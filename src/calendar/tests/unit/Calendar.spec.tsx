@@ -30,16 +30,19 @@ const expectedDateCell = function(
 	date: number,
 	currentMonth: boolean,
 	outOfRange = false,
-	selectedIndex = -1
+	selectedIndex = -1,
+	focusIndex = -1
 ) {
 	return (
 		<CalendarCell
 			key={`date-${dateIndex}`}
-			callFocus={false}
+			callFocus={dateIndex === focusIndex}
 			date={date}
 			outOfRange={outOfRange}
 			disabled={!currentMonth}
-			focusable={date === 1 && currentMonth}
+			focusable={
+				date === 1 && currentMonth && (focusIndex === -1 || focusIndex === dateIndex)
+			}
 			selected={dateIndex === selectedIndex}
 			theme={undefined}
 			classes={undefined}
@@ -49,6 +52,126 @@ const expectedDateCell = function(
 			onKeyDown={noop}
 		/>
 	);
+};
+
+const mayDates = (selectedIndex = -1, focusIndex = -1) => {
+	let dateIndex = 0;
+	return [
+		<tr>
+			{expectedDateCell(dateIndex++, 30, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 1, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 2, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 3, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 4, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 5, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 6, true, false, selectedIndex, focusIndex)}
+		</tr>,
+		<tr>
+			{expectedDateCell(dateIndex++, 7, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 8, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 9, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 10, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 11, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 12, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 13, true, false, selectedIndex, focusIndex)}
+		</tr>,
+		<tr>
+			{expectedDateCell(dateIndex++, 14, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 15, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 16, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 17, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 18, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 19, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 20, true, false, selectedIndex, focusIndex)}
+		</tr>,
+		<tr>
+			{expectedDateCell(dateIndex++, 21, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 22, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 23, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 24, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 25, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 26, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 27, true, false, selectedIndex, focusIndex)}
+		</tr>,
+		<tr>
+			{expectedDateCell(dateIndex++, 28, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 29, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 30, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 31, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 1, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 2, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 3, false, false, selectedIndex, focusIndex)}
+		</tr>,
+		<tr>
+			{expectedDateCell(dateIndex++, 4, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 5, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 6, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 7, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 8, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 9, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 10, false, false, selectedIndex, focusIndex)}
+		</tr>
+	];
+};
+
+const julyDates = (selectedIndex = -1, focusIndex = -1) => {
+	let dateIndex = 0;
+	return [
+		<tr>
+			{expectedDateCell(dateIndex++, 25, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 26, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 27, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 28, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 29, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 30, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 1, true, false, selectedIndex, focusIndex)}
+		</tr>,
+		<tr>
+			{expectedDateCell(dateIndex++, 2, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 3, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 4, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 5, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 6, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 7, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 8, true, false, selectedIndex, focusIndex)}
+		</tr>,
+		<tr>
+			{expectedDateCell(dateIndex++, 9, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 10, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 11, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 12, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 13, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 14, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 15, true, false, selectedIndex, focusIndex)}
+		</tr>,
+		<tr>
+			{expectedDateCell(dateIndex++, 16, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 17, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 18, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 19, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 20, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 21, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 22, true, false, selectedIndex, focusIndex)}
+		</tr>,
+		<tr>
+			{expectedDateCell(dateIndex++, 23, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 24, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 25, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 26, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 27, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 28, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 29, true, false, selectedIndex, focusIndex)}
+		</tr>,
+		<tr>
+			{expectedDateCell(dateIndex++, 30, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 31, true, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 1, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 2, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 3, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 4, false, false, selectedIndex, focusIndex)}
+			{expectedDateCell(dateIndex++, 5, false, false, selectedIndex, focusIndex)}
+		</tr>
+	];
 };
 
 const expected = function(
@@ -228,7 +351,7 @@ const baseTemplate = assertionTemplate(() => {
 						))}
 					</tr>
 				</thead>
-				<tbody>
+				<tbody assertion-key="dates">
 					<tr>
 						{expectedDateCell(dateIndex++, 28, false)}
 						{expectedDateCell(dateIndex++, 29, false)}
@@ -324,14 +447,12 @@ const baseTemplate = assertionTemplate(() => {
 registerSuite('Calendar', {
 	tests: {
 		'Render specific month with default props'() {
-			const h = harness(() => (
-				<Calendar month={testDate.getMonth()} year={testDate.getFullYear()} />
-			));
+			const h = harness(() => <Calendar initialYear={2017} initialMonth={5} />);
 			h.expect(expected);
 		},
 
-		'Render specific month and year with selectedDate'() {
-			const h = harness(() => <Calendar selectedDate={testDate} />);
+		'Render specific month and year with initialValue'() {
+			const h = harness(() => <Calendar initialValue={testDate} />);
 
 			h.expect(() => expected(false, 8));
 		},
@@ -340,11 +461,9 @@ registerSuite('Calendar', {
 			let properties: any = {
 				aria: { describedBy: 'foo' },
 				labels: DEFAULT_LABELS,
-				month: testDate.getMonth(),
 				monthNames: DEFAULT_MONTHS,
-				selectedDate: new Date('June 1 2017'),
-				weekdayNames: DEFAULT_WEEKDAYS,
-				year: testDate.getFullYear()
+				initialValue: new Date('June 1 2017'),
+				weekdayNames: DEFAULT_WEEKDAYS
 			};
 			let children: any = {
 				monthLabel: () => 'Foo',
@@ -353,21 +472,14 @@ registerSuite('Calendar', {
 			const h = harness(() => <Calendar {...properties}>{children}</Calendar>);
 
 			h.expect(() => expected(false, 4, 'Bar', true, 'foo'));
-			properties = {
-				month: testDate.getMonth(),
-				year: testDate.getFullYear()
-			};
-			children = {};
-			h.expect(expected);
 		},
 
 		'Click to select date'() {
 			let selectedDate = testDate;
 			const h = harness(() => (
 				<Calendar
-					month={testDate.getMonth()}
-					year={testDate.getFullYear()}
-					onDateSelect={(date: Date) => {
+					initialValue={testDate}
+					onValue={(date: Date) => {
 						selectedDate = date;
 					}}
 				/>
@@ -389,37 +501,53 @@ registerSuite('Calendar', {
 
 		'Clicking on dates outside the current month changes the month'() {
 			let currentMonth = testDate.getMonth();
-			let selectedDate = testDate;
+			let selectedDate: Date = new Date();
 			let properties = {
-				month: currentMonth,
-				year: testDate.getFullYear(),
-				onMonthChange: (month: number) => {
-					currentMonth = month;
-				},
-				onDateSelect: (date: Date) => {
+				initialValue: testDate,
+				onValue(date: Date) {
 					selectedDate = date;
+				},
+				onMonth(month: number) {
+					currentMonth = month;
 				}
 			};
 			const h = harness(() => <Calendar {...properties} />);
 
 			h.trigger('@date-34', 'onClick', 1, true);
+			h.expect(
+				baseTemplate
+					.setChildren('tbody', () => julyDates(6, 6))
+					.setProperty('@date-picker', 'month', 6)
+			);
+			h.trigger('@date-6', 'onFocusCalled');
+			h.expect(
+				baseTemplate
+					.setChildren('tbody', () => julyDates(6))
+					.setProperty('@date-picker', 'month', 6)
+			);
 			assert.strictEqual(currentMonth, 6, 'Month changes to July');
 			assert.strictEqual(selectedDate.getMonth(), 6, 'selected date in July');
 			assert.strictEqual(selectedDate.getDate(), 1, 'selected correct date in July');
+			h.trigger('@date-0', 'onClick', 30, true);
+			h.trigger('@date-0', 'onClick', 30, true);
+			h.trigger('@date-1', 'onClick', 1, false);
 
-			h.trigger('@date-2', 'onClick', 30, true);
+			h.expect(
+				baseTemplate
+					.setChildren('tbody', () => mayDates(1, 1))
+					.setProperty('@date-picker', 'month', 4)
+			);
 			assert.strictEqual(currentMonth, 4, 'Month changes to May');
 			assert.strictEqual(selectedDate.getMonth(), 4, 'selected date in May');
-			assert.strictEqual(selectedDate.getDate(), 30, 'selected correct date in May');
+			assert.strictEqual(selectedDate.getDate(), 1, 'selected correct date in May');
 		},
 
 		'Keyboard date select'() {
 			let selectedDate = testDate;
 			const h = harness(() => (
 				<Calendar
-					month={testDate.getMonth()}
-					year={testDate.getFullYear()}
-					onDateSelect={(date: Date) => {
+					initialValue={testDate}
+					onValue={(date: Date) => {
 						selectedDate = date;
 					}}
 				/>
@@ -478,104 +606,154 @@ registerSuite('Calendar', {
 			let currentMonth = testDate.getMonth();
 			const h = harness(() => (
 				<Calendar
-					month={currentMonth}
-					year={testDate.getFullYear()}
-					onMonthChange={(month: number) => {
+					initialYear={testDate.getFullYear()}
+					initialMonth={currentMonth}
+					onMonth={(month) => {
 						currentMonth = month;
 					}}
 				/>
 			));
 
 			h.trigger('@date-4', 'onKeyDown', Keys.Left, () => {});
-			assert.strictEqual(
-				currentMonth,
-				testDate.getMonth() - 1,
-				'Going left from the first day goes to previous month'
+			h.expect(
+				baseTemplate
+					.setChildren('tbody', mayDates(-1, 31))
+					.setProperty('@date-picker', 'month', 4)
+					.setProperty('@date-31', 'focusable', true)
 			);
+			assert.strictEqual(currentMonth, 4);
 
 			h.trigger('@date-4', 'onKeyDown', Keys.PageDown, () => {});
 			h.trigger('@date-4', 'onKeyDown', Keys.Right, () => {});
-			assert.strictEqual(
-				currentMonth,
-				testDate.getMonth(),
-				'Going right from the last day goes to next month'
-			);
+			h.expect(baseTemplate.setProperty('@date-4', 'callFocus', true));
+			assert.strictEqual(currentMonth, 5);
 		},
 
-		'Month changes wrap and change year'() {
-			let currentMonth = 0;
-			let currentYear = 2017;
+		'Month change wraps to previous year'() {
+			const initialValue = new Date('January 1, 2018');
+			let currentMonth = initialValue.getMonth();
+			let currentYear = initialValue.getFullYear();
 			let properties = {
-				month: currentMonth,
-				year: currentYear,
-				onMonthChange: (month: number) => {
+				initialMonth: currentMonth,
+				initialYear: currentYear,
+				onMonth(month: number) {
 					currentMonth = month;
 				},
-				onYearChange: (year: number) => {
+				onYear(year: number) {
 					currentYear = year;
 				}
 			};
 			const h = harness(() => <Calendar {...properties} />);
 
+			// Rollover year and continue to June
+			h.trigger('@date-0', 'onKeyDown', Keys.Up, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.PageUp, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.Up, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.PageUp, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.Up, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.PageUp, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.Up, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.PageUp, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.Up, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.PageUp, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.Up, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.PageUp, () => {});
 			h.trigger('@date-0', 'onKeyDown', Keys.Up, () => {});
 
-			assert.strictEqual(currentMonth, 11, 'Previous month wraps from January to December');
-			assert.strictEqual(currentYear, 2016, 'Year decrements when month wraps');
+			h.expect(
+				baseTemplate
+					// The 1st will not be focused because we've navigated to the 24th
+					.setProperty('@date-4', 'focusable', false)
+					.setProperty('@date-27', 'focusable', true)
+					.setProperty('@date-27', 'callFocus', true)
+			);
+			assert.strictEqual(currentMonth, 5);
+			assert.strictEqual(currentYear, 2017);
+		},
 
-			properties = {
-				month: 11,
-				year: 2017,
-				onMonthChange: (month: number) => {
+		'Month change wraps to next year'() {
+			const initialValue = new Date('December 1, 2016');
+			let currentMonth = initialValue.getMonth();
+			let currentYear = initialValue.getFullYear();
+			let properties = {
+				initialMonth: currentMonth,
+				initialYear: currentYear,
+				onMonth(month: number) {
 					currentMonth = month;
 				},
-				onYearChange: (year: number) => {
+				onYear(year: number) {
 					currentYear = year;
 				}
 			};
+			const h = harness(() => <Calendar {...properties} />);
 
-			h.trigger('@date-35', 'onKeyDown', Keys.Down, () => {});
+			// Rollover year and continue to June
+			h.trigger('@date-0', 'onKeyDown', Keys.PageDown, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.Down, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.PageDown, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.Down, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.PageDown, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.Down, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.PageDown, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.Down, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.PageDown, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.Down, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.PageDown, () => {});
+			h.trigger('@date-0', 'onKeyDown', Keys.Down, () => {});
 
-			assert.strictEqual(currentMonth, 0, 'Next month wraps from December to January');
-			assert.strictEqual(currentYear, 2018, 'Year increments when month wraps');
+			h.expect(
+				baseTemplate
+					// The 1st will not be focused because we've navigated to the 7th
+					.setProperty('@date-4', 'focusable', false)
+					.setProperty('@date-10', 'focusable', true)
+					.setProperty('@date-10', 'callFocus', true)
+			);
+			assert.strictEqual(currentMonth, 5);
+			assert.strictEqual(currentYear, 2017);
 		},
 
-		'Month popup events change month and year'() {
+		'Month popup events change month'() {
 			let currentMonth = testDate.getMonth();
-			let currentYear = testDate.getFullYear();
 			const h = harness(() => (
 				<Calendar
-					month={currentMonth}
-					year={currentYear}
-					onMonthChange={(month: number) => {
+					initialYear={2017}
+					initialMonth={currentMonth}
+					onMonth={(month) => {
 						currentMonth = month;
 					}}
-					onYearChange={(year: number) => {
+				/>
+			));
+
+			h.trigger('@date-picker', 'onRequestMonthChange', 4);
+			h.expect(
+				baseTemplate.setChildren('tbody', mayDates).setProperty('@date-picker', 'month', 4)
+			);
+			assert.strictEqual(currentMonth, 4);
+		},
+
+		'Year popup events change year'() {
+			let currentYear = 2018;
+			const h = harness(() => (
+				<Calendar
+					initialMonth={5}
+					initialYear={currentYear}
+					onYear={(year) => {
 						currentYear = year;
 					}}
 				/>
 			));
 
-			h.trigger('@date-picker', 'onRequestMonthChange', 2);
-			assert.strictEqual(
-				currentMonth,
-				2,
-				'Popup month change event triggers calendar month change event'
-			);
-
-			h.trigger('@date-picker', 'onRequestYearChange', 2018);
-			assert.strictEqual(
-				currentYear,
-				2018,
-				'Popup year change triggers calendar year change'
-			);
+			h.trigger('@date-picker', 'onRequestYearChange', 2017);
+			h.expect(baseTemplate);
+			assert.strictEqual(currentYear, 2017);
 		},
 
 		'Previous button should decrement month'() {
 			let currentMonth = testDate.getMonth();
 			const h = harness(() => (
 				<Calendar
-					month={currentMonth}
-					onMonthChange={(month: number) => {
+					initialMonth={currentMonth}
+					onMonth={(month: number) => {
 						currentMonth = month;
 					}}
 				/>
@@ -593,8 +771,8 @@ registerSuite('Calendar', {
 			let currentMonth = testDate.getMonth();
 			const h = harness(() => (
 				<Calendar
-					month={currentMonth}
-					onMonthChange={(month: number) => {
+					initialMonth={currentMonth}
+					onMonth={(month: number) => {
 						currentMonth = month;
 					}}
 				/>
@@ -613,8 +791,8 @@ registerSuite('Calendar', {
 			const h = harness(() => <Calendar {...properties} />);
 			h.trigger('@date-picker', 'onPopupChange', true);
 			properties = {
-				month: testDate.getMonth(),
-				year: testDate.getFullYear()
+				initialMonth: testDate.getMonth(),
+				initialYear: testDate.getFullYear()
 			};
 			h.expect(() => expected(true));
 		}
@@ -670,8 +848,8 @@ registerSuite('Custom first day of week', {
 		'render the correct first day of week'() {
 			const h = harness(() => (
 				<Calendar
-					month={testDate.getMonth()}
-					year={testDate.getFullYear()}
+					initialMonth={testDate.getMonth()}
+					initialYear={testDate.getFullYear()}
 					firstDayOfWeek={2}
 				/>
 			));
@@ -770,8 +948,8 @@ registerSuite('Calendar with min-max', {
 
 			const h = harness(() => (
 				<Calendar
-					month={testDate.getMonth()}
-					year={testDate.getFullYear()}
+					initialMonth={testDate.getMonth()}
+					initialYear={testDate.getFullYear()}
 					minDate={minDate}
 					maxDate={maxDate}
 				/>
@@ -786,7 +964,7 @@ registerSuite('Calendar with min-max', {
 		'Render the month and year with min and max date limitations'() {
 			const h = harness(() => (
 				<Calendar
-					selectedDate={testDate}
+					initialValue={testDate}
 					minDate={minDateInMonth}
 					maxDate={maxDateInMonth}
 				/>
@@ -802,7 +980,7 @@ registerSuite('Calendar with min-max', {
 			const maxDate = new Date('June 29, 2017 00:00:00.000');
 
 			const h = harness(() => (
-				<Calendar selectedDate={testDate} minDate={minDate} maxDate={maxDate} />
+				<Calendar initialValue={testDate} minDate={minDate} maxDate={maxDate} />
 			));
 			h.expect(
 				baseMinMaxTemplate
@@ -815,8 +993,8 @@ registerSuite('Calendar with min-max', {
 		'Set the focusable date when the month change makes it invalid'() {
 			const maxDate = new Date('June 24, 2017');
 			const calendarProperties: CalendarProperties = {
-				month: testDate.getMonth() - 1,
-				year: testDate.getFullYear(),
+				initialMonth: testDate.getMonth() - 1,
+				initialYear: testDate.getFullYear(),
 				maxDate
 			};
 
@@ -846,11 +1024,14 @@ registerSuite('Calendar with min-max', {
 			));
 
 			// Change to next month so 29th cell is invalid
-			calendarProperties.month = testDate.getMonth();
+			calendarProperties.initialMonth = testDate.getMonth();
 
 			h.expect(
 				baseTemplate
 					.setProperty('@date-picker', 'maxDate', maxDate)
+					// Defaults to selecting the max date if no initial date is provided and
+					// today is not in range
+					.setProperty('@date-27', 'selected', true)
 					.setProperty('@date-4', 'focusable', false)
 					.replaceChildren('tbody tr:nth-child(5)', () => {
 						let dateIndex = 28;
@@ -882,10 +1063,10 @@ registerSuite('Calendar with min-max', {
 			);
 		},
 
-		'Allows the selected date even if outside the min/max'() {
+		'Allows the initial value even if outside the min/max'() {
 			const h = harness(() => (
 				<Calendar
-					selectedDate={new Date('June 1, 2017')}
+					initialValue={new Date('June 1, 2017')}
 					minDate={minDateInMonth}
 					maxDate={maxDateInMonth}
 				/>
@@ -899,11 +1080,10 @@ registerSuite('Calendar with min-max', {
 			let selectedDate = testDate.toDateString();
 			const h = harness(() => (
 				<Calendar
-					month={testDate.getMonth()}
-					year={testDate.getFullYear()}
+					initialValue={testDate}
 					minDate={minDateInMonth}
 					maxDate={maxDateInMonth}
-					onDateSelect={(date: Date) => {
+					onValue={(date: Date) => {
 						selectedDate = date.toDateString();
 					}}
 				/>
@@ -950,11 +1130,11 @@ registerSuite('Calendar with min-max', {
 			let currentMonth = originalMonth;
 			const h = harness(() => (
 				<Calendar
-					month={currentMonth}
-					year={testDate.getFullYear()}
+					initialMonth={currentMonth}
+					initialYear={testDate.getFullYear()}
 					minDate={minDateInMonth}
 					maxDate={maxDateInMonth}
-					onMonthChange={(month: number) => {
+					onMonth={(month: number) => {
 						currentMonth = month;
 					}}
 				/>

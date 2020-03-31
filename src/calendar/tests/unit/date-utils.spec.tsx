@@ -1,7 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import { isOutOfDateRange, monthInMin } from '../../date-utils';
+import { isOutOfDateRange, monthInMin, toDate } from '../../date-utils';
 
 const fullDate = new Date(1979, 2, 20, 7, 33, 12);
 const shortDate = new Date(2019, 11, 3);
@@ -105,6 +105,26 @@ registerSuite('Calendar date utils', {
 				);
 				assert.isTrue(isOutOfDateRange(fullDate, undefined, max));
 			}
+		},
+
+		'toDate returns the value passed when it is a date'() {
+			const date = new Date('June 28 2016');
+			assert.strictEqual(toDate(date), date);
+		},
+
+		'toDate returns a new date from a string'() {
+			const expected = new Date('June 28 2016').toString();
+			assert.strictEqual(toDate('June 28 2016').toString(), expected);
+		},
+
+		'toDate returns a new date from a number'() {
+			const input = new Date('June 28 2016').getTime();
+			assert.strictEqual(toDate(input).toString(), new Date('June 28 2016').toString());
+		},
+
+		'toDate returns a new date instance when null or undefined is passed'() {
+			assert.instanceOf(toDate(null), Date);
+			assert.instanceOf(toDate(undefined), Date);
 		}
 	}
 });

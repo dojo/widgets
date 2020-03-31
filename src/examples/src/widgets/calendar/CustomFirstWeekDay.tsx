@@ -6,41 +6,11 @@ const factory = create({ icache });
 
 export default factory(function Basic({ middleware: { icache } }) {
 	const date = icache.getOrSet('date', new Date());
-	const month = icache.getOrSet('month', date.getMonth());
-	const year = icache.getOrSet('year', date.getFullYear());
 
 	return (
 		<virtual>
-			<Calendar
-				firstDayOfWeek={FirstDayOfWeek.monday}
-				selectedDate={date}
-				year={year}
-				month={month}
-				onMonthChange={(month) => {
-					icache.set('month', month);
-				}}
-				onYearChange={(year) => {
-					icache.set('year', year);
-				}}
-				onDateSelect={(date) => {
-					icache.set('date', date);
-				}}
-			/>
-			<Calendar
-				firstDayOfWeek={4}
-				selectedDate={date}
-				year={year}
-				month={month}
-				onMonthChange={(month) => {
-					icache.set('month', month);
-				}}
-				onYearChange={(year) => {
-					icache.set('year', year);
-				}}
-				onDateSelect={(date) => {
-					icache.set('date', date);
-				}}
-			/>
+			<Calendar firstDayOfWeek={FirstDayOfWeek.monday} initialValue={date} />
+			<Calendar firstDayOfWeek={4} initialValue={date} />
 		</virtual>
 	);
 });

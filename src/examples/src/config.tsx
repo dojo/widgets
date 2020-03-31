@@ -16,6 +16,7 @@ import ToggleButton from './widgets/button/ToggleButton';
 import BasicCalendar from './widgets/calendar/Basic';
 import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
 import LimitedRange from './widgets/calendar/LimitedRange';
+import InitialMonthAndYear from './widgets/calendar/InitialMonthAndYear';
 import ActionButtons from './widgets/card/ActionButtons';
 import ActionButtonsAndIcons from './widgets/card/ActionButtonsAndIcons';
 import ActionIcons from './widgets/card/ActionIcons';
@@ -312,6 +313,12 @@ export const config = {
 					filename: 'LimitedRange',
 					module: LimitedRange,
 					title: 'Limited Date Range'
+				},
+				{
+					description: 'Demonstrates initializing month and year, and monitoring changes',
+					filename: 'InitialMonthAndYear',
+					module: InitialMonthAndYear,
+					title: 'Initial month and year'
 				}
 			],
 			filename: 'index',
