@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	composes: mdc-snackbar from '@material/snackbar/dist/mdc.snackbar.css';
 }

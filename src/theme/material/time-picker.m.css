@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .toggleMenuButton {
 	composes: nativeResetRoot from './button.m.css';
 	cursor: pointer;

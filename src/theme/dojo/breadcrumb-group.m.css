@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .listItem,
 .listItem::before {
 	margin-right: var(--grid-base);

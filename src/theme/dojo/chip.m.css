@@ -1,5 +1,3 @@
-@import './variables.css';
-
 .root {
 	height: calc(var(--grid-base) * 4);
 	background-color: var(--color-background-inverted);
