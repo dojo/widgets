@@ -541,26 +541,26 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 						<legend classes={[baseCss.visuallyHidden]}>{labels.chooseYear}</legend>
 						{...renderYearRadios()}
 					</fieldset>
-					<div classes={themeCss.controls}>
-						<button
-							classes={themeCss.previous}
-							tabIndex={yearPopupOpen ? 0 : -1}
-							type="button"
-							onclick={onYearPageDown}
-							disabled={!yearInMinMax(year - 1)}
-						>
-							{...renderPagingButtonContent(Paging.previous)}
-						</button>
-						<button
-							classes={themeCss.next}
-							tabIndex={yearPopupOpen ? 0 : -1}
-							type="button"
-							onclick={onYearPageUp}
-							disabled={!yearInMinMax(year + 1)}
-						>
-							{renderPagingButtonContent(Paging.next)}
-						</button>
-					</div>
+				</div>
+				<div classes={themeCss.controls}>
+					<button
+						classes={themeCss.previous}
+						tabindex={yearPopupOpen ? 0 : -1}
+						type="button"
+						onclick={onYearPageDown}
+						disabled={!yearInMinMax(year - 1)}
+					>
+						{...renderPagingButtonContent(Paging.previous)}
+					</button>
+					<button
+						classes={themeCss.next}
+						tabindex={yearPopupOpen ? 0 : -1}
+						type="button"
+						onclick={onYearPageUp}
+						disabled={!yearInMinMax(year + 1)}
+					>
+						{renderPagingButtonContent(Paging.next)}
+					</button>
 				</div>
 			</div>
 		);
