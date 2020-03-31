@@ -47,16 +47,27 @@ export interface CalendarProperties {
 	initialValue?: Date;
 	/** Function called when the user selects a date */
 	onValue?: (value: Date) => void;
+	/** The initial month to display */
+	initialMonth?: number;
+	/** Function called when the month changes */
+	onMonth?(month: number): void;
+	/** The initial year to display */
+	initialYear?: number;
+	/** Function called when the year changes */
+	onYear?(year: number): void;
 }
 
 export interface CalendarIcache {
 	value?: Date;
-	initialValue?: Date;
+	initialValue: Date;
+	initialMonth: number;
+	month: number;
+	initialYear: number;
+	year: number;
 	callDateFocus?: boolean;
 	focusedDay: number;
 	monthLabelId: string;
 	popupOpen?: boolean;
-	selectedDate: Date;
 }
 
 export interface CalendarChildren {
@@ -119,34 +130,53 @@ export const Calendar = factory(function Calendar({
 		aria = {},
 		minDate,
 		maxDate,
-		initialValue,
+		initialValue = new Date(),
 		weekdayNames = getWeekdays(commonMessages),
 		firstDayOfWeek = 0
 	} = properties();
 
 	const { monthLabel, weekdayCell } = children()[0] || ({} as CalendarChildren);
+	const {
+		initialYear = initialValue.getFullYear(),
+		initialMonth = initialValue.getMonth()
+	} = properties();
 
 	const existingInitialValue = icache.getOrSet('initialValue', new Date());
+	const existingInitialMonth = icache.get('initialMonth');
+	const existingInitialYear = icache.get('initialYear');
 	const callDateFocus = icache.getOrSet('callDateFocus', false);
 	const focusedDay = icache.getOrSet('focusedDay', 1);
 	const monthLabelId = icache.getOrSet('monthLabelId', id);
 	const popupOpen = icache.getOrSet('popupOpen', false);
 	const shouldFocus = focus.shouldFocus();
 	let value = icache.get('value') || new Date();
-	let selectedDate = icache.getOrSet('selectedDate', value);
 	console.log('focusedDay', focusedDay);
 
 	if (initialValue !== existingInitialValue) {
 		value = toDate(initialValue);
-		selectedDate = toDate(value.getTime());
-		if (isOutOfDateRange(value, minDate, maxDate)) {
+
+		if (
+			typeof properties().initialValue === 'undefined' &&
+			isOutOfDateRange(value, minDate, maxDate)
+		) {
 			value = toDate(maxDate);
 		}
+
 		icache.set('initialValue', toDate(initialValue));
 		onValueChange(value);
 	}
 
-	const { year, month } = getMonthYear();
+	if (initialMonth !== existingInitialMonth) {
+		icache.set('initialMonth', initialMonth);
+		onMonthChange(initialMonth);
+	}
+
+	if (initialYear !== existingInitialYear) {
+		icache.set('initialYear', initialYear);
+		onYearChange(initialYear);
+	}
+
+	const { month, year } = getMonthYear();
 
 	let weekdayOrder: number[] = [];
 	for (let i = firstDayOfWeek; i < firstDayOfWeek + 7; i++) {
@@ -162,8 +192,19 @@ export const Calendar = factory(function Calendar({
 	function onValueChange(newValue: Date) {
 		const { onValue } = properties();
 		icache.set('value', newValue);
-		icache.set('selectedDate', toDate(newValue.getTime()));
 		onValue && onValue(newValue);
+	}
+
+	function onMonthChange(newMonth: number) {
+		const { onMonth } = properties();
+		icache.set('month', newMonth);
+		onMonth && onMonth(newMonth);
+	}
+
+	function onYearChange(newYear: number) {
+		const { onYear } = properties();
+		icache.set('year', newYear);
+		onYear && onYear(newYear);
 	}
 
 	function getMonthLength(month: number, year: number) {
@@ -179,10 +220,12 @@ export const Calendar = factory(function Calendar({
 	}
 
 	function getMonthYear() {
-		const value = icache.get('selectedDate') || new Date();
+		const selectedDate = icache.get('value') || new Date();
+		const month = icache.get('month');
+		const year = icache.get('year');
 		return {
-			month: value.getMonth(),
-			year: value.getFullYear()
+			month: typeof month === 'number' ? month : selectedDate.getMonth(),
+			year: typeof year === 'number' ? year : selectedDate.getFullYear()
 		};
 	}
 
@@ -208,6 +251,8 @@ export const Calendar = factory(function Calendar({
 			day -= currentMonthLength;
 		}
 
+		const { month: newMonth, year: newYear } = getMonthYear();
+		console.log(`Go to ${day} ${newMonth} ${newYear}`);
 		icache.set('focusedDay', day);
 		icache.set('callDateFocus', true);
 	}
@@ -253,8 +298,8 @@ export const Calendar = factory(function Calendar({
 				break;
 			case Keys.PageDown:
 				preventDefault();
-				const monthLengh = getMonthLength(month, year);
-				goToDate(monthLengh);
+				const monthLength = getMonthLength(month, year);
+				goToDate(monthLength);
 				break;
 			case Keys.Enter:
 			case Keys.Space:
@@ -263,25 +308,29 @@ export const Calendar = factory(function Calendar({
 	}
 
 	function onMonthDecrement() {
-		let { month, year } = getMonthYear();
+		const { month, year } = getMonthYear();
 
-		year = month === 0 ? year - 1 : year;
-		month = month === 0 ? 11 : month - 1;
-		selectedDate.setMonth(month);
-		selectedDate.setFullYear(year);
-		icache.set('selectedDate', selectedDate);
-		return { month, year };
+		const newYear = month === 0 ? year - 1 : year;
+		const newMonth = month === 0 ? 11 : month - 1;
+
+		onMonthChange(newMonth);
+		if (newYear !== year) {
+			onYearChange(newYear);
+		}
+
+		return { month: newMonth, year: newYear };
 	}
 
 	function onMonthIncrement() {
-		let { month, year } = getMonthYear();
+		const { month, year } = getMonthYear();
 
-		year = month === 11 ? year + 1 : year;
-		month = month === 11 ? 0 : month + 1;
-		selectedDate.setMonth(month);
-		selectedDate.setFullYear(year);
-		icache.set('selectedDate', selectedDate);
-		return { month, year };
+		const newYear = month === 11 ? year + 1 : year;
+		const newMonth = month === 11 ? 0 : month + 1;
+		onMonthChange(newMonth);
+		if (newYear !== year) {
+			onYearChange(newYear);
+		}
+		return { month: newMonth, year: newYear };
 	}
 
 	function onMonthPageDown(event: MouseEvent) {
@@ -430,12 +479,10 @@ export const Calendar = factory(function Calendar({
 					icache.set('popupOpen', open);
 				}}
 				onRequestMonthChange={(requestMonth: number) => {
-					selectedDate.setMonth(requestMonth);
-					icache.set('selectedDate', selectedDate);
+					onMonthChange(requestMonth);
 				}}
 				onRequestYearChange={(requestYear: number) => {
-					selectedDate.setFullYear(requestYear);
-					icache.set('selectedDate', selectedDate);
+					onYearChange(requestYear);
 				}}
 			/>
 		);
