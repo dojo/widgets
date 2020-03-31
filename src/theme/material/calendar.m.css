@@ -124,6 +124,10 @@
 	background-color: var(--mdc-theme-primary);
 }
 
+.calendarPagingIcon {
+	composes: icon from './icon.m.css';
+}
+
 .yearRadioChecked .yearRadioLabel,
 .monthRadioChecked .monthRadioLabel {
 	color: var(--mdc-theme-on-primary);
