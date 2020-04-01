@@ -222,6 +222,7 @@ import ValidatedTypeahead from './widgets/typeahead/Validation';
 import BasicTwoColumnLayout from './widgets/two-column-layout/Basic';
 import TrailingBiasTwoColumnLayout from './widgets/two-column-layout/TrailingBias';
 import CollapsingLayout from './widgets/two-column-layout/Collapsing';
+import BasicResult from './widgets/result/Basic';
 
 `!has('docs')`;
 import testsContext from './tests';
@@ -1205,6 +1206,14 @@ export const config = {
 				{ filename: 'Disabled', module: DisabledRangeSlider, title: 'Disabled' },
 				{ filename: 'Controlled', module: ControlledRangeSlider, title: 'Controlled' }
 			]
+		},
+		result: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicResult
+				}
+			}
 		},
 		select: {
 			overview: {

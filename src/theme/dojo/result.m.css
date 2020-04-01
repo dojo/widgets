@@ -1,0 +1,48 @@
+.root {
+	display: flex;
+	flex-direction: column;
+}
+
+.statusIcon {
+	background: var(--color-success);
+	border-radius: 50%;
+	color: var(--color-text-inverted);
+	font-size: 72px;
+	height: 150px;
+	width: 150px;
+}
+
+.actions {
+	display: flex;
+	flex-direction: row;
+}
+
+.actionButtons {
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+}
+
+.contentWrapper {
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+}
+
+.titleWrapper {
+}
+
+.title {
+	font-size: var(--font-size-title);
+	font-weight: inherit;
+	margin: 0;
+}
+
+.subtitle {
+	color: var(--color-text-faded);
+	font-size: var(--font-size-small);
+	font-weight: inherit;
+	margin: 0;
+}
