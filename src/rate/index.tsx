@@ -46,30 +46,14 @@ export interface RateChildren {
 	(fill: boolean, integer: number, selected?: number, over?: number): RenderResult;
 }
 
-interface RateState {
-	uuid: string;
-	hover: string;
+interface RateICache {
 	hovering: boolean;
-	selectedInteger?: number;
-	selectedStep?: number;
+	hover: number;
+	selected?: number;
 	focused: boolean;
 }
 
-const icache = createICacheMiddleware<RateState>();
-
-function mixedNumber(integer: number, step: number, steps: number): MixedNumber {
-	if (step === steps) {
-		step = 0;
-	} else {
-		integer -= 1;
-	}
-	return {
-		value: integer + step / steps,
-		quotient: integer,
-		numerator: step,
-		denominator: steps
-	};
-}
+const icache = createICacheMiddleware<RateICache>();
 
 type RadioChecked = (checked?: boolean) => boolean | undefined;
 
@@ -88,85 +72,61 @@ export const Rate = factory(function Rate({
 	const {
 		name,
 		label,
-		initialValue: initialNumber = undefined,
+		initialValue,
 		onValue,
 		max = 5,
-		steps: stepsLength = 1,
-		allowClear = false,
-		disabled = false,
-		readOnly = false
+		steps = 1,
+		allowClear,
+		disabled,
+		readOnly
 	} = properties();
 	const interaction = !disabled && !readOnly;
-	const initialStep = initialNumber ? Math.round((initialNumber % 1) * stepsLength) : undefined;
-	const initialInteger = initialNumber ? Math.ceil(initialNumber) : undefined;
-	const initialValue = initialNumber
-		? `${initialInteger}-${initialStep || stepsLength}`
-		: undefined;
 	const character = children()[0];
 	const hovering = icache.getOrSet('hovering', false);
-	const selectedInteger = icache.getOrSet('selectedInteger', initialInteger);
-	const selectedStep = icache.getOrSet('selectedStep', initialStep);
+	const hover = icache.getOrSet('hover', 0);
+	const selected = icache.getOrSet('selected', initialValue);
 	const shouldFocus = hovering ? focus.shouldFocus() : icache.getOrSet('focused', false);
 
-	const integers: number[] = [];
-	const steps: number[] = [];
-	for (let step = 1; step <= stepsLength; step++) {
-		steps.push(step);
-	}
 	const options = [];
 	if (allowClear) {
-		integers.push(0);
 		options.push({
 			value: '',
-			label: format('starLabels', { quotient: 0, numerator: 0, denominator: 1 })
+			label: format('starLabels', { rating: 0 })
 		});
 	}
-	for (let integer = 1; integer <= max; integer++) {
-		integers.push(integer);
-		for (const step of steps) {
+	for (let integer = 0; integer < max; integer++) {
+		for (let step = 1; step <= steps; step++) {
+			const value = integer + step / steps;
 			options.push({
-				value: `${integer}-${step}`,
-				label: format('starLabels', mixedNumber(integer, step, stepsLength))
+				value: `${value}`,
+				label: format('starLabels', { rating: value })
 			});
 		}
 	}
 
 	const _onValue = (value?: string) => {
 		if (!value) {
-			icache.set('selectedInteger', undefined);
-			icache.set('selectedStep', undefined);
+			icache.set('selected', undefined);
 			onValue && onValue();
 		} else {
-			const [integer, step] = value.split('-').map((num) => +num);
-			const mixed = mixedNumber(integer, step, stepsLength);
-			icache.set('selectedInteger', integer);
-			icache.set('selectedStep', step);
-			onValue && onValue(mixed.value);
+			const decimal = parseFloat(value);
+			icache.set('selected', decimal);
+			onValue && onValue(decimal);
 		}
 		focus.focus();
 	};
 
-	const selected =
-		selectedInteger !== undefined && selectedStep !== undefined
-			? selectedInteger - 1 + selectedStep / stepsLength
-			: undefined;
-	const groupIsActive = shouldFocus && allowClear && selectedInteger === undefined;
-	const [hoverInteger, hoverStep] = icache
-		.getOrSet('hover', '0-0')
-		.split('-')
-		.map((num) => +num);
-	const hoverDecimal = hoverInteger - 1 + hoverStep / stepsLength;
-	const over = hovering && !shouldFocus ? hoverDecimal : undefined;
-	const activeInteger = shouldFocus || !hovering ? selectedInteger : hoverInteger;
-	const activeStep = shouldFocus || !hovering ? selectedStep : hoverStep;
+	const groupIsActive = shouldFocus && allowClear && selected === undefined;
+	const over = hovering && !shouldFocus ? hover : undefined;
+	const active = shouldFocus || !hovering ? selected : hover;
 
-	const renderLabel = (integer: number, step: number, fill: boolean) => (
+	const renderLabel = (value: number, fill: boolean) => (
 		<virtual>
 			<span key="radioLabel" classes={baseCss.visuallyHidden}>
-				{format('starLabels', mixedNumber(integer, step, stepsLength))}
+				{format('starLabels', { rating: value })}
 			</span>
 			{character ? (
-				character(fill, integer, selected, over)
+				character(fill, Math.ceil(value), selected, over)
 			) : (
 				<Icon
 					theme={theme.compose(
@@ -178,7 +138,7 @@ export const Rate = factory(function Rate({
 						'@dojo/widgets/icon': {
 							icon: [
 								fill ? themedCss.filled : null,
-								over && Math.ceil(over) === integer ? themedCss.over : null
+								over && Math.ceil(over) === Math.ceil(value) ? themedCss.over : null
 							]
 						}
 					}}
@@ -217,26 +177,18 @@ export const Rate = factory(function Rate({
 	);
 
 	const renderStep = (
-		integer: number,
-		step: number,
-		key: string,
+		value: number,
 		styles: Partial<CSSStyleDeclaration>,
 		classes: string[],
 		clear: RadioChecked,
 		radio: RenderResult
 	) => (
 		<div
-			key={key}
+			key={`${value === 0 ? '' : value}`}
 			styles={styles}
 			classes={classes}
-			onpointerenter={() => interaction && icache.set('hover', key)}
-			onclick={() =>
-				interaction &&
-				allowClear &&
-				integer === selectedInteger &&
-				step === selectedStep &&
-				clear(true)
-			}
+			onpointerenter={() => interaction && icache.set('hover', value)}
+			onclick={() => interaction && allowClear && value === selected && clear(true)}
 		>
 			{radio}
 		</div>
@@ -249,8 +201,8 @@ export const Rate = factory(function Rate({
 				themedCss.characterWrapper,
 				integer === 0 ? baseCss.visuallyHidden : null,
 				shouldFocus &&
-				(integer === selectedInteger ||
-					(!allowClear && selectedInteger === undefined && integer === 1))
+				(integer === (selected && Math.ceil(selected)) ||
+					(!allowClear && selected === undefined && integer === 1))
 					? themedCss.active
 					: null
 			]}
@@ -259,45 +211,41 @@ export const Rate = factory(function Rate({
 		</div>
 	);
 
-	const renderChildren: RadioGroupChildren = (name, middleware) => {
-		const radioIntegers: DNode[] = [];
-		for (const integer of integers) {
-			const radios: DNode[] = [];
-			for (const step of steps) {
-				if (integer === 0 && step !== stepsLength) {
-					continue;
-				}
+	const renderChildren: RadioGroupChildren = (name, middleware, options) => {
+		const radioIntegers: DNode[][] = [];
+		for (const option of options) {
+			const zero = option.value === '';
+			const value = parseFloat(option.value) || 0;
+			const integer = Math.ceil(value);
+			const remainder = value % 1;
+			const numerator = remainder === 0 ? steps : Math.round((value * steps) % steps);
+			const key = zero ? '' : `${value}`;
+			const forId = `${id}-${name}-${key}`;
+			const { checked } = middleware(key);
+			const { checked: clear } = middleware('');
 
-				const key = integer === 0 ? '' : `${integer}-${step}`;
-				const forId = `${id}-${name}-${key}`;
-				const { checked } = middleware(key);
-				const { checked: clear } = middleware('');
-
-				let fill = activeInteger !== undefined && integer <= activeInteger;
-				const styles: Partial<CSSStyleDeclaration> = {};
-				const classes: string[] = [];
-				const radioClasses: string[] = [];
-				if (integer > 0 && stepsLength > 1) {
-					if (step > 1) {
-						classes.push(themedCss.partialCharacter);
-						radioClasses.push(themedCss.partialRadio);
-						styles.width = `${((stepsLength - step + 1) / stepsLength) * 100}%`;
-						if (integer === activeInteger && activeStep !== undefined) {
-							fill = step <= activeStep;
-						}
-					}
-				}
-
-				const label = renderLabel(integer, step, fill);
-				const radio = renderRadio(forId, checked, radioClasses, label);
-				radios.push(renderStep(integer, step, key, styles, classes, clear, radio));
+			let fill = !zero && active !== undefined && value <= active;
+			const styles: Partial<CSSStyleDeclaration> = {};
+			const classes: string[] = [];
+			const radioClasses: string[] = [];
+			if (!zero && steps > 1 && numerator !== 1) {
+				classes.push(themedCss.partialCharacter);
+				radioClasses.push(themedCss.partialRadio);
+				styles.width = `${((steps - numerator + 1) / steps) * 100}%`;
 			}
-			radioIntegers.push(renderInteger(integer, radios));
+
+			const label = renderLabel(value, fill);
+			const radio = renderRadio(forId, checked, radioClasses, label);
+			const step = renderStep(value, styles, classes, clear, radio);
+			(radioIntegers[integer] = radioIntegers[integer] || []).push(step);
 		}
 
 		return (
 			<div classes={[themedCss.groupWrapper, groupIsActive ? themedCss.active : null]}>
-				{radioIntegers}
+				{radioIntegers.reduce((nodes, radios, integer) => {
+					nodes.push(renderInteger(integer, radios));
+					return nodes;
+				}, [])}
 			</div>
 		);
 	};
@@ -316,7 +264,7 @@ export const Rate = factory(function Rate({
 		>
 			<RadioGroup
 				key="radioGroup"
-				initialValue={initialValue}
+				initialValue={`${initialValue}`}
 				label={label}
 				name={name}
 				onValue={_onValue}

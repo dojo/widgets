@@ -1,4 +1,4 @@
-import Rate, { MixedNumber } from '@dojo/widgets/rate';
+import Rate from '@dojo/widgets/rate';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import icache from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -20,11 +20,8 @@ const App = factory(function({ properties, middleware: { i18n, icache } }) {
 						'half',
 						value &&
 							format('starLabels', {
-								value,
-								quotient: Math.floor(value),
-								numerator: Math.round(value * 2) % 2,
-								denominator: 2
-							} as MixedNumber)
+								rating: value
+							})
 					);
 				}}
 			/>

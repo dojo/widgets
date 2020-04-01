@@ -12,7 +12,6 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import { HarnessAPI } from '@dojo/framework/testing/harness';
 import select from '@dojo/framework/testing/support/selector';
-
 import {
 	compareTheme,
 	createHarness,
@@ -22,7 +21,7 @@ import {
 import * as baseCss from '../../../common/styles/base.m.css';
 import * as css from '../../../theme/default/rate.m.css';
 import Radio from '../../../radio';
-import RadioGroup from '../../../radio-group';
+import RadioGroup, { RadioGroupProperties } from '../../../radio-group';
 import Rate, { RateProperties } from '../../index';
 
 const i18nFactory = create();
@@ -47,11 +46,6 @@ const i18nMiddlewareMock = i18nFactory(() => ({
 const harness = createHarness([
 	compareTheme,
 	{
-		selector: '@radioGroup',
-		property: 'options',
-		comparator: Array.isArray
-	},
-	{
 		selector: '*',
 		property: 'widgetId',
 		comparator: isStringComparator
@@ -64,6 +58,8 @@ const harness = createHarness([
 ]);
 
 const selectRadio = (h: HarnessAPI, value?: string, checkedStub?: SinonStub) => {
+	let options;
+	h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
 	return h.trigger(
 		'@radioGroup',
 		(node: any) => node.children[0],
@@ -75,7 +71,8 @@ const selectRadio = (h: HarnessAPI, value?: string, checkedStub?: SinonStub) => 
 				}
 				checkedStub && checkedStub(checked);
 			}
-		})
+		}),
+		options
 	);
 };
 const createGroup = (integer: number, hidden: boolean, active: boolean, children: RenderResult) => (
@@ -90,24 +87,26 @@ const createGroup = (integer: number, hidden: boolean, active: boolean, children
 		{children}
 	</div>
 );
-const createRadio = (
-	properties: Partial<RateProperties> = {},
-	key: string,
-	quotient: number,
-	numerator = 0,
-	denominator = 1
-) => {
+const createRadio = (properties: Partial<RateProperties> = {}, value?: number, steps = 1) => {
 	const { disabled = false, readOnly = false } = properties;
+	const remainder = (value || 0) % 1;
+	const numerator = remainder === 0 ? steps : Math.round(((value || 0) * steps) % steps);
 	const styles: Partial<CSSStyleDeclaration> = {};
 	const classes: string[] = [];
 	const radioClasses: string[] = [];
-	if (denominator > 1 && numerator !== 1) {
-		styles.width = `${((denominator - (numerator || denominator) + 1) / denominator) * 100}%`;
+	if (steps > 1 && numerator !== 1) {
 		classes.push(css.partialCharacter);
 		radioClasses.push(css.partialRadio);
+		styles.width = `${((steps - numerator + 1) / steps) * 100}%`;
 	}
 	return (
-		<div key={key} styles={styles} classes={classes} onpointerenter={noop} onclick={noop}>
+		<div
+			key={`${value === undefined ? '' : value}`}
+			styles={styles}
+			classes={classes}
+			onpointerenter={noop}
+			onclick={noop}
+		>
 			<Radio
 				widgetId=""
 				key="radio"
@@ -134,7 +133,10 @@ const createRadio = (
 };
 
 describe('Rate', () => {
-	const baseTemplate = (properties: Partial<RateProperties> = {}) =>
+	const baseTemplate = (
+		properties: Partial<RateProperties> = {},
+		options: RadioGroupProperties['options'] = []
+	) =>
 		assertionTemplate(() => (
 			<div
 				key="root"
@@ -153,7 +155,7 @@ describe('Rate', () => {
 					label={undefined}
 					name="rate"
 					onValue={noop}
-					options={[]}
+					options={options}
 					theme={{}}
 				>
 					{() => []}
@@ -165,16 +167,18 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		h.expect(baseTemplate());
+		let options;
+		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		h.expect(baseTemplate(undefined, options));
 		const radios = selectRadio(h);
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, null]}>
-					{createGroup(1, false, false, [createRadio(undefined, '1-1', 1)])}
-					{createGroup(2, false, false, [createRadio(undefined, '2-1', 4)])}
-					{createGroup(3, false, false, [createRadio(undefined, '3-1', 3)])}
-					{createGroup(4, false, false, [createRadio(undefined, '4-1', 4)])}
-					{createGroup(5, false, false, [createRadio(undefined, '5-1', 5)])}
+					{createGroup(1, false, false, [createRadio(undefined, 1)])}
+					{createGroup(2, false, false, [createRadio(undefined, 2)])}
+					{createGroup(3, false, false, [createRadio(undefined, 3)])}
+					{createGroup(4, false, false, [createRadio(undefined, 4)])}
+					{createGroup(5, false, false, [createRadio(undefined, 5)])}
 				</div>
 			),
 			() => radios
@@ -185,13 +189,15 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" max={2} />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		h.expect(baseTemplate());
+		let options;
+		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		h.expect(baseTemplate(undefined, options));
 		const radios = selectRadio(h);
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, null]}>
-					{createGroup(1, false, false, [createRadio(undefined, '1-1', 1)])}
-					{createGroup(2, false, false, [createRadio(undefined, '2-1', 4)])}
+					{createGroup(1, false, false, [createRadio(undefined, 1)])}
+					{createGroup(2, false, false, [createRadio(undefined, 2)])}
 				</div>
 			),
 			() => radios
@@ -202,17 +208,19 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" disabled />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
+		let options;
+		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
 		const properties = { disabled: true };
-		h.expect(baseTemplate(properties));
+		h.expect(baseTemplate(properties, options));
 		const radios = selectRadio(h);
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, null]}>
-					{createGroup(1, false, false, [createRadio(properties, '1-1', 1)])}
-					{createGroup(2, false, false, [createRadio(properties, '2-1', 4)])}
-					{createGroup(3, false, false, [createRadio(properties, '3-1', 3)])}
-					{createGroup(4, false, false, [createRadio(properties, '4-1', 4)])}
-					{createGroup(5, false, false, [createRadio(properties, '5-1', 5)])}
+					{createGroup(1, false, false, [createRadio(properties, 1)])}
+					{createGroup(2, false, false, [createRadio(properties, 2)])}
+					{createGroup(3, false, false, [createRadio(properties, 3)])}
+					{createGroup(4, false, false, [createRadio(properties, 4)])}
+					{createGroup(5, false, false, [createRadio(properties, 5)])}
 				</div>
 			),
 			() => radios
@@ -223,21 +231,23 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" initialValue={1} readOnly allowClear />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
+		let options;
+		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
 		const properties = { readOnly: true };
-		h.expect(baseTemplate(properties).setProperty('@radioGroup', 'initialValue', `1-1`));
+		h.expect(baseTemplate(properties, options).setProperty('@radioGroup', 'initialValue', `1`));
 		const radios = selectRadio(h);
-		const [radio] = select('[key="1-1"]', radios);
+		const [radio] = select('[key="1"]', radios);
 		assert.exists(radio);
 		(radio.properties as any).onclick();
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, null]}>
-					{createGroup(0, true, false, [createRadio(properties, '', 0)])}
-					{createGroup(1, false, false, [createRadio(properties, '1-1', 1)])}
-					{createGroup(2, false, false, [createRadio(properties, '2-1', 4)])}
-					{createGroup(3, false, false, [createRadio(properties, '3-1', 3)])}
-					{createGroup(4, false, false, [createRadio(properties, '4-1', 4)])}
-					{createGroup(5, false, false, [createRadio(properties, '5-1', 5)])}
+					{createGroup(0, true, false, [createRadio(properties, undefined)])}
+					{createGroup(1, false, false, [createRadio(properties, 1)])}
+					{createGroup(2, false, false, [createRadio(properties, 2)])}
+					{createGroup(3, false, false, [createRadio(properties, 3)])}
+					{createGroup(4, false, false, [createRadio(properties, 4)])}
+					{createGroup(5, false, false, [createRadio(properties, 5)])}
 				</div>
 			),
 			() => radios
@@ -248,51 +258,53 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		h.expect(baseTemplate());
+		let options;
+		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		h.expect(baseTemplate(undefined, options));
 
 		let radios = selectRadio(h);
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, null]}>
-					{createGroup(1, false, false, [createRadio(undefined, '1-1', 1)])}
-					{createGroup(2, false, false, [createRadio(undefined, '2-1', 4)])}
-					{createGroup(3, false, false, [createRadio(undefined, '3-1', 3)])}
-					{createGroup(4, false, false, [createRadio(undefined, '4-1', 4)])}
-					{createGroup(5, false, false, [createRadio(undefined, '5-1', 5)])}
+					{createGroup(1, false, false, [createRadio(undefined, 1)])}
+					{createGroup(2, false, false, [createRadio(undefined, 2)])}
+					{createGroup(3, false, false, [createRadio(undefined, 3)])}
+					{createGroup(4, false, false, [createRadio(undefined, 4)])}
+					{createGroup(5, false, false, [createRadio(undefined, 5)])}
 				</div>
 			),
 			() => radios
 		);
 
 		// focus the 1 star rating
-		const [radio] = select('[key="1-1"] [key="radio"]', radios);
+		const [radio] = select('[key="1"] [key="radio"]', radios);
 		assert.exists(radio);
 		(radio.properties as any).onFocus();
 		radios = selectRadio(h);
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, null]}>
-					{createGroup(1, false, true, [createRadio(undefined, '1-1', 1)])}
-					{createGroup(2, false, false, [createRadio(undefined, '2-1', 4)])}
-					{createGroup(3, false, false, [createRadio(undefined, '3-1', 3)])}
-					{createGroup(4, false, false, [createRadio(undefined, '4-1', 4)])}
-					{createGroup(5, false, false, [createRadio(undefined, '5-1', 5)])}
+					{createGroup(1, false, true, [createRadio(undefined, 1)])}
+					{createGroup(2, false, false, [createRadio(undefined, 2)])}
+					{createGroup(3, false, false, [createRadio(undefined, 3)])}
+					{createGroup(4, false, false, [createRadio(undefined, 4)])}
+					{createGroup(5, false, false, [createRadio(undefined, 5)])}
 				</div>
 			),
 			() => radios
 		);
 
 		// select the value
-		h.trigger('@radioGroup', 'onValue', '1-1');
+		h.trigger('@radioGroup', 'onValue', '1');
 		radios = selectRadio(h);
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, null]}>
-					{createGroup(1, false, true, [createRadio(undefined, '1-1', 1)])}
-					{createGroup(2, false, false, [createRadio(undefined, '2-1', 4)])}
-					{createGroup(3, false, false, [createRadio(undefined, '3-1', 3)])}
-					{createGroup(4, false, false, [createRadio(undefined, '4-1', 4)])}
-					{createGroup(5, false, false, [createRadio(undefined, '5-1', 5)])}
+					{createGroup(1, false, true, [createRadio(undefined, 1)])}
+					{createGroup(2, false, false, [createRadio(undefined, 2)])}
+					{createGroup(3, false, false, [createRadio(undefined, 3)])}
+					{createGroup(4, false, false, [createRadio(undefined, 4)])}
+					{createGroup(5, false, false, [createRadio(undefined, 5)])}
 				</div>
 			),
 			() => radios
@@ -304,11 +316,11 @@ describe('Rate', () => {
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, null]}>
-					{createGroup(1, false, false, [createRadio(undefined, '1-1', 1)])}
-					{createGroup(2, false, false, [createRadio(undefined, '2-1', 4)])}
-					{createGroup(3, false, false, [createRadio(undefined, '3-1', 3)])}
-					{createGroup(4, false, false, [createRadio(undefined, '4-1', 4)])}
-					{createGroup(5, false, false, [createRadio(undefined, '5-1', 5)])}
+					{createGroup(1, false, false, [createRadio(undefined, 1)])}
+					{createGroup(2, false, false, [createRadio(undefined, 2)])}
+					{createGroup(3, false, false, [createRadio(undefined, 3)])}
+					{createGroup(4, false, false, [createRadio(undefined, 4)])}
+					{createGroup(5, false, false, [createRadio(undefined, 5)])}
 				</div>
 			),
 			() => radios
@@ -319,23 +331,25 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" allowClear={true} />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		h.expect(baseTemplate());
+		let options;
+		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		h.expect(baseTemplate(undefined, options));
 
 		let radios = selectRadio(h);
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, null]}>
-					{createGroup(0, true, false, [createRadio(undefined, '', 0)])}
-					{createGroup(1, false, false, [createRadio(undefined, '1-1', 1)])}
-					{createGroup(2, false, false, [createRadio(undefined, '2-1', 4)])}
-					{createGroup(3, false, false, [createRadio(undefined, '3-1', 3)])}
-					{createGroup(4, false, false, [createRadio(undefined, '4-1', 4)])}
-					{createGroup(5, false, false, [createRadio(undefined, '5-1', 5)])}
+					{createGroup(0, true, false, [createRadio()])}
+					{createGroup(1, false, false, [createRadio(undefined, 1)])}
+					{createGroup(2, false, false, [createRadio(undefined, 2)])}
+					{createGroup(3, false, false, [createRadio(undefined, 3)])}
+					{createGroup(4, false, false, [createRadio(undefined, 4)])}
+					{createGroup(5, false, false, [createRadio(undefined, 5)])}
 				</div>
 			),
 			() => radios
 		);
-		const [radio] = select('[key="1-1"] [key="radio"]', radios);
+		const [radio] = select('[key="1"] [key="radio"]', radios);
 		assert.exists(radio);
 		(radio.properties as any).onFocus();
 
@@ -343,12 +357,12 @@ describe('Rate', () => {
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, css.active]}>
-					{createGroup(0, true, false, [createRadio(undefined, '', 0)])}
-					{createGroup(1, false, false, [createRadio(undefined, '1-1', 1)])}
-					{createGroup(2, false, false, [createRadio(undefined, '2-1', 4)])}
-					{createGroup(3, false, false, [createRadio(undefined, '3-1', 3)])}
-					{createGroup(4, false, false, [createRadio(undefined, '4-1', 4)])}
-					{createGroup(5, false, false, [createRadio(undefined, '5-1', 5)])}
+					{createGroup(0, true, false, [createRadio()])}
+					{createGroup(1, false, false, [createRadio(undefined, 1)])}
+					{createGroup(2, false, false, [createRadio(undefined, 2)])}
+					{createGroup(3, false, false, [createRadio(undefined, 3)])}
+					{createGroup(4, false, false, [createRadio(undefined, 4)])}
+					{createGroup(5, false, false, [createRadio(undefined, 5)])}
 				</div>
 			),
 			() => radios
@@ -359,12 +373,12 @@ describe('Rate', () => {
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, null]}>
-					{createGroup(0, true, false, [createRadio(undefined, '', 0)])}
-					{createGroup(1, false, false, [createRadio(undefined, '1-1', 1)])}
-					{createGroup(2, false, false, [createRadio(undefined, '2-1', 4)])}
-					{createGroup(3, false, false, [createRadio(undefined, '3-1', 3)])}
-					{createGroup(4, false, false, [createRadio(undefined, '4-1', 4)])}
-					{createGroup(5, false, false, [createRadio(undefined, '5-1', 5)])}
+					{createGroup(0, true, false, [createRadio()])}
+					{createGroup(1, false, false, [createRadio(undefined, 1)])}
+					{createGroup(2, false, false, [createRadio(undefined, 2)])}
+					{createGroup(3, false, false, [createRadio(undefined, 3)])}
+					{createGroup(4, false, false, [createRadio(undefined, 4)])}
+					{createGroup(5, false, false, [createRadio(undefined, 5)])}
 				</div>
 			),
 			() => radios
@@ -376,7 +390,15 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" initialValue={initialValue} />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		h.expect(baseTemplate().setProperty('@radioGroup', 'initialValue', `${initialValue}-1`));
+		let options;
+		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		h.expect(
+			baseTemplate(undefined, options).setProperty(
+				'@radioGroup',
+				'initialValue',
+				`${initialValue}`
+			)
+		);
 	});
 
 	it('renders with steps', () => {
@@ -387,41 +409,45 @@ describe('Rate', () => {
 				middleware: [[i18n, i18nMiddlewareMock]]
 			}
 		);
-		h.expect(baseTemplate().setProperty('@radioGroup', 'initialValue', `4-3`));
+		let options;
+		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		h.expect(
+			baseTemplate(undefined, options).setProperty('@radioGroup', 'initialValue', `3.75`)
+		);
 		const radios = selectRadio(h);
 		h.expect(
 			() => (
 				<div classes={[css.groupWrapper, null]}>
-					{createGroup(0, true, false, [createRadio(undefined, '', 0)])}
+					{createGroup(0, true, false, [createRadio()])}
 					{createGroup(1, false, false, [
-						createRadio(undefined, '1-1', 0, 1, 4),
-						createRadio(undefined, '1-2', 0, 2, 4),
-						createRadio(undefined, '1-3', 0, 3, 4),
-						createRadio(undefined, '1-4', 1, 0, 4)
+						createRadio(undefined, 0.25, 4),
+						createRadio(undefined, 0.5, 4),
+						createRadio(undefined, 0.75, 4),
+						createRadio(undefined, 1, 4)
 					])}
 					{createGroup(2, false, false, [
-						createRadio(undefined, '2-1', 1, 1, 4),
-						createRadio(undefined, '2-2', 1, 2, 4),
-						createRadio(undefined, '2-3', 1, 3, 4),
-						createRadio(undefined, '2-4', 2, 0, 4)
+						createRadio(undefined, 1.25, 4),
+						createRadio(undefined, 1.5, 4),
+						createRadio(undefined, 1.75, 4),
+						createRadio(undefined, 2, 4)
 					])}
 					{createGroup(3, false, false, [
-						createRadio(undefined, '3-1', 2, 1, 4),
-						createRadio(undefined, '3-2', 2, 2, 4),
-						createRadio(undefined, '3-3', 2, 3, 4),
-						createRadio(undefined, '3-4', 3, 0, 4)
+						createRadio(undefined, 2.25, 4),
+						createRadio(undefined, 2.5, 4),
+						createRadio(undefined, 2.75, 4),
+						createRadio(undefined, 3, 4)
 					])}
 					{createGroup(4, false, false, [
-						createRadio(undefined, '4-1', 3, 1, 4),
-						createRadio(undefined, '4-2', 3, 2, 4),
-						createRadio(undefined, '4-3', 3, 3, 4),
-						createRadio(undefined, '4-4', 4, 0, 4)
+						createRadio(undefined, 3.25, 4),
+						createRadio(undefined, 3.5, 4),
+						createRadio(undefined, 3.75, 4),
+						createRadio(undefined, 4, 4)
 					])}
 					{createGroup(5, false, false, [
-						createRadio(undefined, '5-1', 4, 1, 4),
-						createRadio(undefined, '5-2', 4, 2, 4),
-						createRadio(undefined, '5-3', 4, 3, 4),
-						createRadio(undefined, '5-4', 5, 0, 4)
+						createRadio(undefined, 4.25, 4),
+						createRadio(undefined, 4.5, 4),
+						createRadio(undefined, 4.75, 4),
+						createRadio(undefined, 5, 4)
 					])}
 				</div>
 			),
@@ -435,10 +461,12 @@ describe('Rate', () => {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
 		h.trigger('@root', 'onpointerenter');
-		h.expect(baseTemplate());
+		let options;
+		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		h.expect(baseTemplate(undefined, options));
 
 		const radios = selectRadio(h);
-		const [radio] = select('@5-1', radios);
+		const [radio] = select('@5', radios);
 		assert.exists(radio);
 		(radio.properties as any).onpointerenter();
 
@@ -459,19 +487,21 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" allowClear={true} onValue={onValue} />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		h.expect(baseTemplate());
-		h.trigger('@radioGroup', 'onValue', '2-1');
+		let options;
+		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		h.expect(baseTemplate(undefined, options));
+		h.trigger('@radioGroup', 'onValue', '2');
 		sinon.assert.calledWithExactly(onValue, 2);
 		onValue.reset();
 		h.trigger('@radioGroup', 'onValue', '');
 		sinon.assert.calledWithExactly(onValue);
 		onValue.reset();
-		h.trigger('@radioGroup', 'onValue', '3-1');
+		h.trigger('@radioGroup', 'onValue', '3');
 		sinon.assert.calledWithExactly(onValue, 3);
 		onValue.reset();
 		const checkedStub = sinon.stub();
 		const radios = selectRadio(h, undefined, checkedStub);
-		const [radio] = select('[key="3-1"]', radios);
+		const [radio] = select('[key="3"]', radios);
 		assert.exists(radio);
 		(radio.properties as any).onclick();
 		sinon.assert.calledWithExactly(checkedStub, true);
@@ -482,10 +512,12 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" steps={2} onValue={onValue} />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		h.expect(baseTemplate());
-		h.trigger('@radioGroup', 'onValue', '2-1');
+		let options;
+		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		h.expect(baseTemplate(undefined, options));
+		h.trigger('@radioGroup', 'onValue', '1.5');
 		sinon.assert.calledWithExactly(onValue, 1.5);
-		h.trigger('@radioGroup', 'onValue', '3-2');
+		h.trigger('@radioGroup', 'onValue', '3');
 		sinon.assert.calledWithExactly(onValue, 3);
 	});
 });
