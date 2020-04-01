@@ -5,9 +5,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../../../common/util';
 
 import { DEFAULT_LABELS, DEFAULT_MONTHS, DEFAULT_WEEKDAYS } from '../support/defaults';
-import Calendar, { CalendarProperties } from '../../index';
-import CalendarCell from '../../CalendarCell';
-import DatePicker from '../../DatePicker';
+import Calendar, { CalendarProperties, CalendarCell, DatePicker } from '../../index';
 import Icon from '../../../icon/index';
 import * as css from '../../../theme/default/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';

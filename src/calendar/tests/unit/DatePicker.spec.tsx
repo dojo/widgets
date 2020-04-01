@@ -6,7 +6,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../../../common/util';
 
 import { DEFAULT_LABELS, DEFAULT_MONTHS } from '../support/defaults';
-import DatePicker, { DatePickerProperties } from '../../DatePicker';
+import { DatePicker } from '../../index';
 import Icon from '../../../icon/index';
 import * as css from '../../../theme/default/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
@@ -19,13 +19,13 @@ import {
 } from '../../../common/tests/support/test-helpers';
 
 const testDate = new Date('June 3 2017');
-const requiredProps: DatePickerProperties = {
+const requiredProps = {
 	labels: DEFAULT_LABELS,
 	month: testDate.getMonth(),
 	monthNames: DEFAULT_MONTHS,
 	year: testDate.getFullYear()
 };
-let customProps: Partial<DatePickerProperties> = {};
+let customProps: any = {};
 
 const compareKey = {
 	selector: 'label,input',
