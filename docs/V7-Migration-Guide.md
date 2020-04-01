@@ -7,7 +7,6 @@
   * Other general breaking changes
 
 ## Per widget we should cover:
-* Flag if it is a new widget
 * Summarise the changes to the widget properties
    * Additional mandatory properties
    * Replaced properties/functionality by other properties
