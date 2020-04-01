@@ -21,18 +21,18 @@
 ### accordion-pane
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -42,18 +42,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### avatar
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -63,18 +63,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### breadcrumb-group
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -84,18 +84,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### button
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -105,18 +105,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### calendar
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -126,18 +126,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### card
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -147,18 +147,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### checkbox
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -168,18 +168,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### checkbox-group
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -189,18 +189,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### chip
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -210,18 +210,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### constrained-input
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -231,18 +231,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### context-menu
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -252,18 +252,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### context-popup
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -273,18 +273,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### date-input
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -294,18 +294,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### dialog
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -315,18 +315,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### email-input
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -336,18 +336,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### form
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -357,18 +357,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### global-event
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -378,18 +378,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### grid
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -399,18 +399,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### header
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -420,18 +420,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### header-card
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -441,18 +441,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### helper-text
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -462,18 +462,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### icon
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -483,18 +483,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### label
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -504,18 +504,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### list
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -525,18 +525,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### loading-indicator
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -546,18 +546,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### native-select
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -567,18 +567,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### number-input
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -588,18 +588,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### outlined-button
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -609,18 +609,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### password-input
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -630,18 +630,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### popup
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -651,18 +651,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### progress
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -672,18 +672,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### radio
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -693,18 +693,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### radio-group
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -714,18 +714,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### raised-button
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -735,18 +735,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### range-slider
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -756,18 +756,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### select
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -777,18 +777,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### slide-pane
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -798,18 +798,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### slider
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -819,18 +819,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### snackbar
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -840,18 +840,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### switch
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -861,18 +861,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### tab
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -882,18 +882,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### tab-controller
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -903,18 +903,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### text-area
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -924,18 +924,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### text-input
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -945,18 +945,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### time-picker
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -966,18 +966,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### title-pane
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -987,18 +987,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### tooltip
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
@@ -1008,18 +1008,18 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 ### trigger-popup
 **New Widget** (delete if innapropriate)
 #### Property changes
-- Additional Mandatory Properties
-	- foo: string
-		- this prop does x
-- Changed properties
-	- bar: string
-		- this prop replaced x
-		- this prop does foo bar baz
-		- more info
-- Removed properties
-	- baz: string
-		- replaced by foo
-		- any additional info
+##### Additional Mandatory Properties
+- foo: string
+	- this prop does x
+##### Changed properties
+- bar: string
+	- this prop replaced x
+	- this prop does foo bar baz
+	- more info
+##### Removed properties
+- baz: string
+	- replaced by foo
+	- any additional info
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
