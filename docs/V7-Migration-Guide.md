@@ -104,22 +104,63 @@ Latest example can be found on [widgets.dojo.io/#widget/button/overwiew](https:/
 
 
 ### calendar
-**New Widget** (delete if innapropriate)
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- initialValue?: Date
+	- This property replaced `selectedDate`
+	- This property can be used to simply provide an initial value or can
+	  be used together with `onValue` to control the value
+- onValue?(value: Date): void
+    - This property replaced `onDateSelect`
+    - The name was changed to follow a more consistent pattern
+- initialMonth?: number
+   - This property replaced `month`
+   - This property can be used to specify the initial month that should be displayed
+     or can be used together with `onMonth` to control the month displayed
+- onMonth?(month: number): void
+    - This property replaced `onMonthChange`
+    - The name was changed to follow a more consistent pattern
+- initialYear?: number
+   - This property replaced `year`
+   - This property can be used to specify the initial year that should be displayed
+     or can be used together with `onYear` to control the year displayed
+- onYear?(year: number): void
+    - This property replaced `onYearChange`
+    - The name was changed to follow a more consistent pattern
 #### Changes in behaviour
+The calendar widget is now uncontrolled by default. Initial values can be
+provided but the calendar will maintain its own internal state, tracking the
+displayed month and year and the currently selected value. The calendar can
+still be controlled by using the callbacks and initial properties to track
+and update the value.
 #### Example of migration from v6 to v7
+```ts
+const selectedDate = icache.getOrSet('date', new Date());
+const month = icache.getOrSet('month', selectedDate.getMonth());
+const year = icache.getOrSet('year', selectedDate.getFullYear());
+<Calendar
+    selectedDate={selectedDate}
+    month={month}
+    year={year}
+    onDateSelect={date => {
+        icache.set('date', date);
+    }}
+    onMonthChange={month => {
+        icache.set('month', month);
+    }}
+    onYearChange={year => {
+        icache.set('year', year);
+    }}
+/>
+```
+
+```ts
+<Calendar
+    onValue={date => {
+        icache.set('date', date);
+    }}
+/>
+```
 
 Latest example can be found on [widgets.dojo.io/#widget/calendar/overwiew](https://widgets.dojo.io/#widget/calendar/overview)
 
