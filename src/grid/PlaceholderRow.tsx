@@ -8,7 +8,7 @@ import * as fixedCss from './styles/placeholder-row.m.css';
 @theme(css)
 export default class PlaceholderRow extends ThemedMixin(WidgetBase) {
 	protected render(): DNode {
-		return v('div', { classes: [fixedCss.root, this.theme(css.root)] }, [
+		return v('div', { classes: [this.variant(), fixedCss.root, this.theme(css.root)] }, [
 			v('div', { classes: this.theme(css.loading) })
 		]);
 	}
