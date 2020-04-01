@@ -565,27 +565,6 @@ Latest example can be found on [widgets.dojo.io/#widget/outlined-button/overwiew
 Latest example can be found on [widgets.dojo.io/#widget/password-input/overwiew](https://widgets.dojo.io/#widget/password-input/overview)
 
 
-### popup
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/popup/overwiew](https://widgets.dojo.io/#widget/popup/overview)
-
-
 ### progress
 **New Widget** (delete if innapropriate)
 #### Property changes
