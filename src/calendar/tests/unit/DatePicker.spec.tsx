@@ -1,7 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
-import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../../../common/util';
 
@@ -15,9 +14,12 @@ import {
 	compareAriaControls,
 	compareId,
 	stubEvent,
-	noop
+	noop,
+	createHarness,
+	compareTheme
 } from '../../../common/tests/support/test-helpers';
 
+const harness = createHarness([compareTheme]);
 const testDate = new Date('June 3 2017');
 const requiredProps = {
 	labels: DEFAULT_LABELS,
@@ -160,7 +162,7 @@ const expectedControls = function(open: boolean) {
 				disabled={false}
 				onclick={noop}
 			>
-				<Icon type="leftIcon" theme={undefined} classes={undefined} />
+				<Icon type="leftIcon" theme={{}} classes={undefined} />
 				<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.previousYears}</span>
 			</button>
 			<button
@@ -170,7 +172,7 @@ const expectedControls = function(open: boolean) {
 				disabled={false}
 				onclick={noop}
 			>
-				<Icon type="rightIcon" theme={undefined} classes={undefined} />
+				<Icon type="rightIcon" theme={{}} classes={undefined} />
 				<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.nextYears}</span>
 			</button>
 		</div>
@@ -433,7 +435,7 @@ registerSuite('Calendar DatePicker', {
 							type="button"
 							onclick={noop}
 						>
-							<Icon type="leftIcon" theme={undefined} classes={undefined} />
+							<Icon type="leftIcon" theme={{}} classes={undefined} />
 							<span classes={baseCss.visuallyHidden}>
 								{DEFAULT_LABELS.previousYears}
 							</span>
@@ -445,7 +447,7 @@ registerSuite('Calendar DatePicker', {
 							type="button"
 							onclick={noop}
 						>
-							<Icon type="rightIcon" theme={undefined} classes={undefined} />
+							<Icon type="rightIcon" theme={{}} classes={undefined} />
 							<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.nextYears}</span>
 						</button>
 					</div>

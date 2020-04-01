@@ -9,6 +9,7 @@ import Calendar, { CalendarProperties, CalendarCell, DatePicker } from '../../in
 import Icon from '../../../icon/index';
 import * as css from '../../../theme/default/calendar.m.css';
 import * as baseCss from '../../../common/styles/base.m.css';
+import { compareTheme } from '../../../common/tests/support/test-helpers';
 import {
 	compareId,
 	createHarness,
@@ -20,7 +21,7 @@ import {
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 
 const testDate = new Date('June 5 2017');
-const harness = createHarness([compareId, compareLabelId, compareAriaLabelledBy]);
+const harness = createHarness([compareId, compareLabelId, compareAriaLabelledBy, compareTheme]);
 
 /** Index of current expected date cell. Used by date cell factory function */
 const expectedDateCell = function(
@@ -286,11 +287,7 @@ const expected = function(
 					type="button"
 					onclick={noop}
 				>
-					<Icon
-						type="leftIcon"
-						theme={undefined}
-						classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
-					/>
+					<Icon type="leftIcon" theme={{}} classes={undefined} />
 					<span classes={[baseCss.visuallyHidden]}>Previous Month</span>
 				</button>
 				<button
@@ -300,11 +297,7 @@ const expected = function(
 					type="button"
 					onclick={noop}
 				>
-					<Icon
-						type="rightIcon"
-						theme={undefined}
-						classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
-					/>
+					<Icon type="rightIcon" theme={{}} classes={undefined} />
 					<span classes={[baseCss.visuallyHidden]}>Next Month</span>
 				</button>
 			</div>
@@ -415,11 +408,7 @@ const baseTemplate = assertionTemplate(() => {
 					type="button"
 					onclick={noop}
 				>
-					<Icon
-						type="leftIcon"
-						theme={undefined}
-						classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
-					/>
+					<Icon type="leftIcon" theme={{}} classes={undefined} />
 					<span classes={[baseCss.visuallyHidden]}>Previous Month</span>
 				</button>
 				<button
@@ -430,11 +419,7 @@ const baseTemplate = assertionTemplate(() => {
 					type="button"
 					onclick={noop}
 				>
-					<Icon
-						type="rightIcon"
-						theme={undefined}
-						classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
-					/>
+					<Icon type="rightIcon" theme={{}} classes={undefined} />
 					<span classes={[baseCss.visuallyHidden]}>Next Month</span>
 				</button>
 			</div>
