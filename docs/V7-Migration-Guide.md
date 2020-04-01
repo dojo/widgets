@@ -17,6 +17,7 @@
 * link to the widget examples on widgets.dojo.io
 
 ## Widget Changes
+/#widget/accordion-pane/overview
 
 ### accordion-pane
 **New Widget** (delete if innapropriate)
@@ -36,7 +37,7 @@
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/accordion-pane/overwiew](https://widgets.dojo.io/#widget/accordion-pane/overview)
 
 
 ### avatar
@@ -57,7 +58,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/avatar/overwiew](https://widgets.dojo.io/#widget/avatar/overview)
 
 
 ### breadcrumb-group
@@ -78,7 +79,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/breadcrumb-group/overwiew](https://widgets.dojo.io/#widget/breadcrumb-group/overview)
 
 
 ### button
@@ -99,7 +100,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/button/overwiew](https://widgets.dojo.io/#widget/button/overview)
 
 
 ### calendar
@@ -120,7 +121,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/calendar/overwiew](https://widgets.dojo.io/#widget/calendar/overview)
 
 
 ### card
@@ -141,7 +142,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/card/overwiew](https://widgets.dojo.io/#widget/card/overview)
 
 
 ### checkbox
@@ -162,7 +163,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/checkbox/overwiew](https://widgets.dojo.io/#widget/checkbox/overview)
 
 
 ### checkbox-group
@@ -183,7 +184,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/checkbox-group/overwiew](https://widgets.dojo.io/#widget/checkbox-group/overview)
 
 
 ### chip
@@ -204,7 +205,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/chip/overwiew](https://widgets.dojo.io/#widget/chip/overview)
 
 
 ### constrained-input
@@ -225,7 +226,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/constrained-input/overwiew](https://widgets.dojo.io/#widget/constrained-input/overview)
 
 
 ### context-menu
@@ -246,7 +247,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/context-menu/overwiew](https://widgets.dojo.io/#widget/context-menu/overview)
 
 
 ### context-popup
@@ -267,7 +268,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/context-popup/overwiew](https://widgets.dojo.io/#widget/context-popup/overview)
 
 
 ### date-input
@@ -288,7 +289,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/date-input/overwiew](https://widgets.dojo.io/#widget/date-input/overview)
 
 
 ### dialog
@@ -309,7 +310,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/dialog/overwiew](https://widgets.dojo.io/#widget/dialog/overview)
 
 
 ### email-input
@@ -330,7 +331,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/email-input/overwiew](https://widgets.dojo.io/#widget/email-input/overview)
 
 
 ### form
@@ -351,7 +352,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/form/overwiew](https://widgets.dojo.io/#widget/form/overview)
 
 
 ### global-event
@@ -372,7 +373,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/global-event/overwiew](https://widgets.dojo.io/#widget/global-event/overview)
 
 
 ### grid
@@ -393,7 +394,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/grid/overwiew](https://widgets.dojo.io/#widget/grid/overview)
 
 
 ### header
@@ -414,7 +415,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/header/overwiew](https://widgets.dojo.io/#widget/header/overview)
 
 
 ### header-card
@@ -435,7 +436,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/header-card/overwiew](https://widgets.dojo.io/#widget/header-card/overview)
 
 
 ### helper-text
@@ -456,7 +457,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/helper-text/overwiew](https://widgets.dojo.io/#widget/helper-text/overview)
 
 
 ### icon
@@ -477,7 +478,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/icon/overwiew](https://widgets.dojo.io/#widget/icon/overview)
 
 
 ### label
@@ -498,7 +499,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/label/overwiew](https://widgets.dojo.io/#widget/label/overview)
 
 
 ### list
@@ -519,7 +520,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/list/overwiew](https://widgets.dojo.io/#widget/list/overview)
 
 
 ### loading-indicator
@@ -540,7 +541,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/loading-indicator/overwiew](https://widgets.dojo.io/#widget/loading-indicator/overview)
 
 
 ### native-select
@@ -561,7 +562,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/native-select/overwiew](https://widgets.dojo.io/#widget/native-select/overview)
 
 
 ### number-input
@@ -582,7 +583,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/number-input/overwiew](https://widgets.dojo.io/#widget/number-input/overview)
 
 
 ### outlined-button
@@ -603,7 +604,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/outlined-button/overwiew](https://widgets.dojo.io/#widget/outlined-button/overview)
 
 
 ### password-input
@@ -624,7 +625,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/password-input/overwiew](https://widgets.dojo.io/#widget/password-input/overview)
 
 
 ### popup
@@ -645,7 +646,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/popup/overwiew](https://widgets.dojo.io/#widget/popup/overview)
 
 
 ### progress
@@ -666,7 +667,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/progress/overwiew](https://widgets.dojo.io/#widget/progress/overview)
 
 
 ### radio
@@ -687,7 +688,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/radio/overwiew](https://widgets.dojo.io/#widget/radio/overview)
 
 
 ### radio-group
@@ -708,7 +709,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/radio-group/overwiew](https://widgets.dojo.io/#widget/radio-group/overview)
 
 
 ### raised-button
@@ -729,7 +730,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/raised-button/overwiew](https://widgets.dojo.io/#widget/raised-button/overview)
 
 
 ### range-slider
@@ -750,7 +751,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/range-slider/overwiew](https://widgets.dojo.io/#widget/range-slider/overview)
 
 
 ### select
@@ -771,7 +772,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/select/overwiew](https://widgets.dojo.io/#widget/select/overview)
 
 
 ### slide-pane
@@ -792,7 +793,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/slide-pane/overwiew](https://widgets.dojo.io/#widget/slide-pane/overview)
 
 
 ### slider
@@ -813,7 +814,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/slider/overwiew](https://widgets.dojo.io/#widget/slider/overview)
 
 
 ### snackbar
@@ -834,7 +835,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/snackbar/overwiew](https://widgets.dojo.io/#widget/snackbar/overview)
 
 
 ### switch
@@ -855,7 +856,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/switch/overwiew](https://widgets.dojo.io/#widget/switch/overview)
 
 
 ### tab
@@ -876,7 +877,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/tab/overwiew](https://widgets.dojo.io/#widget/tab/overview)
 
 
 ### tab-controller
@@ -897,7 +898,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/tab-controller/overwiew](https://widgets.dojo.io/#widget/tab-controller/overview)
 
 
 ### text-area
@@ -918,7 +919,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/text-area/overwiew](https://widgets.dojo.io/#widget/text-area/overview)
 
 
 ### text-input
@@ -939,7 +940,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/text-input/overwiew](https://widgets.dojo.io/#widget/text-input/overview)
 
 
 ### time-picker
@@ -960,7 +961,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/time-picker/overwiew](https://widgets.dojo.io/#widget/time-picker/overview)
 
 
 ### title-pane
@@ -981,7 +982,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/title-pane/overwiew](https://widgets.dojo.io/#widget/title-pane/overview)
 
 
 ### tooltip
@@ -1002,7 +1003,7 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/tooltip/overwiew](https://widgets.dojo.io/#widget/tooltip/overview)
 
 
 ### trigger-popup
@@ -1023,6 +1024,6 @@ Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/restOfPath](https://widgets.dojo.io/restOfPath)
+Latest example can be found on [widgets.dojo.io/#widget/trigger-popup/overwiew](https://widgets.dojo.io/#widget/trigger-popup/overview)
 
 
