@@ -318,13 +318,11 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 		function onYearPageDown(event: MouseEvent) {
 			event.stopPropagation();
 			icache.set('yearPage', yearPage - 1);
-			// this._yearPopupOpen && this.invalidate();
 		}
 
 		function onYearPageUp(event: MouseEvent) {
 			event.stopPropagation();
 			icache.set('yearPage', yearPage + 1);
-			// this._yearPopupOpen && this.invalidate();
 		}
 
 		function onYearRadioChange(event: Event) {
