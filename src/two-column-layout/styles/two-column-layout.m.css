@@ -1,0 +1,12 @@
+.root {
+	display: flex;
+	box-sizing: border-box;
+}
+
+.even {
+	flex-basis: 50%;
+}
+
+.biased {
+	flex-grow: 1;
+}
