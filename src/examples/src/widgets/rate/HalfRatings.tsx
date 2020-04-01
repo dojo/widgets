@@ -1,4 +1,4 @@
-import Rate from '@dojo/widgets/rate';
+import Rate, { MixedNumber } from '@dojo/widgets/rate';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import icache from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -15,8 +15,17 @@ const App = factory(function({ properties, middleware: { i18n, icache } }) {
 			<Rate
 				name="half"
 				steps={2}
-				onValue={(mixed) => {
-					set('half', format('starLabels', mixed));
+				onValue={(value) => {
+					set(
+						'half',
+						value &&
+							format('starLabels', {
+								value,
+								quotient: Math.floor(value),
+								numerator: Math.round(value * 2) % 2,
+								denominator: 2
+							} as MixedNumber)
+					);
 				}}
 			/>
 			<pre>{`${get('half')}`}</pre>

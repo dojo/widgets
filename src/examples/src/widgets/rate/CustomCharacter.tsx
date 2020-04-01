@@ -29,6 +29,41 @@ const App = factory(function({ properties, middleware: { icache } }) {
 				}}
 			</Rate>
 			<pre>{`${get('character')}`}</pre>
+			<Rate
+				name="emoji"
+				steps={4}
+				initialValue={3.5}
+				onValue={(value) => {
+					set('emoji', value);
+				}}
+			>
+				{(fill, integer, selected, over) => {
+					let moon = '🌑';
+					const active = over !== undefined ? over : selected;
+					if (active) {
+						if (Math.ceil(active) === integer) {
+							switch (Math.round((active % 1) * 4)) {
+								case 0:
+									moon = '🌕';
+									break;
+								case 1:
+									moon = '🌘';
+									break;
+								case 2:
+									moon = '🌗';
+									break;
+								case 3:
+									moon = '🌖';
+									break;
+							}
+						} else if (active > integer) {
+							moon = '🌕';
+						}
+					}
+					return <div>{moon}</div>;
+				}}
+			</Rate>
+			<pre>{`${get('emoji')}`}</pre>
 		</virtual>
 	);
 });

@@ -29,7 +29,7 @@ export interface RateProperties {
 	/** The initial rating value */
 	initialValue?: number;
 	/** Callback fired when the rating value changes */
-	onValue?: (mixedValue?: MixedNumber) => void;
+	onValue?: (value?: number) => void;
 	/** The number of times each star is divided */
 	steps?: number;
 	/** The highest rating for this rating group */
@@ -57,7 +57,7 @@ interface RateState {
 
 const icache = createICacheMiddleware<RateState>();
 
-function mixedNumber(integer: number, step: number, steps: number) {
+function mixedNumber(integer: number, step: number, steps: number): MixedNumber {
 	if (step === steps) {
 		step = 0;
 	} else {
@@ -141,7 +141,7 @@ export const Rate = factory(function Rate({
 			const mixed = mixedNumber(integer, step, stepsLength);
 			icache.set('selectedInteger', integer);
 			icache.set('selectedStep', step);
-			onValue && onValue(mixed);
+			onValue && onValue(mixed.value);
 		}
 		focus.focus();
 	};

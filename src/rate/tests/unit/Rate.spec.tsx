@@ -461,23 +461,13 @@ describe('Rate', () => {
 		});
 		h.expect(baseTemplate());
 		h.trigger('@radioGroup', 'onValue', '2-1');
-		sinon.assert.calledWithExactly(onValue, {
-			value: 2,
-			quotient: 2,
-			numerator: 0,
-			denominator: 1
-		});
+		sinon.assert.calledWithExactly(onValue, 2);
 		onValue.reset();
 		h.trigger('@radioGroup', 'onValue', '');
 		sinon.assert.calledWithExactly(onValue);
 		onValue.reset();
 		h.trigger('@radioGroup', 'onValue', '3-1');
-		sinon.assert.calledWithExactly(onValue, {
-			value: 3,
-			quotient: 3,
-			numerator: 0,
-			denominator: 1
-		});
+		sinon.assert.calledWithExactly(onValue, 3);
 		onValue.reset();
 		const checkedStub = sinon.stub();
 		const radios = selectRadio(h, undefined, checkedStub);
@@ -494,18 +484,8 @@ describe('Rate', () => {
 		});
 		h.expect(baseTemplate());
 		h.trigger('@radioGroup', 'onValue', '2-1');
-		sinon.assert.calledWithExactly(onValue, {
-			value: 1.5,
-			quotient: 1,
-			numerator: 1,
-			denominator: 2
-		});
+		sinon.assert.calledWithExactly(onValue, 1.5);
 		h.trigger('@radioGroup', 'onValue', '3-2');
-		sinon.assert.calledWithExactly(onValue, {
-			value: 3,
-			quotient: 3,
-			numerator: 0,
-			denominator: 2
-		});
+		sinon.assert.calledWithExactly(onValue, 3);
 	});
 });
