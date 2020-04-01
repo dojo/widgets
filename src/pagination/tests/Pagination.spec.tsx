@@ -20,7 +20,7 @@ describe('Pagination', () => {
 	const noop = () => {};
 
 	const baseAssertion = assertionTemplate(() => (
-		<div classes={css.root}>
+		<div key="root" classes={[undefined, css.root]}>
 			<button type="button" onclick={noop} classes={[css.prev, css.link]}>
 				<div classes={css.icon}>
 					<Icon type="leftIcon" />
@@ -69,7 +69,7 @@ describe('Pagination', () => {
 		const h = harness(() => <Pagination total={3} initialPage={1} onPageChange={noop} />);
 		h.expect(
 			assertionTemplate(() => (
-				<div classes={css.root}>
+				<div key="root" classes={[undefined, css.root]}>
 					<div classes={css.currentPage}>1</div>
 					<button type="button" onclick={noop} classes={[css.numberedLink, css.link]}>
 						2
@@ -92,7 +92,7 @@ describe('Pagination', () => {
 		const h = harness(() => <Pagination total={3} initialPage={3} onPageChange={noop} />);
 		h.expect(
 			assertionTemplate(() => (
-				<div classes={css.root}>
+				<div key="root" classes={[undefined, css.root]}>
 					<button
 						assertion-key="prev"
 						type="button"

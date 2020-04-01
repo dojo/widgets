@@ -118,7 +118,7 @@ export default factory(function Pagination({ middleware: { theme, icache, i18n }
 
 	return (
 		total > 1 && (
-			<div classes={classes.root}>
+			<div key="root" classes={[theme.variant(), classes.root]}>
 				{leadingCount &&
 					pageLink(
 						page - 1,
