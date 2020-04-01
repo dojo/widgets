@@ -22,6 +22,8 @@ export default factory(function Basic() {
 			<Icon type="alertIcon" />
 			<Icon type="helpIcon" />
 			<Icon type="infoIcon" />
+			<Icon type="cancelIcon" />
+			<Icon type="checkedBoxIcon" />
 			<Icon type="phoneIcon" />
 			<Icon type="editIcon" />
 			<Icon type="dateIcon" />

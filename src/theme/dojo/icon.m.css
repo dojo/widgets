@@ -80,6 +80,12 @@
 .infoIcon:before {
 	content: '\e88e';
 }
+.cancelIcon:before {
+	content: '\ea0d';
+}
+.checkedBoxIcon:before {
+	content: '\ea52';
+}
 .phoneIcon:before {
 	content: '\e0cd';
 }
