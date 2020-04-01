@@ -193,6 +193,8 @@ import TrailingHeader from './widgets/header/Trailing';
 import BasicGlobalEvent from './widgets/global-event/Basic';
 import Pagination from './widgets/pagination/Basic';
 import PaginationPageSizeSelector from './widgets/pagination/PageSizeSelector';
+import PaginationControlled from './widgets/pagination/Controlled';
+import PaginationSiblingCount from './widgets/pagination/SiblingCount';
 import BasicTypeahead from './widgets/typeahead/Basic';
 import RemoteTypeahead from './widgets/typeahead/RemoteSource';
 import CustomFilterTypeahead from './widgets/typeahead/CustomFilter';
@@ -967,6 +969,16 @@ export const config = {
 					filename: 'PageSizeSelector',
 					module: PaginationPageSizeSelector,
 					title: 'Page Size Selection'
+				},
+				{
+					filename: 'Controlled',
+					module: PaginationControlled,
+					title: 'Fully Controlled'
+				},
+				{
+					filename: 'SiblingCount',
+					module: PaginationSiblingCount,
+					title: 'Sibling Count'
 				}
 			],
 			overview: {

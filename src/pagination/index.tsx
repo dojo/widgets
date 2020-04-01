@@ -42,6 +42,9 @@ export interface PaginationProperties {
 	/** Custom renderer for page size selector item */
 	pageSizeRenderer?(pageSize: number): RenderResult;
 
+	/** Number of always visible page links before and after the current page */
+	siblingCount?: number;
+
 	/** Total number of pages */
 	total: number;
 }
@@ -56,8 +59,6 @@ interface PaginationCache {
 const icache = createICacheMiddleware<PaginationCache>();
 const factory = create({ theme, icache, i18n }).properties<PaginationProperties>();
 
-const PAGE_LINKS = 3;
-
 export default factory(function Pagination({ middleware: { theme, icache, i18n }, properties }) {
 	const {
 		initialPage,
@@ -66,6 +67,7 @@ export default factory(function Pagination({ middleware: { theme, icache, i18n }
 		onPageSizeChange,
 		pageSizes,
 		pageSizeRenderer,
+		siblingCount = 3,
 		total
 	} = properties();
 	const classes = theme.classes(css);
@@ -87,11 +89,13 @@ export default factory(function Pagination({ middleware: { theme, icache, i18n }
 	const pageLink = function(
 		page: number,
 		content?: WNode | WNode[],
-		extraClasses: string = classes.numberedLink
+		extraClasses: string = classes.numberedLink,
+		key?: string
 	): WNode {
 		return (
 			<button
 				type="button"
+				key={key || `numberedLink-${page}`}
 				classes={[extraClasses, classes.link]}
 				onclick={(e) => {
 					e.stopPropagation();
@@ -105,13 +109,13 @@ export default factory(function Pagination({ middleware: { theme, icache, i18n }
 	};
 
 	const leading: WNode[] = [];
-	const leadingCount = page > PAGE_LINKS ? PAGE_LINKS : page - 1;
+	const leadingCount = Math.min(siblingCount, page - 1);
 	for (let i = 1; i <= leadingCount; i++) {
 		leading.unshift(pageLink(page - i));
 	}
 
 	const trailing: WNode[] = [];
-	const trailingCount = total - page > PAGE_LINKS ? PAGE_LINKS : total - page;
+	const trailingCount = Math.min(siblingCount, total - page);
 	for (let i = 1; i <= trailingCount; i++) {
 		trailing.push(pageLink(page + i));
 	}
@@ -128,7 +132,8 @@ export default factory(function Pagination({ middleware: { theme, icache, i18n }
 							</div>,
 							<div classes={classes.label}>{messages.previous}</div>
 						],
-						classes.prev
+						classes.prev,
+						'prev'
 					)}
 				{...leading}
 				<div classes={classes.currentPage}>{page.toString()}</div>
@@ -142,7 +147,8 @@ export default factory(function Pagination({ middleware: { theme, icache, i18n }
 							</div>,
 							<div classes={classes.label}>{messages.next}</div>
 						],
-						classes.next
+						classes.next,
+						'next'
 					)}
 				{pageSizes && pageSizes.length > 0 && (
 					<div classes={classes.selectWrapper}>

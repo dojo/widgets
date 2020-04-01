@@ -21,20 +21,62 @@ describe('Pagination', () => {
 
 	const baseAssertion = assertionTemplate(() => (
 		<div key="root" classes={[undefined, css.root]}>
-			<button type="button" onclick={noop} classes={[css.prev, css.link]}>
+			<button key="prev" type="button" onclick={noop} classes={[css.prev, css.link]}>
 				<div classes={css.icon}>
 					<Icon type="leftIcon" />
 				</div>
 				<div classes={css.label}>{messages.previous}</div>
 			</button>
-			<button type="button" onclick={noop} classes={[css.numberedLink, css.link]}>
-				1
+			<button
+				key="numberedLink-7"
+				type="button"
+				onclick={noop}
+				classes={[css.numberedLink, css.link]}
+			>
+				7
 			</button>
-			<div classes={css.currentPage}>2</div>
-			<button type="button" onclick={noop} classes={[css.numberedLink, css.link]}>
-				3
+			<button
+				key="numberedLink-8"
+				type="button"
+				onclick={noop}
+				classes={[css.numberedLink, css.link]}
+			>
+				8
 			</button>
-			<button type="button" onclick={noop} classes={[css.next, css.link]}>
+			<button
+				key="numberedLink-9"
+				type="button"
+				onclick={noop}
+				classes={[css.numberedLink, css.link]}
+			>
+				9
+			</button>
+			<div classes={css.currentPage}>10</div>
+			<button
+				key="numberedLink-11"
+				type="button"
+				onclick={noop}
+				classes={[css.numberedLink, css.link]}
+			>
+				11
+			</button>
+			<button
+				key="numberedLink-12"
+				type="button"
+				onclick={noop}
+				classes={[css.numberedLink, css.link]}
+			>
+				12
+			</button>
+			<button
+				key="numberedLink-13"
+				type="button"
+				onclick={noop}
+				classes={[css.numberedLink, css.link]}
+			>
+				13
+			</button>
+			<button key="next" type="button" onclick={noop} classes={[css.next, css.link]}>
 				<div classes={css.icon}>
 					<Icon type="rightIcon" />
 				</div>
@@ -44,7 +86,7 @@ describe('Pagination', () => {
 	));
 
 	it('renders standard use case', () => {
-		const h = harness(() => <Pagination total={3} initialPage={2} onPageChange={noop} />);
+		const h = harness(() => <Pagination total={20} initialPage={10} onPageChange={noop} />);
 		h.expect(baseAssertion);
 	});
 
@@ -56,13 +98,13 @@ describe('Pagination', () => {
 	it('raises page change events', () => {
 		const onPageChange = sinon.stub();
 		const h = harness(() => (
-			<Pagination total={3} initialPage={2} onPageChange={onPageChange} />
+			<Pagination total={20} initialPage={10} onPageChange={onPageChange} />
 		));
 
 		h.expect(baseAssertion);
 		h.trigger('button:first-child', 'onclick', stubEvent);
 
-		sinon.assert.calledWith(onPageChange, 1);
+		sinon.assert.calledWith(onPageChange, 9);
 	});
 
 	it('renders without "prev" button when there is no prev', () => {
@@ -71,13 +113,23 @@ describe('Pagination', () => {
 			assertionTemplate(() => (
 				<div key="root" classes={[undefined, css.root]}>
 					<div classes={css.currentPage}>1</div>
-					<button type="button" onclick={noop} classes={[css.numberedLink, css.link]}>
+					<button
+						key="numberedLink-2"
+						type="button"
+						onclick={noop}
+						classes={[css.numberedLink, css.link]}
+					>
 						2
 					</button>
-					<button type="button" onclick={noop} classes={[css.numberedLink, css.link]}>
+					<button
+						key="numberedLink-3"
+						type="button"
+						onclick={noop}
+						classes={[css.numberedLink, css.link]}
+					>
 						3
 					</button>
-					<button type="button" onclick={noop} classes={[css.next, css.link]}>
+					<button key="next" type="button" onclick={noop} classes={[css.next, css.link]}>
 						<div classes={css.icon}>
 							<Icon type="rightIcon" />
 						</div>
@@ -95,6 +147,7 @@ describe('Pagination', () => {
 				<div key="root" classes={[undefined, css.root]}>
 					<button
 						assertion-key="prev"
+						key="prev"
 						type="button"
 						onclick={noop}
 						classes={[css.prev, css.link]}
@@ -104,15 +157,70 @@ describe('Pagination', () => {
 						</div>
 						<div classes={css.label}>Previous</div>
 					</button>
-					<button type="button" onclick={noop} classes={[css.numberedLink, css.link]}>
+					<button
+						key="numberedLink-1"
+						type="button"
+						onclick={noop}
+						classes={[css.numberedLink, css.link]}
+					>
 						1
 					</button>
-					<button type="button" onclick={noop} classes={[css.numberedLink, css.link]}>
+					<button
+						key="numberedLink-2"
+						type="button"
+						onclick={noop}
+						classes={[css.numberedLink, css.link]}
+					>
 						2
 					</button>
 					<div classes={css.currentPage}>3</div>
 				</div>
 			))
+		);
+	});
+
+	it('renders with specified sibling count', () => {
+		const h = harness(() => (
+			<Pagination total={20} initialPage={10} siblingCount={5} onPageChange={noop} />
+		));
+		h.expect(
+			baseAssertion
+				.insertAfter('@prev', () => [
+					<button
+						key="numberedLink-5"
+						type="button"
+						onclick={noop}
+						classes={[css.numberedLink, css.link]}
+					>
+						5
+					</button>,
+					<button
+						key="numberedLink-6"
+						type="button"
+						onclick={noop}
+						classes={[css.numberedLink, css.link]}
+					>
+						6
+					</button>
+				])
+				.insertBefore('@next', () => [
+					<button
+						key="numberedLink-14"
+						type="button"
+						onclick={noop}
+						classes={[css.numberedLink, css.link]}
+					>
+						14
+					</button>,
+					<button
+						key="numberedLink-15"
+						type="button"
+						onclick={noop}
+						classes={[css.numberedLink, css.link]}
+					>
+						15
+					</button>
+				])
 		);
 	});
 
@@ -138,9 +246,9 @@ describe('Pagination', () => {
 		it('renders', () => {
 			const h = harness(() => (
 				<Pagination
-					initialPage={2}
+					initialPage={10}
 					initialPageSize={20}
-					total={3}
+					total={20}
 					onPageChange={noop}
 					pageSizes={pageSizes}
 				/>
@@ -152,9 +260,9 @@ describe('Pagination', () => {
 			const onPageSizeChange = sinon.stub();
 			const h = harness(() => (
 				<Pagination
-					initialPage={2}
+					initialPage={10}
 					initialPageSize={20}
-					total={3}
+					total={20}
 					onPageChange={noop}
 					onPageSizeChange={onPageSizeChange}
 					pageSizes={pageSizes}
