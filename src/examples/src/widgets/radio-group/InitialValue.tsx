@@ -5,20 +5,23 @@ import { icache } from '@dojo/framework/core/middleware/icache';
 const factory = create({ icache });
 
 const App = factory(function({ properties, middleware: { icache } }) {
-	const { get, set } = icache;
+	const initialValue = 'tom';
 
 	return (
 		<virtual>
 			<RadioGroup
-				initialValue="tom"
-				label="favourite names"
+				initialValue={initialValue}
 				name="initial-value"
 				options={[{ value: 'tom' }, { value: 'dick' }, { value: 'harry' }]}
 				onValue={(value) => {
-					set('initial-value', value);
+					icache.set('value', value);
 				}}
-			/>
-			<pre>{`${get('initial-value')}`}</pre>
+			>
+				{{
+					label: 'favourite names'
+				}}
+			</RadioGroup>
+			<pre>{`${icache.getOrSet('value', initialValue)}`}</pre>
 		</virtual>
 	);
 });
