@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import theme from '../middleware/theme';
-import TextInput, { BaseInputProperties } from '../text-input';
+import TextInput, { BaseInputProperties, TextInputChildren } from '../text-input';
 import * as textInputCss from '../theme/default/text-input.m.css';
 import * as numberInputCss from '../theme/default/number-input.m.css';
 
@@ -16,9 +16,11 @@ export interface NumberInputProperties extends BaseInputProperties<{ value: numb
 	valid?: { valid?: boolean; message?: string } | boolean;
 }
 
-const factory = create({ theme }).properties<NumberInputProperties>();
+const factory = create({ theme })
+	.properties<NumberInputProperties>()
+	.children<TextInputChildren | undefined>();
 
-export default factory(function NumberInput({ properties, middleware: { theme } }) {
+export default factory(function NumberInput({ properties, children, middleware: { theme } }) {
 	const { initialValue, onValue } = properties();
 
 	const valueAsString =
@@ -47,6 +49,8 @@ export default factory(function NumberInput({ properties, middleware: { theme } 
 				textInputCss,
 				numberInputCss
 			)}
-		/>
+		>
+			{children()[0]}
+		</TextInput>
 	);
 });

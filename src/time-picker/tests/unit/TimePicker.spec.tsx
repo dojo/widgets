@@ -68,12 +68,10 @@ const buttonTemplate = assertionTemplate(() => {
 			<TextInput
 				disabled={undefined}
 				key="input"
-				label={undefined}
 				focus={() => false}
 				theme={{}}
 				onBlur={noop}
 				onValue={noop}
-				trailing={() => undefined}
 				initialValue={''}
 				onValidate={noop}
 				required={undefined}

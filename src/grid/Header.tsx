@@ -96,24 +96,27 @@ export default class Header extends I18nMixin(ThemedMixin(WidgetBase))<HeaderPro
 	) => {
 		const { theme, classes = {} } = this.properties;
 		const { format } = this.localizeBundle(bundle);
-		return w(TextInput, {
-			key: 'filter',
-			theme,
-			classes: {
-				...classes,
-				'@dojo/widgets/text-input': {
-					root: [this.theme(css.filter)],
-					input: [this.theme(css.filterInput)],
-					noLabel: [this.theme(css.filterNoLabel)],
-					...classes['@dojo/widgets/text-input']
-				}
+		return w(
+			TextInput,
+			{
+				key: 'filter',
+				theme,
+				classes: {
+					...classes,
+					'@dojo/widgets/text-input': {
+						root: [this.theme(css.filter)],
+						input: [this.theme(css.filterInput)],
+						noLabel: [this.theme(css.filterNoLabel)],
+						...classes['@dojo/widgets/text-input']
+					}
+				},
+				labelHidden: true,
+				type: 'search',
+				initialValue: filterValue || undefined,
+				onValue: doFilter
 			},
-			label: format('filterBy', { name: title }),
-			labelHidden: true,
-			type: 'search',
-			initialValue: filterValue || undefined,
-			onValue: doFilter
-		});
+			[{ label: format('filterBy', { name: title }) }]
+		);
 	};
 
 	protected render(): DNode {

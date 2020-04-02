@@ -45,18 +45,21 @@ const expectedEditing = function() {
 			classes: [css.root, fixedCss.rootFixed]
 		},
 		[
-			w(TextInput, {
-				key: 'input',
-				label: 'Edit id',
-				labelHidden: true,
-				classes: { '@dojo/widgets/text-input': { input: [css.input] } },
-				focus: noop,
-				initialValue: 'id',
-				onValue: noop,
-				onBlur: noop,
-				onKeyDown: noop,
-				theme: undefined
-			})
+			w(
+				TextInput,
+				{
+					key: 'input',
+					labelHidden: true,
+					classes: { '@dojo/widgets/text-input': { input: [css.input] } },
+					focus: noop,
+					initialValue: 'id',
+					onValue: noop,
+					onBlur: noop,
+					onKeyDown: noop,
+					theme: undefined
+				},
+				[{ label: 'Edit id' }]
+			)
 		]
 	);
 };

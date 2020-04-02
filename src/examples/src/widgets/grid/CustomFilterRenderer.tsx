@@ -99,12 +99,13 @@ export default factory(function CustomFilterRenderer() {
 					return (
 						<TextInput
 							key="filter"
-							label={`Filter by ${title}`}
 							labelHidden={true}
 							type="search"
 							initialValue={filterValue}
 							onValue={doFilter}
-						/>
+						>
+							{{ label: `Filter by ${title}` }}
+						</TextInput>
 					);
 				}
 			}}

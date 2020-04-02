@@ -35,9 +35,7 @@ registerSuite('NumberInput', {
 				autocomplete: true,
 				disabled: true,
 				helperText: 'helper text',
-				label: 'label',
 				labelHidden: true,
-				leading: () => <div />,
 				name: 'name',
 				onBlur: noop,
 				onFocus: noop,
@@ -49,19 +47,29 @@ registerSuite('NumberInput', {
 				onOut: noop,
 				onValue: noop,
 				readOnly: true,
-				trailing: () => <div />,
 				initialValue: 42,
 				widgetId: 'widgetId'
 			};
 
-			const h = harness(() => <NumberInput {...baseProperties} />, [compareTheme]);
+			const h = harness(
+				() => (
+					<NumberInput {...baseProperties}>
+						{{ label: 'label', leading: <div />, trailing: <div /> }}
+					</NumberInput>
+				),
+				[compareTheme]
+			);
 			h.expect(
-				baseTemplate.setProperties(':root', {
-					...baseProperties,
-					initialValue: baseProperties.initialValue!.toString(),
-					type: 'number',
-					theme: { '@dojo/widgets/text-input': textInputCss }
-				})
+				baseTemplate
+					.setProperties(':root', {
+						...baseProperties,
+						initialValue: baseProperties.initialValue!.toString(),
+						type: 'number',
+						theme: { '@dojo/widgets/text-input': textInputCss }
+					})
+					.setChildren(':root', [
+						{ label: 'label', leading: <div />, trailing: <div /> }
+					] as any)
 			);
 		},
 		'passes correct value to underlying TextInput'() {

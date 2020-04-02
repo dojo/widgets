@@ -21,7 +21,6 @@ describe('PasswordInput', () => {
 				key="root"
 				type={'password'}
 				theme={{ '@dojo/widgets/text-input': textInputCss }}
-				trailing={() => undefined}
 			/>
 		));
 	});
@@ -33,7 +32,6 @@ describe('PasswordInput', () => {
 				key="root"
 				type={'password'}
 				theme={{ '@dojo/widgets/text-input': textInputCss }}
-				trailing={() => undefined}
 				onValidate={() => undefined}
 				valid={undefined}
 			/>
@@ -48,7 +46,6 @@ describe('PasswordInput', () => {
 				key="root"
 				type={'password'}
 				theme={{ '@dojo/widgets/text-input': textInputCss }}
-				trailing={() => undefined}
 				onValidate={() => undefined}
 				required
 				valid={{ valid: false, message: 'this is required' }}
@@ -64,7 +61,6 @@ describe('PasswordInput', () => {
 				key="root"
 				type={'password'}
 				theme={{ '@dojo/widgets/text-input': textInputCss }}
-				trailing={() => undefined}
 			/>
 		));
 
@@ -86,7 +82,6 @@ describe('PasswordInput', () => {
 				key="root"
 				type={'text'}
 				theme={{ '@dojo/widgets/text-input': textInputCss }}
-				trailing={() => undefined}
 			/>
 		));
 

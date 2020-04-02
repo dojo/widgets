@@ -236,7 +236,7 @@ registerSuite('TextInput', {
 		},
 
 		label() {
-			const h = harness(() => <TextInput label="foo" />);
+			const h = harness(() => <TextInput>{{ label: 'foo' }}</TextInput>);
 
 			h.expect(() => expected({ label: true }));
 		},
@@ -534,7 +534,7 @@ registerSuite('TextInput', {
 		},
 
 		'leading property'() {
-			const leading = () => <span>A</span>;
+			const leading = <span>A</span>;
 			const leadingTemplate = baseAssertion
 				.setProperty('@wrapper', 'classes', [
 					css.wrapper,
@@ -550,15 +550,15 @@ registerSuite('TextInput', {
 				])
 				.prepend('@inputWrapper', () => [
 					<span key="leading" classes={css.leading}>
-						{leading()}
+						{leading}
 					</span>
 				]);
-			const h = harness(() => <TextInput leading={leading} />);
+			const h = harness(() => <TextInput>{{ leading }}</TextInput>);
 			h.expect(leadingTemplate);
 		},
 
 		'trailing property'() {
-			const trailing = () => <span>Z</span>;
+			const trailing = <span>Z</span>;
 			const trailingTemplate = baseAssertion
 				.setProperty('@wrapper', 'classes', [
 					css.wrapper,
@@ -574,10 +574,10 @@ registerSuite('TextInput', {
 				])
 				.append('@inputWrapper', () => [
 					<span key="trailing" classes={css.trailing}>
-						{trailing()}
+						{trailing}
 					</span>
 				]);
-			const h = harness(() => <TextInput trailing={trailing} />);
+			const h = harness(() => <TextInput>{{ trailing }}</TextInput>);
 			h.expect(trailingTemplate);
 		},
 
@@ -712,7 +712,7 @@ registerSuite('TextInput', {
 			clock.restore();
 		},
 		hiddenLabel() {
-			const h = harness(() => <TextInput label="foo" labelHidden={true} />);
+			const h = harness(() => <TextInput labelHidden={true}>{{ label: 'foo' }}</TextInput>);
 
 			h.expect(() => expected({ label: true, labelHidden: true }));
 		}

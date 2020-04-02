@@ -10,7 +10,6 @@ export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<Tooltip open={show} content="This tooltip shows on focus">
 			<TextInput
-				label="Focus me"
 				onFocus={() => {
 					icache.set('show', true);
 				}}
@@ -18,7 +17,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 					icache.set('show', false);
 				}}
 			>
-				Click
+				{{ label: 'Focus me' }}
 			</TextInput>
 		</Tooltip>
 	);

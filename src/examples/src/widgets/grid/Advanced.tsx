@@ -117,26 +117,18 @@ export default factory(function Advanced({ middleware: { icache } }) {
 				{selectedItems.map((items) => {
 					return (
 						<div styles={{ margin: '5px', padding: '10px', border: '1px solid grey' }}>
-							<TextInput
-								label="First Name"
-								readOnly={true}
-								initialValue={items.firstName}
-							/>
-							<TextInput
-								label="Last Name"
-								readOnly={true}
-								initialValue={items.lastName}
-							/>
-							<TextInput
-								label="Phone"
-								readOnly={true}
-								initialValue={items.phoneNumber}
-							/>
-							<TextInput
-								label="Country"
-								readOnly={true}
-								initialValue={items.country}
-							/>
+							<TextInput readOnly={true} initialValue={items.firstName}>
+								{{ label: 'First Name' }}
+							</TextInput>
+							<TextInput readOnly={true} initialValue={items.lastName}>
+								{{ label: 'Last Name' }}
+							</TextInput>
+							<TextInput readOnly={true} initialValue={items.phoneNumber}>
+								{{ label: 'Phone' }}
+							</TextInput>
+							<TextInput readOnly={true} initialValue={items.country}>
+								{{ label: 'Country' }}
+							</TextInput>
 						</div>
 					);
 				})}

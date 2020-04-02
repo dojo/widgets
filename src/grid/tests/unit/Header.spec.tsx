@@ -145,22 +145,25 @@ describe('Header', () => {
 								)
 							]
 						),
-						w(TextInput, {
-							key: 'filter',
-							classes: {
-								'@dojo/widgets/text-input': {
-									root: [css.filter],
-									input: [css.filterInput],
-									noLabel: [css.filterNoLabel]
-								}
+						w(
+							TextInput,
+							{
+								key: 'filter',
+								classes: {
+									'@dojo/widgets/text-input': {
+										root: [css.filter],
+										input: [css.filterInput],
+										noLabel: [css.filterNoLabel]
+									}
+								},
+								labelHidden: true,
+								type: 'search',
+								initialValue: undefined,
+								onValue: noop,
+								theme: undefined
 							},
-							label: 'Filter by Custom Title',
-							labelHidden: true,
-							type: 'search',
-							initialValue: undefined,
-							onValue: noop,
-							theme: undefined
-						})
+							[{ label: 'Filter by Custom Title' }]
+						)
 					]
 				)
 			])
@@ -229,22 +232,25 @@ describe('Header', () => {
 								)
 							]
 						),
-						w(TextInput, {
-							key: 'filter',
-							classes: {
-								'@dojo/widgets/text-input': {
-									root: [css.filter],
-									input: [css.filterInput],
-									noLabel: [css.filterNoLabel]
-								}
+						w(
+							TextInput,
+							{
+								key: 'filter',
+								classes: {
+									'@dojo/widgets/text-input': {
+										root: [css.filter],
+										input: [css.filterInput],
+										noLabel: [css.filterNoLabel]
+									}
+								},
+								labelHidden: true,
+								type: 'search',
+								initialValue: undefined,
+								onValue: noop,
+								theme: undefined
 							},
-							label: 'Filter by Custom Title',
-							labelHidden: true,
-							type: 'search',
-							initialValue: undefined,
-							onValue: noop,
-							theme: undefined
-						})
+							[{ label: 'Filter by Custom Title' }]
+						)
 					]
 				)
 			])
@@ -319,22 +325,25 @@ describe('Header', () => {
 								)
 							]
 						),
-						w(TextInput, {
-							key: 'filter',
-							classes: {
-								'@dojo/widgets/text-input': {
-									root: [css.filter],
-									input: [css.filterInput],
-									noLabel: [css.filterNoLabel]
-								}
+						w(
+							TextInput,
+							{
+								key: 'filter',
+								classes: {
+									'@dojo/widgets/text-input': {
+										root: [css.filter],
+										input: [css.filterInput],
+										noLabel: [css.filterNoLabel]
+									}
+								},
+								labelHidden: true,
+								type: 'search',
+								initialValue: undefined,
+								onValue: noop,
+								theme: undefined
 							},
-							label: 'Filter by Custom Title',
-							labelHidden: true,
-							type: 'search',
-							initialValue: undefined,
-							onValue: noop,
-							theme: undefined
-						})
+							[{ label: 'Filter by Custom Title' }]
+						)
 					]
 				)
 			])
@@ -402,22 +411,25 @@ describe('Header', () => {
 								)
 							]
 						),
-						w(TextInput, {
-							key: 'filter',
-							classes: {
-								'@dojo/widgets/text-input': {
-									root: [css.filter],
-									input: [css.filterInput],
-									noLabel: [css.filterNoLabel]
-								}
+						w(
+							TextInput,
+							{
+								key: 'filter',
+								classes: {
+									'@dojo/widgets/text-input': {
+										root: [css.filter],
+										input: [css.filterInput],
+										noLabel: [css.filterNoLabel]
+									}
+								},
+								labelHidden: true,
+								type: 'search',
+								initialValue: 'my filter',
+								onValue: noop,
+								theme: undefined
 							},
-							label: 'Filter by Custom Title',
-							labelHidden: true,
-							type: 'search',
-							initialValue: 'my filter',
-							onValue: noop,
-							theme: undefined
-						})
+							[{ label: 'Filter by Custom Title' }]
+						)
 					]
 				)
 			])
@@ -572,22 +584,25 @@ describe('Header', () => {
 									])
 								]
 							),
-							w(TextInput, {
-								key: 'filter',
-								classes: {
-									'@dojo/widgets/text-input': {
-										root: [css.filter],
-										input: [css.filterInput],
-										noLabel: [css.filterNoLabel]
-									}
+							w(
+								TextInput,
+								{
+									key: 'filter',
+									classes: {
+										'@dojo/widgets/text-input': {
+											root: [css.filter],
+											input: [css.filterInput],
+											noLabel: [css.filterNoLabel]
+										}
+									},
+									labelHidden: true,
+									type: 'search',
+									initialValue: undefined,
+									onValue: noop,
+									theme: undefined
 								},
-								label: 'Filter by Custom Title',
-								labelHidden: true,
-								type: 'search',
-								initialValue: undefined,
-								onValue: noop,
-								theme: undefined
-							})
+								[{ label: 'Filter by Custom Title' }]
+							)
 						]
 					)
 				])
@@ -657,22 +672,25 @@ describe('Header', () => {
 									])
 								]
 							),
-							w(TextInput, {
-								key: 'filter',
-								classes: {
-									'@dojo/widgets/text-input': {
-										root: [css.filter],
-										input: [css.filterInput],
-										noLabel: [css.filterNoLabel]
-									}
+							w(
+								TextInput,
+								{
+									key: 'filter',
+									classes: {
+										'@dojo/widgets/text-input': {
+											root: [css.filter],
+											input: [css.filterInput],
+											noLabel: [css.filterNoLabel]
+										}
+									},
+									labelHidden: true,
+									type: 'search',
+									initialValue: undefined,
+									onValue: noop,
+									theme: undefined
 								},
-								label: 'Filter by Custom Title',
-								labelHidden: true,
-								type: 'search',
-								initialValue: undefined,
-								onValue: noop,
-								theme: undefined
-							})
+								[{ label: 'Filter by Custom Title' }]
+							)
 						]
 					)
 				])
