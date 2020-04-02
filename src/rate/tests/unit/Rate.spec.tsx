@@ -128,6 +128,7 @@ describe('Rate', () => {
 				classes={[
 					undefined,
 					css.root,
+					properties.initialValue === undefined ? css.unselected : null,
 					properties.allowHalf ? css.halfCharacters : null,
 					properties.readOnly ? css.readOnly : null,
 					properties.disabled ? css.disabled : null
@@ -211,7 +212,7 @@ describe('Rate', () => {
 		});
 		let options;
 		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
-		const properties = { readOnly: true };
+		const properties = { readOnly: true, initialValue: 1 };
 		h.expect(baseTemplate(properties, options).setProperty('@radioGroup', 'initialValue', `1`));
 		const radios = selectRadio(h);
 		const [radio] = select('[key="1"]', radios);
@@ -355,7 +356,7 @@ describe('Rate', () => {
 		let options;
 		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
 		h.expect(
-			baseTemplate(undefined, options).setProperty(
+			baseTemplate({ initialValue: 4 }, options).setProperty(
 				'@radioGroup',
 				'initialValue',
 				`${initialValue}`
@@ -363,7 +364,7 @@ describe('Rate', () => {
 		);
 	});
 
-	it('renders with steps', () => {
+	it('renders with partial stars', () => {
 		const initialValue = 3.5;
 		const h = harness(
 			() => <Rate name="rate" allowClear allowHalf initialValue={initialValue} />,
@@ -374,7 +375,7 @@ describe('Rate', () => {
 		let options;
 		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
 		h.expect(
-			baseTemplate({ allowHalf: true }, options).setProperty(
+			baseTemplate({ allowHalf: true, initialValue }, options).setProperty(
 				'@radioGroup',
 				'initialValue',
 				`${initialValue}`

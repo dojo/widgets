@@ -205,6 +205,7 @@ export const Rate = factory(function Rate({
 			classes={[
 				theme.variant(),
 				themeCss.root,
+				selected === undefined ? themeCss.unselected : null,
 				allowHalf ? themeCss.halfCharacters : null,
 				readOnly ? themeCss.readOnly : null,
 				disabled ? themeCss.disabled : null

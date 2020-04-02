@@ -54,11 +54,19 @@
 }
 
 /* fill all icons */
-.root .filled {
+.filled {
 	display: inline;
 }
-.root .empty {
+.empty {
 	display: none;
+}
+
+/* empty icons if there is no selection */
+.unselected .filled {
+	display: none;
+}
+.unselected .empty {
+	display: inline;
 }
 
 /* empty icons after the selected icon */

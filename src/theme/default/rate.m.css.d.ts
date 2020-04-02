@@ -9,6 +9,7 @@ export const groupRoot: string;
 export const over: string;
 export const integer: string;
 export const iconIcon: string;
+export const unselected: string;
 export const selectedInteger: string;
 export const selectedCharacter: string;
 export const disabled: string;
