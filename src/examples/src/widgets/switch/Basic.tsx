@@ -10,10 +10,11 @@ export default factory(function Basic({ middleware: { icache } }) {
 		<Switch
 			value={switched}
 			name="Switch"
-			label="On/Off"
 			onValue={(value) => {
 				icache.set('switched', value);
 			}}
-		/>
+		>
+			{{ label: 'On/Off' }}
+		</Switch>
 	);
 });

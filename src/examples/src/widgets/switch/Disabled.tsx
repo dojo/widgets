@@ -11,21 +11,23 @@ export default factory(function Basic({ middleware: { icache } }) {
 			<Switch
 				value={switched}
 				name="Switch"
-				label="Disabled off"
 				disabled={true}
 				onValue={(switched) => {
 					icache.set('checked', switched);
 				}}
-			/>
+			>
+				{{ label: 'Disabled Off' }}
+			</Switch>
 			<Switch
 				value={!switched}
 				name="Switch"
-				label="Disabled on"
 				disabled={true}
 				onValue={(switched) => {
 					icache.set('switched', switched);
 				}}
-			/>
+			>
+				{{ label: 'Disabled On' }}
+			</Switch>
 		</virtual>
 	);
 });

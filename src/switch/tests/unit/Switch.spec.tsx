@@ -122,13 +122,9 @@ registerSuite('Switch', {
 		'custom properties'() {
 			const h = harness(
 				() => (
-					<Switch
-						aria={{ describedBy: 'foo' }}
-						value={true}
-						name="bar"
-						onLabel={'on'}
-						offLabel={'off'}
-					/>
+					<Switch aria={{ describedBy: 'foo' }} value={true} name="bar">
+						{{ onLabel: 'on', offLabel: 'off' }}
+					</Switch>
 				),
 				[compareId]
 			);
@@ -143,7 +139,7 @@ registerSuite('Switch', {
 		},
 
 		label() {
-			const h = harness(() => <Switch label="foo" />, [compareId, compareForId]);
+			const h = harness(() => <Switch>{{ label: 'foo' }}</Switch>, [compareId, compareForId]);
 
 			h.expect(expected({ label: true }));
 		},
@@ -178,13 +174,9 @@ registerSuite('Switch', {
 		'state properties on label'() {
 			const h = harness(
 				() => (
-					<Switch
-						label="foo"
-						valid={false}
-						disabled={true}
-						readOnly={true}
-						required={true}
-					/>
+					<Switch valid={false} disabled={true} readOnly={true} required={true}>
+						{{ label: 'foo' }}
+					</Switch>
 				),
 				[compareId, compareForId]
 			);
