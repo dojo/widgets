@@ -4,7 +4,7 @@ import Checkbox from '@dojo/widgets/checkbox';
 
 const factory = create({ icache });
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function CustomLabelRenderer({ middleware: { icache } }) {
 	const checked = icache.getOrSet('checked', false);
 	return (
 		<Checkbox
@@ -13,7 +13,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 				icache.set('checked', checked);
 			}}
 		>
-			Sample checkbox that starts checked
+			<span styles={{ fontWeight: 'bold', fontStyle: 'italic' }}>Custom Label</span>
 		</Checkbox>
 	);
 });

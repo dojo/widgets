@@ -35,6 +35,7 @@ import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
 import BasicCheckbox from './widgets/checkbox/Basic';
 import DisabledCheckbox from './widgets/checkbox/Disabled';
 import ReadonlyCheckbox from './widgets/checkbox/Readonly';
+import CustomLabelCheckbox from './widgets/checkbox/CustomLabel';
 import BasicChip from './widgets/chip/Basic';
 import ClickableChip from './widgets/chip/Clickable';
 import ClickableClosableChip from './widgets/chip/ClickableClosable';
@@ -414,7 +415,8 @@ export const config = {
 			},
 			examples: [
 				{ title: 'Disabled', module: DisabledCheckbox, filename: 'Disabled' },
-				{ title: 'Readonly', module: ReadonlyCheckbox, filename: 'Readonly' }
+				{ title: 'Readonly', module: ReadonlyCheckbox, filename: 'Readonly' },
+				{ title: 'Custom Label', module: CustomLabelCheckbox, filename: 'CustomLabel' }
 			]
 		},
 		'checkbox-group': {

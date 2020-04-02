@@ -122,7 +122,7 @@ registerSuite('Checkbox', {
 		},
 
 		label() {
-			const h = harness(() => <Checkbox label="foo" />, [compareId, compareForId]);
+			const h = harness(() => <Checkbox>foo</Checkbox>, [compareId, compareForId]);
 
 			h.expect(expected({ label: true }));
 		},
@@ -157,13 +157,9 @@ registerSuite('Checkbox', {
 		'state properties on label'() {
 			const h = harness(
 				() => (
-					<Checkbox
-						label="foo"
-						valid={false}
-						disabled={true}
-						readOnly={true}
-						required={true}
-					/>
+					<Checkbox valid={false} disabled={true} readOnly={true} required={true}>
+						foo
+					</Checkbox>
 				),
 				[compareId, compareForId]
 			);

@@ -6,8 +6,10 @@ const factory = create();
 export default factory(function Readonly() {
 	return (
 		<div>
-			<Checkbox readOnly label="Readonly Checkbox" />
-			<Checkbox checked readOnly label="Readonly Checkbox (Checked)" />
+			<Checkbox readOnly>Readonly Checkbox</Checkbox>
+			<Checkbox checked readOnly>
+				Readonly Checkbox (Checked)
+			</Checkbox>
 		</div>
 	);
 });
