@@ -60,27 +60,6 @@ Many of our form widgets are now capable of validating themselves. In many cases
 Latest example can be found on [widgets.dojo.io/#widget/accordion-pane/overview](https://widgets.dojo.io/#widget/accordion-pane/overview)
 
 
-### button
-
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/button/overview](https://widgets.dojo.io/#widget/button/overview)
-
-
 ### calendar
 #### Property changes
 ##### Changed properties
@@ -183,27 +162,6 @@ Latest example can be found on [widgets.dojo.io/#widget/checkbox/overview](https
 #### Example of migration from v6 to v7
 
 Latest example can be found on [widgets.dojo.io/#widget/dialog/overview](https://widgets.dojo.io/#widget/dialog/overview)
-
-
-### global-event
-
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/global-event/overview](https://widgets.dojo.io/#widget/global-event/overview)
 
 
 ### header
