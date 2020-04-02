@@ -311,20 +311,21 @@ Latest example can be found on [widgets.dojo.io/#widget/progress/overview](https
 ### radio
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- label?: () => RenderResult
+	- Label is now handled in a child renderer. Child content of the Radio widget is displayed in a Label.
+- labelAfter?: boolean;
+	- Removed in favor of a single label handled via a child renderer.
+	
 #### Changes in behaviour
+Label is now handled via an optional child renderer of type RenderResult.
 #### Example of migration from v6 to v7
+```
+<Radio label={'Radio Button 1'} />
+```
+```
+<Radio>Radio Button 1</Radio>
+```
 
 Latest example can be found on [widgets.dojo.io/#widget/radio/overview](https://widgets.dojo.io/#widget/radio/overview)
 
