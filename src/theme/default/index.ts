@@ -44,6 +44,7 @@ import * as textInput from './text-input.m.css';
 import * as timePicker from './time-picker.m.css';
 import * as titlePane from './title-pane.m.css';
 import * as tooltip from './tooltip.m.css';
+import * as twoColumnLayout from './two-column-layout.m.css';
 import * as typeahead from './typeahead.m.css';
 import * as defaultVariant from './variants/default.m.css';
 
@@ -95,6 +96,7 @@ export default {
 		'@dojo/widgets/time-picker': timePicker,
 		'@dojo/widgets/title-pane': titlePane,
 		'@dojo/widgets/tooltip': tooltip,
+		'@dojo/widgets/two-column-layout': twoColumnLayout,
 		'@dojo/widgets/typeahead': typeahead
 	},
 	variants: {

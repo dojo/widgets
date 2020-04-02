@@ -35,14 +35,14 @@ export const TwoColumnLayout = factory(function({
 	const classes = theme.classes(css);
 	const { leading, trailing } = children()[0];
 	return (
-		<div key="root" classes={[theme.variant(), fixedClasses.root, css.root]}>
+		<div key="root" classes={[theme.variant(), fixedClasses.root, classes.root]}>
 			<div
 				key="leading"
 				classes={[
 					bias === 'leading' && fixedClasses.biased,
 					bias === undefined && !shouldCollapse && fixedClasses.even,
 					bias === 'trailing' && shouldCollapse && baseCss.visuallyHidden,
-					bias === 'trailing' && !shouldCollapse && css.small,
+					bias === 'trailing' && !shouldCollapse && classes.small,
 					classes.column
 				]}
 			>
@@ -56,7 +56,7 @@ export const TwoColumnLayout = factory(function({
 					(bias === 'leading' || bias === undefined) &&
 						shouldCollapse &&
 						baseCss.visuallyHidden,
-					bias === 'leading' && !shouldCollapse && css.small,
+					bias === 'leading' && !shouldCollapse && classes.small,
 					classes.column
 				]}
 			>
