@@ -8,10 +8,11 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export interface HeaderCardProperties extends CardProperties {
 	title: string;
-	avatar?: () => RenderResult;
 }
 
-export interface HeaderCardChildren extends Omit<CardChildren, 'header'> {}
+export interface HeaderCardChildren extends Omit<CardChildren, 'header'> {
+	avatar?: RenderResult;
+}
 
 const factory = create({ theme })
 	.properties<HeaderCardProperties>()
@@ -23,14 +24,14 @@ export const HeaderCard = factory(function HeaderCard({
 	children
 }) {
 	const themeCss = theme.classes(css);
-	const { title, subtitle, avatar, ...cardProps } = properties();
-	const [cardChildren] = children();
+	const { title, subtitle, ...cardProps } = properties();
+	const [{ avatar, ...cardChildren } = {} as HeaderCardChildren] = children();
 	return (
 		<Card key="root" {...cardProps}>
 			{{
 				header: (
 					<div key="header" classes={themeCss.header}>
-						{avatar && <div classes={themeCss.avatar}>{avatar()}</div>}
+						{avatar && <div classes={themeCss.avatar}>{avatar}</div>}
 						<div key="headerContent" classes={themeCss.headerContent}>
 							{<h2 classes={themeCss.title}>{title}</h2>}
 							{subtitle && <h3 classes={themeCss.subtitle}>{subtitle}</h3>}

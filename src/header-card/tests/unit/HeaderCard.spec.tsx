@@ -52,7 +52,9 @@ describe('HeaderCard', () => {
 	it('renders with a an avatar', () => {
 		const avatar = <Avatar>D</Avatar>;
 		const h = harness(() => (
-			<HeaderCard square title="title" subtitle="subtitle" avatar={() => avatar} />
+			<HeaderCard square title="title" subtitle="subtitle">
+				{{ avatar }}
+			</HeaderCard>
 		));
 		h.expect(
 			template.setProperty('@root', 'square', true).setChildren(

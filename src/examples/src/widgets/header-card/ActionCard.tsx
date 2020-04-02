@@ -11,13 +11,9 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<div styles={{ width: '400px' }}>
-			<HeaderCard
-				avatar={() => <Avatar src={avatar} />}
-				title="Hello, World"
-				subtitle="Lorem ipsum"
-				mediaSrc={mediaSrc}
-			>
+			<HeaderCard title="Hello, World" subtitle="Lorem ipsum" mediaSrc={mediaSrc}>
 				{{
+					avatar: <Avatar src={avatar} />,
 					content: <p styles={{ margin: '0' }}>Lorem ipsum</p>,
 					actionButtons: <Button>Action</Button>,
 					actionIcons: (
