@@ -52,7 +52,8 @@
 			"src/time-picker",
 			"src/title-pane",
 			"src/tooltip",
-			"src/trigger-popup"
+			"src/trigger-popup",
+			"src/typeahead"
 		]
 	}
 }

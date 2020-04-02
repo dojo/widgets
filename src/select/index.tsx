@@ -24,6 +24,7 @@ import * as iconCss from '../theme/default/icon.m.css';
 import * as css from '../theme/default/select.m.css';
 import bundle from './select.nls';
 import { find } from '@dojo/framework/shim/array';
+import LoadingIndicator from '../loading-indicator';
 
 export interface SelectProperties {
 	/** Callback called when user selects a value */
@@ -111,7 +112,7 @@ export const Select = factory(function Select({
 	let valid = icache.get('valid');
 	const dirty = icache.get('dirty');
 	const { messages } = i18n.localize(bundle);
-	const { get, getOptions } = data();
+	const { get, getOptions, isLoading, getTotal } = data();
 
 	if (required && dirty) {
 		const isValid = value !== undefined;
@@ -174,7 +175,7 @@ export const Select = factory(function Select({
 						}
 
 						let valueOption: ListOption | undefined;
-						const currentOptions = get(getOptions());
+						const currentOptions = get({ query: getOptions().query });
 						if (currentOptions && currentOptions.length) {
 							valueOption = find(currentOptions, (option) => option.value === value);
 						}
@@ -229,7 +230,9 @@ export const Select = factory(function Select({
 							close();
 						}
 
-						return (
+						return getTotal(getOptions()) === undefined && isLoading(getOptions()) ? (
+							<LoadingIndicator key="loading" />
+						) : (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
 								<List
 									key="menu"

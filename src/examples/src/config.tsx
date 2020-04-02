@@ -191,6 +191,10 @@ import LeadingHeader from './widgets/header/Leading';
 import StickyHeader from './widgets/header/Sticky';
 import TrailingHeader from './widgets/header/Trailing';
 import BasicGlobalEvent from './widgets/global-event/Basic';
+import BasicTypeahead from './widgets/typeahead/Basic';
+import RemoteTypeahead from './widgets/typeahead/RemoteSource';
+import CustomFilterTypeahead from './widgets/typeahead/CustomFilter';
+import ValidatedTypeahead from './widgets/typeahead/Validation';
 
 `!has('docs')`;
 import testsContext from './tests';
@@ -1437,6 +1441,31 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicTooltip
+				}
+			}
+		},
+		typeahead: {
+			examples: [
+				{
+					filename: 'CustomFilter',
+					module: CustomFilterTypeahead,
+					title: 'Custom Filter'
+				},
+				{
+					filename: 'Remote',
+					module: RemoteTypeahead,
+					title: 'Remote Source'
+				},
+				{
+					filename: 'Validation',
+					module: ValidatedTypeahead,
+					title: 'Validation'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Typeahead',
+					module: BasicTypeahead
 				}
 			}
 		}
