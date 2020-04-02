@@ -16,15 +16,15 @@ export default factory(function CardWithMediaContent() {
 				subtitle="A pretty picture"
 			>
 				{{
-					header: () => <div>Header Content</div>,
-					content: () => <span>Travel the world today.</span>,
-					actionButtons: () => (
+					header: <div>Header Content</div>,
+					content: <span>Travel the world today.</span>,
+					actionButtons: (
 						<virtual>
 							<Button>Read</Button>
 							<Button>Bookmark</Button>
 						</virtual>
 					),
-					actionIcons: () => (
+					actionIcons: (
 						<virtual>
 							<Icon type="secureIcon" />
 							<Icon type="downIcon" />

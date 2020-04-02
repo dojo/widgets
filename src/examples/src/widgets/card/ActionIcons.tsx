@@ -9,8 +9,8 @@ export default factory(function ActionIcons() {
 		<div styles={{ width: '400px' }}>
 			<Card title="Hello, World">
 				{{
-					content: () => <h2>Hello, World</h2>,
-					actionIcons: () => (
+					content: <h2>Hello, World</h2>,
+					actionIcons: (
 						<virtual>
 							<Icon type="secureIcon" />
 							<Icon type="downIcon" />

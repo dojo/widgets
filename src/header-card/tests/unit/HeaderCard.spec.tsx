@@ -11,7 +11,7 @@ describe('HeaderCard', () => {
 	const template = assertionTemplate(() => (
 		<Card key="root">
 			{{
-				header: () => (
+				header: (
 					<div key="header" classes={css.header}>
 						<div key="headerContent" classes={css.headerContent}>
 							<h2 classes={css.title}>title</h2>

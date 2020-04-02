@@ -13,7 +13,7 @@ export default factory(function Basic() {
 				avatar={() => <Avatar>D</Avatar>}
 			>
 				{{
-					content: () => <p styles={{ margin: '0' }}>Lorem ipsum</p>
+					content: <p styles={{ margin: '0' }}>Lorem ipsum</p>
 				}}
 			</HeaderCard>
 		</div>

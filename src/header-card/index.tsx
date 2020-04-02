@@ -28,7 +28,7 @@ export const HeaderCard = factory(function HeaderCard({
 	return (
 		<Card key="root" {...cardProps}>
 			{{
-				header: () => (
+				header: (
 					<div key="header" classes={themeCss.header}>
 						{avatar && <div classes={themeCss.avatar}>{avatar()}</div>}
 						<div key="headerContent" classes={themeCss.headerContent}>

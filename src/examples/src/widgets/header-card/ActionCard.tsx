@@ -18,9 +18,9 @@ export default factory(function Basic() {
 				mediaSrc={mediaSrc}
 			>
 				{{
-					content: () => <p styles={{ margin: '0' }}>Lorem ipsum</p>,
-					actionButtons: () => <Button>Action</Button>,
-					actionIcons: () => (
+					content: <p styles={{ margin: '0' }}>Lorem ipsum</p>,
+					actionButtons: <Button>Action</Button>,
+					actionIcons: (
 						<virtual>
 							<Icon type="upIcon" />
 							<Icon type="downIcon" />
