@@ -35,7 +35,7 @@ export const TwoColumnLayout = factory(function({
 	const classes = theme.classes(css);
 	const { leading, trailing } = children()[0];
 	return (
-		<div key="root" classes={[fixedClasses.root, css.root]}>
+		<div key="root" classes={[theme.variant(), fixedClasses.root, css.root]}>
 			<div
 				key="leading"
 				classes={[

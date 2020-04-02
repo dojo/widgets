@@ -28,7 +28,7 @@ describe('TwoColumnLayout', () => {
 	const leading = <div>Leading</div>;
 	const trailing = <div>Trailing</div>;
 	const baseAssertion = assertionTemplate(() => (
-		<div key="root" classes={[fixedCss.root, css.root]}>
+		<div key="root" classes={[undefined, fixedCss.root, css.root]}>
 			<div key="leading" classes={[false, fixedCss.even, false, css.column]}>
 				{leading}
 			</div>
