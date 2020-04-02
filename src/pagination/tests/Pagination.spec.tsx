@@ -86,20 +86,18 @@ describe('Pagination', () => {
 	));
 
 	it('renders standard use case', () => {
-		const h = harness(() => <Pagination total={20} initialPage={10} onPageChange={noop} />);
+		const h = harness(() => <Pagination total={20} initialPage={10} onPage={noop} />);
 		h.expect(baseAssertion);
 	});
 
 	it('renders nothing with only 1 page', () => {
-		const h = harness(() => <Pagination total={1} onPageChange={noop} />);
+		const h = harness(() => <Pagination total={1} onPage={noop} />);
 		h.expect(() => false);
 	});
 
 	it('raises page change events', () => {
 		const onPageChange = sinon.stub();
-		const h = harness(() => (
-			<Pagination total={20} initialPage={10} onPageChange={onPageChange} />
-		));
+		const h = harness(() => <Pagination total={20} initialPage={10} onPage={onPageChange} />);
 
 		h.expect(baseAssertion);
 		h.trigger('button:first-child', 'onclick', stubEvent);
@@ -108,7 +106,7 @@ describe('Pagination', () => {
 	});
 
 	it('renders without "prev" button when there is no prev', () => {
-		const h = harness(() => <Pagination total={3} initialPage={1} onPageChange={noop} />);
+		const h = harness(() => <Pagination total={3} initialPage={1} onPage={noop} />);
 		h.expect(
 			assertionTemplate(() => (
 				<div key="root" classes={[undefined, css.root]}>
@@ -141,7 +139,7 @@ describe('Pagination', () => {
 	});
 
 	it('renders without "next" button when there is no next', () => {
-		const h = harness(() => <Pagination total={3} initialPage={3} onPageChange={noop} />);
+		const h = harness(() => <Pagination total={3} initialPage={3} onPage={noop} />);
 		h.expect(
 			assertionTemplate(() => (
 				<div key="root" classes={[undefined, css.root]}>
@@ -181,7 +179,7 @@ describe('Pagination', () => {
 
 	it('renders with specified sibling count', () => {
 		const h = harness(() => (
-			<Pagination total={20} initialPage={10} siblingCount={5} onPageChange={noop} />
+			<Pagination total={20} initialPage={10} siblingCount={5} onPage={noop} />
 		));
 		h.expect(
 			baseAssertion
@@ -249,7 +247,7 @@ describe('Pagination', () => {
 					initialPage={10}
 					initialPageSize={20}
 					total={20}
-					onPageChange={noop}
+					onPage={noop}
 					pageSizes={pageSizes}
 				/>
 			));
@@ -263,8 +261,8 @@ describe('Pagination', () => {
 					initialPage={10}
 					initialPageSize={20}
 					total={20}
-					onPageChange={noop}
-					onPageSizeChange={onPageSizeChange}
+					onPage={noop}
+					onPageSize={onPageSizeChange}
 					pageSizes={pageSizes}
 				/>
 			));

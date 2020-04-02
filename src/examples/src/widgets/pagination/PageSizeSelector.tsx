@@ -18,12 +18,11 @@ const Example = factory(function Example({ middleware: { icache } }) {
 				initialPage={8}
 				initialPageSize={pageSize}
 				total={25}
-				onPageChange={() => {}}
-				onPageSizeChange={(value) => {
+				onPage={() => {}}
+				onPageSize={(value) => {
 					icache.set('pageSize', value);
 				}}
 				pageSizes={[10, 20, 30]}
-				pageSizeRenderer={(pageSize) => `${pageSize} items per page`}
 			/>
 			<div>Current page size is: {pageSize.toString()}</div>
 		</div>
