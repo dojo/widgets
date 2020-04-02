@@ -91,6 +91,21 @@ describe('HeaderToolbar', () => {
 		h.expect(testTemplate);
 	});
 
+	it('Renders a single action element', () => {
+		const h = harness(() => (
+			<Header>
+				{{
+					title: 'title',
+					actions: 'action'
+				}}
+			</Header>
+		));
+		const testTemplate = baseTemplate.replaceChildren('@actions', () => [
+			<div classes={classes.action}>action</div>
+		]);
+		h.expect(testTemplate);
+	});
+
 	it('Renders a sticky header', () => {
 		const h = harness(() => (
 			<Header sticky>
