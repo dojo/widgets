@@ -227,64 +227,13 @@ Latest example can be found on [widgets.dojo.io/#widget/global-event/overview](h
 Latest example can be found on [widgets.dojo.io/#widget/header/overview](https://widgets.dojo.io/#widget/header/overview)
 
 
-### helper-text
-
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/helper-text/overview](https://widgets.dojo.io/#widget/helper-text/overview)
-
-
-### icon
-
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/icon/overview](https://widgets.dojo.io/#widget/icon/overview)
-
-
 ### label
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
+- `invalid?: boolean`
+	- replaced by `valid?: boolean`
+	- inverted validation API for consistency
 #### Example of migration from v6 to v7
 
 Latest example can be found on [widgets.dojo.io/#widget/label/overview](https://widgets.dojo.io/#widget/label/overview)
