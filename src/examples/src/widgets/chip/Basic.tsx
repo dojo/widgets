@@ -4,7 +4,7 @@ import Chip from '@dojo/widgets/chip';
 const factory = create();
 
 const App = factory(function Basic() {
-	return <Chip label="Chip Example" />;
+	return <Chip>{{ label: 'Chip Example' }}</Chip>;
 });
 
 export default App;

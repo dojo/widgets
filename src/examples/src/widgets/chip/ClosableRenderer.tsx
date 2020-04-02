@@ -13,12 +13,15 @@ const App = factory(function ClosableRenderer({ middleware: { icache } }) {
 		<virtual>
 			{!closed && (
 				<Chip
-					label="Close me"
 					onClose={() => {
 						set('closed', true);
 					}}
-					closeRenderer={() => <Icon type="minusIcon" />}
-				/>
+				>
+					{{
+						label: 'Close me',
+						closeIcon: <Icon type="minusIcon" />
+					}}
+				</Chip>
 			)}
 		</virtual>
 	);

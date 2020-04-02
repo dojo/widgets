@@ -9,11 +9,12 @@ const App = factory(function Clickable({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Chip
-				label="Clickable"
 				onClick={() => {
 					icache.set('clickable', icache.getOrSet<number>('clickable', 0) + 1);
 				}}
-			/>
+			>
+				{{ label: 'Clickable' }}
+			</Chip>
 			<div>Clicked {String(clickable)} times</div>
 		</virtual>
 	);
