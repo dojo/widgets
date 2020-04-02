@@ -129,16 +129,28 @@ registerSuite('CalendarCell', {
 
 		'Keydown handler called'() {
 			let called = false;
+			let preventDefaultCalled = false;
+			let callback: () => any = () => {};
+			const localStubEvent = {
+				...stubEvent,
+				preventDefault() {
+					preventDefaultCalled = true;
+				}
+			};
 			const h = harness(() => (
 				<CalendarCell
 					date={1}
-					onKeyDown={() => {
+					onKeyDown={(_, localCallback) => {
 						called = true;
+						callback = localCallback;
 					}}
 				/>
 			));
-			h.trigger('td', 'onkeydown', stubEvent);
+			h.trigger('td', 'onkeydown', localStubEvent);
 			assert.isTrue(called);
+			assert.isFalse(preventDefaultCalled);
+			typeof callback && callback();
+			assert.isTrue(preventDefaultCalled);
 		},
 
 		'Focus is set with callback'() {
