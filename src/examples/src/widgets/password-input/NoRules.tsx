@@ -4,5 +4,5 @@ import PasswordInput from '@dojo/widgets/password-input';
 const factory = create();
 
 export default factory(function NoRules() {
-	return <PasswordInput required label="Enter Password" />;
+	return <PasswordInput required>{{ label: 'Enter Password' }}</PasswordInput>;
 });

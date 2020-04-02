@@ -17,7 +17,8 @@ export default factory(function Basic() {
 					specialCharacters: 1
 				}
 			}}
-			label="Enter Username"
-		/>
+		>
+			{{ label: 'Enter Username' }}
+		</ConstrainedInput>
 	);
 });
