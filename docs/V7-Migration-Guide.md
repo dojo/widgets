@@ -335,9 +335,11 @@ Latest example can be found on [widgets.dojo.io/#widget/native-select/overview](
 ### progress
 
 #### Property changes
-##### Removed properties
-- output?(value: number, percent: number): string;
+##### Changed properties
+- output?: () => RenderResult
 	- `output` was moved to a child renderer and should be handled in a child function.
+#### Changes in behaviour
+Output is now handled via an optional child renderer of type RenderResult.
 #### Example of migration from v6 to v7
 ```
 <Progress
