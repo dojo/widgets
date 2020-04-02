@@ -152,6 +152,8 @@ Latest example can be found on [widgets.dojo.io/#widget/calendar/overview](https
 - onFocus: () => void;
 	- this prop now is passed zero arguments, whereas previously it was passed the current `value` and `checked` property values.
 ##### Removed properties
+- label: string;
+	- Removed in favor of using a child to render the label
 - onChange: (value: string, checked: boolean) => void;
 	- replaced by `onValue(checked: boolean)`
 - onClick: (value: string, checked: boolean) => void;
@@ -198,11 +200,12 @@ export default factory(function CheckboxExample({ middleware: { icache } }) {
 	return [
 		<Checkbox
 			checked={icache.get('isChecked0')}
-			label="v7 Checkbox Example"
 			onValue={(checked) => {
 				icache.set('isChecked0', checked);
 			}}
-		/>,
+		>
+			v7 Checkbox Example
+		</Checkbox>,
 		// other checkboxes...
 	];
 });
