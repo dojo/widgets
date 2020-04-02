@@ -12,7 +12,8 @@ export default factory(function Basic() {
 					max: 10
 				}
 			}}
-			label="Minimum and Maximum Length Constraints"
-		/>
+		>
+			{{ label: 'Minimum and Maximum Length Constraints' }}
+		</ConstrainedInput>
 	);
 });

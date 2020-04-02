@@ -45,7 +45,6 @@ const App = factory(function({ middleware: { icache } }) {
 						<virtual>
 							<TextInput
 								key="firstName"
-								label="First Name"
 								placeholder="Enter first name (must be Billy)"
 								pattern="Billy"
 								required={true}
@@ -54,10 +53,11 @@ const App = factory(function({ middleware: { icache } }) {
 								onValue={firstName.value}
 								onValidate={firstName.valid}
 								disabled={firstName.disabled()}
-							/>
+							>
+								{{ label: 'First Name' }}
+							</TextInput>
 							<TextInput
 								key="middleName"
-								label="Middle Name"
 								placeholder="Enter a middle name"
 								required={middleName.required()}
 								initialValue={middleName.value()}
@@ -66,10 +66,11 @@ const App = factory(function({ middleware: { icache } }) {
 								onValidate={middleName.valid}
 								maxLength={5}
 								disabled={middleName.disabled()}
-							/>
+							>
+								{{ label: 'Middle Name' }}
+							</TextInput>
 							<TextInput
 								key="lastName"
-								label="Last Name"
 								placeholder="Enter a last name"
 								required={true}
 								initialValue={lastName.value()}
@@ -78,10 +79,11 @@ const App = factory(function({ middleware: { icache } }) {
 								onValidate={lastName.valid}
 								minLength={2}
 								disabled={lastName.disabled()}
-							/>
+							>
+								{{ label: 'Last Name' }}
+							</TextInput>
 							<TextInput
 								key="email"
-								label="Email"
 								placeholder="Enter an email address"
 								required={false}
 								initialValue={email.value()}
@@ -91,7 +93,9 @@ const App = factory(function({ middleware: { icache } }) {
 								type="email"
 								pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
 								disabled={email.disabled()}
-							/>
+							>
+								{{ label: 'Email' }}
+							</TextInput>
 							<Button
 								key="fill"
 								type="button"

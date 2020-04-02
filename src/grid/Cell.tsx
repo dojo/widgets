@@ -109,24 +109,27 @@ export default class Cell extends I18nMixin(ThemedMixin(FocusMixin(WidgetBase)))
 			},
 			[
 				this._editing
-					? w(TextInput, {
-							key: 'input',
-							theme,
-							classes: {
-								...classes,
-								'@dojo/widgets/text-input': {
-									input: [this.theme(css.input)],
-									...passedInputClasses
-								}
+					? w(
+							TextInput,
+							{
+								key: 'input',
+								theme,
+								classes: {
+									...classes,
+									'@dojo/widgets/text-input': {
+										input: [this.theme(css.input)],
+										...passedInputClasses
+									}
+								},
+								labelHidden: true,
+								focus: this._focusKey === 'input' ? this.shouldFocus : () => false,
+								initialValue: this._editingValue,
+								onValue: this._onInput,
+								onBlur: this._onBlur,
+								onKeyDown: this._onKeyDown
 							},
-							label: format('editValue', { value: rawValue }),
-							labelHidden: true,
-							focus: this._focusKey === 'input' ? this.shouldFocus : () => false,
-							initialValue: this._editingValue,
-							onValue: this._onInput,
-							onBlur: this._onBlur,
-							onKeyDown: this._onKeyDown
-					  })
+							[{ label: format('editValue', { value: rawValue }) }]
+					  )
 					: this.renderContent(),
 				editable && !this._editing
 					? w(

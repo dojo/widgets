@@ -126,19 +126,6 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 										css,
 										'input'
 									)}
-									trailing={() => (
-										<button
-											key="dateIcon"
-											onclick={(e) => {
-												e.stopPropagation();
-												openCalendar();
-											}}
-											classes={classes.toggleCalendarButton}
-											type="button"
-										>
-											<Icon type="dateIcon" />
-										</button>
-									)}
 									type="text"
 									initialValue={icache.get('inputValue')}
 									onBlur={() => icache.set('shouldValidate', true)}
@@ -153,7 +140,23 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 											openCalendar();
 										}
 									}}
-								/>
+								>
+									{{
+										trailing: (
+											<button
+												key="dateIcon"
+												onclick={(e) => {
+													e.stopPropagation();
+													openCalendar();
+												}}
+												classes={classes.toggleCalendarButton}
+												type="button"
+											>
+												<Icon type="dateIcon" />
+											</button>
+										)
+									}}
+								</TextInput>
 							</div>
 						);
 					},

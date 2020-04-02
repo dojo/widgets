@@ -5,6 +5,8 @@ const factory = create();
 
 export default factory(function Basic() {
 	return (
-		<TextInput initialValue="disabled input text" label="Can't type here" disabled readOnly />
+		<TextInput initialValue="disabled input text" disabled readOnly>
+			{{ label: "Can't type here" }}
+		</TextInput>
 	);
 });

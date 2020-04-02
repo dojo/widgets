@@ -45,10 +45,13 @@ describe('ConstrainedInput', () => {
 	});
 
 	it('passes properties to the input widget', () => {
-		const h = harness(() => <ConstrainedInput rules={rules} label="Test Label" />, {
-			middleware: [[validation, createMockValidationMiddleware(() => true)]],
-			customComparator: [compareTheme]
-		});
+		const h = harness(
+			() => <ConstrainedInput rules={rules}>{{ label: 'Test Label' }}</ConstrainedInput>,
+			{
+				middleware: [[validation, createMockValidationMiddleware(() => true)]],
+				customComparator: [compareTheme]
+			}
+		);
 		h.expect(() => (
 			<TextInput
 				key="root"
@@ -57,15 +60,18 @@ describe('ConstrainedInput', () => {
 				valid={undefined}
 				onValidate={() => {}}
 				helperText="description"
-				label="Test Label"
-			/>
+			>
+				{{ label: 'Test Label' }}
+			</TextInput>
 		));
 	});
 
 	it('will display user helperText if passed instead of generated description', () => {
 		const h = harness(
 			() => (
-				<ConstrainedInput rules={rules} label="Test Label" helperText="test helper text" />
+				<ConstrainedInput rules={rules} helperText="test helper text">
+					{{ label: 'Test Label' }}
+				</ConstrainedInput>
 			),
 			{
 				middleware: [[validation, createMockValidationMiddleware(() => true)]],
@@ -80,8 +86,9 @@ describe('ConstrainedInput', () => {
 				valid={undefined}
 				onValidate={() => {}}
 				helperText="test helper text"
-				label="Test Label"
-			/>
+			>
+				{{ label: 'Test Label' }}
+			</TextInput>
 		));
 	});
 

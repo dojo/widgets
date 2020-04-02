@@ -9,7 +9,6 @@ const Example = factory(function Example({ middleware: { icache } }) {
 
 	return (
 		<NumberInput
-			label="Value between 40 and 50"
 			initialValue={42}
 			min={40}
 			max={50}
@@ -17,7 +16,9 @@ const Example = factory(function Example({ middleware: { icache } }) {
 			onValidate={(valid, message) => {
 				icache.set('valid', { valid, message });
 			}}
-		/>
+		>
+			{{ label: 'Value between 40 and 50' }}
+		</NumberInput>
 	);
 });
 

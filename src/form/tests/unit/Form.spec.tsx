@@ -28,7 +28,6 @@ describe('Form', () => {
 		<form name="formName" classes={[undefined, css.root]} onsubmit={noop}>
 			<TextInput
 				key="firstName"
-				label="First Name"
 				placeholder="Enter first name (must be Billy)"
 				pattern="Billy"
 				required={true}
@@ -40,10 +39,11 @@ describe('Form', () => {
 				onValue={noop}
 				onValidate={noop}
 				disabled={false}
-			/>
+			>
+				{{ label: 'First Name' }}
+			</TextInput>
 			<TextInput
 				key="middleName"
-				label="Middle Name"
 				placeholder="Enter a middle name"
 				required={false}
 				initialValue={undefined}
@@ -55,10 +55,11 @@ describe('Form', () => {
 				onValidate={noop}
 				maxLength={5}
 				disabled={false}
-			/>
+			>
+				{{ label: 'Middle Name' }}
+			</TextInput>
 			<TextInput
 				key="lastName"
-				label="Last Name"
 				placeholder="Enter a last name"
 				required={true}
 				initialValue={undefined}
@@ -70,10 +71,11 @@ describe('Form', () => {
 				onValidate={noop}
 				minLength={2}
 				disabled={false}
-			/>
+			>
+				{{ label: 'Last Name' }}
+			</TextInput>
 			<TextInput
 				key="email"
-				label="Email"
 				placeholder="Enter an email address"
 				required={false}
 				initialValue={undefined}
@@ -86,7 +88,9 @@ describe('Form', () => {
 				type="email"
 				pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
 				disabled={false}
-			/>
+			>
+				{{ label: 'Email' }}
+			</TextInput>
 			<Button key="fill" type="button" disabled={false} onClick={noop}>
 				Fill
 			</Button>
@@ -128,7 +132,6 @@ describe('Form', () => {
 				return [
 					<TextInput
 						key="firstName"
-						label="First Name"
 						placeholder="Enter first name (must be Billy)"
 						pattern="Billy"
 						required={true}
@@ -137,10 +140,11 @@ describe('Form', () => {
 						onValue={firstName.value}
 						onValidate={firstName.valid}
 						disabled={firstName.disabled()}
-					/>,
+					>
+						{{ label: 'First Name' }}
+					</TextInput>,
 					<TextInput
 						key="middleName"
-						label="Middle Name"
 						placeholder="Enter a middle name"
 						required={middleName.required()}
 						initialValue={middleName.value()}
@@ -149,10 +153,11 @@ describe('Form', () => {
 						onValidate={middleName.valid}
 						maxLength={5}
 						disabled={middleName.disabled()}
-					/>,
+					>
+						{{ label: 'Middle Name' }}
+					</TextInput>,
 					<TextInput
 						key="lastName"
-						label="Last Name"
 						placeholder="Enter a last name"
 						required={true}
 						initialValue={lastName.value()}
@@ -161,10 +166,11 @@ describe('Form', () => {
 						onValidate={lastName.valid}
 						minLength={2}
 						disabled={lastName.disabled()}
-					/>,
+					>
+						{{ label: 'Last Name' }}
+					</TextInput>,
 					<TextInput
 						key="email"
-						label="Email"
 						placeholder="Enter an email address"
 						required={false}
 						initialValue={email.value()}
@@ -174,7 +180,9 @@ describe('Form', () => {
 						type="email"
 						pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
 						disabled={email.disabled()}
-					/>,
+					>
+						{{ label: 'Email' }}
+					</TextInput>,
 					<Button
 						key="fill"
 						type="button"

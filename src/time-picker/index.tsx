@@ -13,6 +13,7 @@ import { Keys } from '../common/util';
 import bundle from './nls/TimePicker';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { createResource, DataTemplate } from '@dojo/framework/core/resource';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
 function createMemoryTemplate<S = void>(): DataTemplate<S> {
 	return {
@@ -32,9 +33,6 @@ export interface TimePickerProperties {
 
 	/** Callback to determine if a particular time entry should be disabled */
 	timeDisabled?: (time: Date) => boolean;
-
-	/** Adds a <label> element with the supplied text */
-	label?: string;
 
 	/** The name of the field */
 	name?: string;
@@ -64,6 +62,11 @@ export interface TimePickerProperties {
 	format?: '24' | '12';
 }
 
+export interface TimePickerChildren {
+	/** The label to be displayed above the input */
+	label?: RenderResult;
+}
+
 export interface TimePickerICache {
 	value?: string;
 	inputValue: string;
@@ -81,7 +84,9 @@ const factory = create({
 	i18n,
 	focus,
 	icache: createICacheMiddleware<TimePickerICache>()
-}).properties<TimePickerProperties>();
+})
+	.properties<TimePickerProperties>()
+	.children<TimePickerChildren | undefined>();
 
 export interface TimeParser {
 	regex: RegExp;
@@ -206,7 +211,8 @@ export function format24HourTime(dt: Date) {
 
 export const TimePicker = factory(function TimePicker({
 	middleware: { theme, icache, focus, i18n },
-	properties
+	properties,
+	children
 }) {
 	const classes = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
@@ -329,6 +335,7 @@ export const TimePicker = factory(function TimePicker({
 	};
 
 	const { name } = properties();
+	const [{ label } = {} as TimePickerChildren] = children();
 
 	const options = generateOptions();
 
@@ -349,13 +356,12 @@ export const TimePicker = factory(function TimePicker({
 							toggleOpen();
 						}
 
-						const { disabled, required, label } = properties();
+						const { disabled, required } = properties();
 
 						return (
 							<div classes={classes.input}>
 								<TextInput
 									key="input"
-									label={label}
 									disabled={disabled}
 									required={required}
 									focus={() => shouldFocus && focusNode === 'input'}
@@ -363,20 +369,6 @@ export const TimePicker = factory(function TimePicker({
 										inputCss,
 										css,
 										'input'
-									)}
-									trailing={() => (
-										<button
-											disabled={disabled}
-											key="clockIcon"
-											onclick={(e) => {
-												e.stopPropagation();
-												openMenu();
-											}}
-											classes={classes.toggleMenuButton}
-											type="button"
-										>
-											<Icon type="clockIcon" />
-										</button>
 									)}
 									initialValue={icache.get('inputValue')}
 									onBlur={() => icache.set('shouldValidate', true)}
@@ -395,7 +387,25 @@ export const TimePicker = factory(function TimePicker({
 										}
 									}}
 									type="text"
-								/>
+								>
+									{{
+										label,
+										trailing: (
+											<button
+												disabled={disabled}
+												key="clockIcon"
+												onclick={(e) => {
+													e.stopPropagation();
+													openMenu();
+												}}
+												classes={classes.toggleMenuButton}
+												type="button"
+											>
+												<Icon type="clockIcon" />
+											</button>
+										)
+									}}
+								</TextInput>
 							</div>
 						);
 					},

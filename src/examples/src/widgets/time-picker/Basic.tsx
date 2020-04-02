@@ -7,11 +7,9 @@ const factory = create({ icache });
 export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<virtual>
-			<TimePicker
-				label="Time: "
-				step={1800}
-				onValue={(value) => icache.set('value', value)}
-			/>
+			<TimePicker step={1800} onValue={(value) => icache.set('value', value)}>
+				{{ label: 'Time: ' }}
+			</TimePicker>
 			<div>The value is {icache.get('value') || 'not set'}</div>
 		</virtual>
 	);

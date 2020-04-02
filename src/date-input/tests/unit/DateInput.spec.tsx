@@ -71,11 +71,12 @@ const buttonTemplate = assertionTemplate(() => {
 				type="text"
 				onBlur={noop}
 				onValue={noop}
-				trailing={() => undefined}
 				initialValue={formatDate(today)}
 				helperText=""
 				onKeyDown={noop}
-			/>
+			>
+				{{ trailing: undefined }}
+			</TextInput>
 		</div>
 	);
 });
@@ -135,7 +136,7 @@ describe('DateInput', () => {
 		// Find the date icon & `click` it
 		const [dateIcon] = select(
 			'@dateIcon',
-			select('@input', triggerResult)[0].properties.trailing()
+			(select('@input', triggerResult)[0].children![0] as any).trailing
 		);
 		dateIcon.properties.onclick(stubEvent);
 		h.expect(baseTemplate());

@@ -1,4 +1,4 @@
-import { TextInput, BaseInputProperties } from '../text-input/index';
+import { TextInput, BaseInputProperties, TextInputChildren } from '../text-input/index';
 import { tsx, create } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '../middleware/theme';
@@ -13,9 +13,15 @@ interface EmailInputICache {
 }
 
 const icache = createICacheMiddleware<EmailInputICache>();
-const factory = create({ icache, theme }).properties<EmailInputProperties>();
+const factory = create({ icache, theme })
+	.properties<EmailInputProperties>()
+	.children<TextInputChildren | undefined>();
 
-export const EmailInput = factory(function({ properties, middleware: { icache, theme } }) {
+export const EmailInput = factory(function({
+	properties,
+	children,
+	middleware: { icache, theme }
+}) {
 	const { get, set } = icache;
 	const props = properties();
 	return (
@@ -32,7 +38,9 @@ export const EmailInput = factory(function({ properties, middleware: { icache, t
 				textInputCss,
 				emailInputCss
 			)}
-		/>
+		>
+			{children()[0]}
+		</TextInput>
 	);
 });
 

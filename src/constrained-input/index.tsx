@@ -1,4 +1,4 @@
-import TextInput, { BaseInputProperties, TextInputType } from '../text-input';
+import TextInput, { BaseInputProperties, TextInputType, TextInputChildren } from '../text-input';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import validation, { ValidationRules } from '../middleware/validation';
@@ -23,10 +23,14 @@ const factory = create({
 	icache: createICacheMiddleware<ConstrainedInputState>(),
 	validation,
 	theme
-}).properties<ConstrainedInputProperties>();
+})
+	.properties<ConstrainedInputProperties>()
+	.children<TextInputChildren | undefined>();
+
 export const ConstrainedInput = factory(function ConstrainedInput({
 	middleware: { icache, validation, theme },
-	properties
+	properties,
+	children
 }) {
 	const { rules, onValidate, helperText, ...props } = properties();
 	const valid = icache.get('valid');
@@ -53,7 +57,9 @@ export const ConstrainedInput = factory(function ConstrainedInput({
 			valid={valid}
 			onValidate={handleValidation}
 			helperText={helperText ? helperText : generatedDescribeHelperText}
-		/>
+		>
+			{children()[0]}
+		</TextInput>
 	);
 });
 

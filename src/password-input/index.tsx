@@ -7,7 +7,7 @@ import theme from '../middleware/theme';
 import * as buttonCss from '../theme/default/button.m.css';
 import * as css from '../theme/default/password-input.m.css';
 import * as textInputCss from '../theme/default/text-input.m.css';
-import TextInput from '../text-input';
+import TextInput, { TextInputChildren } from '../text-input';
 import { ValidationRules } from '../middleware/validation';
 
 export type Omit<T, E> = Pick<T, Exclude<keyof T, E>>;
@@ -25,10 +25,14 @@ export interface PasswordInputState {
 const factory = create({
 	icache: createICacheMiddleware<PasswordInputState>(),
 	theme
-}).properties<PasswordInputProperties>();
+})
+	.properties<PasswordInputProperties>()
+	.children<TextInputChildren | undefined>();
+
 export const PasswordInput = factory(function PasswordInput({
 	middleware: { theme, icache },
-	properties
+	properties,
+	children
 }) {
 	const props = properties();
 	const showPassword = icache.getOrSet('showPassword', false);
@@ -63,8 +67,9 @@ export const PasswordInput = factory(function PasswordInput({
 				textInputCss,
 				css
 			)}
-			trailing={() => trailing}
-		/>
+		>
+			{{ ...children()[0], trailing }}
+		</ConstrainedInput>
 	) : (
 		<TextInput
 			{...props}
@@ -74,10 +79,11 @@ export const PasswordInput = factory(function PasswordInput({
 				textInputCss,
 				css
 			)}
-			trailing={() => trailing}
 			onValidate={handleValidation}
 			valid={icache.get('valid')}
-		/>
+		>
+			{{ ...children()[0], trailing }}
+		</TextInput>
 	);
 });
 
