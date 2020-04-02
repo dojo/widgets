@@ -79,7 +79,9 @@ const buttonTemplate = assertionTemplate(() => {
 				helperText=""
 				onKeyDown={noop}
 				type="text"
-			/>
+			>
+				{{ label: undefined, trailing: undefined }}
+			</TextInput>
 		</div>
 	);
 });
@@ -173,7 +175,7 @@ describe('TimePicker', () => {
 		// Find the date icon & `click` it
 		const [dateIcon] = select(
 			'@clockIcon',
-			select('@input', triggerResult)[0].properties.trailing()
+			(select('@input', triggerResult)[0].children![0] as any).trailing
 		);
 		dateIcon.properties.onclick(stubEvent);
 		h.expect(baseTemplate());

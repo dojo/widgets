@@ -21,7 +21,9 @@ describe('PasswordInput', () => {
 				key="root"
 				type={'password'}
 				theme={{ '@dojo/widgets/text-input': textInputCss }}
-			/>
+			>
+				{{ trailing: undefined }}
+			</ConstrainedInput>
 		));
 	});
 
@@ -34,7 +36,9 @@ describe('PasswordInput', () => {
 				theme={{ '@dojo/widgets/text-input': textInputCss }}
 				onValidate={() => undefined}
 				valid={undefined}
-			/>
+			>
+				{{ trailing: undefined }}
+			</TextInput>
 		));
 	});
 
@@ -49,7 +53,9 @@ describe('PasswordInput', () => {
 				onValidate={() => undefined}
 				required
 				valid={{ valid: false, message: 'this is required' }}
-			/>
+			>
+				{{ trailing: undefined }}
+			</TextInput>
 		));
 	});
 
@@ -61,38 +67,15 @@ describe('PasswordInput', () => {
 				key="root"
 				type={'password'}
 				theme={{ '@dojo/widgets/text-input': textInputCss }}
-			/>
+			>
+				{{
+					trailing: (
+						<Button onClick={() => {}} theme={{}}>
+							<Icon type="eyeIcon" />
+						</Button>
+					)
+				}}
+			</ConstrainedInput>
 		));
-
-		const eyeRender = h.trigger('@root', 'trailing');
-		h.expect(
-			() => (
-				<Button onClick={() => {}} theme={{}}>
-					<Icon type="eyeIcon" />
-				</Button>
-			),
-			() => eyeRender
-		);
-
-		h.trigger('@root', (node: any) => node.properties.trailing().properties.onClick);
-
-		h.expect(() => (
-			<ConstrainedInput
-				rules={rules}
-				key="root"
-				type={'text'}
-				theme={{ '@dojo/widgets/text-input': textInputCss }}
-			/>
-		));
-
-		const slashRender = h.trigger('@root', 'trailing');
-		h.expect(
-			() => (
-				<Button onClick={() => {}} theme={{}}>
-					<Icon type="eyeSlashIcon" />
-				</Button>
-			),
-			() => slashRender
-		);
 	});
 });

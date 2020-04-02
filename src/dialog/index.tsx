@@ -142,8 +142,6 @@ export const Dialog = factory(function Dialog({
 									role === 'alertdialog' ||
 									(properties() as DialogPropertiesDialogRole).modal;
 
-								console.log('click!');
-
 								event.stopPropagation();
 								!modal && close();
 							}}
