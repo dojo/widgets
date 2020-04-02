@@ -79,8 +79,8 @@ describe('TitlePane', () => {
 		const h = harness(() => (
 			<TitlePane>
 				{{
-					title: () => 'title',
-					content: () => 'content'
+					title: 'title',
+					content: 'content'
 				}}
 			</TitlePane>
 		));
@@ -91,8 +91,8 @@ describe('TitlePane', () => {
 		const h = harness(() => (
 			<TitlePane initialOpen>
 				{{
-					title: () => 'title',
-					content: () => 'content'
+					title: 'title',
+					content: 'content'
 				}}
 			</TitlePane>
 		));
@@ -107,8 +107,8 @@ describe('TitlePane', () => {
 		const h = harness(() => (
 			<TitlePane headingLevel={3}>
 				{{
-					title: () => 'title',
-					content: () => 'content'
+					title: 'title',
+					content: 'content'
 				}}
 			</TitlePane>
 		));
@@ -123,8 +123,8 @@ describe('TitlePane', () => {
 		const h = harness(() => (
 			<TitlePane closeable={false}>
 				{{
-					title: () => 'title',
-					content: () => 'content'
+					title: 'title',
+					content: 'content'
 				}}
 			</TitlePane>
 		));
@@ -139,8 +139,8 @@ describe('TitlePane', () => {
 		const h = harness(() => (
 			<TitlePane>
 				{{
-					title: () => 'title',
-					content: () => 'content'
+					title: 'title',
+					content: 'content'
 				}}
 			</TitlePane>
 		));
@@ -160,8 +160,8 @@ describe('TitlePane', () => {
 		const h = harness(() => (
 			<TitlePane initialOpen>
 				{{
-					title: () => 'title',
-					content: () => 'content'
+					title: 'title',
+					content: 'content'
 				}}
 			</TitlePane>
 		));
@@ -177,8 +177,8 @@ describe('TitlePane', () => {
 		const h = harness(() => (
 			<TitlePane onOpen={onOpen}>
 				{{
-					title: () => 'title',
-					content: () => 'content'
+					title: 'title',
+					content: 'content'
 				}}
 			</TitlePane>
 		));
@@ -193,8 +193,8 @@ describe('TitlePane', () => {
 		const h = harness(() => (
 			<TitlePane initialOpen onClose={onClose}>
 				{{
-					title: () => 'title',
-					content: () => 'content'
+					title: 'title',
+					content: 'content'
 				}}
 			</TitlePane>
 		));

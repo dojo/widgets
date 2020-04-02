@@ -15,8 +15,8 @@ export default factory(function Basic() {
 					initialOpen={initialOpen('foo')}
 				>
 					{{
-						title: () => 'Pane 1',
-						content: () => (
+						title: 'Pane 1',
+						content: (
 							<div>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
 								purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue,
@@ -32,8 +32,8 @@ export default factory(function Basic() {
 					initialOpen={initialOpen('bar')}
 				>
 					{{
-						title: () => 'Pane 2',
-						content: () => (
+						title: 'Pane 2',
+						content: (
 							<div>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
 								purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue,
@@ -49,8 +49,8 @@ export default factory(function Basic() {
 					initialOpen={initialOpen('baz')}
 				>
 					{{
-						title: () => 'Pane 3',
-						content: () => (
+						title: 'Pane 3',
+						content: (
 							<div>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
 								purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue,
