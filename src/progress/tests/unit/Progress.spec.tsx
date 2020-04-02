@@ -100,4 +100,11 @@ describe('Progress', () => {
 
 		h.expect(template.setProperty('~progressbar', 'id', 'my-id'));
 	});
+
+	it('accepts aria properties', () => {
+		const h = harness(() => (
+			<Progress value={50} aria={{ describedBy: 'foo', valueNow: 'overridden' }} />
+		));
+		h.expect(template.setProperty('~progressbar', 'aria-describedby', 'foo'));
+	});
 });

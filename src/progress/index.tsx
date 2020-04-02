@@ -3,8 +3,11 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 
 import theme from '../middleware/theme';
 import * as css from '../theme/default/progress.m.css';
+import { formatAriaProperties } from '../common/util';
 
 export interface ProgressProperties {
+	/** Custom aria attributes */
+	aria?: { [key: string]: string | null };
 	/** Value used to calculate percent width */
 	max?: number;
 	/** Value used to calculate percent width */
@@ -33,6 +36,7 @@ export const Progress = factory(function Progress({
 }) {
 	const themeCss = theme.classes(css);
 	const {
+		aria = {},
 		value,
 		showOutput = true,
 		max = 100,
@@ -57,6 +61,7 @@ export const Progress = factory(function Progress({
 			<div
 				classes={themeCss.bar}
 				role="progressbar"
+				{...formatAriaProperties(aria)}
 				aria-valuemin={`${min}`}
 				aria-valuemax={`${max}`}
 				aria-valuenow={`${value}`}
