@@ -1,7 +1,29 @@
-# Widgets 6 to 7 Migration Guide
+# Widgets 6 to 7 Migration Guide (In Progress)
 
-## Initial summary covering:
-* Overview of breaking changes  * Normalisation of properties across the library, eg onValue, value/initialValue
+## Breaking changes
+
+Across the widget suite we have made a number of sweeping breaking changes
+
+### Removal of touch/mouse/pointer events
+
+We have standardised mouse / touch events to use `pointer` events under the covers and removed a large number of callbacks from our widgets adding in only what we feel is appropriate.
+For example, `text-input` now provides `onOver` / `onOut` events rather than `mouseIn` / `mouseOut` which signify the cross device nature of the pointer events being used.
+
+### Standardisation of input/value/change
+
+We have consolidated the use of `onInput` / `onChange` etc to a consistent `onValue` callback. All widgets returning a value will do so using this callback. In addition to this change, any callbacks with previously returned a value or a key such as `onChange` / `onBlur` etc have either been removed or have been changed to return zero parameters.
+To match the use of `onValue`, all widgets that accept a value now either take a `value` or `initialValue` property (in the case of partially controlled widgets). This will make it easier and more consistent to use the widget library.
+
+### Partially controlled pattern
+
+In an effort to make widgets easier and simpler to use out of the box we have changed many of our form widgets to use a partially controlled pattern. This means that our widgets that accept `initialValue` will manage their own value internally. They will still report back value changes via the `onValue` callback but you do not need to keep setting `value` on the widget. The same is true for widgets that accept an `onValidate` callback but do not accept `valid`. This widgets will self validate and inform you of their validation state.
+
+### Validated widgets
+
+Many of our form widgets are now capable of validating themselves. In many cases this is
+
+* Overview of breaking changes
+	* Normalisation of properties across the library, eg onValue, value/initialValue
   * Simplification of properties for some widgets
   * Removal/Replacement of certain widgets like combobox/listbox for select/typeahead
   * Other general breaking changes
@@ -16,7 +38,6 @@
 * link to the widget examples on widgets.dojo.io
 
 ## Widget Changes
-/#widget/accordion-pane/overview
 
 ### accordion-pane
 **New Widget** (delete if innapropriate)
@@ -36,7 +57,7 @@
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/accordion-pane/overwiew](https://widgets.dojo.io/#widget/accordion-pane/overview)
+Latest example can be found on [widgets.dojo.io/#widget/accordion-pane/overview](https://widgets.dojo.io/#widget/accordion-pane/overview)
 
 
 ### avatar
@@ -57,7 +78,7 @@ Latest example can be found on [widgets.dojo.io/#widget/accordion-pane/overwiew]
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/avatar/overwiew](https://widgets.dojo.io/#widget/avatar/overview)
+Latest example can be found on [widgets.dojo.io/#widget/avatar/overview](https://widgets.dojo.io/#widget/avatar/overview)
 
 
 ### breadcrumb-group
@@ -78,7 +99,7 @@ Latest example can be found on [widgets.dojo.io/#widget/avatar/overwiew](https:/
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/breadcrumb-group/overwiew](https://widgets.dojo.io/#widget/breadcrumb-group/overview)
+Latest example can be found on [widgets.dojo.io/#widget/breadcrumb-group/overview](https://widgets.dojo.io/#widget/breadcrumb-group/overview)
 
 
 ### button
@@ -99,7 +120,7 @@ Latest example can be found on [widgets.dojo.io/#widget/breadcrumb-group/overwie
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/button/overwiew](https://widgets.dojo.io/#widget/button/overview)
+Latest example can be found on [widgets.dojo.io/#widget/button/overview](https://widgets.dojo.io/#widget/button/overview)
 
 
 ### calendar
@@ -161,7 +182,7 @@ const year = icache.getOrSet('year', selectedDate.getFullYear());
 />
 ```
 
-Latest example can be found on [widgets.dojo.io/#widget/calendar/overwiew](https://widgets.dojo.io/#widget/calendar/overview)
+Latest example can be found on [widgets.dojo.io/#widget/calendar/overview](https://widgets.dojo.io/#widget/calendar/overview)
 
 
 ### card
@@ -182,7 +203,7 @@ Latest example can be found on [widgets.dojo.io/#widget/calendar/overwiew](https
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/card/overwiew](https://widgets.dojo.io/#widget/card/overview)
+Latest example can be found on [widgets.dojo.io/#widget/card/overview](https://widgets.dojo.io/#widget/card/overview)
 
 
 ### checkbox
@@ -203,7 +224,7 @@ Latest example can be found on [widgets.dojo.io/#widget/card/overwiew](https://w
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/checkbox/overwiew](https://widgets.dojo.io/#widget/checkbox/overview)
+Latest example can be found on [widgets.dojo.io/#widget/checkbox/overview](https://widgets.dojo.io/#widget/checkbox/overview)
 
 
 ### checkbox-group
@@ -224,7 +245,7 @@ Latest example can be found on [widgets.dojo.io/#widget/checkbox/overwiew](https
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/checkbox-group/overwiew](https://widgets.dojo.io/#widget/checkbox-group/overview)
+Latest example can be found on [widgets.dojo.io/#widget/checkbox-group/overview](https://widgets.dojo.io/#widget/checkbox-group/overview)
 
 
 ### constrained-input
@@ -245,7 +266,7 @@ Latest example can be found on [widgets.dojo.io/#widget/checkbox-group/overwiew]
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/constrained-input/overwiew](https://widgets.dojo.io/#widget/constrained-input/overview)
+Latest example can be found on [widgets.dojo.io/#widget/constrained-input/overview](https://widgets.dojo.io/#widget/constrained-input/overview)
 
 
 ### date-input
@@ -266,7 +287,7 @@ Latest example can be found on [widgets.dojo.io/#widget/constrained-input/overwi
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/date-input/overwiew](https://widgets.dojo.io/#widget/date-input/overview)
+Latest example can be found on [widgets.dojo.io/#widget/date-input/overview](https://widgets.dojo.io/#widget/date-input/overview)
 
 
 ### dialog
@@ -287,7 +308,7 @@ Latest example can be found on [widgets.dojo.io/#widget/date-input/overwiew](htt
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/dialog/overwiew](https://widgets.dojo.io/#widget/dialog/overview)
+Latest example can be found on [widgets.dojo.io/#widget/dialog/overview](https://widgets.dojo.io/#widget/dialog/overview)
 
 
 ### email-input
@@ -308,7 +329,7 @@ Latest example can be found on [widgets.dojo.io/#widget/dialog/overwiew](https:/
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/email-input/overwiew](https://widgets.dojo.io/#widget/email-input/overview)
+Latest example can be found on [widgets.dojo.io/#widget/email-input/overview](https://widgets.dojo.io/#widget/email-input/overview)
 
 
 ### form
@@ -329,7 +350,7 @@ Latest example can be found on [widgets.dojo.io/#widget/email-input/overwiew](ht
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/form/overwiew](https://widgets.dojo.io/#widget/form/overview)
+Latest example can be found on [widgets.dojo.io/#widget/form/overview](https://widgets.dojo.io/#widget/form/overview)
 
 
 ### global-event
@@ -350,7 +371,7 @@ Latest example can be found on [widgets.dojo.io/#widget/form/overwiew](https://w
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/global-event/overwiew](https://widgets.dojo.io/#widget/global-event/overview)
+Latest example can be found on [widgets.dojo.io/#widget/global-event/overview](https://widgets.dojo.io/#widget/global-event/overview)
 
 
 ### grid
@@ -371,7 +392,7 @@ Latest example can be found on [widgets.dojo.io/#widget/global-event/overwiew](h
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/grid/overwiew](https://widgets.dojo.io/#widget/grid/overview)
+Latest example can be found on [widgets.dojo.io/#widget/grid/overview](https://widgets.dojo.io/#widget/grid/overview)
 
 
 ### header
@@ -392,7 +413,7 @@ Latest example can be found on [widgets.dojo.io/#widget/grid/overwiew](https://w
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/header/overwiew](https://widgets.dojo.io/#widget/header/overview)
+Latest example can be found on [widgets.dojo.io/#widget/header/overview](https://widgets.dojo.io/#widget/header/overview)
 
 
 ### header-card
@@ -413,7 +434,7 @@ Latest example can be found on [widgets.dojo.io/#widget/header/overwiew](https:/
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/header-card/overwiew](https://widgets.dojo.io/#widget/header-card/overview)
+Latest example can be found on [widgets.dojo.io/#widget/header-card/overview](https://widgets.dojo.io/#widget/header-card/overview)
 
 
 ### helper-text
@@ -434,7 +455,7 @@ Latest example can be found on [widgets.dojo.io/#widget/header-card/overwiew](ht
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/helper-text/overwiew](https://widgets.dojo.io/#widget/helper-text/overview)
+Latest example can be found on [widgets.dojo.io/#widget/helper-text/overview](https://widgets.dojo.io/#widget/helper-text/overview)
 
 
 ### icon
@@ -455,7 +476,7 @@ Latest example can be found on [widgets.dojo.io/#widget/helper-text/overwiew](ht
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/icon/overwiew](https://widgets.dojo.io/#widget/icon/overview)
+Latest example can be found on [widgets.dojo.io/#widget/icon/overview](https://widgets.dojo.io/#widget/icon/overview)
 
 
 ### label
@@ -476,7 +497,7 @@ Latest example can be found on [widgets.dojo.io/#widget/icon/overwiew](https://w
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/label/overwiew](https://widgets.dojo.io/#widget/label/overview)
+Latest example can be found on [widgets.dojo.io/#widget/label/overview](https://widgets.dojo.io/#widget/label/overview)
 
 
 ### list
@@ -497,7 +518,7 @@ Latest example can be found on [widgets.dojo.io/#widget/label/overwiew](https://
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/list/overwiew](https://widgets.dojo.io/#widget/list/overview)
+Latest example can be found on [widgets.dojo.io/#widget/list/overview](https://widgets.dojo.io/#widget/list/overview)
 
 
 ### loading-indicator
@@ -518,7 +539,7 @@ Latest example can be found on [widgets.dojo.io/#widget/list/overwiew](https://w
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/loading-indicator/overwiew](https://widgets.dojo.io/#widget/loading-indicator/overview)
+Latest example can be found on [widgets.dojo.io/#widget/loading-indicator/overview](https://widgets.dojo.io/#widget/loading-indicator/overview)
 
 
 ### native-select
@@ -539,7 +560,7 @@ Latest example can be found on [widgets.dojo.io/#widget/loading-indicator/overwi
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/native-select/overwiew](https://widgets.dojo.io/#widget/native-select/overview)
+Latest example can be found on [widgets.dojo.io/#widget/native-select/overview](https://widgets.dojo.io/#widget/native-select/overview)
 
 
 ### number-input
@@ -560,7 +581,7 @@ Latest example can be found on [widgets.dojo.io/#widget/native-select/overwiew](
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/number-input/overwiew](https://widgets.dojo.io/#widget/number-input/overview)
+Latest example can be found on [widgets.dojo.io/#widget/number-input/overview](https://widgets.dojo.io/#widget/number-input/overview)
 
 
 ### outlined-button
@@ -581,7 +602,7 @@ Latest example can be found on [widgets.dojo.io/#widget/number-input/overwiew](h
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/outlined-button/overwiew](https://widgets.dojo.io/#widget/outlined-button/overview)
+Latest example can be found on [widgets.dojo.io/#widget/outlined-button/overview](https://widgets.dojo.io/#widget/outlined-button/overview)
 
 
 ### password-input
@@ -602,7 +623,7 @@ Latest example can be found on [widgets.dojo.io/#widget/outlined-button/overwiew
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/password-input/overwiew](https://widgets.dojo.io/#widget/password-input/overview)
+Latest example can be found on [widgets.dojo.io/#widget/password-input/overview](https://widgets.dojo.io/#widget/password-input/overview)
 
 
 ### progress
@@ -623,7 +644,7 @@ Latest example can be found on [widgets.dojo.io/#widget/password-input/overwiew]
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/progress/overwiew](https://widgets.dojo.io/#widget/progress/overview)
+Latest example can be found on [widgets.dojo.io/#widget/progress/overview](https://widgets.dojo.io/#widget/progress/overview)
 
 
 ### radio
@@ -644,7 +665,7 @@ Latest example can be found on [widgets.dojo.io/#widget/progress/overwiew](https
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/radio/overwiew](https://widgets.dojo.io/#widget/radio/overview)
+Latest example can be found on [widgets.dojo.io/#widget/radio/overview](https://widgets.dojo.io/#widget/radio/overview)
 
 
 ### radio-group
@@ -665,7 +686,7 @@ Latest example can be found on [widgets.dojo.io/#widget/radio/overwiew](https://
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/radio-group/overwiew](https://widgets.dojo.io/#widget/radio-group/overview)
+Latest example can be found on [widgets.dojo.io/#widget/radio-group/overview](https://widgets.dojo.io/#widget/radio-group/overview)
 
 
 ### raised-button
@@ -686,7 +707,7 @@ Latest example can be found on [widgets.dojo.io/#widget/radio-group/overwiew](ht
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/raised-button/overwiew](https://widgets.dojo.io/#widget/raised-button/overview)
+Latest example can be found on [widgets.dojo.io/#widget/raised-button/overview](https://widgets.dojo.io/#widget/raised-button/overview)
 
 
 ### range-slider
@@ -707,7 +728,7 @@ Latest example can be found on [widgets.dojo.io/#widget/raised-button/overwiew](
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/range-slider/overwiew](https://widgets.dojo.io/#widget/range-slider/overview)
+Latest example can be found on [widgets.dojo.io/#widget/range-slider/overview](https://widgets.dojo.io/#widget/range-slider/overview)
 
 
 ### select
@@ -728,7 +749,7 @@ Latest example can be found on [widgets.dojo.io/#widget/range-slider/overwiew](h
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/select/overwiew](https://widgets.dojo.io/#widget/select/overview)
+Latest example can be found on [widgets.dojo.io/#widget/select/overview](https://widgets.dojo.io/#widget/select/overview)
 
 
 ### slide-pane
@@ -749,7 +770,7 @@ Latest example can be found on [widgets.dojo.io/#widget/select/overwiew](https:/
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/slide-pane/overwiew](https://widgets.dojo.io/#widget/slide-pane/overview)
+Latest example can be found on [widgets.dojo.io/#widget/slide-pane/overview](https://widgets.dojo.io/#widget/slide-pane/overview)
 
 
 ### slider
@@ -770,7 +791,7 @@ Latest example can be found on [widgets.dojo.io/#widget/slide-pane/overwiew](htt
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/slider/overwiew](https://widgets.dojo.io/#widget/slider/overview)
+Latest example can be found on [widgets.dojo.io/#widget/slider/overview](https://widgets.dojo.io/#widget/slider/overview)
 
 
 ### snackbar
@@ -791,7 +812,7 @@ Latest example can be found on [widgets.dojo.io/#widget/slider/overwiew](https:/
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/snackbar/overwiew](https://widgets.dojo.io/#widget/snackbar/overview)
+Latest example can be found on [widgets.dojo.io/#widget/snackbar/overview](https://widgets.dojo.io/#widget/snackbar/overview)
 
 
 ### switch
@@ -812,7 +833,7 @@ Latest example can be found on [widgets.dojo.io/#widget/snackbar/overwiew](https
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/switch/overwiew](https://widgets.dojo.io/#widget/switch/overview)
+Latest example can be found on [widgets.dojo.io/#widget/switch/overview](https://widgets.dojo.io/#widget/switch/overview)
 
 
 ### tab
@@ -833,7 +854,7 @@ Latest example can be found on [widgets.dojo.io/#widget/switch/overwiew](https:/
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/tab/overwiew](https://widgets.dojo.io/#widget/tab/overview)
+Latest example can be found on [widgets.dojo.io/#widget/tab/overview](https://widgets.dojo.io/#widget/tab/overview)
 
 
 ### tab-controller
@@ -854,7 +875,7 @@ Latest example can be found on [widgets.dojo.io/#widget/tab/overwiew](https://wi
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/tab-controller/overwiew](https://widgets.dojo.io/#widget/tab-controller/overview)
+Latest example can be found on [widgets.dojo.io/#widget/tab-controller/overview](https://widgets.dojo.io/#widget/tab-controller/overview)
 
 
 ### text-area
@@ -875,7 +896,7 @@ Latest example can be found on [widgets.dojo.io/#widget/tab-controller/overwiew]
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/text-area/overwiew](https://widgets.dojo.io/#widget/text-area/overview)
+Latest example can be found on [widgets.dojo.io/#widget/text-area/overview](https://widgets.dojo.io/#widget/text-area/overview)
 
 
 ### text-input
@@ -896,7 +917,7 @@ Latest example can be found on [widgets.dojo.io/#widget/text-area/overwiew](http
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/text-input/overwiew](https://widgets.dojo.io/#widget/text-input/overview)
+Latest example can be found on [widgets.dojo.io/#widget/text-input/overview](https://widgets.dojo.io/#widget/text-input/overview)
 
 
 ### time-picker
@@ -917,7 +938,7 @@ Latest example can be found on [widgets.dojo.io/#widget/text-input/overwiew](htt
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/time-picker/overwiew](https://widgets.dojo.io/#widget/time-picker/overview)
+Latest example can be found on [widgets.dojo.io/#widget/time-picker/overview](https://widgets.dojo.io/#widget/time-picker/overview)
 
 
 ### title-pane
@@ -938,7 +959,7 @@ Latest example can be found on [widgets.dojo.io/#widget/time-picker/overwiew](ht
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/title-pane/overwiew](https://widgets.dojo.io/#widget/title-pane/overview)
+Latest example can be found on [widgets.dojo.io/#widget/title-pane/overview](https://widgets.dojo.io/#widget/title-pane/overview)
 
 
 ### tooltip
@@ -959,7 +980,7 @@ Latest example can be found on [widgets.dojo.io/#widget/title-pane/overwiew](htt
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/tooltip/overwiew](https://widgets.dojo.io/#widget/tooltip/overview)
+Latest example can be found on [widgets.dojo.io/#widget/tooltip/overview](https://widgets.dojo.io/#widget/tooltip/overview)
 
 
 ### trigger-popup
@@ -980,5 +1001,5 @@ Latest example can be found on [widgets.dojo.io/#widget/tooltip/overwiew](https:
 #### Changes in behaviour
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/trigger-popup/overwiew](https://widgets.dojo.io/#widget/trigger-popup/overview)
+Latest example can be found on [widgets.dojo.io/#widget/trigger-popup/overview](https://widgets.dojo.io/#widget/trigger-popup/overview)
 
