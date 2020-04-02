@@ -40,7 +40,7 @@ Many of our form widgets are now capable of validating themselves. In many cases
 ## Widget Changes
 
 ### accordion-pane
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -60,50 +60,8 @@ Many of our form widgets are now capable of validating themselves. In many cases
 Latest example can be found on [widgets.dojo.io/#widget/accordion-pane/overview](https://widgets.dojo.io/#widget/accordion-pane/overview)
 
 
-### avatar
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/avatar/overview](https://widgets.dojo.io/#widget/avatar/overview)
-
-
-### breadcrumb-group
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/breadcrumb-group/overview](https://widgets.dojo.io/#widget/breadcrumb-group/overview)
-
-
 ### button
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -185,29 +143,8 @@ const year = icache.getOrSet('year', selectedDate.getFullYear());
 Latest example can be found on [widgets.dojo.io/#widget/calendar/overview](https://widgets.dojo.io/#widget/calendar/overview)
 
 
-### card
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/card/overview](https://widgets.dojo.io/#widget/card/overview)
-
-
 ### checkbox
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -227,71 +164,8 @@ Latest example can be found on [widgets.dojo.io/#widget/card/overview](https://w
 Latest example can be found on [widgets.dojo.io/#widget/checkbox/overview](https://widgets.dojo.io/#widget/checkbox/overview)
 
 
-### checkbox-group
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/checkbox-group/overview](https://widgets.dojo.io/#widget/checkbox-group/overview)
-
-
-### constrained-input
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/constrained-input/overview](https://widgets.dojo.io/#widget/constrained-input/overview)
-
-
-### date-input
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/date-input/overview](https://widgets.dojo.io/#widget/date-input/overview)
-
-
 ### dialog
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -311,50 +185,8 @@ Latest example can be found on [widgets.dojo.io/#widget/date-input/overview](htt
 Latest example can be found on [widgets.dojo.io/#widget/dialog/overview](https://widgets.dojo.io/#widget/dialog/overview)
 
 
-### email-input
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/email-input/overview](https://widgets.dojo.io/#widget/email-input/overview)
-
-
-### form
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/form/overview](https://widgets.dojo.io/#widget/form/overview)
-
-
 ### global-event
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -374,29 +206,8 @@ Latest example can be found on [widgets.dojo.io/#widget/form/overview](https://w
 Latest example can be found on [widgets.dojo.io/#widget/global-event/overview](https://widgets.dojo.io/#widget/global-event/overview)
 
 
-### grid
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/grid/overview](https://widgets.dojo.io/#widget/grid/overview)
-
-
 ### header
-**New Widget** (delete if innapropriate)
+- used to be toolbar
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -416,29 +227,8 @@ Latest example can be found on [widgets.dojo.io/#widget/grid/overview](https://w
 Latest example can be found on [widgets.dojo.io/#widget/header/overview](https://widgets.dojo.io/#widget/header/overview)
 
 
-### header-card
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/header-card/overview](https://widgets.dojo.io/#widget/header-card/overview)
-
-
 ### helper-text
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -459,7 +249,7 @@ Latest example can be found on [widgets.dojo.io/#widget/helper-text/overview](ht
 
 
 ### icon
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -480,7 +270,7 @@ Latest example can be found on [widgets.dojo.io/#widget/icon/overview](https://w
 
 
 ### label
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -501,7 +291,7 @@ Latest example can be found on [widgets.dojo.io/#widget/label/overview](https://
 
 
 ### list
-**New Widget** (delete if innapropriate)
+- used to be listbox
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -521,29 +311,8 @@ Latest example can be found on [widgets.dojo.io/#widget/label/overview](https://
 Latest example can be found on [widgets.dojo.io/#widget/list/overview](https://widgets.dojo.io/#widget/list/overview)
 
 
-### loading-indicator
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/loading-indicator/overview](https://widgets.dojo.io/#widget/loading-indicator/overview)
-
-
 ### native-select
-**New Widget** (delete if innapropriate)
+- used to live inside select
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -563,71 +332,8 @@ Latest example can be found on [widgets.dojo.io/#widget/loading-indicator/overvi
 Latest example can be found on [widgets.dojo.io/#widget/native-select/overview](https://widgets.dojo.io/#widget/native-select/overview)
 
 
-### number-input
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/number-input/overview](https://widgets.dojo.io/#widget/number-input/overview)
-
-
-### outlined-button
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/outlined-button/overview](https://widgets.dojo.io/#widget/outlined-button/overview)
-
-
-### password-input
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/password-input/overview](https://widgets.dojo.io/#widget/password-input/overview)
-
-
 ### progress
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -648,7 +354,7 @@ Latest example can be found on [widgets.dojo.io/#widget/progress/overview](https
 
 
 ### radio
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -668,50 +374,8 @@ Latest example can be found on [widgets.dojo.io/#widget/progress/overview](https
 Latest example can be found on [widgets.dojo.io/#widget/radio/overview](https://widgets.dojo.io/#widget/radio/overview)
 
 
-### radio-group
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/radio-group/overview](https://widgets.dojo.io/#widget/radio-group/overview)
-
-
-### raised-button
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/raised-button/overview](https://widgets.dojo.io/#widget/raised-button/overview)
-
-
 ### range-slider
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -732,7 +396,7 @@ Latest example can be found on [widgets.dojo.io/#widget/range-slider/overview](h
 
 
 ### select
-**New Widget** (delete if innapropriate)
+- now uses list, no longer has native
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -753,7 +417,7 @@ Latest example can be found on [widgets.dojo.io/#widget/select/overview](https:/
 
 
 ### slide-pane
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -774,7 +438,7 @@ Latest example can be found on [widgets.dojo.io/#widget/slide-pane/overview](htt
 
 
 ### slider
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -794,29 +458,8 @@ Latest example can be found on [widgets.dojo.io/#widget/slide-pane/overview](htt
 Latest example can be found on [widgets.dojo.io/#widget/slider/overview](https://widgets.dojo.io/#widget/slider/overview)
 
 
-### snackbar
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/snackbar/overview](https://widgets.dojo.io/#widget/snackbar/overview)
-
-
 ### switch
-**New Widget** (delete if innapropriate)
+ - Split out of checkbox
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -835,30 +478,8 @@ Latest example can be found on [widgets.dojo.io/#widget/snackbar/overview](https
 
 Latest example can be found on [widgets.dojo.io/#widget/switch/overview](https://widgets.dojo.io/#widget/switch/overview)
 
-
-### tab
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/tab/overview](https://widgets.dojo.io/#widget/tab/overview)
-
-
 ### tab-controller
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -879,7 +500,7 @@ Latest example can be found on [widgets.dojo.io/#widget/tab-controller/overview]
 
 
 ### text-area
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -900,7 +521,7 @@ Latest example can be found on [widgets.dojo.io/#widget/text-area/overview](http
 
 
 ### text-input
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -921,7 +542,7 @@ Latest example can be found on [widgets.dojo.io/#widget/text-input/overview](htt
 
 
 ### time-picker
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -942,7 +563,7 @@ Latest example can be found on [widgets.dojo.io/#widget/time-picker/overview](ht
 
 
 ### title-pane
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -963,7 +584,7 @@ Latest example can be found on [widgets.dojo.io/#widget/title-pane/overview](htt
 
 
 ### tooltip
-**New Widget** (delete if innapropriate)
+
 #### Property changes
 ##### Additional Mandatory Properties
 - foo: string
@@ -982,24 +603,4 @@ Latest example can be found on [widgets.dojo.io/#widget/title-pane/overview](htt
 
 Latest example can be found on [widgets.dojo.io/#widget/tooltip/overview](https://widgets.dojo.io/#widget/tooltip/overview)
 
-
-### trigger-popup
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/trigger-popup/overview](https://widgets.dojo.io/#widget/trigger-popup/overview)
 
