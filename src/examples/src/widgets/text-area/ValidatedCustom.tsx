@@ -9,7 +9,6 @@ export default factory(function ValidateCustom({ middleware: { icache } }) {
 	return (
 		<TextArea
 			valid={valid}
-			label="Custom Validated"
 			helperText='Enter "valid" to be valid'
 			required={true}
 			customValidator={(value: string) => {
@@ -30,6 +29,8 @@ export default factory(function ValidateCustom({ middleware: { icache } }) {
 			onValidate={(valid?: boolean, message?: string) => {
 				icache.set('valid', { valid, message });
 			}}
-		/>
+		>
+			Custom Validated
+		</TextArea>
 	);
 });

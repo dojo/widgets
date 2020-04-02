@@ -9,11 +9,12 @@ export default factory(function ValidateRequired({ middleware: { icache } }) {
 	return (
 		<TextArea
 			valid={valid}
-			label="Required"
 			required={true}
 			onValidate={(valid?: boolean, message?: string) => {
 				icache.set('valid', { valid, message });
 			}}
-		/>
+		>
+			Required
+		</TextArea>
 	);
 });
