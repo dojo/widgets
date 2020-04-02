@@ -223,6 +223,9 @@ import BasicTwoColumnLayout from './widgets/two-column-layout/Basic';
 import TrailingBiasTwoColumnLayout from './widgets/two-column-layout/TrailingBias';
 import CollapsingLayout from './widgets/two-column-layout/Collapsing';
 import BasicResult from './widgets/result/Basic';
+import AlertResult from './widgets/result/Alert';
+import ErrorResult from './widgets/result/Error';
+import SuccessResult from './widgets/result/Success';
 
 `!has('docs')`;
 import testsContext from './tests';
@@ -1213,7 +1216,24 @@ export const config = {
 					filename: 'Basic',
 					module: BasicResult
 				}
-			}
+			},
+			examples: [
+				{
+					filename: 'Alert',
+					module: AlertResult,
+					title: 'Alert'
+				},
+				{
+					filename: 'Error',
+					module: ErrorResult,
+					title: 'Error'
+				},
+				{
+					filename: 'Success',
+					module: SuccessResult,
+					title: 'Success'
+				}
+			]
 		},
 		select: {
 			overview: {

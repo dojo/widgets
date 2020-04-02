@@ -2,7 +2,10 @@
 .root {
 }
 
-.statusIcon {
+.iconWrapper {
+}
+
+.iconIcon {
 }
 
 /* Contains the Result widget's action buttons */
@@ -12,7 +15,6 @@
 	align-items: center;
 }
 
-/* May be added to action buttons supplied by the actionsRenderer */
 .actionButtons {
 }
 
@@ -34,6 +36,19 @@
 .title {
 }
 
-/* Applied to the subTitle */
-.subTitle {
+/* Applied to the subtitle */
+.subtitle {
+}
+
+/* Status Styles */
+.alert {
+}
+
+.error {
+}
+
+.info {
+}
+
+.success {
 }

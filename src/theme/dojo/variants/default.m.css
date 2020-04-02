@@ -12,6 +12,10 @@
 	--font-size-icon: 24px;
 	--line-height-base: 24px;
 
+	--normal-font-weight: 400;
+	--bold-font-weight: 600;
+	--bolder-font-weight: 600;
+
 	/* Color hex values */
 	--color-dark: #333;
 	--color-text-primary: #000000;
@@ -21,6 +25,8 @@
 	--color-highlight-border: hsl(212.08695652173913, 100%, 58.0980392157%);
 	--color-success: #188701;
 	--color-error: #eb1313;
+	--color-alert: #ffa500;
+	--color-info: #006be6;
 	--color-background: #ffffff;
 	--color-background-inverted: #5c6c7c;
 	--color-background-faded: #f4f6f7;

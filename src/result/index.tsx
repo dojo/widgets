@@ -3,14 +3,23 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 
 import theme from '../middleware/theme';
 import * as css from '../theme/default/result.m.css';
+import * as iconCss from '../theme/default/icon.m.css';
+import Icon from '../icon';
 
-type ResultStatus = 'success' | 'error' | 'warning' | 404 | 500; // TODO: Additional status
+type ResultStatus = 'alert' | 'error' | 'info' | 'success';
+
+export enum StatusIcon {
+	alert = 'alertIcon',
+	error = 'cancelIcon',
+	info = 'infoIcon',
+	success = 'checkedBoxIcon'
+}
 
 export interface ResultProperties {
 	/* Title for the result */
 	title?: string;
 	/* A subtitle for the result */
-	subTitle?: string;
+	subtitle?: string;
 	/* The result status. Applies appropriate icon and color. */
 	status?: ResultStatus;
 }
@@ -27,22 +36,39 @@ const factory = create({ theme })
 
 export const Result = factory(function Result({ children, properties, middleware: { theme } }) {
 	const themeCss = theme.classes(css);
-	const { title, subTitle, status } = properties();
+	const { title, subtitle, status } = properties();
 	const { actionButtons, content, icon } = children()[0] || ({} as ResultChildren);
 
-	// TODO: Handle status Icons
+	const statusIcon = () => {
+		if (!icon && status) {
+			return (
+				<Icon
+					key="statusIcon"
+					type={StatusIcon[status]}
+					theme={theme.compose(
+						iconCss,
+						css,
+						'statusIcon'
+					)}
+				/>
+			);
+		}
+	};
 
 	return (
 		<div key="root" classes={[theme.variant(), themeCss.root]}>
-			{icon && (
-				<div key="icon" classes={themeCss.statusIcon}>
-					{icon()}
+			{icon || status ? (
+				<div
+					key="iconWrapper"
+					classes={[themeCss.iconWrapper, status ? themeCss[status] : null]}
+				>
+					{icon ? icon() : statusIcon()}
 				</div>
-			)}
+			) : null}
 			{title && (
 				<div classes={themeCss.titleWrapper}>
 					{<h2 classes={themeCss.title}>{title}</h2>}
-					{subTitle && <h3 classes={themeCss.subTitle}>{subTitle}</h3>}
+					{subtitle && <h3 classes={themeCss.subtitle}>{subtitle}</h3>}
 				</div>
 			)}
 			{content && <div classes={themeCss.contentWrapper}>{content()}</div>}

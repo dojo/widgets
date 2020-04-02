@@ -5,32 +5,22 @@
 }
 
 .iconWrapper {
-	align-items: center;
-	display: flex;
 	font-size: 64px;
-	font-weight: var(--bold-font-weight);
-	justify-content: center;
 	height: 64px;
 	width: 64px;
 }
 
-.iconIcon {
+.statusIconIcon {
+	font-size: 64px;
 }
 
 .actions {
 	display: flex;
 	flex-direction: row;
-	margin: var(--grid-base);
+	margin: var(--mdc-grid-base);
 }
 
 .actionButtons {
-	display: flex;
-	align-items: center;
-	box-sizing: border-box;
-}
-
-.contentWrapper {
-	margin: var(--grid-base);
 }
 
 .content {
@@ -38,36 +28,39 @@
 	flex-direction: column;
 }
 
+.contentWrapper {
+	margin: var(--mdc-grid-base);
+}
+
 .titleWrapper {
 	text-align: center;
-	margin: var(--grid-base);
+	margin: var(--mdc-grid-base);
 }
 
 .title {
-	font-size: var(--font-size-title);
-	margin: 0;
 }
 
 .subtitle {
 	color: var(--color-text-faded);
-	font-size: var(--font-size-small);
+	font-size: var(--mdc-theme-font-size-small);
 	font-weight: var(--normal-font-weight);
 	margin: 0;
 }
 
 /* Status Styles */
+
 .alert {
-	color: var(--color-alert);
+	color: var(--mdc-theme-alert);
 }
 
 .error {
-	color: var(--color-error);
+	color: var(--mdc-theme-error);
 }
 
 .info {
-	color: var(--color-info);
+	color: var(--mdc-theme-info);
 }
 
 .success {
-	color: var(--color-success);
+	color: var(--mdc-theme-success);
 }
