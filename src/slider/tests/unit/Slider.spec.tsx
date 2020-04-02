@@ -143,11 +143,14 @@ registerSuite('Slider', {
 					max={60}
 					min={10}
 					name="bar"
-					output={() => 'tribbles'}
 					outputIsTooltip
 					step={5}
 					initialValue={35}
-				/>
+				>
+					{{
+						output: () => 'tribbles'
+					}}
+				</Slider>
 			));
 
 			h.expect(
@@ -247,7 +250,7 @@ registerSuite('Slider', {
 		},
 
 		label() {
-			const h = harness(() => <Slider label="foo" />);
+			const h = harness(() => <Slider>{{ label: 'foo' }}</Slider>);
 
 			h.expect(expected(true));
 		},
