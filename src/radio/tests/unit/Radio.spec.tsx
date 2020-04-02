@@ -29,7 +29,6 @@ function createMockFocusMiddleware({
 
 const expected = ({
 	label = false,
-	labelAfter = true,
 	checked = false,
 	disabled = undefined,
 	focused = false,
@@ -52,23 +51,6 @@ const expected = ({
 				required ? css.required : null
 			]}
 		>
-			{!labelAfter && label ? (
-				<Label
-					key="label"
-					classes={undefined}
-					theme={undefined}
-					disabled={disabled}
-					focused={false}
-					forId=""
-					valid={valid}
-					readOnly={readOnly}
-					hidden={undefined}
-					required={required}
-					secondary={true}
-				>
-					foo
-				</Label>
-			) : null}
 			<div classes={css.inputWrapper}>
 				<input
 					assertion-key="input"
@@ -95,23 +77,7 @@ const expected = ({
 					<div classes={css.radioInner} />
 				</div>
 			</div>
-			{labelAfter && label ? (
-				<Label
-					key="labelAfter"
-					classes={undefined}
-					theme={undefined}
-					disabled={disabled}
-					focused={false}
-					forId=""
-					valid={valid}
-					readOnly={readOnly}
-					hidden={undefined}
-					required={required}
-					secondary={true}
-				>
-					foo
-				</Label>
-			) : null}
+			{label ? <Label>foo</Label> : null}
 		</div>
 	));
 
@@ -138,7 +104,10 @@ registerSuite('Radio', {
 		},
 
 		label() {
-			const h = harness(() => <Radio label="foo" />, [compareId, compareForId]);
+			const h = harness(() => <Radio>{{ label: () => <Label>foo</Label> }}</Radio>, [
+				compareId,
+				compareForId
+			]);
 
 			h.expect(expected({ label: true }));
 		},
@@ -168,31 +137,6 @@ registerSuite('Radio', {
 			required = false;
 
 			h.expect(expected({ valid, disabled, readOnly, required }));
-		},
-
-		'state properties on label'() {
-			const h = harness(
-				() => (
-					<Radio
-						label="foo"
-						valid={false}
-						disabled={true}
-						readOnly={true}
-						required={true}
-					/>
-				),
-				[compareId, compareForId]
-			);
-
-			h.expect(
-				expected({
-					label: true,
-					disabled: true,
-					readOnly: true,
-					required: true,
-					valid: false
-				})
-			);
 		},
 
 		'focused class'() {

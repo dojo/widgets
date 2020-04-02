@@ -3,9 +3,9 @@ import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import { formatAriaProperties } from '../common/util';
-import Label from '../label';
 import theme, { ThemeProperties } from '../middleware/theme';
 import * as css from '../theme/default/radio.m.css';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export interface RadioProperties extends ThemeProperties, FocusProperties {
 	/** Custom aria attributes */
@@ -14,10 +14,6 @@ export interface RadioProperties extends ThemeProperties, FocusProperties {
 	checked?: boolean;
 	/** Set the disabled property of the control */
 	disabled?: boolean;
-	/** Adds a <label> element with the supplied text */
-	label?: string;
-	/** Hides the label from view while still remaining accessible for screen readers */
-	labelHidden?: boolean;
 	/** The name of the radio button */
 	name?: string;
 	/** Handler for when the element is blurred */
@@ -42,16 +38,24 @@ export interface RadioProperties extends ThemeProperties, FocusProperties {
 	widgetId?: string;
 }
 
-const factory = create({ focus, theme }).properties<RadioProperties>();
+export interface RadioChild {
+	label?: () => RenderResult;
+}
 
-export const Radio = factory(function Radio({ properties, id, middleware: { focus, theme } }) {
+const factory = create({ focus, theme })
+	.properties<RadioProperties>()
+	.children<RadioChild | undefined>();
+
+export const Radio = factory(function Radio({
+	properties,
+	id,
+	children,
+	middleware: { focus, theme }
+}) {
 	const {
 		aria = {},
 		checked = false,
-		classes,
 		disabled,
-		label,
-		labelHidden,
 		name,
 		onBlur,
 		onFocus,
@@ -60,7 +64,6 @@ export const Radio = factory(function Radio({ properties, id, middleware: { focu
 		onValue,
 		readOnly,
 		required,
-		theme: themeProp,
 		valid,
 		value,
 		widgetId
@@ -68,6 +71,7 @@ export const Radio = factory(function Radio({ properties, id, middleware: { focu
 
 	const themeCss = theme.classes(css);
 	const idBase = widgetId || `radio-${id}`;
+	const { label } = children()[0] || {};
 
 	return (
 		<div
@@ -114,23 +118,7 @@ export const Radio = factory(function Radio({ properties, id, middleware: { focu
 					<div classes={themeCss.radioInner} />
 				</div>
 			</div>
-			{label && (
-				<Label
-					key="labelAfter"
-					classes={classes}
-					theme={themeProp}
-					disabled={disabled}
-					focused={focus.isFocused('root')}
-					forId={idBase}
-					valid={valid}
-					readOnly={readOnly}
-					hidden={labelHidden}
-					required={required}
-					secondary={true}
-				>
-					{label}
-				</Label>
-			)}
+			{label && label()}
 		</div>
 	);
 });
