@@ -1,5 +1,6 @@
 .iconIcon {
 	composes: icon from './icon.m.css';
+	composes: iconIcon from '../default/rate.m.css';
 }
 
 .root .iconIcon {
@@ -7,10 +8,10 @@
 	color: var(--mdc-disabled-color);
 }
 
-.root .filled {
-	color: #ffb400;
+.integer {
+	composes: integer from '../default/rate.m.css';
 }
 
-.over {
+.integer:hover .iconIcon {
 	transform: scale(1.2);
 }

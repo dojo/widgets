@@ -14,7 +14,7 @@ const App = factory(function({ properties, middleware: { i18n, icache } }) {
 		<virtual>
 			<Rate
 				name="half"
-				steps={2}
+				allowHalf
 				onValue={(value) => {
 					set(
 						'half',

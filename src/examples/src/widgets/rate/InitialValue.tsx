@@ -7,7 +7,7 @@ const factory = create({ icache });
 const App = factory(function({ properties, middleware: { icache } }) {
 	const { get, set } = icache;
 	icache.getOrSet('initial', 4);
-	icache.getOrSet('initialsteps', 4.25);
+	icache.getOrSet('initialsteps', 1.5);
 
 	return (
 		<virtual>
@@ -21,8 +21,8 @@ const App = factory(function({ properties, middleware: { icache } }) {
 			<pre>{`${get('initial')}`}</pre>
 			<Rate
 				name="initialsteps"
-				initialValue={4.25}
-				steps={4}
+				initialValue={1.5}
+				allowHalf
 				onValue={(value) => {
 					set('initialsteps', value);
 				}}

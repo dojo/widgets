@@ -1,0 +1,16 @@
+.integer:hover {
+	background: #ccc;
+}
+
+.integer {
+	border-bottom: 1px solid transparent;
+}
+
+.selectedInteger {
+	border-bottom: 1px solid #369;
+}
+
+.filled,
+.empty {
+	color: black;
+}

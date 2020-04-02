@@ -1,7 +1,29 @@
 .root {
 }
 
-.groupWrapper {
+.filled {
+	color: #fadb14;
+}
+
+.empty {
+	color: var(--color-dark);
+}
+
+.character ~ .character {
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.halfCharacters .character ~ .character {
+	width: 50%;
+}
+
+.halfCharacters .character ~ .character .radioRoot {
+	position: absolute;
+	right: 0;
 }
 
 .labelRoot {
@@ -9,7 +31,7 @@
 	cursor: pointer;
 }
 
-.radioGroupRoot {
+.groupRoot {
 	display: inline-block;
 	border: 1px solid transparent;
 }
@@ -21,32 +43,62 @@
 .over {
 }
 
-.partialCharacter {
-	overflow: hidden;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-}
-
-.partialRadio {
-	position: absolute;
-	right: 0;
-}
-
-.characterWrapper {
+.integer {
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
 }
 
-.filled {
-	color: #fadb14;
+.iconIcon {
+	composes: icon from './icon.m.css';
 }
 
-/* Added to active items */
-.active {
-	outline: 1px solid #999;
+/* fill all icons */
+.root .filled {
+	display: inline;
+}
+.root .empty {
+	display: none;
+}
+
+/* empty icons after the selected icon */
+.selectedInteger ~ .integer .filled {
+	display: none;
+}
+.selectedInteger ~ .integer .empty {
+	display: inline;
+}
+
+/* empty icon segments after the selected one */
+.selectedInteger .selectedCharacter ~ .character .filled {
+	display: none;
+}
+.selectedInteger .selectedCharacter ~ .character .empty {
+	display: inline;
+}
+
+/* fill all icons when the widget is hovered */
+.root:hover .integer .filled {
+	display: inline;
+}
+.root:hover .integer .empty {
+	display: none;
+}
+
+/* empty all icons after the hovered icon */
+.integer:hover ~ .integer .filled {
+	display: none;
+}
+.integer:hover ~ .integer .empty {
+	display: inline;
+}
+
+/* empty icon segments after the hovered one */
+.integer .character:hover ~ .character .filled {
+	display: none;
+}
+.integer .character:hover ~ .character .empty {
+	display: inline;
 }
 
 /* Added to disabled ratings group */
