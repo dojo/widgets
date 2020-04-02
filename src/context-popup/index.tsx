@@ -12,7 +12,7 @@ export interface ContextPopupProperties {
 }
 
 export interface ContextPopupChildren {
-	trigger: () => RenderResult;
+	trigger: RenderResult;
 	content: (callbacks: { close(): void; shouldFocus(): boolean }) => RenderResult;
 }
 
@@ -61,7 +61,7 @@ export const ContextPopup = factory(function({
 					onOpen && onOpen();
 				}}
 			>
-				{trigger()}
+				{trigger}
 			</div>
 			<Popup
 				key="popup"

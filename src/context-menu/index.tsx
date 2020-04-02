@@ -22,7 +22,7 @@ export const ContextMenu = factory(function({ properties, children, middleware: 
 	return (
 		<ContextPopup>
 			{{
-				trigger: () => children(),
+				trigger: children(),
 				content: ({ close, shouldFocus }) => (
 					<List
 						key="menu"

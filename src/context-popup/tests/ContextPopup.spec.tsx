@@ -41,7 +41,7 @@ describe('ContextPopup', () => {
 		const h = harness(() => (
 			<ContextPopup>
 				{{
-					trigger: () => <div>Some text with a context menu</div>,
+					trigger: <div>Some text with a context menu</div>,
 					content: () => 'hello world'
 				}}
 			</ContextPopup>
@@ -57,7 +57,7 @@ describe('ContextPopup', () => {
 		const h = harness(() => (
 			<ContextPopup onClose={onClose}>
 				{{
-					trigger: () => undefined,
+					trigger: undefined,
 					content: ({ close, shouldFocus }) => (
 						<div key="content" tabIndex={0} onblur={close} focus={shouldFocus}>
 							hello world
@@ -86,7 +86,7 @@ describe('ContextPopup', () => {
 		const h = harness(() => (
 			<ContextPopup onOpen={onOpen} onClose={onClose}>
 				{{
-					trigger: () => undefined,
+					trigger: undefined,
 					content: () => 'hello world'
 				}}
 			</ContextPopup>
