@@ -72,9 +72,7 @@ export const ContextPopup = factory(function({
 				position="below"
 				open={icache.get('open')}
 			>
-				{{
-					content: () => <div>{content({ close, shouldFocus: focus.shouldFocus })}</div>
-				}}
+				<div>{content({ close, shouldFocus: focus.shouldFocus })}</div>
 			</Popup>
 		</virtual>
 	);
