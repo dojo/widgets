@@ -120,10 +120,7 @@ registerSuite('Radio', {
 		},
 
 		label() {
-			const h = harness(() => <Radio>{{ label: () => 'foo' }}</Radio>, [
-				compareId,
-				compareForId
-			]);
+			const h = harness(() => <Radio>foo</Radio>, [compareId, compareForId]);
 
 			h.expect(expected({ label: true }));
 		},
@@ -159,9 +156,7 @@ registerSuite('Radio', {
 			const h = harness(
 				() => (
 					<Radio valid={false} disabled={true} readOnly={true} required={true}>
-						{{
-							label: () => 'foo'
-						}}
+						foo
 					</Radio>
 				),
 				[compareId, compareForId]

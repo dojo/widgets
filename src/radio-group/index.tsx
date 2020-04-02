@@ -49,13 +49,9 @@ export const RadioGroup = factory(function({
 		return options.map(({ value, label }) => {
 			const { checked } = radio(value);
 			return (
-				<Radio
-					checked={checked()}
-					label={label || value}
-					name={name}
-					onValue={checked}
-					value={value}
-				/>
+				<Radio checked={checked()} name={name} onValue={checked} value={value}>
+					{label || value}
+				</Radio>
 			);
 		});
 	}

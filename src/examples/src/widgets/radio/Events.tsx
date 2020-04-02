@@ -15,9 +15,7 @@ export default factory(function EventsRadioButton({ middleware: { icache } }) {
 				onOut={() => icache.set('event', 'onOut')}
 				onOver={() => icache.set('event', 'onOver')}
 			>
-				{{
-					label: () => `Last event: ${icache.get('event') || 'Awaiting first event'}`
-				}}
+				{`Last event: ${icache.get('event') || 'Awaiting first event'}`}
 			</Radio>
 		</virtual>
 	);

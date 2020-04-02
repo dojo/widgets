@@ -10,4 +10,4 @@ Dojo's `Radio` widget provides a styleable radio widget with an optional label.
 
 `Radio` ensures that the proper attributes (ARIA or otherwise) are set along with classes when properties such as `disabled`, `readOnly`, `invalid`, etc. are used.
 
-`Label` is handled via a child renderer. We recommend pointing it at the input's `widgetId` property.
+`Label` is handled via a child renderer. Child content will be rendered within a Label.

@@ -5,8 +5,8 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { formatAriaProperties } from '../common/util';
 import theme, { ThemeProperties } from '../middleware/theme';
 import * as css from '../theme/default/radio.m.css';
-import { RenderResult } from '@dojo/framework/core/interfaces';
 import Label from '../label';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export interface RadioProperties extends ThemeProperties, FocusProperties {
 	/** Custom aria attributes */
@@ -41,13 +41,9 @@ export interface RadioProperties extends ThemeProperties, FocusProperties {
 	widgetId?: string;
 }
 
-export interface RadioChild {
-	label?: () => RenderResult;
-}
-
 const factory = create({ focus, theme })
 	.properties<RadioProperties>()
-	.children<RadioChild | undefined>();
+	.children<RenderResult | undefined>();
 
 export const Radio = factory(function Radio({
 	properties,
@@ -77,7 +73,6 @@ export const Radio = factory(function Radio({
 
 	const themeCss = theme.classes(css);
 	const idBase = widgetId || `radio-${id}`;
-	const { label } = children()[0] || {};
 
 	return (
 		<div
@@ -124,7 +119,7 @@ export const Radio = factory(function Radio({
 					<div classes={themeCss.radioInner} />
 				</div>
 			</div>
-			{label && (
+			{children().length > 0 && (
 				<Label
 					key="label"
 					classes={classes}
@@ -138,7 +133,7 @@ export const Radio = factory(function Radio({
 					required={required}
 					secondary={true}
 				>
-					{label()}
+					{children()}
 				</Label>
 			)}
 		</div>

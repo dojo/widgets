@@ -27,11 +27,12 @@ const App = factory(function({ middleware: { icache } }) {
 									<span>I'm custom!</span>
 									<Radio
 										checked={checked()}
-										label={label || value}
 										name={name}
 										onValue={checked}
 										value={value}
-									/>
+									>
+										{label || value}
+									</Radio>
 									<hr
 										styles={{
 											borderColor: '#d6dde2',
@@ -46,6 +47,7 @@ const App = factory(function({ middleware: { icache } }) {
 							);
 						});
 					}
+
 				}}
 			</RadioGroup>
 			<pre>{`${get('custom')}`}</pre>

@@ -22,9 +22,15 @@ describe('RadioGroup', () => {
 			/>
 		));
 		const optionTemplate = template.setChildren('@root', () => [
-			<Radio name="test" value="cat" label="cat" checked={undefined} onValue={noop} />,
-			<Radio name="test" value="fish" label="fish" checked={undefined} onValue={noop} />,
-			<Radio name="test" value="dog" label="dog" checked={undefined} onValue={noop} />
+			<Radio name="test" value="cat" checked={undefined} onValue={noop}>
+				cat
+			</Radio>,
+			<Radio name="test" value="fish" checked={undefined} onValue={noop}>
+				fish
+			</Radio>,
+			<Radio name="test" value="dog" checked={undefined} onValue={noop}>
+				dog
+			</Radio>
 		]);
 		h.expect(optionTemplate);
 	});
@@ -39,7 +45,9 @@ describe('RadioGroup', () => {
 		));
 		const labelTemplate = template.setChildren('@root', () => [
 			<legend classes={css.legend}>test label</legend>,
-			<Radio name="test" value="cat" label="cat" checked={undefined} onValue={noop} />
+			<Radio name="test" value="cat" checked={undefined} onValue={noop}>
+				cat
+			</Radio>
 		]);
 		h.expect(labelTemplate);
 	});
@@ -54,9 +62,15 @@ describe('RadioGroup', () => {
 			/>
 		));
 		const optionTemplate = template.setChildren('@root', () => [
-			<Radio name="test" value="cat" label="cat" checked={undefined} onValue={noop} />,
-			<Radio name="test" value="fish" label="fish" checked={true} onValue={noop} />,
-			<Radio name="test" value="dog" label="dog" checked={undefined} onValue={noop} />
+			<Radio name="test" value="cat" checked={undefined} onValue={noop}>
+				cat
+			</Radio>,
+			<Radio name="test" value="fish" checked={true} onValue={noop}>
+				fish
+			</Radio>,
+			<Radio name="test" value="dog" checked={undefined} onValue={noop}>
+				dog
+			</Radio>
 		]);
 		h.expect(optionTemplate);
 	});
@@ -72,10 +86,11 @@ describe('RadioGroup', () => {
 							<Radio
 								name="test"
 								value="cat"
-								label="cat"
 								checked={false}
 								onValue={noop}
-							/>,
+							>
+								cat
+							</Radio>,
 							<hr />
 						];
 					}
@@ -85,7 +100,9 @@ describe('RadioGroup', () => {
 		const customTemplate = template.setChildren('@root', () => [
 			<legend classes={css.legend}>custom render label</legend>,
 			<span>custom label</span>,
-			<Radio name="test" value="cat" label="cat" checked={false} onValue={noop} />,
+			<Radio name="test" value="cat" checked={false} onValue={noop}>
+				cat
+			</Radio>,
 			<hr />
 		]);
 		h.expect(customTemplate);
