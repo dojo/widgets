@@ -11,16 +11,16 @@ For example, `text-input` now provides `onOver` / `onOut` events rather than `mo
 
 ### Standardisation of input/value/change
 
-We have consolidated the use of `onInput` / `onChange` etc to a consistent `onValue` callback. All widgets returning a value will do so using this callback. In addition to this change, any callbacks with previously returned a value or a key such as `onChange` / `onBlur` etc have either been removed or have been changed to return zero parameters.
+We have consolidated the use of `onInput` / `onChange` etc to a consistent `onValue` callback. All widgets returning a value will do so using this callback. In addition to this change, any callbacks which previously returned a value or a key such as `onChange` / `onBlur` etc have either been removed or have been changed to return zero parameters.
 To match the use of `onValue`, all widgets that accept a value now either take a `value` or `initialValue` property (in the case of partially controlled widgets). This will make it easier and more consistent to use the widget library.
 
 ### Partially controlled pattern
 
-In an effort to make widgets easier and simpler to use out of the box we have changed many of our form widgets to use a partially controlled pattern. This means that our widgets that accept `initialValue` will manage their own value internally. They will still report back value changes via the `onValue` callback but you do not need to keep setting `value` on the widget. The same is true for widgets that accept an `onValidate` callback but do not accept `valid`. This widgets will self validate and inform you of their validation state.
+In an effort to make widgets easier and simpler to use out of the box we have changed many of our form widgets to use a partially controlled pattern. This means that our widgets that accept `initialValue` will manage their own value internally. They will still report back value changes via the `onValue` callback but you do not need to keep setting `value` on the widget. The same is true for widgets that accept an `onValidate` callback but do not accept `valid`. These widgets will self validate and inform you of their validation state.
 
 ### Validated widgets
 
-Many of our form widgets are now capable of validating themselves. In many cases this is done in an uncontrolled way meanign the widget will display it's valid state / error message and will call the `onValidate` callback when valid state changes.
+Many of our form widgets are now capable of validating themselves. In many cases this is done in an uncontrolled way meaning the widget will display its valid state / error message and will call the `onValidate` callback when valid state changes.
 
 * Overview of breaking changes
 	* Normalisation of properties across the library, eg onValue, value/initialValue
