@@ -186,27 +186,6 @@ Latest example can be found on [widgets.dojo.io/#widget/checkbox/overwiew](https
 Latest example can be found on [widgets.dojo.io/#widget/checkbox-group/overwiew](https://widgets.dojo.io/#widget/checkbox-group/overview)
 
 
-### chip
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/chip/overwiew](https://widgets.dojo.io/#widget/chip/overview)
-
-
 ### constrained-input
 **New Widget** (delete if innapropriate)
 #### Property changes
@@ -226,48 +205,6 @@ Latest example can be found on [widgets.dojo.io/#widget/chip/overwiew](https://w
 #### Example of migration from v6 to v7
 
 Latest example can be found on [widgets.dojo.io/#widget/constrained-input/overwiew](https://widgets.dojo.io/#widget/constrained-input/overview)
-
-
-### context-menu
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/context-menu/overwiew](https://widgets.dojo.io/#widget/context-menu/overview)
-
-
-### context-popup
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/context-popup/overwiew](https://widgets.dojo.io/#widget/context-popup/overview)
 
 
 ### date-input
@@ -625,27 +562,6 @@ Latest example can be found on [widgets.dojo.io/#widget/outlined-button/overwiew
 #### Example of migration from v6 to v7
 
 Latest example can be found on [widgets.dojo.io/#widget/password-input/overwiew](https://widgets.dojo.io/#widget/password-input/overview)
-
-
-### popup
-**New Widget** (delete if innapropriate)
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/popup/overwiew](https://widgets.dojo.io/#widget/popup/overview)
 
 
 ### progress
