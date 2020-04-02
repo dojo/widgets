@@ -83,6 +83,7 @@ export default factory(function Pagination({ middleware: { theme, icache, i18n }
 	}
 
 	if (pageSizes !== undefined && pageSizes !== icache.get('pageSizes')) {
+		icache.set('pageSizes', pageSizes);
 		icache.set('pageSizesData', pageSizes.map((ps) => ({ value: ps.toString() })));
 	}
 
