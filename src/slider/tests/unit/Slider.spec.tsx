@@ -255,6 +255,14 @@ registerSuite('Slider', {
 			h.expect(expected(true));
 		},
 
+		'label after'() {
+			const h = harness(() => <Slider labelAfter={true}>{{ label: 'foo' }}</Slider>);
+
+			const assertion = expected(true);
+			const children = assertion.getChildren('@root');
+			h.expect(assertion.setChildren('@root', () => children.reverse()));
+		},
+
 		'state classes'() {
 			let properties = {
 				valid: false,
