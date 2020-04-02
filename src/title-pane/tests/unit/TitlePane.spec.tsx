@@ -59,7 +59,7 @@ describe('TitlePane', () => {
 						aria-labelledby="test-title"
 						classes={[
 							themeCss.content,
-							open ? themeCss.contentTransition : null,
+							themeCss.contentTransition,
 							fixedCss.contentFixed
 						]}
 						id="test-content"
@@ -147,13 +147,7 @@ describe('TitlePane', () => {
 
 		h.trigger('@title-button', 'onclick', { stopPropagation: noop });
 
-		h.expect(
-			getTemplate({ initialOpen: true }).setProperty('@content', 'classes', [
-				themeCss.content,
-				null,
-				fixedCss.contentFixed
-			])
-		);
+		h.expect(getTemplate({ initialOpen: true }));
 	});
 
 	it('closes an open pane', () => {

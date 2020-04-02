@@ -15,6 +15,8 @@ export interface TitlePaneProperties {
 	headingLevel?: number;
 	/** If true the pane is opened and content is visible initially */
 	initialOpen?: boolean;
+	/** Explicitly control TitlePane */
+	open?: boolean;
 	/** Called when the title of a closed pane is clicked */
 	onClose?(): void;
 	/** Called when the title of an open pane is clicked */
@@ -55,19 +57,12 @@ export const TitlePane = factory(function TitlePane({
 		initialOpen,
 		onClose,
 		onOpen,
+		open: openProp,
 		theme: themeProp
 	} = properties();
 	const { content, title } = children()[0];
 
-	let open = icache.get('open');
-	let performTransition = false;
-	const existingInitialOpen = icache.get('initialOpen');
-	if (existingInitialOpen !== initialOpen) {
-		icache.set('open', initialOpen);
-		icache.set('initialOpen', initialOpen);
-		open = initialOpen;
-		performTransition = true;
-	}
+	let open = openProp !== undefined ? openProp : icache.getOrSet('open', initialOpen);
 
 	return (
 		<div
@@ -115,11 +110,7 @@ export const TitlePane = factory(function TitlePane({
 			<div
 				aria-hidden={open ? null : 'true'}
 				aria-labelledby={`${id}-title`}
-				classes={[
-					themeCss.content,
-					performTransition ? themeCss.contentTransition : null,
-					fixedCss.contentFixed
-				]}
+				classes={[themeCss.content, themeCss.contentTransition, fixedCss.contentFixed]}
 				id={`${id}-content`}
 				key="content"
 				styles={{
