@@ -17,7 +17,8 @@ export default factory(function Basic() {
 					numbers: 1
 				}
 			}}
-			label="Enter Password"
-		/>
+		>
+			{{ label: 'Enter Password' }}
+		</PasswordInput>
 	);
 });
