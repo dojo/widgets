@@ -45,7 +45,6 @@
 			"src/slider",
 			"src/snackbar",
 			"src/switch",
-			"src/tab",
 			"src/tab-controller",
 			"src/text-area",
 			"src/text-input",

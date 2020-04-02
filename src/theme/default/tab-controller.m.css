@@ -18,11 +18,6 @@
 	padding: 1px 3px;
 }
 
-/* Added to a hidden Tab */
-.hidden {
-	display: none;
-}
-
 /* Styles the content of the close button */
 .close:after {
 	content: '✕';

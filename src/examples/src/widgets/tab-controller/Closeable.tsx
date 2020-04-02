@@ -1,39 +1,34 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
-import { includes } from '@dojo/framework/shim/array';
 
 import TabController from '@dojo/widgets/tab-controller';
-import Tab from '@dojo/widgets/tab';
+import TabContent from '@dojo/widgets/tab-controller/TabContent';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function Closeable({ middleware: { icache } }) {
-	const activeIndex = icache.getOrSet('active', 0);
-	const closedKeys = icache.getOrSet<string[]>('closedKeys', []);
+export default factory(function Closeable() {
+	const tabs = [
+		{ closeable: true, id: 'tab0', label: 'Tab One' },
+		{ id: 'tab1', label: 'Tab Two' },
+		{ id: 'tab2', label: 'Tab Three' },
+		{ id: 'tab3', label: 'Tab Four' }
+	];
+
 	return (
-		<TabController
-			activeIndex={activeIndex}
-			onRequestTabChange={(index) => {
-				icache.set('active', index);
-			}}
-			onRequestTabClose={(index, key) => {
-				icache.set('closedKeys', [...closedKeys, key]);
-			}}
-		>
-			{!includes(closedKeys, 'tab-one') ? (
-				<Tab key="tab-one" label="Tab One" closeable={true}>
+		<TabController tabs={tabs}>
+			{(_tabs, isActive, isClosed) => [
+				<TabContent key="tab0" active={isActive('tab0')} closed={isClosed('tab0')}>
 					Hello Tab One
-				</Tab>
-			) : null}
-			<Tab key="tab-two" label="Tab Two">
-				Hello Tab Two
-			</Tab>
-			<Tab key="tab-three" label="Tab Three">
-				Hello Tab Three
-			</Tab>
-			<Tab key="tab-four" label="Tab Four">
-				Hello Tab Four
-			</Tab>
+				</TabContent>,
+				<TabContent key="tab1" active={isActive('tab1')} closed={isClosed('tab1')}>
+					Hello Tab Two
+				</TabContent>,
+				<TabContent key="tab2" active={isActive('tab2')} closed={isClosed('tab2')}>
+					Hello Tab Three
+				</TabContent>,
+				<TabContent key="tab3" active={isActive('tab3')} closed={isClosed('tab3')}>
+					Hello Tab Four
+				</TabContent>
+			]}
 		</TabController>
 	);
 });

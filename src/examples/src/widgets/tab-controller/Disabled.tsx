@@ -1,32 +1,34 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
 
 import TabController from '@dojo/widgets/tab-controller';
-import Tab from '@dojo/widgets/tab';
+import TabContent from '@dojo/widgets/tab-controller/TabContent';
 
-const factory = create({ icache });
+const factory = create();
 
-export default factory(function Disabled({ middleware: { icache } }) {
-	const activeIndex = icache.getOrSet('active', 0);
+export default factory(function Disabled() {
+	const tabs = [
+		{ disabled: true, id: 'tab0', label: 'Tab One' },
+		{ id: 'tab1', label: 'Tab Two' },
+		{ disabled: true, id: 'tab2', label: 'Tab Three' },
+		{ id: 'tab3', label: 'Tab Four' }
+	];
+
 	return (
-		<TabController
-			activeIndex={activeIndex}
-			onRequestTabChange={(index) => {
-				icache.set('active', index);
-			}}
-		>
-			<Tab key="tab-one" disabled={true} label="Tab One">
-				Hello Tab One
-			</Tab>
-			<Tab key="tab-two" label="Tab Two">
-				Hello Tab Two
-			</Tab>
-			<Tab key="tab-three" disabled={true} label="Tab Three">
-				Hello Tab Three
-			</Tab>
-			<Tab key="tab-four" label="Tab Four">
-				Hello Tab Four
-			</Tab>
+		<TabController tabs={tabs}>
+			{(_tabs, isActive) => [
+				<TabContent key="tab0" active={isActive('tab0')}>
+					Hello Tab One
+				</TabContent>,
+				<TabContent key="tab1" active={isActive('tab1')}>
+					Hello Tab Two
+				</TabContent>,
+				<TabContent key="tab2" active={isActive('tab2')}>
+					Hello Tab Three
+				</TabContent>,
+				<TabContent key="tab3" active={isActive('tab3')}>
+					Hello Tab Four
+				</TabContent>
+			]}
 		</TabController>
 	);
 });
