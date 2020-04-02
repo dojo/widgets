@@ -29,10 +29,10 @@ describe('TwoColumnLayout', () => {
 	const trailing = <div>Trailing</div>;
 	const baseAssertion = assertionTemplate(() => (
 		<div key="root" classes={[undefined, fixedCss.root, css.root]}>
-			<div key="leading" classes={[false, fixedCss.even, false, css.column]}>
+			<div key="leading" classes={[false, fixedCss.even, false, false, css.column]}>
 				{leading}
 			</div>
-			<div key="trailing" classes={[false, fixedCss.even, false, css.column]}>
+			<div key="trailing" classes={[false, fixedCss.even, false, false, css.column]}>
 				{trailing}
 			</div>
 		</div>
@@ -66,8 +66,14 @@ describe('TwoColumnLayout', () => {
 
 		h.expect(
 			baseAssertion
-				.setProperty('@leading', 'classes', [fixedCss.biased, false, false, css.column])
-				.setProperty('@trailing', 'classes', [false, false, false, css.column])
+				.setProperty('@leading', 'classes', [
+					fixedCss.biased,
+					false,
+					false,
+					false,
+					css.column
+				])
+				.setProperty('@trailing', 'classes', [false, false, false, css.small, css.column])
 		);
 	});
 
@@ -83,8 +89,14 @@ describe('TwoColumnLayout', () => {
 
 		h.expect(
 			baseAssertion
-				.setProperty('@leading', 'classes', [false, false, false, css.column])
-				.setProperty('@trailing', 'classes', [fixedCss.biased, false, false, css.column])
+				.setProperty('@leading', 'classes', [false, false, false, css.small, css.column])
+				.setProperty('@trailing', 'classes', [
+					fixedCss.biased,
+					false,
+					false,
+					false,
+					css.column
+				])
 		);
 	});
 
@@ -105,11 +117,12 @@ describe('TwoColumnLayout', () => {
 
 			h.expect(
 				baseAssertion
-					.setProperty('@leading', 'classes', [false, false, false, css.column])
+					.setProperty('@leading', 'classes', [false, false, false, false, css.column])
 					.setProperty('@trailing', 'classes', [
 						false,
 						false,
 						baseCss.visuallyHidden,
+						false,
 						css.column
 					])
 			);
@@ -127,11 +140,18 @@ describe('TwoColumnLayout', () => {
 
 			h.expect(
 				baseAssertion
-					.setProperty('@leading', 'classes', [fixedCss.biased, false, false, css.column])
+					.setProperty('@leading', 'classes', [
+						fixedCss.biased,
+						false,
+						false,
+						false,
+						css.column
+					])
 					.setProperty('@trailing', 'classes', [
 						false,
 						false,
 						baseCss.visuallyHidden,
+						false,
 						css.column
 					])
 			);
@@ -153,10 +173,12 @@ describe('TwoColumnLayout', () => {
 						false,
 						false,
 						baseCss.visuallyHidden,
+						false,
 						css.column
 					])
 					.setProperty('@trailing', 'classes', [
 						fixedCss.biased,
+						false,
 						false,
 						false,
 						css.column

@@ -42,6 +42,7 @@ export const TwoColumnLayout = factory(function({
 					bias === 'leading' && fixedClasses.biased,
 					bias === undefined && !shouldCollapse && fixedClasses.even,
 					bias === 'trailing' && shouldCollapse && baseCss.visuallyHidden,
+					bias === 'trailing' && !shouldCollapse && css.small,
 					classes.column
 				]}
 			>
@@ -55,6 +56,7 @@ export const TwoColumnLayout = factory(function({
 					(bias === 'leading' || bias === undefined) &&
 						shouldCollapse &&
 						baseCss.visuallyHidden,
+					bias === 'leading' && !shouldCollapse && css.small,
 					classes.column
 				]}
 			>
