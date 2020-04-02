@@ -134,7 +134,7 @@ displayed month and year and the currently selected value. The calendar can
 still be controlled by using the callbacks and initial properties to track
 and update the value.
 #### Example of migration from v6 to v7
-```ts
+```tsx
 const selectedDate = icache.getOrSet('date', new Date());
 const month = icache.getOrSet('month', selectedDate.getMonth());
 const year = icache.getOrSet('year', selectedDate.getFullYear());
@@ -154,7 +154,7 @@ const year = icache.getOrSet('year', selectedDate.getFullYear());
 />
 ```
 
-```ts
+```tsx
 <Calendar
     onValue={date => {
         icache.set('date', date);
@@ -1066,5 +1066,4 @@ Latest example can be found on [widgets.dojo.io/#widget/tooltip/overwiew](https:
 #### Example of migration from v6 to v7
 
 Latest example can be found on [widgets.dojo.io/#widget/trigger-popup/overwiew](https://widgets.dojo.io/#widget/trigger-popup/overview)
-
 
