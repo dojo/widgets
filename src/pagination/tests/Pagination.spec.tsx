@@ -95,14 +95,56 @@ describe('Pagination', () => {
 		h.expect(() => false);
 	});
 
-	it('raises page change events', () => {
-		const onPageChange = sinon.stub();
-		const h = harness(() => <Pagination total={20} initialPage={10} onPage={onPageChange} />);
+	it('raises page change events', () => {});
 
-		h.expect(baseAssertion);
-		h.trigger('button:first-child', 'onclick', stubEvent);
+	describe('page change events', () => {
+		it('raises event from prev link', () => {
+			const onPageChange = sinon.stub();
+			const h = harness(() => (
+				<Pagination total={20} initialPage={10} onPage={onPageChange} />
+			));
 
-		sinon.assert.calledWith(onPageChange, 9);
+			h.expect(baseAssertion);
+			h.trigger('@prev', 'onclick', stubEvent);
+
+			sinon.assert.calledWith(onPageChange, 9);
+		});
+
+		it('raises event from next link', () => {
+			const onPageChange = sinon.stub();
+			const h = harness(() => (
+				<Pagination total={20} initialPage={10} onPage={onPageChange} />
+			));
+
+			h.expect(baseAssertion);
+			h.trigger('@next', 'onclick', stubEvent);
+
+			sinon.assert.calledWith(onPageChange, 11);
+		});
+
+		it('raises event from trailing links', () => {
+			const onPageChange = sinon.stub();
+			const h = harness(() => (
+				<Pagination total={20} initialPage={10} onPage={onPageChange} />
+			));
+
+			h.expect(baseAssertion);
+			h.trigger('@numberedLink-11', 'onclick', stubEvent);
+
+			sinon.assert.calledWith(onPageChange, 11);
+		});
+
+		it('raises event from leading links', () => {
+			const onPageChange = sinon.stub();
+			const h = harness(() => (
+				<Pagination total={20} initialPage={10} onPage={onPageChange} />
+			));
+
+			h.expect(baseAssertion);
+			h.trigger('@numberedLink-9', 'onclick', stubEvent);
+
+			sinon.assert.calledWith(onPageChange, 9);
+		});
 	});
 
 	it('renders without "prev" button when there is no prev', () => {
