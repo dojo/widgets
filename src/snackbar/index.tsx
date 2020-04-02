@@ -6,10 +6,6 @@ import * as css from '../theme/default/snackbar.m.css';
 export interface SnackbarProperties {
 	/** If the snackbar is displayed */
 	open: boolean;
-	/** Renders the message portion of the snackbar */
-	messageRenderer: () => RenderResult;
-	/** If provided, render actions that the user may select */
-	actionsRenderer?: () => RenderResult;
 	/** The type of snackbar message */
 	type?: 'success' | 'error';
 	/** If the snackbar contents should be justified at the start */
@@ -18,11 +14,22 @@ export interface SnackbarProperties {
 	stacked?: boolean;
 }
 
-const factory = create({ theme }).properties<SnackbarProperties>();
+export interface SnackbarChildren {
+	/** Renders the message portion of the snackbar */
+	message: RenderResult;
+	/** If provided, render actions that the user may select */
+	actions?: RenderResult;
+}
 
-export const Snackbar = factory(function Snackbar({ middleware: { theme }, properties }) {
-	const { type, open, leading, stacked, messageRenderer, actionsRenderer } = properties();
+const factory = create({ theme })
+	.properties<SnackbarProperties>()
+	.children<SnackbarChildren>();
+
+export const Snackbar = factory(function Snackbar({ middleware: { theme }, properties, children }) {
+	const { type, open, leading, stacked } = properties();
+	const { message, actions } = children()[0];
 	const themeCss = theme.classes(css);
+
 	return (
 		<div
 			key="root"
@@ -37,11 +44,11 @@ export const Snackbar = factory(function Snackbar({ middleware: { theme }, prope
 		>
 			<div key="content" classes={themeCss.content}>
 				<div key="label" classes={themeCss.label} role="status" aria-live="polite">
-					{messageRenderer()}
+					{message}
 				</div>
-				{actionsRenderer && (
+				{actions && (
 					<div key="actions" classes={themeCss.actions}>
-						{actionsRenderer()}
+						{actions}
 					</div>
 				)}
 			</div>
