@@ -20,7 +20,7 @@ In an effort to make widgets easier and simpler to use out of the box we have ch
 
 ### Validated widgets
 
-Many of our form widgets are now capable of validating themselves. In many cases this is
+Many of our form widgets are now capable of validating themselves. In many cases this is done in an uncontrolled way meanign the widget will display it's valid state / error message and will call the `onValidate` callback when valid state changes.
 
 * Overview of breaking changes
 	* Normalisation of properties across the library, eg onValue, value/initialValue
