@@ -1,65 +1,51 @@
 import AccordionPane from '@dojo/widgets/accordion-pane';
-import TitlePane from '@dojo/widgets/title-pane';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 const factory = create();
 
 export default factory(function Basic() {
 	return (
-		<AccordionPane>
-			{(onOpen, onClose, initialOpen) => [
-				<TitlePane
-					key="foo"
-					onOpen={onOpen('foo')}
-					onClose={onClose('foo')}
-					initialOpen={initialOpen('foo')}
-				>
-					{{
-						title: () => 'Pane 1',
-						content: () => (
-							<div>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
-								purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue,
-								sed lacinia felis tempor in.
-							</div>
-						)
-					}}
-				</TitlePane>,
-				<TitlePane
-					key="bar"
-					onOpen={onOpen('bar')}
-					onClose={onClose('bar')}
-					initialOpen={initialOpen('bar')}
-				>
-					{{
-						title: () => 'Pane 2',
-						content: () => (
-							<div>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
-								purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue,
-								sed lacinia felis tempor in.
-							</div>
-						)
-					}}
-				</TitlePane>,
-				<TitlePane
-					key="baz"
-					onOpen={onOpen('baz')}
-					onClose={onClose('baz')}
-					initialOpen={initialOpen('baz')}
-				>
-					{{
-						title: () => 'Pane 3',
-						content: () => (
-							<div>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
-								purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue,
-								sed lacinia felis tempor in.
-							</div>
-						)
-					}}
-				</TitlePane>
-			]}
+		<AccordionPane exclusive>
+			{(Pane) => {
+				return [
+					<Pane>
+						{{
+							title: () => 'Pane 1',
+							content: () => (
+								<div>
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+									id purus ipsum. Aenean ac purus purus. Nam sollicitudin varius
+									augue, sed lacinia felis tempor in.
+								</div>
+							)
+						}}
+					</Pane>,
+					<Pane>
+						{{
+							title: () => 'Pane 2',
+							content: () => (
+								<div>
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+									id purus ipsum. Aenean ac purus purus. Nam sollicitudin varius
+									augue, sed lacinia felis tempor in.
+								</div>
+							)
+						}}
+					</Pane>,
+					<Pane>
+						{{
+							title: () => 'Pane 3',
+							content: () => (
+								<div>
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+									id purus ipsum. Aenean ac purus purus. Nam sollicitudin varius
+									augue, sed lacinia felis tempor in.
+								</div>
+							)
+						}}
+					</Pane>
+				];
+			}}
 		</AccordionPane>
 	);
 });

@@ -1,5 +1,4 @@
 import AccordionPane from '@dojo/widgets/accordion-pane';
-import TitlePane from '@dojo/widgets/title-pane';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 const factory = create();
@@ -7,15 +6,9 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<AccordionPane>
-			{(onOpen, onClose, initialOpen, theme) => {
+			{(Pane) => {
 				return [
-					<TitlePane
-						key="foo"
-						onOpen={onOpen('foo')}
-						onClose={onClose('foo')}
-						initialOpen={initialOpen('foo')}
-						theme={theme}
-					>
+					<Pane>
 						{{
 							title: () => 'Pane 1',
 							content: () => (
@@ -26,14 +19,8 @@ export default factory(function Basic() {
 								</div>
 							)
 						}}
-					</TitlePane>,
-					<TitlePane
-						key="bar"
-						onOpen={onOpen('bar')}
-						onClose={onClose('bar')}
-						initialOpen={initialOpen('bar')}
-						theme={theme}
-					>
+					</Pane>,
+					<Pane>
 						{{
 							title: () => 'Pane 2',
 							content: () => (
@@ -44,14 +31,8 @@ export default factory(function Basic() {
 								</div>
 							)
 						}}
-					</TitlePane>,
-					<TitlePane
-						key="baz"
-						onOpen={onOpen('baz')}
-						onClose={onClose('baz')}
-						initialOpen={initialOpen('baz')}
-						theme={theme}
-					>
+					</Pane>,
+					<Pane>
 						{{
 							title: () => 'Pane 3',
 							content: () => (
@@ -62,7 +43,7 @@ export default factory(function Basic() {
 								</div>
 							)
 						}}
-					</TitlePane>
+					</Pane>
 				];
 			}}
 		</AccordionPane>
