@@ -210,6 +210,22 @@ describe('Chip', () => {
 		assert.isTrue(onClick.calledOnce);
 	});
 
+	it('does not trigger callback when disabled and clicked', () => {
+		const onClick = sinon.spy();
+		const h = harness(() => (
+			<Chip disabled onClick={onClick}>
+				{{ label }}
+			</Chip>
+		));
+
+		h.expect(
+			template.setProperty(':root', 'classes', [undefined, css.root, css.disabled, false])
+		);
+
+		h.trigger('@root', 'onclick');
+		assert.isFalse(onClick.called);
+	});
+
 	it('calls appropriate callbacks when enter or space is pressed', () => {
 		const onClose = sinon.spy();
 		const onClick = sinon.spy();
