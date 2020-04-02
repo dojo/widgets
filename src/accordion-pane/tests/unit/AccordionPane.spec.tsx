@@ -14,14 +14,14 @@ describe('AccordionPane', () => {
 			<div classes={[undefined, themeCss.root]}>
 				<TitlePane key="foo">
 					{{
-						title: () => 'foo title',
-						content: () => 'foo content'
+						title: 'foo title',
+						content: 'foo content'
 					}}
 				</TitlePane>
 				<TitlePane key="bar">
 					{{
-						title: () => 'bar title',
-						content: () => 'bar content'
+						title: 'bar title',
+						content: 'bar content'
 					}}
 				</TitlePane>
 			</div>
@@ -35,14 +35,14 @@ describe('AccordionPane', () => {
 					return [
 						<TitlePane key="foo" onOpen={onOpen('foo')} onClose={onClose('foo')}>
 							{{
-								title: () => 'foo title',
-								content: () => 'foo content'
+								title: 'foo title',
+								content: 'foo content'
 							}}
 						</TitlePane>,
 						<TitlePane key="bar" onOpen={onOpen('bar')} onClose={onClose('bar')}>
 							{{
-								title: () => 'bar title',
-								content: () => 'bar content'
+								title: 'bar title',
+								content: 'bar content'
 							}}
 						</TitlePane>
 					];
@@ -75,8 +75,8 @@ describe('AccordionPane', () => {
 							initialOpen={initialOpen('foo')}
 						>
 							{{
-								title: () => 'foo title',
-								content: () => 'foo content'
+								title: 'foo title',
+								content: 'foo content'
 							}}
 						</TitlePane>,
 						<TitlePane
@@ -85,8 +85,8 @@ describe('AccordionPane', () => {
 							initialOpen={initialOpen('bar')}
 						>
 							{{
-								title: () => 'bar title',
-								content: () => 'bar content'
+								title: 'bar title',
+								content: 'bar content'
 							}}
 						</TitlePane>
 					];
@@ -117,8 +117,8 @@ describe('AccordionPane', () => {
 							initialOpen={initialOpen('foo')}
 						>
 							{{
-								title: () => 'foo title',
-								content: () => 'foo content'
+								title: 'foo title',
+								content: 'foo content'
 							}}
 						</TitlePane>,
 						<TitlePane
@@ -127,8 +127,8 @@ describe('AccordionPane', () => {
 							initialOpen={initialOpen('bar')}
 						>
 							{{
-								title: () => 'bar title',
-								content: () => 'bar content'
+								title: 'bar title',
+								content: 'bar content'
 							}}
 						</TitlePane>
 					];

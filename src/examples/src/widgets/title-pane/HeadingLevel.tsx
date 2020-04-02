@@ -7,8 +7,8 @@ export default factory(function Basic() {
 	return (
 		<TitlePane headingLevel={2}>
 			{{
-				title: () => 'Aria Heading Level 2',
-				content: () => (
+				title: 'Aria Heading Level 2',
+				content: (
 					<div>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus
 						ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia

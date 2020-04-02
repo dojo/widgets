@@ -5,10 +5,10 @@ const factory = create();
 
 export default factory(function Basic() {
 	return (
-		<TitlePane closeable={false}>
+		<TitlePane initialOpen={true} closeable={false}>
 			{{
-				title: () => "I can't be closed",
-				content: () => (
+				title: "I can't be closed",
+				content: (
 					<div>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus
 						ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia

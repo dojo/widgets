@@ -28,9 +28,9 @@ export interface TitlePaneICache {
 
 export type TitlePaneChildren = {
 	/** Renderer for the pane content */
-	content?(): RenderResult;
+	content?: RenderResult;
 	/** Renderer for the pane title */
-	title(): RenderResult;
+	title: RenderResult;
 };
 
 const factory = create({
@@ -109,7 +109,7 @@ export const TitlePane = factory(function TitlePane({
 					<span classes={themeCss.arrow}>
 						<Icon type={open ? 'downIcon' : 'rightIcon'} theme={themeProp} />
 					</span>
-					{title()}
+					{title}
 				</button>
 			</div>
 			<div
@@ -126,7 +126,7 @@ export const TitlePane = factory(function TitlePane({
 					marginTop: open ? '0px' : `-${dimensions.get('content').offset.height}px`
 				}}
 			>
-				{content && content()}
+				{content}
 			</div>
 		</div>
 	);

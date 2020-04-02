@@ -7,8 +7,8 @@ export default factory(function Basic() {
 	return (
 		<TitlePane>
 			{{
-				title: () => 'Basic Title Pane',
-				content: () => (
+				title: 'Basic Title Pane',
+				content: (
 					<div>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus
 						ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia

@@ -17,8 +17,8 @@ export default factory(function Basic() {
 						theme={theme}
 					>
 						{{
-							title: () => 'Pane 1',
-							content: () => (
+							title: 'Pane 1',
+							content: (
 								<div>
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
 									id purus ipsum. Aenean ac purus purus. Nam sollicitudin varius
@@ -35,8 +35,8 @@ export default factory(function Basic() {
 						theme={theme}
 					>
 						{{
-							title: () => 'Pane 2',
-							content: () => (
+							title: 'Pane 2',
+							content: (
 								<div>
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
 									id purus ipsum. Aenean ac purus purus. Nam sollicitudin varius
@@ -53,8 +53,8 @@ export default factory(function Basic() {
 						theme={theme}
 					>
 						{{
-							title: () => 'Pane 3',
-							content: () => (
+							title: 'Pane 3',
+							content: (
 								<div>
 									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
 									id purus ipsum. Aenean ac purus purus. Nam sollicitudin varius
