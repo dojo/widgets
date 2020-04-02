@@ -14,12 +14,12 @@ const columnConfig: ColumnConfig[] = [
 	{
 		id: 'firstName',
 		title: 'First Name',
-		editable: false
+		editable: true
 	},
 	{
 		id: 'lastName',
 		title: 'Last Name',
-		editable: false
+		editable: true
 	}
 ];
 
