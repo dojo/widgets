@@ -1,37 +1,44 @@
-import createBreakpointMock from '@dojo/framework/testing/mocks/middleware/breakpoint';
-
 const { describe, it, beforeEach } = intern.getInterface('bdd');
 import testHarness from '@dojo/framework/testing/harness';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import { tsx } from '@dojo/framework/core/vdom';
+import { create, tsx } from '@dojo/framework/core/vdom';
 import * as fixedCss from '../styles/two-column-layout.m.css';
 import * as css from '../../theme/default/two-column-layout.m.css';
 import * as baseCss from '../../common/styles/base.m.css';
+import breakpointMiddleware from '@dojo/framework/core/middleware/breakpoint';
 
 import TwoColumnLayout from '../index';
 import { WNode } from '@dojo/framework/core/interfaces';
-import breakpoint from '@dojo/framework/core/middleware/breakpoint';
 
 describe('TwoColumnLayout', () => {
-	const mockBreakpoint = createBreakpointMock();
+	let breakpoint = 'LARGE';
+	// TODO - Fix test context so resize mock works and remove this
+	const factory = create();
+	const mockBreakpoint = factory(() => {
+		return {
+			get() {
+				return { breakpoint, contentRect: {} };
+			}
+		};
+	});
 	const harness = (renderFunc: () => WNode) =>
 		testHarness(renderFunc, {
-			middleware: [[breakpoint, mockBreakpoint]]
+			middleware: [[breakpointMiddleware, () => mockBreakpoint()]] as any
 		});
 	const leading = <div>Leading</div>;
 	const trailing = <div>Trailing</div>;
 	const baseAssertion = assertionTemplate(() => (
 		<div key="root" classes={[fixedCss.root, css.root]}>
-			<div key="leading" classes={[undefined, fixedCss.even, undefined, css.column]}>
+			<div key="leading" classes={[false, fixedCss.even, false, css.column]}>
 				{leading}
 			</div>
-			<div key="trailing" classes={[undefined, fixedCss.even, undefined, css.column]}>
+			<div key="trailing" classes={[false, fixedCss.even, false, css.column]}>
 				{trailing}
 			</div>
 		</div>
 	));
 	beforeEach(() => {
-		mockBreakpoint('root', { breakpoint: 'LARGE', contentRect: {} });
+		breakpoint = 'LARGE';
 	});
 
 	it('renders', () => {
@@ -59,8 +66,8 @@ describe('TwoColumnLayout', () => {
 
 		h.expect(
 			baseAssertion
-				.setProperty('@leading', 'classes', [fixedCss.biased, undefined, undefined])
-				.setProperty('@trailing', 'classes', [undefined, undefined, undefined])
+				.setProperty('@leading', 'classes', [fixedCss.biased, false, false, css.column])
+				.setProperty('@trailing', 'classes', [false, false, false, css.column])
 		);
 	});
 
@@ -76,14 +83,14 @@ describe('TwoColumnLayout', () => {
 
 		h.expect(
 			baseAssertion
-				.setProperty('@leading', 'classes', [undefined, undefined, undefined])
-				.setProperty('@trailing', 'classes', [fixedCss.biased, undefined, undefined])
+				.setProperty('@leading', 'classes', [false, false, false, css.column])
+				.setProperty('@trailing', 'classes', [fixedCss.biased, false, false, css.column])
 		);
 	});
 
 	describe('collapsed', () => {
 		beforeEach(() => {
-			mockBreakpoint('root', { breakpoint: 'SMALL', contentRect: {} });
+			breakpoint = 'SMALL';
 		});
 
 		it('renders', () => {
@@ -96,7 +103,16 @@ describe('TwoColumnLayout', () => {
 				</TwoColumnLayout>
 			));
 
-			h.expect(baseAssertion);
+			h.expect(
+				baseAssertion
+					.setProperty('@leading', 'classes', [false, false, false, css.column])
+					.setProperty('@trailing', 'classes', [
+						false,
+						false,
+						baseCss.visuallyHidden,
+						css.column
+					])
+			);
 		});
 
 		it('renders with leading bias', () => {
@@ -111,8 +127,13 @@ describe('TwoColumnLayout', () => {
 
 			h.expect(
 				baseAssertion
-					.setProperty('@leading', 'classes', [fixedCss.biased, undefined, undefined])
-					.setProperty('@trailing', 'classes', [undefined, undefined, undefined])
+					.setProperty('@leading', 'classes', [fixedCss.biased, false, false, css.column])
+					.setProperty('@trailing', 'classes', [
+						false,
+						false,
+						baseCss.visuallyHidden,
+						css.column
+					])
 			);
 		});
 
@@ -128,8 +149,18 @@ describe('TwoColumnLayout', () => {
 
 			h.expect(
 				baseAssertion
-					.setProperty('@leading', 'classes', [undefined, undefined, undefined])
-					.setProperty('@trailing', 'classes', [fixedCss.biased, undefined, undefined])
+					.setProperty('@leading', 'classes', [
+						false,
+						false,
+						baseCss.visuallyHidden,
+						css.column
+					])
+					.setProperty('@trailing', 'classes', [
+						fixedCss.biased,
+						false,
+						false,
+						css.column
+					])
 			);
 		});
 	});

@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import theme from '@dojo/widgets/middleware/theme';
+import theme from '../middleware/theme';
 import * as fixedCss from './styles/two-column-layout.m.css';
 import * as css from '../theme/default/two-column-layout.m.css';
 import * as baseCss from '../common/styles/base.m.css';
