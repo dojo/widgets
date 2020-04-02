@@ -14,8 +14,8 @@ export default factory(function ModalDialog({ middleware: { icache } }) {
 			</Button>
 			<Dialog open={isOpen} modal={true} onRequestClose={() => icache.set('isOpen', false)}>
 				{{
-					title: () => 'Modal Dialog',
-					content: () => (
+					title: 'Modal Dialog',
+					content: (
 						<virtual>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
 							purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed

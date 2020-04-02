@@ -18,8 +18,8 @@ export default factory(function AlertDialog({ middleware: { icache } }) {
 				role="alertdialog"
 			>
 				{{
-					title: () => 'Alert Dialog',
-					content: () => (
+					title: 'Alert Dialog',
+					content: (
 						<virtual>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
 							purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed

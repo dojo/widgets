@@ -14,8 +14,8 @@ export default factory(function Basic({ middleware: { icache } }) {
 			</Button>
 			<Dialog open={isOpen} onRequestClose={() => icache.set('isOpen', false)}>
 				{{
-					title: () => 'Basic Dialog',
-					content: () => (
+					title: 'Basic Dialog',
+					content: (
 						<virtual>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
 							purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed

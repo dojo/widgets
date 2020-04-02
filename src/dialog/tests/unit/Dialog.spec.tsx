@@ -79,7 +79,7 @@ describe('Dialog', () => {
 	it('renders open', () => {
 		const h = harness(() => (
 			<Dialog open onRequestClose={() => {}}>
-				{{ title: () => 'foo' }}
+				{{ title: 'foo' }}
 			</Dialog>
 		));
 		h.expect(focusedAssertion);
@@ -90,7 +90,7 @@ describe('Dialog', () => {
 			open: true,
 			onRequestClose: () => {}
 		};
-		const h = harness(() => <Dialog {...properties}>{{ title: () => 'foo' }}</Dialog>);
+		const h = harness(() => <Dialog {...properties}>{{ title: 'foo' }}</Dialog>);
 
 		// set tested properties
 		properties = {
@@ -124,7 +124,7 @@ describe('Dialog', () => {
 	it('renders children', () => {
 		const h = harness(() => (
 			<Dialog closeable open onRequestClose={() => {}}>
-				{{ title: () => 'foo', content: () => 'test' }}
+				{{ title: 'foo', content: 'test' }}
 			</Dialog>
 		));
 
@@ -156,7 +156,7 @@ describe('Dialog', () => {
 			onOpen,
 			onRequestClose: () => {}
 		};
-		const h = harness(() => <Dialog {...properties}>{{ title: () => 'foo' }}</Dialog>);
+		const h = harness(() => <Dialog {...properties}>{{ title: 'foo' }}</Dialog>);
 		h.expect(openAssertion.setProperty('@main', 'focus', true));
 
 		assert.isTrue(
@@ -235,9 +235,9 @@ describe('Dialog', () => {
 		const h = harness(() => (
 			<Dialog open onRequestClose={() => {}}>
 				{{
-					title: () => 'foo',
-					content: () => 'bar',
-					actions: () => 'action'
+					title: 'foo',
+					content: 'bar',
+					actions: 'action'
 				}}
 			</Dialog>
 		));

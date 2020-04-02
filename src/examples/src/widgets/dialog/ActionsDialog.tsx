@@ -14,15 +14,15 @@ export default factory(function ActionsDialog({ middleware: { icache } }) {
 			</Button>
 			<Dialog open={isOpen} onRequestClose={() => icache.set('isOpen', false)}>
 				{{
-					title: () => 'Dialog with Actions',
-					content: () => (
+					title: 'Dialog with Actions',
+					content: (
 						<virtual>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
 							purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed
 							lacinia felis tempor in.
 						</virtual>
 					),
-					actions: () => (
+					actions: (
 						<virtual>
 							<Button onClick={() => icache.set('isOpen', false)}>OK</Button>
 						</virtual>

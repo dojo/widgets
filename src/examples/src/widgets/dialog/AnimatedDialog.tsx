@@ -27,8 +27,8 @@ export default factory(function AnimatedDialog({ middleware: { icache, theme } }
 				}}
 			>
 				{{
-					title: () => 'Basic Dialog',
-					content: () => (
+					title: 'Basic Dialog',
+					content: (
 						<virtual>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
 							purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed

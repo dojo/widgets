@@ -18,8 +18,8 @@ export default factory(function UnderlayDialog({ middleware: { icache } }) {
 				onRequestClose={() => icache.set('isOpen', false)}
 			>
 				{{
-					title: () => 'Underlay Dialog',
-					content: () => (
+					title: 'Underlay Dialog',
+					content: (
 						<virtual>
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
 							purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed
