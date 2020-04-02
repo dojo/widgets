@@ -6,8 +6,10 @@ const factory = create();
 export default factory(function Disabled() {
 	return (
 		<div>
-			<Checkbox disabled label="Disabled Checkbox" />
-			<Checkbox checked disabled label="Disabled Checkbox (Checked)" />
+			<Checkbox disabled>Disabled Checkbox</Checkbox>
+			<Checkbox checked disabled>
+				Disabled Checkbox (Checked)
+			</Checkbox>
 		</div>
 	);
 });

@@ -27,10 +27,11 @@ const App = factory(function({ middleware: { icache } }) {
 								<Checkbox
 									name={name}
 									value={value}
-									label={label || value}
 									checked={checked()}
 									onValue={checked}
-								/>
+								>
+									{label || value}
+								</Checkbox>
 								<hr
 									styles={{
 										borderColor: '#d6dde2',

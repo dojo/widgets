@@ -1,10 +1,12 @@
-import { tsx, create } from '@dojo/framework/core/vdom';
-import * as css from '../theme/default/checkbox.m.css';
-import theme from '@dojo/framework/core/middleware/theme';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
-import Label from '../label/index';
-import { formatAriaProperties } from '../common/util';
+import theme from '@dojo/framework/core/middleware/theme';
 import { uuid } from '@dojo/framework/core/util';
+import { tsx, create } from '@dojo/framework/core/vdom';
+
+import { formatAriaProperties } from '../common/util';
+import Label from '../label/index';
+import * as css from '../theme/default/checkbox.m.css';
 
 export interface CheckboxProperties {
 	/** Custom aria attributes */
@@ -13,10 +15,6 @@ export interface CheckboxProperties {
 	checked?: boolean;
 	/** Set the disabled property of the control */
 	disabled?: boolean;
-	/** Adds a <label> element with the supplied text */
-	label?: string;
-	/** Adds the label element after (true) or before (false) */
-	labelAfter?: boolean;
 	/** Hides the label from view while still remaining accessible for screen readers */
 	labelHidden?: boolean;
 	/** The name of the checkbox */
@@ -43,16 +41,21 @@ export interface CheckboxProperties {
 	widgetId?: string;
 }
 
-const factory = create({ theme, focus }).properties<CheckboxProperties>();
+const factory = create({ theme, focus })
+	.properties<CheckboxProperties>()
+	.children<RenderResult | undefined>();
 
-export const Checkbox = factory(function Checkbox({ properties, middleware: { theme, focus } }) {
+export const Checkbox = factory(function Checkbox({
+	children,
+	properties,
+	middleware: { theme, focus }
+}) {
 	const _uuid = uuid();
 	const {
 		aria = {},
 		checked = false,
 		classes,
 		disabled,
-		label,
 		labelHidden,
 		name,
 		onBlur,
@@ -68,6 +71,7 @@ export const Checkbox = factory(function Checkbox({ properties, middleware: { th
 		widgetId = _uuid
 	} = properties();
 
+	const [label] = children();
 	const themeCss = theme.classes(css);
 
 	return (

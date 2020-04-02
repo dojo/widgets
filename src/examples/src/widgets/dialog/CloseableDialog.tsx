@@ -29,10 +29,11 @@ export default factory(function CloseableDialog({ middleware: { icache } }) {
 								sed lacinia felis tempor in.
 							</div>
 							<Checkbox
-								label="Closeable?"
 								checked={isCloseable}
 								onValue={(value) => icache.set('isCloseable', !isCloseable)}
-							/>
+							>
+								Closeable?
+							</Checkbox>
 						</virtual>
 					)
 				}}
