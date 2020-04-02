@@ -18,8 +18,8 @@ export default factory(function FocusTrappedDialog({ middleware: { icache } }) {
 					title: () => 'Focus Trapped Dialog',
 					content: () => (
 						<virtual>
-							<TextInput label="First Name" key="first" />
-							<TextInput label="Last Name" key="last" />
+							<TextInput key="first">{{ label: 'First Name' }}</TextInput>
+							<TextInput key="last">{{ label: 'Last Name' }}</TextInput>
 						</virtual>
 					)
 				}}

@@ -34,37 +34,39 @@ const App = factory(function({ middleware: { icache } }) {
 						<virtual>
 							<TextInput
 								key="firstName"
-								label="First Name"
 								placeholder="Enter first name (must be Billy)"
 								pattern="Billy"
 								initialValue={firstName.value()}
 								valid={firstName.valid()}
 								onValue={firstName.value}
 								onValidate={firstName.valid}
-							/>
+							>
+								{{ label: 'First Name' }}
+							</TextInput>
 							<TextInput
 								key="middleName"
-								label="Middle Name"
 								placeholder="Enter a middle name"
 								initialValue={middleName.value()}
 								valid={middleName.valid()}
 								onValue={middleName.value}
 								onValidate={middleName.valid}
 								maxLength={5}
-							/>
+							>
+								{{ label: 'Middle Name' }}
+							</TextInput>
 							<TextInput
 								key="lastName"
-								label="Last Name"
 								placeholder="Enter a last name"
 								initialValue={lastName.value()}
 								valid={lastName.valid()}
 								onValue={lastName.value}
 								onValidate={lastName.valid}
 								minLength={2}
-							/>
+							>
+								{{ label: 'Last Name' }}
+							</TextInput>
 							<TextInput
 								key="email"
-								label="Email"
 								placeholder="Enter an email address"
 								initialValue={email.value()}
 								valid={email.valid()}
@@ -72,7 +74,9 @@ const App = factory(function({ middleware: { icache } }) {
 								onValidate={email.valid}
 								type="email"
 								pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
-							/>
+							>
+								{{ label: 'Email' }}
+							</TextInput>
 						</virtual>
 					);
 				}}

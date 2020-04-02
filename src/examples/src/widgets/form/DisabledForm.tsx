@@ -35,37 +35,41 @@ const App = factory(function({ middleware: { icache } }) {
 						<virtual>
 							<TextInput
 								key="firstName"
-								label="First Name"
 								placeholder="Enter first name"
 								initialValue={firstName.value()}
 								onValue={firstName.value}
 								disabled={firstName.disabled()}
-							/>
+							>
+								{{ label: 'First Name' }}
+							</TextInput>
 							<TextInput
 								key="middleName"
-								label="Middle Name"
 								placeholder="Enter a middle name"
 								initialValue={middleName.value()}
 								onValue={middleName.value}
 								disabled={middleName.disabled()}
-							/>
+							>
+								{{ label: 'Middle Name' }}
+							</TextInput>
 							<TextInput
 								key="lastName"
-								label="Last Name"
 								placeholder="Enter a last name"
 								initialValue={lastName.value()}
 								onValue={lastName.value}
 								disabled={lastName.disabled()}
-							/>
+							>
+								{{ label: 'Last Name' }}
+							</TextInput>
 							<TextInput
 								key="email"
-								label="Email"
 								placeholder="Enter an email address"
 								initialValue={email.value()}
 								onValue={email.value}
 								type="email"
 								disabled={email.disabled()}
-							/>
+							>
+								{{ label: 'Email' }}
+							</TextInput>
 							<Button
 								key="disableForm"
 								type="button"

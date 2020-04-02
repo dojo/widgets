@@ -4,5 +4,5 @@ import TextInput from '@dojo/widgets/text-input';
 const factory = create();
 
 export default factory(function Basic() {
-	return <TextInput label="Hidden label" labelHidden />;
+	return <TextInput labelHidden>{{ label: 'Hidden label' }}</TextInput>;
 });

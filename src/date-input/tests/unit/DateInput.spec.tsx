@@ -71,11 +71,12 @@ const buttonTemplate = assertionTemplate(() => {
 				type="text"
 				onBlur={noop}
 				onValue={noop}
-				trailing={() => undefined}
 				initialValue={formatDate(today)}
 				helperText=""
 				onKeyDown={noop}
-			/>
+			>
+				{{ trailing: undefined }}
+			</TextInput>
 		</div>
 	);
 });

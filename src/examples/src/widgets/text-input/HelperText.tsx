@@ -4,5 +4,5 @@ import TextInput from '@dojo/widgets/text-input';
 const factory = create();
 
 export default factory(function Basic() {
-	return <TextInput label="Input with helper text" helperText="Helper text" />;
+	return <TextInput helperText="Helper text">{{ label: 'Input with helper text' }}</TextInput>;
 });

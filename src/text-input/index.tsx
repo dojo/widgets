@@ -1,4 +1,4 @@
-import { DNode } from '@dojo/framework/core/interfaces';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
@@ -28,12 +28,8 @@ export interface BaseInputProperties<T extends { value: any } = { value: string 
 	disabled?: boolean;
 	/** Text to display below the input */
 	helperText?: string;
-	/** The label to be displayed above the input */
-	label?: string | DNode;
 	/** Hides the label for a11y purposes */
 	labelHidden?: boolean;
-	/** Renderer for leading icon content */
-	leading?: () => DNode;
 	/** The name property of the input */
 	name?: string;
 	/** Callback fired when the input is blurred */
@@ -60,14 +56,19 @@ export interface BaseInputProperties<T extends { value: any } = { value: string 
 	readOnly?: boolean;
 	/** The required attribute of the input */
 	required?: boolean;
-	/** Renderer for trailing icon content */
-	trailing?: () => DNode;
-
 	/** The initial value */
 	initialValue?: T['value'];
-
 	/** The id to be applied to the input */
 	widgetId?: string;
+}
+
+export interface TextInputChildren {
+	/** The label to be displayed above the input */
+	label?: RenderResult;
+	/** Renderer for leading content */
+	leading?: RenderResult;
+	/** Renderer for trailing content */
+	trailing?: RenderResult;
 }
 
 export interface TextInputProperties extends BaseInputProperties {
@@ -112,11 +113,14 @@ const factory = create({
 	focus,
 	diffProperty,
 	invalidator
-}).properties<TextInputProperties>();
+})
+	.properties<TextInputProperties>()
+	.children<TextInputChildren | undefined>();
 
 export const TextInput = factory(function TextInput({
 	middleware: { icache, theme, validity, focus, diffProperty, invalidator },
 	properties,
+	children,
 	id
 }) {
 	diffProperty('pattern', (previous: TextInputProperties, next: TextInputProperties) => {
@@ -125,16 +129,6 @@ export const TextInput = factory(function TextInput({
 			invalidator();
 		}
 	});
-	diffProperty(
-		'leading',
-		(previous: TextInputProperties, next: TextInputProperties) =>
-			previous.leading !== next.leading && invalidator()
-	);
-	diffProperty(
-		'trailing',
-		(previous: TextInputProperties, next: TextInputProperties) =>
-			previous.leading !== next.leading && invalidator()
-	);
 
 	const themeCss = theme.classes(css);
 	const dirty = icache.getOrSet('dirty', false);
@@ -146,9 +140,7 @@ export const TextInput = factory(function TextInput({
 		customValidator,
 		disabled,
 		helperText,
-		label,
 		labelHidden = false,
-		leading,
 		max,
 		maxLength,
 		min,
@@ -169,12 +161,13 @@ export const TextInput = factory(function TextInput({
 		required,
 		step,
 		theme: themeProp,
-		trailing,
 		type = 'text',
 		initialValue,
 		valid: validValue = { valid: undefined, message: '' },
 		widgetId = `text-input-${id}`
 	} = properties();
+
+	const [{ label, leading, trailing } = {} as TextInputChildren] = children();
 
 	let value = icache.get('value');
 	const existingInitialValue = icache.get('initialValue');
@@ -261,7 +254,7 @@ export const TextInput = factory(function TextInput({
 				<div key="inputWrapper" classes={themeCss.inputWrapper} role="presentation">
 					{leading && (
 						<span key="leading" classes={themeCss.leading}>
-							{leading()}
+							{leading}
 						</span>
 					)}
 					<input
@@ -318,7 +311,7 @@ export const TextInput = factory(function TextInput({
 					/>
 					{trailing && (
 						<span key="trailing" classes={themeCss.trailing}>
-							{trailing()}
+							{trailing}
 						</span>
 					)}
 				</div>

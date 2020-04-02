@@ -35,42 +35,46 @@ const App = factory(function({ middleware: { icache } }) {
 						<virtual>
 							<TextInput
 								key="firstName"
-								label="First Name"
 								placeholder="Enter first name (must be Billy)"
 								required={true}
 								initialValue={firstName.value()}
 								valid={firstName.valid()}
 								onValue={firstName.value}
 								onValidate={firstName.valid}
-							/>
+							>
+								{{ label: 'First Name' }}
+							</TextInput>
 							<TextInput
 								key="middleName"
-								label="Middle Name"
 								placeholder="Enter a middle name"
 								required={middleName.required()}
 								initialValue={middleName.value()}
 								valid={middleName.valid()}
 								onValue={middleName.value}
 								onValidate={middleName.valid}
-							/>
+							>
+								{{ label: 'Middle Name' }}
+							</TextInput>
 							<TextInput
 								key="lastName"
-								label="Last Name"
 								placeholder="Enter a last name"
 								required={true}
 								initialValue={lastName.value()}
 								valid={lastName.valid()}
 								onValue={lastName.value}
 								onValidate={lastName.valid}
-							/>
+							>
+								{{ label: 'Last Name' }}
+							</TextInput>
 							<TextInput
 								key="email"
-								label="Email"
 								placeholder="Enter an email address"
 								initialValue={email.value()}
 								onValue={email.value}
 								type="email"
-							/>
+							>
+								{{ label: 'Email' }}
+							</TextInput>
 							<Button
 								key="requireMiddleName"
 								type="button"
