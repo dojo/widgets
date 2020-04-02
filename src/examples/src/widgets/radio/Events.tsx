@@ -1,7 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Radio from '@dojo/widgets/radio';
 import icache from '@dojo/framework/core/middleware/icache';
-import Label from '@dojo/widgets/label';
 
 const factory = create({ icache });
 
@@ -17,10 +16,7 @@ export default factory(function EventsRadioButton({ middleware: { icache } }) {
 				onOver={() => icache.set('event', 'onOver')}
 			>
 				{{
-					label: () => (
-						<Label>{`Last event: ${icache.get('event') ||
-							'Awaiting first event'}`}</Label>
-					)
+					label: () => `Last event: ${icache.get('event') || 'Awaiting first event'}`
 				}}
 			</Radio>
 		</virtual>

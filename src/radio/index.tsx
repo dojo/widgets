@@ -6,6 +6,7 @@ import { formatAriaProperties } from '../common/util';
 import theme, { ThemeProperties } from '../middleware/theme';
 import * as css from '../theme/default/radio.m.css';
 import { RenderResult } from '@dojo/framework/core/interfaces';
+import Label from '../label';
 
 export interface RadioProperties extends ThemeProperties, FocusProperties {
 	/** Custom aria attributes */
@@ -14,6 +15,8 @@ export interface RadioProperties extends ThemeProperties, FocusProperties {
 	checked?: boolean;
 	/** Set the disabled property of the control */
 	disabled?: boolean;
+	/** Hides the label from view while still remaining accessible for screen readers */
+	labelHidden?: boolean;
 	/** The name of the radio button */
 	name?: string;
 	/** Handler for when the element is blurred */
@@ -55,7 +58,9 @@ export const Radio = factory(function Radio({
 	const {
 		aria = {},
 		checked = false,
+		classes,
 		disabled,
+		labelHidden,
 		name,
 		onBlur,
 		onFocus,
@@ -64,6 +69,7 @@ export const Radio = factory(function Radio({
 		onValue,
 		readOnly,
 		required,
+		theme: themeProp,
 		valid,
 		value,
 		widgetId
@@ -118,7 +124,23 @@ export const Radio = factory(function Radio({
 					<div classes={themeCss.radioInner} />
 				</div>
 			</div>
-			{label && label()}
+			{label && (
+				<Label
+					key="label"
+					classes={classes}
+					theme={themeProp}
+					disabled={disabled}
+					focused={focus.isFocused('root')}
+					forId={idBase}
+					valid={valid}
+					readOnly={readOnly}
+					hidden={labelHidden}
+					required={required}
+					secondary={true}
+				>
+					{label()}
+				</Label>
+			)}
 		</div>
 	);
 });

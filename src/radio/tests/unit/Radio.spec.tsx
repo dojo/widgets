@@ -77,7 +77,23 @@ const expected = ({
 					<div classes={css.radioInner} />
 				</div>
 			</div>
-			{label ? <Label>foo</Label> : null}
+			{label ? (
+				<Label
+					key="label"
+					classes={undefined}
+					theme={undefined}
+					disabled={disabled}
+					focused={false}
+					forId=""
+					valid={valid}
+					readOnly={readOnly}
+					hidden={undefined}
+					required={required}
+					secondary={true}
+				>
+					foo
+				</Label>
+			) : null}
 		</div>
 	));
 
@@ -104,7 +120,7 @@ registerSuite('Radio', {
 		},
 
 		label() {
-			const h = harness(() => <Radio>{{ label: () => <Label>foo</Label> }}</Radio>, [
+			const h = harness(() => <Radio>{{ label: () => 'foo' }}</Radio>, [
 				compareId,
 				compareForId
 			]);
@@ -137,6 +153,29 @@ registerSuite('Radio', {
 			required = false;
 
 			h.expect(expected({ valid, disabled, readOnly, required }));
+		},
+
+		'state properties on label'() {
+			const h = harness(
+				() => (
+					<Radio valid={false} disabled={true} readOnly={true} required={true}>
+						{{
+							label: () => 'foo'
+						}}
+					</Radio>
+				),
+				[compareId, compareForId]
+			);
+
+			h.expect(
+				expected({
+					label: true,
+					disabled: true,
+					readOnly: true,
+					required: true,
+					valid: false
+				})
+			);
 		},
 
 		'focused class'() {
