@@ -141,7 +141,7 @@ export const Typeahead = factory(function Typeahead({
 			case Keys.Enter:
 				preventDefault();
 
-				const allItems = get({ query: getOptions().query }) as ListOption[];
+				const allItems = get({ query: getOptions().query });
 				if (allItems && allItems.length >= activeIndex) {
 					const activeItem = allItems[activeIndex];
 					if (!activeItem.disabled) {
@@ -272,7 +272,7 @@ export const Typeahead = factory(function Typeahead({
 							toggleClosed();
 						}
 
-						return isLoading(getOptions()) ? (
+						return getTotal(getOptions()) === undefined && isLoading(getOptions()) ? (
 							<LoadingIndicator key="loading" />
 						) : (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>

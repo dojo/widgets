@@ -112,7 +112,7 @@ export const Select = factory(function Select({
 	let valid = icache.get('valid');
 	const dirty = icache.get('dirty');
 	const { messages } = i18n.localize(bundle);
-	const { get, getOptions, isLoading } = data();
+	const { get, getOptions, isLoading, getTotal } = data();
 
 	if (required && dirty) {
 		const isValid = value !== undefined;
@@ -230,7 +230,7 @@ export const Select = factory(function Select({
 							close();
 						}
 
-						return isLoading(getOptions()) ? (
+						return getTotal(getOptions()) === undefined && isLoading(getOptions()) ? (
 							<LoadingIndicator key="loading" />
 						) : (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
