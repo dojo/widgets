@@ -11,7 +11,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 		<Tooltip open={show}>
 			{{
 				content: 'This tooltip shows on focus',
-				target: (
+				trigger: (
 					<TextInput
 						onFocus={() => {
 							icache.set('show', true);

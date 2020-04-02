@@ -33,10 +33,10 @@ registerSuite('Tooltip', {
 			));
 		},
 
-		'should render target'() {
+		'should render trigger'() {
 			const h = harness(() => (
 				<Tooltip open>
-					{{ target: <Button>Give me a tooltip</Button>, content: 'foobar' }}
+					{{ trigger: <Button>Give me a tooltip</Button>, content: 'foobar' }}
 				</Tooltip>
 			));
 

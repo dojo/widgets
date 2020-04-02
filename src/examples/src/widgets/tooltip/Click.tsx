@@ -11,7 +11,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 		<Tooltip open={show}>
 			{{
 				content: 'This tooltip is toggled on click',
-				target: (
+				trigger: (
 					<Button
 						onClick={() => {
 							icache.set('show', !icache.get<boolean>('show'));

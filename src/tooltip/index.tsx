@@ -16,7 +16,7 @@ export interface TooltipProperties {
 }
 
 export interface TooltipChildren {
-	target?: RenderResult;
+	trigger?: RenderResult;
 	content: RenderResult;
 }
 
@@ -36,7 +36,7 @@ export const Tooltip = factory(function Tooltip({ children, properties, middlewa
 	const { open, aria = {}, orientation = Orientation.right } = properties();
 	const classes = theme.classes(css);
 	const fixedClasses = theme.classes(fixedCss);
-	const [{ target, content }] = children();
+	const [{ trigger, content }] = children();
 
 	let fixedOrientation;
 	let classesOrientation;
@@ -65,7 +65,7 @@ export const Tooltip = factory(function Tooltip({ children, properties, middlewa
 			]}
 		>
 			<div key="target">
-				{target}
+				{trigger}
 				{open ? (
 					<div
 						key="content"

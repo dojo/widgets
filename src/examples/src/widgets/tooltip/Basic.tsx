@@ -11,7 +11,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 		<Tooltip open={show}>
 			{{
 				content: 'This tooltip shows on mouseover',
-				target: (
+				trigger: (
 					<Button
 						onOut={() => {
 							icache.set('show', false);
