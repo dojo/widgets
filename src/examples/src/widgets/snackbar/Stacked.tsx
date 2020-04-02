@@ -5,11 +5,11 @@ const factory = create();
 
 export default factory(function Stacked() {
 	return (
-		<Snackbar
-			stacked
-			open={true}
-			messageRenderer={() => 'Stacked Snackbar'}
-			actionsRenderer={() => 'A really long actions renderer'}
-		/>
+		<Snackbar stacked open={true}>
+			{{
+				message: 'Stacked Snackbar',
+				actions: 'A really long actions renderer'
+			}}
+		</Snackbar>
 	);
 });

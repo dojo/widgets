@@ -4,5 +4,11 @@ import Snackbar from '@dojo/widgets/snackbar';
 const factory = create();
 
 export default factory(function Basic() {
-	return <Snackbar open={true} messageRenderer={() => 'Basic Snackbar'} />;
+	return (
+		<Snackbar open={true}>
+			{{
+				message: 'Basic Snackbar'
+			}}
+		</Snackbar>
+	);
 });

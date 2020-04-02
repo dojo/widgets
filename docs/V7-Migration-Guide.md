@@ -406,6 +406,35 @@ Latest example can be found on [widgets.dojo.io/#widget/slide-pane/overview](htt
 
 Latest example can be found on [widgets.dojo.io/#widget/slider/overview](https://widgets.dojo.io/#widget/slider/overview)
 
+### snackbar
+#### Property changes
+##### Removed properties
+- messageRenderer: () => RenderResult
+	- replaced by children.message: RenderResult
+- actionsRenderer: () => RenderResult
+	- replaced by children.actions: RenderResult
+
+#### Example of migration from v6 to v7
+
+##### v6 implementation
+```tsx
+<Snackbar
+	messageRenderer={() => 'Snackbar'}
+	actionsRenderer={() => 'Actions'} open={true} 
+/>
+```
+
+##### v7 implementation
+```tsx
+<Snackbar open={true}>
+	{{
+		message: 'Snackbar',
+		actions: 'Actions'
+	}}
+</Snackbar>
+```
+
+Latest example can be found on [widgets.dojo.io/#widget/snackbar/overview](https://widgets.dojo.io/#widget/snackbar/overview)
 
 ### switch
  - Split out of checkbox

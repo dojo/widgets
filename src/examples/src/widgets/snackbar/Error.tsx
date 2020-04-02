@@ -4,5 +4,11 @@ import Snackbar from '@dojo/widgets/snackbar';
 const factory = create();
 
 export default factory(function Error() {
-	return <Snackbar type="error" open={true} messageRenderer={() => 'Error Snackbar'} />;
+	return (
+		<Snackbar type="error" open={true}>
+			{{
+				message: 'Error Snackbar'
+			}}
+		</Snackbar>
+	);
 });
