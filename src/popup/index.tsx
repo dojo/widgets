@@ -28,13 +28,9 @@ export interface PopupProperties extends BasePopupProperties {
 	open?: boolean;
 }
 
-export interface PopupChildren {
-	content: () => RenderResult;
-}
-
 const factory = create({ dimensions, theme, bodyScroll })
 	.properties<PopupProperties>()
-	.children<PopupChildren>();
+	.children<RenderResult | undefined>();
 
 export const Popup = factory(function({
 	properties,
@@ -87,7 +83,6 @@ export const Popup = factory(function({
 	}
 
 	const classes = theme.classes(css);
-	const { content } = children()[0];
 
 	bodyScroll(!open);
 
@@ -108,7 +103,7 @@ export const Popup = factory(function({
 					classes={[theme.variant(), fixedCss.root]}
 					styles={wrapperStyles}
 				>
-					{content()}
+					{children()}
 				</div>
 			</body>
 		)

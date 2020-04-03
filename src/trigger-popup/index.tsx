@@ -67,13 +67,9 @@ export const TriggerPopup = factory(function({
 				onClose={close}
 				open={icache.get('open')}
 			>
-				{{
-					content: () => (
-						<div key="trigger-wrapper" styles={wrapperStyles}>
-							{content(close)}
-						</div>
-					)
-				}}
+				<div key="trigger-wrapper" styles={wrapperStyles}>
+					{content(close)}
+				</div>
 			</Popup>
 		</virtual>
 	);

@@ -13,7 +13,9 @@ const baseTemplate = assertionTemplate(() => (
 	<virtual>
 		<span key="trigger" classes={fixedCss.trigger} />
 		<Popup key="popup" x={0} yTop={0} yBottom={0} onClose={() => {}} open={undefined}>
-			{{ content: () => undefined }}
+			<div key="trigger-wrapper" styles={{ width: '0px' }}>
+				hello world
+			</div>
 		</Popup>
 	</virtual>
 ));
@@ -100,7 +102,8 @@ describe('TriggerPopup', () => {
 		const contentTemplate = baseTemplate
 			.setProperty('@popup', 'x', 50)
 			.setProperty('@popup', 'yTop', 100)
-			.setProperty('@popup', 'yBottom', 50);
+			.setProperty('@popup', 'yBottom', 50)
+			.setProperty('@trigger-wrapper', 'styles', { width: '150px' });
 
 		h.expect(contentTemplate);
 
@@ -110,7 +113,7 @@ describe('TriggerPopup', () => {
 					hello world
 				</div>
 			),
-			() => h.trigger('@popup', (node: any) => node.children[0].content)
+			() => h.trigger('@popup', (node: any) => () => node.children[0])
 		);
 	});
 	it('renders with unmatched size', () => {
@@ -123,7 +126,7 @@ describe('TriggerPopup', () => {
 			</TriggerPopup>
 		));
 
-		h.expect(baseTemplate);
+		h.expect(baseTemplate.setProperty('@trigger-wrapper', 'styles', { width: 'auto' }));
 
 		h.expect(
 			() => (
@@ -131,7 +134,7 @@ describe('TriggerPopup', () => {
 					hello world
 				</div>
 			),
-			() => h.trigger('@popup', (node: any) => node.children[0].content)
+			() => h.trigger('@popup', (node: any) => () => node.children[0])
 		);
 	});
 

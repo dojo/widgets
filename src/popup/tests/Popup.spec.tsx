@@ -33,9 +33,7 @@ describe('Popup', () => {
 	it('renders nothing if not open', () => {
 		const h = harness(() => (
 			<Popup x={0} yTop={0} yBottom={0} onClose={() => {}} open={false}>
-				{{
-					content: () => 'hello world'
-				}}
+				hello world
 			</Popup>
 		));
 
@@ -45,9 +43,7 @@ describe('Popup', () => {
 	it('initially renders with opacity 0 while height is calculated', () => {
 		const h = harness(() => (
 			<Popup x={0} yTop={0} yBottom={0} onClose={() => {}} open={true}>
-				{{
-					content: () => 'hello world'
-				}}
+				hello world
 			</Popup>
 		));
 
@@ -58,9 +54,7 @@ describe('Popup', () => {
 		const onClose = stub();
 		const h = harness(() => (
 			<Popup x={0} yTop={0} yBottom={0} open={true} onClose={onClose}>
-				{{
-					content: () => 'hello world'
-				}}
+				hello world
 			</Popup>
 		));
 
@@ -85,9 +79,7 @@ describe('Popup', () => {
 		const h = harness(
 			() => (
 				<Popup x={50} yTop={100} yBottom={0} open={true} onClose={() => {}}>
-					{{
-						content: () => 'hello world'
-					}}
+					hello world
 				</Popup>
 			),
 			{ middleware: [[node, mockNode]] }
@@ -126,9 +118,7 @@ describe('Popup', () => {
 		const h = harness(
 			() => (
 				<Popup x={50} yTop={901} yBottom={300} open={true} onClose={() => {}}>
-					{{
-						content: () => 'hello world'
-					}}
+					hello world
 				</Popup>
 			),
 			{ middleware: [[node, mockNode]] }
@@ -168,9 +158,7 @@ describe('Popup', () => {
 		const h = harness(
 			() => (
 				<Popup x={50} yTop={300} yBottom={50} open={true} onClose={() => {}}>
-					{{
-						content: () => 'hello world'
-					}}
+					hello world
 				</Popup>
 			),
 			{ middleware: [[node, mockNode]] }
@@ -196,9 +184,7 @@ describe('Popup', () => {
 	it('Renders with an underlay', () => {
 		const h = harness(() => (
 			<Popup x={0} yTop={0} yBottom={0} onClose={() => {}} underlayVisible={true} open={true}>
-				{{
-					content: () => 'hello world'
-				}}
+				hello world
 			</Popup>
 		));
 

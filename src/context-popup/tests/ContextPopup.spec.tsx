@@ -19,9 +19,7 @@ const baseTemplate = assertionTemplate(() => (
 			onClose={() => {}}
 			position="below"
 			open={undefined}
-		>
-			{{ content: () => undefined }}
-		</Popup>
+		/>
 	</virtual>
 ));
 
@@ -46,9 +44,9 @@ describe('ContextPopup', () => {
 				}}
 			</ContextPopup>
 		));
-		const contextContentTemplate = baseTemplate.setChildren('@trigger', () => [
-			<div>Some text with a context menu</div>
-		]);
+		const contextContentTemplate = baseTemplate
+			.setChildren('@trigger', () => [<div>Some text with a context menu</div>])
+			.setChildren('@popup', () => [<div>hello world</div>]);
 		h.expect(contextContentTemplate);
 	});
 
@@ -66,17 +64,19 @@ describe('ContextPopup', () => {
 				}}
 			</ContextPopup>
 		));
-		h.expect(baseTemplate);
+		h.expect(
+			baseTemplate.setChildren('@popup', () => [
+				<div>
+					<div key="content" tabIndex={0} onblur={() => {}} focus={onClose}>
+						hello world
+					</div>
+				</div>
+			])
+		);
 		assert.isFalse(
-			h.trigger(
-				'@popup',
-				(node: any) => node.children[0].content().children[0].properties.focus
-			)
+			h.trigger('@popup', (node: any) => node.children[0].children[0].properties.focus)
 		);
-		h.trigger(
-			'@popup',
-			(node: any) => node.children[0].content().children[0].properties.onblur
-		);
+		h.trigger('@popup', (node: any) => node.children[0].children[0].properties.onblur);
 		assert.isTrue(onClose.calledOnce);
 	});
 
@@ -105,6 +105,7 @@ describe('ContextPopup', () => {
 				.setProperty('@popup', 'x', 98)
 				.setProperty('@popup', 'yTop', 96)
 				.setProperty('@popup', 'open', true)
+				.setChildren('@popup', () => [<div>hello world</div>])
 		);
 		h.trigger('@popup', 'onClose');
 		assert.isTrue(onClose.calledOnce);
@@ -113,6 +114,7 @@ describe('ContextPopup', () => {
 				.setProperty('@popup', 'x', 98)
 				.setProperty('@popup', 'yTop', 96)
 				.setProperty('@popup', 'open', false)
+				.setChildren('@popup', () => [<div>hello world</div>])
 		);
 	});
 });
