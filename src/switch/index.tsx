@@ -1,4 +1,4 @@
-import { DNode } from '@dojo/framework/core/interfaces';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import theme from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -12,20 +12,14 @@ interface SwitchProperties {
 	aria?: { [key: string]: string | null };
 	/** Whether the switch is disabled or clickable */
 	disabled?: boolean;
-	/** The label to be displayed for the switch */
-	label?: string;
 	/** Whether the label is hidden or displayed */
 	labelHidden?: boolean;
 	/** The name attribute for the switch */
 	name?: string;
-	/** Label to show in the "off" position of the switch */
-	offLabel?: DNode;
 	/** Handler for events triggered by switch losing focus */
 	onBlur?(): void;
 	/** Handler for events triggered by "on focus" */
 	onFocus?(): void;
-	/** Label to show in the "on" position of the switch */
-	onLabel?: DNode;
 	/** Handler for events triggered by "on out" */
 	onOut?(): void;
 	/** Handler for events triggered by "on over" */
@@ -42,21 +36,29 @@ interface SwitchProperties {
 	value?: boolean;
 }
 
-const factory = create({ theme, focus }).properties<SwitchProperties>();
+export interface SwitchChildren {
+	/** The label to be displayed for the switch */
+	label?: RenderResult;
+	/** Label to show in the "off" position of the switch */
+	offLabel?: RenderResult;
+	/** Label to show in the "on" position of the switch */
+	onLabel?: RenderResult;
+}
 
-export default factory(function Switch({ properties, id, middleware: { theme, focus } }) {
+const factory = create({ theme, focus })
+	.properties<SwitchProperties>()
+	.children<SwitchChildren | undefined>();
+
+export default factory(function Switch({ children, properties, id, middleware: { theme, focus } }) {
 	const {
 		aria = {},
 		classes,
 		disabled,
-		label,
 		labelHidden,
 		name,
-		offLabel,
 		onBlur,
 		onFocus,
 		onValue,
-		onLabel,
 		onOut,
 		onOver,
 		readOnly,
@@ -66,6 +68,7 @@ export default factory(function Switch({ properties, id, middleware: { theme, fo
 		value = false
 	} = properties();
 
+	const [{ label, offLabel, onLabel } = {} as SwitchChildren] = children();
 	const themedCss = theme.classes(css);
 	const idBase = `switch-${id}`;
 
