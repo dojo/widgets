@@ -17,8 +17,6 @@ import bundle from './nls/Rate';
 export interface RateProperties {
 	/** The name attribute for this rating group */
 	name: string;
-	/** The label to be displayed in the legend */
-	label?: string;
 	/** The initial rating value */
 	initialValue?: number;
 	/** Callback fired when the rating value changes */
@@ -36,7 +34,8 @@ export interface RateProperties {
 }
 
 export interface RateChildren {
-	(filled: boolean, integer: number): RenderResult;
+	label?: RenderResult;
+	character?: (filled: boolean, integer: number) => RenderResult;
 }
 
 interface RateICache {
@@ -61,7 +60,6 @@ export const Rate = factory(function Rate({
 	const themeCss = theme.classes(css);
 	const {
 		name,
-		label,
 		initialValue,
 		onValue,
 		max = 5,
@@ -71,7 +69,7 @@ export const Rate = factory(function Rate({
 		readOnly
 	} = properties();
 	const interaction = !disabled && !readOnly;
-	const [character] = children();
+	const [{ character, label } = {} as RateChildren] = children();
 	const selected = icache.getOrSet('selected', initialValue);
 	const shouldFocus = focus.shouldFocus();
 
@@ -197,8 +195,6 @@ export const Rate = factory(function Rate({
 			return nodes;
 		}, []);
 	};
-
-	console.log('Rate.render');
 
 	return (
 		<div

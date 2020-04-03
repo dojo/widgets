@@ -25,10 +25,10 @@ const App = factory(function({ properties, middleware: { icache } }) {
 					}
 				}}
 			>
-				{(filled) => {
-					return (
+				{{
+					character: (filled) => (
 						<span>{filled ? <Icon type="upIcon" /> : <Icon type="downIcon" />}</span>
-					);
+					)
 				}}
 			</Rate>
 			<pre>{`${get('character')}`}</pre>
@@ -40,8 +40,10 @@ const App = factory(function({ properties, middleware: { icache } }) {
 					set('emoji', value);
 				}}
 			>
-				{(filled) => {
-					return <span styles={{ textAlign: 'center' }}>{filled ? '🌕' : '🌑'}</span>;
+				{{
+					character: (filled) => {
+						return <span styles={{ textAlign: 'center' }}>{filled ? '🌕' : '🌑'}</span>;
+					}
 				}}
 			</Rate>
 			<pre>{`${get('emoji')}`}</pre>
