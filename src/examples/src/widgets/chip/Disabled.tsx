@@ -6,12 +6,13 @@ const factory = create();
 const App = factory(function Disabled() {
 	return (
 		<Chip
-			label="Disabled"
 			disabled
 			onClick={() => {
 				window.alert('clicked');
 			}}
-		/>
+		>
+			{{ label: 'Disabled' }}
+		</Chip>
 	);
 });
 

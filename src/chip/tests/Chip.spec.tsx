@@ -28,15 +28,13 @@ describe('Chip', () => {
 	));
 
 	it('should render with a label', () => {
-		const h = harness(() => <Chip label={label} />);
+		const h = harness(() => <Chip>{{ label }}</Chip>);
 
 		h.expect(template);
 	});
 
-	it('should render with an iconRenderer', () => {
-		const h = harness(() => (
-			<Chip label={label} iconRenderer={() => <Icon type="plusIcon" />} />
-		));
+	it('should render with an icon renderer', () => {
+		const h = harness(() => <Chip>{{ label, icon: () => <Icon type="plusIcon" /> }}</Chip>);
 
 		h.expect(
 			template.prepend(':root', () => [
@@ -47,13 +45,14 @@ describe('Chip', () => {
 		);
 	});
 
-	it('should pass checked property to iconRenderer', () => {
+	it('should pass checked property to icon', () => {
 		const h = harness(() => (
-			<Chip
-				label={label}
-				checked={true}
-				iconRenderer={(checked) => <span>{String(checked)}</span>}
-			/>
+			<Chip checked={true}>
+				{{
+					label,
+					icon: (checked) => <span>{String(checked)}</span>
+				}}
+			</Chip>
 		));
 
 		h.expect(
@@ -66,7 +65,7 @@ describe('Chip', () => {
 	});
 
 	it('should render with a close icon when onClose is provided', () => {
-		const h = harness(() => <Chip label={label} onClose={noop} />);
+		const h = harness(() => <Chip onClose={noop}>{{ label }}</Chip>);
 		h.expect(
 			template.append(':root', () => [
 				<span
@@ -85,7 +84,7 @@ describe('Chip', () => {
 
 	it('should render with a closeRenderer when onClose is also provided', () => {
 		const h = harness(() => (
-			<Chip label={label} onClose={noop} closeRenderer={() => <Icon type="minusIcon" />} />
+			<Chip onClose={noop}>{{ label, closeIcon: <Icon type="minusIcon" /> }}</Chip>
 		));
 		h.expect(
 			template.append(':root', () => [
@@ -104,14 +103,14 @@ describe('Chip', () => {
 	});
 
 	it('should not use a closeIconRenderer if provided without a callback', () => {
-		const h = harness(() => <Chip label={label} closeRenderer={() => <span>Close</span>} />);
+		const h = harness(() => <Chip>{{ label, closeIcon: <span>Close</span> }}</Chip>);
 
 		h.expect(template);
 	});
 
-	it('should render with an iconRenderer and a close icon', () => {
+	it('should render with an icon and a close icon', () => {
 		const h = harness(() => (
-			<Chip label={label} onClose={noop} iconRenderer={() => <Icon type="plusIcon" />} />
+			<Chip onClose={noop}>{{ label, icon: () => <Icon type="plusIcon" /> }}</Chip>
 		));
 
 		h.expect(
@@ -137,7 +136,7 @@ describe('Chip', () => {
 	});
 
 	it('should add a clickable class and button attributes with an onClick callback', () => {
-		const h = harness(() => <Chip label={label} onClick={noop} />);
+		const h = harness(() => <Chip onClick={noop}>{{ label }}</Chip>);
 
 		h.expect(
 			template
@@ -148,7 +147,11 @@ describe('Chip', () => {
 	});
 
 	it('should add disabled class, and remove clickable class and button attributes if disabled', () => {
-		const h = harness(() => <Chip label={label} onClick={noop} disabled />);
+		const h = harness(() => (
+			<Chip onClick={noop} disabled>
+				{{ label }}
+			</Chip>
+		));
 
 		h.expect(
 			template.setProperty(':root', 'classes', [undefined, css.root, css.disabled, false])
@@ -159,12 +162,12 @@ describe('Chip', () => {
 		const onClose = sinon.spy();
 		const onClick = sinon.spy();
 		const h = harness(() => (
-			<Chip
-				label={label}
-				onClose={onClose}
-				onClick={onClick}
-				iconRenderer={() => <Icon type="plusIcon" />}
-			/>
+			<Chip onClose={onClose} onClick={onClick}>
+				{{
+					label,
+					icon: () => <Icon type="plusIcon" />
+				}}
+			</Chip>
 		));
 
 		h.expect(
@@ -207,16 +210,32 @@ describe('Chip', () => {
 		assert.isTrue(onClick.calledOnce);
 	});
 
+	it('does not trigger callback when disabled and clicked', () => {
+		const onClick = sinon.spy();
+		const h = harness(() => (
+			<Chip disabled onClick={onClick}>
+				{{ label }}
+			</Chip>
+		));
+
+		h.expect(
+			template.setProperty(':root', 'classes', [undefined, css.root, css.disabled, false])
+		);
+
+		h.trigger('@root', 'onclick');
+		assert.isFalse(onClick.called);
+	});
+
 	it('calls appropriate callbacks when enter or space is pressed', () => {
 		const onClose = sinon.spy();
 		const onClick = sinon.spy();
 		const h = harness(() => (
-			<Chip
-				label={label}
-				onClose={onClose}
-				onClick={onClick}
-				iconRenderer={() => <Icon type="plusIcon" />}
-			/>
+			<Chip onClose={onClose} onClick={onClick}>
+				{{
+					label,
+					icon: () => <Icon type="plusIcon" />
+				}}
+			</Chip>
 		));
 
 		h.expect(

@@ -11,11 +11,14 @@ const App = factory(function Closeable({ middleware: { icache } }) {
 	return (
 		!closed && (
 			<Chip
-				label="Close me"
 				onClose={() => {
 					set('closed', true);
 				}}
-			/>
+			>
+				{{
+					label: 'Close me'
+				}}
+			</Chip>
 		)
 	);
 });

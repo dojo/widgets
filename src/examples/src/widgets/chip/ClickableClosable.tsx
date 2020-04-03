@@ -12,7 +12,6 @@ const App = factory(function ClickableClosable({ middleware: { icache } }) {
 		<virtual>
 			{!clickableClosed && (
 				<Chip
-					label="Click or close"
 					onClick={() => {
 						icache.set(
 							'clickableClosedCount',
@@ -22,7 +21,9 @@ const App = factory(function ClickableClosable({ middleware: { icache } }) {
 					onClose={() => {
 						icache.set('clickableClosed', true);
 					}}
-				/>
+				>
+					{{ label: 'Click or close' }}
+				</Chip>
 			)}
 			<div>Clicked {String(clickableClosedCount)} times</div>
 		</virtual>

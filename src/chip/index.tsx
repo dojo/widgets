@@ -6,36 +6,33 @@ import Icon from '../icon/index';
 import { Keys } from '../common/util';
 
 export interface ChipProperties {
-	/** Renders an icon, provided with the value of the checked property */
-	iconRenderer?(checked?: boolean): RenderResult;
-	/** The label to be displayed in the widget */
-	label: string;
-	/** Renders a close icon, ignored if `onClose` is not provided */
-	closeRenderer?(): RenderResult;
 	/** A callback when the close icon is clicked, if `closeRenderer` is not provided a default X icon will be used */
 	onClose?(): void;
 	/** An optional callback for the the widget is clicked */
 	onClick?(): void;
 	/** Whether the widget is disabled, only affects the widget when `onClick` is provided */
 	disabled?: boolean;
-	/** Indicates whe "checked" state of the widget, will be passed to the iconRenderer */
+	/** Indicates whe "checked" state of the widget, will be passed to the icon renderer */
 	checked?: boolean;
 }
 
-const factory = create({ theme }).properties<ChipProperties>();
+export interface ChipChildren {
+	/** Renders an icon, provided with the value of the checked property */
+	icon?(checked?: boolean): RenderResult;
+	/** The label to be displayed in the widget */
+	label: RenderResult;
+	/** Renders a close icon, ignored if `onClose` is not provided */
+	closeIcon?: RenderResult;
+}
 
-export default factory(function Chip({ properties, middleware: { theme } }) {
-	const {
-		iconRenderer,
-		label,
-		closeRenderer,
-		onClose,
-		onClick,
-		disabled,
-		checked
-	} = properties();
+const factory = create({ theme })
+	.properties<ChipProperties>()
+	.children<ChipChildren>();
+
+export default factory(function Chip({ properties, children, middleware: { theme } }) {
+	const { onClose, onClick, disabled, checked } = properties();
 	const themedCss = theme.classes(css);
-
+	const [{ icon, label, closeIcon }] = children();
 	const clickable = !disabled && onClick;
 	return (
 		<div
@@ -64,7 +61,7 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 				}
 			}}
 		>
-			{iconRenderer && <span classes={themedCss.iconWrapper}>{iconRenderer(checked)}</span>}
+			{icon && <span classes={themedCss.iconWrapper}>{icon(checked)}</span>}
 			<span classes={themedCss.label}>{label}</span>
 			{onClose && (
 				<span
@@ -84,7 +81,7 @@ export default factory(function Chip({ properties, middleware: { theme } }) {
 						}
 					}}
 				>
-					{closeRenderer ? closeRenderer() : <Icon type="closeIcon" />}
+					{closeIcon || <Icon type="closeIcon" />}
 				</span>
 			)}
 		</div>
