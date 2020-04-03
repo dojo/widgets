@@ -7,6 +7,20 @@ on:
     branches: [ master ]
 
 jobs:
+  build-tsc:
+    name: Build TSC
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - run: npm install
+    - run: npm run build:tsc
+
   build-lib:
     name: Build Lib
     runs-on: ubuntu-latest
