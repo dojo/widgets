@@ -120,9 +120,10 @@ describe('Select', () => {
 					position="above"
 					placeholder="test"
 					helperText="test-helper"
-					label="test-label"
 					required={true}
-				/>
+				>
+					{{ label: 'test-label' }}
+				</Select>
 			),
 			[compareForId]
 		);

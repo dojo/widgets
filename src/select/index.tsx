@@ -41,8 +41,6 @@ export interface SelectProperties {
 	disabled?: boolean;
 	/** Sets the helper text of the input */
 	helperText?: string;
-	/** The label to show */
-	label?: RenderResult;
 	/** Boolean to indicate if field is required */
 	required?: boolean;
 	/** Callabck when valid state has changed */
@@ -53,7 +51,9 @@ export interface SelectProperties {
 
 export interface SelectChildren {
 	/** Custom renderer for item contents */
-	(properties: ItemRendererProperties): RenderResult;
+	itemRenderer?(properties: ItemRendererProperties): RenderResult;
+	/** The label to show */
+	label?: RenderResult;
 }
 
 export const defaultTransform = listTransform;
@@ -86,7 +86,6 @@ export const Select = factory(function Select({
 		helperText,
 		initialValue,
 		itemsInView = 6,
-		label,
 		onValidate,
 		onValue,
 		placeholder = '',
@@ -96,7 +95,7 @@ export const Select = factory(function Select({
 		resource,
 		transform
 	} = properties();
-	const [itemRenderer] = children();
+	const { itemRenderer, label } = children()[0] || ({} as SelectChildren);
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
 		icache.set('initial', initialValue);

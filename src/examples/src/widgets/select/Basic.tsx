@@ -16,13 +16,16 @@ export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Select
-				label="Basic Select"
 				resource={resource}
 				transform={defaultTransform}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-			/>
+			>
+				{{
+					label: 'Basic Select'
+				}}
+			</Select>
 			<pre>{icache.getOrSet('value', '')}</pre>
 		</virtual>
 	);

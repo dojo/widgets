@@ -12,7 +12,6 @@ export default factory(function CustomRenderer({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Select
-				label="Basic Select"
 				resource={{
 					resource: () => createResource(memoryTemplate),
 					data: options
@@ -22,13 +21,16 @@ export default factory(function CustomRenderer({ middleware: { icache } }) {
 					icache.set('value', value);
 				}}
 			>
-				{({ selected, value }) => {
-					return (
-						<div>
-							{selected && <span>✅ </span>}
-							{value}
-						</div>
-					);
+				{{
+					label: 'Basic Select',
+					itemRenderer: ({ selected, value }) => {
+						return (
+							<div>
+								{selected && <span>✅ </span>}
+								{value}
+							</div>
+						);
+					}
 				}}
 			</Select>
 			<pre>{icache.getOrSet('value', '')}</pre>
