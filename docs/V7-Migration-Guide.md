@@ -311,12 +311,12 @@ Latest example can be found on [widgets.dojo.io/#widget/progress/overview](https
 ### radio
 
 #### Property changes
-##### Removed properties
-- label?: () => RenderResult
+##### Changed properties
+- label?: RenderResult
 	- Label is now handled in a child renderer. Child content of the Radio widget is displayed in a Label.
+##### Removed properties
 - labelAfter?: boolean;
 	- Removed in favor of a single label handled via a child renderer.
-	
 #### Changes in behaviour
 Label is now handled via an optional child renderer of type RenderResult.
 #### Example of migration from v6 to v7
