@@ -99,7 +99,7 @@ export const Rate = factory(function Rate({
 		options.push(createOption(integer + 1));
 	}
 
-	const renderIcon = (value?: number, filled: boolean) =>
+	const renderIcon = (filled: boolean, value: number) =>
 		character ? (
 			character(filled, Math.ceil(value))
 		) : (
@@ -118,8 +118,8 @@ export const Rate = factory(function Rate({
 			<span key="radioLabel" classes={baseCss.visuallyHidden}>
 				{format('starLabels', { rating: value })}
 			</span>
-			<span classes={themeCss.filled}>{renderIcon(value, true)}</span>
-			<span classes={themeCss.empty}>{renderIcon(value, false)}</span>
+			<span classes={themeCss.filled}>{renderIcon(true, value)}</span>
+			<span classes={themeCss.empty}>{renderIcon(false, value)}</span>
 		</virtual>
 	);
 
@@ -174,7 +174,7 @@ export const Rate = factory(function Rate({
 		</div>
 	);
 
-	const renderChildren: RadioGroupChildren = (name, middleware, options) => {
+	const renderChildren: RadioGroupChildren['radios'] = (name, middleware, options) => {
 		const radioIntegers: DNode[][] = [];
 		for (const option of options) {
 			const value = parseFloat(option.value) || 0;
@@ -197,6 +197,8 @@ export const Rate = factory(function Rate({
 		}, []);
 	};
 
+	console.log('Rate.render');
+
 	return (
 		<div
 			key="root"
@@ -214,7 +216,6 @@ export const Rate = factory(function Rate({
 			<RadioGroup
 				key="radioGroup"
 				initialValue={`${initialValue}`}
-				label={label}
 				name={name}
 				onValue={_onValue}
 				options={options}
@@ -224,7 +225,7 @@ export const Rate = factory(function Rate({
 					'group'
 				)}
 			>
-				{renderChildren}
+				{{ label, radios: renderChildren }}
 			</RadioGroup>
 		</div>
 	);

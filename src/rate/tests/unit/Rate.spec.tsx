@@ -61,7 +61,7 @@ const selectRadio = (h: HarnessAPI, value?: string, checkedStub?: SinonStub) => 
 	const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 	return h.trigger(
 		'@radioGroup',
-		(node: any) => node.children[0],
+		(node: any) => node.children[0].radios,
 		'rate',
 		(radioValue: string) => ({
 			checked(checked?: boolean) {
@@ -136,13 +136,12 @@ describe('Rate', () => {
 				<RadioGroup
 					key="radioGroup"
 					initialValue={undefined}
-					label={undefined}
 					name="rate"
 					onValue={noop}
 					options={options}
 					theme={{}}
 				>
-					{() => []}
+					{{ label: undefined, radios: () => [] }}
 				</RadioGroup>
 			</div>
 		));
