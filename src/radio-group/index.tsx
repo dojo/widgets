@@ -10,8 +10,6 @@ type RadioOptions = { value: string; label?: string }[];
 export interface RadioGroupProperties {
 	/** Initial value of the radio group */
 	initialValue?: string;
-	/** The label to be displayed in the legend */
-	label?: string;
 	/** The name attribute for this form group */
 	name: string;
 	/** Callback for the current value */
@@ -22,11 +20,12 @@ export interface RadioGroupProperties {
 
 export interface RadioGroupChildren {
 	/** Custom renderer for the radios, receives the radio group middleware and options */
-	(
+	radios?(
 		name: string,
 		middleware: ReturnType<ReturnType<typeof radioGroup>['api']>,
 		options: RadioOptions
 	): RenderResult;
+	label?: RenderResult;
 }
 
 const factory = create({ radioGroup, theme })
@@ -38,14 +37,14 @@ export const RadioGroup = factory(function({
 	properties,
 	middleware: { radioGroup, theme }
 }) {
-	const { name, label, options, onValue, initialValue } = properties();
-	const [renderer] = children();
+	const { name, options, onValue, initialValue } = properties();
+	const [{ radios, label } = { radios: undefined, label: undefined }] = children();
 	const radio = radioGroup(onValue, initialValue || '');
 	const { root, legend } = theme.classes(css);
 
 	function renderRadios() {
-		if (renderer) {
-			return renderer(name, radio, options);
+		if (radios) {
+			return radios(name, radio, options);
 		}
 		return options.map(({ value, label }) => {
 			const { checked } = radio(value);

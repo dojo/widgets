@@ -31,12 +31,11 @@ describe('RadioGroup', () => {
 
 	it('renders with a label', () => {
 		const h = harness(() => (
-			<RadioGroup
-				label="test label"
-				name="test"
-				onValue={noop}
-				options={[{ value: 'cat' }]}
-			/>
+			<RadioGroup name="test" onValue={noop} options={[{ value: 'cat' }]}>
+				{{
+					label: 'test label'
+				}}
+			</RadioGroup>
 		));
 		const labelTemplate = template.setChildren('@root', () => [
 			<legend classes={css.legend}>test label</legend>,
@@ -64,24 +63,22 @@ describe('RadioGroup', () => {
 
 	it('renders with custom renderer', () => {
 		const h = harness(() => (
-			<RadioGroup
-				label="custom render label"
-				name="test"
-				onValue={noop}
-				options={[{ value: 'cat' }]}
-			>
-				{() => {
-					return [
-						<span>custom label</span>,
-						<Radio
-							name="test"
-							value="cat"
-							label="cat"
-							checked={false}
-							onValue={noop}
-						/>,
-						<hr />
-					];
+			<RadioGroup name="test" onValue={noop} options={[{ value: 'cat' }]}>
+				{{
+					label: 'custom render label',
+					radios: () => {
+						return [
+							<span>custom label</span>,
+							<Radio
+								name="test"
+								value="cat"
+								label="cat"
+								checked={false}
+								onValue={noop}
+							/>,
+							<hr />
+						];
+					}
 				}}
 			</RadioGroup>
 		));

@@ -10,7 +10,6 @@ const App = factory(function({ properties, middleware: { icache } }) {
 	return (
 		<virtual>
 			<RadioGroup
-				label="colours"
 				name="colours"
 				options={[
 					{ value: 'red', label: 'Rouge' },
@@ -20,7 +19,11 @@ const App = factory(function({ properties, middleware: { icache } }) {
 				onValue={(value) => {
 					set('colours', value);
 				}}
-			/>
+			>
+				{{
+					label: 'colours'
+				}}
+			</RadioGroup>
 			<pre>{`${get('colours')}`}</pre>
 		</virtual>
 	);
