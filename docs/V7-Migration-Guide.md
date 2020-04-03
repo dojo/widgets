@@ -60,6 +60,45 @@ Many of our form widgets are now capable of validating themselves. In many cases
 Latest example can be found on [widgets.dojo.io/#widget/accordion-pane/overview](https://widgets.dojo.io/#widget/accordion-pane/overview)
 
 
+### button
+
+#### Property changes
+##### Changed properties
+- onDown?(): void;
+	- Handler for events triggered by pointer down.
+	- Replaces previous down event handlers.
+##### Removed properties
+- popup?: { expanded?: boolean; id?: string } | boolean;
+	- Popup functionality was removed from `Button`.
+	- The `TriggerPopup` widget provides popup functionality.
+- onInput?(value?: string | number | boolean): void;
+	- Not applicable to a button.
+- onChange?(value?: string | number | boolean): void;
+	- Not applicable to a button.
+- The following interaction events were replaced by onDown:
+	- onMouseDown?(): void;
+	- onMouseUp?(): void;
+	- onTouchStart?(): void;
+	- onTouchEnd?(): void;
+	- onTouchCancel?(): void;
+	- onMouseDown?(): void;
+	- onMouseUp?(): void;
+	- onTouchStart?(): void;
+	- onTouchEnd?(): void;
+	- onTouchCancel?(): void;
+#### Changes in behaviour
+
+#### Example of migration from v6 to v7
+```
+<Button onMouseDown={() => {console.log('Down')}}>Example Button</Button>
+```
+```
+<Button onDown={() => {console.log('Down')}}>Example Button</Button>
+```
+
+Latest example can be found on [widgets.dojo.io/#widget/button/overview](https://widgets.dojo.io/#widget/button/overview)
+
+
 ### calendar
 #### Property changes
 ##### Changed properties
