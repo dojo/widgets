@@ -338,19 +338,17 @@ Latest example can be found on [widgets.dojo.io/#widget/radio/overview](https://
 ### range-slider
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+- value
+	- This property has been replaced by `initialValue`
+	- The range-slider now internally manages its value and it is no longer necessary to pass the current value into the range slider from the parent
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- labelAfter
+  - No longer supported
 #### Changes in behaviour
+
+The range slider widget now internally manages its own value. The value can be changed via the `initialValue` property, and updates are exposed via the `onValue` callback.
+
 #### Example of migration from v6 to v7
 
 Latest example can be found on [widgets.dojo.io/#widget/range-slider/overview](https://widgets.dojo.io/#widget/range-slider/overview)
@@ -534,19 +532,63 @@ Latest example can be found on [widgets.dojo.io/#widget/text-input/overview](htt
 ### time-picker
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
+##### Additional  Properties
+- format
+	- Specifies whether or not the time is displayed in 24h or 12h format
+- onValidate
+  - Called when validation occurs on the time picker.
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+- value
+  - Changed to `initialValue`
+  - The time picker value is now internally managed and does not need to be managed by the parent widget
+- start
+  - Renamed to `min` to match with native time picker
+- end
+  - Renamed to `max` to match with native time picker
+- isOptionDisabled
+  - Renamed to `timeDisabled`
+  - Takes a function with a single `Date` parameter. The option is disabled if the function returns falsey
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- widgetId
+  - No longer needed
+- valid
+  - Validation is now handled internally by the time picker and exposed via the `onValidate` property
+- useNativeElement
+  - No longer supported
+- readOnly
+  - No longer supported. Time picker can be `disabled` if required
+- options
+  - It is no longer necessary to manually specify the options. The options may be configured via the `start`, `end`, and `step` properties.
+- openOnFocus
+  - No longer supported. Clicking the button or using the enter/down arrow is required to open the time picker menu
+- onRequestOptions
+  - No longer supported
+- onOver
+  - No longer supported
+- onOut
+  - No longer supported
+- onMenuChange
+  - No longer supported
+- onFocus
+  - No longer supported
+- onClick
+  - No longer supported
+- onBlur
+  - No longer supported
+- labelHidden
+  - No longer supported
+- labelAfter
+  - No longer supported
+- inputProperties
+  - No longer supported
+- clearable
+  - No longer supported, the time picker is not clearable
+- autoBlur
+  - No longer supported
 #### Changes in behaviour
+
+The time picker will generate its own time options manually now, and therefore does not require the parent widget to pass in a list of time options.
+
 #### Example of migration from v6 to v7
 
 Latest example can be found on [widgets.dojo.io/#widget/time-picker/overview](https://widgets.dojo.io/#widget/time-picker/overview)
