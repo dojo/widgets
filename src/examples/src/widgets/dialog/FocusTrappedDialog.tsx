@@ -15,8 +15,8 @@ export default factory(function FocusTrappedDialog({ middleware: { icache } }) {
 			</Button>
 			<Dialog open={isOpen} onRequestClose={() => icache.set('isOpen', false)}>
 				{{
-					title: () => 'Focus Trapped Dialog',
-					content: () => (
+					title: 'Focus Trapped Dialog',
+					content: (
 						<virtual>
 							<TextInput key="first">{{ label: 'First Name' }}</TextInput>
 							<TextInput key="last">{{ label: 'Last Name' }}</TextInput>

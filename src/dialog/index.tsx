@@ -44,9 +44,9 @@ export interface DialogPropertiesAlertDialogRole extends DialogPropertiesBase {
 export type DialogProperties = DialogPropertiesDialogRole | DialogPropertiesAlertDialogRole;
 
 export interface DialogChild {
-	title?: () => DNode;
-	content?: () => DNode;
-	actions?: () => DNode;
+	title?: DNode;
+	content?: DNode;
+	actions?: DNode;
 }
 
 export interface DialogState {
@@ -73,14 +73,14 @@ export const Dialog = factory(function Dialog({
 	const themeCss = theme.classes(css);
 
 	let { open, aria = {}, underlay, role = 'dialog', closeable = true, closeText } = properties();
-	const [renderer] = children();
+	const [{ title, actions, content }] = children();
 	const modal = role === 'alertdialog' || (properties() as DialogPropertiesDialogRole).modal;
 
 	inert.set('dialog', open, true);
 
 	if (!closeText) {
 		const { messages } = i18n.localize(commonBundle);
-		closeText = `${messages.close} ${renderer.title ? renderer.title() : ''}`;
+		closeText = `${messages.close} ${title || ''}`;
 	}
 
 	const wasOpen = icache.getOrSet('wasOpen', false);
@@ -160,7 +160,7 @@ export const Dialog = factory(function Dialog({
 							focus={callFocus}
 						>
 							<div classes={themeCss.title} key="title" id={titleId}>
-								<div>{renderer.title && renderer.title()}</div>
+								<div>{title}</div>
 								{closeable && (
 									<button
 										classes={themeCss.close}
@@ -178,11 +178,11 @@ export const Dialog = factory(function Dialog({
 								)}
 							</div>
 							<div classes={themeCss.content} key="content" id={contentId}>
-								{renderer.content && renderer.content()}
+								{content}
 							</div>
-							{renderer.actions && (
+							{actions && (
 								<div classes={themeCss.actions} key="actions">
-									{renderer.actions()}
+									{actions}
 								</div>
 							)}
 						</div>

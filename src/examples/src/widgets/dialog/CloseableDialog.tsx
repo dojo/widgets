@@ -20,8 +20,8 @@ export default factory(function CloseableDialog({ middleware: { icache } }) {
 				onRequestClose={() => icache.set('isOpen', false)}
 			>
 				{{
-					title: () => 'Closeable Dialog',
-					content: () => (
+					title: 'Closeable Dialog',
+					content: (
 						<virtual>
 							<div>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
