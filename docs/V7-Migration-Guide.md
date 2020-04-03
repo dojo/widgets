@@ -284,20 +284,26 @@ Latest example can be found on [widgets.dojo.io/#widget/native-select/overview](
 ### progress
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- output?: () => RenderResult
+	- `output` was moved to a child renderer and should be handled in a child function.
 #### Changes in behaviour
+Output is now handled via an optional child renderer of type RenderResult.
 #### Example of migration from v6 to v7
+```
+<Progress
+	value={value}
+	max={max}
+	output={(value, percent) => `${value} of ${max} is ${percent}%`}
+/>
+```
+```
+<Progress value={value} max={max}>
+	{{
+		output: (value, percent) => `${value} of ${max} is ${percent}%`
+	}}
+</Progress>
+```
 
 Latest example can be found on [widgets.dojo.io/#widget/progress/overview](https://widgets.dojo.io/#widget/progress/overview)
 
