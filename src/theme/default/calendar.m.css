@@ -44,7 +44,8 @@
 }
 
 /* Icons */
-.icon {
+.calendarPagingIcon {
+	composes: icon from './icon.m.css';
 }
 
 /* Added the days of the week header (e.g. Sun, Mon, Tue) */

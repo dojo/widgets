@@ -16,6 +16,7 @@ export const yearRadio: string;
 export const monthRadio: string;
 export const yearRadioChecked: string;
 export const monthRadioChecked: string;
+export const calendarPagingIcon: string;
 export const yearRadioLabel: string;
 export const monthRadioLabel: string;
 export const yearRadioInput: string;

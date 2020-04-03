@@ -136,7 +136,8 @@
 	top: var(--grid-base);
 }
 
-.icon {
+.calendarPagingIcon {
+	composes: icon from './icon.m.css';
 	display: flex;
 	justify-content: center;
 	align-items: center;
