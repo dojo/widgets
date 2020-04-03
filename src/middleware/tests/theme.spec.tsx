@@ -442,4 +442,104 @@ describe('theme middleware', () => {
 			}
 		});
 	});
+
+	it('should work with theme variants', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant',
+			active: 'variant_active',
+			extra: 'variant_extra'
+		};
+
+		properties.theme = {
+			theme: {
+				'@dojo/widgets/Base': {
+					root: 'base_theme_root'
+				},
+				'@dojo/widgets/Variant': {
+					extra: 'variant_theme_extra',
+					selected: 'variant_theme_selected'
+				}
+			},
+			variant: {
+				default: { root: 'foo' }
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses
+		);
+		assert.deepEqual(composedClasses, {
+			theme: {
+				'@dojo/widgets/Base': {
+					root: 'base_theme_root',
+					selected: 'variant_theme_selected',
+					active: 'variant_active'
+				},
+				'@dojo/widgets/Variant': {
+					extra: 'variant_theme_extra',
+					selected: 'variant_theme_selected'
+				}
+			},
+			variant: {
+				default: { root: 'foo' }
+			}
+		});
+	});
+
+	it('should work with theme with variant and prefix', () => {
+		const baseClasses = {
+			' _key': '@dojo/widgets/Base',
+			root: 'base_root',
+			selected: 'base_selected',
+			active: 'base_active'
+		};
+
+		const variantClasses = {
+			' _key': '@dojo/widgets/Variant',
+			baseActive: 'variant_active'
+		};
+
+		properties.theme = {
+			theme: {
+				'@dojo/widgets/Base': {
+					active: 'base_theme_active'
+				},
+				'@dojo/widgets/Variant': {
+					baseActive: 'variant_theme_active'
+				}
+			},
+			variant: {
+				default: { root: 'foo' }
+			}
+		};
+
+		const composedClasses = composesInstance.compose(
+			baseClasses,
+			variantClasses,
+			'base'
+		);
+		assert.deepEqual(composedClasses, {
+			theme: {
+				'@dojo/widgets/Base': {
+					root: 'base_root',
+					selected: 'base_selected',
+					active: 'variant_theme_active'
+				},
+				'@dojo/widgets/Variant': {
+					baseActive: 'variant_theme_active'
+				}
+			},
+			variant: {
+				default: { root: 'foo' }
+			}
+		});
+	});
 });

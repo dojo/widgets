@@ -16,6 +16,10 @@ function lowercaseFirstChar(value: string) {
 	return `${value.charAt(0).toLowerCase()}${value.slice(1)}`;
 }
 
+function isThemeWithVariant(theme: any): theme is ThemeWithVariant {
+	return theme && theme.hasOwnProperty('variant');
+}
+
 export interface ThemeProperties extends CoreThemeProperties {}
 
 export const theme = factory(function({ middleware: { coreTheme }, properties }) {
@@ -69,6 +73,17 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 					{} as ClassNames
 				);
 				baseTheme = { ...baseTheme, ...prefixedCss };
+
+				if (isThemeWithVariant(theme)) {
+					return {
+						theme: {
+							...theme.theme,
+							[baseKey]: baseTheme
+						},
+						variant: theme.variant
+					};
+				}
+
 				return {
 					...theme,
 					[baseKey]: baseTheme
@@ -90,6 +105,17 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 				},
 				{ ...baseTheme } as ClassNames
 			);
+
+			if (isThemeWithVariant(theme)) {
+				return {
+					theme: {
+						...theme.theme,
+						[baseKey]: constructedTheme
+					},
+					variant: theme.variant
+				};
+			}
+
 			return {
 				...theme,
 				[baseKey]: constructedTheme
