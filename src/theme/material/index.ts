@@ -42,6 +42,7 @@ import * as switchControl from './switch.m.css';
 import * as tabController from './tab-controller.m.css';
 import * as textArea from './text-area.m.css';
 import * as textInput from './text-input.m.css';
+import * as threeColumnLayout from './three-column-layout.m.css';
 import * as timePicker from './time-picker.m.css';
 import * as titlePane from './title-pane.m.css';
 import * as tooltip from './tooltip.m.css';
@@ -95,6 +96,7 @@ export default {
 		'@dojo/widgets/tab-controller': tabController,
 		'@dojo/widgets/text-area': textArea,
 		'@dojo/widgets/text-input': textInput,
+		'@dojo/widgets/three-column-layout': threeColumnLayout,
 		'@dojo/widgets/time-picker': timePicker,
 		'@dojo/widgets/title-pane': titlePane,
 		'@dojo/widgets/tooltip': tooltip,

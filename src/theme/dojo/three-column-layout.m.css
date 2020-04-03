@@ -1,0 +1,7 @@
+.leading {
+	width: calc(var(--grid-base) * 40);
+}
+
+.trailing {
+	width: calc(var(--grid-base) * 40);
+}
