@@ -1,0 +1,3 @@
+.small {
+	width: calc(var(--grid-base) * 40);
+}

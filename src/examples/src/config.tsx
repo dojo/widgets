@@ -200,6 +200,9 @@ import BasicTypeahead from './widgets/typeahead/Basic';
 import RemoteTypeahead from './widgets/typeahead/RemoteSource';
 import CustomFilterTypeahead from './widgets/typeahead/CustomFilter';
 import ValidatedTypeahead from './widgets/typeahead/Validation';
+import BasicTwoColumnLayout from './widgets/two-column-layout/Basic';
+import TrailingBiasTwoColumnLayout from './widgets/two-column-layout/TrailingBias';
+import CollapsingLayout from './widgets/two-column-layout/Collapsing';
 
 `!has('docs')`;
 import testsContext from './tests';
@@ -1472,6 +1475,26 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicTooltip
+				}
+			}
+		},
+		'two-column-layout': {
+			examples: [
+				{
+					filename: 'TrailingBias',
+					module: TrailingBiasTwoColumnLayout,
+					title: 'Trailing section bias'
+				},
+				{
+					filename: 'Collapsing',
+					module: CollapsingLayout,
+					title: 'Collapsing columns'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicTwoColumnLayout
 				}
 			}
 		},
