@@ -3,7 +3,7 @@ import coreTheme, {
 	ThemeProperties as CoreThemeProperties
 } from '@dojo/framework/core/middleware/theme';
 import { ClassNames, Theme } from '@dojo/framework/core/mixins/Themed';
-import { ThemeWithVariant, ThemeWithVariants } from '@dojo/framework/core/interfaces';
+import { ThemeWithVariant } from '@dojo/framework/core/interfaces';
 
 const factory = create({ coreTheme });
 export const THEME_KEY = ' _key';
