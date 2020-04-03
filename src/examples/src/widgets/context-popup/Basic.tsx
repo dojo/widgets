@@ -8,7 +8,7 @@ export default factory(function Basic() {
 		<virtual>
 			<ContextPopup>
 				{{
-					trigger: () => <div>This text has a context popup</div>,
+					trigger: <div>This text has a context popup</div>,
 					content: ({ close, shouldFocus }) => (
 						<div
 							focus={shouldFocus}

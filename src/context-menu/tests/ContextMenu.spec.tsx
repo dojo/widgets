@@ -23,7 +23,7 @@ describe('ContextMenu', () => {
 	const template = assertionTemplate(() => (
 		<ContextPopup>
 			{{
-				trigger: () => null as any,
+				trigger: null as any,
 				content: null as any
 			}}
 		</ContextPopup>
@@ -54,7 +54,7 @@ describe('ContextMenu', () => {
 		h.expect(template);
 	});
 
-	it('passes a function that returns children as `trigger`', () => {
+	it('passes children as `trigger`', () => {
 		const h = harness(() => (
 			<ContextMenu
 				resource={{
@@ -71,7 +71,7 @@ describe('ContextMenu', () => {
 		h.expect(template);
 		h.expect(
 			() => [children],
-			() => h.trigger(':root', (node: any) => node.children[0].trigger)
+			() => h.trigger(':root', (node: any) => () => node.children[0].trigger)
 		);
 	});
 
