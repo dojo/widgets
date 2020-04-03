@@ -117,8 +117,8 @@ describe('RangeSlider', () => {
 	});
 
 	it('renders a label', () => {
-		const h = harness(() => <RangeSlider label="label" />);
-		const testTemplate = template.prepend('@root', [
+		const h = harness(() => <RangeSlider>{{ label: 'label' }}</RangeSlider>);
+		const testTemplate = template.prepend('@root', () => [
 			<Label
 				classes={undefined}
 				disabled={undefined}
@@ -163,7 +163,7 @@ describe('RangeSlider', () => {
 				null,
 				themeCss.hasOutput
 			])
-			.insertAfter('@rightThumb', [
+			.insertAfter('@rightThumb', () => [
 				<output
 					classes={[themeCss.output, null]}
 					for="range-slider-test"
@@ -189,7 +189,7 @@ describe('RangeSlider', () => {
 				null,
 				themeCss.hasOutput
 			])
-			.insertAfter('@rightThumb', [
+			.insertAfter('@rightThumb', () => [
 				<output
 					classes={[themeCss.output, themeCss.outputTooltip]}
 					for="range-slider-test"

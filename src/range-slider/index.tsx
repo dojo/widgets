@@ -5,7 +5,7 @@ import Label from '../label/index';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import focus from '@dojo/framework/core/middleware/focus';
 import theme from '@dojo/framework/core/middleware/theme';
-import { DNode } from '@dojo/framework/core/interfaces';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { formatAriaProperties } from '../common/util';
@@ -17,8 +17,6 @@ export interface RangeSliderProperties {
 	aria?: { [key: string]: string | null };
 	/** Set the disabled property of the control */
 	disabled?: boolean;
-	/** Adds a <label> element with the supplied text */
-	label?: string;
 	/** Hides the label from view while still remaining accessible for screen readers */
 	labelHidden?: boolean;
 	/** The maximum value allowed */
@@ -45,8 +43,6 @@ export interface RangeSliderProperties {
 	onOver?(): void;
 	/** Handler for when the value of the widget changes */
 	onValue?(value: RangeValue): void;
-	/** A renderer used to display the output values (min, max) */
-	output?(value: RangeValue): DNode;
 	/** If the rendered output should be displayed as a tooltip */
 	outputIsTooltip?: boolean;
 	/** Makes the slider readonly (it may be focused but not changed) */
@@ -65,6 +61,13 @@ export interface RangeSliderProperties {
 	widgetId?: string;
 }
 
+export interface RangeSliderChildren {
+	/** Adds a <label> element with the supplied text */
+	label?: RenderResult;
+	/** A renderer used to display the output values (min, max) */
+	output?(value: RangeValue): RenderResult;
+}
+
 export interface RangeSliderICache {
 	initialValue?: RangeValue;
 	value?: RangeValue;
@@ -75,20 +78,23 @@ const factory = create({
 	focus,
 	icache: createICacheMiddleware<RangeSliderICache>(),
 	theme
-}).properties<RangeSliderProperties>();
+})
+	.properties<RangeSliderProperties>()
+	.children<RangeSliderChildren | undefined>();
 
 export const RangeSlider = factory(function RangeSlider({
+	children,
 	id,
 	middleware: { dimensions, focus, icache, theme },
 	properties
 }) {
 	const { name = '', max: maxRestraint = 100, min: minRestraint = 0 } = properties();
 
+	const [{ label, output } = {} as RangeSliderChildren] = children();
 	const {
 		aria = {},
 		classes,
 		disabled,
-		label,
 		labelHidden,
 		maxName = `${name}_max`,
 		maximumLabel = 'Maximum',
@@ -99,7 +105,6 @@ export const RangeSlider = factory(function RangeSlider({
 		onOut,
 		onOver,
 		onValue,
-		output,
 		outputIsTooltip,
 		readOnly,
 		required,
