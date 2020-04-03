@@ -8,6 +8,7 @@ import * as checkbox from './checkbox.m.css';
 import * as checkboxGroup from './checkbox-group.m.css';
 import * as chip from './chip.m.css';
 import * as constrainedInput from './constrained-input.m.css';
+import * as dateInput from './date-input.m.css';
 import * as dialog from './dialog.m.css';
 import * as emailInput from './email-input.m.css';
 import * as grid from './grid.m.css';
@@ -60,6 +61,7 @@ export default {
 		'@dojo/widgets/checkbox-group': checkboxGroup,
 		'@dojo/widgets/chip': chip,
 		'@dojo/widgets/constrained-input': constrainedInput,
+		'@dojo/widgets/date-input': dateInput,
 		'@dojo/widgets/dialog': dialog,
 		'@dojo/widgets/email-input': emailInput,
 		'@dojo/widgets/grid-body': gridBody,
@@ -79,7 +81,7 @@ export default {
 		'@dojo/widgets/native-select': nativeSelect,
 		'@dojo/widgets/list-item': listItem,
 		'@dojo/widgets/outlined-button': outlinedButton,
-		'@dojo/widget/password-input': passwordInput,
+		'@dojo/widgets/password-input': passwordInput,
 		'@dojo/widgets/popup': popup,
 		'@dojo/widgets/progress': progress,
 		'@dojo/widgets/radio': radio,

@@ -3,7 +3,7 @@ import coreTheme, {
 	ThemeProperties as CoreThemeProperties
 } from '@dojo/framework/core/middleware/theme';
 import { ClassNames, Theme } from '@dojo/framework/core/mixins/Themed';
-import { ThemeWithVariant } from '@dojo/framework/core/interfaces';
+import { ThemeWithVariant, ThemeWithVariants } from '@dojo/framework/core/interfaces';
 
 const factory = create({ coreTheme });
 export const THEME_KEY = ' _key';
@@ -14,6 +14,10 @@ function uppercaseFirstChar(value: string) {
 
 function lowercaseFirstChar(value: string) {
 	return `${value.charAt(0).toLowerCase()}${value.slice(1)}`;
+}
+
+function isThemeWithVariant(theme: any): theme is ThemeWithVariant {
+	return theme && theme.hasOwnProperty('variant');
 }
 
 export interface ThemeProperties extends CoreThemeProperties {}
@@ -69,6 +73,17 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 					{} as ClassNames
 				);
 				baseTheme = { ...baseTheme, ...prefixedCss };
+
+				if (isThemeWithVariant(theme)) {
+					return {
+						theme: {
+							...theme.theme,
+							[baseKey]: baseTheme
+						},
+						variant: theme.variant
+					};
+				}
+
 				return {
 					...theme,
 					[baseKey]: baseTheme
@@ -90,6 +105,17 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 				},
 				{ ...baseTheme } as ClassNames
 			);
+
+			if (isThemeWithVariant(theme)) {
+				return {
+					theme: {
+						...theme.theme,
+						[baseKey]: constructedTheme
+					},
+					variant: theme.variant
+				};
+			}
+
 			return {
 				...theme,
 				[baseKey]: constructedTheme
