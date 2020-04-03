@@ -58,8 +58,7 @@ const harness = createHarness([
 ]);
 
 const selectRadio = (h: HarnessAPI, value?: string, checkedStub?: SinonStub) => {
-	let options;
-	h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+	const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 	return h.trigger(
 		'@radioGroup',
 		(node: any) => node.children[0],
@@ -152,8 +151,7 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		let options;
-		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 		h.expect(baseTemplate(undefined, options));
 		const radios = selectRadio(h);
 		h.expect(
@@ -172,8 +170,7 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" max={2} />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		let options;
-		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 		h.expect(baseTemplate(undefined, options));
 		const radios = selectRadio(h);
 		h.expect(
@@ -189,8 +186,7 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" disabled />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		let options;
-		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 		const properties = { disabled: true };
 		h.expect(baseTemplate(properties, options));
 		const radios = selectRadio(h);
@@ -210,8 +206,7 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" initialValue={1} readOnly allowClear />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		let options;
-		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 		const properties = { readOnly: true, initialValue: 1 };
 		h.expect(baseTemplate(properties, options).setProperty('@radioGroup', 'initialValue', `1`));
 		const radios = selectRadio(h);
@@ -235,8 +230,7 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		let options;
-		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 		h.expect(baseTemplate(undefined, options));
 
 		let radios = selectRadio(h);
@@ -300,8 +294,7 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" allowClear={true} />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		let options;
-		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 		h.expect(baseTemplate(undefined, options));
 
 		let radios = selectRadio(h);
@@ -353,8 +346,7 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" initialValue={initialValue} />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		let options;
-		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 		h.expect(
 			baseTemplate({ initialValue: 4 }, options).setProperty(
 				'@radioGroup',
@@ -372,8 +364,7 @@ describe('Rate', () => {
 				middleware: [[i18n, i18nMiddlewareMock]]
 			}
 		);
-		let options;
-		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 		h.expect(
 			baseTemplate({ allowHalf: true, initialValue }, options).setProperty(
 				'@radioGroup',
@@ -405,8 +396,7 @@ describe('Rate', () => {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
 		h.trigger('@root', 'onpointerenter');
-		let options;
-		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 		h.expect(baseTemplate(undefined, options));
 
 		const radios = selectRadio(h);
@@ -432,8 +422,7 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" allowClear={true} onValue={onValue} />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		let options;
-		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 		h.expect(baseTemplate(undefined, options));
 		h.trigger('@radioGroup', 'onValue', '2');
 		sinon.assert.calledWithExactly(onValue, 2);
@@ -457,8 +446,7 @@ describe('Rate', () => {
 		const h = harness(() => <Rate name="rate" allowHalf onValue={onValue} />, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
-		let options;
-		h.trigger('@radioGroup', (node: any) => (options = node.properties.options) && undefined);
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
 		h.expect(baseTemplate({ allowHalf: true }, options));
 		h.trigger('@radioGroup', 'onValue', '1.5');
 		sinon.assert.calledWithExactly(onValue, 1.5);
