@@ -27,7 +27,7 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
-					title: () => 'title'
+					title: 'title'
 				}}
 			</Header>
 		));
@@ -38,8 +38,8 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
-					title: () => 'title',
-					leading: () => 'leading'
+					title: 'title',
+					leading: 'leading'
 				}}
 			</Header>
 		));
@@ -53,8 +53,8 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
-					title: () => 'title',
-					trailing: () => 'trailing'
+					title: 'title',
+					trailing: 'trailing'
 				}}
 			</Header>
 		));
@@ -68,7 +68,7 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
-					title: () => 'title'
+					title: 'title'
 				}}
 			</Header>
 		));
@@ -80,8 +80,23 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header>
 				{{
-					title: () => 'title',
-					actions: () => ['action']
+					title: 'title',
+					actions: ['action']
+				}}
+			</Header>
+		));
+		const testTemplate = baseTemplate.replaceChildren('@actions', () => [
+			<div classes={classes.action}>action</div>
+		]);
+		h.expect(testTemplate);
+	});
+
+	it('Renders a single action element', () => {
+		const h = harness(() => (
+			<Header>
+				{{
+					title: 'title',
+					actions: 'action'
 				}}
 			</Header>
 		));
@@ -95,7 +110,7 @@ describe('HeaderToolbar', () => {
 		const h = harness(() => (
 			<Header sticky>
 				{{
-					title: () => 'title'
+					title: 'title'
 				}}
 			</Header>
 		));

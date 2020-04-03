@@ -8,8 +8,8 @@ export default factory(function Basic() {
 	return (
 		<Header>
 			{{
-				title: () => 'My App',
-				actions: () => [
+				title: 'My App',
+				actions: [
 					<Link to="#foo">Foo</Link>,
 					<Link to="#bar">Bar</Link>,
 					<Link to="#baz">Baz</Link>

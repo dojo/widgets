@@ -9,9 +9,9 @@ export default factory(function Basic() {
 	return (
 		<Header>
 			{{
-				leading: () => <Icon type="barsIcon" />,
-				title: () => 'My App',
-				actions: () => [
+				leading: <Icon type="barsIcon" />,
+				title: 'My App',
+				actions: [
 					<Link to="#foo">Foo</Link>,
 					<Link to="#bar">Bar</Link>,
 					<Link to="#baz">Baz</Link>

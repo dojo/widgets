@@ -10,13 +10,13 @@ export interface HeaderProperties {
 
 export type HeaderChildren = {
 	/** Renderer for leading elements like icons */
-	leading?(): RenderResult;
+	leading?: RenderResult;
 	/** Renderer for the header title */
-	title(): RenderResult;
+	title: RenderResult;
 	/** Renderer for header actions like links */
-	actions?(): RenderResult;
+	actions?: RenderResult;
 	/** Renderer for trailing elements like search inputs */
-	trailing?(): RenderResult;
+	trailing?: RenderResult;
 };
 
 const factory = create({ theme })
@@ -27,27 +27,25 @@ export const Header = factory(function Header({ children, properties, middleware
 	const classes = theme.classes(css);
 	const { sticky } = properties();
 	const { actions, leading, title, trailing } = children()[0];
-	const actionElements = actions && actions();
 
 	return (
 		<header key="header" classes={[theme.variant(), sticky ? classes.spacer : undefined]}>
 			<div classes={[classes.root, sticky && classes.sticky]} key="root">
 				<div classes={classes.row}>
 					<div classes={classes.primary} key="primary">
-						{leading && <div classes={classes.leading}>{leading()}</div>}
+						{leading && <div classes={classes.leading}>{leading}</div>}
 						<div classes={classes.title} key="title">
-							{title && title()}
+							{title && title}
 						</div>
 					</div>
 					<div classes={classes.secondary} key="secondary">
 						<nav classes={classes.actions} key="actions">
 							{actions &&
-								(Array.isArray(actionElements)
-									? actionElements
-									: [actionElements]
-								).map((action) => <div classes={classes.action}>{action}</div>)}
+								(Array.isArray(actions) ? actions : [actions]).map((action) => (
+									<div classes={classes.action}>{action}</div>
+								))}
 						</nav>
-						{trailing && <div classes={classes.trailing}>{trailing()}</div>}
+						{trailing && <div classes={classes.trailing}>{trailing}</div>}
 					</div>
 				</div>
 			</div>
