@@ -1,4 +1,4 @@
-import { DNode } from '@dojo/framework/core/interfaces';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
@@ -13,8 +13,6 @@ export interface SliderProperties {
 	aria?: { [key: string]: string | null };
 	/** Set the disabled property of the control */
 	disabled?: boolean;
-	/** Adds a <label> element with the supplied text */
-	label?: string;
 	/** Adds the label element after (true) or before (false) */
 	labelAfter?: boolean;
 	/** Hides the label from view while still remaining accessible for screen readers */
@@ -35,8 +33,6 @@ export interface SliderProperties {
 	onOver?(): void;
 	/** Handler for when the value of the widget changes */
 	onValue?(value?: number): void;
-	/** An optional function that returns a string or DNode for custom output format */
-	output?(value: number): DNode;
 	/** If the rendered output should be displayed as a tooltip */
 	outputIsTooltip?: boolean;
 	/** Makes the slider readonly (it may be focused but not changed) */
@@ -59,6 +55,13 @@ export interface SliderProperties {
 	widgetId?: string;
 }
 
+export interface SliderChildren {
+	/** Adds a <label> element with the supplied text */
+	label?: RenderResult;
+	/** An optional function that returns a string or DNode for custom output format */
+	output?(value: number): RenderResult;
+}
+
 export interface SliderICache {
 	value?: number;
 	initialValue?: number;
@@ -68,19 +71,21 @@ const factory = create({
 	theme,
 	focus,
 	icache: createICacheMiddleware<SliderICache>()
-}).properties<SliderProperties>();
+})
+	.properties<SliderProperties>()
+	.children<SliderChildren | undefined>();
 
 export const Slider = factory(function Slider({
 	id,
 	middleware: { theme, focus, icache },
-	properties
+	properties,
+	children
 }) {
 	const {
 		aria = {},
 		disabled,
 		widgetId = `slider-${id}}`,
 		valid,
-		label,
 		labelAfter,
 		labelHidden,
 		max = 100,
@@ -93,7 +98,6 @@ export const Slider = factory(function Slider({
 		vertical = false,
 		verticalHeight = '200px',
 		outputIsTooltip = false,
-		output,
 		theme: themeProp,
 		classes,
 		onOut,
@@ -102,6 +106,7 @@ export const Slider = factory(function Slider({
 		onFocus,
 		onValue
 	} = properties();
+	const [{ output, label } = { output: undefined, label: undefined }] = children();
 
 	const { initialValue = min } = properties();
 	const existingInitialValue = icache.getOrSet('initialValue', min);
@@ -191,7 +196,7 @@ export const Slider = factory(function Slider({
 		</div>
 	);
 
-	const children = [
+	const content = [
 		label ? (
 			<Label
 				theme={themeProp}
@@ -226,7 +231,7 @@ export const Slider = factory(function Slider({
 				fixedCss.rootFixed
 			]}
 		>
-			{labelAfter ? children.reverse() : children}
+			{labelAfter ? content.reverse() : content}
 		</div>
 	);
 });

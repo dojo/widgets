@@ -8,13 +8,11 @@ export default factory(function SliderWithValidityCheck({ middleware: { icache }
 	const value = icache.getOrSet<number>('value', 0);
 	const valid = value < 50;
 	return (
-		<Slider
-			label="Anything over 50 is invalid"
-			min={0}
-			max={100}
-			onValue={(value) => icache.set('value', value)}
-			valid={valid}
-			output={() => (valid ? 'Valid' : 'Invalid')}
-		/>
+		<Slider min={0} max={100} onValue={(value) => icache.set('value', value)} valid={valid}>
+			{{
+				label: 'Anything over 50 is invalid',
+				output: () => (valid ? 'Valid' : 'Invalid')
+			}}
+		</Slider>
 	);
 });

@@ -143,11 +143,14 @@ registerSuite('Slider', {
 					max={60}
 					min={10}
 					name="bar"
-					output={() => 'tribbles'}
 					outputIsTooltip
 					step={5}
 					initialValue={35}
-				/>
+				>
+					{{
+						output: () => 'tribbles'
+					}}
+				</Slider>
 			));
 
 			h.expect(
@@ -247,9 +250,17 @@ registerSuite('Slider', {
 		},
 
 		label() {
-			const h = harness(() => <Slider label="foo" />);
+			const h = harness(() => <Slider>{{ label: 'foo' }}</Slider>);
 
 			h.expect(expected(true));
+		},
+
+		'label after'() {
+			const h = harness(() => <Slider labelAfter={true}>{{ label: 'foo' }}</Slider>);
+
+			const assertion = expected(true);
+			const children = assertion.getChildren('@root');
+			h.expect(assertion.setChildren('@root', () => children.reverse()));
 		},
 
 		'state classes'() {
