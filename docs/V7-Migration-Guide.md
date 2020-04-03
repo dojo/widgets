@@ -167,19 +167,25 @@ Latest example can be found on [widgets.dojo.io/#widget/checkbox/overview](https
 ### dialog
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
+
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+- title
+  - Title is now specified in the child function and not passed as a property.
+- modal
+  - The modal property is now only valid when role="dialog"
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- underlayEnterAnimation
+	- Replaced by themeing `underlayEnter` class.
+- underlayExitAnimation
+  - Replaced by themeing `underlayExit` class.
+- enterAnimation
+  - Replaced by themeing `enter` class
+- exitAnimation
+  - Replaced by themeing `exit` class
 #### Changes in behaviour
+
+Dialog contents, title, and actions are now specified via a child function. Previously, the title was specified via a property and the dialog contents where passed as the children of the Dialog. Dialog actions are nodes that appear below the dialog contents, like cancel / ok buttons.
+
 #### Example of migration from v6 to v7
 
 Latest example can be found on [widgets.dojo.io/#widget/dialog/overview](https://widgets.dojo.io/#widget/dialog/overview)
