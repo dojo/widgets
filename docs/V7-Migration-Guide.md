@@ -745,20 +745,22 @@ Latest example can be found on [widgets.dojo.io/#widget/tab-controller/overview]
 ### text-area
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
+- `label`: string
+	- `<TextArea>` now takes an optional child that will be rendered as its label.
 #### Example of migration from v6 to v7
+
+##### v6 example
+
+```tsx
+<TextArea label="Textarea with label" />
+```
+
+##### v7 example
+
+```tsx
+<TextArea>Textarea with label</TextArea>
+```
 
 Latest example can be found on [widgets.dojo.io/#widget/text-area/overview](https://widgets.dojo.io/#widget/text-area/overview)
 
@@ -766,20 +768,40 @@ Latest example can be found on [widgets.dojo.io/#widget/text-area/overview](http
 ### text-input
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
+- `label`: string
+	- Specifying a label is now done with a `label` key on a child renderer object (see the example below)
+- `leading`: () => DNode
+	- Specifying leading content is now done with a `leading` key on a child renderer object (see the example below)
+	- Since the original property function receives no arguments, the child renderer object expects a static value instead of a function.
+- `trailing`: () => DNode
+	- Specifying trailing content is now done with a `trailing` key on a child renderer object (see the example below)
+	- Since the original property function receives no arguments, the child renderer object expects a static value instead of a function.
 #### Example of migration from v6 to v7
+
+##### v6 example
+
+```tsx
+<TextInput
+	type="text"
+	label="Input Label"
+	value="Initial value"
+	leading={() => <span>A</span>}
+	trailing={() => <span>Z</span>}
+/>
+```
+
+##### v7 example
+
+```tsx
+<TextInput type="text" value="Initial value">
+	{{
+		label: 'Input Label',
+		leading: <span>A</span>,
+		trailing: <span>Z</span>
+	}}
+</TextInput>
+```
 
 Latest example can be found on [widgets.dojo.io/#widget/text-input/overview](https://widgets.dojo.io/#widget/text-input/overview)
 
