@@ -75,7 +75,7 @@ const selectRadio = (h: HarnessAPI, value?: string, checkedStub?: SinonStub) => 
 	);
 };
 const createGroup = (integer: number, selected: boolean, children: RenderResult) => (
-	<div key={integer} classes={[css.integer, selected ? css.selectedInteger : null]}>
+	<div key={integer} classes={[css.integer, css.star, selected ? css.selectedInteger : null]}>
 		{children}
 	</div>
 );
@@ -127,6 +127,7 @@ describe('Rate', () => {
 				classes={[
 					undefined,
 					css.root,
+					css.hoverable,
 					properties.initialValue === undefined ? css.unselected : null,
 					properties.allowHalf ? css.halfCharacters : null,
 					properties.readOnly ? css.readOnly : null,

@@ -1,17 +1,19 @@
 .iconIcon {
 	composes: icon from './icon.m.css';
-	composes: iconIcon from '../default/rate.m.css';
 }
 
 .root .iconIcon {
 	transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-	color: var(--mdc-disabled-color);
 }
 
-.integer {
-	composes: integer from '../default/rate.m.css';
-}
-
-.integer:hover .iconIcon {
+.star:hover .iconIcon {
 	transform: scale(1.2);
+}
+
+.root .filled {
+	color: #ffb400;
+}
+
+.root .empty {
+	color: var(--mdc-disabled-color);
 }

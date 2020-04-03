@@ -9,6 +9,9 @@
 	color: var(--color-dark);
 }
 
+.star {
+}
+
 .character ~ .character {
 	overflow: hidden;
 	position: absolute;
@@ -49,63 +52,59 @@
 	overflow: hidden;
 }
 
-.iconIcon {
-	composes: icon from './icon.m.css';
-}
-
 /* fill all icons */
-.filled {
+.on {
 	display: inline;
 }
-.empty {
+.off {
 	display: none;
 }
 
 /* empty icons if there is no selection */
-.unselected .filled {
+.unselected .on {
 	display: none;
 }
-.unselected .empty {
+.unselected .off {
 	display: inline;
 }
 
 /* empty icons after the selected icon */
-.selectedInteger ~ .integer .filled {
+.selectedInteger ~ .integer .on {
 	display: none;
 }
-.selectedInteger ~ .integer .empty {
+.selectedInteger ~ .integer .off {
 	display: inline;
 }
 
 /* empty icon segments after the selected one */
-.selectedInteger .selectedCharacter ~ .character .filled {
+.selectedInteger .selectedCharacter ~ .character .on {
 	display: none;
 }
-.selectedInteger .selectedCharacter ~ .character .empty {
+.selectedInteger .selectedCharacter ~ .character .off {
 	display: inline;
 }
 
 /* fill all icons when the widget is hovered */
-.root:hover .integer .filled {
+.hoverable:hover .integer .on {
 	display: inline;
 }
-.root:hover .integer .empty {
+.hoverable:hover .integer .off {
 	display: none;
 }
 
 /* empty all icons after the hovered icon */
-.integer:hover ~ .integer .filled {
+.integer:hover ~ .integer .on {
 	display: none;
 }
-.integer:hover ~ .integer .empty {
+.integer:hover ~ .integer .off {
 	display: inline;
 }
 
 /* empty icon segments after the hovered one */
-.integer .character:hover ~ .character .filled {
+.integer .character:hover ~ .character .on {
 	display: none;
 }
-.integer .character:hover ~ .character .empty {
+.integer .character:hover ~ .character .off {
 	display: inline;
 }
 

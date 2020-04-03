@@ -118,8 +118,8 @@ export const Rate = factory(function Rate({
 			<span key="radioLabel" classes={baseCss.visuallyHidden}>
 				{format('starLabels', { rating: value })}
 			</span>
-			<span classes={themeCss.filled}>{renderIcon(true, value)}</span>
-			<span classes={themeCss.empty}>{renderIcon(false, value)}</span>
+			<span classes={[themeCss.on, themeCss.filled]}>{renderIcon(true, value)}</span>
+			<span classes={[themeCss.off, themeCss.empty]}>{renderIcon(false, value)}</span>
 		</virtual>
 	);
 
@@ -167,6 +167,7 @@ export const Rate = factory(function Rate({
 			key={integer}
 			classes={[
 				themeCss.integer,
+				themeCss.star,
 				selected && Math.ceil(selected) === integer ? themeCss.selectedInteger : null
 			]}
 		>
@@ -207,6 +208,7 @@ export const Rate = factory(function Rate({
 			classes={[
 				theme.variant(),
 				themeCss.root,
+				themeCss.hoverable,
 				selected === undefined ? themeCss.unselected : null,
 				allowHalf ? themeCss.halfCharacters : null,
 				readOnly ? themeCss.readOnly : null,
