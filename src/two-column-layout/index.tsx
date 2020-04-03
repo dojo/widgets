@@ -31,16 +31,15 @@ export const TwoColumnLayout = factory(function({
 		LARGE: breakpoint
 	}) || { breakpoint: 'LARGE' };
 	const shouldCollapse = currentBreakpoint === 'SMALL';
-	const fixedClasses = theme.classes(fixedCss);
 	const classes = theme.classes(css);
 	const { leading, trailing } = children()[0];
 	return (
-		<div key="root" classes={[theme.variant(), fixedClasses.root, classes.root]}>
+		<div key="root" classes={[theme.variant(), fixedCss.root, classes.root]}>
 			<div
 				key="leading"
 				classes={[
-					bias === 'leading' && fixedClasses.biased,
-					bias === undefined && !shouldCollapse && fixedClasses.even,
+					bias === 'leading' && fixedCss.biased,
+					bias === undefined && !shouldCollapse && fixedCss.even,
 					bias === 'trailing' && shouldCollapse && baseCss.visuallyHidden,
 					bias === 'trailing' && !shouldCollapse && classes.small,
 					classes.column
@@ -51,8 +50,8 @@ export const TwoColumnLayout = factory(function({
 			<div
 				key="trailing"
 				classes={[
-					bias === 'trailing' && fixedClasses.biased,
-					bias === undefined && !shouldCollapse && fixedClasses.even,
+					bias === 'trailing' && fixedCss.biased,
+					bias === undefined && !shouldCollapse && fixedCss.even,
 					(bias === 'leading' || bias === undefined) &&
 						shouldCollapse &&
 						baseCss.visuallyHidden,
