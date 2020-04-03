@@ -11,40 +11,42 @@ const App = factory(function({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<CheckboxGroup
-				label="going?"
 				name="custom"
 				options={[{ value: 'yes' }, { value: 'no' }, { value: 'maybe' }]}
 				onValue={(value) => {
 					set('custom', value);
 				}}
 			>
-				{(name, checkboxGroup, options) => {
-					return options.map(({ value, label }) => {
-						const { checked } = checkboxGroup(value);
-						return (
-							<virtual>
-								<span>I'm custom!</span>
-								<Checkbox
-									name={name}
-									value={value}
-									checked={checked()}
-									onValue={checked}
-								>
-									{label || value}
-								</Checkbox>
-								<hr
-									styles={{
-										borderColor: '#d6dde2',
-										borderStyle: 'solid',
-										borderWidth: '1px 0 0',
-										height: '0',
-										margin: '0',
-										overflow: 'hidden'
-									}}
-								/>
-							</virtual>
-						);
-					});
+				{{
+					label: 'going?',
+					checkboxes: (name, checkboxGroup, options) => {
+						return options.map(({ value, label }) => {
+							const { checked } = checkboxGroup(value);
+							return (
+								<virtual>
+									<span>I'm custom!</span>
+									<Checkbox
+										name={name}
+										value={value}
+										checked={checked()}
+										onValue={checked}
+									>
+										{label || value}
+									</Checkbox>
+									<hr
+										styles={{
+											borderColor: '#d6dde2',
+											borderStyle: 'solid',
+											borderWidth: '1px 0 0',
+											height: '0',
+											margin: '0',
+											overflow: 'hidden'
+										}}
+									/>
+								</virtual>
+							);
+						});
+					}
 				}}
 			</CheckboxGroup>
 			<pre>{`${get('custom')}`}</pre>
