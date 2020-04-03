@@ -37,12 +37,11 @@ describe('CheckboxGroup', () => {
 
 	it('renders with a label', () => {
 		const h = harness(() => (
-			<CheckboxGroup
-				onValue={noop}
-				name="test"
-				label="test label"
-				options={[{ value: 'cat' }]}
-			/>
+			<CheckboxGroup onValue={noop} name="test" options={[{ value: 'cat' }]}>
+				{{
+					label: 'test label'
+				}}
+			</CheckboxGroup>
 		));
 		const labelTemplate = template.setChildren('@root', () => [
 			<legend classes={css.legend}>test label</legend>,
@@ -78,20 +77,18 @@ describe('CheckboxGroup', () => {
 
 	it('renders with custom renderer', () => {
 		const h = harness(() => (
-			<CheckboxGroup
-				onValue={noop}
-				name="test"
-				label="custom render label"
-				options={[{ value: 'cat' }]}
-			>
-				{() => {
-					return [
-						<span>custom label</span>,
-						<Checkbox name="test" value="cat" checked={undefined} onValue={noop}>
-							cat
-						</Checkbox>,
-						<hr />
-					];
+			<CheckboxGroup onValue={noop} name="test" options={[{ value: 'cat' }]}>
+				{{
+					label: 'custom render label',
+					checkboxes: () => {
+						return [
+							<span>custom label</span>,
+							<Checkbox name="test" value="cat" checked={undefined} onValue={noop}>
+								cat
+							</Checkbox>,
+							<hr />
+						];
+					}
 				}}
 			</CheckboxGroup>
 		));

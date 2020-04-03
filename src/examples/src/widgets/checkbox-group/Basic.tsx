@@ -10,13 +10,16 @@ const App = factory(function({ properties, middleware: { icache } }) {
 	return (
 		<virtual>
 			<CheckboxGroup
-				label="pets"
 				name="standard"
 				options={[{ value: 'cat' }, { value: 'dog' }, { value: 'fish' }]}
 				onValue={(value) => {
 					set('standard', value);
 				}}
-			/>
+			>
+				{{
+					label: 'pets'
+				}}
+			</CheckboxGroup>
 			<pre>{`${get('standard')}`}</pre>
 		</virtual>
 	);
