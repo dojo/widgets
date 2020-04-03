@@ -49,6 +49,7 @@
 			"src/tab-controller",
 			"src/text-area",
 			"src/text-input",
+			"src/three-column-layout",
 			"src/time-picker",
 			"src/title-pane",
 			"src/tooltip",
