@@ -13,10 +13,10 @@ export interface CardProperties {
 }
 
 export interface CardChildren {
-	header?: () => RenderResult;
-	content?: () => RenderResult;
-	actionButtons?: () => RenderResult;
-	actionIcons?: () => RenderResult;
+	header?: RenderResult;
+	content?: RenderResult;
+	actionButtons?: RenderResult;
+	actionIcons?: RenderResult;
 }
 
 const factory = create({ theme })
@@ -32,7 +32,7 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 		<div key="root" classes={[theme.variant(), themeCss.root]}>
 			{header && (
 				<div key="header" classes={themeCss.header}>
-					{header()}
+					{header}
 				</div>
 			)}
 			<div
@@ -58,12 +58,12 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 						{subtitle && <h3 classes={themeCss.subtitle}>{subtitle}</h3>}
 					</div>
 				)}
-				{content && <div classes={themeCss.contentWrapper}>{content()}</div>}
+				{content && <div classes={themeCss.contentWrapper}>{content}</div>}
 			</div>
 			{(actionButtons || actionIcons) && (
 				<div key="actions" classes={themeCss.actions}>
-					{actionButtons && <div classes={themeCss.actionButtons}>{actionButtons()}</div>}
-					{actionIcons && <div classes={themeCss.actionIcons}>{actionIcons()}</div>}
+					{actionButtons && <div classes={themeCss.actionButtons}>{actionButtons}</div>}
+					{actionIcons && <div classes={themeCss.actionIcons}>{actionIcons}</div>}
 				</div>
 			)}
 		</div>

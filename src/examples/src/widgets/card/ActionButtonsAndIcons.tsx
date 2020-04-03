@@ -12,15 +12,15 @@ export default factory(function ActionButtonsAndIcons({ middleware: { icache } }
 		<div styles={{ width: '400px' }}>
 			<Card title="Hello, World">
 				{{
-					content: () => <span>Lorem ipsum</span>,
-					actionButtons: () => (
+					content: <span>Lorem ipsum</span>,
+					actionButtons: (
 						<Button onClick={() => icache.set('clickCount', clickCount + 1)}>
 							{clickCount === 0
 								? 'Action'
 								: `Clicked: ${clickCount} time${clickCount > 1 ? 's' : ''}`}
 						</Button>
 					),
-					actionIcons: () => (
+					actionIcons: (
 						<virtual>
 							<Icon type="secureIcon" />
 							<Icon type="downIcon" />

@@ -8,7 +8,7 @@ export default factory(function Basic() {
 		<div styles={{ width: '400px' }}>
 			<Card title="Hello, World">
 				{{
-					content: () => <span>Lorem ipsum</span>
+					content: <span>Lorem ipsum</span>
 				}}
 			</Card>
 		</div>

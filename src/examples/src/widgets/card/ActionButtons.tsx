@@ -11,14 +11,14 @@ export default factory(function ActionButtons({ middleware: { icache } }) {
 		<div styles={{ width: '400px' }}>
 			<Card title="Hello, World">
 				{{
-					actionButtons: () => (
+					actionButtons: (
 						<Button onClick={() => icache.set('clickCount', clickCount + 1)}>
 							{clickCount === 0
 								? 'Action'
 								: `Clicked: ${clickCount} time${clickCount > 1 ? 's' : ''}`}
 						</Button>
 					),
-					content: () => <span>Lorem ipsum</span>
+					content: <span>Lorem ipsum</span>
 				}}
 			</Card>
 		</div>

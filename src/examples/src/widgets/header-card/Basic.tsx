@@ -7,13 +7,10 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<div styles={{ width: '400px' }}>
-			<HeaderCard
-				title="Hello, World"
-				subtitle="Lorem ipsum"
-				avatar={() => <Avatar>D</Avatar>}
-			>
+			<HeaderCard title="Hello, World" subtitle="Lorem ipsum">
 				{{
-					content: () => <p styles={{ margin: '0' }}>Lorem ipsum</p>
+					avatar: <Avatar>D</Avatar>,
+					content: <p styles={{ margin: '0' }}>Lorem ipsum</p>
 				}}
 			</HeaderCard>
 		</div>

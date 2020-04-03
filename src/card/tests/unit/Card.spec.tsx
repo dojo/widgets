@@ -36,7 +36,7 @@ describe('Card', () => {
 			const h = harness(() => (
 				<Card>
 					{{
-						header: () => 'Hello, World'
+						header: 'Hello, World'
 					}}
 				</Card>
 			));
@@ -56,7 +56,7 @@ describe('Card', () => {
 			const h = harness(() => (
 				<Card>
 					{{
-						content: () => 'Hello, World'
+						content: 'Hello, World'
 					}}
 				</Card>
 			));
@@ -83,7 +83,7 @@ describe('Card', () => {
 			const h = harness(() => (
 				<Card title="Hello, World" subtitle="this is a test">
 					{{
-						content: () => 'test'
+						content: 'test'
 					}}
 				</Card>
 			));
@@ -138,7 +138,7 @@ describe('Card', () => {
 			const h = harness(() => (
 				<Card>
 					{{
-						actionButtons: () => <Button>test</Button>
+						actionButtons: <Button>test</Button>
 					}}
 				</Card>
 			));
@@ -154,7 +154,7 @@ describe('Card', () => {
 			const h = harness(() => (
 				<Card>
 					{{
-						actionIcons: () => <Icon type="upIcon" />
+						actionIcons: <Icon type="upIcon" />
 					}}
 				</Card>
 			));
@@ -170,8 +170,8 @@ describe('Card', () => {
 			const h = harness(() => (
 				<Card>
 					{{
-						actionButtons: () => <Button>test</Button>,
-						actionIcons: () => <Icon type="upIcon" />
+						actionButtons: <Button>test</Button>,
+						actionIcons: <Icon type="upIcon" />
 					}}
 				</Card>
 			));
@@ -197,10 +197,10 @@ describe('Card', () => {
 				square
 			>
 				{{
-					header: () => 'Header Content',
-					content: () => 'Content',
-					actionButtons: () => <Button>test</Button>,
-					actionIcons: () => <Icon type="upIcon" />
+					header: 'Header Content',
+					content: 'Content',
+					actionButtons: <Button>test</Button>,
+					actionIcons: <Icon type="upIcon" />
 				}}
 			</Card>
 		));
