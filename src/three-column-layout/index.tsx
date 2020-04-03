@@ -7,15 +7,24 @@ import * as baseCss from '../common/styles/base.m.css';
 import * as css from '../theme/default/three-column-layout.m.css';
 
 export interface ThreeColumnLayoutProperties {
+	/** The breakpoint at which one column should collapse. Defaults to 1024px.
+	 * The column that collapses will be the trailing column by default or the column that is not specified by the
+	 * `bias` property if it is provided
+	 */
 	twoColumnBreakpoint?: number;
+	/** The breakpoint at which both side columns will collapse. Defaults to 600px. */
 	oneColumnBreakpoint?: number;
+	/** Determines which column is more important, and will remain at the `twoColumnBreakpoint`. Defaults to `'leading'`. */
 	bias?: 'leading' | 'trailing';
 }
 
 export interface ThreeColumnLayoutChildren {
+	/** The content for the leading column */
 	leading: RenderResult;
-	trailing: RenderResult;
+	/** The content for the center column */
 	center: RenderResult;
+	/** The content for the trailing column */
+	trailing: RenderResult;
 }
 
 const factory = create({ breakpoint, theme })
@@ -45,7 +54,7 @@ export const ThreeColumnLayout = factory(function({
 		currentBreakpoint === 'SMALL' || (currentBreakpoint === 'MEDIUM' && bias === 'leading');
 
 	return (
-		<div classes={[theme.variant(), fixedCss.root, classes.root]}>
+		<div key="root" classes={[theme.variant(), fixedCss.root, classes.root]}>
 			<div
 				key="leading"
 				classes={[classes.leading, shouldCollapseLeading && baseCss.visuallyHidden]}

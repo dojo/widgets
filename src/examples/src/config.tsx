@@ -172,6 +172,7 @@ import PlaceholderTextInput from './widgets/text-input/Placeholder';
 import LeadingTrailingTextInput from './widgets/text-input/LeadingTrailing';
 import ValidatedTextInput from './widgets/text-input/Validated';
 import TextInputWithLabel from './widgets/text-input/WithLabel';
+import BasicThreeColumnLayout from './widgets/three-column-layout/Basic';
 import TwelveHourTimePicker from './widgets/time-picker/12HourTime';
 import BasicTimePicker from './widgets/time-picker/Basic';
 import DisabledTimePicker from './widgets/time-picker/Disabled';
@@ -1400,6 +1401,14 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicTextInput
+				}
+			}
+		},
+		'three-column-layout': {
+			overview: {
+				example: {
+					filename: 'BasicThreeColumnLayout',
+					module: BasicThreeColumnLayout
 				}
 			}
 		},
