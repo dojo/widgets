@@ -8,6 +8,7 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '../middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
 import validity from '@dojo/framework/core/middleware/validity';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export interface TextAreaProperties {
 	/** Custom aria attributes */
@@ -20,8 +21,6 @@ export interface TextAreaProperties {
 	disabled?: boolean;
 	/** Renders helper text to the user */
 	helperText?: string;
-	/** Adds a <label> element with the supplied text */
-	label?: string;
 	/** Hides the label from view while still remaining accessible for screen readers */
 	labelHidden?: boolean;
 	/** Maximum number of characters allowed in the input */
@@ -87,11 +86,14 @@ const factory = create({
 	theme,
 	focus,
 	validity
-}).properties<TextAreaProperties>();
+})
+	.properties<TextAreaProperties>()
+	.children<RenderResult | undefined>();
 export const TextArea = factory(function TextArea({
 	id,
 	middleware: { icache, theme, focus, validity },
-	properties
+	properties,
+	children
 }) {
 	const themeCss = theme.classes(css);
 
@@ -151,7 +153,6 @@ export const TextArea = factory(function TextArea({
 		columns = 20,
 		disabled,
 		widgetId = `textarea-${id}`,
-		label,
 		maxLength,
 		minLength,
 		name,
@@ -182,6 +183,7 @@ export const TextArea = factory(function TextArea({
 
 	const computedHelperText = (valid === false && message) || helperText;
 	const inputFocused = focus.isFocused('input');
+	const [label] = children();
 
 	return (
 		<div key="root" classes={[theme.variant(), themeCss.root]}>

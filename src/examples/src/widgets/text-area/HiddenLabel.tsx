@@ -4,5 +4,5 @@ import TextArea from '@dojo/widgets/text-area';
 const factory = create();
 
 export default factory(function HiddenLabel() {
-	return <TextArea label="Hidden label" labelHidden={true} />;
+	return <TextArea labelHidden={true}>Hidden label</TextArea>;
 });

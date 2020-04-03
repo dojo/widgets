@@ -212,7 +212,7 @@ registerSuite('Textarea', {
 		},
 
 		label() {
-			const h = harness(() => <TextArea label="foo" />);
+			const h = harness(() => <TextArea>foo</TextArea>);
 
 			h.expect(() => expected(true));
 		},

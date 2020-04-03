@@ -4,5 +4,5 @@ import TextArea from '@dojo/widgets/text-area';
 const factory = create();
 
 export default factory(function Label() {
-	return <TextArea label="Textarea with label" />;
+	return <TextArea>Textarea with label</TextArea>;
 });

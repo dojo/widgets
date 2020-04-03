@@ -4,5 +4,5 @@ import TextArea from '@dojo/widgets/text-area';
 const factory = create();
 
 export default factory(function HelperText() {
-	return <TextArea label="Has helper text" helperText="Hi there, enter some text" />;
+	return <TextArea helperText="Hi there, enter some text">Has helper text</TextArea>;
 });
