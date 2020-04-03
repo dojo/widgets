@@ -16,15 +16,18 @@ describe('TitlePane', () => {
 	function getTemplate({
 		closeable = true,
 		headingLevel,
-		initialOpen: open
+		initialOpen,
+		open
 	}: TitlePaneProperties = {}) {
+		const isOpen = open || initialOpen;
+
 		return assertationTemplate(() => {
 			return (
 				<div
 					classes={[
 						undefined,
 						themeCss.root,
-						open ? themeCss.open : null,
+						isOpen ? themeCss.open : null,
 						fixedCss.rootFixed
 					]}
 				>
@@ -40,7 +43,7 @@ describe('TitlePane', () => {
 					>
 						<button
 							aria-controls="test-content"
-							aria-expanded={`${open}`}
+							aria-expanded={open === false ? 'false' : `${isOpen}`}
 							disabled={!closeable}
 							classes={[fixedCss.titleButtonFixed, themeCss.titleButton]}
 							focus={false}
@@ -49,13 +52,13 @@ describe('TitlePane', () => {
 							type="button"
 						>
 							<span classes={themeCss.arrow}>
-								<Icon type={open ? 'downIcon' : 'rightIcon'} theme={undefined} />
+								<Icon type={isOpen ? 'downIcon' : 'rightIcon'} theme={undefined} />
 							</span>
 							title
 						</button>
 					</div>
 					<div
-						aria-hidden={open ? null : 'true'}
+						aria-hidden={isOpen ? null : 'true'}
 						aria-labelledby="test-title"
 						classes={[
 							themeCss.content,
@@ -65,7 +68,7 @@ describe('TitlePane', () => {
 						id="test-content"
 						key="content"
 						styles={{
-							marginTop: open ? '0px' : `-0px`
+							marginTop: isOpen ? '0px' : `-0px`
 						}}
 					>
 						content
@@ -195,5 +198,20 @@ describe('TitlePane', () => {
 
 		h.trigger('@title-button', 'onclick', { stopPropagation: noop });
 		assert.isTrue(onClose.called);
+	});
+
+	it('allows partial control', () => {
+		const getHarness = (open: boolean) =>
+			harness(() => (
+				<TitlePane open={open}>
+					{{
+						title: 'title',
+						content: 'content'
+					}}
+				</TitlePane>
+			));
+
+		getHarness(true).expect(getTemplate({ open: true }));
+		getHarness(false).expect(getTemplate({ open: false }));
 	});
 });
