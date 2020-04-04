@@ -69,7 +69,7 @@ Many of our form widgets are now capable of validating themselves. In many cases
 #### Changes in behaviour
 The `Accordion` widget is now uncontrolled by default, meaning it manages its own child pane open state internally. Child panes can use an `initialOpen` property to set individual initial open state. Child panes can also use `onOpen` and `onClose` properties to detect when this open state changes.
 
-The `Accordion` now uses a child renderer function to determine its child panes. This means that an function is passed as the widget's only child, and that function receives `onOpen`, `onClose`, and `open` arguments to be used as properties each returned pane. Child panes should be `Pane` widgets, a convenience wrapper around `TitlePane` with features specific to `Accordion`.
+The `Accordion` now uses a child renderer function to determine its child panes. This means that a function is passed as the widget's only child, and that function receives `onOpen`, `onClose`, and `open` arguments to be used as properties each returned pane. Child panes should be `Pane` widgets, a convenience wrapper around `TitlePane` with features specific to `Accordion`.
 
 #### Example of migration from v6 to v7
 
