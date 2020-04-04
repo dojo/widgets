@@ -39,25 +39,74 @@ Many of our form widgets are now capable of validating themselves. In many cases
 
 ## Widget Changes
 
-### accordion-pane
+### accordion
+- `Accordion` used to be named `AccordionPane`.
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+
+##### Added properties
+- `exclusive?: boolean`
+	- This property only allows one open child pane at a time.
+
+#### Changed properties
+- `children: AccordionPaneChildren`
+	- This property no longer accepts `TitlePane` widgets.
+	- This property accepts a renderer function that returns child panes.
+	- Child panes use renderer function arguments as properties.
+
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- `onRequestClose?(key: string): void`
+	- This property was removed altogether.
+	- Child panes can use `onClose` instead.
+- `onRequestOpen?(key: string): void`
+	- This property was removed altogether.
+	- Child panes can use `onOpen` instead.
+- `openKeys?: string[]`
+	- This property was removed altogether.
+	- Child pane open state is now internally managed.
+	- Child panes can use `initialOpen` to set initial open state.
+
 #### Changes in behaviour
+The `Accordion` widget is now uncontrolled by default, meaning it manages its own child pane open state internally. Child panes can use an `initialOpen` property to set individual initial open state. Child panes can also use `onOpen` and `onClose` properties to detect when this open state changes.
+
+The `Accordion` now uses a child renderer function to determine its child panes. This means that a function is passed as the widget's only child, and that function receives `onOpen`, `onClose`, and `open` arguments to be used as properties each returned pane. Child panes should be `Pane` widgets, a convenience wrapper around `TitlePane` with features specific to `Accordion`.
+
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/accordion-pane/overview](https://widgets.dojo.io/#widget/accordion-pane/overview)
+##### v6 Example
+```tsx
+<AccordionPane
+	onRequestClose={key => icache.set('keys', icache.get('keys').filter(k !== key))}
+	onRequestOpen={key => icache.set('keys', [...icache.get('keys'), key])}
+	openKeys={icache.get('keys')}
+>
+	<TitlePane
+		title="Title"
+		key="pane"
+	>
+		Content
+	</TitlePane>
+</AccordionPane>
+```
+
+##### v7 Example
+```tsx
+<Accordion>
+	{(onOpen, onClose, open) => ([
+		<Pane
+			key="pane"
+			onOpen={onOpen('pane')}
+			onClose={onClose('pane')}
+			open={open('pane')}
+		>
+			{{
+				title: 'Title',
+				content: 'Content'
+			}}
+		</Pane>
+	])}
+</Accordion>
+```
 
 
 ### button
@@ -213,24 +262,68 @@ Latest example can be found on [widgets.dojo.io/#widget/global-event/overview](h
 
 
 ### header
-- used to be toolbar
+- The `Header` used to be named `Toolbar`.
+
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
+
+##### Added properties
+- `sticky?: boolean`
+	- This property fixed the header to the top of a view.
+
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+- `children: HeaderChildren`
+	- This property no longer accepts `DNode` actions.
+	- This property accepts a child renderer object.
+	- Leading, trailing, title, and actions are set using this renderer.
+
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- `align?: Align`
+	- This property was removed altogether.
+	- Alignment functionality is no longer supported.
+- `collapseWidth?: number`
+	- This property was removed altogether.
+	- Collapse functionality is no longer supported.
+- `onCollapse?(collapsed: boolean): void`
+	- This property was removed altogether.
+	- Collapse functionality is no longer supported.
+- `heading?: string`
+	- This property was removed altogether.
+	- The header title is now set using a child renderer.
+
 #### Changes in behaviour
+The `Header` now uses a child renderer object to determine its leading content, trailing content, title, and action items. This means that an object is passed as the widget's only child with keys for `leading` , `trailing`, `title`, and `actions`, each of which return elements to render accordingly.
+
+The `Header` no longer auto-collapses action items into a `SlidePane`. Instead, to be more aligned with future Dojo application architecture, media-based middleware can be used to responsively change the `Header` out for a different widget depending on available space.
+
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/header/overview](https://widgets.dojo.io/#widget/header/overview)
+##### v6 Example
+```tsx
+<Toolbar
+	align={Align.right}
+	collapseWidth={700}
+	heading="Title"
+	onCollapse={() => { console.log('collapsed'); }}
+>
+	<a href="#foo">Foo</a>
+	<a href="#bar">Bar</a>
+	<a href="#baz">Baz</a>
+</Toolbar>
+```
+
+##### v7 Example
+```tsx
+<Header>
+	{{
+		title: () => 'Title',
+		actions: () => [
+			<Link to="#foo">Foo</Link>,
+			<Link to="#bar">Bar</Link>,
+			<Link to="#baz">Baz</Link>
+		]
+	}}
+</Header>
+```
 
 
 ### label
@@ -380,23 +473,37 @@ Latest example can be found on [widgets.dojo.io/#widget/select/overview](https:/
 ### slide-pane
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+
+##### Added properties
+- `aria?: { [key: string]: string | null }`
+	- This property is used to pass custom `aria-*` attributes DOM nodes.
+
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- `onOpen?(): void`
+	- This property was removed altogether.
+	- This functionality is no longer supported.
+
 #### Changes in behaviour
+The `SlidePane` no longer supports an `onOpen` property and instead only uses `onRequestClose` to update externally-managed open state.
+
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/slide-pane/overview](https://widgets.dojo.io/#widget/slide-pane/overview)
+##### v6 Example
+```tsx
+<SlidePane
+	open={icache.get('open')}
+	onOpen={() => icache.set('open', false)}
+	onRequestClose={() => icache.set('open', false)}
+/>
+```
 
+##### v7 Example
+```tsx
+<SlidePane
+	open={icache.get('open')}
+	onRequestClose={() => icache.set('open', false)}
+/>
+```
 
 ### slider
 
@@ -555,23 +662,56 @@ Latest example can be found on [widgets.dojo.io/#widget/time-picker/overview](ht
 ### title-pane
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
+
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+- `onClose?(): void`
+	- This property replaces `onRequestClose`.
+	- This property receives no arguments.
+- `onOpen?(): void`
+	- This property replaces `onRequestOpen`.
+	- This property receives no arguments.
+- `initialOpen?: boolean`
+	- This property sets initial open state.
+	- This widget then manages its open state internally.
+	- The `open` property can alternatively be used for full control.
+- `children: TitlePaneChildren`
+	- This property no longer accepts `DNode` content.
+	- This property accepts a child renderer object.
+	- Pane title and content are set using this renderer.
+
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- `title: DNode`
+	- This property was removed altogether.
+	- Pane titles are now set using a child renderer.
+
 #### Changes in behaviour
+The `TitlePane` widget is now uncontrolled by default, meaning it manages its own open state internally. An `initialOpen` property can be used to set initial open state, and `onOpen` and `onClose` properties can be used to detect when this open state changes. If full-control is needed to support complex use-cases - such as restrictions around opening or closing - the `open` property can be used instead of `initialOpen` to mandate open state.
+
+The `TitlePane` now uses a child renderer object to determine its title and content. This means that an object is passed as the widget's only child with keys for `title` and `content`, each of which return elements to render accordingly.
+
 #### Example of migration from v6 to v7
 
-Latest example can be found on [widgets.dojo.io/#widget/title-pane/overview](https://widgets.dojo.io/#widget/title-pane/overview)
+##### v6 Example
+```tsx
+<TitlePane
+	title="Title"
+	onRequestClose={() => icache.set('open', false)}
+	onRequestOpen={() => icache.set('open', true)}
+	open={icache.get('open')}
+>
+	Content
+</TitlePane>
+```
 
+##### v7 Example
+```tsx
+<TitlePane>
+	{{
+		title: 'Title',
+		content: 'Content'
+	}}
+</TitlePane>
+```
 
 ### tooltip
 
