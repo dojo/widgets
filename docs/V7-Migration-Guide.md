@@ -221,6 +221,12 @@ Latest example can be found on [widgets.dojo.io/#widget/calendar/overview](https
 ##### Removed properties
 - label: string;
 	- Removed in favor of using a child to render the label
+- onLabel: DNode
+	- Removed in favor of using a child renderer
+- offLabel: DNode
+	- Removed in favor of using a child renderer
+- mode: 'normal' | 'toggle'
+	- "toggle" mode has been split into the `switch` widget (see below)
 - onChange: (value: string, checked: boolean) => void;
 	- replaced by `onValue(checked: boolean)`
 - onClick: (value: string, checked: boolean) => void;
@@ -558,20 +564,90 @@ The `SlidePane` no longer supports an `onOpen` property and instead only uses `o
 ### slider
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- `label`: `string`
+	- Removed in favor of a single label handled via a child renderer.
+- `labelAfter`: `boolean`
+	- Removed in favor of a single label handled via a child renderer.
+- `value`: `number`
+  - Changed to `initialValue`
+- `output`: `() => RenderResult`
+	- `output` was moved to a child renderer and should be handled in a child function.
+- `onChange`: `(value: number) => void`
+	- replaced by `onValue(value: number)`
+	- since `Slider` is now uncontrolled, the new `onValue` property is used to read the slider's value on change, not set it.
+- `onInput`: `(value: number) => void`
+	- removed in favor of controlling input handling internally
 #### Changes in behaviour
+- `Slider` is now uncontrolled, meaning that parents no longer must manually update the slider's current value in response to user interaction.
+- Rendering the label and output is now handled via an optional child renderer of type `RenderResult`.
 #### Example of migration from v6 to v7
+
+##### v6 Example
+
+```tsx
+<Slider
+	label="How much do you like tribbles?"
+	min={0}
+	max={100}
+	output={(value: number) => {
+		if (value < 20) {
+			return 'I am a Klingon';
+		}
+		if (value < 40) {
+			return 'Tribbles only cause trouble';
+		}
+		if (value < 60) {
+			return 'They\`re kind of cute';
+		}
+		if (value < 80) {
+			return 'Most of my salary goes to tribble food';
+		} else {
+			return 'I permanently altered the ecology of a planet for my tribbles';
+		}
+	}}
+	step={1}
+	value={icache.get('tribbleValue')}
+	onChange={(value) => {
+		icache.set('tribbleValue', value);
+	}}
+	onInput={(value) => {
+		icache.set('tribbleValue', value);
+	}}
+/>
+```
+
+##### v7 Example
+
+```tsx
+<Slider
+	initialValue={0}
+	min={0}
+	max={100}
+	step={1}
+>
+	{{
+		label: 'How much do you like tribbles?',
+		output: (value: number) => {
+			if (value < 20) {
+				return 'I am a Klingon';
+			}
+			if (value < 40) {
+				return 'Tribbles only cause trouble';
+			}
+			if (value < 60) {
+				return 'They\`re kind of cute';
+			}
+			if (value < 80) {
+				return 'Most of my salary goes to tribble food';
+			} else {
+				return 'I permanently altered the ecology of a planet for my tribbles';
+			}
+		}
+	}}
+</Slider>
+```
+
 
 Latest example can be found on [widgets.dojo.io/#widget/slider/overview](https://widgets.dojo.io/#widget/slider/overview)
 
@@ -589,7 +665,7 @@ Latest example can be found on [widgets.dojo.io/#widget/slider/overview](https:/
 ```tsx
 <Snackbar
 	messageRenderer={() => 'Snackbar'}
-	actionsRenderer={() => 'Actions'} open={true} 
+	actionsRenderer={() => 'Actions'} open={true}
 />
 ```
 
@@ -608,20 +684,40 @@ Latest example can be found on [widgets.dojo.io/#widget/snackbar/overview](https
 ### switch
  - Split out of checkbox
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
+- `label`: `string`;
+	- Removed in favor of using a child renderer
+- `onLabel`: `DNode`
+	- Removed in favor of using a child renderer
+- `offLabel`: `DNode`
+	- Removed in favor of using a child renderer
+- `onChange`: `(value: string, checked: boolean) => void`;
+	- replaced by `onValue(checked: boolean)`
 #### Example of migration from v6 to v7
+
+##### v6 Example
+
+```tsx
+<Checkbox
+	checked={icache.get('checked')}
+	label="On/Off"
+	mode={Mode.toggle}
+	onChange: this.onChange
+/>
+```
+
+##### v7 Example
+
+```tsx
+<Switch
+	value={icache.get('checked')}
+	onValue={(value) => {
+		icache.set('checked', true);
+	}}
+>
+	{{ label: 'On/Off' }}
+</Switch>
+```
 
 Latest example can be found on [widgets.dojo.io/#widget/switch/overview](https://widgets.dojo.io/#widget/switch/overview)
 
@@ -816,16 +912,49 @@ The `TitlePane` now uses a child renderer object to determine its title and cont
 - foo: string
 	- this prop does x
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+- `children`: `DNode`
+	- This property no longer accepts `DNode` triggers.
+	- This property accepts a child renderer object.
+	- The trigger and contents are set using this renderer.
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- `content`: DNode
+	- The tooltip content is now set via a child renderer object.
 #### Changes in behaviour
+- Both the tooltip trigger and content are specified on a child renderer object rather than as a child `DNode` and property, respectively.
 #### Example of migration from v6 to v7
+
+##### v6 Example
+
+```tsx
+<Tooltip content="This tooltip shows on click" open={icache.get('show')}>
+	<button
+		onclick={() => {
+			icache.set('show', !icache.get('show'));
+		}}
+	>
+		Toggle Tooltip
+	</button>
+</Tooltip>
+```
+
+##### v7 Example
+
+```tsx
+<Tooltip open={icache.get('show')}>
+	{{
+		content: 'This tooltip shows on click',
+		trigger: (
+			<button
+				onclick={() => {
+					icache.set('show', !icache.get('show'));
+				}}
+			>
+				Toggle Tooltip
+			</button>
+		)
+	}}
+</Tooltip>
+```
 
 Latest example can be found on [widgets.dojo.io/#widget/tooltip/overview](https://widgets.dojo.io/#widget/tooltip/overview)
 
