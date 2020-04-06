@@ -17,7 +17,7 @@
     "url": "https://github.com/dojo/widgets.git"
   },
   "scripts": {
-    "dev": "tsc && dojo build app -m dev -w -s",
+    "dev": "dojo build app -m dev -w -s",
     "prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "dojo-package": "dojo-package",
     "dojo-release": "dojo-release",
