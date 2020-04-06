@@ -195,20 +195,70 @@ Latest example can be found on [widgets.dojo.io/#widget/calendar/overview](https
 ### checkbox
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+- onBlur: () => void;
+	- this prop now is passed zero arguments, whereas previously it was passed the current `value` and `checked` property values.
+- onFocus: () => void;
+	- this prop now is passed zero arguments, whereas previously it was passed the current `value` and `checked` property values.
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
+- label: string;
+	- Removed in favor of using a child to render the label
+- onChange: (value: string, checked: boolean) => void;
+	- replaced by `onValue(checked: boolean)`
+- onClick: (value: string, checked: boolean) => void;
+	- replaced by `onValue(checked: boolean)`
 #### Example of migration from v6 to v7
+
+```ts
+// v6
+import { create, tsx } from '@dojo/framework/core/vdom';
+import icache from '@dojo/framework/core/middleware/icache';
+import Checkbox from '@dojo/widgets/checkbox';
+
+const factory = create({ icache });
+
+export default factory(function CheckboxExample({ middleware: { icache } }) {
+	const checkboxStates = icache.getOrSet('checkboxStates', {});
+	return [
+		<Checkbox
+			checked={checked.checkbox0}
+			label="v6 Checkbox Example"
+			value="checkbox0"
+			onChange={(value, checked) => {
+				icache.set('checkboxStates', {
+					...checkboxStates,
+					[value]: checked
+				});
+			}}
+		/>,
+		// other checkboxes...
+	];
+});
+```
+
+```ts
+// v7
+import { create, tsx } from '@dojo/framework/core/vdom';
+import icache from '@dojo/framework/core/middleware/icache';
+import Checkbox from '@dojo/widgets/checkbox';
+
+const factory = create({ icache });
+
+export default factory(function CheckboxExample({ middleware: { icache } }) {
+	const checkboxStates = icache.getOrSet('checkboxStates', {});
+	return [
+		<Checkbox
+			checked={icache.get('isChecked0')}
+			onValue={(checked) => {
+				icache.set('isChecked0', checked);
+			}}
+		>
+			v7 Checkbox Example
+		</Checkbox>,
+		// other checkboxes...
+	];
+});
+```
 
 Latest example can be found on [widgets.dojo.io/#widget/checkbox/overview](https://widgets.dojo.io/#widget/checkbox/overview)
 
