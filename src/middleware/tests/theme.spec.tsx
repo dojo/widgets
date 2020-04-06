@@ -467,9 +467,7 @@ describe('theme middleware', () => {
 					selected: 'variant_theme_selected'
 				}
 			},
-			variant: {
-				default: { root: 'foo' }
-			}
+			variant: { root: 'foo' }
 		};
 
 		const composedClasses = composesInstance.compose(
@@ -488,9 +486,7 @@ describe('theme middleware', () => {
 					selected: 'variant_theme_selected'
 				}
 			},
-			variant: {
-				default: { root: 'foo' }
-			}
+			variant: { root: 'foo' }
 		});
 	});
 
@@ -517,7 +513,7 @@ describe('theme middleware', () => {
 				}
 			},
 			variant: {
-				default: { root: 'foo' }
+				root: 'foo'
 			}
 		};
 
@@ -537,9 +533,7 @@ describe('theme middleware', () => {
 					baseActive: 'variant_theme_active'
 				}
 			},
-			variant: {
-				default: { root: 'foo' }
-			}
+			variant: { root: 'foo' }
 		});
 	});
 });
