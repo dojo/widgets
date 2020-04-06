@@ -23,7 +23,7 @@ export default factory(function CustomRenderer({ middleware: { icache } }) {
 			>
 				{{
 					label: 'Basic Select',
-					itemRenderer: ({ selected, value }) => {
+					items: ({ selected, value }) => {
 						return (
 							<div>
 								{selected && <span>✅ </span>}

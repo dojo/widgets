@@ -51,7 +51,7 @@ export interface SelectProperties {
 
 export interface SelectChildren {
 	/** Custom renderer for item contents */
-	itemRenderer?(properties: ItemRendererProperties): RenderResult;
+	items?(properties: ItemRendererProperties): RenderResult;
 	/** The label to show */
 	label?: RenderResult;
 }
@@ -95,7 +95,7 @@ export const Select = factory(function Select({
 		resource,
 		transform
 	} = properties();
-	const [{ itemRenderer, label } = { itemRenderer: undefined, label: undefined }] = children();
+	const [{ items, label } = { items: undefined, label: undefined }] = children();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
 		icache.set('initial', initialValue);
@@ -256,7 +256,7 @@ export const Select = factory(function Select({
 									classes={classes}
 									widgetId={menuId}
 								>
-									{itemRenderer}
+									{items}
 								</List>
 							</div>
 						);
