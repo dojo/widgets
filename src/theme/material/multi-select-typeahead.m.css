@@ -1,0 +1,72 @@
+.root {
+	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
+	display: block;
+	height: auto;
+}
+
+.focused {
+	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.value {
+	margin: 2px;
+}
+
+.root.hasLabel .wrapper .inputWrapper .input {
+	padding: 20px 16px 6px;
+}
+
+.selectedIcon {
+	margin-right: 8px;
+}
+
+.root .input {
+	flex-grow: 1;
+	min-width: 100px;
+	width: 100px;
+}
+
+.root .inputWrapper {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.value {
+	margin: 4px 4px 4px 0;
+}
+
+.root .label {
+	z-index: 1;
+}
+
+.root.hasValue {
+	height: auto;
+}
+
+.root.hasValue .inputWrapper {
+	height: auto;
+	padding-left: 16px;
+}
+
+.root.hasValue.hasLabel .inputWrapper {
+	padding-top: 24px;
+}
+
+.root .wrapper {
+	height: auto;
+}
+
+.root .input {
+	height: auto;
+	padding-left: 16px;
+}
+
+.root.hasValue .label {
+	top: 26px;
+}
+
+.values {
+	padding-left: 16px;
+	padding-top: 4px;
+}

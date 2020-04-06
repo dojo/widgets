@@ -95,6 +95,11 @@ import ItemRenderer from './widgets/list/ItemRenderer';
 import FetchedResource from './widgets/list/FetchedResource';
 import Menu from './widgets/list/Menu';
 import CustomTransformer from './widgets/list/CustomTransformer';
+import BasicMultiSelectTypeahead from './widgets/multi-select-typeahead/Basic';
+import ControlledMultiSelectTypeahead from './widgets/multi-select-typeahead/Controlled';
+import DisabledMultiSelectTypeahead from './widgets/multi-select-typeahead/Disabled';
+import CustomRendererMultiSelectTypeahead from './widgets/multi-select-typeahead/CustomRenderer';
+import BottomMultiSelectTypeahead from './widgets/multi-select-typeahead/BottomPlacement';
 import BasicNumberInput from './widgets/number-input/Basic';
 import ValidatedNumberInput from './widgets/number-input/Validation';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
@@ -944,6 +949,36 @@ export const config = {
 					module: MenuTriggerPopup,
 					sandbox: true,
 					size: 'medium'
+				}
+			]
+		},
+		'multi-select-typeahead': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicMultiSelectTypeahead
+				}
+			},
+			examples: [
+				{
+					title: 'Controlled',
+					filename: 'Controlled',
+					module: ControlledMultiSelectTypeahead
+				},
+				{
+					title: 'Disabled',
+					filename: 'Disabled',
+					module: DisabledMultiSelectTypeahead
+				},
+				{
+					title: 'Custom Renderer',
+					filename: 'CustomRenderer',
+					module: CustomRendererMultiSelectTypeahead
+				},
+				{
+					title: 'Bottom Placement',
+					filename: 'BottomPlacement',
+					module: BottomMultiSelectTypeahead
 				}
 			]
 		},

@@ -1,6 +1,4 @@
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import Label from '../../../label';
-import * as labelCss from '../../../theme/default/label.m.css';
 import * as themedCss from '../../../theme/default/typeahead.m.css';
 import TriggerPopup from '../../../trigger-popup';
 import HelperText from '../../../helper-text';
@@ -38,16 +36,6 @@ const resource = {
 
 const baseAssertion = assertionTemplate(() => (
 	<div key="root" classes={[undefined, themedCss.root, undefined, false, false]}>
-		<Label
-			key="label"
-			theme={{ '@dojo/widgets/label': labelCss }}
-			disabled={undefined}
-			valid={undefined}
-			required={undefined}
-			active={false}
-		>
-			Test
-		</Label>
 		<TriggerPopup key="popup" onOpen={noop} onClose={noop} position={undefined}>
 			{{
 				trigger: noop,
@@ -62,6 +50,7 @@ const inputTemplate = assertionTemplate(() => (
 	<TextInput
 		onValue={noop}
 		onBlur={noop}
+		onFocus={noop}
 		name={undefined}
 		initialValue={undefined}
 		focus={noop}
@@ -82,7 +71,9 @@ const inputTemplate = assertionTemplate(() => (
 		onKeyDown={noop}
 		valid={undefined}
 		theme={{ '@dojo/widgets/text-input': inputCss }}
-	/>
+	>
+		{{ label: 'Test', leading: undefined }}
+	</TextInput>
 ));
 
 const listTemplate = assertionTemplate(() => (
@@ -110,12 +101,9 @@ registerSuite('Typeahead', {
 	tests: {
 		'renders a typeahead'() {
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			h.expect(baseAssertion);
@@ -123,12 +111,9 @@ registerSuite('Typeahead', {
 
 		'renders the typeahead trigger'() {
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			const toggleOpenStub = stub();
@@ -144,12 +129,9 @@ registerSuite('Typeahead', {
 
 		'renders the typeahead content'() {
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			const toggleCloseStub = stub();
@@ -165,12 +147,9 @@ registerSuite('Typeahead', {
 
 		'opens the typeahead on input value'() {
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			const toggleOpenStub = stub();
@@ -188,12 +167,9 @@ registerSuite('Typeahead', {
 
 		'opens the typeahead on input click'() {
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			const toggleOpenStub = stub();
@@ -211,12 +187,9 @@ registerSuite('Typeahead', {
 
 		'opens the typeahead on down press'() {
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			const toggleOpenStub = stub();
@@ -236,12 +209,9 @@ registerSuite('Typeahead', {
 		},
 		'opens the typeahead on up press'() {
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			const toggleOpenStub = stub();
@@ -261,12 +231,9 @@ registerSuite('Typeahead', {
 		},
 		'controls the list with keyboard events'() {
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			const toggleOpenStub = stub();
@@ -297,12 +264,9 @@ registerSuite('Typeahead', {
 		},
 		'wraps list items when gets to the top'() {
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			const toggleOpenStub = stub();
@@ -333,12 +297,9 @@ registerSuite('Typeahead', {
 		},
 		'wraps list items when gets to the bottom'() {
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			const toggleOpenStub = stub();
@@ -374,12 +335,9 @@ registerSuite('Typeahead', {
 			const onValue = stub();
 
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={onValue}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={onValue}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			const toggleOpenStub = stub();
@@ -401,12 +359,9 @@ registerSuite('Typeahead', {
 			const onValue = stub();
 
 			const h = harness(() => (
-				<Typeahead
-					label="Test"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={onValue}
-				/>
+				<Typeahead resource={resource} transform={defaultTransform} onValue={onValue}>
+					{{ label: 'Test' }}
+				</Typeahead>
 			));
 
 			const toggleOpenStub = stub();
@@ -423,6 +378,47 @@ registerSuite('Typeahead', {
 			triggerRenderResult.properties.onKeyDown(Keys.Escape, preventDefaultStub);
 
 			assert.isFalse(onValue.called);
+		},
+
+		'allows manual control of values'() {
+			const properties = {
+				value: 'value'
+			};
+
+			const h = harness(() => (
+				<Typeahead
+					resource={resource}
+					transform={defaultTransform}
+					onValue={stub}
+					{...properties}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			let triggerRenderResult = h.trigger(
+				'@popup',
+				(node) => (node.children as any)[0].trigger,
+				stub
+			);
+
+			h.expect(
+				inputTemplate.setProperty('@trigger', 'initialValue', 'value'),
+				() => triggerRenderResult
+			);
+
+			properties.value = 'another value';
+
+			triggerRenderResult = h.trigger(
+				'@popup',
+				(node) => (node.children as any)[0].trigger,
+				stub
+			);
+
+			h.expect(
+				inputTemplate.setProperty('@trigger', 'initialValue', 'another value'),
+				() => triggerRenderResult
+			);
 		}
 	}
 });

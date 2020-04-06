@@ -7,6 +7,7 @@ Dojo's `Typeahead` provides a form input with a filterable list of options. As t
 - Compatible with any underlying data provider, data format, or store
 - Allows customization of option state and vdom
 - Keyboard accessible
+- Can be partially or fully controlled
 
 ### Keyboard Usage
 

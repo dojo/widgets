@@ -30,6 +30,7 @@
 			"src/label",
 			"src/list",
 			"src/loading-indicator",
+			"src/multi-select-typeahead",
 			"src/native-select",
 			"src/number-input",
 			"src/outlined-button",
