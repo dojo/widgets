@@ -1,4 +1,5 @@
 export const root: string;
+export const linksWrapper: string;
 export const link: string;
 export const prev: string;
 export const label: string;

@@ -1,6 +1,10 @@
 .root {
 }
 
+/* Added to the parent of all page links */
+.linksWrapper {
+}
+
 /* Added to all page-changing links */
 .link {
 }

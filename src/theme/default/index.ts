@@ -28,6 +28,7 @@ import * as menuItem from './menu-item.m.css';
 import * as nativeSelect from './native-select.m.css';
 import * as listItem from './list-item.m.css';
 import * as outlinedButton from './outlined-button.m.css';
+import * as pagination from './pagination.m.css';
 import * as passwordInput from './password-input.m.css';
 import * as popup from './popup.m.css';
 import * as progress from './progress.m.css';
@@ -82,6 +83,7 @@ export default {
 		'@dojo/widgets/native-select': nativeSelect,
 		'@dojo/widgets/list-item': listItem,
 		'@dojo/widgets/outlined-button': outlinedButton,
+		'@dojo/widgets/pagination': pagination,
 		'@dojo/widgets/password-input': passwordInput,
 		'@dojo/widgets/popup': popup,
 		'@dojo/widgets/progress': progress,
