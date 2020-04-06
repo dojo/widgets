@@ -10,8 +10,9 @@ export default factory(function RequiredRangeSlider() {
 				min: 0,
 				max: 100
 			}}
-			label="A Required Slider"
 			required
-		/>
+		>
+			{{ label: 'A Required Slider' }}
+		</RangeSlider>
 	);
 });

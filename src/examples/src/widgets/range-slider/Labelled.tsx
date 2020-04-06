@@ -10,7 +10,8 @@ export default factory(function LabelledRangeSlider() {
 				min: 0,
 				max: 100
 			}}
-			label="A Labelled Slider"
-		/>
+		>
+			{{ label: 'A Labelled Slider' }}
+		</RangeSlider>
 	);
 });
