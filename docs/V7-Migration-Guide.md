@@ -342,6 +342,10 @@ Latest example can be found on [widgets.dojo.io/#widget/radio/overview](https://
 - value
 	- This property has been replaced by `initialValue`
 	- The range-slider now internally manages its value and it is no longer necessary to pass the current value into the range slider from the parent
+- label
+  - Replaced with a child renderer
+- output
+  - Replaced with a child renderer
 ##### Removed properties
 - labelAfter
   - No longer supported
@@ -548,6 +552,8 @@ Latest example can be found on [widgets.dojo.io/#widget/text-input/overview](htt
 - isOptionDisabled
   - Renamed to `timeDisabled`
   - Takes a function with a single `Date` parameter. The option is disabled if the function returns falsey
+- label
+  - Replaced with child renderer
 ##### Removed properties
 - widgetId
   - No longer needed
