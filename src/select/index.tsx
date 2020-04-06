@@ -95,7 +95,7 @@ export const Select = factory(function Select({
 		resource,
 		transform
 	} = properties();
-	const { itemRenderer, label } = children()[0] || ({} as SelectChildren);
+	const [{ itemRenderer, label } = { itemRenderer: undefined, label: undefined }] = children();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
 		icache.set('initial', initialValue);
