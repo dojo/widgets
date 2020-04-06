@@ -112,20 +112,38 @@ The `Accordion` now uses a child renderer function to determine its child panes.
 ### button
 
 #### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+- onDown?(): void;
+	- Handler for events triggered by pointer down.
+	- Replaces previous down event handlers.
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- popup?: { expanded?: boolean; id?: string } | boolean;
+	- Popup functionality was removed from `Button`.
+	- The `TriggerPopup` widget provides popup functionality.
+- onInput?(value?: string | number | boolean): void;
+	- Not applicable to a button.
+- onChange?(value?: string | number | boolean): void;
+	- Not applicable to a button.
+- The following interaction events were replaced by onDown:
+	- onMouseDown?(): void;
+	- onMouseUp?(): void;
+	- onTouchStart?(): void;
+	- onTouchEnd?(): void;
+	- onTouchCancel?(): void;
+	- onMouseDown?(): void;
+	- onMouseUp?(): void;
+	- onTouchStart?(): void;
+	- onTouchEnd?(): void;
+	- onTouchCancel?(): void;
 #### Changes in behaviour
+
 #### Example of migration from v6 to v7
+```
+<Button onMouseDown={() => {console.log('Down')}}>Example Button</Button>
+```
+```
+<Button onDown={() => {console.log('Down')}}>Example Button</Button>
+```
 
 Latest example can be found on [widgets.dojo.io/#widget/button/overview](https://widgets.dojo.io/#widget/button/overview)
 
@@ -288,27 +306,6 @@ Dialog contents, title, and actions are now specified via a child function. Prev
 #### Example of migration from v6 to v7
 
 Latest example can be found on [widgets.dojo.io/#widget/dialog/overview](https://widgets.dojo.io/#widget/dialog/overview)
-
-
-### global-event
-
-#### Property changes
-##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
-#### Example of migration from v6 to v7
-
-Latest example can be found on [widgets.dojo.io/#widget/global-event/overview](https://widgets.dojo.io/#widget/global-event/overview)
 
 
 ### header
