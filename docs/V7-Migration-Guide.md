@@ -746,8 +746,13 @@ Latest example can be found on [widgets.dojo.io/#widget/tab-controller/overview]
 
 #### Property changes
 ##### Removed properties
-- `label`: string
+- `label`: `string`
 	- `<TextArea>` now takes an optional child that will be rendered as its label.
+- `value`: `string`
+	- Removed as the widget is now uncontrolled.
+	- Replaced by `initialValue: string` for setting the initial value.
+#### Changes in behavior
+- `TextArea` is now uncontrolled, meaning parent widgets are no longer responsible for updating the the current value in response to changes or events.
 #### Example of migration from v6 to v7
 
 ##### v6 example
@@ -769,14 +774,19 @@ Latest example can be found on [widgets.dojo.io/#widget/text-area/overview](http
 
 #### Property changes
 ##### Removed properties
-- `label`: string
+- `label`: `string`
 	- Specifying a label is now done with a `label` key on a child renderer object (see the example below)
-- `leading`: () => DNode
+- `leading`: `() => DNode`
 	- Specifying leading content is now done with a `leading` key on a child renderer object (see the example below)
 	- Since the original property function receives no arguments, the child renderer object expects a static value instead of a function.
-- `trailing`: () => DNode
+- `trailing`: `() => DNode`
 	- Specifying trailing content is now done with a `trailing` key on a child renderer object (see the example below)
 	- Since the original property function receives no arguments, the child renderer object expects a static value instead of a function.
+- `value`: `string`
+	- Removed as the widget is now uncontrolled.
+	- Replaced by `initialValue: string` for setting the initial value.
+#### Changes in behavior
+- `TextInput` is now uncontrolled, meaning parent widgets are no longer responsible for updating the the current value in response to changes or events.
 #### Example of migration from v6 to v7
 
 ##### v6 example
