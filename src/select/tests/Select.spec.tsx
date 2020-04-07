@@ -22,8 +22,10 @@ import { createResource } from '@dojo/framework/core/resource';
 import TriggerPopup from '../../trigger-popup';
 import * as css from '../../theme/default/select.m.css';
 import Select, { defaultTransform } from '../index';
+import bundle from '../select.nls';
 
 const options = [{ value: 'dog' }, { value: 'cat' }, { value: 'fish' }];
+const { messages } = bundle;
 
 const memoryTemplate = createMemoryTemplate();
 
@@ -120,9 +122,10 @@ describe('Select', () => {
 					position="above"
 					placeholder="test"
 					helperText="test-helper"
-					label="test-label"
 					required={true}
-				/>
+				>
+					{{ label: 'test-label' }}
+				</Select>
 			),
 			[compareForId]
 		);
@@ -345,5 +348,38 @@ describe('Select', () => {
 			]),
 			() => triggerRenderResult
 		);
+	});
+
+	it('invalidates correctly', () => {
+		const onValidate = stub();
+		const h = harness(() => (
+			<Select
+				onValue={() => {}}
+				resource={{
+					resource: () => createResource(memoryTemplate),
+					data: options
+				}}
+				transform={defaultTransform}
+				required={true}
+				onValidate={onValidate}
+			/>
+		));
+		h.expect(baseTemplate);
+
+		h.trigger('@popup', 'onClose');
+		h.expect(
+			baseTemplate
+				.setProperty(':root', 'classes', [
+					undefined,
+					css.root,
+					undefined,
+					false,
+					css.invalid
+				])
+				.setProperty('@helperText', 'text', messages.requiredMessage)
+				.setProperty('@helperText', 'valid', false)
+		);
+
+		assert.isTrue(onValidate.calledWith(false));
 	});
 });

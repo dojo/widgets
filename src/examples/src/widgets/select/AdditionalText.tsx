@@ -12,7 +12,6 @@ export default factory(function AdditionalText({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Select
-				label="Additional Text"
 				resource={resource}
 				transform={defaultTransform}
 				onValue={(value) => {
@@ -20,7 +19,11 @@ export default factory(function AdditionalText({ middleware: { icache } }) {
 				}}
 				helperText="I am the helper text"
 				placeholder="I am a placeholder"
-			/>
+			>
+				{{
+					label: 'Additional Text'
+				}}
+			</Select>
 			<pre>{`Value: ${icache.getOrSet('value', '')}`}</pre>
 		</virtual>
 	);

@@ -13,7 +13,6 @@ export default factory(function RequiredSelect({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Select
-				label="Required Select"
 				resource={{
 					resource: () => createResource(memoryTemplate),
 					data: options
@@ -26,7 +25,11 @@ export default factory(function RequiredSelect({ middleware: { icache } }) {
 				onValidate={(valid) => {
 					icache.set('valid', valid);
 				}}
-			/>
+			>
+				{{
+					label: 'Required Select'
+				}}
+			</Select>
 			<pre>{`Value: ${icache.getOrSet('value', '')}, Valid: ${icache.get('valid')}`}</pre>
 		</virtual>
 	);

@@ -13,7 +13,6 @@ export default factory(function DisabledSelect() {
 	return (
 		<virtual>
 			<Select
-				label="Disabled Select"
 				resource={{
 					resource: () => createResource(memoryTemplate),
 					data: options
@@ -21,7 +20,11 @@ export default factory(function DisabledSelect() {
 				transform={defaultTransform}
 				disabled
 				onValue={() => {}}
-			/>
+			>
+				{{
+					label: 'Disabled Select'
+				}}
+			</Select>
 		</virtual>
 	);
 });

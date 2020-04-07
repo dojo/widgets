@@ -187,7 +187,9 @@ export default factory(function Pagination({ middleware: { theme, icache, i18n }
 								onPageSize && onPageSize(parseInt(value, 10));
 							}}
 						>
-							{(itemProps) => itemProps.value}
+							{{
+								items: (itemProps) => itemProps.value
+							}}
 						</Select>
 					</div>
 				)}
