@@ -11,6 +11,7 @@
 }
 
 .statusIconIcon {
+	composes: icon from './icon.m.css';
 	font-size: 64px;
 }
 

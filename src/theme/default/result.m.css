@@ -5,7 +5,8 @@
 .iconWrapper {
 }
 
-.iconIcon {
+.statusIconIcon {
+	composes: icon from './icon.m.css';
 }
 
 /* Contains the Result widget's action buttons */

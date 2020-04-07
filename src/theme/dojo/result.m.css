@@ -14,7 +14,8 @@
 	width: 64px;
 }
 
-.iconIcon {
+.statusIconIcon {
+	composes: icon from './icon.m.css';
 }
 
 .actions {
