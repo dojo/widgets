@@ -1,4 +1,4 @@
-const { describe, it, before, after } = intern.getInterface('bdd');
+const { describe, it, beforeEach, afterEach } = intern.getInterface('bdd');
 
 import * as sinon from 'sinon';
 
@@ -24,8 +24,36 @@ const { messages } = bundle;
 describe('Pagination', () => {
 	const noop = () => {};
 
-	const makeLinks = (start: number, end: number) => {
+	const prev = (
+		<button
+			assertion-key="prev"
+			key="prev"
+			type="button"
+			onclick={noop}
+			classes={[css.prev, css.link]}
+		>
+			<div classes={css.icon}>
+				<Icon type="leftIcon" />
+			</div>
+			<div classes={css.label}>Previous</div>
+		</button>
+	);
+
+	const next = (
+		<button key="next" type="button" onclick={noop} classes={[css.next, css.link]}>
+			<div classes={css.icon}>
+				<Icon type="rightIcon" />
+			</div>
+			<div classes={css.label}>{messages.next}</div>
+		</button>
+	);
+
+	const makeLinks = (start: number, end?: number) => {
 		const links = [];
+
+		if (!end) {
+			end = start;
+		}
 
 		for (let i = start; i <= end; i++) {
 			links.push(
@@ -46,23 +74,13 @@ describe('Pagination', () => {
 	const baseAssertion = assertionTemplate(() => (
 		<div key="root" classes={[undefined, css.root]}>
 			<div key="links" classes={css.linksWrapper} styles={{ opacity: '0' }}>
-				<button key="prev" type="button" onclick={noop} classes={[css.prev, css.link]}>
-					<div classes={css.icon}>
-						<Icon type="leftIcon" />
-					</div>
-					<div classes={css.label}>{messages.previous}</div>
-				</button>
+				{prev}
 				{...makeLinks(1, 9)}
 				<div key="current" classes={css.currentPage}>
 					10
 				</div>
 				{...makeLinks(11, 20)}
-				<button key="next" type="button" onclick={noop} classes={[css.next, css.link]}>
-					<div classes={css.icon}>
-						<Icon type="rightIcon" />
-					</div>
-					<div classes={css.label}>{messages.next}</div>
-				</button>
+				{next}
 			</div>
 		</div>
 	));
@@ -139,17 +157,7 @@ describe('Pagination', () => {
 							1
 						</div>
 						{...makeLinks(2, 3)}
-						<button
-							key="next"
-							type="button"
-							onclick={noop}
-							classes={[css.next, css.link]}
-						>
-							<div classes={css.icon}>
-								<Icon type="rightIcon" />
-							</div>
-							<div classes={css.label}>Next</div>
-						</button>
+						{next}
 					</div>
 				</div>
 			))
@@ -162,18 +170,7 @@ describe('Pagination', () => {
 			assertionTemplate(() => (
 				<div key="root" classes={[undefined, css.root]}>
 					<div key="links" classes={css.linksWrapper} styles={{ opacity: '0' }}>
-						<button
-							assertion-key="prev"
-							key="prev"
-							type="button"
-							onclick={noop}
-							classes={[css.prev, css.link]}
-						>
-							<div classes={css.icon}>
-								<Icon type="leftIcon" />
-							</div>
-							<div classes={css.label}>Previous</div>
-						</button>
+						{prev}
 						{...makeLinks(1, 2)}
 						<div key="current" classes={css.currentPage}>
 							3
@@ -190,29 +187,13 @@ describe('Pagination', () => {
 		));
 		h.expect(
 			baseAssertion.replaceChildren('@links', [
-				<button
-					assertion-key="prev"
-					key="prev"
-					type="button"
-					onclick={noop}
-					classes={[css.prev, css.link]}
-				>
-					<div classes={css.icon}>
-						<Icon type="leftIcon" />
-					</div>
-					<div classes={css.label}>Previous</div>
-				</button>,
+				prev,
 				...makeLinks(5, 9),
 				<div key="current" classes={css.currentPage}>
 					10
 				</div>,
 				...makeLinks(11, 15),
-				<button key="next" type="button" onclick={noop} classes={[css.next, css.link]}>
-					<div classes={css.icon}>
-						<Icon type="rightIcon" />
-					</div>
-					<div classes={css.label}>Next</div>
-				</button>
+				next
 			])
 		);
 	});
@@ -283,7 +264,7 @@ describe('Pagination', () => {
 			});
 		}
 
-		before(() => {
+		beforeEach(() => {
 			sb.stub(global.window.HTMLDivElement.prototype, 'getBoundingClientRect').callsFake(
 				() => ({
 					width: 45
@@ -292,11 +273,29 @@ describe('Pagination', () => {
 			nodeMock = createNodeMock();
 		});
 
-		after(() => {
+		afterEach(() => {
 			sb.restore();
 		});
 
-		it('re-renders when sizing is available', () => {});
+		it('limits siblings to siblingCount', () => {
+			const h = harness(
+				() => <Pagination total={20} initialPage={10} siblingCount={3} onPage={noop} />,
+				{
+					middleware: [[resize, resizeMock], [node, nodeMock]]
+				}
+			);
+			h.expect(
+				baseAssertion.setChildren('@links', [
+					prev,
+					...makeLinks(7, 9),
+					<div key="current" classes={css.currentPage}>
+						10
+					</div>,
+					...makeLinks(11, 13),
+					next
+				])
+			);
+		});
 
 		it('excludes siblings when insufficient space', () => {
 			const h = harness(() => <Pagination total={20} initialPage={10} onPage={noop} />, {
@@ -314,38 +313,53 @@ describe('Pagination', () => {
 				baseAssertion
 					.setProperty('@links', 'styles', { opacity: '1' })
 					.setChildren('@links', [
-						<button
-							assertion-key="prev"
-							key="prev"
-							type="button"
-							onclick={noop}
-							classes={[css.prev, css.link]}
-						>
-							<div classes={css.icon}>
-								<Icon type="leftIcon" />
-							</div>
-							<div classes={css.label}>Previous</div>
-						</button>,
+						prev,
 						...makeLinks(8, 9),
 						<div key="current" classes={css.currentPage}>
 							10
 						</div>,
 						...makeLinks(11, 12),
-						<button
-							key="next"
-							type="button"
-							onclick={noop}
-							classes={[css.next, css.link]}
-						>
-							<div classes={css.icon}>
-								<Icon type="rightIcon" />
-							</div>
-							<div classes={css.label}>Next</div>
-						</button>
+						next
 					])
 			);
 		});
 
-		it('excludes siblings unevenly when applicable', () => {});
+		it('excludes siblings unevenly when applicable', () => {
+			const h = harness(() => <Pagination total={10} initialPage={2} onPage={noop} />, {
+				middleware: [[resize, resizeMock], [node, nodeMock]]
+			});
+			h.expect(
+				baseAssertion.setChildren('@links', [
+					prev,
+					...makeLinks(1),
+					<div key="current" classes={css.currentPage}>
+						2
+					</div>,
+					...makeLinks(3, 10),
+					next
+				])
+			);
+
+			// available width is 400
+			// available width after next/prev/current is 400 - (45*3) = 265
+			// leaving room for 265 / 45 = 5.8 => 5 total siblings
+			// but there's only one leading sibling possible.
+			mockWidth('links', 400);
+			resizeMock(':root', {});
+
+			h.expect(
+				baseAssertion
+					.setProperty('@links', 'styles', { opacity: '1' })
+					.setChildren('@links', [
+						prev,
+						...makeLinks(1),
+						<div key="current" classes={css.currentPage}>
+							2
+						</div>,
+						...makeLinks(3, 6),
+						next
+					])
+			);
+		});
 	});
 });
