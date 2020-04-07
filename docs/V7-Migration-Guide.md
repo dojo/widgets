@@ -152,23 +152,24 @@ Latest example can be found on [widgets.dojo.io/#widget/button/overview](https:/
 #### Property changes
 ##### Changed properties
 - initialValue?: Date
+	- This property can be used to provide an initial value or can
+	  be used to partially control the component, which responds to changes in this value
+ - value?: Date
 	- This property replaced `selectedDate`
-	- This property can be used to simply provide an initial value or can
-	  be used together with `onValue` to control the value
 - onValue?(value: Date): void
     - This property replaced `onDateSelect`
     - The name was changed to follow a more consistent pattern
 - initialMonth?: number
-   - This property replaced `month`
    - This property can be used to specify the initial month that should be displayed
-     or can be used together with `onMonth` to control the month displayed
+     or can be used together with `onMonth` to partially control the month displayed,
+     which will responod to changes in this value
 - onMonth?(month: number): void
     - This property replaced `onMonthChange`
     - The name was changed to follow a more consistent pattern
 - initialYear?: number
-   - This property replaced `year`
    - This property can be used to specify the initial year that should be displayed
-     or can be used together with `onYear` to control the year displayed
+     or can be used together with `onYear` to partially control the year displayed,
+     which will respond to changes in this value
 - onYear?(year: number): void
     - This property replaced `onYearChange`
     - The name was changed to follow a more consistent pattern
@@ -176,8 +177,9 @@ Latest example can be found on [widgets.dojo.io/#widget/button/overview](https:/
 The calendar widget is now uncontrolled by default. Initial values can be
 provided but the calendar will maintain its own internal state, tracking the
 displayed month and year and the currently selected value. The calendar can
-still be controlled by using the callbacks and initial properties to track
-and update the value.
+be partially controlled using the `initial` properties as it will update when those
+values change. For use cases where the component needs to be fully controlled, the
+`value`, `month`, and `year` properties can be used.
 #### Example of migration from v6 to v7
 ```tsx
 const selectedDate = icache.getOrSet('date', new Date());

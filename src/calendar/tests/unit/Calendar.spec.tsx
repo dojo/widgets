@@ -434,6 +434,24 @@ registerSuite('Calendar', {
 			h.expect(expected);
 		},
 
+		'Controlled properties should always be rendered'() {
+			const h = harness(() => (
+				<Calendar
+					initialMonth={6}
+					initialYear={2018}
+					initialValue={new Date(2018, 6)}
+					value={testDate}
+					month={5}
+					year={2017}
+				/>
+			));
+
+			h.expect(() => expected(false, 8));
+			h.trigger('@date-picker', 'onRequestYearChange', 2018);
+			h.trigger(`.${css.previous}`, 'onclick', stubEvent);
+			h.expect(() => expected(false, 8));
+		},
+
 		'Render specific month and year with initialValue'() {
 			const h = harness(() => <Calendar initialValue={testDate} />);
 

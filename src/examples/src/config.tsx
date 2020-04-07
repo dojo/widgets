@@ -17,6 +17,7 @@ import BasicCalendar from './widgets/calendar/Basic';
 import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
 import LimitedRange from './widgets/calendar/LimitedRange';
 import InitialMonthAndYear from './widgets/calendar/InitialMonthAndYear';
+import FullyControlledCalendar from './widgets/calendar/FullyControlled';
 import ActionButtons from './widgets/card/ActionButtons';
 import ActionButtonsAndIcons from './widgets/card/ActionButtonsAndIcons';
 import ActionIcons from './widgets/card/ActionIcons';
@@ -332,6 +333,12 @@ export const config = {
 					filename: 'InitialMonthAndYear',
 					module: InitialMonthAndYear,
 					title: 'Initial month and year'
+				},
+				{
+					description: 'Shows a fully controlled calendar',
+					filename: 'FullyControlled',
+					module: FullyControlledCalendar,
+					title: 'Fully controlled'
 				}
 			],
 			filename: 'index',
