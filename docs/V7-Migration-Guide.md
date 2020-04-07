@@ -233,8 +233,9 @@ Latest example can be found on [widgets.dojo.io/#widget/calendar/overview](https
 	- replaced by `onValue(checked: boolean)`
 #### Example of migration from v6 to v7
 
+##### v6 Example
+
 ```ts
-// v6
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import Checkbox from '@dojo/widgets/checkbox';
@@ -260,8 +261,9 @@ export default factory(function CheckboxExample({ middleware: { icache } }) {
 });
 ```
 
+##### v7 Example
+
 ```ts
-// v7
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import Checkbox from '@dojo/widgets/checkbox';
@@ -740,8 +742,9 @@ Latest example can be found on [widgets.dojo.io/#widget/switch/overview](https:/
 	- parents no longer must control which tabs are closed.
 #### Example of migration from v6 to v7
 
+##### v6 Example
+
 ```tsx
-// v6
 import { tsx, create } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import Set from '@dojo/framework/shim/Set';
@@ -784,8 +787,9 @@ export default factory(function Closeable() {
 });
 ```
 
+##### v7 Example
+
 ```tsx
-// v7
 import { tsx, create } from '@dojo/framework/core/vdom';
 
 import TabController, { TabItem } from '@dojo/widgets/tab-controller';
