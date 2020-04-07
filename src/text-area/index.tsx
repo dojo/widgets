@@ -69,6 +69,8 @@ export interface TextAreaProperties {
 	valid?: { valid?: boolean; message?: string } | boolean;
 	/** The initial value */
 	initialValue?: string;
+	/** Controlled value property */
+	value?: string;
 	/** The id used for the form input element */
 	widgetId?: string;
 	/** Controls text wrapping. Can be "hard", "soft", or "off" */
@@ -112,8 +114,7 @@ export const TextArea = factory(function TextArea({
 	}
 
 	function validate() {
-		const { customValidator } = properties();
-		const value = icache.get('value') || '';
+		const { customValidator, value = icache.get('value') || '' } = properties();
 		const dirty = icache.getOrSet('dirty', false);
 
 		if (value === '' && !dirty) {
@@ -169,13 +170,18 @@ export const TextArea = factory(function TextArea({
 		onValidate
 	} = properties();
 
-	let value = icache.get('value');
-	const existingInitialValue = icache.get('initialValue');
+	let { value } = properties();
+	const hasValue = typeof value !== 'undefined';
 
-	if (initialValue !== existingInitialValue) {
-		icache.set('value', initialValue);
-		icache.set('initialValue', initialValue);
-		value = initialValue;
+	if (!hasValue) {
+		value = icache.get('value');
+		const existingInitialValue = icache.get('initialValue');
+
+		if (initialValue !== existingInitialValue) {
+			icache.set('value', initialValue);
+			icache.set('initialValue', initialValue);
+			value = initialValue;
+		}
 	}
 
 	onValidate && validate();
@@ -251,7 +257,9 @@ export const TextArea = factory(function TextArea({
 							const { onValue } = properties();
 							event.stopPropagation();
 							const value = (event.target as HTMLInputElement).value;
-							icache.set('value', value);
+							if (!hasValue) {
+								icache.set('value', value);
+							}
 							onValue && onValue(value);
 						}}
 						onkeydown={(event: KeyboardEvent) => {

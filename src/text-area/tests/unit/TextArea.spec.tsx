@@ -293,6 +293,89 @@ registerSuite('Textarea', {
 			h.trigger('@input', 'oninput', stubEvent);
 		},
 
+		'updates internal value when edited properties'() {
+			const h = harness(() => (
+				<TextArea
+					aria={{ describedBy: 'foo' }}
+					columns={15}
+					widgetId="foo"
+					maxLength={50}
+					minLength={10}
+					name="bar"
+					placeholder="baz"
+					rows={42}
+					initialValue="qux"
+					wrapText="soft"
+				/>
+			));
+
+			h.expect(() =>
+				expected(false, {
+					cols: '15',
+					'aria-describedby': 'foo',
+					id: 'foo',
+					maxlength: '50',
+					minlength: '10',
+					name: 'bar',
+					placeholder: 'baz',
+					rows: '42',
+					value: 'qux',
+					wrap: 'soft'
+				})
+			);
+
+			h.trigger('@input', 'oninput', { ...stubEvent, target: { value: 'newvalue' } });
+			h.expect(() =>
+				expected(false, {
+					cols: '15',
+					'aria-describedby': 'foo',
+					id: 'foo',
+					maxlength: '50',
+					minlength: '10',
+					name: 'bar',
+					placeholder: 'baz',
+					rows: '42',
+					value: 'newvalue',
+					wrap: 'soft'
+				})
+			);
+		},
+
+		'ignores changes when controlled'() {
+			const h = harness(() => (
+				<TextArea
+					aria={{ describedBy: 'foo' }}
+					columns={15}
+					widgetId="foo"
+					maxLength={50}
+					minLength={10}
+					name="bar"
+					placeholder="baz"
+					rows={42}
+					value="qux"
+					wrapText="soft"
+				/>
+			));
+
+			const assertion = () =>
+				expected(false, {
+					cols: '15',
+					'aria-describedby': 'foo',
+					id: 'foo',
+					maxlength: '50',
+					minlength: '10',
+					name: 'bar',
+					placeholder: 'baz',
+					rows: '42',
+					value: 'qux',
+					wrap: 'soft'
+				});
+			h.expect(assertion);
+
+			h.trigger('@input', 'oninput', { ...stubEvent, target: { value: 'newvalue' } });
+			h.expect(assertion);
+		},
+
 		onValidate() {
 			let mockValidity = createValidityMock();
 
