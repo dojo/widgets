@@ -34,7 +34,11 @@ export interface TabControllerProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/** initial active tab ID. Defaults to the first tab's ID. */
-	initialId?: string;
+	initialActiveTab?: string;
+	/** controlled active tab ID */
+	activeTab?: string;
+	/** Callback fired when a tab is changed if `activeTab` is passed */
+	onActiveTab?(tabId: string): void;
 	/** Tabs config used to display tab buttons */
 	tabs: TabItem[];
 }
@@ -115,26 +119,32 @@ export const TabController = factory(function TabController({
 	};
 
 	const selectIndex = (index: number, backwards?: boolean) => {
-		const { tabs } = properties();
-		const activeId = icache.get('activeId');
+		const { tabs, activeTab, onActiveTab } = properties();
+		const activeId = activeTab || icache.get('activeId');
 		const activeIndex = findTabIndex(tabs, activeId);
 		const validIndex = validateIndex(index, backwards);
 		focus.focus();
 
 		if (validIndex !== null && validIndex !== activeIndex) {
-			icache.set('activeId', tabs[validIndex].id);
+			const newId = tabs[validIndex].id;
+			if (onActiveTab) {
+				onActiveTab(newId);
+			}
+			if (!activeTab) {
+				icache.set('activeId', newId);
+			}
 		}
 	};
 
 	const selectNextIndex = () => {
-		const { tabs } = properties();
-		const activeIndex = findTabIndex(tabs, icache.get('activeId'));
+		const { tabs, activeTab } = properties();
+		const activeIndex = findTabIndex(tabs, activeTab || icache.get('activeId'));
 		selectIndex(activeIndex === tabs.length - 1 ? 0 : activeIndex + 1);
 	};
 
 	const selectPreviousIndex = () => {
-		const { tabs } = properties();
-		const activeIndex = findTabIndex(tabs, icache.get('activeId'));
+		const { tabs, activeTab } = properties();
+		const activeIndex = findTabIndex(tabs, activeTab || icache.get('activeId'));
 		selectIndex(activeIndex === 0 ? tabs.length - 1 : activeIndex - 1, true);
 	};
 
@@ -218,17 +228,23 @@ export const TabController = factory(function TabController({
 		}
 	};
 
-	const { alignButtons, aria = {}, initialId, tabs } = properties();
+	const {
+		alignButtons,
+		aria = {},
+		initialActiveTab,
+		activeTab,
+		tabs,
+		onActiveTab
+	} = properties();
 	const themeCss = theme.classes(css);
 	const { messages } = i18n.localize(commonBundle);
 
 	const closedIds = icache.getOrSet('closedIds', new Set<string>());
-	const initialIndex = initialId == null ? 0 : findTabIndex(tabs, initialId);
+	const initialIndex = initialActiveTab == null ? 0 : findTabIndex(tabs, initialActiveTab);
 	const validIndex = validateIndex(initialIndex === -1 ? tabs.length - 1 : initialIndex);
-	const activeId = icache.getOrSet(
-		'activeId',
-		validIndex != null ? tabs[validIndex].id : undefined
-	);
+	const activeId =
+		activeTab ||
+		icache.getOrSet('activeId', validIndex != null ? tabs[validIndex].id : undefined);
 	const [renderer] = children();
 	const tabContents = renderer(tabs, (id) => id === activeId, (id) => closedIds.has(id));
 
@@ -256,7 +272,10 @@ export const TabController = factory(function TabController({
 				key={`${index}-tabbutton`}
 				onclick={() => {
 					if (!disabled) {
-						icache.set('activeId', tab.id);
+						onActiveTab && onActiveTab(tab.id);
+						if (!activeTab) {
+							icache.set('activeId', tab.id);
+						}
 					}
 				}}
 				onkeydown={(event) => onKeyDown(event, tab)}
