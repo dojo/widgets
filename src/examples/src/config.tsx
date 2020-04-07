@@ -59,6 +59,7 @@ import ActionsDialog from './widgets/dialog/ActionsDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
 import Advanced from './widgets/grid/Advanced';
 import BasicForm from './widgets/form/Basic';
+import ControlledForm from './widgets/form/Basic';
 import ValidationForm from './widgets/form/Validation';
 import InitialValueForm from './widgets/form/InitialValueForm';
 import FillingForm from './widgets/form/FillingForm';
@@ -626,6 +627,11 @@ export const config = {
 					title: 'Basic form with an initial value',
 					module: InitialValueForm,
 					filename: 'InitialValueForm'
+				},
+				{
+					title: 'Basic controlled form',
+					module: ControlledForm,
+					filename: 'Controlled'
 				},
 				{
 					title: 'Basic form with fill button',

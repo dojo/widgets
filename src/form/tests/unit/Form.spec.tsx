@@ -12,7 +12,7 @@ import TextInput from '../../../text-input';
 import { stubEvent } from '../../../common/tests/support/test-helpers';
 
 import * as css from '../../../theme/default/form.m.css';
-import { FormMiddleware } from '../../middleware';
+import { FormMiddleware, FormValue } from '../../middleware';
 import Form from '../../index';
 
 interface Fields {
@@ -114,11 +114,12 @@ describe('Form', () => {
 
 	const onSubmit = stub();
 	const onValue = stub();
-	const form = () => (
+	const form = (value?: FormValue) => (
 		<Form
 			initialValue={{
 				firstName: 'Billy'
 			}}
+			value={value}
 			onSubmit={onSubmit}
 			onValue={onValue}
 			name="formName"
@@ -340,6 +341,42 @@ describe('Form', () => {
 			valid: false,
 			message: 'Required'
 		});
+		h.expect(assertion);
+	});
+
+	it('it overrides value changes when controlled', () => {
+		const h = harness(() => form({ firstName: 'Billy', lastName: 'Bob' }));
+		const assertion = baseAssertion.setProperty('@lastName', 'initialValue', 'Bob');
+
+		h.expect(assertion);
+		assert.isTrue(
+			onValue.calledWith({ firstName: 'Billy', lastName: 'Bob' }),
+			'onValue called'
+		);
+
+		h.trigger('@firstName', 'onValidate', undefined);
+		h.trigger('@middleName', 'onValidate', undefined);
+		h.trigger('@lastName', 'onValidate', undefined);
+		h.trigger('@email', 'onValidate', undefined);
+
+		h.expect(assertion);
+
+		h.trigger('@firstName', 'onValidate', undefined);
+		h.trigger('@middleName', 'onValidate', undefined);
+		h.trigger('@lastName', 'onValidate', undefined);
+		h.trigger('@email', 'onValidate', undefined);
+
+		h.expect(assertion);
+
+		h.trigger('@firstName', 'onValue', 'Bobby');
+		assert.isTrue(onValue.calledWith({ firstName: 'Bobby' }), 'onValue called');
+		h.trigger('@middleName', 'onValue', 'Bo');
+		assert.isTrue(onValue.calledWith({ middleName: 'Bo' }), 'onValue called');
+		h.trigger('@lastName', 'onValue', 'Bob');
+		assert.isTrue(onValue.calledWith({ lastName: 'Bob' }), 'onValue called');
+		h.trigger('@email', 'onValue', 'test@example.com');
+		assert.isTrue(onValue.calledWith({ email: 'test@example.com' }), 'onValue called');
+
 		h.expect(assertion);
 	});
 
