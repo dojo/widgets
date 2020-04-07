@@ -9,8 +9,8 @@ export default factory(function Error() {
 		<div>
 			<Result title="Something Failed" subtitle="This is an error." status="error">
 				{{
-					content: () => <span>This is the error content.</span>,
-					actionButtons: () => (
+					content: <span>This is the error content.</span>,
+					actionButtons: (
 						<virtual>
 							<Button>Go Back</Button>
 							<Button>Try Again</Button>

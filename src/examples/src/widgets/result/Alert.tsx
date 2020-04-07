@@ -9,8 +9,8 @@ export default factory(function Alert() {
 		<div>
 			<Result title="Alert Result" subtitle="This is an alert." status="alert">
 				{{
-					content: () => <span>Content describing the alert.</span>,
-					actionButtons: () => (
+					content: <span>Content describing the alert.</span>,
+					actionButtons: (
 						<virtual>
 							<Button>Alert Action</Button>
 						</virtual>

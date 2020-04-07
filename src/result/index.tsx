@@ -25,9 +25,9 @@ export interface ResultProperties {
 }
 
 export interface ResultChildren {
-	icon?: () => RenderResult;
-	content?: () => RenderResult;
-	actionButtons?: () => RenderResult;
+	icon?: RenderResult;
+	content?: RenderResult;
+	actionButtons?: RenderResult;
 }
 
 const factory = create({ theme })
@@ -62,7 +62,7 @@ export const Result = factory(function Result({ children, properties, middleware
 					key="iconWrapper"
 					classes={[themeCss.iconWrapper, status ? themeCss[status] : null]}
 				>
-					{icon ? icon() : statusIcon()}
+					{icon ? icon : statusIcon()}
 				</div>
 			) : null}
 			{title && (
@@ -71,10 +71,10 @@ export const Result = factory(function Result({ children, properties, middleware
 					{subtitle && <h3 classes={themeCss.subtitle}>{subtitle}</h3>}
 				</div>
 			)}
-			{content && <div classes={themeCss.contentWrapper}>{content()}</div>}
+			{content && <div classes={themeCss.contentWrapper}>{content}</div>}
 			{actionButtons && (
 				<div key="actions" classes={themeCss.actions}>
-					{actionButtons && <div classes={themeCss.actionButtons}>{actionButtons()}</div>}
+					{actionButtons && <div classes={themeCss.actionButtons}>{actionButtons}</div>}
 				</div>
 			)}
 		</div>

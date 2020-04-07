@@ -8,7 +8,7 @@ export default factory(function Basic() {
 		<div>
 			<Result title="Hello, World" subtitle="Result SubTitle" status="info">
 				{{
-					content: () => <span>Result Content</span>
+					content: <span>Result Content</span>
 				}}
 			</Result>
 		</div>

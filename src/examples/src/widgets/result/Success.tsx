@@ -9,8 +9,8 @@ export default factory(function Error() {
 		<div>
 			<Result title="Success Result" subtitle="This is an success result." status="success">
 				{{
-					content: () => <span>This is the success content.</span>,
-					actionButtons: () => (
+					content: <span>This is the success content.</span>,
+					actionButtons: (
 						<virtual>
 							<Button>OK</Button>
 						</virtual>
