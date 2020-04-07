@@ -226,6 +226,7 @@ import BasicResult from './widgets/result/Basic';
 import AlertResult from './widgets/result/Alert';
 import ErrorResult from './widgets/result/Error';
 import SuccessResult from './widgets/result/Success';
+import CustomIconResult from './widgets/result/CustomIcon';
 
 `!has('docs')`;
 import testsContext from './tests';
@@ -1232,6 +1233,11 @@ export const config = {
 					filename: 'Success',
 					module: SuccessResult,
 					title: 'Success'
+				},
+				{
+					filename: 'CustomIcon',
+					module: CustomIconResult,
+					title: 'Custom Icon'
 				}
 			]
 		},

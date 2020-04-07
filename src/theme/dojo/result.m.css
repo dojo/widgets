@@ -7,14 +7,17 @@
 .iconWrapper {
 	align-items: center;
 	display: flex;
-	font-size: 64px;
-	font-weight: var(--bold-font-weight);
 	justify-content: center;
-	height: 64px;
-	width: 64px;
 }
 
-.statusIconIcon {
+.statusIcon {
+	font-size: calc(var(--grid-base) * 9);
+	font-weight: var(--bold-font-weight);
+	height: calc(var(--grid-base) * 9);
+	width: calc(var(--grid-base) * 9);
+}
+
+.iconIcon {
 	composes: icon from './icon.m.css';
 }
 
@@ -57,6 +60,7 @@
 }
 
 /* Status Styles */
+
 .alert {
 	color: var(--color-alert);
 }

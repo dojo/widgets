@@ -43,12 +43,12 @@ export const Result = factory(function Result({ children, properties, middleware
 		if (!icon && status) {
 			return (
 				<Icon
-					key="statusIcon"
+					key="icon"
 					type={StatusIcon[status]}
 					theme={theme.compose(
 						iconCss,
 						css,
-						'statusIcon'
+						'icon'
 					)}
 				/>
 			);
@@ -60,7 +60,11 @@ export const Result = factory(function Result({ children, properties, middleware
 			{icon || status ? (
 				<div
 					key="iconWrapper"
-					classes={[themeCss.iconWrapper, status ? themeCss[status] : null]}
+					classes={[
+						themeCss.iconWrapper,
+						status ? themeCss[status] : null,
+						status && !icon ? themeCss.statusIcon : null
+					]}
 				>
 					{icon ? icon : statusIcon()}
 				</div>

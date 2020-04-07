@@ -1,5 +1,6 @@
 export const root: string;
 export const iconWrapper: string;
+export const statusIcon: string;
 export const iconIcon: string;
 export const actions: string;
 export const actionButtons: string;

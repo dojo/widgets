@@ -4,24 +4,21 @@
 	align-items: center;
 }
 
-.iconWrapper {
-	font-size: 64px;
-	height: 64px;
-	width: 64px;
+.statusIcon {
+	font-size: calc(var(--mdc-grid-base) * 9);
+	height: calc(var(--mdc-grid-base) * 9);
+	width: calc(var(--mdc-grid-base) * 9);
 }
 
-.statusIconIcon {
+.iconIcon {
 	composes: icon from './icon.m.css';
-	font-size: 64px;
+	font-size: calc(var(--mdc-grid-base) * 9);
 }
 
 .actions {
 	display: flex;
 	flex-direction: row;
 	margin: var(--mdc-grid-base);
-}
-
-.actionButtons {
 }
 
 .content {
@@ -36,9 +33,6 @@
 .titleWrapper {
 	text-align: center;
 	margin: var(--mdc-grid-base);
-}
-
-.title {
 }
 
 .subtitle {

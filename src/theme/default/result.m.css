@@ -1,11 +1,16 @@
-/* The root class for the Result widget. */
+/* The root class for the Result widget */
 .root {
 }
 
+/* Wrapper around the icon */
 .iconWrapper {
 }
 
-.statusIconIcon {
+/* Applied if a status is specified */
+.statusIcon {
+}
+
+.iconIcon {
 	composes: icon from './icon.m.css';
 }
 
@@ -16,13 +21,8 @@
 	align-items: center;
 }
 
+/* Wrapped around the action buttons */
 .actionButtons {
-}
-
-/* The wrapper around the main content section */
-.content {
-	display: flex;
-	flex-direction: column;
 }
 
 /* Wrapper around the content child */
@@ -42,6 +42,7 @@
 }
 
 /* Status Styles */
+
 .alert {
 }
 
