@@ -5,7 +5,12 @@ import theme from '@dojo/framework/core/middleware/theme';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import resize from '@dojo/framework/core/middleware/resize';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import { Resource } from '@dojo/framework/core/resource';
+import {
+	Resource,
+	createResource,
+	ResourceQuery,
+	DataTemplate
+} from '@dojo/framework/core/resource';
 import global from '@dojo/framework/shim/global';
 
 import Icon from '../icon';
@@ -14,7 +19,28 @@ import { ListOption } from '../list';
 
 import bundle from './Pagination.nls';
 import * as css from '../theme/default/pagination.m.css';
-import { createMemoryResourceWithData } from '../examples/src/widgets/list/memoryTemplate';
+
+export function createMemoryTemplate<S = void>({
+	filter
+}: { filter?: (query: ResourceQuery[], v: S) => boolean } = {}): DataTemplate<S> {
+	return {
+		read: ({ query }, put, get) => {
+			let data: any[] = get();
+			const filteredData = filter && query ? data.filter((i) => filter(query, i)) : data;
+			put(0, filteredData);
+			return { data: filteredData, total: filteredData.length };
+		}
+	};
+}
+
+export function createMemoryResourceWithData<S = any>(data: S[]) {
+	const memoryTemplate = createMemoryTemplate<S>();
+
+	return {
+		resource: () => createResource(memoryTemplate),
+		data
+	};
+}
 
 export interface PaginationProperties {
 	/** The initial page number */
@@ -32,7 +58,7 @@ export interface PaginationProperties {
 	/** Page size options to display in the page size selector */
 	pageSizes?: number[];
 
-	/** Number of always visible page links before and after the current page */
+	/** Number of always visible page links before and after the current page. When unset, siblings will be added to consume the available space. */
 	siblingCount?: number;
 
 	/** Total number of pages */
