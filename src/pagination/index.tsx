@@ -4,13 +4,8 @@ import i18n from '@dojo/framework/core/middleware/i18n';
 import theme from '@dojo/framework/core/middleware/theme';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import resize from '@dojo/framework/core/middleware/resize';
-import { RenderResult } from '@dojo/framework/core/interfaces';
-import {
-	Resource,
-	createResource,
-	ResourceQuery,
-	DataTemplate
-} from '@dojo/framework/core/resource';
+import { RenderResult, Theme, ThemeWithVariant } from '@dojo/framework/core/interfaces';
+import { Resource, createResource } from '@dojo/framework/core/resource';
 import global from '@dojo/framework/shim/global';
 
 import Icon from '../icon';
@@ -19,28 +14,6 @@ import { ListOption } from '../list';
 
 import bundle from './Pagination.nls';
 import * as css from '../theme/default/pagination.m.css';
-
-export function createMemoryTemplate<S = void>({
-	filter
-}: { filter?: (query: ResourceQuery[], v: S) => boolean } = {}): DataTemplate<S> {
-	return {
-		read: ({ query }, put, get) => {
-			let data: any[] = get();
-			const filteredData = filter && query ? data.filter((i) => filter(query, i)) : data;
-			put(0, filteredData);
-			return { data: filteredData, total: filteredData.length };
-		}
-	};
-}
-
-export function createMemoryResourceWithData<S = any>(data: S[]) {
-	const memoryTemplate = createMemoryTemplate<S>();
-
-	return {
-		resource: () => createResource(memoryTemplate),
-		data
-	};
-}
 
 export interface PaginationProperties {
 	/** The initial page number */
@@ -69,9 +42,41 @@ interface PaginationCache {
 	initialPage?: number;
 	initialPageSize?: number;
 	currentPage: number;
+	nodeWidths: { prev: number; next: number; current: number; sibling: number };
 	pageSize: number;
 	pageSizes: number[];
 	pageSizesResource: { resource: () => Resource; data: ListOption[] };
+	theme?: Theme | ThemeWithVariant;
+}
+
+function createMemoryResourceWithData<S = any>(data: S[]) {
+	return {
+		resource: () =>
+			createResource({
+				read: (_, put, get) => {
+					let data: any[] = get();
+					put(0, data);
+					return { data, total: data.length };
+				}
+			}),
+		data
+	};
+}
+
+function getRenderedWidth(dnode: RenderResult, wrapperClass?: string): number {
+	if (dnode === undefined) {
+		return 0;
+	}
+
+	const r = renderer(() => dnode);
+	const div = global.document.createElement('div');
+	div.className = wrapperClass || '';
+	div.style.position = 'absolute';
+	global.document.body.appendChild(div);
+	r.mount({ domNode: div, sync: true });
+	const dimensions = div.getBoundingClientRect();
+	global.document.body.removeChild(div);
+	return dimensions.width;
 }
 
 const icache = createICacheMiddleware<PaginationCache>();
@@ -115,31 +120,17 @@ export default factory(function Pagination({
 		);
 	}
 
+	if (theme.get() !== icache.get('theme')) {
+		icache.set('theme', theme.get());
+		icache.delete('nodeWidths');
+	}
+
 	const page = icache.getOrSet('currentPage', 1);
 	const pageSize = icache.getOrSet('pageSize', 10);
 	const pageSizesResource = icache.get('pageSizesResource');
 
-	const getRenderedWidth = (dnode: RenderResult) => {
-		if (dnode === undefined) {
-			return 0;
-		}
-
-		const r = renderer(() => dnode);
-		const div = global.document.createElement('div');
-		div.className = theme.variant() || '';
-		div.style.position = 'absolute';
-		global.document.body.appendChild(div);
-		r.mount({ domNode: div, sync: true });
-		const dimensions = div.getBoundingClientRect();
-		global.document.body.removeChild(div);
-		return dimensions.width;
-	};
-
-	// If provided, use `siblingCount` as an upper bound for sibling links
-	const leadingCount = siblingCount ? Math.min(siblingCount, page - 1) : page - 1;
-	const trailingCount = siblingCount ? Math.min(siblingCount, total - page) : total - page;
-
-	const prevLink = leadingCount ? (
+	const showPrev = page > 1;
+	const prevLink = (
 		<button
 			type="button"
 			key="prev"
@@ -155,11 +146,10 @@ export default factory(function Pagination({
 			</div>
 			<div classes={classes.label}>{messages.previous}</div>
 		</button>
-	) : (
-		undefined
 	);
 
-	const nextLink = trailingCount ? (
+	const showNext = page < total;
+	const nextLink = (
 		<button
 			type="button"
 			key="next"
@@ -175,93 +165,99 @@ export default factory(function Pagination({
 			</div>
 			<div classes={classes.label}>{messages.next}</div>
 		</button>
-	) : (
-		undefined
 	);
 
 	const leadingSiblings: RenderResult[] = [];
 	const trailingSiblings: RenderResult[] = [];
 	const containerWidth = dimensions.get('links').size.width;
-	let containerStyles: Partial<CSSStyleDeclaration> = {
-		opacity: containerWidth ? '1' : '0'
-	};
+	if (containerWidth) {
+		const nodeWidths = icache.getOrSet('nodeWidths', () => ({
+			prev: getRenderedWidth(prevLink, theme.variant()),
+			next: getRenderedWidth(nextLink, theme.variant()),
+			current: getRenderedWidth(
+				<div classes={classes.currentPage}>{total.toString()}</div>,
+				theme.variant()
+			),
+			sibling: getRenderedWidth(
+				<button classes={[classes.numberedLink, classes.link]}>{total.toString()}</button>,
+				theme.variant()
+			)
+		}));
 
-	const current = (
-		<div key="current" classes={classes.currentPage}>
-			{page.toString()}
-		</div>
-	);
+		const maxSiblings =
+			(containerWidth -
+				nodeWidths.current -
+				(showPrev ? nodeWidths.prev : 0) -
+				(showNext ? nodeWidths.next : 0)) /
+			nodeWidths.sibling;
 
-	let availableWidth =
-		containerWidth -
-		getRenderedWidth(prevLink) -
-		getRenderedWidth(current) -
-		getRenderedWidth(nextLink);
+		const maxLeading = siblingCount ? Math.min(siblingCount, page - 1) : page - 1;
+		const maxTrailing = siblingCount ? Math.min(siblingCount, total - page) : total - page;
+		let numSiblings = 0;
 
-	for (let i = 1; i <= Math.max(leadingCount, trailingCount); i++) {
-		const leadingSibling = (
-			<button
-				type="button"
-				key={`numberedLink-${page - i}`}
-				classes={[classes.numberedLink, classes.link]}
-				onclick={(e) => {
-					e.stopPropagation();
-					icache.set('currentPage', page - i);
-					onPage && onPage(page - i);
-				}}
-			>
-				{(page - i).toString()}
-			</button>
-		);
+		for (let i = 1; i <= Math.max(maxLeading, maxTrailing); i++) {
+			const showLeading = i <= maxLeading;
+			const showTrailing = i <= maxTrailing;
 
-		const trailingSibling = (
-			<button
-				type="button"
-				key={`numberedLink-${page + i}`}
-				classes={[classes.numberedLink, classes.link]}
-				onclick={(e) => {
-					e.stopPropagation();
-					icache.set('currentPage', page + i);
-					onPage && onPage(page + i);
-				}}
-			>
-				{(page + i).toString()}
-			</button>
-		);
+			if (maxSiblings >= numSiblings + +showLeading + +showTrailing) {
+				if (showLeading) {
+					leadingSiblings.unshift(
+						<button
+							type="button"
+							key={`numberedLink-${page - i}`}
+							classes={[classes.numberedLink, classes.link]}
+							onclick={(e) => {
+								e.stopPropagation();
+								icache.set('currentPage', page - i);
+								onPage && onPage(page - i);
+							}}
+						>
+							{(page - i).toString()}
+						</button>
+					);
+					numSiblings++;
+				}
 
-		let widthNeeded = 0;
-		if (i <= leadingCount) {
-			widthNeeded += getRenderedWidth(leadingSibling);
-		}
-
-		if (i <= trailingCount) {
-			widthNeeded += getRenderedWidth(trailingSibling);
-		}
-
-		if (containerWidth === 0 || availableWidth - widthNeeded >= 0) {
-			if (i <= leadingCount) {
-				leadingSiblings.unshift(leadingSibling);
+				if (showTrailing) {
+					trailingSiblings.push(
+						<button
+							type="button"
+							key={`numberedLink-${page + i}`}
+							classes={[classes.numberedLink, classes.link]}
+							onclick={(e) => {
+								e.stopPropagation();
+								icache.set('currentPage', page + i);
+								onPage && onPage(page + i);
+							}}
+						>
+							{(page + i).toString()}
+						</button>
+					);
+					numSiblings++;
+				}
+			} else {
+				break;
 			}
-
-			if (i <= trailingCount) {
-				trailingSiblings.push(trailingSibling);
-			}
-
-			availableWidth -= widthNeeded;
-		} else {
-			break;
 		}
 	}
 
 	return (
 		total > 1 && (
 			<div key="root" classes={[theme.variant(), classes.root]}>
-				<div key="links" classes={classes.linksWrapper} styles={containerStyles}>
-					{prevLink}
+				<div
+					key="links"
+					classes={classes.linksWrapper}
+					styles={{
+						opacity: containerWidth ? '1' : '0'
+					}}
+				>
+					{showPrev && prevLink}
 					{...leadingSiblings}
-					{current}
+					<div key="current" classes={classes.currentPage}>
+						{page.toString()}
+					</div>
 					{...trailingSiblings}
-					{nextLink}
+					{showNext && nextLink}
 				</div>
 				{pageSizes && pageSizes.length > 0 && pageSizesResource && (
 					<div classes={classes.selectWrapper}>

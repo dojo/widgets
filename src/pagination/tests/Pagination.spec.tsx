@@ -71,9 +71,21 @@ describe('Pagination', () => {
 		return links;
 	};
 
-	const baseAssertion = assertionTemplate(() => (
+	const hiddenAssertion = assertionTemplate(() => (
 		<div key="root" classes={[undefined, css.root]}>
 			<div key="links" classes={css.linksWrapper} styles={{ opacity: '0' }}>
+				{prev}
+				<div key="current" classes={css.currentPage}>
+					10
+				</div>
+				{next}
+			</div>
+		</div>
+	));
+
+	const visibleAssertion = assertionTemplate(() => (
+		<div key="root" classes={[undefined, css.root]}>
+			<div key="links" classes={css.linksWrapper} styles={{ opacity: '1' }}>
 				{prev}
 				{...makeLinks(1, 9)}
 				<div key="current" classes={css.currentPage}>
@@ -85,9 +97,34 @@ describe('Pagination', () => {
 		</div>
 	));
 
+	const sb = sinon.sandbox.create();
+	const resizeMock = createResizeMock();
+	let nodeMock: ReturnType<typeof createNodeMock>;
+
+	function mockWidth(key: string, width: number) {
+		nodeMock(key, {
+			getBoundingClientRect() {
+				return {
+					width
+				};
+			}
+		});
+	}
+
+	beforeEach(() => {
+		sb.stub(global.window.HTMLDivElement.prototype, 'getBoundingClientRect').callsFake(() => ({
+			width: 45
+		}));
+		nodeMock = createNodeMock();
+	});
+
+	afterEach(() => {
+		sb.restore();
+	});
+
 	it('renders standard use case', () => {
 		const h = harness(() => <Pagination total={20} initialPage={10} onPage={noop} />);
-		h.expect(baseAssertion);
+		h.expect(hiddenAssertion);
 	});
 
 	it('renders nothing with only 1 page', () => {
@@ -104,7 +141,7 @@ describe('Pagination', () => {
 				<Pagination total={20} initialPage={10} onPage={onPageChange} />
 			));
 
-			h.expect(baseAssertion);
+			h.expect(hiddenAssertion);
 			h.trigger('@prev', 'onclick', stubEvent);
 
 			sinon.assert.calledWith(onPageChange, 9);
@@ -116,31 +153,35 @@ describe('Pagination', () => {
 				<Pagination total={20} initialPage={10} onPage={onPageChange} />
 			));
 
-			h.expect(baseAssertion);
+			h.expect(hiddenAssertion);
 			h.trigger('@next', 'onclick', stubEvent);
 
 			sinon.assert.calledWith(onPageChange, 11);
 		});
 
 		it('raises event from trailing links', () => {
+			mockWidth('links', 10000);
 			const onPageChange = sinon.stub();
-			const h = harness(() => (
-				<Pagination total={20} initialPage={10} onPage={onPageChange} />
-			));
+			const h = harness(
+				() => <Pagination total={20} initialPage={10} onPage={onPageChange} />,
+				{ middleware: [[resize, resizeMock], [node, nodeMock]] }
+			);
 
-			h.expect(baseAssertion);
+			h.expect(visibleAssertion);
 			h.trigger('@numberedLink-11', 'onclick', stubEvent);
 
 			sinon.assert.calledWith(onPageChange, 11);
 		});
 
 		it('raises event from leading links', () => {
+			mockWidth('links', 1000);
 			const onPageChange = sinon.stub();
-			const h = harness(() => (
-				<Pagination total={20} initialPage={10} onPage={onPageChange} />
-			));
+			const h = harness(
+				() => <Pagination total={20} initialPage={10} onPage={onPageChange} />,
+				{ middleware: [[resize, resizeMock], [node, nodeMock]] }
+			);
 
-			h.expect(baseAssertion);
+			h.expect(visibleAssertion);
 			h.trigger('@numberedLink-9', 'onclick', stubEvent);
 
 			sinon.assert.calledWith(onPageChange, 9);
@@ -148,11 +189,15 @@ describe('Pagination', () => {
 	});
 
 	it('renders without "prev" button when there is no prev', () => {
-		const h = harness(() => <Pagination total={3} initialPage={1} onPage={noop} />);
+		mockWidth('links', 1000);
+		const h = harness(() => <Pagination total={3} initialPage={1} onPage={noop} />, {
+			middleware: [[resize, resizeMock], [node, nodeMock]]
+		});
+
 		h.expect(
 			assertionTemplate(() => (
 				<div key="root" classes={[undefined, css.root]}>
-					<div key="links" classes={css.linksWrapper} styles={{ opacity: '0' }}>
+					<div key="links" classes={css.linksWrapper} styles={{ opacity: '1' }}>
 						<div key="current" classes={css.currentPage}>
 							1
 						</div>
@@ -165,11 +210,15 @@ describe('Pagination', () => {
 	});
 
 	it('renders without "next" button when there is no next', () => {
-		const h = harness(() => <Pagination total={3} initialPage={3} onPage={noop} />);
+		mockWidth('links', 10000);
+		const h = harness(() => <Pagination total={3} initialPage={3} onPage={noop} />, {
+			middleware: [[resize, resizeMock], [node, nodeMock]]
+		});
+
 		h.expect(
 			assertionTemplate(() => (
 				<div key="root" classes={[undefined, css.root]}>
-					<div key="links" classes={css.linksWrapper} styles={{ opacity: '0' }}>
+					<div key="links" classes={css.linksWrapper} styles={{ opacity: '1' }}>
 						{prev}
 						{...makeLinks(1, 2)}
 						<div key="current" classes={css.currentPage}>
@@ -182,11 +231,14 @@ describe('Pagination', () => {
 	});
 
 	it('renders with specified sibling count', () => {
-		const h = harness(() => (
-			<Pagination total={20} initialPage={10} siblingCount={5} onPage={noop} />
-		));
+		mockWidth('links', 1000);
+		const h = harness(
+			() => <Pagination total={20} initialPage={10} siblingCount={5} onPage={noop} />,
+			{ middleware: [[resize, resizeMock], [node, nodeMock]] }
+		);
+
 		h.expect(
-			baseAssertion.replaceChildren('@links', [
+			visibleAssertion.replaceChildren('@links', [
 				prev,
 				...makeLinks(5, 9),
 				<div key="current" classes={css.currentPage}>
@@ -199,7 +251,7 @@ describe('Pagination', () => {
 	});
 
 	describe('page size selector', () => {
-		const sizeSelectorAssertion = baseAssertion.append(':root', [
+		const sizeSelectorAssertion = visibleAssertion.append(':root', [
 			<div classes={css.selectWrapper}>
 				<Select
 					key="page-size-select"
@@ -218,30 +270,38 @@ describe('Pagination', () => {
 		const pageSizes = [10, 20];
 
 		it('renders', () => {
-			const h = harness(() => (
-				<Pagination
-					initialPage={10}
-					initialPageSize={20}
-					total={20}
-					onPage={noop}
-					pageSizes={pageSizes}
-				/>
-			));
+			mockWidth('links', 1000);
+			const h = harness(
+				() => (
+					<Pagination
+						initialPage={10}
+						initialPageSize={20}
+						total={20}
+						onPage={noop}
+						pageSizes={pageSizes}
+					/>
+				),
+				{ middleware: [[resize, resizeMock], [node, nodeMock]] }
+			);
 			h.expect(sizeSelectorAssertion);
 		});
 
 		it('raises page-size change events', () => {
+			mockWidth('links', 1000);
 			const onPageSizeChange = sinon.stub();
-			const h = harness(() => (
-				<Pagination
-					initialPage={10}
-					initialPageSize={20}
-					total={20}
-					onPage={noop}
-					onPageSize={onPageSizeChange}
-					pageSizes={pageSizes}
-				/>
-			));
+			const h = harness(
+				() => (
+					<Pagination
+						initialPage={10}
+						initialPageSize={20}
+						total={20}
+						onPage={noop}
+						onPageSize={onPageSizeChange}
+						pageSizes={pageSizes}
+					/>
+				),
+				{ middleware: [[resize, resizeMock], [node, nodeMock]] }
+			);
 			h.expect(sizeSelectorAssertion);
 
 			h.trigger('@page-size-select', 'onValue', '10');
@@ -250,34 +310,8 @@ describe('Pagination', () => {
 	});
 
 	describe('sibling resizing', () => {
-		const sb = sinon.sandbox.create();
-		const resizeMock = createResizeMock();
-		let nodeMock: ReturnType<typeof createNodeMock>;
-
-		function mockWidth(key: string, width: number) {
-			nodeMock(key, {
-				getBoundingClientRect() {
-					return {
-						width
-					};
-				}
-			});
-		}
-
-		beforeEach(() => {
-			sb.stub(global.window.HTMLDivElement.prototype, 'getBoundingClientRect').callsFake(
-				() => ({
-					width: 45
-				})
-			);
-			nodeMock = createNodeMock();
-		});
-
-		afterEach(() => {
-			sb.restore();
-		});
-
 		it('limits siblings to siblingCount', () => {
+			mockWidth('links', 1000);
 			const h = harness(
 				() => <Pagination total={20} initialPage={10} siblingCount={3} onPage={noop} />,
 				{
@@ -285,7 +319,7 @@ describe('Pagination', () => {
 				}
 			);
 			h.expect(
-				baseAssertion.setChildren('@links', [
+				visibleAssertion.setChildren('@links', [
 					prev,
 					...makeLinks(7, 9),
 					<div key="current" classes={css.currentPage}>
@@ -298,20 +332,20 @@ describe('Pagination', () => {
 		});
 
 		it('excludes siblings when insufficient space', () => {
-			const h = harness(() => <Pagination total={20} initialPage={10} onPage={noop} />, {
-				middleware: [[resize, resizeMock], [node, nodeMock]]
-			});
-			h.expect(baseAssertion);
-
 			// available width is 400
 			// available width after next/prev/current is 400 - (45*3) = 265
 			// leaving room for 265 / 45 = 5.8 => 5 total siblings => 2 siblings on each side
 			mockWidth('links', 400);
-			resizeMock(':root', {});
+
+			const h = harness(() => <Pagination total={20} initialPage={10} onPage={noop} />, {
+				middleware: [[resize, resizeMock], [node, nodeMock]]
+			});
 
 			h.expect(
-				baseAssertion
-					.setProperty('@links', 'styles', { opacity: '1' })
+				visibleAssertion
+					.setProperty('@links', 'styles', {
+						opacity: '1'
+					})
 					.setChildren('@links', [
 						prev,
 						...makeLinks(8, 9),
@@ -325,40 +359,26 @@ describe('Pagination', () => {
 		});
 
 		it('excludes siblings unevenly when applicable', () => {
-			const h = harness(() => <Pagination total={10} initialPage={2} onPage={noop} />, {
-				middleware: [[resize, resizeMock], [node, nodeMock]]
-			});
-			h.expect(
-				baseAssertion.setChildren('@links', [
-					prev,
-					...makeLinks(1),
-					<div key="current" classes={css.currentPage}>
-						2
-					</div>,
-					...makeLinks(3, 10),
-					next
-				])
-			);
-
 			// available width is 400
 			// available width after next/prev/current is 400 - (45*3) = 265
 			// leaving room for 265 / 45 = 5.8 => 5 total siblings
 			// but there's only one leading sibling possible.
 			mockWidth('links', 400);
-			resizeMock(':root', {});
+
+			const h = harness(() => <Pagination total={10} initialPage={2} onPage={noop} />, {
+				middleware: [[resize, resizeMock], [node, nodeMock]]
+			});
 
 			h.expect(
-				baseAssertion
-					.setProperty('@links', 'styles', { opacity: '1' })
-					.setChildren('@links', [
-						prev,
-						...makeLinks(1),
-						<div key="current" classes={css.currentPage}>
-							2
-						</div>,
-						...makeLinks(3, 6),
-						next
-					])
+				visibleAssertion.setChildren('@links', [
+					prev,
+					...makeLinks(1),
+					<div key="current" classes={css.currentPage}>
+						2
+					</div>,
+					...makeLinks(3, 6),
+					next
+				])
 			);
 		});
 	});
