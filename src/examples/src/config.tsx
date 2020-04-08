@@ -131,6 +131,7 @@ import RequiredRangeSlider from './widgets/range-slider/Required';
 import LabelledRangeSlider from './widgets/range-slider/Labelled';
 import AdditionalText from './widgets/select/AdditionalText';
 import BasicSelect from './widgets/select/Basic';
+import ControlledSelect from './widgets/select/Controlled';
 import CustomRenderer from './widgets/select/CustomRenderer';
 import DisabledSelect from './widgets/select/DisabledSelect';
 import RequiredSelect from './widgets/select/RequiredSelect';
@@ -1130,6 +1131,13 @@ export const config = {
 				}
 			},
 			examples: [
+				{
+					filename: 'Controlled',
+					module: ControlledSelect,
+					sandbox: true,
+					title: 'Controlled Select',
+					size: 'medium'
+				},
 				{
 					filename: 'AdditionalText',
 					module: AdditionalText,

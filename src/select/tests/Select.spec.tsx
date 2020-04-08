@@ -350,6 +350,44 @@ describe('Select', () => {
 		);
 	});
 
+	it('renders with a value property', () => {
+		const onValueStub = stub();
+		const toggleOpenStub = stub();
+
+		const options = [{ value: 'dog', label: 'Dog' }, { value: 'cat' }, { value: 'fish' }];
+
+		const h = harness(
+			() => (
+				<Select
+					onValue={onValueStub}
+					resource={{
+						resource: () => createResource(memoryTemplate),
+						data: options
+					}}
+					transform={defaultTransform}
+					value="dog"
+				/>
+			),
+			[compareAriaControls, compareId]
+		);
+
+		const triggerRenderResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpenStub
+		);
+
+		h.expect(
+			buttonTemplate.setProperty('@trigger', 'value', 'dog').setChildren('@trigger', () => [
+				<span classes={css.value}>Dog</span>,
+				<span classes={css.arrow}>
+					<Icon type="downIcon" theme={{}} classes={undefined} />
+				</span>
+			]),
+			() => triggerRenderResult
+		);
+	});
+
 	it('invalidates correctly', () => {
 		const onValidate = stub();
 		const h = harness(() => (

@@ -31,6 +31,8 @@ export interface SelectProperties {
 	onValue(value: string): void;
 	/** The initial selected value */
 	initialValue?: string;
+	/** Controlled value property */
+	value?: string;
 	/** Property to determine how many items to render. Defaults to 6 */
 	itemsInView?: number;
 	/** placement of the select menu; 'above' or 'below' */
@@ -97,12 +99,16 @@ export const Select = factory(function Select({
 	} = properties();
 	const [{ items, label } = { items: undefined, label: undefined }] = children();
 
-	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
-		icache.set('initial', initialValue);
-		icache.set('value', initialValue);
+	let { value } = properties();
+
+	if (value === undefined) {
+		if (initialValue !== undefined && initialValue !== icache.get('initial')) {
+			icache.set('initial', initialValue);
+			icache.set('value', initialValue);
+		}
+		value = icache.get('value');
 	}
 
-	const value = icache.get('value');
 	const menuId = icache.getOrSet('menuId', uuid());
 	const triggerId = icache.getOrSet('triggerId', uuid());
 	const focusNode = icache.getOrSet('focusNode', 'trigger');
@@ -182,7 +188,7 @@ export const Select = factory(function Select({
 						return (
 							<button
 								name={name}
-								value={icache.get('value')}
+								value={value}
 								focus={() => focusNode === 'trigger' && shouldFocus}
 								aria-controls={menuId}
 								aria-haspopup="listbox"
