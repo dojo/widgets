@@ -236,6 +236,19 @@ registerSuite('Slider', {
 			);
 		},
 
+		'controlled value should be respected'() {
+			const h = harness(() => <Slider max={40} initialValue={20} value={100} />);
+
+			h.expect(
+				expected()
+					.setProperty('@input', 'value', '40')
+					.setProperty('@input', 'max', '40')
+					.setProperty('~fill', 'styles', { width: '100%' })
+					.setProperty('~thumb', 'styles', { left: '100%' })
+					.setChildren('~output', ['40'])
+			);
+		},
+
 		'min value should be respected'() {
 			const h = harness(() => <Slider min={30} initialValue={20} />);
 

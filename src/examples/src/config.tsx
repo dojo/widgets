@@ -149,6 +149,7 @@ import DisabledSlider from './widgets/slider/DisabledSlider';
 import VerticalSlider from './widgets/slider/VerticalSlider';
 import SliderWithNoOutput from './widgets/slider/SliderWithNoOutput';
 import SliderWithValidityCheck from './widgets/slider/SliderWithValidityCheck';
+import ControlledSlider from './widgets/slider/ControlledSlider';
 import BasicSnackbar from './widgets/snackbar/Basic';
 import ErrorSnackbar from './widgets/snackbar/Error';
 import LeadingSnackbar from './widgets/snackbar/Leading';
@@ -1259,6 +1260,10 @@ export const config = {
 				{
 					filename: 'SliderWithValidityCheck',
 					module: SliderWithValidityCheck
+				},
+				{
+					filename: 'ControlledSlider',
+					module: ControlledSlider
 				}
 			]
 		},

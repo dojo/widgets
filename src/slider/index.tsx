@@ -47,6 +47,8 @@ export interface SliderProperties {
 	valid?: boolean;
 	/** The initial value */
 	initialValue?: number;
+	/** A controlled slider value */
+	value?: number;
 	/** Orients the slider vertically, false by default. */
 	vertical?: boolean;
 	/** Length of the vertical slider (only used if vertical is true) */
@@ -109,20 +111,31 @@ export const Slider = factory(function Slider({
 	const [{ output, label } = { output: undefined, label: undefined }] = children();
 
 	const { initialValue = min } = properties();
-	const existingInitialValue = icache.getOrSet('initialValue', min);
-	let value = icache.get('value') || initialValue;
+	let { value } = properties();
 
-	if (initialValue !== existingInitialValue) {
-		value = initialValue;
-		if (initialValue > max) {
+	if (!value) {
+		value = icache.get('value') || initialValue;
+		const existingInitialValue = icache.getOrSet('initialValue', min);
+
+		if (initialValue !== existingInitialValue) {
+			value = initialValue;
+			if (initialValue > max) {
+				value = max;
+			} else if (initialValue < min) {
+				value = min;
+			}
+
+			icache.set('value', value);
+			icache.set('initialValue', initialValue);
+			onValue && onValue(value);
+		}
+	} else {
+		if (value > max) {
 			value = max;
-		} else if (initialValue < min) {
+		} else if (value < min) {
 			value = min;
 		}
-
 		icache.set('value', value);
-		icache.set('initialValue', initialValue);
-		onValue && onValue(value);
 	}
 
 	const themeCss = theme.classes(css);
