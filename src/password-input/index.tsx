@@ -7,7 +7,7 @@ import theme from '../middleware/theme';
 import * as buttonCss from '../theme/default/button.m.css';
 import * as css from '../theme/default/password-input.m.css';
 import * as textInputCss from '../theme/default/text-input.m.css';
-import TextInput, { TextInputChildren } from '../text-input';
+import TextInput, { TextInputChildren, Addon } from '../text-input';
 import { ValidationRules } from '../middleware/validation';
 
 export type Omit<T, E> = Pick<T, Exclude<keyof T, E>>;
@@ -38,18 +38,20 @@ export const PasswordInput = factory(function PasswordInput({
 	const showPassword = icache.getOrSet('showPassword', false);
 
 	const trailing = (
-		<Button
-			onClick={() => {
-				icache.set('showPassword', !showPassword);
-			}}
-			theme={theme.compose(
-				buttonCss,
-				css,
-				'toggleButton'
-			)}
-		>
-			<Icon type={showPassword ? 'eyeSlashIcon' : 'eyeIcon'} />
-		</Button>
+		<Addon>
+			<Button
+				onClick={() => {
+					icache.set('showPassword', !showPassword);
+				}}
+				theme={theme.compose(
+					buttonCss,
+					css,
+					'toggleButton'
+				)}
+			>
+				<Icon type={showPassword ? 'eyeSlashIcon' : 'eyeIcon'} />
+			</Button>
+		</Addon>
 	);
 
 	const handleValidation = (valid?: boolean, message?: string) => {

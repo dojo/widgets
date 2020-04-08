@@ -11,7 +11,7 @@ import createFocusMock from '@dojo/framework/testing/mocks/middleware/focus';
 import createValidityMock from '@dojo/framework/testing/mocks/middleware/validity';
 
 import Label from '../../../label/index';
-import TextInput from '../../index';
+import TextInput, { Addon } from '../../index';
 import * as css from '../../../theme/default/text-input.m.css';
 import {
 	compareForId,
@@ -567,11 +567,7 @@ registerSuite('TextInput', {
 					null,
 					css.noLabel
 				])
-				.prepend('@inputWrapper', () => [
-					<span key="leading" classes={css.leading}>
-						{leading}
-					</span>
-				]);
+				.prepend('@inputWrapper', () => [leading]);
 			const h = harness(() => <TextInput>{{ leading }}</TextInput>);
 			h.expect(leadingTemplate);
 		},
@@ -591,11 +587,7 @@ registerSuite('TextInput', {
 					css.hasTrailing,
 					css.noLabel
 				])
-				.append('@inputWrapper', () => [
-					<span key="trailing" classes={css.trailing}>
-						{trailing}
-					</span>
-				]);
+				.append('@inputWrapper', () => [trailing]);
 			const h = harness(() => <TextInput>{{ trailing }}</TextInput>);
 			h.expect(trailingTemplate);
 		},
@@ -735,5 +727,22 @@ registerSuite('TextInput', {
 
 			h.expect(() => expected({ label: true, labelHidden: true }));
 		}
+	},
+	addon() {
+		const addonTemplate = assertionTemplate(() => {
+			return <span classes={[css.addonRoot, null]}>foo</span>;
+		});
+
+		const h = harness(() => <Addon>foo</Addon>);
+		h.expect(addonTemplate);
+	},
+
+	'addon filled'() {
+		const addonTemplate = assertionTemplate(() => {
+			return <span classes={[css.addonRoot, css.addonFilled]}>foo</span>;
+		});
+
+		const h = harness(() => <Addon filled>foo</Addon>);
+		h.expect(addonTemplate);
 	}
 });

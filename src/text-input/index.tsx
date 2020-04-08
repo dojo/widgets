@@ -257,11 +257,7 @@ export const TextInput = factory(function TextInput({
 					</Label>
 				)}
 				<div key="inputWrapper" classes={themeCss.inputWrapper} role="presentation">
-					{leading && (
-						<span key="leading" classes={themeCss.leading}>
-							{leading}
-						</span>
-					)}
+					{leading}
 					<input
 						{...formatAriaProperties(aria)}
 						aria-invalid={valid === false ? 'true' : null}
@@ -314,11 +310,7 @@ export const TextInput = factory(function TextInput({
 							onOut && onOut();
 						}}
 					/>
-					{trailing && (
-						<span key="trailing" classes={themeCss.trailing}>
-							{trailing}
-						</span>
-					)}
+					{trailing}
 				</div>
 			</div>
 			<HelperText
@@ -328,6 +320,27 @@ export const TextInput = factory(function TextInput({
 				theme={themeProp}
 			/>
 		</div>
+	);
+});
+
+export interface AddonProperties {
+	filled?: boolean;
+}
+
+const addonFactory = create({
+	theme
+})
+	.properties<AddonProperties>()
+	.children();
+
+export const Addon = addonFactory(function Addon({ middleware: { theme }, properties, children }) {
+	const themeCss = theme.classes(css);
+	const { filled } = properties();
+
+	return (
+		<span classes={[themeCss.addonRoot, filled ? themeCss.addonFilled : null]}>
+			{children()}
+		</span>
 	);
 });
 

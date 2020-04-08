@@ -22,13 +22,3 @@
 	display: inline-block;
 	background: var(--color-background);
 }
-
-.inputTrailing {
-	composes: trailing from './text-input.m.css';
-}
-
-.root .inputTrailing {
-	background: none;
-	padding-bottom: 0;
-	padding-top: 0;
-}

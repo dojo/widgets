@@ -7,5 +7,5 @@ export const disabled: string;
 export const readonly: string;
 export const invalid: string;
 export const valid: string;
-export const leading: string;
-export const trailing: string;
+export const addonRoot: string;
+export const addonFilled: string;

@@ -88,14 +88,16 @@
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-valid);
 }
 
-.leading,
-.trailing {
-	background-color: var(--color-background-faded);
+.addonRoot {
 	color: var(--color-text-faded);
 	flex: 0 0 auto;
 	font-size: inherit;
 	line-height: var(--line-height-base);
-	padding: var(--grid-base);
-	transition: border var(--transition-duration) var(--transition-easing);
+	padding: 0 var(--grid-base);
 	box-sizing: border-box;
+}
+
+.addonRoot.addonFilled {
+	background-color: var(--color-background-faded);
+	padding: var(--grid-base);
 }
