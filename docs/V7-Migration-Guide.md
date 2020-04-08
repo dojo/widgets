@@ -413,7 +413,7 @@ Latest example can be found on [widgets.dojo.io/#widget/list/overview](https://w
 
 
 ### native-select
-- used to live inside select
+- Used to live inside select
 #### Property changes
 ##### Additional Mandatory Properties
 - options: MenuOption[]
@@ -421,11 +421,8 @@ Latest example can be found on [widgets.dojo.io/#widget/list/overview](https://w
 ##### Changed properties
 - onValue: (value string) => void
 	- This prop replaces `onChange`
-initialValue?: string;
-    - This prop replaces `value`
-    - Is no longer required as the component can be used in an uncontrolled manner
 #### Changes in behaviour
-Native select is controllable with `initialValue` but can also be used as an uncontrolled
+Native select is controllable with `value` but can also be used as an uncontrolled
 component
 #### Example of migration from v6 to v7
 ```tsx
@@ -526,18 +523,13 @@ Latest example can be found on [widgets.dojo.io/#widget/range-slider/overview](h
 ### select
 - Now uses list, no longer supports using the native element
 #### Property changes
+##### Additional Mandatory Properties
+##### Changed properties
 - onValue: (value: string) => void
 	- Replaces `onChange`
 - initialValue?: string;
-    - Replaces `value`
-    - Can be used to control the component or set an initial
-      value and then let the component act in an uncontrolled manner
-##### Additional Mandatory Properties
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+    - Can be used to an initial value and then let the
+      component act in an uncontrolled manner
 ##### Removed properties
 - useNativeElement: boolean
 	- Native use case is now supported by its own widget
