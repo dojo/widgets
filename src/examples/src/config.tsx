@@ -202,6 +202,7 @@ import BasicTooltip from './widgets/tooltip/Basic';
 import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
 import BasicNativeSelect from './widgets/native-select/Basic';
+import ControlledNativeSelect from './widgets/native-select/ControlledNativeSelect';
 import BasicDateInput from './widgets/date-input/Basic';
 import ControlledDateInput from './widgets/date-input/Controlled';
 import BasicLoadingIndicator from './widgets/loading-indicator/Basic';
@@ -930,7 +931,14 @@ export const config = {
 					filename: 'Basic',
 					module: BasicNativeSelect
 				}
-			}
+			},
+			examples: [
+				{
+					title: 'Contolled Native Select',
+					filename: 'ControlledNativeSelect',
+					module: ControlledNativeSelect
+				}
+			]
 		},
 		'password-input': {
 			overview: {

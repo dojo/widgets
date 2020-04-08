@@ -118,6 +118,43 @@ describe('Native Select', () => {
 		h.expect(optionalPropertyTemplate);
 	});
 
+	it('controlled value', () => {
+		const h = harness(
+			() => (
+				<NativeSelect
+					onValue={() => {}}
+					options={options}
+					disabled={true}
+					helperText="Pick a pet type"
+					label="Pets"
+					required={true}
+					name="Pet select"
+					size={3}
+					value="dog"
+				/>
+			),
+			[compareForId, compareId]
+		);
+
+		const controlledTemplate = baseTemplate
+			.setProperty('@native-select', 'disabled', true)
+			.setProperty('@native-select', 'required', true)
+			.setProperty('@native-select', 'name', 'Pet select')
+			.setProperty('@native-select', 'size', 3)
+			.setProperty('@helperText', 'text', 'Pick a pet type')
+			.setProperty('@option-0', 'selected', true)
+			.setProperty('@root', 'classes', [undefined, css.root, css.disabled, css.required])
+			.setProperty('~label', 'disabled', true)
+			.setProperty('~label', 'required', true)
+			.setProperty('~label', 'active', true)
+			.replaceChildren('~label', () => {
+				return ['Pets'];
+			})
+			.remove('@blank-option');
+
+		h.expect(controlledTemplate);
+	});
+
 	it('calls onValue when a select item is selected', () => {
 		const changeEvent = {
 			target: {
