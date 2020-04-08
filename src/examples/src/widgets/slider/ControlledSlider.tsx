@@ -4,7 +4,7 @@ import Slider from '@dojo/widgets/slider';
 
 const factory = create({ icache });
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function Controlled({ middleware: { icache } }) {
 	const value = icache.getOrSet('value', 50);
 
 	return (

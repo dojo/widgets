@@ -113,7 +113,7 @@ export const Slider = factory(function Slider({
 	const { initialValue = min } = properties();
 	let { value } = properties();
 
-	if (!value) {
+	if (value === undefined) {
 		value = icache.get('value') || initialValue;
 		const existingInitialValue = icache.getOrSet('initialValue', min);
 
