@@ -12,7 +12,7 @@ const options = [
 
 const resource = createMemoryResourceWithData(options);
 
-export default factory(function Basic({ middleware: { icache } }) {
+export default factory(function Controlled({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Select
