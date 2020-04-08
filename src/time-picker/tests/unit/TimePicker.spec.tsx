@@ -305,7 +305,8 @@ describe('TimePicker', () => {
 		// Find the calendar widget and trigger a date selected
 		const [menu] = select('@menu', contentResult);
 		onValue.resetHistory();
-		menu.properties.onValue(format24HourTime(new Date(1990, 0)));
+		const newDate = new Date(1970, 0, 1, 5, 30, 0);
+		menu.properties.onValue(format24HourTime(newDate));
 
 		h.expect(baseTemplate(initialValue));
 	});
