@@ -236,19 +236,6 @@ registerSuite('Slider', {
 			);
 		},
 
-		'controlled value should be respected'() {
-			const h = harness(() => <Slider max={40} initialValue={20} value={100} />);
-
-			h.expect(
-				expected()
-					.setProperty('@input', 'value', '40')
-					.setProperty('@input', 'max', '40')
-					.setProperty('~fill', 'styles', { width: '100%' })
-					.setProperty('~thumb', 'styles', { left: '100%' })
-					.setChildren('~output', ['40'])
-			);
-		},
-
 		'min value should be respected'() {
 			const h = harness(() => <Slider min={30} initialValue={20} />);
 
@@ -260,6 +247,77 @@ registerSuite('Slider', {
 					.setProperty('~thumb', 'styles', { left: '0%' })
 					.setChildren('~output', ['30'])
 			);
+		},
+
+		controlled: {
+			'controlled value should take precedence'() {
+				const h = harness(() => <Slider max={40} initialValue={20} value={100} />);
+
+				h.expect(
+					expected()
+						.setProperty('@input', 'value', '40')
+						.setProperty('@input', 'max', '40')
+						.setProperty('~fill', 'styles', { width: '100%' })
+						.setProperty('~thumb', 'styles', { left: '100%' })
+						.setChildren('~output', ['40'])
+				);
+			},
+			'min value should be respected'() {
+				const h = harness(() => <Slider min={30} value={20} />);
+
+				h.expect(
+					expected()
+						.setProperty('@input', 'value', '30')
+						.setProperty('@input', 'min', '30')
+						.setProperty('~fill', 'styles', { width: '0%' })
+						.setProperty('~thumb', 'styles', { left: '0%' })
+						.setChildren('~output', ['30'])
+				);
+			},
+			'max value should be respected'() {
+				const h = harness(() => <Slider max={40} value={100} />);
+				h.expect(
+					expected()
+						.setProperty('@input', 'value', '40')
+						.setProperty('@input', 'max', '40')
+						.setProperty('~fill', 'styles', { width: '100%' })
+						.setProperty('~thumb', 'styles', { left: '100%' })
+						.setChildren('~output', ['40'])
+				);
+			},
+			events() {
+				const onBlur = sinon.stub();
+				const onFocus = sinon.stub();
+				const onValue = sinon.stub();
+				const onOver = sinon.stub();
+				const onOut = sinon.stub();
+
+				const h = harness(() => (
+					<Slider
+						value={100}
+						onBlur={onBlur}
+						onFocus={onFocus}
+						onValue={onValue}
+						onOver={onOver}
+						onOut={onOut}
+					/>
+				));
+
+				h.trigger('@input', 'onblur', stubEvent);
+				assert.isTrue(onBlur.called, 'onBlur called');
+
+				h.trigger('@input', 'onfocus', stubEvent);
+				assert.isTrue(onFocus.called, 'onFocus called');
+
+				h.trigger('@input', 'oninput', stubEvent);
+				assert.isTrue(onValue.called, 'onValue called');
+
+				h.trigger('@input', 'onpointerenter', stubEvent);
+				assert.isTrue(onOver.called, 'onOver called');
+
+				h.trigger('@input', 'onpointerleave', stubEvent);
+				assert.isTrue(onOut.called, 'onOut called');
+			}
 		},
 
 		label() {
@@ -335,8 +393,18 @@ registerSuite('Slider', {
 			const onBlur = sinon.stub();
 			const onFocus = sinon.stub();
 			const onValue = sinon.stub();
+			const onOver = sinon.stub();
+			const onOut = sinon.stub();
 
-			const h = harness(() => <Slider onBlur={onBlur} onFocus={onFocus} onValue={onValue} />);
+			const h = harness(() => (
+				<Slider
+					onBlur={onBlur}
+					onFocus={onFocus}
+					onValue={onValue}
+					onOver={onOver}
+					onOut={onOut}
+				/>
+			));
 
 			h.trigger('@input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');
@@ -346,6 +414,12 @@ registerSuite('Slider', {
 
 			h.trigger('@input', 'oninput', stubEvent);
 			assert.isTrue(onValue.called, 'onValue called');
+
+			h.trigger('@input', 'onpointerenter', stubEvent);
+			assert.isTrue(onOver.called, 'onOver called');
+
+			h.trigger('@input', 'onpointerleave', stubEvent);
+			assert.isTrue(onOut.called, 'onOut called');
 		}
 	}
 });
