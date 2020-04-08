@@ -401,6 +401,19 @@ registerSuite('Textarea', {
 			assert.isTrue(validateSpy.calledWith(true, 'test'));
 		},
 
+		'validates as undefined with no initial value'() {
+			let mockValidity = createValidityMock();
+
+			let validateSpy = sinon.spy();
+
+			let h = harness(() => <TextArea onValidate={validateSpy} />, {
+				middleware: [[validity, mockValidity]]
+			});
+
+			h.expect(baseAssertion.setProperty('@helperText', 'valid', undefined));
+			assert.isTrue(validateSpy.calledWith(undefined));
+		},
+
 		'onValidate only called when validity or message changed'() {
 			const mockValidity = createValidityMock();
 			let validateSpy = sinon.spy();
