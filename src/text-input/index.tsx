@@ -58,6 +58,8 @@ export interface BaseInputProperties<T extends { value: any } = { value: string 
 	required?: boolean;
 	/** The initial value */
 	initialValue?: T['value'];
+	/** The controlled value */
+	value?: T['value'];
 	/** The id to be applied to the input */
 	widgetId?: string;
 }
@@ -167,15 +169,18 @@ export const TextInput = factory(function TextInput({
 		widgetId = `text-input-${id}`
 	} = properties();
 
+	let { value } = properties();
 	const [{ label, leading, trailing } = {} as TextInputChildren] = children();
 
-	let value = icache.get('value');
-	const existingInitialValue = icache.get('initialValue');
+	if (value === undefined) {
+		value = icache.get('value');
+		const existingInitialValue = icache.get('initialValue');
 
-	if (initialValue !== existingInitialValue) {
-		icache.set('value', initialValue);
-		icache.set('initialValue', initialValue);
-		value = initialValue;
+		if (initialValue !== existingInitialValue) {
+			icache.set('value', initialValue);
+			icache.set('initialValue', initialValue);
+			value = initialValue;
+		}
 	}
 
 	const pattern = patternValue instanceof RegExp ? patternValue.source : patternValue;

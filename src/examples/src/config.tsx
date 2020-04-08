@@ -165,6 +165,7 @@ import HiddenLabelTextArea from './widgets/text-area/HiddenLabel';
 import ValidatedCustomTextArea from './widgets/text-area/ValidatedCustom';
 import ValidatedRequiredTextArea from './widgets/text-area/ValidatedRequired';
 import BasicTextInput from './widgets/text-input/Basic';
+import ControlledTextInput from './widgets/text-input/Controlled';
 import DisabledTextInput from './widgets/text-input/Disabled';
 import HelperTextInput from './widgets/text-input/HelperText';
 import HiddenLabelTextInput from './widgets/text-input/HiddenLabel';
@@ -1374,6 +1375,11 @@ export const config = {
 					filename: 'Placeholder',
 					module: PlaceholderTextInput,
 					title: 'TextInput with placeholder and no label'
+				},
+				{
+					filename: 'Controlled',
+					module: ControlledTextInput,
+					title: 'Controlled TextInput'
 				},
 				{
 					filename: 'Disabled',

@@ -203,6 +203,25 @@ registerSuite('TextInput', {
 			h.expect(expected);
 		},
 
+		'controlled value'() {
+			const h = harness(() => <TextInput value="foo" />);
+			const valueTemplate = baseAssertion
+				.setProperty('@input', 'value', 'foo')
+				.setProperty('@wrapper', 'classes', [
+					css.wrapper,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					css.noLabel
+				]);
+			h.expect(valueTemplate);
+		},
+
 		'custom properties'() {
 			const h = harness(() => (
 				<TextInput
