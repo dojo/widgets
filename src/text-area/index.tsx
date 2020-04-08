@@ -171,9 +171,8 @@ export const TextArea = factory(function TextArea({
 	} = properties();
 
 	let { value } = properties();
-	const hasValue = typeof value !== 'undefined';
 
-	if (!hasValue) {
+	if (value === undefined) {
 		value = icache.get('value');
 		const existingInitialValue = icache.get('initialValue');
 
@@ -257,9 +256,7 @@ export const TextArea = factory(function TextArea({
 							const { onValue } = properties();
 							event.stopPropagation();
 							const value = (event.target as HTMLInputElement).value;
-							if (!hasValue) {
-								icache.set('value', value);
-							}
+							icache.set('value', value);
 							onValue && onValue(value);
 						}}
 						onkeydown={(event: KeyboardEvent) => {
