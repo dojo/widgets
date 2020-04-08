@@ -6,7 +6,7 @@ import focus from '@dojo/framework/core/middleware/focus';
 import * as css from '../theme/default/time-picker.m.css';
 import * as inputCss from '../theme/default/text-input.m.css';
 import TriggerPopup from '../trigger-popup';
-import TextInput from '../text-input';
+import TextInput, { Addon } from '../text-input';
 import Icon from '../icon';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { Keys } from '../common/util';
@@ -391,18 +391,20 @@ export const TimePicker = factory(function TimePicker({
 									{{
 										label,
 										trailing: (
-											<button
-												disabled={disabled}
-												key="clockIcon"
-												onclick={(e) => {
-													e.stopPropagation();
-													openMenu();
-												}}
-												classes={classes.toggleMenuButton}
-												type="button"
-											>
-												<Icon type="clockIcon" />
-											</button>
+											<Addon>
+												<button
+													disabled={disabled}
+													key="clockIcon"
+													onclick={(e) => {
+														e.stopPropagation();
+														openMenu();
+													}}
+													classes={classes.toggleMenuButton}
+													type="button"
+												>
+													<Icon type="clockIcon" />
+												</button>
+											</Addon>
 										)
 									}}
 								</TextInput>

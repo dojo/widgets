@@ -39,11 +39,7 @@
 .invalid {
 }
 /* Contains leading content */
-.leading {
-	composes: mdc-text-field__icon from '@material/textfield/dist/mdc.textfield.css';
-}
-/* Contains trailing content */
-.trailing {
+.addonRoot {
 	composes: mdc-text-field__icon from '@material/textfield/dist/mdc.textfield.css';
 }
 /* Added at the root when there is leading content */
