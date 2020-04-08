@@ -43,14 +43,20 @@ export interface CalendarProperties {
 	firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 	/** The initial value */
 	initialValue?: Date;
+	/** A controlled date value */
+	value?: Date;
 	/** Function called when the user selects a date */
 	onValue?: (value: Date) => void;
 	/** The initial month to display */
 	initialMonth?: number;
+	/** A controlled month value */
+	month?: number;
 	/** Function called when the month changes */
 	onMonth?(month: number): void;
 	/** The initial year to display */
 	initialYear?: number;
+	/** A controlled year value */
+	year?: number;
 	/** Function called when the year changes */
 	onYear?(year: number): void;
 }
@@ -602,6 +608,7 @@ export const Calendar = factory(function Calendar({
 		firstDayOfWeek = 0
 	} = properties();
 
+	let { value, month, year } = properties();
 	const { monthLabel, weekdayCell } = children()[0] || ({} as CalendarChildren);
 	const defaultDate = initialValue || new Date();
 	const {
@@ -617,37 +624,43 @@ export const Calendar = factory(function Calendar({
 	const monthLabelId = icache.getOrSet('monthLabelId', id);
 	const popupOpen = icache.getOrSet('popupOpen', false);
 	const shouldFocus = focus.shouldFocus();
-	let value = icache.get('value') || new Date();
+	if (!value) {
+		value = icache.get('value') || new Date();
 
-	if (!initialValue && !existingInitialValue) {
-		value = toDate(defaultDate);
+		if (!initialValue && !existingInitialValue) {
+			value = toDate(defaultDate);
 
-		if (isOutOfDateRange(value, minDate, maxDate)) {
-			value = toDate(maxDate);
+			if (isOutOfDateRange(value, minDate, maxDate)) {
+				value = toDate(maxDate);
+			}
+
+			icache.set('initialValue', value);
+			icache.set('value', value);
 		}
 
-		icache.set('initialValue', value);
-		icache.set('value', value);
+		if (initialValue && initialValue !== existingInitialValue) {
+			value = toDate(initialValue);
+
+			icache.set('initialValue', toDate(initialValue));
+			icache.set('value', value);
+		}
 	}
 
-	if (initialValue && initialValue !== existingInitialValue) {
-		value = toDate(initialValue);
-
-		icache.set('initialValue', toDate(initialValue));
-		icache.set('value', value);
+	if (typeof month === 'undefined') {
+		if (initialMonth !== existingInitialMonth) {
+			icache.set('initialMonth', initialMonth);
+			icache.set('month', initialMonth);
+		}
 	}
 
-	if (initialMonth !== existingInitialMonth) {
-		icache.set('initialMonth', initialMonth);
-		icache.set('month', initialMonth);
+	if (typeof year === 'undefined') {
+		if (initialYear !== existingInitialYear) {
+			icache.set('initialYear', initialYear);
+			icache.set('year', initialYear);
+		}
 	}
 
-	if (initialYear !== existingInitialYear) {
-		icache.set('initialYear', initialYear);
-		icache.set('year', initialYear);
-	}
-
-	const { month, year } = getMonthYear();
+	({ month, year } = getMonthYear());
 
 	let weekdayOrder: number[] = [];
 	for (let i = firstDayOfWeek; i < firstDayOfWeek + 7; i++) {
@@ -691,9 +704,10 @@ export const Calendar = factory(function Calendar({
 	}
 
 	function getMonthYear() {
-		const selectedDate = icache.getOrSet('value', new Date());
-		const month = icache.get('month');
-		const year = icache.get('year');
+		let { month, year, value } = properties();
+		const selectedDate = value || icache.getOrSet('value', new Date());
+		month = typeof month === 'number' ? month : icache.get('month');
+		year = typeof year === 'number' ? year : icache.get('year');
 		return {
 			month: typeof month === 'number' ? month : selectedDate.getMonth(),
 			year: typeof year === 'number' ? year : selectedDate.getFullYear()
