@@ -293,7 +293,7 @@ registerSuite('Textarea', {
 			h.trigger('@input', 'oninput', stubEvent);
 		},
 
-		'updates internal value when edited properties'() {
+		'updates internal value when edited'() {
 			const h = harness(() => (
 				<TextArea
 					aria={{ describedBy: 'foo' }}
