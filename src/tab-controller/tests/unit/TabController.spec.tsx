@@ -205,22 +205,32 @@ registerSuite('TabController', {
 				{ disabled: true, id: 'tab1', label: 'Tab 2' },
 				{ id: 'tab2', label: 'Tab 3' }
 			];
+			let currentActiveTab = 'tab2';
 
 			const h = harness(() => (
-				<TabController initialActiveTab="tab2" tabs={tabs}>
+				<TabController
+					initialActiveTab="tab2"
+					onActiveTab={(tabId) => {
+						currentActiveTab = tabId;
+					}}
+					tabs={tabs}
+				>
 					{tabChildren(tabs)}
 				</TabController>
 			));
 
 			h.trigger('@0-tabbutton', 'onclick');
 			h.expect(() => expected([expectedTabButtons(tabs), expectedTabContent(tabs)]));
+			assert.equal(currentActiveTab, 'tab0');
 
 			h.trigger('@1-tabbutton', 'onclick');
 			// nothing happens on disabled tabs
 			h.expect(() => expected([expectedTabButtons(tabs), expectedTabContent(tabs)]));
+			assert.equal(currentActiveTab, 'tab0');
 
 			h.trigger('@2-tabbutton', 'onclick');
 			h.expect(() => expected([expectedTabButtons(tabs, 2), expectedTabContent(tabs, 2)]));
+			assert.equal(currentActiveTab, 'tab2');
 		},
 
 		'Closing a tab should change tabs'() {
