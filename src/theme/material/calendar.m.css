@@ -6,6 +6,7 @@
 	color: var(--mdc-theme-on-surface);
 	padding-left: calc(var(--mdc-grid-base) * 2);
 	padding-right: calc(var(--mdc-grid-base) * 2);
+	user-select: none;
 }
 
 .monthTrigger,
@@ -19,6 +20,7 @@
 	font-size: inherit;
 	line-height: inherit;
 	padding: 0;
+	cursor: pointer;
 }
 
 .monthTrigger {
@@ -41,6 +43,17 @@
 	text-align: center;
 	position: relative;
 	z-index: 0;
+	cursor: pointer;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.monthFields,
+.yearFields {
+	border: none;
+	padding: 0;
+	margin: 0;
 }
 
 .inactiveDate {
@@ -104,6 +117,7 @@
 	margin-left: calc(var(--mdc-grid-base) * -0.5);
 	align-items: center;
 	justify-content: center;
+	cursor: pointer;
 }
 
 .yearRadioChecked,
