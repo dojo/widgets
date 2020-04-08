@@ -10,17 +10,19 @@ const icache = createICacheMiddleware<RadioGroupICache>();
 const factory = create({ icache });
 
 export const radioGroup = factory(({ middleware: { icache } }) => {
-	return (onValue: (value: string) => void, initialValue: string) => {
-		const existingInitialValue = icache.get('initial');
+	return (onValue: (value: string) => void, initialValue: string, value?: string) => {
+		if (value === undefined) {
+			const existingInitialValue = icache.get('initial');
 
-		if (existingInitialValue !== initialValue) {
-			icache.set('value', initialValue);
-			icache.set('initial', initialValue);
+			if (existingInitialValue !== initialValue) {
+				icache.set('value', initialValue);
+				icache.set('initial', initialValue);
+			}
 		}
 
 		return (key: string) => ({
 			checked(checked?: boolean) {
-				const existingValue = icache.get('value');
+				const existingValue = value === undefined ? icache.get('value') : value;
 
 				if (!checked && existingValue === key) {
 					return existingValue === key && true;

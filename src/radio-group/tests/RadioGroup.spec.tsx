@@ -73,6 +73,32 @@ describe('RadioGroup', () => {
 			</Radio>
 		]);
 		h.expect(optionTemplate);
+		h.trigger('[value="cat"]', 'onValue', true);
+	});
+
+	it('renders with a value', () => {
+		const h = harness(() => (
+			<RadioGroup
+				value="fish"
+				name="test"
+				onValue={noop}
+				options={[{ value: 'cat' }, { value: 'fish' }, { value: 'dog' }]}
+			/>
+		));
+		const optionTemplate = template.setChildren('@root', () => [
+			<Radio name="test" value="cat" checked={undefined} onValue={noop}>
+				cat
+			</Radio>,
+			<Radio name="test" value="fish" checked={true} onValue={noop}>
+				fish
+			</Radio>,
+			<Radio name="test" value="dog" checked={undefined} onValue={noop}>
+				dog
+			</Radio>
+		]);
+		h.expect(optionTemplate);
+		h.trigger('[value="cat"]', 'onValue', true);
+		h.expect(optionTemplate);
 	});
 
 	it('renders with custom renderer', () => {
@@ -83,12 +109,7 @@ describe('RadioGroup', () => {
 					radios: () => {
 						return [
 							<span>custom label</span>,
-							<Radio
-								name="test"
-								value="cat"
-								checked={false}
-								onValue={noop}
-							>
+							<Radio name="test" value="cat" checked={false} onValue={noop}>
 								cat
 							</Radio>,
 							<hr />
