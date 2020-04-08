@@ -287,6 +287,13 @@ describe('TimePicker', () => {
 		sinon.assert.calledOnce(onClose);
 	});
 
+	it('does not display an invalid value', () => {
+		const h = harness(() => (
+			<TimePicker name="timeInput" onValue={onValue} value={'not a time'} />
+		));
+		h.expect(baseTemplate());
+	});
+
 	it('ignores value changes when controlled', () => {
 		const initialValue = new Date(1970, 0, 1, 4, 30, 0);
 		const h = harness(() => (
