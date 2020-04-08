@@ -401,6 +401,31 @@ registerSuite('Textarea', {
 			assert.isTrue(validateSpy.calledWith(true, 'test'));
 		},
 
+		'onValidate with a value property'() {
+			let mockValidity = createValidityMock();
+
+			let validateSpy = sinon.spy();
+
+			mockValidity('input', { valid: false, message: 'test' });
+
+			let h = harness(() => <TextArea value="test value" onValidate={validateSpy} />, {
+				middleware: [[validity, mockValidity]]
+			});
+
+			h.expect(valueAssertion);
+			assert.isTrue(validateSpy.calledWith(false, 'test'));
+
+			mockValidity = createValidityMock();
+
+			h = harness(() => <TextArea value="test value" onValidate={validateSpy} />, {
+				middleware: [[validity, mockValidity]]
+			});
+			mockValidity('input', { valid: true, message: 'test' });
+			h.expect(valueAssertion);
+
+			assert.isTrue(validateSpy.calledWith(true, 'test'));
+		},
+
 		'validates as undefined with no initial value'() {
 			let mockValidity = createValidityMock();
 
