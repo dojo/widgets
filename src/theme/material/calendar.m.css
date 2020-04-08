@@ -110,6 +110,7 @@
 	margin-left: calc(var(--mdc-grid-base) * -0.5);
 	align-items: center;
 	justify-content: center;
+	cursor: pointer;
 }
 
 .yearRadioChecked,
