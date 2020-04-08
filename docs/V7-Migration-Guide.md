@@ -415,23 +415,38 @@ Latest example can be found on [widgets.dojo.io/#widget/list/overview](https://w
 
 
 ### native-select
-- used to live inside select
+- Used to live inside select
 #### Property changes
 ##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
+- options: MenuOption[]
+	- The options for the menu
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
-##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- onValue: (value string) => void
+	- This prop replaces `onChange`
 #### Changes in behaviour
+Native select is controllable with `value` but can also be used as an uncontrolled
+component
 #### Example of migration from v6 to v7
+```tsx
+<Select
+    options={[]}
+    onChange={value => {
+        icache.set('value', value);
+    }}
+    value={icache.get('value')}
+    useNativeElement={true}
+/>
+```
 
+```tsx
+<NativeSelect
+    options={[]}
+    onValue={value => {
+        icache.set('value', value);
+    }}
+    initialValue={icache.get('value')}
+/>
+```
 Latest example can be found on [widgets.dojo.io/#widget/native-select/overview](https://widgets.dojo.io/#widget/native-select/overview)
 
 
@@ -508,23 +523,33 @@ Latest example can be found on [widgets.dojo.io/#widget/range-slider/overview](h
 
 
 ### select
-- now uses list, no longer has native
+- Now uses list, no longer supports using the native element
 #### Property changes
 ##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
 ##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+- onValue: (value: string) => void
+	- Replaces `onChange`
+- initialValue?: string;
+    - Can be used to an initial value and then let the
+      component act in an uncontrolled manner
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
+- useNativeElement: boolean
+	- Native use case is now supported by its own widget
 #### Changes in behaviour
+Can now be used in an uncontrolled or controlled manner
 #### Example of migration from v6 to v7
+```tsx
+<Select
+    onChange={value => {
+        icache.set('value', value);
+    }}
+    value={icache.get('value')}
+/>
+```
 
+```tsx
+<Select/>
+```
 Latest example can be found on [widgets.dojo.io/#widget/select/overview](https://widgets.dojo.io/#widget/select/overview)
 
 
