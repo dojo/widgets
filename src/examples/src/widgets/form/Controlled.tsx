@@ -63,8 +63,8 @@ const App = factory(function({ middleware: { icache } }) {
 							<TextInput
 								key="email"
 								placeholder="Enter an email address"
-								initialValue={email.value()}
-								value={email.value}
+								value={email.value()}
+								onValue={email.value}
 								type="email"
 							>
 								{{ label: 'Email' }}
