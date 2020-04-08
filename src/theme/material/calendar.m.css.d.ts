@@ -7,6 +7,8 @@ export const datePicker: string;
 export const topMatter: string;
 export const weekday: string;
 export const date: string;
+export const monthFields: string;
+export const yearFields: string;
 export const inactiveDate: string;
 export const abbr: string;
 export const selectedDate: string;

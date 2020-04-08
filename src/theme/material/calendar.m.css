@@ -43,13 +43,15 @@
 	text-align: center;
 	position: relative;
 	z-index: 0;
-}
-
-.date {
 	cursor: pointer;
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.monthFields,
+.yearFields {
+	border: none;
 }
 
 .inactiveDate {
