@@ -21,12 +21,7 @@ const factory = create({ theme })
 	.children<TextInputChildren | undefined>();
 
 export default factory(function NumberInput({ properties, children, middleware: { theme } }) {
-	const { initialValue, onValue } = properties();
-
-	const valueAsString =
-		initialValue !== undefined && initialValue !== null
-			? initialValue.toString()
-			: initialValue;
+	const { initialValue, value, onValue } = properties();
 
 	function onValueAdapter(valueAsString: string | undefined) {
 		if (!onValue) {
@@ -42,7 +37,8 @@ export default factory(function NumberInput({ properties, children, middleware: 
 	return (
 		<TextInput
 			{...properties()}
-			initialValue={valueAsString}
+			value={value === undefined ? value : `${value}`}
+			initialValue={initialValue === undefined ? initialValue : `${initialValue}`}
 			onValue={onValueAdapter}
 			type="number"
 			theme={theme.compose(

@@ -20,6 +20,7 @@ const baseTemplate = assertionTemplate(() => (
 		theme={{ '@dojo/widgets/text-input': textInputCss }}
 		onValue={noop}
 		initialValue={undefined}
+		value={undefined}
 	/>
 ));
 
@@ -28,6 +29,10 @@ registerSuite('NumberInput', {
 		'default properties'() {
 			const h = harness(() => <NumberInput />, [compareTheme]);
 			h.expect(baseTemplate);
+		},
+		'can take controlled property'() {
+			const h = harness(() => <NumberInput value={42} />, [compareTheme]);
+			h.expect(baseTemplate.setProperty(':root', 'value', '42'));
 		},
 		'passes expected properties to underlying TextInput'() {
 			const baseProperties: BaseInputProperties<{ value: number }> = {
@@ -48,7 +53,8 @@ registerSuite('NumberInput', {
 				onValue: noop,
 				readOnly: true,
 				initialValue: 42,
-				widgetId: 'widgetId'
+				widgetId: 'widgetId',
+				value: undefined
 			};
 
 			const h = harness(

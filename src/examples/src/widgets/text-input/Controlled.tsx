@@ -14,7 +14,7 @@ const Example = factory(function Controlled({ middleware: { icache } }) {
 					icache.set('value', value);
 				}}
 			>
-				Controlled input with reset
+				{{ label: 'Controlled input with reset' }}
 			</TextInput>
 			<Button
 				onClick={() => {
