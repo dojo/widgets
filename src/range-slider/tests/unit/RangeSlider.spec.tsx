@@ -7,6 +7,9 @@ import RangeSlider from '../../index';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
+import { stub } from 'sinon';
+import { stubEvent } from '../../../common/tests/support/test-helpers';
+const { assert } = intern.getPlugin('chai');
 
 const noop = () => {};
 
@@ -150,6 +153,28 @@ describe('RangeSlider', () => {
 		h.expect(testTemplate);
 	});
 
+	it('renders with initialValue', () => {
+		const h = harness(() => <RangeSlider initialValue={{ min: 10, max: 100 }} />);
+		const testTemplate = template
+			.setProperty('@track', 'styles', { left: '10%', width: '90%' })
+			.setProperty('@leftThumb', 'styles', { left: '10%' })
+			.setProperty('@slider1', 'value', '10')
+			.setProperty('@slider2', 'value', '100');
+		h.expect(testTemplate);
+	});
+
+	it('renders with controlled value', () => {
+		const value = { min: 10, max: 100 };
+
+		const h = harness(() => <RangeSlider initialValue={{ min: 20, max: 80 }} value={value} />);
+		const testTemplate = template
+			.setProperty('@track', 'styles', { left: '10%', width: '90%' })
+			.setProperty('@leftThumb', 'styles', { left: '10%' })
+			.setProperty('@slider1', 'value', '10')
+			.setProperty('@slider2', 'value', '100');
+		h.expect(testTemplate);
+	});
+
 	it('renders output', () => {
 		const h = harness(() => <RangeSlider showOutput />);
 		const testTemplate = template
@@ -202,5 +227,27 @@ describe('RangeSlider', () => {
 				</output>
 			]);
 		h.expect(testTemplate);
+	});
+
+	it('calls event callbacks', () => {
+		const onBlurStub = stub();
+		const onFocusStub = stub();
+		const onValueStub = stub();
+
+		const h = harness(() => (
+			<RangeSlider onBlur={onBlurStub} onFocus={onFocusStub} onValue={onValueStub} />
+		));
+
+		h.trigger('@slider1', 'onblur', stubEvent);
+		h.trigger('@slider2', 'onblur', stubEvent);
+		assert.isTrue(onBlurStub.calledTwice, 'onBlur called');
+
+		h.trigger('@slider1', 'onfocus', stubEvent);
+		h.trigger('@slider2', 'onfocus', stubEvent);
+		assert.isTrue(onFocusStub.called, 'onFocus called');
+
+		h.trigger('@slider1', 'oninput', stubEvent);
+		h.trigger('@slider2', 'oninput', stubEvent);
+		assert.isTrue(onValueStub.called, 'onValue called');
 	});
 });
