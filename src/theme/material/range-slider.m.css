@@ -4,7 +4,7 @@
 
 .inputWrapper {
 	composes: mdc-slider__track-container from '@material/slider/dist/mdc.slider.css';
-	height: calc(var(--border-width) * 2);
+	height: calc(var(--mdc-border-width) * 2);
 	margin: calc(var(--spacing-regular) * 1.5) 0;
 	overflow: inherit;
 	position: relative;
