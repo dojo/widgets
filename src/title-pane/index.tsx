@@ -1,12 +1,13 @@
-import * as css from '../theme/default/title-pane.m.css';
-import * as fixedCss from './styles/title-pane.m.css';
-import Icon from '../icon';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import focus from '@dojo/framework/core/middleware/focus';
-import theme from '../middleware/theme';
-import { RenderResult } from '@dojo/framework/core/interfaces';
-import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import { create, tsx } from '@dojo/framework/core/vdom';
+
+import Icon from '../icon';
+import theme from '../middleware/theme';
+import * as css from '../theme/default/title-pane.m.css';
+import * as fixedCss from './styles/title-pane.m.css';
 
 export interface TitlePaneProperties {
 	/** If false the pane will not collapse in response to clicking the title */
@@ -57,12 +58,22 @@ export const TitlePane = factory(function TitlePane({
 		initialOpen,
 		onClose,
 		onOpen,
-		open: openProp,
 		theme: themeProp
 	} = properties();
 	const { content, title } = children()[0];
 
-	let open = openProp !== undefined ? openProp : icache.getOrSet('open', initialOpen);
+	let { open } = properties();
+
+	if (open === undefined) {
+		open = icache.get('open');
+		const existingInitialOpen = icache.get('initialOpen');
+
+		if (initialOpen !== existingInitialOpen) {
+			icache.set('open', initialOpen);
+			icache.set('initialOpen', initialOpen);
+			open = initialOpen;
+		}
+	}
 
 	return (
 		<div
