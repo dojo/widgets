@@ -332,7 +332,7 @@ describe('Pagination', () => {
 			));
 			h.expect(
 				sizeSelectorAssertion
-					.setProperty('@page-size-select', 'value', 20)
+					.setProperty('@page-size-select', 'value', '20')
 					.setProperty('@page-size-select', 'initialValue', undefined)
 			);
 
