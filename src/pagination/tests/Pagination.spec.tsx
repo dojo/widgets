@@ -188,12 +188,15 @@ describe('Pagination', () => {
 		});
 
 		it('ignores page change events when controlled', () => {
+			mockWidth('links', 1000);
 			const onPageChange = sinon.stub();
-			const h = harness(() => <Pagination total={20} page={10} onPage={onPageChange} />);
+			const h = harness(() => <Pagination total={20} page={10} onPage={onPageChange} />, {
+				middleware: [[resize, resizeMock], [node, nodeMock]]
+			});
 
-			h.expect(baseAssertion);
+			h.expect(visibleAssertion);
 			h.trigger('@numberedLink-9', 'onclick', stubEvent);
-			h.expect(baseAssertion);
+			h.expect(visibleAssertion);
 		});
 	});
 
@@ -319,17 +322,21 @@ describe('Pagination', () => {
 		});
 
 		it('passes a value when controlled', () => {
+			mockWidth('links', 1000);
 			const onPageSizeChange = sinon.stub();
-			const h = harness(() => (
-				<Pagination
-					initialPage={10}
-					pageSize={20}
-					total={20}
-					onPage={noop}
-					onPageSize={onPageSizeChange}
-					pageSizes={pageSizes}
-				/>
-			));
+			const h = harness(
+				() => (
+					<Pagination
+						initialPage={10}
+						pageSize={20}
+						total={20}
+						onPage={noop}
+						onPageSize={onPageSizeChange}
+						pageSizes={pageSizes}
+					/>
+				),
+				{ middleware: [[resize, resizeMock], [node, nodeMock]] }
+			);
 			h.expect(
 				sizeSelectorAssertion
 					.setProperty('@page-size-select', 'value', '20')
