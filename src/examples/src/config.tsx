@@ -33,6 +33,7 @@ import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
 import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
 import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
+import ControlledCheckboxGroup from './widgets/checkbox-group/Controlled';
 import BasicCheckbox from './widgets/checkbox/Basic';
 import DisabledCheckbox from './widgets/checkbox/Disabled';
 import ReadonlyCheckbox from './widgets/checkbox/Readonly';
@@ -455,6 +456,11 @@ export const config = {
 					filename: 'CustomRenderer',
 					module: CustomRendererCheckboxGroup,
 					title: 'Custom Renderer'
+				},
+				{
+					filename: 'Controlled',
+					module: ControlledCheckboxGroup,
+					title: 'Controlled'
 				}
 			],
 			filename: 'index',

@@ -16,6 +16,8 @@ export interface CheckboxGroupProperties {
 	onValue(value: string[]): void;
 	/** Initial value of the checkbox group */
 	initialValue?: string[];
+	/** A controlled value for the checkbox group */
+	value?: string[];
 }
 
 export interface CheckboxGroupChildren {
@@ -37,10 +39,10 @@ export const CheckboxGroup = factory(function({
 	properties,
 	middleware: { checkboxGroup, theme }
 }) {
-	const { name, options, onValue, initialValue } = properties();
+	const { name, options, onValue, initialValue, value } = properties();
 	const [{ checkboxes, label } = { checkboxes: undefined, label: undefined }] = children();
 
-	const checkbox = checkboxGroup(onValue, initialValue);
+	const checkbox = checkboxGroup(onValue, initialValue, value);
 	const { root, legend } = theme.classes(css);
 
 	function renderCheckboxes() {

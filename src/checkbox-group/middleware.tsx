@@ -12,17 +12,19 @@ const icache = createICacheMiddleware<CheckboxGroupICache>();
 const factory = create({ icache });
 
 export const checkboxGroup = factory(({ middleware: { icache } }) => {
-	return (onValue: (value: string[]) => void, initialValue: string[] = []) => {
-		const existingInitialValue = icache.get('initial');
-		if (JSON.stringify(existingInitialValue) !== JSON.stringify(initialValue)) {
-			icache.set(
-				'values',
-				initialValue.reduce((existing: any, value) => {
-					existing[value] = true;
-					return existing;
-				}, {})
-			);
-			icache.set('initial', initialValue);
+	return (onValue: (value: string[]) => void, initialValue: string[] = [], value?: string[]) => {
+		if (value === undefined) {
+			const existingInitialValue = icache.get('initial');
+			if (JSON.stringify(existingInitialValue) !== JSON.stringify(initialValue)) {
+				icache.set(
+					'values',
+					initialValue.reduce((existing: any, value) => {
+						existing[value] = true;
+						return existing;
+					}, {})
+				);
+				icache.set('initial', initialValue);
+			}
 		}
 
 		function getAllValues() {
@@ -39,7 +41,13 @@ export const checkboxGroup = factory(({ middleware: { icache } }) => {
 
 		return (key: string) => ({
 			checked(checked?: boolean) {
-				const values = icache.getOrSet('values', {});
+				const values =
+					value === undefined
+						? icache.getOrSet('values', {})
+						: value.reduce((existing: any, value) => {
+								existing[value] = true;
+								return existing;
+						  }, {});
 
 				if (checked === undefined) {
 					return values[key];
