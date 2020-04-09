@@ -591,13 +591,14 @@ The `SlidePane` no longer supports an `onOpen` property and instead only uses `o
 ### slider
 
 #### Property changes
+##### Added properties
+- `initialValue`: `number`
+  - Can be used to provide an initial value or can be used to partially control the slider
 ##### Removed properties
 - `label`: `string`
 	- Removed in favor of a single label handled via a child renderer.
 - `labelAfter`: `boolean`
 	- Removed in favor of a single label handled via a child renderer.
-- `value`: `number`
-  - Changed to `initialValue`
 - `output`: `() => RenderResult`
 	- `output` was moved to a child renderer and should be handled in a child function.
 - `onChange`: `(value: number) => void`
@@ -606,7 +607,8 @@ The `SlidePane` no longer supports an `onOpen` property and instead only uses `o
 - `onInput`: `(value: number) => void`
 	- removed in favor of controlling input handling internally
 #### Changes in behaviour
-- `Slider` is now uncontrolled, meaning that parents no longer must manually update the slider's current value in response to user interaction.
+- `Slider` is now uncontrolled by default, meaning that parents no longer must manually update the slider's current value in response to user interaction.
+- The `Slider` can be controlled by using the `value` property.
 - Rendering the label and output is now handled via an optional child renderer of type `RenderResult`.
 #### Example of migration from v6 to v7
 
