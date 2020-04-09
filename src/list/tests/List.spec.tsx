@@ -185,6 +185,45 @@ describe('List', () => {
 		h.expect(arrowKeyDownTemplate);
 	});
 
+	it('ignores changes to active item when controlled', () => {
+		let currentActiveValue;
+		const h = harness(() => (
+			<List
+				onValue={(value) => {
+					currentActiveValue = value;
+				}}
+				value="dog"
+				resource={{
+					resource: () => createResource(memoryTemplate),
+					data: animalOptions
+				}}
+				transform={defaultTransform}
+			/>
+		));
+		const mockArrowDownEvent = {
+			stopPropagation: sb.stub(),
+			preventDefault: sb.stub(),
+			which: Keys.Down
+		};
+		const mockSpacePressEvent = {
+			stopPropagation: sb.stub(),
+			preventDefault: sb.stub(),
+			which: Keys.Space
+		};
+		const selectedTemplate = template.setProperty('@item-0', 'selected', true);
+
+		h.expect(selectedTemplate);
+		h.trigger('@root', 'onkeydown', mockArrowDownEvent);
+		h.trigger('@root', 'onkeydown', mockSpacePressEvent);
+
+		const spacePressTemplate = selectedTemplate
+			.setProperty('@item-0', 'active', false)
+			.setProperty('@item-1', 'active', true);
+		h.expect(spacePressTemplate);
+		// Calls callback to request a value change
+		assert.equal(currentActiveValue, 'cat');
+	});
+
 	it('changes active item on arrow key up and loops to last item', () => {
 		const h = harness(() => (
 			<List

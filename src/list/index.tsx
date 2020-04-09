@@ -26,6 +26,8 @@ export const defaultTransform = {
 export interface ListProperties {
 	/** The initial selected value */
 	initialValue?: string;
+	/** Controlled value property */
+	value?: string;
 	/** Callback called when user selects a value */
 	onValue(value: string): void;
 	/** Called to request that the menu be closed */
@@ -336,9 +338,15 @@ export const List = factory(function List({
 		return divider ? [item, <hr classes={themedCss.divider} />] : item;
 	}
 
-	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
-		icache.set('initial', initialValue);
-		icache.set('value', initialValue);
+	let { value: selectedValue } = properties();
+
+	if (selectedValue === undefined) {
+		if (initialValue !== undefined && initialValue !== icache.get('initial')) {
+			icache.set('initial', initialValue);
+			icache.set('value', initialValue);
+		}
+
+		selectedValue = icache.get('value');
 	}
 
 	if (itemsInView !== icache.get('itemsInView')) {
@@ -376,7 +384,6 @@ export const List = factory(function List({
 	}
 
 	const nodePadding = Math.min(itemsInView, 20);
-	const selectedValue = icache.get('value');
 	const menuHeight = icache.get('menuHeight');
 	const idBase = widgetId || `menu-${id}`;
 	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
