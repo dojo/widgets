@@ -49,6 +49,7 @@ export default factory(function Controlled({ middleware: { icache } }) {
 					icache.set('activeIndex', index);
 				}}
 				activeIndex={activeIndex}
+				value={icache.get('value')}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
