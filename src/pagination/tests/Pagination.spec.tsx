@@ -1,15 +1,20 @@
-const { describe, it } = intern.getInterface('bdd');
+const { describe, it, beforeEach, afterEach } = intern.getInterface('bdd');
 
 import * as sinon from 'sinon';
 
-import { tsx } from '@dojo/framework/core/vdom';
+import { tsx, node } from '@dojo/framework/core/vdom';
+import global from '@dojo/framework/shim/global';
 import harness from '@dojo/framework/testing/harness';
-
+import resize from '@dojo/framework/core/middleware/resize';
+import { createResizeMock } from '@dojo/framework/testing/mocks/middleware/resize';
+import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+
 import { stubEvent } from '../../common/tests/support/test-helpers';
 
 import Icon from '../../icon';
 import Select, { defaultTransform } from '../../select';
+
 import Pagination from '..';
 import * as css from '../../theme/default/pagination.m.css';
 import bundle from '../Pagination.nls';
@@ -19,75 +24,107 @@ const { messages } = bundle;
 describe('Pagination', () => {
 	const noop = () => {};
 
-	const baseAssertion = assertionTemplate(() => (
+	const prev = (
+		<button
+			assertion-key="prev"
+			key="prev"
+			type="button"
+			onclick={noop}
+			classes={[css.prev, css.link]}
+		>
+			<div classes={css.icon}>
+				<Icon type="leftIcon" />
+			</div>
+			<div classes={css.label}>Previous</div>
+		</button>
+	);
+
+	const next = (
+		<button key="next" type="button" onclick={noop} classes={[css.next, css.link]}>
+			<div classes={css.icon}>
+				<Icon type="rightIcon" />
+			</div>
+			<div classes={css.label}>{messages.next}</div>
+		</button>
+	);
+
+	const makeLinks = (start: number, end?: number) => {
+		const links = [];
+
+		if (!end) {
+			end = start;
+		}
+
+		for (let i = start; i <= end; i++) {
+			links.push(
+				<button
+					key={`numberedLink-${i}`}
+					type="button"
+					onclick={noop}
+					classes={[css.numberedLink, css.link]}
+				>
+					{i.toString()}
+				</button>
+			);
+		}
+
+		return links;
+	};
+
+	const hiddenAssertion = assertionTemplate(() => (
 		<div key="root" classes={[undefined, css.root]}>
-			<button key="prev" type="button" onclick={noop} classes={[css.prev, css.link]}>
-				<div classes={css.icon}>
-					<Icon type="leftIcon" />
+			<div key="links" classes={css.linksWrapper} styles={{ opacity: '0' }}>
+				{prev}
+				<div key="current" classes={css.currentPage}>
+					10
 				</div>
-				<div classes={css.label}>{messages.previous}</div>
-			</button>
-			<button
-				key="numberedLink-7"
-				type="button"
-				onclick={noop}
-				classes={[css.numberedLink, css.link]}
-			>
-				7
-			</button>
-			<button
-				key="numberedLink-8"
-				type="button"
-				onclick={noop}
-				classes={[css.numberedLink, css.link]}
-			>
-				8
-			</button>
-			<button
-				key="numberedLink-9"
-				type="button"
-				onclick={noop}
-				classes={[css.numberedLink, css.link]}
-			>
-				9
-			</button>
-			<div classes={css.currentPage}>10</div>
-			<button
-				key="numberedLink-11"
-				type="button"
-				onclick={noop}
-				classes={[css.numberedLink, css.link]}
-			>
-				11
-			</button>
-			<button
-				key="numberedLink-12"
-				type="button"
-				onclick={noop}
-				classes={[css.numberedLink, css.link]}
-			>
-				12
-			</button>
-			<button
-				key="numberedLink-13"
-				type="button"
-				onclick={noop}
-				classes={[css.numberedLink, css.link]}
-			>
-				13
-			</button>
-			<button key="next" type="button" onclick={noop} classes={[css.next, css.link]}>
-				<div classes={css.icon}>
-					<Icon type="rightIcon" />
-				</div>
-				<div classes={css.label}>{messages.next}</div>
-			</button>
+				{next}
+			</div>
 		</div>
 	));
 
+	const visibleAssertion = assertionTemplate(() => (
+		<div key="root" classes={[undefined, css.root]}>
+			<div key="links" classes={css.linksWrapper} styles={{ opacity: '1' }}>
+				{prev}
+				{...makeLinks(1, 9)}
+				<div key="current" classes={css.currentPage}>
+					10
+				</div>
+				{...makeLinks(11, 20)}
+				{next}
+			</div>
+		</div>
+	));
+
+	const sb = sinon.sandbox.create();
+	const resizeMock = createResizeMock();
+	let nodeMock: ReturnType<typeof createNodeMock>;
+
+	function mockWidth(key: string, width: number) {
+		nodeMock(key, {
+			getBoundingClientRect() {
+				return {
+					width
+				};
+			}
+		});
+	}
+
+	beforeEach(() => {
+		sb.stub(global.window.HTMLDivElement.prototype, 'getBoundingClientRect').callsFake(() => ({
+			width: 45
+		}));
+		nodeMock = createNodeMock();
+	});
+
+	afterEach(() => {
+		sb.restore();
+	});
+
 	it('renders standard use case', () => {
 		const h = harness(() => <Pagination total={20} initialPage={10} onPage={noop} />);
-		h.expect(baseAssertion);
+		h.expect(hiddenAssertion);
 	});
 
 	it('renders nothing with only 1 page', () => {
@@ -104,7 +141,7 @@ describe('Pagination', () => {
 				<Pagination total={20} initialPage={10} onPage={onPageChange} />
 			));
 
-			h.expect(baseAssertion);
+			h.expect(hiddenAssertion);
 			h.trigger('@prev', 'onclick', stubEvent);
 
 			sinon.assert.calledWith(onPageChange, 9);
@@ -116,31 +153,35 @@ describe('Pagination', () => {
 				<Pagination total={20} initialPage={10} onPage={onPageChange} />
 			));
 
-			h.expect(baseAssertion);
+			h.expect(hiddenAssertion);
 			h.trigger('@next', 'onclick', stubEvent);
 
 			sinon.assert.calledWith(onPageChange, 11);
 		});
 
 		it('raises event from trailing links', () => {
+			mockWidth('links', 10000);
 			const onPageChange = sinon.stub();
-			const h = harness(() => (
-				<Pagination total={20} initialPage={10} onPage={onPageChange} />
-			));
+			const h = harness(
+				() => <Pagination total={20} initialPage={10} onPage={onPageChange} />,
+				{ middleware: [[resize, resizeMock], [node, nodeMock]] }
+			);
 
-			h.expect(baseAssertion);
+			h.expect(visibleAssertion);
 			h.trigger('@numberedLink-11', 'onclick', stubEvent);
 
 			sinon.assert.calledWith(onPageChange, 11);
 		});
 
 		it('raises event from leading links', () => {
+			mockWidth('links', 1000);
 			const onPageChange = sinon.stub();
-			const h = harness(() => (
-				<Pagination total={20} initialPage={10} onPage={onPageChange} />
-			));
+			const h = harness(
+				() => <Pagination total={20} initialPage={10} onPage={onPageChange} />,
+				{ middleware: [[resize, resizeMock], [node, nodeMock]] }
+			);
 
-			h.expect(baseAssertion);
+			h.expect(visibleAssertion);
 			h.trigger('@numberedLink-9', 'onclick', stubEvent);
 
 			sinon.assert.calledWith(onPageChange, 9);
@@ -148,124 +189,69 @@ describe('Pagination', () => {
 	});
 
 	it('renders without "prev" button when there is no prev', () => {
-		const h = harness(() => <Pagination total={3} initialPage={1} onPage={noop} />);
+		mockWidth('links', 1000);
+		const h = harness(() => <Pagination total={3} initialPage={1} onPage={noop} />, {
+			middleware: [[resize, resizeMock], [node, nodeMock]]
+		});
+
 		h.expect(
 			assertionTemplate(() => (
 				<div key="root" classes={[undefined, css.root]}>
-					<div classes={css.currentPage}>1</div>
-					<button
-						key="numberedLink-2"
-						type="button"
-						onclick={noop}
-						classes={[css.numberedLink, css.link]}
-					>
-						2
-					</button>
-					<button
-						key="numberedLink-3"
-						type="button"
-						onclick={noop}
-						classes={[css.numberedLink, css.link]}
-					>
-						3
-					</button>
-					<button key="next" type="button" onclick={noop} classes={[css.next, css.link]}>
-						<div classes={css.icon}>
-							<Icon type="rightIcon" />
+					<div key="links" classes={css.linksWrapper} styles={{ opacity: '1' }}>
+						<div key="current" classes={css.currentPage}>
+							1
 						</div>
-						<div classes={css.label}>Next</div>
-					</button>
+						{...makeLinks(2, 3)}
+						{next}
+					</div>
 				</div>
 			))
 		);
 	});
 
 	it('renders without "next" button when there is no next', () => {
-		const h = harness(() => <Pagination total={3} initialPage={3} onPage={noop} />);
+		mockWidth('links', 10000);
+		const h = harness(() => <Pagination total={3} initialPage={3} onPage={noop} />, {
+			middleware: [[resize, resizeMock], [node, nodeMock]]
+		});
+
 		h.expect(
 			assertionTemplate(() => (
 				<div key="root" classes={[undefined, css.root]}>
-					<button
-						assertion-key="prev"
-						key="prev"
-						type="button"
-						onclick={noop}
-						classes={[css.prev, css.link]}
-					>
-						<div classes={css.icon}>
-							<Icon type="leftIcon" />
+					<div key="links" classes={css.linksWrapper} styles={{ opacity: '1' }}>
+						{prev}
+						{...makeLinks(1, 2)}
+						<div key="current" classes={css.currentPage}>
+							3
 						</div>
-						<div classes={css.label}>Previous</div>
-					</button>
-					<button
-						key="numberedLink-1"
-						type="button"
-						onclick={noop}
-						classes={[css.numberedLink, css.link]}
-					>
-						1
-					</button>
-					<button
-						key="numberedLink-2"
-						type="button"
-						onclick={noop}
-						classes={[css.numberedLink, css.link]}
-					>
-						2
-					</button>
-					<div classes={css.currentPage}>3</div>
+					</div>
 				</div>
 			))
 		);
 	});
 
 	it('renders with specified sibling count', () => {
-		const h = harness(() => (
-			<Pagination total={20} initialPage={10} siblingCount={5} onPage={noop} />
-		));
+		mockWidth('links', 1000);
+		const h = harness(
+			() => <Pagination total={20} initialPage={10} siblingCount={5} onPage={noop} />,
+			{ middleware: [[resize, resizeMock], [node, nodeMock]] }
+		);
+
 		h.expect(
-			baseAssertion
-				.insertAfter('@prev', () => [
-					<button
-						key="numberedLink-5"
-						type="button"
-						onclick={noop}
-						classes={[css.numberedLink, css.link]}
-					>
-						5
-					</button>,
-					<button
-						key="numberedLink-6"
-						type="button"
-						onclick={noop}
-						classes={[css.numberedLink, css.link]}
-					>
-						6
-					</button>
-				])
-				.insertBefore('@next', () => [
-					<button
-						key="numberedLink-14"
-						type="button"
-						onclick={noop}
-						classes={[css.numberedLink, css.link]}
-					>
-						14
-					</button>,
-					<button
-						key="numberedLink-15"
-						type="button"
-						onclick={noop}
-						classes={[css.numberedLink, css.link]}
-					>
-						15
-					</button>
-				])
+			visibleAssertion.replaceChildren('@links', [
+				prev,
+				...makeLinks(5, 9),
+				<div key="current" classes={css.currentPage}>
+					10
+				</div>,
+				...makeLinks(11, 15),
+				next
+			])
 		);
 	});
 
-	describe('PageSizeSelector', () => {
-		const sizeSelectorAssertion = baseAssertion.append(':root', [
+	describe('page size selector', () => {
+		const sizeSelectorAssertion = visibleAssertion.append(':root', [
 			<div classes={css.selectWrapper}>
 				<Select
 					key="page-size-select"
@@ -284,34 +270,116 @@ describe('Pagination', () => {
 		const pageSizes = [10, 20];
 
 		it('renders', () => {
-			const h = harness(() => (
-				<Pagination
-					initialPage={10}
-					initialPageSize={20}
-					total={20}
-					onPage={noop}
-					pageSizes={pageSizes}
-				/>
-			));
+			mockWidth('links', 1000);
+			const h = harness(
+				() => (
+					<Pagination
+						initialPage={10}
+						initialPageSize={20}
+						total={20}
+						onPage={noop}
+						pageSizes={pageSizes}
+					/>
+				),
+				{ middleware: [[resize, resizeMock], [node, nodeMock]] }
+			);
 			h.expect(sizeSelectorAssertion);
 		});
 
 		it('raises page-size change events', () => {
+			mockWidth('links', 1000);
 			const onPageSizeChange = sinon.stub();
-			const h = harness(() => (
-				<Pagination
-					initialPage={10}
-					initialPageSize={20}
-					total={20}
-					onPage={noop}
-					onPageSize={onPageSizeChange}
-					pageSizes={pageSizes}
-				/>
-			));
+			const h = harness(
+				() => (
+					<Pagination
+						initialPage={10}
+						initialPageSize={20}
+						total={20}
+						onPage={noop}
+						onPageSize={onPageSizeChange}
+						pageSizes={pageSizes}
+					/>
+				),
+				{ middleware: [[resize, resizeMock], [node, nodeMock]] }
+			);
 			h.expect(sizeSelectorAssertion);
 
 			h.trigger('@page-size-select', 'onValue', '10');
 			sinon.assert.calledWith(onPageSizeChange, 10);
+		});
+	});
+
+	describe('sibling resizing', () => {
+		it('limits siblings to siblingCount', () => {
+			mockWidth('links', 1000);
+			const h = harness(
+				() => <Pagination total={20} initialPage={10} siblingCount={3} onPage={noop} />,
+				{
+					middleware: [[resize, resizeMock], [node, nodeMock]]
+				}
+			);
+			h.expect(
+				visibleAssertion.setChildren('@links', [
+					prev,
+					...makeLinks(7, 9),
+					<div key="current" classes={css.currentPage}>
+						10
+					</div>,
+					...makeLinks(11, 13),
+					next
+				])
+			);
+		});
+
+		it('excludes siblings when insufficient space', () => {
+			// available width is 400
+			// available width after next/prev/current is 400 - (45*3) = 265
+			// leaving room for 265 / 45 = 5.8 => 5 total siblings => 2 siblings on each side
+			mockWidth('links', 400);
+
+			const h = harness(() => <Pagination total={20} initialPage={10} onPage={noop} />, {
+				middleware: [[resize, resizeMock], [node, nodeMock]]
+			});
+
+			h.expect(
+				visibleAssertion
+					.setProperty('@links', 'styles', {
+						opacity: '1'
+					})
+					.setChildren('@links', [
+						prev,
+						...makeLinks(8, 9),
+						<div key="current" classes={css.currentPage}>
+							10
+						</div>,
+						...makeLinks(11, 12),
+						next
+					])
+			);
+		});
+
+		it('excludes siblings unevenly when applicable', () => {
+			// available width is 400
+			// available width after next/prev/current is 400 - (45*3) = 265
+			// leaving room for 265 / 45 = 5.8 => 5 total siblings
+			// but there's only one leading sibling possible.
+			mockWidth('links', 400);
+
+			const h = harness(() => <Pagination total={10} initialPage={2} onPage={noop} />, {
+				middleware: [[resize, resizeMock], [node, nodeMock]]
+			});
+
+			h.expect(
+				visibleAssertion.setChildren('@links', [
+					prev,
+					...makeLinks(1),
+					<div key="current" classes={css.currentPage}>
+						2
+					</div>,
+					...makeLinks(3, 6),
+					next
+				])
+			);
 		});
 	});
 });
