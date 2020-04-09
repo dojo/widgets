@@ -287,6 +287,37 @@ describe('TimePicker', () => {
 		sinon.assert.calledOnce(onClose);
 	});
 
+	it('does not display an invalid value', () => {
+		const h = harness(() => (
+			<TimePicker name="timeInput" onValue={onValue} value={'not a time'} />
+		));
+		h.expect(baseTemplate());
+	});
+
+	it('ignores value changes when controlled', () => {
+		const initialValue = new Date(1970, 0, 1, 4, 30, 0);
+		const h = harness(() => (
+			<TimePicker name="timeInput" onValue={onValue} value={format24HourTime(initialValue)} />
+		));
+		h.expect(baseTemplate(initialValue));
+
+		const onClose = sinon.stub();
+		const contentResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].content,
+			onClose
+		);
+		h.expect(menuTemplate, () => contentResult);
+
+		// Find the calendar widget and trigger a date selected
+		const [menu] = select('@menu', contentResult);
+		onValue.resetHistory();
+		const newDate = new Date(1970, 0, 1, 5, 30, 0);
+		menu.properties.onValue(format24HourTime(newDate));
+
+		h.expect(baseTemplate(initialValue));
+	});
+
 	it('validates time input', () => {
 		const onValidate = sinon.stub();
 		const h = harness(() => (

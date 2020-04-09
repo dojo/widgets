@@ -40,6 +40,9 @@ export interface TimePickerProperties {
 	/** The initial selected value */
 	initialValue?: string;
 
+	/** Controlled value property */
+	value?: string;
+
 	/** Called when the value changes */
 	onValue?(value: string): void;
 
@@ -69,6 +72,8 @@ export interface TimePickerChildren {
 
 export interface TimePickerICache {
 	value?: string;
+	lastValue: string;
+	nextValue: string;
 	inputValue: string;
 	shouldValidate: boolean;
 	validationMessage: string | undefined;
@@ -245,12 +250,23 @@ export const TimePicker = factory(function TimePicker({
 		}
 	};
 
-	const { initialValue, format = '24' } = properties();
-	if (icache.get('initialValue') !== initialValue) {
+	const { initialValue, format = '24', value: controlledValue } = properties();
+	if (
+		initialValue !== undefined &&
+		controlledValue === undefined &&
+		icache.get('initialValue') !== initialValue
+	) {
 		const parsed = initialValue && parseTime(initialValue, format === '12');
 		icache.set('inputValue', parsed ? formatTime(parsed) : '');
 		icache.set('initialValue', initialValue);
 		icache.set('shouldValidate', true);
+	}
+
+	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
+		const parsed = controlledValue && parseTime(controlledValue, format === '12');
+		icache.set('inputValue', parsed ? formatTime(parsed) : '');
+		icache.set('value', parsed ? format24HourTime(parsed) : '');
+		icache.set('lastValue', controlledValue);
 	}
 
 	const inputValue = icache.getOrSet('inputValue', () => {
@@ -265,6 +281,7 @@ export const TimePicker = factory(function TimePicker({
 	const focusNode = icache.getOrSet('focusNode', 'input');
 
 	if (shouldValidate) {
+		const testValue = icache.get('nextValue') || inputValue;
 		const { onValidate, onValue, format } = properties();
 		const max = parseTime(properties().max, format === '12');
 		const min = parseTime(properties().min, format === '12');
@@ -280,7 +297,7 @@ export const TimePicker = factory(function TimePicker({
 			validationMessages.push(messages.invalidProps);
 			isValid = false;
 		} else {
-			const newTime = parseTime(inputValue, format === '12');
+			const newTime = parseTime(testValue, format === '12');
 
 			if (newTime !== undefined) {
 				if (min && newTime < min) {
@@ -288,10 +305,13 @@ export const TimePicker = factory(function TimePicker({
 				} else if (max && newTime > max) {
 					validationMessages.push(messages.tooLate);
 				} else {
-					icache.set('value', format24HourTime(newTime));
-					icache.set('inputValue', formatTime(newTime));
+					const twentyFourHourTime = format24HourTime(newTime);
+					if (controlledValue === undefined) {
+						icache.set('value', twentyFourHourTime);
+						icache.set('inputValue', formatTime(newTime));
+					}
 					if (onValue) {
-						onValue(format24HourTime(newTime));
+						onValue(twentyFourHourTime);
 					}
 				}
 			} else {
@@ -372,7 +392,11 @@ export const TimePicker = factory(function TimePicker({
 									)}
 									initialValue={icache.get('inputValue')}
 									onBlur={() => icache.set('shouldValidate', true)}
-									onValue={(v) => icache.set('inputValue', v || '')}
+									onValue={(v) =>
+										controlledValue === undefined
+											? icache.set('inputValue', v || '')
+											: icache.set('nextValue', v || '')
+									}
 									helperText={icache.get('validationMessage')}
 									valid={icache.get('isValid') && icache.get('inputValid')}
 									onValidate={(valid, message) => {
@@ -429,7 +453,11 @@ export const TimePicker = factory(function TimePicker({
 									}}
 									transform={listTransform}
 									onValue={(value: string) => {
-										icache.set('inputValue', value);
+										if (controlledValue === undefined) {
+											icache.set('inputValue', value);
+										} else {
+											icache.set('nextValue', value);
+										}
 										icache.set('shouldValidate', true);
 										closeMenu();
 									}}

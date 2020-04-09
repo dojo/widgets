@@ -179,6 +179,7 @@ import TextInputWithLabel from './widgets/text-input/WithLabel';
 import BasicThreeColumnLayout from './widgets/three-column-layout/Basic';
 import TwelveHourTimePicker from './widgets/time-picker/12HourTime';
 import BasicTimePicker from './widgets/time-picker/Basic';
+import ControlledTimePicker from './widgets/time-picker/Controlled';
 import DisabledTimePicker from './widgets/time-picker/Disabled';
 import DisabledMenuItemsTimePicker from './widgets/time-picker/DisabledMenuItems';
 import RequiredTimePicker from './widgets/time-picker/Required';
@@ -1441,6 +1442,11 @@ export const config = {
 		},
 		'time-picker': {
 			examples: [
+				{
+					filename: 'Controlled',
+					module: ControlledTimePicker,
+					title: 'Controlled time picker'
+				},
 				{
 					filename: 'DisabledMenuItems',
 					module: DisabledMenuItemsTimePicker,
