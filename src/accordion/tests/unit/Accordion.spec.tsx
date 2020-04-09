@@ -1,11 +1,47 @@
 const { describe, it } = intern.getInterface('bdd');
 import * as themeCss from '../../../theme/default/accordion.m.css';
+import * as titlePaneCss from '../../../theme/default/title-pane.m.css';
 import Accordion, { Pane } from '../../index';
+import TitlePane from '../../../title-pane';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 const noop = () => {};
+
+describe('Pane', () => {
+	it('renders', () => {
+		const h = harness(() => (
+			<Pane>
+				{{
+					title: 'foo title',
+					content: 'foo content'
+				}}
+			</Pane>
+		));
+		h.expect(() => (
+			<TitlePane
+				theme={{
+					'@dojo/widgets/title-pane': {
+						title: titlePaneCss.title,
+						closeable: titlePaneCss.closeable,
+						arrow: titlePaneCss.arrow,
+						root: themeCss.paneRoot,
+						open: themeCss.paneOpen,
+						content: titlePaneCss.content,
+						titleButton: titlePaneCss.titleButton,
+						contentTransition: titlePaneCss.contentTransition
+					}
+				}}
+			>
+				{{
+					title: 'foo title',
+					content: 'foo content'
+				}}
+			</TitlePane>
+		));
+	});
+});
 
 describe('Accordion', () => {
 	const baseTemplate = assertationTemplate(() => {

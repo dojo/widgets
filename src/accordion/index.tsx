@@ -6,25 +6,6 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
-const paneFactory = create({ theme })
-	.properties<TitlePaneProperties>()
-	.children<TitlePaneChildren>();
-
-export const Pane = paneFactory(function Pane({ children, middleware: { theme }, properties }) {
-	return (
-		<TitlePane
-			{...properties()}
-			theme={theme.compose(
-				titlePaneCss,
-				css,
-				'pane'
-			)}
-		>
-			{children()[0]}
-		</TitlePane>
-	);
-});
-
 export interface AccordionPaneProperties {
 	/* If true, only one TitlePane can be opened at a given time */
 	exclusive?: boolean;
@@ -43,6 +24,25 @@ interface AccordionPaneICache {
 		[key: string]: boolean;
 	};
 }
+
+const paneFactory = create({ theme })
+	.properties<TitlePaneProperties>()
+	.children<TitlePaneChildren>();
+
+export const Pane = paneFactory(function Pane({ children, middleware: { theme }, properties }) {
+	return (
+		<TitlePane
+			{...properties()}
+			theme={theme.compose(
+				titlePaneCss,
+				css,
+				'pane'
+			)}
+		>
+			{children()[0]}
+		</TitlePane>
+	);
+});
 
 const icache = createICacheMiddleware<AccordionPaneICache>();
 
