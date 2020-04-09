@@ -118,6 +118,7 @@ import EventsRadio from './widgets/radio/Events';
 import DisabledRadio from './widgets/radio/Disabled';
 import LabelledRadio from './widgets/radio/Labelled';
 import BasicRadioGroup from './widgets/radio-group/Basic';
+import ControlledRadioGroup from './widgets/radio-group/Basic';
 import CustomLabelRadioGroup from './widgets/radio-group/CustomLabel';
 import CustomRendererRadioGroup from './widgets/radio-group/CustomRenderer';
 import InitialValueRadioGroup from './widgets/radio-group/InitialValue';
@@ -1071,6 +1072,11 @@ export const config = {
 		},
 		'radio-group': {
 			examples: [
+				{
+					filename: 'Controlled',
+					module: ControlledRadioGroup,
+					title: 'Controlled radio group'
+				},
 				{
 					filename: 'InitialValue',
 					module: InitialValueRadioGroup,

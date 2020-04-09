@@ -10,6 +10,8 @@ type RadioOptions = { value: string; label?: string }[];
 export interface RadioGroupProperties {
 	/** Initial value of the radio group */
 	initialValue?: string;
+	/** Controlled value property */
+	value?: string;
 	/** The name attribute for this form group */
 	name: string;
 	/** Callback for the current value */
@@ -37,9 +39,9 @@ export const RadioGroup = factory(function({
 	properties,
 	middleware: { radioGroup, theme }
 }) {
-	const { name, options, onValue, initialValue } = properties();
+	const { name, options, onValue, value, initialValue } = properties();
 	const [{ radios, label } = { radios: undefined, label: undefined }] = children();
-	const radio = radioGroup(onValue, initialValue || '');
+	const radio = radioGroup(onValue, initialValue || '', value);
 	const { root, legend } = theme.classes(css);
 
 	function renderRadios() {
