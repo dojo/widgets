@@ -1,10 +1,10 @@
-import renderer, { create, tsx } from '@dojo/framework/core/vdom';
+import renderer, { create, tsx, diffProperty } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import theme from '@dojo/framework/core/middleware/theme';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import resize from '@dojo/framework/core/middleware/resize';
-import { RenderResult, Theme, ThemeWithVariant } from '@dojo/framework/core/interfaces';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import { createResource, DataTemplate } from '@dojo/framework/core/resource';
 import global from '@dojo/framework/shim/global';
 
@@ -44,7 +44,6 @@ interface PaginationCache {
 	nodeWidths: { prev: number; next: number; current: number; sibling: number };
 	pageSize: number;
 	pageSizes: number[];
-	theme?: Theme | ThemeWithVariant;
 }
 
 const template: DataTemplate = {
@@ -74,14 +73,19 @@ function getRenderedWidth(dnode: RenderResult, wrapperClass?: string): number {
 }
 
 const icache = createICacheMiddleware<PaginationCache>();
-const factory = create({ theme, icache, i18n, dimensions, resize }).properties<
+const factory = create({ theme, icache, i18n, dimensions, resize, diffProperty }).properties<
 	PaginationProperties
 >();
 
 export default factory(function Pagination({
-	middleware: { theme, icache, i18n, dimensions, resize },
+	middleware: { theme, icache, i18n, dimensions, resize, diffProperty },
 	properties
 }) {
+	diffProperty('theme', (current, next) => {
+		if (current !== next) {
+			icache.delete('nodeWidths', false);
+		}
+	});
 	resize.get('root');
 
 	const {
@@ -108,11 +112,6 @@ export default factory(function Pagination({
 
 	if (pageSizes !== undefined && pageSizes !== icache.get('pageSizes')) {
 		icache.set('pageSizes', pageSizes);
-	}
-
-	if (theme.get() !== icache.get('theme')) {
-		icache.set('theme', theme.get());
-		icache.delete('nodeWidths');
 	}
 
 	const page = icache.getOrSet('currentPage', 1);
