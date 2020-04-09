@@ -69,7 +69,9 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 	) {
 		const parsed = initialValue && parseDate(initialValue);
 
-		icache.set('inputValue', formatDate(parsed || new Date()));
+		if (parsed) {
+			icache.set('inputValue', formatDate(parsed));
+		}
 		icache.set('initialValue', initialValue);
 		icache.set('shouldValidate', true);
 	}

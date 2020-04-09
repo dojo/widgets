@@ -46,6 +46,7 @@ const baseTemplate = (date?: Date) =>
 		return (
 			<div classes={[undefined, css.root]}>
 				<input
+					assertion-key="input"
 					type="hidden"
 					name="dateInput"
 					value={formatDateISO(date || today)}
@@ -106,6 +107,21 @@ describe('DateInput', () => {
 	it('renders with default date', () => {
 		const h = harness(() => <DateInput name="dateInput" onValue={onValue} />);
 		h.expect(baseTemplate());
+		sinon.assert.calledWith(onValue, formatDateISO(today));
+	});
+
+	it('renders with default date when provided an invalid initial date', () => {
+		const h = harness(() => (
+			<DateInput name="dateInput" initialValue="not a date" onValue={onValue} />
+		));
+		h.expect(baseTemplate());
+	});
+
+	it('does not render a default date when value is provided and invalid', () => {
+		const h = harness(() => (
+			<DateInput name="dateInput" value="not a date" onValue={onValue} />
+		));
+		h.expect(baseTemplate().setProperty('@input', 'value', ''));
 		sinon.assert.calledWith(onValue, formatDateISO(today));
 	});
 
