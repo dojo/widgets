@@ -195,6 +195,7 @@ import ClickTooltip from './widgets/tooltip/Click';
 import FocusTooltip from './widgets/tooltip/Focus';
 import BasicNativeSelect from './widgets/native-select/Basic';
 import BasicDateInput from './widgets/date-input/Basic';
+import ControlledDateInput from './widgets/date-input/Controlled';
 import BasicLoadingIndicator from './widgets/loading-indicator/Basic';
 import BasicHeader from './widgets/header/Basic';
 import LeadingHeader from './widgets/header/Leading';
@@ -538,7 +539,16 @@ export const config = {
 					sandbox: true,
 					size: 'large'
 				}
-			}
+			},
+			examples: [
+				{
+					filename: 'Controlled',
+					module: ControlledDateInput,
+					sandbox: true,
+					size: 'large',
+					title: 'Controlled date input'
+				}
+			]
 		},
 		'context-popup': {
 			overview: {

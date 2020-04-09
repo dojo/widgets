@@ -19,6 +19,8 @@ import bundle from './nls/DateInput';
 export interface DateInputProperties extends ThemeProperties, FocusProperties {
 	/** The initial value */
 	initialValue?: string;
+	/** Controlled value property */
+	value?: string;
 	/** Set the latest date the calendar will display in (it will show the whole month but not allow previous selections) */
 	max?: string;
 	/** Set the earliest date the calendar will display (it will show the whole month but not allow previous selections) */
@@ -33,9 +35,15 @@ export interface DateInputProperties extends ThemeProperties, FocusProperties {
 
 interface DateInputICache {
 	/** Current user-inputted value */
+	initialValue: string;
+	/** Current user-inputted value */
 	inputValue: string;
 	/** The last valid Date of value */
 	value: Date;
+	/** The last "value" property passed */
+	lastValue: string;
+	/** A possible new value that should not be saved until we call a callback */
+	nextValue: string;
 	/** Should validate the input value on the next cycle */
 	shouldValidate: boolean;
 	/** Message for current validation state */
@@ -48,11 +56,32 @@ const icache = createICacheMiddleware<DateInputICache>();
 const factory = create({ theme, icache, i18n, focus }).properties<DateInputProperties>();
 
 export default factory(function({ properties, middleware: { theme, icache, i18n, focus } }) {
-	const { initialValue, name, onValue, onValidate } = properties();
+	const { initialValue, name, onValue, onValidate, value: controlledValue } = properties();
 	const { messages } = i18n.localize(bundle);
 	const classes = theme.classes(css);
 	const max = parseDate(properties().max);
 	const min = parseDate(properties().min);
+
+	if (
+		initialValue !== undefined &&
+		controlledValue === undefined &&
+		icache.get('initialValue') !== initialValue
+	) {
+		const parsed = initialValue && parseDate(initialValue);
+
+		icache.set('inputValue', formatDate(parsed || new Date()));
+		icache.set('initialValue', initialValue);
+		icache.set('shouldValidate', true);
+	}
+
+	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
+		const parsed = controlledValue && parseDate(controlledValue);
+		if (parsed) {
+			icache.set('inputValue', formatDate(parsed));
+			icache.set('value', parsed);
+		}
+		icache.set('lastValue', controlledValue);
+	}
 
 	const inputValue = icache.getOrSet('inputValue', () => {
 		const parsed = initialValue && parseDate(initialValue);
@@ -64,6 +93,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 	const focusNode = icache.getOrSet('focusNode', 'input');
 
 	if (shouldValidate) {
+		const testValue = icache.get('nextValue') || inputValue;
 		let isValid: boolean | undefined;
 		let validationMessages: string[] = [];
 
@@ -72,7 +102,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 			validationMessages.push(messages.invalidProps);
 			isValid = false;
 		} else {
-			const newDate = parseDate(inputValue);
+			const newDate = parseDate(testValue);
 
 			if (newDate !== undefined) {
 				if (min && newDate < min) {
@@ -80,8 +110,10 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 				} else if (max && newDate > max) {
 					validationMessages.push(messages.tooLate);
 				} else {
-					icache.set('value', newDate);
-					icache.set('inputValue', formatDate(newDate));
+					if (controlledValue === undefined) {
+						icache.set('value', newDate);
+						icache.set('inputValue', formatDate(newDate));
+					}
 					if (onValue) {
 						onValue(formatDateISO(newDate));
 					}
@@ -129,7 +161,14 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 									type="text"
 									initialValue={icache.get('inputValue')}
 									onBlur={() => icache.set('shouldValidate', true)}
-									onValue={(v) => icache.set('inputValue', v || '')}
+									onValue={(v) => {
+										icache.set(
+											controlledValue === undefined
+												? 'inputValue'
+												: 'nextValue',
+											v || ''
+										);
+									}}
 									helperText={icache.get('validationMessage')}
 									onKeyDown={(key) => {
 										if (
@@ -178,7 +217,12 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 									minDate={min}
 									initialValue={icache.get('value')}
 									onValue={(date) => {
-										icache.set('inputValue', formatDate(date));
+										icache.set(
+											controlledValue === undefined
+												? 'inputValue'
+												: 'nextValue',
+											formatDate(date)
+										);
 										icache.set('shouldValidate', true);
 										closeCalendar();
 									}}
