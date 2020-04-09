@@ -6,7 +6,7 @@
 	"build-widget": {
 		"prefix": "dojo",
 		"widgets": [
-			"src/accordion-pane",
+			"src/accordion",
 			"src/avatar",
 			"src/breadcrumb-group",
 			"src/button",

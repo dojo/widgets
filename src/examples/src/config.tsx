@@ -1,13 +1,13 @@
 import dojoTheme from '@dojo/widgets/theme/dojo';
 import materialTheme from '@dojo/widgets/theme/material';
-import BasicAccordionPane from './widgets/accordion-pane/Basic';
+import BasicAccordionPane from './widgets/accordion/Basic';
 import BasicAvatar from './widgets/avatar/Basic';
 import ImageAvatar from './widgets/avatar/Image';
 import AvatarVariant from './widgets/avatar/Variant';
 import AvatarSize from './widgets/avatar/Size';
 import AvatarIcon from './widgets/avatar/Icon';
 import AvatarSecondary from './widgets/avatar/Secondary';
-import Exclusive from './widgets/accordion-pane/Exclusive';
+import Exclusive from './widgets/accordion/Exclusive';
 import BasicBreadcrumbGroup from './widgets/breadcrumb-group/Basic';
 import CustomRendererBreadcrumbGroup from './widgets/breadcrumb-group/CustomRenderer';
 import BasicButton from './widgets/button/Basic';
@@ -234,7 +234,7 @@ export const config = {
 		return `https://codesandbox.io/s/github/dojo/widgets/tree/master/src/examples?fontsize=14&initialpath=%23%2Fwidget%2F${widget}%2Fsandbox%2F${filename.toLowerCase()}?theme=${themeName}&module=%2Fsrc%2Fwidgets%2F${widget}%2F${filename}.tsx`;
 	},
 	widgets: {
-		'accordion-pane': {
+		accordion: {
 			examples: [
 				{
 					filename: 'Exclusive',

@@ -1,6 +1,7 @@
 const { describe, it } = intern.getInterface('bdd');
-import * as themeCss from '../../../theme/default/accordion-pane.m.css';
-import AccordionPane from '../../index';
+import * as themeCss from '../../../theme/default/accordion.m.css';
+import * as titlePaneCss from '../../../theme/default/title-pane.m.css';
+import Accordion, { Pane } from '../../index';
 import TitlePane from '../../../title-pane';
 import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
@@ -8,46 +9,80 @@ import { tsx } from '@dojo/framework/core/vdom';
 
 const noop = () => {};
 
-describe('AccordionPane', () => {
+describe('Pane', () => {
+	it('renders', () => {
+		const h = harness(() => (
+			<Pane>
+				{{
+					title: 'foo title',
+					content: 'foo content'
+				}}
+			</Pane>
+		));
+		h.expect(() => (
+			<TitlePane
+				theme={{
+					'@dojo/widgets/title-pane': {
+						title: titlePaneCss.title,
+						closeable: titlePaneCss.closeable,
+						arrow: titlePaneCss.arrow,
+						root: themeCss.paneRoot,
+						open: themeCss.paneOpen,
+						content: titlePaneCss.content,
+						titleButton: titlePaneCss.titleButton,
+						contentTransition: titlePaneCss.contentTransition
+					}
+				}}
+			>
+				{{
+					title: 'foo title',
+					content: 'foo content'
+				}}
+			</TitlePane>
+		));
+	});
+});
+
+describe('Accordion', () => {
 	const baseTemplate = assertationTemplate(() => {
 		return (
 			<div classes={[undefined, themeCss.root]}>
-				<TitlePane key="foo">
+				<Pane key="foo">
 					{{
 						title: 'foo title',
 						content: 'foo content'
 					}}
-				</TitlePane>
-				<TitlePane key="bar">
+				</Pane>
+				<Pane key="bar">
 					{{
 						title: 'bar title',
 						content: 'bar content'
 					}}
-				</TitlePane>
+				</Pane>
 			</div>
 		);
 	});
 
 	it('renders closed panes', () => {
 		const h = harness(() => (
-			<AccordionPane>
+			<Accordion>
 				{(onOpen, onClose) => {
 					return [
-						<TitlePane key="foo" onOpen={onOpen('foo')} onClose={onClose('foo')}>
+						<Pane key="foo" onOpen={onOpen('foo')} onClose={onClose('foo')}>
 							{{
 								title: 'foo title',
 								content: 'foo content'
 							}}
-						</TitlePane>,
-						<TitlePane key="bar" onOpen={onOpen('bar')} onClose={onClose('bar')}>
+						</Pane>,
+						<Pane key="bar" onOpen={onOpen('bar')} onClose={onClose('bar')}>
 							{{
 								title: 'bar title',
 								content: 'bar content'
 							}}
-						</TitlePane>
+						</Pane>
 					];
 				}}
-			</AccordionPane>
+			</Accordion>
 		));
 
 		h.trigger('@foo', 'onOpen');
@@ -66,41 +101,33 @@ describe('AccordionPane', () => {
 
 	it('renders open panes', () => {
 		const h = harness(() => (
-			<AccordionPane>
-				{(onOpen, _, initialOpen) => {
+			<Accordion>
+				{(onOpen, _, open) => {
 					return [
-						<TitlePane
-							key="foo"
-							onOpen={onOpen('foo')}
-							initialOpen={initialOpen('foo')}
-						>
+						<Pane key="foo" onOpen={onOpen('foo')} open={open('foo')}>
 							{{
 								title: 'foo title',
 								content: 'foo content'
 							}}
-						</TitlePane>,
-						<TitlePane
-							key="bar"
-							onOpen={onOpen('bar')}
-							initialOpen={initialOpen('bar')}
-						>
+						</Pane>,
+						<Pane key="bar" onOpen={onOpen('bar')} open={open('bar')}>
 							{{
 								title: 'bar title',
 								content: 'bar content'
 							}}
-						</TitlePane>
+						</Pane>
 					];
 				}}
-			</AccordionPane>
+			</Accordion>
 		));
 
 		h.trigger('@foo', 'onOpen');
 		h.trigger('@bar', 'onOpen');
 
 		const testTemplate = baseTemplate
-			.setProperty('@foo', 'initialOpen', true)
+			.setProperty('@foo', 'open', true)
 			.setProperty('@foo', 'onOpen', noop)
-			.setProperty('@bar', 'initialOpen', true)
+			.setProperty('@bar', 'open', true)
 			.setProperty('@bar', 'onOpen', noop);
 
 		h.expect(testTemplate);
@@ -108,41 +135,33 @@ describe('AccordionPane', () => {
 
 	it('renders exclusive panes', () => {
 		const h = harness(() => (
-			<AccordionPane exclusive>
-				{(onOpen, _, initialOpen) => {
+			<Accordion exclusive>
+				{(onOpen, _, open) => {
 					return [
-						<TitlePane
-							key="foo"
-							onOpen={onOpen('foo')}
-							initialOpen={initialOpen('foo')}
-						>
+						<Pane key="foo" onOpen={onOpen('foo')} open={open('foo')}>
 							{{
 								title: 'foo title',
 								content: 'foo content'
 							}}
-						</TitlePane>,
-						<TitlePane
-							key="bar"
-							onOpen={onOpen('bar')}
-							initialOpen={initialOpen('bar')}
-						>
+						</Pane>,
+						<Pane key="bar" onOpen={onOpen('bar')} open={open('bar')}>
 							{{
 								title: 'bar title',
 								content: 'bar content'
 							}}
-						</TitlePane>
+						</Pane>
 					];
 				}}
-			</AccordionPane>
+			</Accordion>
 		));
 
 		h.trigger('@foo', 'onOpen');
 		h.trigger('@bar', 'onOpen');
 
 		const testTemplate = baseTemplate
-			.setProperty('@foo', 'initialOpen', undefined)
+			.setProperty('@foo', 'open', false)
 			.setProperty('@foo', 'onOpen', noop)
-			.setProperty('@bar', 'initialOpen', true)
+			.setProperty('@bar', 'open', true)
 			.setProperty('@bar', 'onOpen', noop);
 
 		h.expect(testTemplate);

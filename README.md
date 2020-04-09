@@ -88,7 +88,7 @@ Live examples of current widgets are available in the [widget showcase](https://
 [TimePicker](src/time-picker/README.md)
 
 ### Layout widgets
-[AccordionPane](src/accordion-pane/README.md)
+[Accordion](src/accordion/README.md)
 
 [SlidePane](src/slide-pane/README.md)
 
