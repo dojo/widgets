@@ -93,7 +93,7 @@
 
 .date:not(.selectedDate):not(.inactiveDate):hover:before {
 	background-color: var(--mdc-theme-primary);
-	opacity: 0.04;
+	opacity: 0.15;
 }
 
 .controls {
