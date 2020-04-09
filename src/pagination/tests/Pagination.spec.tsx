@@ -186,6 +186,15 @@ describe('Pagination', () => {
 
 			sinon.assert.calledWith(onPageChange, 9);
 		});
+
+		it('ignores page change events when controlled', () => {
+			const onPageChange = sinon.stub();
+			const h = harness(() => <Pagination total={20} page={10} onPage={onPageChange} />);
+
+			h.expect(baseAssertion);
+			h.trigger('@numberedLink-9', 'onclick', stubEvent);
+			h.expect(baseAssertion);
+		});
 	});
 
 	it('renders without "prev" button when there is no prev', () => {
@@ -262,6 +271,7 @@ describe('Pagination', () => {
 					}}
 					transform={defaultTransform}
 					onValue={noop}
+					value={undefined}
 				>
 					{noop as any}
 				</Select>
@@ -303,6 +313,28 @@ describe('Pagination', () => {
 				{ middleware: [[resize, resizeMock], [node, nodeMock]] }
 			);
 			h.expect(sizeSelectorAssertion);
+
+			h.trigger('@page-size-select', 'onValue', '10');
+			sinon.assert.calledWith(onPageSizeChange, 10);
+		});
+
+		it('passes a value when controlled', () => {
+			const onPageSizeChange = sinon.stub();
+			const h = harness(() => (
+				<Pagination
+					initialPage={10}
+					pageSize={20}
+					total={20}
+					onPage={noop}
+					onPageSize={onPageSizeChange}
+					pageSizes={pageSizes}
+				/>
+			));
+			h.expect(
+				sizeSelectorAssertion
+					.setProperty('@page-size-select', 'value', 20)
+					.setProperty('@page-size-select', 'initialValue', undefined)
+			);
 
 			h.trigger('@page-size-select', 'onValue', '10');
 			sinon.assert.calledWith(onPageSizeChange, 10);

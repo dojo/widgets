@@ -18,8 +18,14 @@ export interface PaginationProperties {
 	/** The initial page number */
 	initialPage?: number;
 
+	/** Controlled page property */
+	page?: number;
+
 	/** The initial page size */
 	initialPageSize?: number;
+
+	/** Controlled page size property */
+	pageSize?: number;
 
 	/** Callback fired when the page number is changed */
 	onPage?(page: number): void;
@@ -102,15 +108,27 @@ export default factory(function Pagination({
 	const classes = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
 
-	if (initialPage !== undefined && initialPage !== icache.get('initialPage')) {
+	let { page, pageSize } = properties();
+
+	if (
+		page === undefined &&
+		initialPage !== undefined &&
+		initialPage !== icache.get('initialPage')
+	) {
 		icache.set('initialPage', initialPage);
 		icache.set('currentPage', initialPage);
 	}
 
-	if (initialPageSize !== undefined && initialPageSize !== icache.get('initialPageSize')) {
+	const currentPage = page === undefined ? icache.getOrSet('currentPage', 1) : page;
+	if (
+		pageSize === undefined &&
+		initialPageSize !== undefined &&
+		initialPageSize !== icache.get('initialPageSize')
+	) {
 		icache.set('initialPageSize', initialPageSize);
 		icache.set('pageSize', initialPageSize);
 	}
+	const currentPageSize = pageSize === undefined ? icache.getOrSet('pageSize', 10) : pageSize;
 
 	if (pageSizes !== undefined && pageSizes !== icache.get('pageSizes')) {
 		icache.set('pageSizes', pageSizes);
@@ -263,7 +281,10 @@ export default factory(function Pagination({
 					<div classes={classes.selectWrapper}>
 						<Select
 							key="page-size-select"
-							initialValue={pageSize.toString()}
+							initialValue={
+								pageSize === undefined ? currentPageSize.toString() : undefined
+							}
+							value={pageSize === undefined ? undefined : pageSize}
 							resource={{
 								resource: () => pageSizesResource,
 								data: pageSizes.map((ps) => ({ value: ps.toString() }))

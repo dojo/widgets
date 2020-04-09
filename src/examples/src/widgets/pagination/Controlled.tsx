@@ -26,7 +26,8 @@ const Example = factory(function Example({ middleware: { icache } }) {
 			</div>
 
 			<Pagination
-				initialPage={currentPage}
+				page={currentPage}
+				pageSize={10}
 				total={25}
 				onPage={(value) => {
 					icache.set('currentPage', value);
