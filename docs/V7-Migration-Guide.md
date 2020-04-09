@@ -517,7 +517,7 @@ Latest example can be found on [widgets.dojo.io/#widget/radio/overview](https://
   - No longer supported
 #### Changes in behaviour
 
-The range slider widget now internally manages its own value by default and changed via the `initialValue` property. The range slider can be fully controlled using the `value` property.
+The range slider widget now internally manages its own value by default and can be changed via the `initialValue` property. The range slider can be fully controlled using the `value` property.
 
 #### Example of migration from v6 to v7
 
@@ -986,5 +986,4 @@ The `TitlePane` now uses a child renderer object to determine its title and cont
 ```
 
 Latest example can be found on [widgets.dojo.io/#widget/tooltip/overview](https://widgets.dojo.io/#widget/tooltip/overview)
-
 
