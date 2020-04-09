@@ -71,7 +71,8 @@
 }
 
 .todayDate:before,
-.selectedDate:before {
+.selectedDate:before,
+.date:not(.inactiveDate):hover:before {
 	position: absolute;
 	left: 2px;
 	top: 2px;
@@ -88,6 +89,11 @@
 
 .selectedDate:before {
 	background-color: var(--mdc-theme-primary);
+}
+
+.date:not(.selectedDate):not(.inactiveDate):hover:before {
+	background-color: var(--mdc-theme-primary);
+	opacity: 0.15;
 }
 
 .controls {
