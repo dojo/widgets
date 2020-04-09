@@ -13,6 +13,8 @@ type Omit<T, E> = Pick<T, Exclude<keyof T, E>>;
 interface BaseFormProperties {
 	/** The initial form value */
 	initialValue?: FormValue;
+	/** Controlled form value component */
+	value?: FormValue;
 	/** Callback called when a form value changes */
 	onValue?(values: FormValue): void;
 	/** The name property of the form */
@@ -72,7 +74,7 @@ export default factory(function Form({
 		name: props.name
 	};
 
-	const { initialValue, onValue } = props;
+	const { initialValue, value, onValue } = props;
 
 	if (isSubmitForm(props)) {
 		formProps = {
@@ -95,7 +97,9 @@ export default factory(function Form({
 
 	onValue && form.onValue(onValue);
 
-	if (initialValue !== undefined && !valueEqual(initialValue, icache.get('initial'))) {
+	if (value) {
+		form.value(value);
+	} else if (initialValue !== undefined && !valueEqual(initialValue, icache.get('initial'))) {
 		icache.set('initial', initialValue, false);
 		form.value(initialValue);
 	}
