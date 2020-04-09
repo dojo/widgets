@@ -5,12 +5,11 @@ import theme from '@dojo/framework/core/middleware/theme';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import resize from '@dojo/framework/core/middleware/resize';
 import { RenderResult, Theme, ThemeWithVariant } from '@dojo/framework/core/interfaces';
-import { Resource, createResource } from '@dojo/framework/core/resource';
+import { createResource, DataTemplate } from '@dojo/framework/core/resource';
 import global from '@dojo/framework/shim/global';
 
 import Icon from '../icon';
 import Select, { defaultTransform } from '../select';
-import { ListOption } from '../list';
 
 import bundle from './Pagination.nls';
 import * as css from '../theme/default/pagination.m.css';
@@ -45,23 +44,18 @@ interface PaginationCache {
 	nodeWidths: { prev: number; next: number; current: number; sibling: number };
 	pageSize: number;
 	pageSizes: number[];
-	pageSizesResource: { resource: () => Resource; data: ListOption[] };
 	theme?: Theme | ThemeWithVariant;
 }
 
-function createMemoryResourceWithData<S = any>(data: S[]) {
-	return {
-		resource: () =>
-			createResource({
-				read: (_, put, get) => {
-					let data: any[] = get();
-					put(0, data);
-					return { data, total: data.length };
-				}
-			}),
-		data
-	};
-}
+const template: DataTemplate = {
+	read: (_, put, get) => {
+		let data: any[] = get();
+		put(0, data);
+		return { data, total: data.length };
+	}
+};
+
+const pageSizesResource = createResource(template);
 
 function getRenderedWidth(dnode: RenderResult, wrapperClass?: string): number {
 	if (dnode === undefined) {
@@ -114,10 +108,6 @@ export default factory(function Pagination({
 
 	if (pageSizes !== undefined && pageSizes !== icache.get('pageSizes')) {
 		icache.set('pageSizes', pageSizes);
-		icache.set(
-			'pageSizesResource',
-			createMemoryResourceWithData(pageSizes.map((ps) => ({ value: ps.toString() })))
-		);
 	}
 
 	if (theme.get() !== icache.get('theme')) {
@@ -127,7 +117,6 @@ export default factory(function Pagination({
 
 	const page = icache.getOrSet('currentPage', 1);
 	const pageSize = icache.getOrSet('pageSize', 10);
-	const pageSizesResource = icache.get('pageSizesResource');
 
 	const showPrev = page > 1;
 	const prevLink = (
@@ -259,12 +248,15 @@ export default factory(function Pagination({
 					{...trailingSiblings}
 					{showNext && nextLink}
 				</div>
-				{pageSizes && pageSizes.length > 0 && pageSizesResource && (
+				{pageSizes && pageSizes.length > 0 && (
 					<div classes={classes.selectWrapper}>
 						<Select
 							key="page-size-select"
 							initialValue={pageSize.toString()}
-							resource={pageSizesResource}
+							resource={{
+								resource: () => pageSizesResource,
+								data: pageSizes.map((ps) => ({ value: ps.toString() }))
+							}}
 							transform={defaultTransform}
 							onValue={(value) => {
 								onPageSize && onPageSize(parseInt(value, 10));
