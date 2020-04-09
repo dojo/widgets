@@ -235,8 +235,9 @@ Latest example can be found on [widgets.dojo.io/#widget/calendar/overview](https
 	- replaced by `onValue(checked: boolean)`
 #### Example of migration from v6 to v7
 
+##### v6 Example
+
 ```ts
-// v6
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import Checkbox from '@dojo/widgets/checkbox';
@@ -262,8 +263,9 @@ export default factory(function CheckboxExample({ middleware: { icache } }) {
 });
 ```
 
+##### v7 Example
+
 ```ts
-// v7
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import Checkbox from '@dojo/widgets/checkbox';
@@ -752,21 +754,110 @@ Latest example can be found on [widgets.dojo.io/#widget/switch/overview](https:/
 
 ### tab-controller
 
+#### Structural changes
+- `<TabController>` takes a renderer function as its child instead of a list of `<Tab>` widgets.
+- The `<Tab>` widget previously used to manage both the tab button and tab content properties has been split into a `tabs` property passed to `<TabController>` and a `<TabContent>` widget that defines the tab content.
 #### Property changes
 ##### Additional Mandatory Properties
-- foo: string
-	- this prop does x
-##### Changed properties
-- bar: string
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+- tabs: TabItem[]
+	- this prop defines the label and initial state of each tab.
 ##### Removed properties
-- baz: string
-	- replaced by foo
-	- any additional info
-#### Changes in behaviour
+- activeIndex: number
+	- the active tab index is now controlled internally.
+	- the tab that should be opened by default can be controlled with the new `initialId` property that takes the tab's `id` rather than its numerical index.
+- onRequestTabChange: (index: number, key: string) => void;
+	- parents no longer must control which tab is active.
+- onRequestTabClose: (index: number, key: string) => void;
+	- parents no longer must control which tabs are closed.
 #### Example of migration from v6 to v7
+
+##### v6 Example
+
+```tsx
+import { tsx, create } from '@dojo/framework/core/vdom';
+import icache from '@dojo/framework/core/middleware/icache';
+import Set from '@dojo/framework/shim/Set';
+
+import TabController from '@dojo/widgets/tab-controller';
+import Tab from '@dojo/widgets/tab';
+
+const factory = create();
+
+export default factory(function Closeable() {
+	const closed = icache.getOrSet('closed', new Set<string>());
+	const activeIndex = icache.getOrSet('activeIndex', 2);
+
+	return (
+		<TabController
+			activeIndex={activeIndex}
+			onRequestTabClose={(index, key) => {
+				icache.set('closed', new Set([...closed, key]));
+			}}
+			onRequestTabChange={(index, key) => {
+				icache.set('activeIndex', index);
+			}}
+		>
+			{!closed.has('tab0') && (
+				<Tab key="tab0" closeable={true} label="Tab One">
+					Hello Tab One
+				</Tab>
+			)}
+			<Tab key="tab1" disabled={true} label="Tab Two">
+				Hello Tab Two
+			</Tab>
+			<Tab key="tab2" label="Tab Three">
+				Hello Tab Three
+			</Tab>
+			<Tab key="tab3" label="Tab Four">
+				Hello Tab Four
+			</Tab>
+		</TabController>
+	);
+});
+```
+
+##### v7 Example
+
+```tsx
+import { tsx, create } from '@dojo/framework/core/vdom';
+
+import TabController, { TabItem } from '@dojo/widgets/tab-controller';
+import TabContent from '@dojo/widgets/tab-controller/TabContent';
+
+const factory = create();
+
+export default factory(function Closeable() {
+	const tabs = [
+		{ closeable: true, id: 'tab0', label: 'Tab One' },
+		{ disabled: true, id: 'tab1', label: 'Tab Two' },
+		{ id: 'tab2', label: 'Tab Three' },
+		{ id: 'tab3', label: 'Tab Four' }
+	];
+
+	return (
+		<TabController initialId="tab2" tabs={tabs}>
+			{(
+				tabs: TabItem[],
+				isActive: (id: string) => boolean,
+				isClosed: (id: string) => boolean
+			) => [
+				<TabContent key="tab0" active={isActive('tab0')} closed={isClosed('tab0')}>
+					Hello Tab One
+				</TabContent>,
+				<TabContent key="tab1" active={isActive('tab1')} closed={isClosed('tab1')}>
+					Hello Tab Two
+				</TabContent>,
+				<TabContent key="tab2" active={isActive('tab2')} closed={isClosed('tab2')}>
+					Hello Tab Three
+				</TabContent>,
+				<TabContent key="tab3" active={isActive('tab3')} closed={isClosed('tab3')}>
+					Hello Tab Four
+				</TabContent>
+			]}
+		</TabController>
+	);
+});
+```
 
 Latest example can be found on [widgets.dojo.io/#widget/tab-controller/overview](https://widgets.dojo.io/#widget/tab-controller/overview)
 
