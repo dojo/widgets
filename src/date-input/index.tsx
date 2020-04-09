@@ -34,7 +34,7 @@ export interface DateInputProperties extends ThemeProperties, FocusProperties {
 }
 
 interface DateInputICache {
-	/** Current user-inputted value */
+	/** The most recent "initialValue" property passed */
 	initialValue: string;
 	/** Current user-inputted value */
 	inputValue: string;
