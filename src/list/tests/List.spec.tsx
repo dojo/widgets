@@ -185,7 +185,7 @@ describe('List', () => {
 		h.expect(arrowKeyDownTemplate);
 	});
 
-	it('ignores changes to active item when controlled', () => {
+	it('ignores changes to selected item when controlled', () => {
 		let currentActiveValue;
 		const h = harness(() => (
 			<List
