@@ -157,6 +157,7 @@ import SuccessSnackbar from './widgets/snackbar/Success';
 import BasicSwitch from './widgets/switch/Basic';
 import DisabledSwitch from './widgets/switch/Disabled';
 import BasicTabController from './widgets/tab-controller/Basic';
+import ControlledTabController from './widgets/tab-controller/Controlled';
 import ButtonAlignmentTabController from './widgets/tab-controller/ButtonAlignment';
 import CloseableTabController from './widgets/tab-controller/Closeable';
 import DisabledTabController from './widgets/tab-controller/Disabled';
@@ -1318,6 +1319,11 @@ export const config = {
 		},
 		'tab-controller': {
 			examples: [
+				{
+					filename: 'Controlled',
+					module: ControlledTabController,
+					title: 'Controlled TabController'
+				},
 				{
 					filename: 'Disabled',
 					module: DisabledTabController,
