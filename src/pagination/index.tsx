@@ -18,8 +18,14 @@ export interface PaginationProperties {
 	/** The initial page number */
 	initialPage?: number;
 
+	/** Controlled page property */
+	page?: number;
+
 	/** The initial page size */
 	initialPageSize?: number;
+
+	/** Controlled page size property */
+	pageSize?: number;
 
 	/** Callback fired when the page number is changed */
 	onPage?(page: number): void;
@@ -102,24 +108,33 @@ export default factory(function Pagination({
 	const classes = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
 
-	if (initialPage !== undefined && initialPage !== icache.get('initialPage')) {
+	let { page, pageSize } = properties();
+
+	if (
+		page === undefined &&
+		initialPage !== undefined &&
+		initialPage !== icache.get('initialPage')
+	) {
 		icache.set('initialPage', initialPage);
 		icache.set('currentPage', initialPage);
 	}
 
-	if (initialPageSize !== undefined && initialPageSize !== icache.get('initialPageSize')) {
+	const currentPage = page === undefined ? icache.getOrSet('currentPage', 1) : page;
+	if (
+		pageSize === undefined &&
+		initialPageSize !== undefined &&
+		initialPageSize !== icache.get('initialPageSize')
+	) {
 		icache.set('initialPageSize', initialPageSize);
 		icache.set('pageSize', initialPageSize);
 	}
+	const currentPageSize = pageSize === undefined ? icache.getOrSet('pageSize', 10) : pageSize;
 
 	if (pageSizes !== undefined && pageSizes !== icache.get('pageSizes')) {
 		icache.set('pageSizes', pageSizes);
 	}
 
-	const page = icache.getOrSet('currentPage', 1);
-	const pageSize = icache.getOrSet('pageSize', 10);
-
-	const showPrev = page > 1;
+	const showPrev = currentPage > 1;
 	const prevLink = (
 		<button
 			type="button"
@@ -127,8 +142,8 @@ export default factory(function Pagination({
 			classes={[classes.prev, classes.link]}
 			onclick={(e) => {
 				e.stopPropagation();
-				icache.set('currentPage', page - 1);
-				onPage && onPage(page - 1);
+				icache.set('currentPage', currentPage - 1);
+				onPage && onPage(currentPage - 1);
 			}}
 		>
 			<div classes={classes.icon}>
@@ -138,7 +153,7 @@ export default factory(function Pagination({
 		</button>
 	);
 
-	const showNext = page < total;
+	const showNext = currentPage < total;
 	const nextLink = (
 		<button
 			type="button"
@@ -146,8 +161,8 @@ export default factory(function Pagination({
 			classes={[classes.next, classes.link]}
 			onclick={(e) => {
 				e.stopPropagation();
-				icache.set('currentPage', page + 1);
-				onPage && onPage(page + 1);
+				icache.set('currentPage', currentPage + 1);
+				onPage && onPage(currentPage + 1);
 			}}
 		>
 			<div classes={classes.icon}>
@@ -181,8 +196,10 @@ export default factory(function Pagination({
 
 		let availableSpace = (containerWidth - fixedWidth) / siblingWidth;
 
-		const maxLeading = siblingCount ? Math.min(siblingCount, page - 1) : page - 1;
-		const maxTrailing = siblingCount ? Math.min(siblingCount, total - page) : total - page;
+		const maxLeading = siblingCount ? Math.min(siblingCount, currentPage - 1) : currentPage - 1;
+		const maxTrailing = siblingCount
+			? Math.min(siblingCount, total - currentPage)
+			: total - currentPage;
 
 		for (let i = 1; i <= Math.max(maxLeading, maxTrailing); i++) {
 			const showLeading = i <= maxLeading;
@@ -197,8 +214,8 @@ export default factory(function Pagination({
 			}
 
 			if (availableSpace >= spaceNeeded) {
-				const leadingPageNumber = page - i;
-				const trailingPageNumber = page + i;
+				const leadingPageNumber = currentPage - i;
+				const trailingPageNumber = currentPage + i;
 
 				if (showLeading) {
 					leadingSiblings.unshift(
@@ -254,7 +271,7 @@ export default factory(function Pagination({
 					{showPrev && prevLink}
 					{...leadingSiblings}
 					<div key="current" classes={classes.currentPage}>
-						{page.toString()}
+						{currentPage.toString()}
 					</div>
 					{...trailingSiblings}
 					{showNext && nextLink}
@@ -263,7 +280,10 @@ export default factory(function Pagination({
 					<div classes={classes.selectWrapper}>
 						<Select
 							key="page-size-select"
-							initialValue={pageSize.toString()}
+							initialValue={
+								pageSize === undefined ? currentPageSize.toString() : undefined
+							}
+							value={pageSize === undefined ? undefined : pageSize.toString()}
 							resource={{
 								resource: () => pageSizesResource,
 								data: pageSizes.map((ps) => ({ value: ps.toString() }))
