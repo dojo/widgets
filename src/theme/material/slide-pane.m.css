@@ -1,2 +1,26 @@
-.root {
+.pane {
+	composes: mdc-drawer mdc-drawer--modal from '@material/drawer/dist/mdc.drawer.css';
+	z-index: 400;
+}
+
+.open {
+	composes: mdc-drawer--open from '@material/drawer/dist/mdc.drawer.css';
+}
+
+.title {
+	composes: mdc-drawer__header from '@material/drawer/dist/mdc.drawer.css';
+	position: relative;
+}
+
+.titleContent {
+	composes: mdc-drawer__title from '@material/drawer/dist/mdc.drawer.css';
+}
+
+.content {
+	composes: mdc-drawer__content from '@material/drawer/dist/mdc.drawer.css';
+	padding: 0 16px 16px 16px;
+}
+
+.right {
+	left: auto;
 }

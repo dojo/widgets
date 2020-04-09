@@ -6,6 +6,7 @@ export const content: string;
 export const open: string;
 export const pane: string;
 export const title: string;
+export const titleContent: string;
 export const close: string;
 export const closeIcon: string;
 export const left: string;

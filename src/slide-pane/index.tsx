@@ -258,7 +258,9 @@ export const SlidePane = factory(function SlidePane({
 			>
 				{title ? (
 					<div classes={themeCss.title} key="title">
-						<div id={titleId}>{title}</div>
+						<div id={titleId} classes={themeCss.titleContent}>
+							{title}
+						</div>
 						<button classes={themeCss.close} type="button" onclick={onCloseClick}>
 							{closeText}
 							<span classes={themeCss.closeIcon}>
