@@ -41,7 +41,8 @@ interface PaginationCache {
 	initialPage?: number;
 	initialPageSize?: number;
 	currentPage: number;
-	nodeWidths: { prev: number; next: number; current: number; sibling: number };
+	fixedWidth: number;
+	siblingWidth: number;
 	pageSize: number;
 	pageSizes: number[];
 }
@@ -83,7 +84,8 @@ export default factory(function Pagination({
 }) {
 	diffProperty('theme', (current, next) => {
 		if (current !== next) {
-			icache.delete('nodeWidths', false);
+			icache.delete('fixedWidth', false);
+			icache.delete('siblingWidth', false);
 		}
 	});
 	resize.get('root');
@@ -158,71 +160,81 @@ export default factory(function Pagination({
 	const leadingSiblings: RenderResult[] = [];
 	const trailingSiblings: RenderResult[] = [];
 	const containerWidth = dimensions.get('links').size.width;
+
 	if (containerWidth) {
-		const nodeWidths = icache.getOrSet('nodeWidths', () => ({
-			prev: getRenderedWidth(prevLink, theme.variant()),
-			next: getRenderedWidth(nextLink, theme.variant()),
-			current: getRenderedWidth(
-				<div classes={classes.currentPage}>{total.toString()}</div>,
-				theme.variant()
-			),
-			sibling: getRenderedWidth(
+		const fixedWidth = icache.getOrSet(
+			'fixedWidth',
+			getRenderedWidth(prevLink, theme.variant()) +
+				getRenderedWidth(nextLink, theme.variant()) +
+				getRenderedWidth(
+					<div classes={classes.currentPage}>{total.toString()}</div>,
+					theme.variant()
+				)
+		);
+		const siblingWidth = icache.getOrSet(
+			'siblingWidth',
+			getRenderedWidth(
 				<button classes={[classes.numberedLink, classes.link]}>{total.toString()}</button>,
 				theme.variant()
 			)
-		}));
+		);
 
-		const maxSiblings =
-			(containerWidth -
-				nodeWidths.current -
-				(showPrev ? nodeWidths.prev : 0) -
-				(showNext ? nodeWidths.next : 0)) /
-			nodeWidths.sibling;
+		let availableSpace = (containerWidth - fixedWidth) / siblingWidth;
 
 		const maxLeading = siblingCount ? Math.min(siblingCount, page - 1) : page - 1;
 		const maxTrailing = siblingCount ? Math.min(siblingCount, total - page) : total - page;
-		let numSiblings = 0;
 
 		for (let i = 1; i <= Math.max(maxLeading, maxTrailing); i++) {
 			const showLeading = i <= maxLeading;
 			const showTrailing = i <= maxTrailing;
 
-			if (maxSiblings >= numSiblings + +showLeading + +showTrailing) {
+			let spaceNeeded = 0;
+			if (showLeading) {
+				spaceNeeded++;
+			}
+			if (showTrailing) {
+				spaceNeeded++;
+			}
+
+			if (availableSpace >= spaceNeeded) {
+				const leadingPageNumber = page - i;
+				const trailingPageNumber = page + i;
+
 				if (showLeading) {
 					leadingSiblings.unshift(
 						<button
 							type="button"
-							key={`numberedLink-${page - i}`}
+							key={`numberedLink-${leadingPageNumber}`}
 							classes={[classes.numberedLink, classes.link]}
 							onclick={(e) => {
 								e.stopPropagation();
-								icache.set('currentPage', page - i);
-								onPage && onPage(page - i);
+								icache.set('currentPage', leadingPageNumber);
+								onPage && onPage(leadingPageNumber);
 							}}
 						>
-							{(page - i).toString()}
+							{leadingPageNumber.toString()}
 						</button>
 					);
-					numSiblings++;
 				}
 
 				if (showTrailing) {
 					trailingSiblings.push(
 						<button
 							type="button"
-							key={`numberedLink-${page + i}`}
+							key={`numberedLink-${trailingPageNumber}`}
 							classes={[classes.numberedLink, classes.link]}
 							onclick={(e) => {
 								e.stopPropagation();
-								icache.set('currentPage', page + i);
-								onPage && onPage(page + i);
+								icache.set('currentPage', trailingPageNumber);
+								onPage && onPage(trailingPageNumber);
 							}}
 						>
-							{(page + i).toString()}
+							{trailingPageNumber.toString()}
 						</button>
 					);
-					numSiblings++;
 				}
+
+				availableSpace -= spaceNeeded;
 			} else {
 				break;
 			}
