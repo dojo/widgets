@@ -34,6 +34,10 @@
 	position: relative;
 }
 
+/* The text content of the title */
+.titleContent {
+}
+
 /* Added to the close button */
 .close {
 	position: absolute;
