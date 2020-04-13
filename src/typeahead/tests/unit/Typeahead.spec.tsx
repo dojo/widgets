@@ -419,6 +419,37 @@ registerSuite('Typeahead', {
 				inputTemplate.setProperty('@trigger', 'initialValue', 'another value'),
 				() => triggerRenderResult
 			);
+		},
+
+		'tracks focus and blur'() {
+			const onFocus = stub();
+			const onBlur = stub();
+
+			const h = harness(() => (
+				<Typeahead
+					resource={resource}
+					transform={defaultTransform}
+					onFocus={onFocus}
+					onBlur={onBlur}
+					onValue={stub()}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			let triggerRenderResult = h.trigger(
+				'@popup',
+				(node) => (node.children as any)[0].trigger,
+				stub
+			);
+
+			triggerRenderResult.properties.onFocus();
+
+			assert.isTrue(onFocus.called);
+
+			triggerRenderResult.properties.onBlur();
+
+			assert.isTrue(onBlur.called);
 		}
 	}
 });
