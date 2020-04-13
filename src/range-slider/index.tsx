@@ -55,8 +55,10 @@ export interface RangeSliderProperties {
 	step?: number;
 	/** If the values provided by the slider are valid */
 	valid?: boolean;
-	/** The current vlaue */
+	/** The initial value of the range slider */
 	initialValue?: RangeValue;
+	/** A controlled value for the range slider */
+	value?: RangeValue;
 	/** The id used for the form input element */
 	widgetId?: string;
 }
@@ -119,17 +121,20 @@ export const RangeSlider = factory(function RangeSlider({
 		widgetId = `range-slider-${id}`
 	} = properties();
 
-	let value = icache.get('value');
-	const existingInitialValue = icache.get('initialValue');
+	let { value } = properties();
 
-	if (
-		!existingInitialValue ||
-		initialValue.min !== existingInitialValue.min ||
-		initialValue.max !== existingInitialValue.max
-	) {
-		icache.set('value', initialValue);
-		icache.set('initialValue', initialValue);
-		value = initialValue;
+	if (value === undefined) {
+		value = icache.get('value');
+		const existingInitialValue = icache.get('initialValue');
+		if (
+			!existingInitialValue ||
+			initialValue.min !== existingInitialValue.min ||
+			initialValue.max !== existingInitialValue.max
+		) {
+			icache.set('value', initialValue);
+			icache.set('initialValue', initialValue);
+			value = initialValue;
+		}
 	}
 
 	const themeCss = theme.classes(css);
@@ -177,6 +182,7 @@ export const RangeSlider = factory(function RangeSlider({
 		const returnValues: RangeValue = isMinEvent
 			? { min: Math.min(parseFloat(value), max), max }
 			: { min, max: Math.max(min, parseFloat(value)) };
+
 		icache.set('value', returnValues);
 		onValue && onValue(returnValues);
 	};

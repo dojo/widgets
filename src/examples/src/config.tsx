@@ -132,6 +132,7 @@ import EventsRangeSlider from './widgets/range-slider/Events';
 import DisabledRangeSlider from './widgets/range-slider/Disabled';
 import RequiredRangeSlider from './widgets/range-slider/Required';
 import LabelledRangeSlider from './widgets/range-slider/Labelled';
+import ControlledRangeSlider from './widgets/range-slider/Controlled';
 import AdditionalText from './widgets/select/AdditionalText';
 import BasicSelect from './widgets/select/Basic';
 import ControlledSelect from './widgets/select/Controlled';
@@ -1142,7 +1143,8 @@ export const config = {
 					title: 'Display Tooltip Output'
 				},
 				{ filename: 'Required', module: RequiredRangeSlider, title: 'Required' },
-				{ filename: 'Disabled', module: DisabledRangeSlider, title: 'Disabled' }
+				{ filename: 'Disabled', module: DisabledRangeSlider, title: 'Disabled' },
+				{ filename: 'Controlled', module: ControlledRangeSlider, title: 'Controlled' }
 			]
 		},
 		select: {
