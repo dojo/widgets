@@ -2,9 +2,9 @@ const { describe, it, beforeEach } = intern.getInterface('bdd');
 import { assert } from 'chai';
 import { assert as sinonAssert, mock, sandbox, match } from 'sinon';
 
-import iCacheMiddleware from '@dojo/framework/core/middleware/icache';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
-import createFormMiddleware from '../../middleware';
+import createFormMiddleware, { State } from '../../middleware';
 
 interface Fields {
 	firstName: string;
@@ -26,7 +26,7 @@ describe('Form Middleware', () => {
 		onSubmit.resetHistory();
 		onValue.resetHistory();
 
-		const { callback: iCacheCallback } = iCacheMiddleware();
+		const { callback: iCacheCallback } = createICacheMiddleware<State<Fields>>()();
 		const icache = iCacheCallback({
 			id: 'test',
 			middleware: {

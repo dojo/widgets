@@ -49,7 +49,7 @@ function compareValidity(a: Validity, b: Validity) {
 	return a.message === b.message;
 }
 
-interface State<S> {
+export interface State<S> {
 	callbacks: Callbacks<S>;
 	required: Record<string, boolean>;
 	values: Partial<S>;

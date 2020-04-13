@@ -46,8 +46,8 @@ export async function createFetcherResult(
 
 export function createUpdater<S extends any>(data: S[], idColumn: string = 'id') {
 	return (updatedItem: S) => {
-		const index = findIndex(data, (item) => {
-			return item[idColumn] === updatedItem[idColumn];
+		const index = findIndex(data, (item: any) => {
+			return item[idColumn] === (updatedItem as any)[idColumn];
 		});
 		data[index] = updatedItem;
 	};

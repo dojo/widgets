@@ -1,16 +1,17 @@
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+
 const { describe, it, afterEach } = intern.getInterface('bdd');
 import { checkboxGroup as checkboxGroupMiddleware } from '../middleware';
 const { assert } = intern.getPlugin('chai');
 import { sandbox } from 'sinon';
-import icacheMiddleware from '@dojo/framework/core/middleware/icache';
 
 const sb = sandbox.create();
 const onValueStub = sb.stub();
 
 const { callback } = checkboxGroupMiddleware();
 
-function icacheFactory() {
-	return icacheMiddleware().callback({
+function icacheFactory<T>() {
+	return createICacheMiddleware<T>()().callback({
 		id: 'test-cache',
 		properties: () => ({}),
 		children: () => [],
