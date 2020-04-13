@@ -41,6 +41,7 @@ export interface NativeSelectProperties {
 interface NativeSelectICache {
 	initial: string;
 	value: string;
+	prependBlank: boolean;
 }
 
 const icache = createICacheMiddleware<NativeSelectICache>();
@@ -75,11 +76,15 @@ export const NativeSelect = factory(function NativeSelect({
 	if (value === undefined) {
 		value = icache.get('value');
 		const existingInitialValue = icache.get('initial');
+		icache.set('prependBlank', true);
 
-		if (initialValue !== undefined && initialValue !== existingInitialValue) {
-			icache.set('initial', initialValue);
-			icache.set('value', initialValue);
-			value = initialValue;
+		if (initialValue !== undefined) {
+			icache.set('prependBlank', false);
+			if (initialValue !== existingInitialValue) {
+				icache.set('initial', initialValue);
+				icache.set('value', initialValue);
+				value = initialValue;
+			}
 		}
 	}
 
@@ -138,7 +143,7 @@ export const NativeSelect = factory(function NativeSelect({
 					}}
 					classes={themedCss.select}
 				>
-					{value === undefined && <option key="blank-option" value="" />}
+					{icache.get('prependBlank') && <option key="blank-option" value="" />}
 					{options.map(({ value, label, disabled = false }, index) => {
 						return (
 							<option
