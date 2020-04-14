@@ -82,7 +82,7 @@ export const NativeSelect = factory(function NativeSelect({
 				themedCss.root,
 				disabled && themedCss.disabled,
 				required && themedCss.required,
-				inputFocused && themedCss.focused
+				inputFocused ? themedCss.focused : undefined
 			]}
 			key="root"
 		>

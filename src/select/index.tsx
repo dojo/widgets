@@ -135,7 +135,8 @@ export const Select = factory(function Select({
 				themedCss.root,
 				disabled && themedCss.disabled,
 				valid === true && themedCss.valid,
-				valid === false && themedCss.invalid
+				valid === false && themedCss.invalid,
+				shouldFocus === true && themedCss.focused
 			]}
 			key="root"
 		>
@@ -152,6 +153,7 @@ export const Select = factory(function Select({
 					valid={valid}
 					required={required}
 					active={!!(value || icache.get('expanded'))}
+					focused={shouldFocus}
 				>
 					{label}
 				</Label>

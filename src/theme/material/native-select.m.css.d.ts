@@ -4,4 +4,5 @@ export const select: string;
 export const focused: string;
 export const arrow: string;
 export const labelRoot: string;
+export const labelActive: string;
 export const iconIcon: string;

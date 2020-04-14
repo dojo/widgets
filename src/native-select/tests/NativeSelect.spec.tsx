@@ -21,16 +21,7 @@ const options = [{ value: 'dog' }, { value: 'cat' }, { value: 'fish' }];
 const harness = createHarness([compareTheme]);
 
 const baseTemplate = assertionTemplate(() => (
-	<div classes={[undefined, css.root, undefined, undefined]} key="root">
-		<Label
-			assertion-key="label"
-			theme={{}}
-			classes={undefined}
-			disabled={undefined}
-			forId={'something'}
-			required={undefined}
-			active={false}
-		/>
+	<div classes={[undefined, css.root, undefined, undefined, undefined]} key="root">
 		<div classes={css.inputWrapper}>
 			<select
 				key="native-select"
@@ -100,13 +91,27 @@ describe('Native Select', () => {
 			.setProperty('@native-select', 'size', 3)
 			.setProperty('@helperText', 'text', 'Pick a pet type')
 			.setProperty('@option-1', 'selected', true)
-			.setProperty('@root', 'classes', [undefined, css.root, css.disabled, css.required])
-			.setProperty('~label', 'disabled', true)
-			.setProperty('~label', 'required', true)
-			.setProperty('~label', 'active', true)
-			.replaceChildren('~label', () => {
-				return ['Pets'];
-			})
+			.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				css.disabled,
+				css.required,
+				undefined
+			])
+			.prepend('@root', () => [
+				<Label
+					assertion-key="label"
+					theme={{}}
+					classes={undefined}
+					disabled={true}
+					forId={'something'}
+					required={true}
+					active={true}
+					focused={false}
+				>
+					Pets
+				</Label>
+			])
 			.remove('@blank-option');
 
 		h.expect(optionalPropertyTemplate);

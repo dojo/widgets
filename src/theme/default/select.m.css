@@ -18,6 +18,9 @@
 	padding: 0 8px;
 }
 
+.focused {
+}
+
 /* Wrapper around the widgets text value */
 .value {
 	flex-grow: 1;
