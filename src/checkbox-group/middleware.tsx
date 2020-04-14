@@ -25,6 +25,14 @@ export const checkboxGroup = factory(({ middleware: { icache } }) => {
 				);
 				icache.set('initial', initialValue);
 			}
+		} else {
+			icache.set(
+				'values',
+				value.reduce((existing: any, value) => {
+					existing[value] = true;
+					return existing;
+				}, {})
+			);
 		}
 
 		function getAllValues() {
@@ -41,13 +49,7 @@ export const checkboxGroup = factory(({ middleware: { icache } }) => {
 
 		return (key: string) => ({
 			checked(checked?: boolean) {
-				const values =
-					value === undefined
-						? icache.getOrSet('values', {})
-						: value.reduce((existing: any, value) => {
-								existing[value] = true;
-								return existing;
-						  }, {});
+				const values = icache.getOrSet('values', {});
 
 				if (checked === undefined) {
 					return values[key];
