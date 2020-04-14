@@ -27,3 +27,7 @@
 
 .disabled {
 }
+
+.root .icon {
+	font-size: 18px;
+}

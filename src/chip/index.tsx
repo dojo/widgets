@@ -81,7 +81,12 @@ export default factory(function Chip({ properties, children, middleware: { theme
 						}
 					}}
 				>
-					{closeIcon || <Icon type="closeIcon" />}
+					{closeIcon || (
+						<Icon
+							type="closeIcon"
+							classes={{ '@dojo/widgets/icon': { icon: [themedCss.icon] } }}
+						/>
+					)}
 				</span>
 			)}
 		</div>
