@@ -18,6 +18,8 @@ export interface NativeSelectProperties {
 	onValue?(value: string): void;
 	/** The initial selected value */
 	initialValue?: string;
+	/** A controlled value */
+	value?: string;
 	/** Options to display within the menu */
 	options: MenuOption[];
 	/** Property to determine if the input is disabled */
@@ -39,6 +41,7 @@ export interface NativeSelectProperties {
 interface NativeSelectICache {
 	initial: string;
 	value: string;
+	prependBlank: boolean;
 }
 
 const icache = createICacheMiddleware<NativeSelectICache>();
@@ -68,13 +71,24 @@ export const NativeSelect = factory(function NativeSelect({
 	} = properties();
 
 	const [label] = children();
+	let { value } = properties();
 
-	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
-		icache.set('initial', initialValue);
-		icache.set('value', initialValue);
+	if (value === undefined) {
+		value = icache.get('value');
+		const existingInitialValue = icache.get('initial');
+		icache.set('prependBlank', true);
+
+		if (initialValue !== undefined) {
+			icache.set('prependBlank', false);
+			if (initialValue !== existingInitialValue) {
+				icache.set('initial', initialValue);
+				icache.set('value', initialValue);
+				value = initialValue;
+			}
+		}
 	}
 
-	const selectedValue = icache.get('value');
+	const selectedValue = value;
 	const themedCss = theme.classes(css);
 	const inputFocused = focus.isFocused('native-select');
 
@@ -129,7 +143,7 @@ export const NativeSelect = factory(function NativeSelect({
 					}}
 					classes={themedCss.select}
 				>
-					{!initialValue && <option key="blank-option" value="" />}
+					{icache.get('prependBlank') && <option key="blank-option" value="" />}
 					{options.map(({ value, label, disabled = false }, index) => {
 						return (
 							<option

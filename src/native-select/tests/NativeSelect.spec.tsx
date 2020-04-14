@@ -6,7 +6,8 @@ import {
 	compareTheme,
 	createHarness,
 	noop,
-	compareForId
+	compareForId,
+	stubEvent
 } from '../../common/tests/support/test-helpers';
 import HelperText from '../../helper-text';
 import * as css from '../../theme/default/native-select.m.css';
@@ -118,6 +119,58 @@ describe('Native Select', () => {
 		h.expect(optionalPropertyTemplate);
 	});
 
+	it('controlled value', () => {
+		const h = harness(
+			() => (
+				<NativeSelect
+					onValue={() => {}}
+					options={options}
+					disabled={true}
+					helperText="Pick a pet type"
+					required={true}
+					name="Pet select"
+					size={3}
+					value="dog"
+				>
+					Pets
+				</NativeSelect>
+			),
+			[compareForId, compareId]
+		);
+
+		const controlledTemplate = baseTemplate
+			.setProperty('@native-select', 'disabled', true)
+			.setProperty('@native-select', 'required', true)
+			.setProperty('@native-select', 'name', 'Pet select')
+			.setProperty('@native-select', 'size', 3)
+			.setProperty('@helperText', 'text', 'Pick a pet type')
+			.setProperty('@option-0', 'selected', true)
+			.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				css.disabled,
+				css.required,
+				undefined
+			])
+			.prepend('@root', () => [
+				<Label
+					assertion-key="label"
+					theme={{}}
+					classes={undefined}
+					disabled={true}
+					forId={'something'}
+					required={true}
+					active={true}
+					focused={false}
+				>
+					Pets
+				</Label>
+			])
+			.remove('@blank-option');
+
+		h.expect(controlledTemplate);
+	});
+
 	it('calls onValue when a select item is selected', () => {
 		const changeEvent = {
 			target: {
@@ -135,5 +188,31 @@ describe('Native Select', () => {
 		h.trigger('@native-select', 'onchange', changeEvent);
 
 		assert.isTrue(onValueStub.calledOnceWith('cat'));
+	});
+
+	it('calls onBlur when select loses focus', () => {
+		const onBlurStub = stub();
+
+		const h = harness(() => <NativeSelect onBlur={onBlurStub} options={options} />, [
+			compareForId,
+			compareId
+		]);
+
+		h.trigger('@native-select', 'onblur', stubEvent);
+
+		assert.isTrue(onBlurStub.calledOnce);
+	});
+
+	it('calls onFocus when select gains focus', () => {
+		const onFocusStub = stub();
+
+		const h = harness(() => <NativeSelect onFocus={onFocusStub} options={options} />, [
+			compareForId,
+			compareId
+		]);
+
+		h.trigger('@native-select', 'onfocus', stubEvent);
+
+		assert.isTrue(onFocusStub.calledOnce);
 	});
 });
