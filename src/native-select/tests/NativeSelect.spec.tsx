@@ -6,7 +6,8 @@ import {
 	compareTheme,
 	createHarness,
 	noop,
-	compareForId
+	compareForId,
+	stubEvent
 } from '../../common/tests/support/test-helpers';
 import HelperText from '../../helper-text';
 import * as css from '../../theme/default/native-select.m.css';
@@ -172,5 +173,31 @@ describe('Native Select', () => {
 		h.trigger('@native-select', 'onchange', changeEvent);
 
 		assert.isTrue(onValueStub.calledOnceWith('cat'));
+	});
+
+	it('calls onBlur when select loses focus', () => {
+		const onBlurStub = stub();
+
+		const h = harness(() => <NativeSelect onBlur={onBlurStub} options={options} />, [
+			compareForId,
+			compareId
+		]);
+
+		h.trigger('@native-select', 'onblur', stubEvent);
+
+		assert.isTrue(onBlurStub.calledOnce);
+	});
+
+	it('calls onFocus when select gains focus', () => {
+		const onFocusStub = stub();
+
+		const h = harness(() => <NativeSelect onFocus={onFocusStub} options={options} />, [
+			compareForId,
+			compareId
+		]);
+
+		h.trigger('@native-select', 'onfocus', stubEvent);
+
+		assert.isTrue(onFocusStub.calledOnce);
 	});
 });
