@@ -1,6 +1,5 @@
 import { createHarness, compareTheme } from '../../../common/tests/support/test-helpers';
 import * as textInputCss from '../../../theme/default/text-input.m.css';
-import Button from '../../../button';
 import Icon from '../../../icon';
 import ConstrainedInput from '../../../constrained-input';
 import PasswordInput from '../..';
@@ -70,9 +69,9 @@ describe('PasswordInput', () => {
 			>
 				{{
 					trailing: (
-						<Button onClick={() => {}} theme={{}}>
+						<button onclick={() => {}} type="button">
 							<Icon type="eyeIcon" />
-						</Button>
+						</button>
 					)
 				}}
 			</ConstrainedInput>
