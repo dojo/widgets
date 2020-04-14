@@ -46,6 +46,7 @@ const baseTemplate = (date?: Date) =>
 		return (
 			<div classes={[undefined, css.root]}>
 				<input
+					assertion-key="input"
 					type="hidden"
 					name="dateInput"
 					value={formatDateISO(date || today)}
@@ -106,6 +107,21 @@ describe('DateInput', () => {
 	it('renders with default date', () => {
 		const h = harness(() => <DateInput name="dateInput" onValue={onValue} />);
 		h.expect(baseTemplate());
+		sinon.assert.calledWith(onValue, formatDateISO(today));
+	});
+
+	it('renders with default date when provided an invalid initial date', () => {
+		const h = harness(() => (
+			<DateInput name="dateInput" initialValue="not a date" onValue={onValue} />
+		));
+		h.expect(baseTemplate());
+	});
+
+	it('does not render a default date when value is provided and invalid', () => {
+		const h = harness(() => (
+			<DateInput name="dateInput" value="not a date" onValue={onValue} />
+		));
+		h.expect(baseTemplate().setProperty('@input', 'value', ''));
 		sinon.assert.calledWith(onValue, formatDateISO(today));
 	});
 
@@ -243,6 +259,45 @@ describe('DateInput', () => {
 
 		// If `onValue` is called, the input was accepted & validated
 		sinon.assert.calledWith(onValue, formatDateISO(expected));
+
+		// The calendar popup should be closed after a selection
+		sinon.assert.calledOnce(onClose);
+	});
+
+	it('ignores internal value changes when controlled', () => {
+		const expected = new Date(2019, 11, 19); // Dec 19, 2019
+		const newDate = new Date(2018, 11, 19);
+		const h = harness(() => (
+			<DateInput value={formatDateISO(expected)} name="dateInput" onValue={onValue} />
+		));
+		h.expect(baseTemplate(expected));
+
+		const onClose = sinon.stub();
+		const contentResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].content,
+			onClose
+		);
+		h.expect(
+			calendarTemplate.setProperty('@calendar', 'initialValue', expected),
+			() => contentResult
+		);
+
+		// Find the calendar widget and trigger a date selected
+		const [calendar] = select('@calendar', contentResult);
+		onValue.resetHistory();
+		calendar.properties.onValue(newDate);
+
+		// Find the input; it should contain the old value
+		h.expect(baseTemplate(expected));
+		const [input] = select(
+			'@input',
+			h.trigger('@popup', (node) => (node.children as any)[0].trigger)
+		);
+		assert(input.properties.initialValue, formatDate(expected));
+
+		// If `onValue` is called, the input was accepted & validated
+		sinon.assert.calledWith(onValue, formatDateISO(newDate));
 
 		// The calendar popup should be closed after a selection
 		sinon.assert.calledOnce(onClose);
