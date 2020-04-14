@@ -7,13 +7,13 @@ export default factory(function Basic() {
 	return (
 		<div styles={{ width: '400px', display: 'flex', justifyContent: 'space-around' }}>
 			<Avatar secondary variant="circle">
-				D
+				A
 			</Avatar>
 			<Avatar secondary variant="rounded">
-				D
+				A
 			</Avatar>
 			<Avatar secondary variant="square">
-				D
+				A
 			</Avatar>
 		</div>
 	);

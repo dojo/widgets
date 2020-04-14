@@ -6,9 +6,9 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<div styles={{ width: '400px', display: 'flex', justifyContent: 'space-around' }}>
-			<Avatar variant="circle">D</Avatar>
-			<Avatar variant="rounded">D</Avatar>
-			<Avatar variant="square">D</Avatar>
+			<Avatar variant="circle">A</Avatar>
+			<Avatar variant="rounded">A</Avatar>
+			<Avatar variant="square">A</Avatar>
 		</div>
 	);
 });
