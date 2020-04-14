@@ -7,8 +7,6 @@ import List, { ItemRendererProperties, ListOption } from '../list';
 import theme from '../middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
 import * as css from '../theme/default/typeahead.m.css';
-import Label from '../label';
-import * as labelCss from '../theme/default/label.m.css';
 import TriggerPopup from '../trigger-popup';
 import { find } from '@dojo/framework/shim/array';
 import TextInput from '../text-input';
@@ -33,18 +31,23 @@ export interface TypeaheadProperties {
 	disabled?: boolean;
 	/** Sets the helper text of the input */
 	helperText?: string;
-	/** The label to show */
-	label?: RenderResult;
 	/** Boolean to indicate if field is required */
 	required?: boolean;
 	/** Callback when valid state has changed */
 	onValidate?(valid?: boolean): void;
 	/** The name property of the input */
 	name?: string;
+	/** Optional controlled value of the typeahead */
+	value?: string;
+	/** Callback fired when the input is blurred */
+	onBlur?(): void;
+	/** Callback fired when the input is focused */
+	onFocus?(): void;
 }
 
 export interface TypeaheadICache {
 	value: string;
+	lastValue: string | undefined;
 	activeIndex: number;
 	dirty: boolean;
 	expanded: boolean;
@@ -53,9 +56,12 @@ export interface TypeaheadICache {
 	valid: boolean;
 }
 
-export interface SelectChildren {
+export interface TypeaheadChildren {
+	/** The label to show */
+	label?: RenderResult;
 	/** Custom renderer for item contents */
-	(properties: ItemRendererProperties): RenderResult;
+	items?: (properties: ItemRendererProperties) => RenderResult;
+	leading?: RenderResult;
 }
 
 const factory = create({
@@ -66,7 +72,7 @@ const factory = create({
 	i18n
 })
 	.properties<TypeaheadProperties>()
-	.children<SelectChildren | undefined>();
+	.children<TypeaheadChildren | undefined>();
 
 export const Typeahead = factory(function Typeahead({
 	id,
@@ -77,25 +83,35 @@ export const Typeahead = factory(function Typeahead({
 	const {
 		initialValue,
 		disabled,
-		label,
 		required,
 		position,
 		name,
 		helperText,
 		itemsInView,
 		transform,
-		onValidate
+		onValidate,
+		value: controlledValue
 	} = properties();
 	const themedCss = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
 	const { get, getOptions, setOptions, shared, getTotal, isLoading } = data();
 	const sharedResource = shared();
 
-	const [itemRenderer] = children();
+	const [{ label, items, leading } = {} as TypeaheadChildren] = children();
 
-	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
+	if (
+		initialValue !== undefined &&
+		controlledValue === undefined &&
+		initialValue !== icache.get('initial')
+	) {
 		icache.set('initial', initialValue);
 		icache.set('value', initialValue);
+	}
+
+	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
+		icache.set('value', controlledValue);
+		icache.set('lastValue', controlledValue);
+		setOptions({ query: { value: controlledValue } });
 	}
 
 	let valid = icache.get('valid');
@@ -150,6 +166,7 @@ export const Typeahead = factory(function Typeahead({
 						icache.set('value', activeItem.value);
 						onClose();
 						onValue(activeItem.value);
+						icache.set('lastValue', activeItem.value);
 					}
 				}
 				break;
@@ -167,22 +184,6 @@ export const Typeahead = factory(function Typeahead({
 				valid === false && themedCss.invalid
 			]}
 		>
-			{label && (
-				<Label
-					key="label"
-					theme={theme.compose(
-						labelCss,
-						css,
-						'label'
-					)}
-					disabled={disabled}
-					valid={valid}
-					required={required}
-					active={!!(value || icache.get('expanded'))}
-				>
-					{label}
-				</Label>
-			)}
 			<TriggerPopup
 				key="popup"
 				onOpen={() => icache.set('expanded', true)}
@@ -237,8 +238,16 @@ export const Typeahead = factory(function Typeahead({
 									css,
 									'input'
 								)}
+								onFocus={() => {
+									const { onFocus } = properties();
+
+									onFocus && onFocus();
+								}}
 								onBlur={() => {
+									const { onBlur } = properties();
+
 									closeMenu();
+									onBlur && onBlur();
 								}}
 								name={name}
 								initialValue={valueOption ? valueOption.label : value}
@@ -263,7 +272,9 @@ export const Typeahead = factory(function Typeahead({
 									onKeyDown(event, preventDefault, openMenu, closeMenu);
 								}}
 								valid={valid}
-							/>
+							>
+								{{ label, leading }}
+							</TextInput>
 						);
 					},
 					content: (toggleClosed) => {
@@ -288,6 +299,7 @@ export const Typeahead = factory(function Typeahead({
 										closeMenu();
 										value !== icache.get('value') && icache.set('value', value);
 										onValue(value);
+										icache.set('lastValue', value);
 									}}
 									onRequestClose={closeMenu}
 									onBlur={closeMenu}
@@ -300,7 +312,7 @@ export const Typeahead = factory(function Typeahead({
 									)}
 									widgetId={listId}
 								>
-									{itemRenderer}
+									{items}
 								</List>
 							</div>
 						);

@@ -48,14 +48,17 @@ export default factory(function Remote({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Typeahead
-				label="Remote Source Typeahead"
 				helperText="Type to filter by last name"
 				resource={resource}
 				transform={transformer}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-			/>
+			>
+				{{
+					label: 'Remote Source Typeahead'
+				}}
+			</Typeahead>
 			<pre>{icache.getOrSet('value', '')}</pre>
 		</virtual>
 	);

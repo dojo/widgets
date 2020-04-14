@@ -1,0 +1,22 @@
+.value {
+	margin: 2px;
+}
+
+.selectedIcon {
+	margin-right: calc(var(--spacing-regular) / 2);
+}
+
+.root .input {
+	flex-grow: 1;
+	min-width: 100px;
+	width: 100px;
+}
+
+.root .inputWrapper {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.values {
+	margin-top: var(--spacing-regular);
+}

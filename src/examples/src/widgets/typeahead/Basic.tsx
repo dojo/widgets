@@ -17,13 +17,16 @@ export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Typeahead
-				label="Basic Typeahead"
 				resource={resource}
 				transform={defaultTransform}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-			/>
+			>
+				{{
+					label: 'Basic Typeahead'
+				}}
+			</Typeahead>
 			<pre>{icache.getOrSet('value', '')}</pre>
 		</virtual>
 	);

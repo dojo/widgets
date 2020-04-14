@@ -1,10 +1,9 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { defaultTransform } from '@dojo/widgets/select';
-import icache from '@dojo/framework/core/middleware/icache';
 import { createMemoryResourceWithDataAndFilter } from '../list/memoryTemplate';
-import Typeahead from '@dojo/widgets/typeahead';
+import MultiSelectTypeahead from '@dojo/widgets/multi-select-typeahead';
 
-const factory = create({ icache });
+const factory = create();
 const options = [
 	{ value: 'cat', label: 'Cat' },
 	{ value: 'dog', label: 'Dog' },
@@ -13,22 +12,19 @@ const options = [
 
 const resource = createMemoryResourceWithDataAndFilter(options);
 
-export default factory(function Validation({ middleware: { icache } }) {
+export default factory(function Disabled() {
 	return (
 		<virtual>
-			<Typeahead
+			<MultiSelectTypeahead
 				resource={resource}
 				transform={defaultTransform}
-				onValue={(value) => {
-					icache.set('value', value);
-				}}
-				required
+				disabled
+				initialValue={['cat', 'dog']}
 			>
 				{{
-					label: 'Validation'
+					label: 'Disabled'
 				}}
-			</Typeahead>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			</MultiSelectTypeahead>
 		</virtual>
 	);
 });

@@ -31,13 +31,16 @@ export default factory(function CustomFilter({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<Typeahead
-				label="Basic Typeahead"
 				resource={resource}
 				transform={defaultTransform}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-			/>
+			>
+				{{
+					label: 'Custom Filter'
+				}}
+			</Typeahead>
 			<pre>{icache.getOrSet('value', '')}</pre>
 		</virtual>
 	);

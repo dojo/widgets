@@ -26,6 +26,7 @@ import * as listItem from './list-item.m.css';
 import * as loadingIndicator from './loading-indicator.m.css';
 import * as list from './list.m.css';
 import * as menuItem from './menu-item.m.css';
+import * as multiSelectTypeahead from './multi-select-typeahead.m.css';
 import * as nativeSelect from './native-select.m.css';
 import * as outlinedButton from './outlined-button.m.css';
 import * as pagination from './pagination.m.css';
@@ -80,6 +81,7 @@ export default {
 		'@dojo/widgets/loading-indicator': loadingIndicator,
 		'@dojo/widgets/list': list,
 		'@dojo/widgets/menu-item': menuItem,
+		'@dojo/widgets/multi-select-typeahead': multiSelectTypeahead,
 		'@dojo/widgets/native-select': nativeSelect,
 		'@dojo/widgets/outlined-button': outlinedButton,
 		'@dojo/widgets/pagination': pagination,
