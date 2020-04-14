@@ -32,7 +32,7 @@ export interface MultiSelectTypeaheadProperties {
 	name?: string;
 	/** Placement of the select menu; 'above' or 'below' */
 	position?: PopupPosition;
-	/** Placement of the selected values. Default is 'bottom' */
+	/** Placement of the selected values. Default is 'inline' */
 	placement?: 'inline' | 'bottom';
 }
 
@@ -111,8 +111,9 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 		return (
 			<Chip
 				theme={theme.compose(
+					chipCss,
 					css,
-					chipCss
+					'selection'
 				)}
 				key={`value-${value}`}
 				classes={{
@@ -168,8 +169,9 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 					focused={focused}
 					active={active}
 					theme={theme.compose(
+						labelCss,
 						css,
-						labelCss
+						'label'
 					)}
 					classes={{
 						'@dojo/widgets/label': {
@@ -183,8 +185,9 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 			<Typeahead
 				key="typeahead"
 				theme={theme.compose(
+					typeaheadCss,
 					css,
-					typeaheadCss
+					'input'
 				)}
 				itemsInView={itemsInView}
 				position={position}
@@ -238,8 +241,9 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 									<Icon
 										type="checkIcon"
 										theme={theme.compose(
+											iconCss,
 											css,
-											iconCss
+											'icon'
 										)}
 										classes={{
 											'@dojo/widgets/icon': {
