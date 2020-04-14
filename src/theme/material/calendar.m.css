@@ -23,7 +23,8 @@
 	cursor: pointer;
 }
 
-.monthTrigger {
+.monthTrigger,
+.yearTrigger {
 	padding-right: calc(var(--mdc-grid-base) * 0.75);
 	padding-left: calc(var(--mdc-grid-base) * 1);
 }
