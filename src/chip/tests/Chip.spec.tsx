@@ -12,6 +12,8 @@ import Icon from '../../icon/index';
 
 function noop() {}
 
+const iconClasses = { '@dojo/widgets/icon': { icon: [css.icon] } };
+
 describe('Chip', () => {
 	const label = 'Chip label';
 	const template = assertionTemplate(() => (
@@ -76,7 +78,7 @@ describe('Chip', () => {
 					onclick={noop}
 					onkeydown={noop}
 				>
-					<Icon type="closeIcon" />
+					<Icon type="closeIcon" classes={iconClasses} />
 				</span>
 			])
 		);
@@ -124,7 +126,7 @@ describe('Chip', () => {
 						onclick={noop}
 						onkeydown={noop}
 					>
-						<Icon type="closeIcon" />
+						<Icon type="closeIcon" classes={iconClasses} />
 					</span>
 				])
 				.prepend(':root', () => [
@@ -165,7 +167,7 @@ describe('Chip', () => {
 			<Chip onClose={onClose} onClick={onClick}>
 				{{
 					label,
-					icon: () => <Icon type="plusIcon" />
+					icon: () => <Icon type="plusIcon" classes={iconClasses} />
 				}}
 			</Chip>
 		));
@@ -184,12 +186,12 @@ describe('Chip', () => {
 						onclick={noop}
 						onkeydown={noop}
 					>
-						<Icon type="closeIcon" />
+						<Icon type="closeIcon" classes={iconClasses} />
 					</span>
 				])
 				.prepend(':root', () => [
 					<span classes={css.iconWrapper}>
-						<Icon type="plusIcon" />
+						<Icon type="plusIcon" classes={iconClasses} />
 					</span>
 				])
 		);
@@ -233,7 +235,7 @@ describe('Chip', () => {
 			<Chip onClose={onClose} onClick={onClick}>
 				{{
 					label,
-					icon: () => <Icon type="plusIcon" />
+					icon: () => <Icon type="plusIcon" classes={iconClasses} />
 				}}
 			</Chip>
 		));
@@ -252,12 +254,12 @@ describe('Chip', () => {
 						onclick={noop}
 						onkeydown={noop}
 					>
-						<Icon type="closeIcon" />
+						<Icon type="closeIcon" classes={iconClasses} />
 					</span>
 				])
 				.prepend(':root', () => [
 					<span classes={css.iconWrapper}>
-						<Icon type="plusIcon" />
+						<Icon type="plusIcon" classes={iconClasses} />
 					</span>
 				])
 		);
