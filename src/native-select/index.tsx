@@ -1,4 +1,4 @@
-import { focus } from '@dojo/framework/core/middleware/focus';
+import focus from '@dojo/framework/core/middleware/focus';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -49,7 +49,7 @@ const factory = create({ icache, focus, theme, i18n }).properties<NativeSelectPr
 export const NativeSelect = factory(function NativeSelect({
 	properties,
 	id,
-	middleware: { icache, theme }
+	middleware: { icache, theme, focus }
 }) {
 	const {
 		classes,
@@ -73,6 +73,7 @@ export const NativeSelect = factory(function NativeSelect({
 
 	const selectedValue = icache.get('value');
 	const themedCss = theme.classes(css);
+	const inputFocused = focus.isFocused('native-select');
 
 	return (
 		<div
@@ -80,24 +81,28 @@ export const NativeSelect = factory(function NativeSelect({
 				theme.variant(),
 				themedCss.root,
 				disabled && themedCss.disabled,
-				required && themedCss.required
+				required && themedCss.required,
+				inputFocused && themedCss.focused
 			]}
 			key="root"
 		>
-			<Label
-				theme={theme.compose(
-					labelCss,
-					css,
-					'label'
-				)}
-				classes={classes}
-				disabled={disabled}
-				forId={id}
-				required={required}
-				active={!!selectedValue}
-			>
-				{label}
-			</Label>
+			{label && (
+				<Label
+					theme={theme.compose(
+						labelCss,
+						css,
+						'label'
+					)}
+					focused={inputFocused}
+					classes={classes}
+					disabled={disabled}
+					forId={id}
+					required={required}
+					active={!!selectedValue}
+				>
+					{label}
+				</Label>
+			)}
 			<div classes={themedCss.inputWrapper}>
 				<select
 					key="native-select"

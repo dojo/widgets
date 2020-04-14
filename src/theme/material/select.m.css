@@ -37,6 +37,14 @@
 	z-index: 10;
 }
 
+.labelActive {
+	composes: mdc-floating-label--float-above from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.root .labelActive {
+	top: 26px;
+}
+
 .menuWrapper {
 	box-shadow: var(--mdc-theme-elevation-2);
 	border-radius: var(--mdc-theme-border-radius);

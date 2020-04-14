@@ -19,6 +19,9 @@
 	cursor: inherit;
 }
 
+.focused {
+}
+
 /* Wrapper class for native select and dropdown arrow */
 .inputWrapper {
 	display: inline-block;

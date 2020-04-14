@@ -16,6 +16,10 @@
 	border-radius: 0;
 }
 
+.focused {
+	composes: mdc-select--focused from '@material/select/dist/mdc.select.css';
+}
+
 .arrow {
 	composes: mdc-select__dropdown-icon from '@material/select/dist/mdc.select.css';
 }
@@ -23,6 +27,14 @@
 .labelRoot {
 	composes: mdc-floating-label from '@material/select/dist/mdc.select.css';
 	z-index: 10;
+}
+
+.labelActive {
+	composes: mdc-floating-label--float-above from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.root .labelActive {
+	top: 26px;
 }
 
 .iconIcon {
