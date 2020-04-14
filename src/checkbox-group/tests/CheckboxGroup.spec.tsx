@@ -75,6 +75,29 @@ describe('CheckboxGroup', () => {
 		h.expect(optionTemplate);
 	});
 
+	it('renders with value', () => {
+		const h = harness(() => (
+			<CheckboxGroup
+				onValue={noop}
+				name="test"
+				options={[{ value: 'cat' }, { value: 'fish' }, { value: 'dog' }]}
+				value={['fish']}
+			/>
+		));
+		const optionTemplate = template.setChildren('@root', () => [
+			<Checkbox name="test" value="cat" checked={undefined} onValue={noop}>
+				cat
+			</Checkbox>,
+			<Checkbox name="test" value="fish" checked={true} onValue={noop}>
+				fish
+			</Checkbox>,
+			<Checkbox name="test" value="dog" checked={undefined} onValue={noop}>
+				dog
+			</Checkbox>
+		]);
+		h.expect(optionTemplate);
+	});
+
 	it('renders with custom renderer', () => {
 		const h = harness(() => (
 			<CheckboxGroup onValue={noop} name="test" options={[{ value: 'cat' }]}>

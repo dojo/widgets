@@ -12,17 +12,27 @@ const icache = createICacheMiddleware<CheckboxGroupICache>();
 const factory = create({ icache });
 
 export const checkboxGroup = factory(({ middleware: { icache } }) => {
-	return (onValue: (value: string[]) => void, initialValue: string[] = []) => {
-		const existingInitialValue = icache.get('initial');
-		if (JSON.stringify(existingInitialValue) !== JSON.stringify(initialValue)) {
+	return (onValue: (value: string[]) => void, initialValue: string[] = [], value?: string[]) => {
+		if (value === undefined) {
+			const existingInitialValue = icache.get('initial');
+			if (JSON.stringify(existingInitialValue) !== JSON.stringify(initialValue)) {
+				icache.set(
+					'values',
+					initialValue.reduce((existing: any, value) => {
+						existing[value] = true;
+						return existing;
+					}, {})
+				);
+				icache.set('initial', initialValue);
+			}
+		} else {
 			icache.set(
 				'values',
-				initialValue.reduce((existing: any, value) => {
+				value.reduce((existing: any, value) => {
 					existing[value] = true;
 					return existing;
 				}, {})
 			);
-			icache.set('initial', initialValue);
 		}
 
 		function getAllValues() {
