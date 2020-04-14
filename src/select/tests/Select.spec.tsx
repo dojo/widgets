@@ -32,7 +32,7 @@ const memoryTemplate = createMemoryTemplate();
 const harness = createHarness([compareTheme]);
 
 const baseTemplate = assertionTemplate(() => (
-	<div classes={[undefined, css.root, undefined, false, false]} key="root">
+	<div classes={[undefined, css.root, undefined, false, false, false]} key="root">
 		<TriggerPopup key="popup" onClose={() => {}} onOpen={() => {}} position={undefined}>
 			{{ trigger: () => <button />, content: () => <div /> }}
 		</TriggerPopup>
@@ -140,6 +140,7 @@ describe('Select', () => {
 					valid={undefined}
 					required={true}
 					active={false}
+					focused={false}
 				>
 					test-label
 				</Label>
@@ -412,7 +413,8 @@ describe('Select', () => {
 					css.root,
 					undefined,
 					false,
-					css.invalid
+					css.invalid,
+					false
 				])
 				.setProperty('@helperText', 'text', messages.requiredMessage)
 				.setProperty('@helperText', 'valid', false)

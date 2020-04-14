@@ -13,9 +13,9 @@ export default factory(function Basic() {
 				alignItems: 'center'
 			}}
 		>
-			<Avatar size="small">D</Avatar>
-			<Avatar size="medium">D</Avatar>
-			<Avatar size="large">D</Avatar>
+			<Avatar size="small">A</Avatar>
+			<Avatar size="medium">A</Avatar>
+			<Avatar size="large">A</Avatar>
 		</div>
 	);
 });

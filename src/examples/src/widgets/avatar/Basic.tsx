@@ -6,7 +6,7 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<div styles={{ width: '400px' }}>
-			<Avatar>D</Avatar>
+			<Avatar>A</Avatar>
 		</div>
 	);
 });

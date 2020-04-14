@@ -2,6 +2,10 @@
 	composes: mdc-select from '@material/select/dist/mdc.select.css';
 }
 
+.focused {
+	composes: mdc-select--focused from '@material/select/dist/mdc.select.css';
+}
+
 .valid {
 }
 
@@ -35,6 +39,14 @@
 .labelRoot {
 	composes: mdc-floating-label from '@material/select/dist/mdc.select.css';
 	z-index: 10;
+}
+
+.labelActive {
+	composes: mdc-floating-label--float-above from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.root .labelActive {
+	top: 26px;
 }
 
 .menuWrapper {

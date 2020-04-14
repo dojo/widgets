@@ -1,4 +1,4 @@
-import { focus } from '@dojo/framework/core/middleware/focus';
+import focus from '@dojo/framework/core/middleware/focus';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -9,6 +9,7 @@ import * as labelCss from '../theme/default/label.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
 import Icon from '../icon';
 import Label from '../label';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
@@ -23,8 +24,6 @@ export interface NativeSelectProperties {
 	disabled?: boolean;
 	/** Sets the helper text of the input */
 	helperText?: string;
-	/** The label to show */
-	label?: string;
 	/** Boolean to indicate if field is required */
 	required?: boolean;
 	/** Used to specify the name of the control */
@@ -44,19 +43,21 @@ interface NativeSelectICache {
 
 const icache = createICacheMiddleware<NativeSelectICache>();
 
-const factory = create({ icache, focus, theme, i18n }).properties<NativeSelectProperties>();
+const factory = create({ icache, focus, theme, i18n })
+	.properties<NativeSelectProperties>()
+	.children<RenderResult | undefined>();
 
 export const NativeSelect = factory(function NativeSelect({
 	properties,
+	children,
 	id,
-	middleware: { icache, theme }
+	middleware: { icache, theme, focus }
 }) {
 	const {
 		classes,
 		disabled,
 		helperText,
 		initialValue,
-		label,
 		onValue,
 		options,
 		required,
@@ -66,6 +67,8 @@ export const NativeSelect = factory(function NativeSelect({
 		onBlur
 	} = properties();
 
+	const [label] = children();
+
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
 		icache.set('initial', initialValue);
 		icache.set('value', initialValue);
@@ -73,6 +76,7 @@ export const NativeSelect = factory(function NativeSelect({
 
 	const selectedValue = icache.get('value');
 	const themedCss = theme.classes(css);
+	const inputFocused = focus.isFocused('native-select');
 
 	return (
 		<div
@@ -80,24 +84,28 @@ export const NativeSelect = factory(function NativeSelect({
 				theme.variant(),
 				themedCss.root,
 				disabled && themedCss.disabled,
-				required && themedCss.required
+				required && themedCss.required,
+				inputFocused ? themedCss.focused : undefined
 			]}
 			key="root"
 		>
-			<Label
-				theme={theme.compose(
-					labelCss,
-					css,
-					'label'
-				)}
-				classes={classes}
-				disabled={disabled}
-				forId={id}
-				required={required}
-				active={!!selectedValue}
-			>
-				{label}
-			</Label>
+			{label && (
+				<Label
+					theme={theme.compose(
+						labelCss,
+						css,
+						'label'
+					)}
+					focused={inputFocused}
+					classes={classes}
+					disabled={disabled}
+					forId={id}
+					required={required}
+					active={!!selectedValue}
+				>
+					{label}
+				</Label>
+			)}
 			<div classes={themedCss.inputWrapper}>
 				<select
 					key="native-select"

@@ -30,6 +30,7 @@ import * as multiSelectTypeahead from './multi-select-typeahead.m.css';
 import * as nativeSelect from './native-select.m.css';
 import * as outlinedButton from './outlined-button.m.css';
 import * as pagination from './pagination.m.css';
+import * as passwordInput from './password-input.m.css';
 import * as progress from './progress.m.css';
 import * as radioGroup from './radio-group.m.css';
 import * as radio from './radio.m.css';
@@ -85,6 +86,7 @@ export default {
 		'@dojo/widgets/native-select': nativeSelect,
 		'@dojo/widgets/outlined-button': outlinedButton,
 		'@dojo/widgets/pagination': pagination,
+		'@dojo/widgets/password-input': passwordInput,
 		'@dojo/widgets/progress': progress,
 		'@dojo/widgets/radio-group': radioGroup,
 		'@dojo/widgets/radio': radio,

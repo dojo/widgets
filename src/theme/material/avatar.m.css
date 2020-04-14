@@ -7,6 +7,9 @@
 	justify-content: center;
 	user-select: none;
 	background-size: cover;
+	font-family: var(--mdc-theme-font-family);
+	flex-shrink: 0;
+	line-height: 1;
 }
 
 .avatarColor {
