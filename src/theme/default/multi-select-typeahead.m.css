@@ -1,48 +1,49 @@
-/** The root class of the multi select typeahead */
+/* The root class of the multi select typeahead */
 .root {
 }
 
+/* Added when the MultiSelectTypeahead is focused */
 .focused {
 }
 
-/** The container that surrounds the list of selected values **/
+/* The container that surrounds the list of selected values */
 .values {
 }
 
-/** A particular value */
+/* A single selected value */
 .value {
 }
 
-/** The container that surrounds a single item in the typeahead list */
+/* The container that surrounds a single item in the typeahead list */
 .item {
 	display: flex;
 }
 
-/** A selected item in the typeahead list */
+/* A selected item in the typeahead list */
 .selected {
 }
 
-/** The checkbox icon of selected items in the typeahead list if using the default renderer */
+/* The checkbox icon of selected items in the typeahead list if using the default renderer */
 .selectedIcon {
 }
 
-/** Class of typeahead input node */
+/* Class of typeahead input node */
 .input {
 }
 
-/** Class of the input wrapper on the typeaheads Input widget */
+/* Class of the input wrapper on the typeaheads Input widget */
 .inputWrapper {
 }
 
-/** Class on the input label */
+/* Class on the input label */
 .label {
 }
 
-/** Class on the input's wrapper */
+/* Class on the input's wrapper */
 .wrapper {
 }
 
-/** Class applied when the widget has a value */
+/* Class applied when the widget has a value */
 .hasValue {
 }
 
@@ -50,6 +51,6 @@
 .active {
 }
 
-/** Added if the widget has a label */
+/* Added if the widget has a label */
 .hasLabel {
 }
