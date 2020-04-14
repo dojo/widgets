@@ -9,6 +9,7 @@ import * as labelCss from '../theme/default/label.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
 import Icon from '../icon';
 import Label from '../label';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
@@ -23,8 +24,6 @@ export interface NativeSelectProperties {
 	disabled?: boolean;
 	/** Sets the helper text of the input */
 	helperText?: string;
-	/** The label to show */
-	label?: string;
 	/** Boolean to indicate if field is required */
 	required?: boolean;
 	/** Used to specify the name of the control */
@@ -44,10 +43,13 @@ interface NativeSelectICache {
 
 const icache = createICacheMiddleware<NativeSelectICache>();
 
-const factory = create({ icache, focus, theme, i18n }).properties<NativeSelectProperties>();
+const factory = create({ icache, focus, theme, i18n })
+	.properties<NativeSelectProperties>()
+	.children<RenderResult | undefined>();
 
 export const NativeSelect = factory(function NativeSelect({
 	properties,
+	children,
 	id,
 	middleware: { icache, theme, focus }
 }) {
@@ -56,7 +58,6 @@ export const NativeSelect = factory(function NativeSelect({
 		disabled,
 		helperText,
 		initialValue,
-		label,
 		onValue,
 		options,
 		required,
@@ -65,6 +66,8 @@ export const NativeSelect = factory(function NativeSelect({
 		onFocus,
 		onBlur
 	} = properties();
+
+	const [label] = children();
 
 	if (initialValue !== undefined && initialValue !== icache.get('initial')) {
 		icache.set('initial', initialValue);

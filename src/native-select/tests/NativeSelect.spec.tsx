@@ -75,11 +75,12 @@ describe('Native Select', () => {
 					initialValue="cat"
 					disabled={true}
 					helperText="Pick a pet type"
-					label="Pets"
 					required={true}
 					name="Pet select"
 					size={3}
-				/>
+				>
+					Pets
+				</NativeSelect>
 			),
 			[compareForId, compareId]
 		);

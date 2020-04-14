@@ -9,12 +9,13 @@ export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<NativeSelect
-				label="Basic Select"
 				options={options}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-			/>
+			>
+				Basic Select
+			</NativeSelect>
 			<pre>{icache.getOrSet('value', '')}</pre>
 		</virtual>
 	);
