@@ -1,10 +1,8 @@
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Button from '../button';
 import Icon from '../icon';
 import ConstrainedInput, { ConstrainedInputProperties } from '../constrained-input';
 import theme from '../middleware/theme';
-import * as buttonCss from '../theme/default/button.m.css';
 import * as css from '../theme/default/password-input.m.css';
 import * as textInputCss from '../theme/default/text-input.m.css';
 import TextInput, { TextInputChildren, Addon } from '../text-input';
@@ -36,21 +34,20 @@ export const PasswordInput = factory(function PasswordInput({
 }) {
 	const props = properties();
 	const showPassword = icache.getOrSet('showPassword', false);
+	const classes = theme.classes(css);
 
 	const trailing = (
 		<Addon>
-			<Button
-				onClick={() => {
+			<button
+				onclick={(e) => {
+					e.stopPropagation();
 					icache.set('showPassword', !showPassword);
 				}}
-				theme={theme.compose(
-					buttonCss,
-					css,
-					'toggleButton'
-				)}
+				classes={classes.toggleButton}
+				type="button"
 			>
 				<Icon type={showPassword ? 'eyeSlashIcon' : 'eyeIcon'} />
-			</Button>
+			</button>
 		</Addon>
 	);
 
