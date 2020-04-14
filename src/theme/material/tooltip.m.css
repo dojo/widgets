@@ -1,7 +1,7 @@
 :root {
 	/* Spacing */
 	--mdc-tooltip-grid-base: 8px;
-	--mdc-tooltip-spacing-regular: var(--grid-base);
+	--mdc-tooltip-spacing-regular: calc(var(--mdc-tooltip-grid-base) / 2);
 
 	/* Color */
 	--mdc-tooltip-grey-background: rgba(97, 97, 97, 0.9); /* The theme grey background color */
