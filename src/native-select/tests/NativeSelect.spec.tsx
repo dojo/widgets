@@ -127,12 +127,13 @@ describe('Native Select', () => {
 					options={options}
 					disabled={true}
 					helperText="Pick a pet type"
-					label="Pets"
 					required={true}
 					name="Pet select"
 					size={3}
 					value="dog"
-				/>
+				>
+					Pets
+				</NativeSelect>
 			),
 			[compareForId, compareId]
 		);
@@ -144,13 +145,27 @@ describe('Native Select', () => {
 			.setProperty('@native-select', 'size', 3)
 			.setProperty('@helperText', 'text', 'Pick a pet type')
 			.setProperty('@option-0', 'selected', true)
-			.setProperty('@root', 'classes', [undefined, css.root, css.disabled, css.required])
-			.setProperty('~label', 'disabled', true)
-			.setProperty('~label', 'required', true)
-			.setProperty('~label', 'active', true)
-			.replaceChildren('~label', () => {
-				return ['Pets'];
-			})
+			.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				css.disabled,
+				css.required,
+				undefined
+			])
+			.prepend('@root', () => [
+				<Label
+					assertion-key="label"
+					theme={{}}
+					classes={undefined}
+					disabled={true}
+					forId={'something'}
+					required={true}
+					active={true}
+					focused={false}
+				>
+					Pets
+				</Label>
+			])
 			.remove('@blank-option');
 
 		h.expect(controlledTemplate);
