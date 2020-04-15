@@ -27,7 +27,6 @@ export interface TitlePaneProperties {
 export interface TitlePaneICache {
 	initialOpen?: boolean;
 	open?: boolean;
-	hasChanged?: true | 'open' | 'closed';
 }
 
 export type TitlePaneChildren = {
