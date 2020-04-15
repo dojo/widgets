@@ -6,7 +6,7 @@ import Typeahead from '../../../typeahead';
 import { createMemoryTemplate } from '../../../examples/src/widgets/list/memoryTemplate';
 import { createResource } from '@dojo/framework/core/resource';
 import { stub } from 'sinon';
-import { defaultTransform, ListOption } from '../../../list';
+import { defaultTransform, ListOption, ListItem } from '../../../list';
 import MultiSelectTypeahead from '../../../multi-select-typeahead';
 import * as typeaheadCss from '../../../theme/default/typeahead.m.css';
 import * as chipCss from '../../../theme/default/chip.m.css';
@@ -374,25 +374,39 @@ registerSuite('MultiSelectTypeahead', {
 
 			h.expect(
 				() => (
-					<div classes={[themeCss.item, themeCss.selected]}>
-						<Icon
-							type="checkIcon"
-							theme={{ '@dojo/widgets/Icon': iconCss }}
-							classes={{
-								'@dojo/widgets/icon': {
-									icon: [themeCss.selectedIcon]
-								}
-							}}
-						/>
-						Cat
-					</div>
+					<ListItem onSelect={stub()} onRequestActive={stub()} widgetId="">
+						<div classes={[themeCss.item, themeCss.selected]}>
+							<Icon
+								type="checkIcon"
+								theme={{ '@dojo/widgets/Icon': iconCss }}
+								classes={{
+									'@dojo/widgets/icon': {
+										icon: [themeCss.selectedIcon]
+									}
+								}}
+							/>
+							Cat
+						</div>
+					</ListItem>
 				),
-				() => itemRenderer({ value: 'cat', label: 'Cat' })
+				() =>
+					itemRenderer(
+						{ value: 'cat', label: 'Cat' },
+						{ onSelect: stub(), onRequestActive: stub(), widgetId: '' }
+					)
 			);
 
 			h.expect(
-				() => <div classes={[themeCss.item, null]}>dog</div>,
-				() => itemRenderer({ value: 'dog' })
+				() => (
+					<ListItem onSelect={stub()} onRequestActive={stub()} widgetId="">
+						<div classes={[themeCss.item, null]}>dog</div>
+					</ListItem>
+				),
+				() =>
+					itemRenderer(
+						{ value: 'dog' },
+						{ onSelect: stub(), onRequestActive: stub(), widgetId: '' }
+					)
 			);
 		},
 

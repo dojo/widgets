@@ -13,7 +13,9 @@ import {
 	ItemRendererProperties,
 	List,
 	ListOption,
-	defaultTransform as listTransform
+	defaultTransform as listTransform,
+	ListItemProperties,
+	MenuItemProperties
 } from '../list';
 import theme from '../middleware/theme';
 import { PopupPosition } from '../popup';
@@ -53,7 +55,10 @@ export interface SelectProperties {
 
 export interface SelectChildren {
 	/** Custom renderer for item contents */
-	items?(properties: ItemRendererProperties): RenderResult;
+	items?(
+		item: ItemRendererProperties,
+		props: ListItemProperties & MenuItemProperties
+	): RenderResult;
 	/** The label to show */
 	label?: RenderResult;
 }

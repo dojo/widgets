@@ -3,6 +3,7 @@ import Select, { defaultTransform } from '@dojo/widgets/select';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createResource } from '@dojo/framework/core/resource';
 import { createMemoryTemplate } from '../list/memoryTemplate';
+import { ListItem } from '@dojo/widgets/list';
 
 const factory = create({ icache });
 const options = [{ value: 'cat' }, { value: 'dog' }, { value: 'fish' }];
@@ -23,12 +24,12 @@ export default factory(function CustomRenderer({ middleware: { icache } }) {
 			>
 				{{
 					label: 'Basic Select',
-					items: ({ selected, value }) => {
+					items: ({ selected, value }, props) => {
 						return (
-							<div>
+							<ListItem {...props}>
 								{selected && <span>✅ </span>}
 								{value}
-							</div>
+							</ListItem>
 						);
 					}
 				}}

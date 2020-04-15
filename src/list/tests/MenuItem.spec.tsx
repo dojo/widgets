@@ -3,7 +3,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 import harness from '@dojo/framework/testing/harness';
 import * as css from '../../theme/default/menu-item.m.css';
-import MenuItem from '../MenuItem';
+import { MenuItem } from '../../list';
 const { describe, it, after } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 

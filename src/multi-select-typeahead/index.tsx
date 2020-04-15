@@ -5,7 +5,13 @@ import theme from '../middleware/theme';
 import { createDataMiddleware } from '@dojo/framework/core/middleware/data';
 import Typeahead from '../typeahead';
 import * as css from '../theme/default/multi-select-typeahead.m.css';
-import { ItemRendererProperties, ListOption } from '../list';
+import {
+	ItemRendererProperties,
+	ListOption,
+	ListItem,
+	ListItemProperties,
+	MenuItemProperties
+} from '../list';
 import Chip from '../chip';
 import Icon from '../icon';
 import focus from '@dojo/framework/core/middleware/focus';
@@ -40,7 +46,10 @@ export interface MultiSelectTypeaheadChildren {
 	/** Adds a <label> element with the supplied text */
 	label?: RenderResult;
 	/** Custom renderer for item contents */
-	items?: (properties: ItemRendererProperties) => RenderResult;
+	items?: (
+		item: ItemRendererProperties,
+		props: ListItemProperties & MenuItemProperties
+	) => RenderResult;
 	/** Custom renderer for selected items */
 	selected?: (value: string, label?: string) => RenderResult;
 }
@@ -225,35 +234,40 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 				}}
 			>
 				{{
-					items: (item: ItemRendererProperties) => {
+					items: (item, props) => {
 						const selected = icache.getOrSet('value', []).indexOf(item.value) !== -1;
 
 						if (items) {
-							return items({
-								...item,
-								selected
-							});
+							return items(
+								{
+									...item,
+									selected
+								},
+								props
+							);
 						}
 
 						return (
-							<div classes={[themeCss.item, selected ? themeCss.selected : null]}>
-								{selected ? (
-									<Icon
-										type="checkIcon"
-										theme={theme.compose(
-											iconCss,
-											css,
-											'icon'
-										)}
-										classes={{
-											'@dojo/widgets/icon': {
-												icon: [themeCss.selectedIcon]
-											}
-										}}
-									/>
-								) : null}
-								{item.label || item.value}
-							</div>
+							<ListItem {...props}>
+								<div classes={[themeCss.item, selected ? themeCss.selected : null]}>
+									{selected ? (
+										<Icon
+											type="checkIcon"
+											theme={theme.compose(
+												iconCss,
+												css,
+												'icon'
+											)}
+											classes={{
+												'@dojo/widgets/icon': {
+													icon: [themeCss.selectedIcon]
+												}
+											}}
+										/>
+									) : null}
+									{item.label || item.value}
+								</div>
+							</ListItem>
 						);
 					},
 					leading: placement === 'inline' ? chips : undefined
