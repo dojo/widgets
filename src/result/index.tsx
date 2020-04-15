@@ -39,22 +39,6 @@ export const Result = factory(function Result({ children, properties, middleware
 	const { title, subtitle, status } = properties();
 	const { actionButtons, content, icon } = children()[0] || ({} as ResultChildren);
 
-	const statusIcon = () => {
-		if (!icon && status) {
-			return (
-				<Icon
-					key="icon"
-					type={StatusIcon[status]}
-					theme={theme.compose(
-						iconCss,
-						css,
-						'icon'
-					)}
-				/>
-			);
-		}
-	};
-
 	return (
 		<div key="root" classes={[theme.variant(), themeCss.root]}>
 			{icon || status ? (
@@ -66,7 +50,19 @@ export const Result = factory(function Result({ children, properties, middleware
 						status && !icon ? themeCss.statusIcon : null
 					]}
 				>
-					{icon ? icon : statusIcon()}
+					{icon ? (
+						icon
+					) : (
+						<Icon
+							key="icon"
+							type={StatusIcon[status as ResultStatus]}
+							theme={theme.compose(
+								iconCss,
+								css,
+								'icon'
+							)}
+						/>
+					)}
 				</div>
 			) : null}
 			{title && (
