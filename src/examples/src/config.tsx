@@ -1632,7 +1632,7 @@ export const config = {
 					title: 'Custom Filter'
 				},
 				{
-					filename: 'Remote',
+					filename: 'RemoteSource',
 					module: RemoteTypeahead,
 					title: 'Remote Source'
 				},
@@ -1644,7 +1644,7 @@ export const config = {
 			],
 			overview: {
 				example: {
-					filename: 'Typeahead',
+					filename: 'Basic',
 					module: BasicTypeahead
 				}
 			}
