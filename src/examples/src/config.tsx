@@ -196,6 +196,7 @@ import DisabledMenuItemsTimePicker from './widgets/time-picker/DisabledMenuItems
 import RequiredTimePicker from './widgets/time-picker/Required';
 import SelectBySecondTimePicker from './widgets/time-picker/SelectBySecond';
 import BasicTitlePane from './widgets/title-pane/Basic';
+import ControlledTitlePane from './widgets/title-pane/Controlled';
 import HeadingLevel from './widgets/title-pane/HeadingLevel';
 import NonCloseable from './widgets/title-pane/NonCloseable';
 import BasicTooltip from './widgets/tooltip/Basic';
@@ -1610,6 +1611,11 @@ export const config = {
 					filename: 'NonCloseable',
 					module: NonCloseable,
 					title: 'Non closeable'
+				},
+				{
+					filename: 'Controlled',
+					module: ControlledTitlePane,
+					title: 'Controlled title pane'
 				}
 			],
 			overview: {

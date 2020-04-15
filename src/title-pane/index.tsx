@@ -65,6 +65,7 @@ export const TitlePane = factory(function TitlePane({
 
 	let { open } = properties();
 
+	const firstRender = icache.get('open') === undefined;
 	if (open === undefined) {
 		open = icache.get('open');
 		const existingInitialOpen = icache.get('initialOpen');
@@ -74,11 +75,6 @@ export const TitlePane = factory(function TitlePane({
 			icache.set('initialOpen', initialOpen);
 			open = initialOpen;
 		}
-	}
-	let hasChanged = icache.getOrSet('hasChanged', open ? 'open' : 'closed');
-	if ((hasChanged === 'open' && !open) || (hasChanged === 'closed' && open)) {
-		hasChanged = true;
-		icache.set('hasChanged', true);
 	}
 
 	return (
@@ -129,7 +125,7 @@ export const TitlePane = factory(function TitlePane({
 				aria-labelledby={`${id}-title`}
 				classes={[
 					themeCss.content,
-					hasChanged === true && themeCss.contentTransition,
+					!firstRender && themeCss.contentTransition,
 					fixedCss.contentFixed
 				]}
 				id={`${id}-content`}

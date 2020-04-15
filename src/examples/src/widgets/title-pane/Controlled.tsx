@@ -1,0 +1,27 @@
+import TitlePane from '@dojo/widgets/title-pane';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import icache from '@dojo/framework/core/middleware/icache';
+
+const factory = create({ icache });
+
+export default factory(function Controlled({ middleware: { icache } }) {
+	const open = icache.getOrSet('open', false);
+	return (
+		<TitlePane
+			open={open}
+			onClose={() => icache.set('open', false)}
+			onOpen={() => icache.set('open', true)}
+		>
+			{{
+				title: 'Controlled Title Pane',
+				content: (
+					<div>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus
+						ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia
+						felis tempor in.
+					</div>
+				)
+			}}
+		</TitlePane>
+	);
+});
