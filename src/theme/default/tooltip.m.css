@@ -21,3 +21,19 @@
 /* Added to a bottom-aligned tip */
 .bottom {
 }
+
+.bottom .content {
+	transform: translate(-50%, 100%);
+}
+
+.right .content {
+	transform: translate(100%, -50%);
+}
+
+.left .content {
+	transform: translate(-100%, -50%);
+}
+
+.top .content {
+	transform: translate(-50%, -100%);
+}

@@ -26,21 +26,17 @@
 }
 
 .bottom .content {
-	margin: var(--mdc-tooltip-spacing-regular) 0 0;
 	transform: translate(-50%, calc(100% + var(--mdc-tooltip-grid-base)));
 }
 
 .top .content {
-	margin: 0 0 var(--mdc-tooltip-spacing-regular);
 	transform: translate(-50%, calc(-100% - var(--mdc-tooltip-grid-base)));
 }
 
 .left .content {
-	margin: 0 var(--mdc-tooltip-spacing-regular) 0 0;
 	transform: translate(calc(-100% - var(--mdc-tooltip-grid-base)), -50%);
 }
 
 .right .content {
-	margin: 0 0 0 var(--mdc-tooltip-spacing-regular);
 	transform: translate(calc(100% + var(--mdc-tooltip-grid-base)), -50%);
 }
