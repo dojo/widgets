@@ -3,10 +3,6 @@
 	z-index: 400;
 }
 
-.open {
-	composes: mdc-drawer--open from '@material/drawer/dist/mdc.drawer.css';
-}
-
 .title {
 	composes: mdc-drawer__header from '@material/drawer/dist/mdc.drawer.css';
 	position: relative;
@@ -21,6 +17,18 @@
 	padding: 0 16px 16px 16px;
 }
 
+.left {
+	transform: translateX(calc(-100% - 32px));
+}
+
 .right {
-	left: auto;
+	transform: translateX(calc(100% + 32px));
+}
+
+.top {
+	transform: translateY(calc(-100% - 26px));
+}
+
+.bottom {
+	transform: translateY(calc(100% + 26px));
 }

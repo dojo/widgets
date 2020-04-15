@@ -42,8 +42,10 @@
 	--color-box-shadow-valid: rgba(24, 135, 1, 0.2);
 
 	/* Border and shadow */
+	--box-shadow-voffset-large: 9px;
+	--box-shadow-blur-large: 16px;
 	--box-shadow-dimensions-small: 0 2px 2px 0;
-	--box-shadow-dimensions-large: 0 9px 16px 0;
+	--box-shadow-dimensions-large: 0 var(--box-shadow-voffset-large) var(--box-shadow-blur-large) 0;
 	--border-width: 1px;
 	--border-width-emphasized: 2px;
 	--border-radius: 4px;
