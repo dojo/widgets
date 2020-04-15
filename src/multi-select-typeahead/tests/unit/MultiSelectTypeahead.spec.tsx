@@ -374,7 +374,12 @@ registerSuite('MultiSelectTypeahead', {
 
 			h.expect(
 				() => (
-					<ListItem onSelect={stub()} onRequestActive={stub()} widgetId="">
+					<ListItem
+						onSelect={stub()}
+						onRequestActive={stub()}
+						widgetId=""
+						selected={true}
+					>
 						<div classes={[themeCss.item, themeCss.selected]}>
 							<Icon
 								type="checkIcon"
@@ -398,7 +403,12 @@ registerSuite('MultiSelectTypeahead', {
 
 			h.expect(
 				() => (
-					<ListItem onSelect={stub()} onRequestActive={stub()} widgetId="">
+					<ListItem
+						onSelect={stub()}
+						onRequestActive={stub()}
+						widgetId=""
+						selected={false}
+					>
 						<div classes={[themeCss.item, null]}>dog</div>
 					</ListItem>
 				),
