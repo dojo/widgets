@@ -27,6 +27,7 @@ export interface TitlePaneProperties {
 export interface TitlePaneICache {
 	initialOpen?: boolean;
 	open?: boolean;
+	hasChanged?: true | 'open' | 'closed';
 }
 
 export type TitlePaneChildren = {
@@ -73,6 +74,11 @@ export const TitlePane = factory(function TitlePane({
 			icache.set('initialOpen', initialOpen);
 			open = initialOpen;
 		}
+	}
+	let hasChanged = icache.getOrSet('hasChanged', open ? 'open' : 'closed');
+	if ((hasChanged === 'open' && !open) || (hasChanged === 'closed' && open)) {
+		hasChanged = true;
+		icache.set('hasChanged', true);
 	}
 
 	return (
@@ -121,7 +127,11 @@ export const TitlePane = factory(function TitlePane({
 			<div
 				aria-hidden={open ? null : 'true'}
 				aria-labelledby={`${id}-title`}
-				classes={[themeCss.content, themeCss.contentTransition, fixedCss.contentFixed]}
+				classes={[
+					themeCss.content,
+					hasChanged === true && themeCss.contentTransition,
+					fixedCss.contentFixed
+				]}
 				id={`${id}-content`}
 				key="content"
 				styles={{
