@@ -4,33 +4,35 @@
 
 ## Breaking changes
 
-Across the widget suite we have made a number of sweeping breaking changes
+Across the widget suite we have made a number of breaking changes:
 
 ### Removal of touch/mouse/pointer events
 
-We have standardized mouse / touch events to use `pointer` events and removed a large number of callbacks. ~~from our widgets adding in only what we feel is appropriate.~~
+We have standardized mouse / touch events to use `pointer` events and removed a large number of callbacks.
 
 For example, `text-input` now provides `onOver` / `onOut` events rather than `mouseIn` / `mouseOut` which signify the cross device nature of the pointer events being used.
 
-### Standardization of input/value/change
+### Standardization of input / value / change
 
-We have consolidated the use of `onInput`/`onChange`/etc to a consistent `onValue` callback. All widgets returning a value will do so using this callback. In addition to this change, any callbacks which previously returned a value or a key such as `onChange`/`onBlur` have either been removed or have been changed to return zero parameters.
+We have consolidated the use of `onInput` / `onChange` / etc to a consistent `onValue` callback. All widgets returning a value will do so using this callback. In addition to this change, any callbacks which previously returned a value or a key such as `onChange` / `onBlur` have either been removed or have been changed to return zero parameters.
 
 To match the use of `onValue`, all widgets that accept a value now either take a `value` or `initialValue` property (in the case of partially controlled widgets). This will make it easier and more consistent to use the widget library.
 
 ### Partially controlled pattern
 
-In an effort to make widgets easier and simpler to use out of the box we have changed many of our form widgets to use a partially controlled pattern. This means that our widgets that accept `initialValue` will manage their own value internally. They will still report back value changes via the `onValue` callback but you do not need to keep setting `value` on the widget. The same is true for widgets that accept an `onValidate` callback but do not accept `valid`. These widgets will self validate and inform you of their validation state.
+In an effort to make widgets easier and simpler to use out of the box we have changed many of our form widgets to use a partially controlled pattern. This means widgets that accept `initialValue` will manage their own value internally. They will still report back value changes via the `onValue` callback but you do not need to keep setting `value` on the widget. The same is true for widgets that accept an `onValidate` callback but do not accept `valid`. These widgets will self validate and inform you of their validation state.
 
 ### Validated widgets
 
-Many of our form widgets are now capable of validating themselves. In many cases this is done in an uncontrolled way meaning the widget will display its valid state / error message and will call the `onValidate` callback when valid state changes.
+Many of our form widgets are now capable of validating themselves. In many cases this is done in an uncontrolled way meaning the widget will display its valid state/error message and will call the `onValidate` callback when valid state changes.
 
 * Overview of breaking changes
 * Normalization of properties across the library, eg onValue, value/initialValue
 * Simplification of properties for some widgets
 * Removal/Replacement of certain widgets like combobox/listbox for select/typeahead
 * Other general breaking changes
+
+
 ## Per widget we should cover:
 
 * Summarize the changes to the widget properties
@@ -47,24 +49,21 @@ Many of our form widgets are now capable of validating themselves. In many cases
 
 ## Individual Widget Changes
 
-### `Accordion`
+### Accordion
 
 -  `Accordion` was renamed from `AccordionPane`.
 
-
 #### Property changes
-
 
 ##### Added properties
 
--  `exclusive?: boolean`
+-  `exclusive?: boolean;`
 
 	- This property only allows one open child pane at a time.
 
+##### Changed properties
 
-#### Changed properties
-
--  `children: AccordionPaneChildren`
+-  `children: AccordionPaneChildren;`
 
 	- This property no longer accepts `TitlePane` widgets.
 
@@ -95,87 +94,63 @@ Many of our form widgets are now capable of validating themselves. In many cases
 	- Child panes can use `initialOpen` to set initial open state.
 
 
-#### Changes in behaviour
+#### Changes in behavior
 
 The `Accordion` widget is now uncontrolled by default, meaning it manages its own child pane open state internally. Child panes can use an `initialOpen` property to set individual initial open state. Child panes can also use `onOpen` and `onClose` properties to detect when this open state changes.
-
 
 The `Accordion` now uses a child renderer function to determine its child panes. This means that a function is passed as the widget's only child, and that function receives `onOpen`, `onClose`, and `open` arguments to be used as properties each returned pane. Child panes should be `Pane` widgets, a convenience wrapper around `TitlePane` with features specific to `Accordion`.
 
 
 #### Example of migration from v6 to v7
 
-
 ##### v6 Example
 
 ```tsx
 
 <AccordionPane
-
-onRequestClose={key  =>  icache.set('keys', icache.get('keys').filter(k !== key))}
-
-onRequestOpen={key  =>  icache.set('keys', [...icache.get('keys'), key])}
-
-openKeys={icache.get('keys')}
-
+	onRequestClose={key => icache.set('keys', icache.get('keys').filter(k !== key))}
+	onRequestOpen={key => icache.set('keys', [...icache.get('keys'), key])}
+	openKeys={icache.get('keys')}
 >
-
-<TitlePane
-
-title="Title"
-
-key="pane"
-
->
-
-Content
-
-</TitlePane>
-
+	<TitlePane
+		title="Title"
+		key="pane"
+	>
+		Content
+	</TitlePane>
 </AccordionPane>
 
 ```
-
 
 ##### v7 Example
 
 ```tsx
 
 <Accordion>
-
-{(onOpen, onClose, open) => ([
-
-<Pane
-
-key="pane"
-
-onOpen={onOpen('pane')}
-
-onClose={onClose('pane')}
-
-open={open('pane')}
-
->
-
-{{
-
-title:  'Title',
-
-content:  'Content'
-
-}}
-
-</Pane>
-
-])}
-
+	{(onOpen, onClose, open) => ([
+		<Pane
+			key="pane"
+			onOpen={onOpen('pane')}
+			onClose={onClose('pane')}
+			open={open('pane')}
+		>
+		{{
+			title:  'Title',
+			content:  'Content'
+		}}
+		</Pane>
+	])}
 </Accordion>
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/accordion/overview](https://widgets.dojo.io/#widget/accordion/overview)
 
-### `Button`
 
+---
+
+
+### Button
 
 #### Property changes
 
@@ -225,10 +200,11 @@ content:  'Content'
 
 	- onTouchCancel?(): void;
 
-#### Changes in behaviour
-
+#### Changes in behavior
 
 #### Example of migration from v6 to v7
+
+##### v6 Example
 
 ```
 
@@ -236,17 +212,21 @@ content:  'Content'
 
 ```
 
+##### v7 Example
+
 ```
 
 <Button onDown={() => {console.log('Down')}}>Example Button</Button>
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/button/overview](https://widgets.dojo.io/#widget/button/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/button/overview](https://widgets.dojo.io/#widget/button/overview)
+
+---
 
 
-### `Calendar`
+### Calendar
 
 #### Property changes
 
@@ -286,7 +266,7 @@ Latest example can be found on [widgets.dojo.io/#widget/button/overview](https:/
 
 	- The name was changed to follow a more consistent pattern
 
-#### Changes in behaviour
+#### Changes in behavior
 
 The calendar widget is now uncontrolled by default. Initial values can be
 
@@ -302,65 +282,52 @@ values change. For use cases where the component needs to be fully controlled, t
 
 #### Example of migration from v6 to v7
 
+##### v6 Example
+
 ```tsx
 
-const  selectedDate = icache.getOrSet('date', new  Date());
+const selectedDate = icache.getOrSet('date', new Date());
 
-const  month = icache.getOrSet('month', selectedDate.getMonth());
+const month = icache.getOrSet('month', selectedDate.getMonth());
 
-const  year = icache.getOrSet('year', selectedDate.getFullYear());
+const year = icache.getOrSet('year', selectedDate.getFullYear());
 
 <Calendar
-
-selectedDate={selectedDate}
-
-month={month}
-
-year={year}
-
-onDateSelect={date  => {
-
-icache.set('date', date);
-
-}}
-
-onMonthChange={month  => {
-
-icache.set('month', month);
-
-}}
-
-onYearChange={year  => {
-
-icache.set('year', year);
-
-}}
-
+	selectedDate={selectedDate}
+	month={month}
+	year={year}
+	onDateSelect={date => {
+		icache.set('date', date);
+	}}
+	onMonthChange={month => {
+		icache.set('month', month);
+	}}
+	onYearChange={year => {
+		icache.set('year', year);
+	}}
 />
 
 ```
 
+##### v7 Example
 
 ```tsx
 
 <Calendar
-
-onValue={date  => {
-
-icache.set('date', date);
-
-}}
-
+	onValue={date => {
+		icache.set('date', date);
+	}}
 />
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/calendar/overview](https://widgets.dojo.io/#widget/calendar/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/calendar/overview](https://widgets.dojo.io/#widget/calendar/overview)
+
+---
 
 
-### `Checkbox`
-
+### Checkbox
 
 #### Property changes
 
@@ -402,113 +369,77 @@ Latest example can be found on [widgets.dojo.io/#widget/calendar/overview](https
 
 #### Example of migration from v6 to v7
 
-
 ##### v6 Example
-
 
 ```ts
 
-import { create, tsx } from  '@dojo/framework/core/vdom';
+import { create, tsx } from '@dojo/framework/core/vdom';
 
-import  icache  from  '@dojo/framework/core/middleware/icache';
+import icache from '@dojo/framework/core/middleware/icache';
 
-import  Checkbox  from  '@dojo/widgets/checkbox';
-
-
-const  factory = create({ icache });
+import Checkbox from '@dojo/widgets/checkbox';
 
 
-export  default  factory(function  CheckboxExample({ middleware: { icache } }) {
+const factory = create({ icache });
 
-const  checkboxStates = icache.getOrSet('checkboxStates', {});
 
-return [
+export default factory(function CheckboxExample({ middleware: { icache } }) {
 
-<Checkbox
-
-checked={checked.checkbox0}
-
-label="v6 Checkbox Example"
-
-value="checkbox0"
-
-onChange={(value, checked) => {
-
-icache.set('checkboxStates', {
-
-...checkboxStates,
-
-[value]:  checked
-
-});
-
-}}
-
-/>,
-
-// other checkboxes...
-
-];
-
+const checkboxStates = icache.getOrSet('checkboxStates', {});
+	return [
+		<Checkbox
+			checked={checked.checkbox0}
+			label="v6 Checkbox Example"
+			value="checkbox0"
+			onChange={(value, checked) => {
+				icache.set('checkboxStates', {
+					...checkboxStates,
+					[value]: checked
+				});
+			}}
+		/>,
+		// other checkboxes...
+	];
 });
 
 ```
-
 
 ##### v7 Example
 
-
 ```ts
 
-import { create, tsx } from  '@dojo/framework/core/vdom';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import icache from '@dojo/framework/core/middleware/icache';
+import Checkbox from '@dojo/widgets/checkbox';
 
-import  icache  from  '@dojo/framework/core/middleware/icache';
+const factory = create({ icache });
 
-import  Checkbox  from  '@dojo/widgets/checkbox';
-
-
-const  factory = create({ icache });
-
-
-export  default  factory(function  CheckboxExample({ middleware: { icache } }) {
-
-const  checkboxStates = icache.getOrSet('checkboxStates', {});
-
-return [
-
-<Checkbox
-
-checked={icache.get('isChecked0')}
-
-onValue={(checked) => {
-
-icache.set('isChecked0', checked);
-
-}}
-
->
-
-v7  Checkbox  Example
-
-</Checkbox>,
-
-// other checkboxes...
-
-];
-
+export default factory(function CheckboxExample({ middleware: { icache } }) {
+const checkboxStates = icache.getOrSet('checkboxStates', {});
+	return [
+		<Checkbox
+			checked={icache.get('isChecked0')}
+			onValue={(checked) => {
+				icache.set('isChecked0', checked);
+			}}
+		>
+			v7  Checkbox  Example
+		</Checkbox>,
+		// other checkboxes...
+	];
 });
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/checkbox/overview](https://widgets.dojo.io/#widget/checkbox/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/checkbox/overview](https://widgets.dojo.io/#widget/checkbox/overview)
+
+---
 
 
-### `Dialog`
-
+### Dialog
 
 #### Property changes
-
 
 ##### Changed properties
 
@@ -538,25 +469,62 @@ Latest example can be found on [widgets.dojo.io/#widget/checkbox/overview](https
 
 	- Replaced by theming `exit` class
 
-#### Changes in behaviour
-
+#### Changes in behavior
 
 Dialog contents, title, and actions are now specified via a child function. Previously, the title was specified via a property and the dialog contents where passed as the children of the Dialog. Dialog actions are nodes that appear below the dialog contents, like cancel / ok buttons.
 
-
 #### Example of migration from v6 to v7
 
+##### v6 Example
 
-Latest example can be found on [widgets.dojo.io/#widget/dialog/overview](https://widgets.dojo.io/#widget/dialog/overview)
+```tsx
+
+<Dialog
+    title='Basic Dialog'
+    open={this._open}
+    onRequestClose={() => {
+        this._open = false;
+        this.meta(Focus).set('button');
+        this.invalidate();
+    }}
+>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Quisque id purus ipsum. Aenean ac purus purus.
+    Nam sollicitudin varius augue, sed lacinia felis tempor in.
+</Dialog>
+
+```
+
+##### v7 Example
+
+```tsx
+
+<Dialog open={isOpen} onRequestClose={() => icache.set('isOpen', false)}>
+	{{
+		title: 'Basic Dialog',
+		content: (
+			<virtual>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
+				purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed
+				lacinia felis tempor in.
+			</virtual>
+		)
+	}}
+</Dialog>
+
+```
+
+Latest example can be found at [widgets.dojo.io/#widget/dialog/overview](https://widgets.dojo.io/#widget/dialog/overview)
 
 
-### `Header`
+---
+
+
+### Header
 
 - The `Header` was renamed from `Toolbar`.
 
-
 #### Property changes
-
 
 ##### Added properties
 
@@ -574,7 +542,6 @@ Latest example can be found on [widgets.dojo.io/#widget/dialog/overview](https:/
 	- This property accepts a child renderer object.
 
 	- Leading, trailing, title, and actions are set using this renderer.
-
 
 ##### Removed properties
 
@@ -602,74 +569,51 @@ Latest example can be found on [widgets.dojo.io/#widget/dialog/overview](https:/
 
 	- The header title is now set using a child renderer.
 
-
-#### Changes in behaviour
+#### Changes in behavior
 
 The `Header` now uses a child renderer object to determine its leading content, trailing content, title, and action items. This means that an object is passed as the widget's only child with keys for `leading` , `trailing`, `title`, and `actions`, each of which return elements to render accordingly.
 
 
 The `Header` no longer auto-collapses action items into a `SlidePane`. Instead, to be more aligned with future Dojo application architecture, media-based middleware can be used to responsively change the `Header` out for a different widget depending on available space.
 
-
 #### Example of migration from v6 to v7
-
 
 ##### v6 Example
 
 ```tsx
 
 <Toolbar
-
-align={Align.right}
-
-collapseWidth={700}
-
-heading="Title"
-
-onCollapse={() => { console.log('collapsed'); }}
-
+	align={Align.right}
+	collapseWidth={700}
+	heading="Title"
+	onCollapse={() => { console.log('collapsed'); }}
 >
-
-<a  href="#foo">Foo</a>
-
-<a  href="#bar">Bar</a>
-
-<a  href="#baz">Baz</a>
-
+	<a href="#foo">Foo</a>
+	<a href="#bar">Bar</a>
+	<a href="#baz">Baz</a>
 </Toolbar>
 
 ```
-
 
 ##### v7 Example
 
 ```tsx
 
 <Header>
-
-{{
-
-title: () =>  'Title',
-
-actions: () => [
-
-<Link  to="#foo">Foo</Link>,
-
-<Link  to="#bar">Bar</Link>,
-
-<Link  to="#baz">Baz</Link>
-
-]
-
-}}
-
+	{{
+		title: () => 'Title',
+		actions: () => [
+			<Link to="#foo">Foo</Link>,
+			<Link to="#bar">Bar</Link>,
+			<Link to="#baz">Baz</Link>
+		]
+	}}
 </Header>
 
 ```
 
 
-### `Label`
-
+### Label
 
 #### Property changes
 
@@ -683,11 +627,29 @@ actions: () => [
 
 #### Example of migration from v6 to v7
 
+##### v6 Example
 
-Latest example can be found on [widgets.dojo.io/#widget/label/overview](https://widgets.dojo.io/#widget/label/overview)
+```tsx
+
+<Label invalid={true}>Invalid Label</Label>
+
+```
+
+##### v7 Example
+
+```tsx
+
+<Label valid={false}>Invalid Label</Label>
+
+```
+
+Latest example can be found at [widgets.dojo.io/#widget/label/overview](https://widgets.dojo.io/#widget/label/overview)
 
 
-### `List`
+---
+
+
+### List
 
 - Renamed from `ListBox`
 
@@ -717,82 +679,82 @@ Latest example can be found on [widgets.dojo.io/#widget/label/overview](https://
 
 	- any additional info
 
-#### Changes in behaviour
+#### Changes in behavior
 
 #### Example of migration from v6 to v7
 
+Latest example can be found at [widgets.dojo.io/#widget/list/overview](https://widgets.dojo.io/#widget/list/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/list/overview](https://widgets.dojo.io/#widget/list/overview)
+
+---
 
 
-### `NativeSelect`
+### NativeSelect
 
-	- Used to live inside select
+- Split out of `Select`, now a separate widget.
 
 #### Property changes
+
+##### Added properties
+
+-  `initialValue?: string;`
+
+	- Can be used to set an initial value and then let the component act in an uncontrolled manner.
 
 ##### Additional Mandatory Properties
 
 - `options: MenuOption[];`
 
-	- The options for the menu
+	- The options for the menu.
 
 ##### Changed properties
 
 - `onValue: (value string) => void;
 
-	- This prop replaces `onChange`
+	- This prop replaces `onChange`.
 
-#### Changes in behaviour
+#### Changes in behavior
 
 Native select is controllable with `value` but can also be used as an uncontrolled component.
 
 #### Example of migration from v6 to v7
 
+##### v6 Example
+
 ```tsx
 
 <Select
-
-options={[]}
-
-onChange={value  => {
-
-icache.set('value', value);
-
-}}
-
-value={icache.get('value')}
-
-useNativeElement={true}
-
+	options={[]}
+	onChange={value => {
+		icache.set('value', value);
+	}}
+	value={icache.get('value')}
+	useNativeElement={true}
 />
 
 ```
 
+##### v7 Example
 
 ```tsx
 
 <NativeSelect
-
-options={[]}
-
-onValue={value  => {
-
-icache.set('value', value);
-
-}}
-
-initialValue={icache.get('value')}
-
+	options={[]}
+	onValue={value => {
+		icache.set('value', value);
+	}}
+	initialValue={icache.get('value')}
 />
 
 ```
 
-Latest example can be found on [widgets.dojo.io/#widget/native-select/overview](https://widgets.dojo.io/#widget/native-select/overview)
+Latest example can be found at [widgets.dojo.io/#widget/native-select/overview](https://widgets.dojo.io/#widget/native-select/overview)
 
 
-### `Progress`
+---
 
+
+### Progress
 
 #### Property changes
 
@@ -802,46 +764,43 @@ Latest example can be found on [widgets.dojo.io/#widget/native-select/overview](
 
 	-  `output` was moved to a child renderer and should be handled in a child function.
 
-#### Changes in behaviour
+#### Changes in behavior
 
 Output is now handled via an optional child renderer of type RenderResult.
 
 #### Example of migration from v6 to v7
 
+##### v6 Example
+
 ```
 
 <Progress
-
-value={value}
-
-max={max}
-
-output={(value, percent) => `${value} of ${max} is ${percent}%`}
-
+	value={value}
+	max={max}
+	output={(value, percent) => `${value} of ${max} is ${percent}%`}
 />
 
 ```
 
+##### v7 Example
+
 ```
 
 <Progress value={value} max={max}>
-
-{{
-
-output: (value, percent) => `${value} of ${max} is ${percent}%`
-
-}}
-
+	{{
+		output: (value, percent) => `${value} of ${max} is ${percent}%`
+	}}
 </Progress>
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/progress/overview](https://widgets.dojo.io/#widget/progress/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/progress/overview](https://widgets.dojo.io/#widget/progress/overview)
+
+---
 
 
-### `Radio`
-
+### Radio
 
 #### Property changes
 
@@ -857,11 +816,13 @@ Latest example can be found on [widgets.dojo.io/#widget/progress/overview](https
 
 	- Removed in favor of a single label handled via a child renderer.
 
-#### Changes in behaviour
+#### Changes in behavior
 
 Label is now handled via an optional child renderer of type RenderResult.
 
 #### Example of migration from v6 to v7
+
+##### v6 Example
 
 ```
 
@@ -869,18 +830,21 @@ Label is now handled via an optional child renderer of type RenderResult.
 
 ```
 
+##### v7 Example
+
 ```
 
 <Radio>Radio Button 1</Radio>
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/radio/overview](https://widgets.dojo.io/#widget/radio/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/radio/overview](https://widgets.dojo.io/#widget/radio/overview)
+
+---
 
 
-### `RangeSlider`
-
+### RangeSlider
 
 #### Property changes
 
@@ -910,19 +874,51 @@ Latest example can be found on [widgets.dojo.io/#widget/radio/overview](https://
 
 	- No longer supported
 
-#### Changes in behaviour
-
+#### Changes in behavior
 
 The range slider widget now internally manages its own value by default and can be changed via the `initialValue` property. The range slider can be fully controlled using the `value` property.
 
-
 #### Example of migration from v6 to v7
 
+##### v6 Example
 
-Latest example can be found on [widgets.dojo.io/#widget/range-slider/overview](https://widgets.dojo.io/#widget/range-slider/overview)
+```tsx
+
+<RangeSlider
+    onInput={(min: number, max: number) => {
+        this._state.value1Min = min;
+        this._state.value1Max = max;
+        this.invalidate();
+    }}
+    onChange={(min: number, max: number) => {
+        this._state.value1Min = min;
+        this._state.value1Max = max;
+        this.invalidate();
+    }}
+/>
+
+```
+
+##### v7 Example
+
+```tsx
+
+<RangeSlider
+	initialValue={{
+		min: 0,
+		max: 100
+	}}
+/>
+
+```
+
+Latest example can be found at [widgets.dojo.io/#widget/range-slider/overview](https://widgets.dojo.io/#widget/range-slider/overview)
 
 
-### `Select`
+---
+
+
+### Select
 
 - Now uses list, no longer supports using the native element.
 
@@ -946,50 +942,48 @@ Latest example can be found on [widgets.dojo.io/#widget/range-slider/overview](h
 
 	- Native use case is now supported by its own widget
 
-#### Changes in behaviour
+#### Changes in behavior
 
 Can now be used in an uncontrolled or controlled manner
 
 #### Example of migration from v6 to v7
 
+##### v6 Example
+
 ```tsx
 
 <Select
-
-onChange={value  => {
-
-icache.set('value', value);
-
-}}
-
-value={icache.get('value')}
-
+	onChange={value => {
+		icache.set('value', value);
+	}}
+	value={icache.get('value')}
 />
 
 ```
 
+##### v7 Example
 
 ```tsx
 
-<Select/>
+<Select />
 
 ```
 
-Latest example can be found on [widgets.dojo.io/#widget/select/overview](https://widgets.dojo.io/#widget/select/overview)
+Latest example can be found at [widgets.dojo.io/#widget/select/overview](https://widgets.dojo.io/#widget/select/overview)
 
 
-### `SlidePane`
+---
 
+
+### SlidePane
 
 #### Property changes
-
 
 ##### Added properties
 
 -  `aria?: { [key: string]: string | null }`
 
 	- This property is used to pass custom `aria-*` attributes DOM nodes.
-
 
 ##### Removed properties
 
@@ -999,49 +993,42 @@ Latest example can be found on [widgets.dojo.io/#widget/select/overview](https:/
 
 	- This functionality is no longer supported.
 
-
-#### Changes in behaviour
+#### Changes in behavior
 
 The `SlidePane` no longer supports an `onOpen` property and instead only uses `onRequestClose` to update externally-managed open state.
 
-
 #### Example of migration from v6 to v7
-
 
 ##### v6 Example
 
 ```tsx
 
 <SlidePane
-
-open={icache.get('open')}
-
-onOpen={() =>  icache.set('open', false)}
-
-onRequestClose={() =>  icache.set('open', false)}
-
+	open={icache.get('open')}
+	onOpen={() => icache.set('open', false)}
+	onRequestClose={() => icache.set('open', false)}
 />
 
 ```
-
 
 ##### v7 Example
 
 ```tsx
 
 <SlidePane
-
-open={icache.get('open')}
-
-onRequestClose={() =>  icache.set('open', false)}
-
+	open={icache.get('open')}
+	onRequestClose={() => icache.set('open', false)}
 />
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/slide-pane/overview](https://widgets.dojo.io/#widget/slide-pane/overview)
 
-### `Slider`
 
+---
+
+
+### Slider
 
 #### Property changes
 
@@ -1049,7 +1036,7 @@ onRequestClose={() =>  icache.set('open', false)}
 
 -  `initialValue`: `number`
 
-	- Can be used to provide an initial value or can be used to partially control the slider
+	- Can be used to provide an initial value or can be used to partially control the slider.
 
 ##### Removed properties
 
@@ -1073,9 +1060,9 @@ onRequestClose={() =>  icache.set('open', false)}
 
 -  `onInput`: `(value: number) => void`
 
-	- removed in favor of controlling input handling internally
+	- removed in favor of controlling input handling internally.
 
-#### Changes in behaviour
+#### Changes in behavior
 
 -  `Slider` is now uncontrolled by default, meaning that parents no longer must manually update the slider's current value in response to user interaction.
 
@@ -1085,137 +1072,85 @@ onRequestClose={() =>  icache.set('open', false)}
 
 #### Example of migration from v6 to v7
 
-
 ##### v6 Example
-
 
 ```tsx
 
 <Slider
-
-label="How much do you like tribbles?"
-
-min={0}
-
-max={100}
-
-output={(value: number) => {
-
-if (value < 20) {
-
-return  'I am a Klingon';
-
-}
-
-if (value < 40) {
-
-return  'Tribbles only cause trouble';
-
-}
-
-if (value < 60) {
-
-return  'They\`re kind of cute';
-
-}
-
-if (value < 80) {
-
-return  'Most of my salary goes to tribble food';
-
-} else {
-
-return  'I permanently altered the ecology of a planet for my tribbles';
-
-}
-
-}}
-
-step={1}
-
-value={icache.get('tribbleValue')}
-
-onChange={(value) => {
-
-icache.set('tribbleValue', value);
-
-}}
-
-onInput={(value) => {
-
-icache.set('tribbleValue', value);
-
-}}
-
+	label="How much do you like tribbles?"
+	min={0}
+	max={100}
+	output={(value: number) => {
+		if (value < 20) {
+			return 'I am a Klingon';
+		}
+		if (value < 40) {
+			return 'Tribbles only cause trouble';
+		}
+		if (value < 60) {
+			return 'They\`re kind of cute';
+		}
+		if (value < 80) {
+			return  'Most of my salary goes to tribble food';
+		} else {
+			return 'I permanently altered the ecology of a planet for my tribbles';
+		}
+	}}
+	step={1}
+	value={icache.get('tribbleValue')}
+	onChange={(value) => {
+		icache.set('tribbleValue', value);
+	}}
+	onInput={(value) => {
+		icache.set('tribbleValue', value);
+	}}
 />
 
 ```
 
-
 ##### v7 Example
-
 
 ```tsx
 
 <Slider
-
-initialValue={0}
-
-min={0}
-
-max={100}
-
-step={1}
-
+	initialValue={0}
+	min={0}
+	max={100}
+	step={1}
 >
+	{{
+		label:  'How much do you like tribbles?',
+		output: (value: number) => {
+			if (value < 20) {
+				return 'I am a Klingon';
+			}
 
-{{
+			if (value < 40) {
+				return 'Tribbles only cause trouble';
+			}
 
-label:  'How much do you like tribbles?',
+			if (value < 60) {
+				return 'They\`re kind of cute';
+			}
 
-output: (value: number) => {
-
-if (value < 20) {
-
-return  'I am a Klingon';
-
-}
-
-if (value < 40) {
-
-return  'Tribbles only cause trouble';
-
-}
-
-if (value < 60) {
-
-return  'They\`re kind of cute';
-
-}
-
-if (value < 80) {
-
-return  'Most of my salary goes to tribble food';
-
-} else {
-
-return  'I permanently altered the ecology of a planet for my tribbles';
-
-}
-
-}
-
-}}
-
+			if (value < 80) {
+				return 'Most of my salary goes to tribble food';
+			} else {
+				return 'I permanently altered the ecology of a planet for my tribbles';
+			}
+		}
+	}}
 </Slider>
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/slider/overview](https://widgets.dojo.io/#widget/slider/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/slider/overview](https://widgets.dojo.io/#widget/slider/overview)
+
+---
 
 
-### `Snackbar`
+### Snackbar
 
 #### Property changes
 
@@ -1232,47 +1167,39 @@ Latest example can be found on [widgets.dojo.io/#widget/slider/overview](https:/
 
 #### Example of migration from v6 to v7
 
-
 ##### v6 implementation
 
 ```tsx
 
 <Snackbar
-
-messageRenderer={() =>  'Snackbar'}
-
-actionsRenderer={() =>  'Actions'}  open={true}
-
+	messageRenderer={() => 'Snackbar'}
+	actionsRenderer={() => 'Actions'} open={true}
 />
 
 ```
-
 
 ##### v7 implementation
 
 ```tsx
 
-<Snackbar  open={true}>
-
-{{
-
-message:  'Snackbar',
-
-actions:  'Actions'
-
-}}
-
+<Snackbar open={true}>
+	{{
+		message: 'Snackbar',
+		actions: 'Actions'
+	}}
 </Snackbar>
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/snackbar/overview](https://widgets.dojo.io/#widget/snackbar/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/snackbar/overview](https://widgets.dojo.io/#widget/snackbar/overview)
+
+---
 
 
-### `Switch`
+### Switch
 
-- Split out of `Checkbox`
+- Split out of `Checkbox`, now a separate widget.
 
 #### Property changes
 
@@ -1296,56 +1223,41 @@ Latest example can be found on [widgets.dojo.io/#widget/snackbar/overview](https
 
 #### Example of migration from v6 to v7
 
-
 ##### v6 Example
-
 
 ```tsx
 
 <Checkbox
-
-checked={icache.get('checked')}
-
-label="On/Off"
-
-mode={Mode.toggle}
-
-onChange:  this.onChange
-
+	checked={icache.get('checked')}
+	label="On/Off"
+	mode={Mode.toggle}
+	onChange:  this.onChange
 />
 
 ```
 
-
 ##### v7 Example
-
 
 ```tsx
 
 <Switch
-
-value={icache.get('checked')}
-
-onValue={(value) => {
-
-icache.set('checked', true);
-
-}}
-
+	value={icache.get('checked')}
+	onValue={(value) => {
+		icache.set('checked', true);
+	}}
 >
-
-{{ label:  'On/Off' }}
-
+	{{ label:  'On/Off' }}
 </Switch>
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/switch/overview](https://widgets.dojo.io/#widget/switch/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/switch/overview](https://widgets.dojo.io/#widget/switch/overview)
+
+---
 
 
-### `TabController`
-
+### TabController
 
 #### Structural changes
 
@@ -1379,178 +1291,118 @@ Latest example can be found on [widgets.dojo.io/#widget/switch/overview](https:/
 
 #### Example of migration from v6 to v7
 
-
 ##### v6 Example
-
 
 ```tsx
 
-import { tsx, create } from  '@dojo/framework/core/vdom';
+import { tsx, create } from '@dojo/framework/core/vdom';
 
-import  icache  from  '@dojo/framework/core/middleware/icache';
+import icache from '@dojo/framework/core/middleware/icache';
 
-import  Set  from  '@dojo/framework/shim/Set';
+import Set from '@dojo/framework/shim/Set';
 
+import TabController from '@dojo/widgets/tab-controller';
 
-import  TabController  from  '@dojo/widgets/tab-controller';
+import Tab from '@dojo/widgets/tab';
 
-import  Tab  from  '@dojo/widgets/tab';
+const factory = create();
 
+export default factory(function Closeable() {
 
-const  factory = create();
+	const closed = icache.getOrSet('closed', new Set<string>());
+	const activeIndex = icache.getOrSet('activeIndex', 2);
 
-
-export  default  factory(function  Closeable() {
-
-const  closed = icache.getOrSet('closed', new  Set<string>());
-
-const  activeIndex = icache.getOrSet('activeIndex', 2);
-
-
-return (
-
-<TabController
-
-activeIndex={activeIndex}
-
-onRequestTabClose={(index, key) => {
-
-icache.set('closed', new  Set([...closed, key]));
-
-}}
-
-onRequestTabChange={(index, key) => {
-
-icache.set('activeIndex', index);
-
-}}
-
->
-
-{!closed.has('tab0') && (
-
-<Tab  key="tab0"  closeable={true}  label="Tab One">
-
-Hello Tab One
-
-</Tab>
-
-)}
-
-<Tab  key="tab1"  disabled={true}  label="Tab Two">
-
-Hello Tab Two
-
-</Tab>
-
-<Tab  key="tab2"  label="Tab Three">
-
-Hello Tab Three
-
-</Tab>
-
-<Tab  key="tab3"  label="Tab Four">
-
-Hello Tab Four
-
-</Tab>
-
-</TabController>
-
-);
-
+	return (
+		<TabController
+			activeIndex={activeIndex}
+			onRequestTabClose={(index, key) => {
+				icache.set('closed', new Set([...closed, key]));
+			}}
+			onRequestTabChange={(index, key) => {
+				icache.set('activeIndex', index);
+			}}
+		>
+			{!closed.has('tab0') && (
+				<Tab key="tab0" closeable={true} label="Tab One">
+					Hello Tab One
+				</Tab>
+			)}
+			<Tab key="tab1" disabled={true} label="Tab Two">
+				Hello Tab Two
+			</Tab>
+			<Tab key="tab2" label="Tab Three">
+				Hello Tab Three
+			</Tab>
+			<Tab key="tab3" label="Tab Four">
+				Hello Tab Four
+			</Tab>
+		</TabController>
+	);
 });
 
 ```
 
-
 ##### v7 Example
-
 
 ```tsx
 
 import { tsx, create } from  '@dojo/framework/core/vdom';
 
-
 import  TabController, { TabItem } from  '@dojo/widgets/tab-controller';
-
 import  TabContent  from  '@dojo/widgets/tab-controller/TabContent';
-
 
 const  factory = create();
 
-
-export  default  factory(function  Closeable() {
-
+export  default  factory(function Closeable() {
 const  tabs = [
-
-{ closeable:  true, id:  'tab0', label:  'Tab One' },
-
-{ disabled:  true, id:  'tab1', label:  'Tab Two' },
-
-{ id:  'tab2', label:  'Tab Three' },
-
-{ id:  'tab3', label:  'Tab Four' }
-
+	{ closeable:  true, id:  'tab0', label:  'Tab One' },
+	{ disabled:  true, id:  'tab1', label:  'Tab Two' },
+	{ id:  'tab2', label:  'Tab Three' },
+	{ id:  'tab3', label:  'Tab Four' }
 ];
 
 
 return (
-
-<TabController  initialId="tab2"  tabs={tabs}>
-
-{(
-
-tabs: TabItem[],
-
-isActive: (id: string) =>  boolean,
-
-isClosed: (id: string) =>  boolean
-
-) => [
-
-<TabContent  key="tab0"  active={isActive('tab0')}  closed={isClosed('tab0')}>
-
-Hello Tab One
-
-</TabContent>,
-
-<TabContent  key="tab1"  active={isActive('tab1')}  closed={isClosed('tab1')}>
-
-Hello Tab Two
-
-</TabContent>,
-
-<TabContent  key="tab2"  active={isActive('tab2')}  closed={isClosed('tab2')}>
-
-Hello Tab Three
-
-</TabContent>,
-
-<TabContent  key="tab3"  active={isActive('tab3')}  closed={isClosed('tab3')}>
-
-Hello Tab Four
-
-</TabContent>
-
-]}
-
-</TabController>
-
-);
-
+	<TabController  initialId="tab2"  tabs={tabs}>
+		{(
+			tabs: TabItem[],
+			isActive: (id: string) =>  boolean,
+			isClosed: (id: string) =>  boolean
+		) => [
+			<TabContent  key="tab0"  active={isActive('tab0')}  closed={isClosed('tab0')}>
+				Hello Tab One
+			</TabContent>,
+			<TabContent  key="tab1"  active={isActive('tab1')}  closed={isClosed('tab1')}>
+				Hello Tab Two
+			</TabContent>,
+			<TabContent  key="tab2"  active={isActive('tab2')}  closed={isClosed('tab2')}>
+				Hello Tab Three
+			</TabContent>,
+			<TabContent  key="tab3"  active={isActive('tab3')}  closed={isClosed('tab3')}>
+				Hello Tab Four
+			</TabContent>
+		]}
+	</TabController>
+	);
 });
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/tab-controller/overview](https://widgets.dojo.io/#widget/tab-controller/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/tab-controller/overview](https://widgets.dojo.io/#widget/tab-controller/overview)
+
+---
 
 
-### `TextArea`
-
+### TextArea
 
 #### Property changes
+
+##### Added properties
+
+-  `initialValue?: string;`
+
+	- Can be used to provide an initial value or can be used to partially control the text area.
 
 ##### Removed properties
 
@@ -1558,31 +1410,21 @@ Latest example can be found on [widgets.dojo.io/#widget/tab-controller/overview]
 
 	-  `<TextArea>` now takes an optional child that will be rendered as its label.
 
--  `value`: `string;`
-
-	- Removed as the widget is now uncontrolled.
-
-	- Replaced by `initialValue: string` for setting the initial value.
-
 #### Changes in behavior
 
--  `TextArea` is now uncontrolled, meaning parent widgets are no longer responsible for updating the the current value in response to changes or events.
+- `TextArea` is now uncontrolled by default, meaning parent widgets are no longer responsible for updating the current value in response to changes or events. The widget is controllable with `value`.
 
 #### Example of migration from v6 to v7
 
-
 ##### v6 example
-
 
 ```tsx
 
-<TextArea  label="Textarea with label"  />
+<TextArea label="Textarea with label" />
 
 ```
 
-
 ##### v7 example
-
 
 ```tsx
 
@@ -1590,14 +1432,21 @@ Latest example can be found on [widgets.dojo.io/#widget/tab-controller/overview]
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/text-area/overview](https://widgets.dojo.io/#widget/text-area/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/text-area/overview](https://widgets.dojo.io/#widget/text-area/overview)
+
+---
 
 
-### text-input
-
+### TextInput
 
 #### Property changes
+
+##### Added properties
+
+-  `initialValue?: T['value'];`
+
+	- Can be used to provide an initial value or can be used to partially control the text input.
 
 ##### Removed properties
 
@@ -1617,68 +1466,47 @@ Latest example can be found on [widgets.dojo.io/#widget/text-area/overview](http
 
 	- Since the original property function receives no arguments, the child renderer object expects a static value instead of a function.
 
--  `value`: `string`
-
-	- Removed as the widget is now uncontrolled.
-
-	- Replaced by `initialValue: string` for setting the initial value.
-
 #### Changes in behavior
 
--  `TextInput` is now uncontrolled, meaning parent widgets are no longer responsible for updating the the current value in response to changes or events.
+- `TextInput` is now uncontrolled by default, meaning parent widgets are no longer responsible for updating the current value in response to changes or events. The widget is controllable with `value`. 
 
 #### Example of migration from v6 to v7
 
-
 ##### v6 example
-
 
 ```tsx
 
 <TextInput
-
-type="text"
-
-label="Input Label"
-
-value="Initial value"
-
-leading={() =>  <span>A</span>}
-
-trailing={() =>  <span>Z</span>}
-
+	type="text"
+	label="Input Label"
+	value="Initial value"
+	leading={() => <span>A</span>}
+	trailing={() => <span>Z</span>}
 />
 
 ```
 
-
 ##### v7 example
-
 
 ```tsx
 
-<TextInput  type="text"  value="Initial value">
-
-{{
-
-label:  'Input Label',
-
-leading:  <span>A</span>,
-
-trailing:  <span>Z</span>
-
-}}
-
+<TextInput type="text" value="Initial value">
+	{{
+		label: 'Input Label',
+		leading: <span>A</span>,
+		trailing: <span>Z</span>
+	}}
 </TextInput>
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/text-input/overview](https://widgets.dojo.io/#widget/text-input/overview)
 
-Latest example can be found on [widgets.dojo.io/#widget/text-input/overview](https://widgets.dojo.io/#widget/text-input/overview)
+
+---
 
 
-### `TimePicker`
-
+### TimePicker
 
 #### Property changes
 
@@ -1692,13 +1520,13 @@ Latest example can be found on [widgets.dojo.io/#widget/text-input/overview](htt
 
 	- Called when validation occurs on the time picker.
 
+- `initialValue?: string;`
+
+	- Used to set the initial value of the time picker.
+	
+	- The time picker is now internally managed by default and does not need to be managed by the parent widget, but can still be controlled using `value` and `onValue`.
+
 ##### Changed properties
-
-- `value`
-
-	- Changed to `initialValue?: string`
-
-	- The time picker value is now internally managed and does not need to be managed by the parent widget
 
 - `start`
 
@@ -1792,23 +1620,45 @@ Latest example can be found on [widgets.dojo.io/#widget/text-input/overview](htt
 
 	- No longer supported
 
-#### Changes in behaviour
-
+#### Changes in behavior
 
 The time picker will generate its own time options manually now, and therefore does not require the parent widget to pass in a list of time options.
 
-
 #### Example of migration from v6 to v7
 
+##### v6 Example
 
-Latest example can be found on [widgets.dojo.io/#widget/time-picker/overview](https://widgets.dojo.io/#widget/time-picker/overview)
+```tsx
+
+<TimePicker
+	start="12:00:00"
+	end="12:00:59"
+	step={1}
+	onValue={(value) => icache.set('value', value)}
+	label="Time: "
+/>
+
+```
+
+##### v7 Example
+
+```tsx
+
+<TimePicker min="12:00:00" max="12:00:59" step={1} onValue={(value) => icache.set('value', value)}>
+	{{ label: 'Time: ' }}
+</TimePicker>
+
+```
+
+Latest example can be found at [widgets.dojo.io/#widget/time-picker/overview](https://widgets.dojo.io/#widget/time-picker/overview)
 
 
-### `TitlePane`
+---
 
+
+### TitlePane
 
 #### Property changes
-
 
 ##### Changed properties
 
@@ -1840,7 +1690,6 @@ Latest example can be found on [widgets.dojo.io/#widget/time-picker/overview](ht
 
 	- Pane title and content are set using this renderer.
 
-
 ##### Removed properties
 
 -  `title: DNode`
@@ -1849,62 +1698,50 @@ Latest example can be found on [widgets.dojo.io/#widget/time-picker/overview](ht
 
 	- Pane titles are now set using a child renderer.
 
-
-#### Changes in behaviour
+#### Changes in behavior
 
 The `TitlePane` widget is now uncontrolled by default, meaning it manages its own open state internally. An `initialOpen` property can be used to set initial open state, and `onOpen` and `onClose` properties can be used to detect when this open state changes. If full-control is needed to support complex use-cases - such as restrictions around opening or closing - the `open` property can be used instead of `initialOpen` to mandate open state.
 
 
 The `TitlePane` now uses a child renderer object to determine its title and content. This means that an object is passed as the widget's only child with keys for `title` and `content`, each of which return elements to render accordingly.
 
-
 #### Example of migration from v6 to v7
-
 
 ##### v6 Example
 
 ```tsx
 
 <TitlePane
-
-title="Title"
-
-onRequestClose={() =>  icache.set('open', false)}
-
-onRequestOpen={() =>  icache.set('open', true)}
-
-open={icache.get('open')}
-
+	title="Title"
+	onRequestClose={() =>  icache.set('open', false)}
+	onRequestOpen={() =>  icache.set('open', true)}
+	open={icache.get('open')}
 >
-
-Content
-
+	Content
 </TitlePane>
 
 ```
-
 
 ##### v7 Example
 
 ```tsx
 
 <TitlePane>
-
-{{
-
-title:  'Title',
-
-content:  'Content'
-
-}}
-
+	{{
+		title:  'Title',
+		content:  'Content'
+	}}
 </TitlePane>
 
 ```
 
+Latest example can be found at [widgets.dojo.io/#widget/title-pane/overview](https://widgets.dojo.io/#widget/title-pane/overview)
 
-### `Tooltip`
 
+---
+
+
+### Tooltip
 
 #### Property changes
 
@@ -1924,73 +1761,47 @@ content:  'Content'
 
 	- The tooltip content is now set via a child renderer object.
 
-#### Changes in behaviour
+#### Changes in behavior
 
 - Both the tooltip trigger and content are specified on a child renderer object rather than as a child `DNode` and property, respectively.
 
 #### Example of migration from v6 to v7
 
-
 ##### v6 Example
-
 
 ```tsx
 
-<Tooltip  content="This tooltip shows on click"  open={icache.get('show')}>
-
-<button
-
-onclick={() => {
-
-icache.set('show', !icache.get('show'));
-
-}}
-
->
-
-Toggle Tooltip
-
-</button>
-
+<Tooltip content="This tooltip shows on click" open={icache.get('show')}>
+	<button
+		onclick={() => {
+			icache.set('show', !icache.get('show'));
+		}}
+	>
+		Toggle Tooltip
+	</button>
 </Tooltip>
 
 ```
 
-
 ##### v7 Example
-
 
 ```tsx
 
 <Tooltip  open={icache.get('show')}>
-
-{{
-
-content:  'This tooltip shows on click',
-
-trigger: (
-
-<button
-
-onclick={() => {
-
-icache.set('show', !icache.get('show'));
-
-}}
-
->
-
-Toggle Tooltip
-
-</button>
-
-)
-
-}}
-
+	{{
+		content:  'This tooltip shows on click',
+		trigger: (
+			<button
+				onclick={() => {
+					icache.set('show', !icache.get('show'));
+				}}
+			>
+				Toggle Tooltip
+			</button>
+		)
+	}}
 </Tooltip>
 
 ```
 
-
-Latest example can be found on [widgets.dojo.io/#widget/tooltip/overview](https://widgets.dojo.io/#widget/tooltip/overview)
+Latest example can be found at [widgets.dojo.io/#widget/tooltip/overview](https://widgets.dojo.io/#widget/tooltip/overview)
