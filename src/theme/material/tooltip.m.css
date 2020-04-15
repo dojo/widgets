@@ -22,6 +22,7 @@
 	font-size: var(--mdc-theme-font-size-small);
 	line-height: calc(var(--mdc-tooltip-font-size) * 1.6);
 	z-index: var(--zindex-tooltip);
+	white-space: nowrap;
 }
 
 .bottom .content {
