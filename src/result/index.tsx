@@ -41,7 +41,7 @@ export const Result = factory(function Result({ children, properties, middleware
 
 	return (
 		<div key="root" classes={[theme.variant(), themeCss.root]}>
-			{icon || status ? (
+			{(icon || status) && (
 				<div
 					key="iconWrapper"
 					classes={[
@@ -64,7 +64,7 @@ export const Result = factory(function Result({ children, properties, middleware
 						/>
 					)}
 				</div>
-			) : null}
+			)}
 			{title && (
 				<div classes={themeCss.titleWrapper}>
 					{<h2 classes={themeCss.title}>{title}</h2>}
