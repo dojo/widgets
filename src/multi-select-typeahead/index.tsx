@@ -22,7 +22,6 @@ import * as labelCss from '../theme/default/label.m.css';
 import { PopupPosition } from '@dojo/widgets/popup';
 import { find } from '@dojo/framework/shim/array';
 import Label from '../label';
-import select from '@dojo/framework/testing/support/selector';
 
 export interface MultiSelectTypeaheadProperties {
 	/** The initial selected value */
