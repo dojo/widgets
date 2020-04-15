@@ -1,0 +1,61 @@
+.root {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.statusIcon {
+	font-size: calc(var(--mdc-grid-base) * 9);
+	height: calc(var(--mdc-grid-base) * 9);
+	width: calc(var(--mdc-grid-base) * 9);
+}
+
+.iconIcon {
+	composes: icon from './icon.m.css';
+	font-size: calc(var(--mdc-grid-base) * 9);
+}
+
+.actions {
+	display: flex;
+	flex-direction: row;
+	margin: var(--mdc-grid-base);
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+}
+
+.contentWrapper {
+	margin: var(--mdc-grid-base);
+}
+
+.titleWrapper {
+	text-align: center;
+	margin: var(--mdc-grid-base);
+}
+
+.subtitle {
+	color: var(--color-text-faded);
+	font-size: var(--mdc-theme-font-size-small);
+	font-weight: var(--normal-font-weight);
+	margin: 0;
+}
+
+/* Status Styles */
+
+.alert {
+	color: var(--mdc-theme-alert);
+}
+
+.error {
+	color: var(--mdc-theme-error);
+}
+
+.info {
+	color: var(--mdc-theme-info);
+}
+
+.success {
+	color: var(--mdc-theme-success);
+}

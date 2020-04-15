@@ -113,6 +113,15 @@
 	content: '\f05a';
 }
 
+/* A cancel icon */
+.cancelIcon:before {
+	content: '\ea0d';
+}
+/* A checked box icon */
+.checkedBoxIcon:before {
+	content: '\ea52';
+}
+
 /* A phone icon */
 .phoneIcon:before {
 	content: '\f095';

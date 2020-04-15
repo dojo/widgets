@@ -36,6 +36,7 @@ import * as radioGroup from './radio-group.m.css';
 import * as radio from './radio.m.css';
 import * as raisedButton from './raised-button.m.css';
 import * as rangeSlider from './range-slider.m.css';
+import * as result from './result.m.css';
 import * as select from './select.m.css';
 import * as slidePane from './slide-pane.m.css';
 import * as slider from './slider.m.css';
@@ -92,6 +93,7 @@ export default {
 		'@dojo/widgets/radio': radio,
 		'@dojo/widgets/raised-button': raisedButton,
 		'@dojo/widgets/range-slider': rangeSlider,
+		'@dojo/widgets/result': result,
 		'@dojo/widgets/select': select,
 		'@dojo/widgets/slide-pane': slidePane,
 		'@dojo/widgets/slider': slider,

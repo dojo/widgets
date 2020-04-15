@@ -4,6 +4,9 @@
 	--mdc-theme-background: #fff;
 	--mdc-theme-surface: #fff;
 	--mdc-theme-error: #b00020;
+	--mdc-theme-info: #2196f3;
+	--mdc-theme-alert: #ff5722;
+	--mdc-theme-success: #4caf50;
 	--mdc-theme-on-primary: #fff;
 	--mdc-theme-on-secondary: #fff;
 	--mdc-theme-on-surface: #000;

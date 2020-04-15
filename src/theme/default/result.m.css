@@ -1,0 +1,56 @@
+/* The root class for the Result widget */
+.root {
+}
+
+/* Wrapper around the icon */
+.iconWrapper {
+}
+
+/* Applied if a status is specified */
+.statusIcon {
+}
+
+.iconIcon {
+	composes: icon from './icon.m.css';
+}
+
+/* Contains the Result widget's action buttons */
+.actions {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+/* Wrapped around the action buttons */
+.actionButtons {
+}
+
+/* Wrapper around the content child */
+.contentWrapper {
+}
+
+/* Wrapper around the title and subTitle area */
+.titleWrapper {
+}
+
+/* Applied to the title */
+.title {
+}
+
+/* Applied to the subtitle */
+.subtitle {
+}
+
+/* Status Styles */
+
+.alert {
+}
+
+.error {
+}
+
+.info {
+}
+
+.success {
+}

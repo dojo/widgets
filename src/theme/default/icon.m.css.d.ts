@@ -17,6 +17,8 @@ export const settingsIcon: string;
 export const alertIcon: string;
 export const helpIcon: string;
 export const infoIcon: string;
+export const cancelIcon: string;
+export const checkedBoxIcon: string;
 export const phoneIcon: string;
 export const editIcon: string;
 export const dateIcon: string;

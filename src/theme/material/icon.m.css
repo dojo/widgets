@@ -99,6 +99,14 @@
 	content: 'info';
 }
 
+.cancelIcon:before {
+	content: 'highlight_off';
+}
+
+.checkedBoxIcon:before {
+	content: 'check_circle';
+}
+
 .phoneIcon:before {
 	content: 'phone';
 }

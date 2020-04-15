@@ -1,0 +1,78 @@
+.root {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.iconWrapper {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+.statusIcon {
+	font-size: calc(var(--grid-base) * 9);
+	font-weight: var(--bold-font-weight);
+	height: calc(var(--grid-base) * 9);
+	width: calc(var(--grid-base) * 9);
+}
+
+.iconIcon {
+	composes: icon from './icon.m.css';
+}
+
+.actions {
+	display: flex;
+	flex-direction: row;
+	margin: var(--grid-base);
+}
+
+.actionButtons {
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+}
+
+.contentWrapper {
+	margin: var(--grid-base);
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+}
+
+.titleWrapper {
+	text-align: center;
+	margin: var(--grid-base);
+}
+
+.title {
+	font-size: var(--font-size-title);
+	margin: 0;
+}
+
+.subtitle {
+	color: var(--color-text-faded);
+	font-size: var(--font-size-small);
+	font-weight: var(--normal-font-weight);
+	margin: 0;
+}
+
+/* Status Styles */
+
+.alert {
+	color: var(--color-alert);
+}
+
+.error {
+	color: var(--color-error);
+}
+
+.info {
+	color: var(--color-info);
+}
+
+.success {
+	color: var(--color-success);
+}

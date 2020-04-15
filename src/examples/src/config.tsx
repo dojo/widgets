@@ -222,6 +222,11 @@ import ValidatedTypeahead from './widgets/typeahead/Validation';
 import BasicTwoColumnLayout from './widgets/two-column-layout/Basic';
 import TrailingBiasTwoColumnLayout from './widgets/two-column-layout/TrailingBias';
 import CollapsingLayout from './widgets/two-column-layout/Collapsing';
+import BasicResult from './widgets/result/Basic';
+import AlertResult from './widgets/result/Alert';
+import ErrorResult from './widgets/result/Error';
+import SuccessResult from './widgets/result/Success';
+import CustomIconResult from './widgets/result/CustomIcon';
 
 `!has('docs')`;
 import testsContext from './tests';
@@ -1204,6 +1209,36 @@ export const config = {
 				{ filename: 'Required', module: RequiredRangeSlider, title: 'Required' },
 				{ filename: 'Disabled', module: DisabledRangeSlider, title: 'Disabled' },
 				{ filename: 'Controlled', module: ControlledRangeSlider, title: 'Controlled' }
+			]
+		},
+		result: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicResult
+				}
+			},
+			examples: [
+				{
+					filename: 'Alert',
+					module: AlertResult,
+					title: 'Alert'
+				},
+				{
+					filename: 'Error',
+					module: ErrorResult,
+					title: 'Error'
+				},
+				{
+					filename: 'Success',
+					module: SuccessResult,
+					title: 'Success'
+				},
+				{
+					filename: 'CustomIcon',
+					module: CustomIconResult,
+					title: 'Custom Icon'
+				}
 			]
 		},
 		select: {
