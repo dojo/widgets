@@ -417,12 +417,12 @@ export const config = {
 				{
 					title: 'Basic HeaderCard with Action Buttons',
 					module: ActionHeaderCard,
-					filename: 'ActionHeaderCard'
+					filename: 'ActionCard'
 				},
 				{
 					title: 'Header Card with media',
 					module: MediaHeaderCard,
-					filename: 'MediaHeaderCard'
+					filename: 'MediaCard'
 				}
 			],
 			filename: 'index',
@@ -1519,7 +1519,7 @@ export const config = {
 		'three-column-layout': {
 			overview: {
 				example: {
-					filename: 'BasicThreeColumnLayout',
+					filename: 'Basic',
 					module: BasicThreeColumnLayout
 				}
 			}
@@ -1567,7 +1567,7 @@ export const config = {
 		'title-pane': {
 			examples: [
 				{
-					filename: 'AriaHeadingLevel',
+					filename: 'HeadingLevel',
 					module: HeadingLevel,
 					title: 'Defined aria heading level'
 				},
