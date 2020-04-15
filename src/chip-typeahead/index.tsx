@@ -4,7 +4,7 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '../middleware/theme';
 import { createDataMiddleware } from '@dojo/framework/core/middleware/data';
 import Typeahead from '../typeahead';
-import * as css from '../theme/default/multi-select-typeahead.m.css';
+import * as css from '../theme/default/chip-typeahead.m.css';
 import {
 	ItemRendererProperties,
 	ListOption,
@@ -22,8 +22,9 @@ import * as labelCss from '../theme/default/label.m.css';
 import { PopupPosition } from '@dojo/widgets/popup';
 import { find } from '@dojo/framework/shim/array';
 import Label from '../label';
+import select from '@dojo/framework/testing/support/selector';
 
-export interface MultiSelectTypeaheadProperties {
+export interface ChipTypeaheadProperties {
 	/** The initial selected value */
 	initialValue?: string[];
 	/** Callback called when user selects an option from the typeahead */
@@ -40,9 +41,11 @@ export interface MultiSelectTypeaheadProperties {
 	position?: PopupPosition;
 	/** Placement of the selected values. Default is 'inline' */
 	placement?: 'inline' | 'bottom';
+	/** Allow duplicates of the same value to be selected. Default is false */
+	duplicates?: boolean;
 }
 
-export interface MultiSelectTypeaheadChildren {
+export interface ChipTypeaheadChildren {
 	/** Adds a <label> element with the supplied text */
 	label?: RenderResult;
 	/** Custom renderer for item contents */
@@ -54,20 +57,20 @@ export interface MultiSelectTypeaheadChildren {
 	selected?: (value: string, label?: string) => RenderResult;
 }
 
-export interface MultiSelectTypeaheadIcache {
+export interface ChipTypeaheadIcache {
 	initialValue: string[];
 	value: string[];
 	focused: boolean;
 }
 
 const factory = create({
-	icache: createICacheMiddleware<MultiSelectTypeaheadIcache>(),
+	icache: createICacheMiddleware<ChipTypeaheadIcache>(),
 	theme,
 	data: createDataMiddleware<ListOption>(),
 	focus
 })
-	.properties<MultiSelectTypeaheadProperties>()
-	.children<MultiSelectTypeaheadChildren>();
+	.properties<ChipTypeaheadProperties>()
+	.children<ChipTypeaheadChildren>();
 
 export function arraysDifferent(arr1: string[], arr2: string[]): boolean {
 	if (arr1.length !== arr2.length) {
@@ -83,7 +86,7 @@ export function arraysDifferent(arr1: string[], arr2: string[]): boolean {
 	return false;
 }
 
-export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
+export const ChipTypeahead = factory(function ChipTypeahead({
 	middleware: { icache, theme, focus, data },
 	properties,
 	children
@@ -98,7 +101,7 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 		name,
 		placement = 'inline'
 	} = properties();
-	const [{ label, items, selected } = {} as MultiSelectTypeaheadChildren] = children();
+	const [{ label, items, selected } = {} as ChipTypeaheadChildren] = children();
 	const themeCss = theme.classes(css);
 	const { value } = properties();
 	const { get, getOptions } = data();
@@ -114,7 +117,7 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 	}
 
 	const currentOptions = get(getOptions());
-	const chips = icache.getOrSet('value', []).map((value) => {
+	const chips = icache.getOrSet('value', []).map((value, index) => {
 		let option = find(currentOptions || [], (option) => option.value === value);
 
 		return (
@@ -137,14 +140,10 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 								const { onValue } = properties();
 								const values = [...icache.getOrSet('value', [])];
 
-								const valueIndex = values.indexOf(value);
+								values.splice(index, 1);
+								icache.set('value', values);
 
-								if (valueIndex >= 0) {
-									values.splice(valueIndex, 1);
-									icache.set('value', values);
-
-									onValue && onValue(values);
-								}
+								onValue && onValue(values);
 
 								focus.focus();
 						  }
@@ -207,19 +206,11 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 				onValue={(value) => {
 					const { onValue } = properties();
 
-					const values = [...icache.getOrSet('value', [])];
-					const valueIndex = values.indexOf(value);
-
-					if (valueIndex === -1) {
-						icache.set('value', [...values, value]);
-					} else {
-						values.splice(valueIndex, 1);
-						icache.set('value', values);
-					}
+					const values = [...icache.getOrSet('value', []), value];
+					icache.set('value', values);
+					onValue && onValue(values);
 
 					focus.focus();
-
-					onValue && onValue(icache.get('value') || []);
 				}}
 				transform={transform}
 				value=""
@@ -232,6 +223,13 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 						wrapper: [themeCss.wrapper]
 					}
 				}}
+				itemDisabled={(item) => {
+					const { duplicates = false } = properties();
+
+					const selected = icache.getOrSet('value', []).indexOf(item.value) !== -1;
+
+					return item.disabled || (!duplicates && selected);
+				}}
 			>
 				{{
 					items: (item, props) => {
@@ -243,28 +241,16 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 									...item,
 									selected
 								},
-								props
+								{
+									...props,
+									selected
+								}
 							);
 						}
 
 						return (
 							<ListItem {...props} selected={selected}>
 								<div classes={[themeCss.item, selected ? themeCss.selected : null]}>
-									{selected ? (
-										<Icon
-											type="checkIcon"
-											theme={theme.compose(
-												iconCss,
-												css,
-												'icon'
-											)}
-											classes={{
-												'@dojo/widgets/icon': {
-													icon: [themeCss.selectedIcon]
-												}
-											}}
-										/>
-									) : null}
 									{item.label || item.value}
 								</div>
 							</ListItem>
@@ -278,4 +264,4 @@ export const MultiSelectTypeahead = factory(function MultiSelectTypeahead({
 	);
 });
 
-export default MultiSelectTypeahead;
+export default ChipTypeahead;

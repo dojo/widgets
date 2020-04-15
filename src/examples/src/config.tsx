@@ -98,11 +98,12 @@ import FetchedResource from './widgets/list/FetchedResource';
 import DisabledList from './widgets/list/Disabled';
 import Menu from './widgets/list/Menu';
 import CustomTransformer from './widgets/list/CustomTransformer';
-import BasicMultiSelectTypeahead from './widgets/multi-select-typeahead/Basic';
-import ControlledMultiSelectTypeahead from './widgets/multi-select-typeahead/Controlled';
-import DisabledMultiSelectTypeahead from './widgets/multi-select-typeahead/Disabled';
-import CustomRendererMultiSelectTypeahead from './widgets/multi-select-typeahead/CustomRenderer';
-import BottomMultiSelectTypeahead from './widgets/multi-select-typeahead/BottomPlacement';
+import BasicChipTypeahead from './widgets/chip-typeahead/Basic';
+import ControlledChipTypeahead from './widgets/chip-typeahead/Controlled';
+import DisabledChipTypeahead from './widgets/chip-typeahead/Disabled';
+import CustomRendererChipTypeahead from './widgets/chip-typeahead/CustomRenderer';
+import BottomChipTypeahead from './widgets/chip-typeahead/BottomPlacement';
+import DuplicatesChipTypeahead from './widgets/chip-typeahead/Duplicates';
 import BasicNumberInput from './widgets/number-input/Basic';
 import ValidatedNumberInput from './widgets/number-input/Validation';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
@@ -449,9 +450,21 @@ export const config = {
 				}
 			},
 			examples: [
-				{ title: 'Disabled', module: DisabledCheckbox, filename: 'Disabled' },
-				{ title: 'Readonly', module: ReadonlyCheckbox, filename: 'Readonly' },
-				{ title: 'Custom Label', module: CustomLabelCheckbox, filename: 'CustomLabel' }
+				{
+					title: 'Disabled',
+					module: DisabledCheckbox,
+					filename: 'Disabled'
+				},
+				{
+					title: 'Readonly',
+					module: ReadonlyCheckbox,
+					filename: 'Readonly'
+				},
+				{
+					title: 'Custom Label',
+					module: CustomLabelCheckbox,
+					filename: 'CustomLabel'
+				}
 			]
 		},
 		'checkbox-group': {
@@ -1002,33 +1015,38 @@ export const config = {
 				}
 			]
 		},
-		'multi-select-typeahead': {
+		'chip-typeahead': {
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicMultiSelectTypeahead
+					module: BasicChipTypeahead
 				}
 			},
 			examples: [
 				{
 					title: 'Controlled',
 					filename: 'Controlled',
-					module: ControlledMultiSelectTypeahead
+					module: ControlledChipTypeahead
 				},
 				{
 					title: 'Disabled',
 					filename: 'Disabled',
-					module: DisabledMultiSelectTypeahead
+					module: DisabledChipTypeahead
 				},
 				{
 					title: 'Custom Renderer',
 					filename: 'CustomRenderer',
-					module: CustomRendererMultiSelectTypeahead
+					module: CustomRendererChipTypeahead
 				},
 				{
 					title: 'Bottom Placement',
 					filename: 'BottomPlacement',
-					module: BottomMultiSelectTypeahead
+					module: BottomChipTypeahead
+				},
+				{
+					title: 'Duplicates',
+					filename: 'Duplicates',
+					module: DuplicatesChipTypeahead
 				}
 			]
 		},
@@ -1040,7 +1058,11 @@ export const config = {
 				}
 			},
 			examples: [
-				{ title: 'Validation', filename: 'Validation', module: ValidatedNumberInput }
+				{
+					title: 'Validation',
+					filename: 'Validation',
+					module: ValidatedNumberInput
+				}
 			]
 		},
 		'outlined-button': {
@@ -1203,7 +1225,11 @@ export const config = {
 				}
 			},
 			examples: [
-				{ filename: 'Labelled', module: LabelledRangeSlider, title: 'Labelled' },
+				{
+					filename: 'Labelled',
+					module: LabelledRangeSlider,
+					title: 'Labelled'
+				},
 				{
 					filename: 'MinMax',
 					module: MinMaxRangeSlider,
@@ -1215,9 +1241,21 @@ export const config = {
 					module: TooltipRangeSlider,
 					title: 'Display Tooltip Output'
 				},
-				{ filename: 'Required', module: RequiredRangeSlider, title: 'Required' },
-				{ filename: 'Disabled', module: DisabledRangeSlider, title: 'Disabled' },
-				{ filename: 'Controlled', module: ControlledRangeSlider, title: 'Controlled' }
+				{
+					filename: 'Required',
+					module: RequiredRangeSlider,
+					title: 'Required'
+				},
+				{
+					filename: 'Disabled',
+					module: DisabledRangeSlider,
+					title: 'Disabled'
+				},
+				{
+					filename: 'Controlled',
+					module: ControlledRangeSlider,
+					title: 'Controlled'
+				}
 			]
 		},
 		result: {

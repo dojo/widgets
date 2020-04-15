@@ -7,7 +7,8 @@ import List, {
 	ItemRendererProperties,
 	ListOption,
 	ListItemProperties,
-	MenuItemProperties
+	MenuItemProperties,
+	ListProperties
 } from '../list';
 import theme from '../middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
@@ -48,6 +49,8 @@ export interface TypeaheadProperties {
 	onBlur?(): void;
 	/** Callback fired when the input is focused */
 	onFocus?(): void;
+	/** Callback to determine if an individual item is disabled */
+	itemDisabled?: ListProperties['disabled'];
 }
 
 export interface TypeaheadICache {
@@ -167,8 +170,11 @@ export const Typeahead = factory(function Typeahead({
 
 				const allItems = get({ query: getOptions().query });
 				if (allItems && allItems.length >= activeIndex) {
+					const { itemDisabled = (item) => item.disabled } = properties();
+
 					const activeItem = allItems[activeIndex];
-					if (!activeItem.disabled) {
+
+					if (!itemDisabled(activeItem)) {
 						const { onValue } = properties();
 
 						icache.set('value', activeItem.value);
@@ -291,6 +297,8 @@ export const Typeahead = factory(function Typeahead({
 							toggleClosed();
 						}
 
+						const { itemDisabled } = properties();
+
 						return getTotal(getOptions()) === undefined && isLoading(getOptions()) ? (
 							<LoadingIndicator key="loading" />
 						) : (
@@ -301,6 +309,7 @@ export const Typeahead = factory(function Typeahead({
 									activeIndex={icache.get('activeIndex')}
 									resource={sharedResource}
 									transform={transform}
+									disabled={itemDisabled}
 									onValue={(value) => {
 										const { onValue } = properties();
 										focus.focus();

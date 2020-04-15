@@ -2,7 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { defaultTransform } from '@dojo/widgets/select';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createMemoryResourceWithDataAndFilter } from '../list/memoryTemplate';
-import MultiSelectTypeahead from '@dojo/widgets/multi-select-typeahead';
+import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import Icon from '@dojo/widgets/icon';
 
 const factory = create({ icache });
@@ -17,16 +17,16 @@ const resource = createMemoryResourceWithDataAndFilter(options);
 export default factory(function Controlled({ middleware: { icache } }) {
 	return (
 		<virtual>
-			<MultiSelectTypeahead
+			<ChipTypeahead
 				resource={resource}
 				transform={defaultTransform}
 				value={icache.getOrSet('value', [])}
 				onValue={(value) => icache.set('value', value)}
 			>
 				{{
-					label: 'Multi Select Typeahead'
+					label: 'Chip Typeahead'
 				}}
-			</MultiSelectTypeahead>
+			</ChipTypeahead>
 			<br />
 			<div>
 				The selected values are:
