@@ -42,6 +42,7 @@ import * as select from './select.m.css';
 import * as slidePane from './slide-pane.m.css';
 import * as slider from './slider.m.css';
 import * as snackbar from './snackbar.m.css';
+import * as speedDial from './speed-dial.m.css';
 import * as switchControl from './switch.m.css';
 import * as tabContainer from './tab-container.m.css';
 import * as textArea from './text-area.m.css';
@@ -98,6 +99,7 @@ export default {
 		'@dojo/widgets/result': result,
 		'@dojo/widgets/select': select,
 		'@dojo/widgets/slide-pane': slidePane,
+		'@dojo/widgets/speed-dial': speedDial,
 		'@dojo/widgets/switch': switchControl,
 		'@dojo/widgets/slider': slider,
 		'@dojo/widgets/snackbar': snackbar,
