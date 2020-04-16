@@ -9,10 +9,134 @@ import * as listItemCss from '../theme/default/list-item.m.css';
 import * as menuItemCss from '../theme/default/menu-item.m.css';
 import * as css from '../theme/default/list.m.css';
 import * as fixedCss from './list.m.css';
-import ListItem from './Listitem';
-import MenuItem from './MenuItem';
 import { createDataMiddleware } from '@dojo/framework/core/middleware/data';
 import LoadingIndicator from '../loading-indicator';
+import { throttle } from '@dojo/framework/core/util';
+
+export interface MenuItemProperties {
+	/** Callback used when the item is clicked */
+	onSelect(): void;
+	/** Property to set the active state of the item, indicates it's the current keyboard / mouse navigation target */
+	active?: boolean;
+	/** Callback used when the item wants to request it be made active, to example on pointer move */
+	onRequestActive(): void;
+	/** Property to set the disabled state of the item */
+	disabled?: boolean;
+	/** The id to apply to this widget top level for a11y */
+	widgetId: string;
+}
+
+const menuItemFactory = create({ theme }).properties<MenuItemProperties>();
+
+export const MenuItem = menuItemFactory(function MenuItem({
+	properties,
+	children,
+	middleware: { theme }
+}) {
+	const { onSelect, active = false, onRequestActive, disabled = false, widgetId } = properties();
+
+	const themedCss = theme.classes(menuItemCss);
+
+	function select() {
+		!disabled && onSelect();
+	}
+
+	function requestActive() {
+		!disabled && !active && onRequestActive();
+	}
+
+	return (
+		<div
+			id={widgetId}
+			key="root"
+			onpointermove={throttle(() => {
+				requestActive();
+			}, 500)}
+			classes={[
+				theme.variant(),
+				themedCss.root,
+				active && themedCss.active,
+				disabled && themedCss.disabled
+			]}
+			onpointerdown={() => {
+				requestActive();
+				select();
+			}}
+			role="menuitem"
+			aria-disabled={disabled}
+		>
+			{children()}
+		</div>
+	);
+});
+
+export interface ListItemProperties {
+	/** Callback used when the item is clicked */
+	onSelect(): void;
+	/** Property to set the selected state of the item */
+	selected?: boolean;
+	/** Property to set the active state of the item, indicates it's the current keyboard / mouse navigation target */
+	active?: boolean;
+	/** Callback used when the item wants to request it be made active, to example on pointer move */
+	onRequestActive(): void;
+	/** Property to set the disabled state of the item */
+	disabled?: boolean;
+	/** The id to apply to this widget top level for a11y */
+	widgetId: string;
+}
+
+const listItemFactory = create({ theme }).properties<ListItemProperties>();
+
+export const ListItem = listItemFactory(function ListItem({
+	properties,
+	children,
+	middleware: { theme }
+}) {
+	const {
+		onSelect,
+		active = false,
+		onRequestActive,
+		selected = false,
+		disabled = false,
+		widgetId
+	} = properties();
+
+	const classes = theme.classes(listItemCss);
+
+	function select() {
+		!disabled && onSelect();
+	}
+
+	function requestActive() {
+		!disabled && !active && onRequestActive();
+	}
+
+	return (
+		<div
+			id={widgetId}
+			key="root"
+			onpointermove={throttle(() => {
+				requestActive();
+			}, 500)}
+			classes={[
+				theme.variant(),
+				classes.root,
+				selected && classes.selected,
+				active && classes.active,
+				disabled && classes.disabled
+			]}
+			onpointerdown={() => {
+				requestActive();
+				select();
+			}}
+			role="option"
+			aria-disabled={disabled}
+			aria-selected={selected}
+		>
+			{children()}
+		</div>
+	);
+});
 
 export type ListOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
@@ -52,7 +176,10 @@ export interface ListProperties {
 
 export interface ListChildren {
 	/** Custom renderer for item contents */
-	(properties: ItemRendererProperties): RenderResult;
+	(
+		item: ItemRendererProperties,
+		properties: ListItemProperties & MenuItemProperties
+	): RenderResult;
 }
 
 export interface ItemRendererProperties {
@@ -300,40 +427,46 @@ export const List = factory(function List({
 			disabled
 		};
 
-		const children = itemRenderer
-			? itemRenderer({
+		let item: RenderResult;
+
+		if (itemRenderer) {
+			item = itemRenderer(
+				{
 					value,
 					label,
 					disabled,
 					active,
 					selected
-			  })
-			: label || value;
-
-		const item = menu ? (
-			<MenuItem
-				{...itemProps}
-				theme={theme.compose(
-					menuItemCss,
-					css,
-					'item'
-				)}
-			>
-				{children}
-			</MenuItem>
-		) : (
-			<ListItem
-				{...itemProps}
-				selected={selected}
-				theme={theme.compose(
-					listItemCss,
-					css,
-					'item'
-				)}
-			>
-				{children}
-			</ListItem>
-		);
+				},
+				itemProps
+			);
+		} else {
+			const children = label || value;
+			item = menu ? (
+				<MenuItem
+					{...itemProps}
+					theme={theme.compose(
+						menuItemCss,
+						css,
+						'item'
+					)}
+				>
+					{children}
+				</MenuItem>
+			) : (
+				<ListItem
+					{...itemProps}
+					selected={selected}
+					theme={theme.compose(
+						listItemCss,
+						css,
+						'item'
+					)}
+				>
+					{children}
+				</ListItem>
+			);
+		}
 
 		return divider ? [item, <hr classes={themedCss.divider} />] : item;
 	}
@@ -363,19 +496,20 @@ export const List = factory(function List({
 			theme: themeProp
 		};
 
-		const menuItemChild = itemRenderer
-			? itemRenderer({
+		const offscreenMenuItem = itemRenderer ? (
+			itemRenderer(
+				{
 					selected: false,
 					active: false,
 					value: 'offscreen',
 					disabled: false
-			  })
-			: 'offscreen';
-
-		const offscreenMenuItem = menu ? (
-			<MenuItem {...offscreenItemProps}>{menuItemChild}</MenuItem>
+				},
+				offscreenItemProps
+			)
+		) : menu ? (
+			<MenuItem {...offscreenItemProps}>offscreen</MenuItem>
 		) : (
-			<ListItem {...offscreenItemProps}>{menuItemChild}</ListItem>
+			<ListItem {...offscreenItemProps}>offscreen</ListItem>
 		);
 
 		const itemHeight = icache.getOrSet('itemHeight', offscreenHeight(offscreenMenuItem));

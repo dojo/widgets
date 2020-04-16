@@ -2,13 +2,11 @@ import { sandbox } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import List, { ListOption, defaultTransform } from '..';
+import List, { ListOption, defaultTransform, MenuItem, ListItem } from '..';
 import { compareId, createHarness, compareTheme } from '../../common/tests/support/test-helpers';
 import { Keys } from '../../common/util';
 import * as css from '../../theme/default/list.m.css';
 import * as fixedCss from '../list.m.css';
-import MenuItem from '../MenuItem';
-import ListItem from '../Listitem';
 import { createMemoryTemplate } from '../../examples/src/widgets/list/memoryTemplate';
 import { createResource } from '@dojo/framework/core/resource';
 const { assert } = intern.getPlugin('chai');
@@ -155,7 +153,11 @@ describe('List', () => {
 				}}
 				transform={defaultTransform}
 			>
-				{({ label, value }) => <span>label is {label || value}</span>}
+				{({ label, value }, props) => (
+					<ListItem {...props}>
+						<span>label is {label || value}</span>
+					</ListItem>
+				)}
 			</List>
 		));
 		const itemRendererTemplate = template.setChildren('@transformer', () =>
@@ -167,8 +169,6 @@ describe('List', () => {
 						active={index === 0}
 						onRequestActive={noop}
 						disabled={disabled}
-						selected={false}
-						theme={{}}
 						widgetId={`menu-test-item-${index}`}
 					>
 						<span>label is {label || value}</span>
@@ -482,7 +482,11 @@ describe('List - Menu', () => {
 				transform={defaultTransform}
 				menu
 			>
-				{({ label, value }) => <span>label is {label || value}</span>}
+				{({ label, value }, props) => (
+					<MenuItem {...props}>
+						<span>label is {label || value}</span>
+					</MenuItem>
+				)}
 			</List>
 		));
 		const itemRendererTemplate = template.setChildren('@transformer', () =>
@@ -494,7 +498,6 @@ describe('List - Menu', () => {
 						active={index === 0}
 						onRequestActive={noop}
 						disabled={disabled}
-						theme={{}}
 						widgetId={`menu-test-item-${index}`}
 					>
 						<span>label is {label || value}</span>

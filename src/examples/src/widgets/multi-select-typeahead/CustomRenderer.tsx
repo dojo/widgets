@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { defaultTransform } from '@dojo/widgets/select';
 import { createMemoryResourceWithDataAndFilter } from '../list/memoryTemplate';
 import MultiSelectTypeahead from '@dojo/widgets/multi-select-typeahead';
+import { ListItem } from '@dojo/widgets/list';
 
 const factory = create();
 const options = [
@@ -18,10 +19,10 @@ export default factory(function CustomRenderer() {
 			<MultiSelectTypeahead resource={resource} transform={defaultTransform}>
 				{{
 					label: 'Favorite Foods',
-					items: (item) => (
-						<div>
+					items: (item, props) => (
+						<ListItem {...props}>
 							{item.selected ? '❤️' : '🤢'} {item.label}
-						</div>
+						</ListItem>
 					),
 					selected: (value) => {
 						switch (value) {
