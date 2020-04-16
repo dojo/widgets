@@ -123,13 +123,7 @@ export const SlidePane = factory(function SlidePane({
 	];
 
 	const fixedAlignCss: { [key: string]: any } = fixedCss;
-
-	const fixedContentClasses = [
-		open ? fixedCss.openFixed : null,
-		fixedAlignCss[`${align}Fixed`],
-		slide === Slide.in ? fixedCss.slideInFixed : null,
-		slide === Slide.out ? fixedCss.slideOutFixed : null
-	];
+	const fixedContentClasses = [fixedAlignCss[`${align}Fixed`]];
 
 	if (!closeText) {
 		const { messages } = i18n.localize(commonBundle);
