@@ -16,7 +16,6 @@
 }
 
 .bottom .content {
-	margin: var(--spacing-regular) 0 0;
 	transform: translate(-50%, calc(100% + var(--grid-base)));
 }
 
@@ -32,7 +31,6 @@
 }
 
 .top .content {
-	margin: 0 0 var(--spacing-regular);
 	transform: translate(-50%, calc(-100% - var(--grid-base)));
 }
 
@@ -48,7 +46,6 @@
 }
 
 .left .content {
-	margin: 0 var(--spacing-regular) 0 0;
 	transform: translate(calc(-100% - var(--grid-base)), -50%);
 }
 
@@ -64,7 +61,6 @@
 }
 
 .right .content {
-	margin: 0 0 0 var(--spacing-regular);
 	transform: translate(calc(100% + var(--grid-base)), -50%);
 }
 
