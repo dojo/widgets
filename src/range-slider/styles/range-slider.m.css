@@ -1,5 +1,3 @@
-@import '../../common/styles/variables.css';
-
 .inputWrapperFixed {
 	position: relative;
 }
@@ -31,7 +29,7 @@
 	top: 0;
 	width: 100%;
 	height: 100%;
-	z-index: calc(var(--zindex-base) + 1);
+	z-index: 1;
 }
 
 /* invisible native track */

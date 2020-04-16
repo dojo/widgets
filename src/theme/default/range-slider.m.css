@@ -1,7 +1,3 @@
-:root {
-	--slider-height: 13px;
-}
-
 /* The root class of the RangeSlider */
 .root {
 	padding-bottom: calc(var(--slider-height) / 2);

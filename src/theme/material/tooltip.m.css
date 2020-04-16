@@ -1,15 +1,3 @@
-:root {
-	/* Spacing */
-	--mdc-tooltip-grid-base: 8px;
-	--mdc-tooltip-spacing-regular: calc(var(--mdc-tooltip-grid-base) / 2);
-
-	/* Color */
-	--mdc-tooltip-grey-background: rgba(97, 97, 97, 0.9); /* The theme grey background color */
-
-	/* Border */
-	--mdc-tooltip-border-radius: 6px;
-}
-
 .root {
 	font-family: var(--mdc-theme-font-family);
 }

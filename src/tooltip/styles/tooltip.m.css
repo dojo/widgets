@@ -1,5 +1,3 @@
-@import '../../common/styles/variables.css';
-
 .rootFixed {
 	position: relative;
 	display: inline-block;
@@ -7,7 +5,7 @@
 
 .contentFixed {
 	position: absolute;
-	z-index: var(--zindex-tooltip);
+	z-index: 100;
 }
 
 .bottomFixed .contentFixed {
