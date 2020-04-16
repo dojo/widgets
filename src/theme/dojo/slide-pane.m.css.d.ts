@@ -11,4 +11,3 @@ export const top: string;
 export const bottom: string;
 export const slideIn: string;
 export const slideOut: string;
-export const open: string;

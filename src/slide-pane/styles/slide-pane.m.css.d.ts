@@ -5,6 +5,3 @@ export const leftFixed: string;
 export const rightFixed: string;
 export const topFixed: string;
 export const bottomFixed: string;
-export const slideOutFixed: string;
-export const slideInFixed: string;
-export const openFixed: string;

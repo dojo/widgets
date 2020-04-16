@@ -33,18 +33,7 @@ const closedTemplate = assertionTemplate(() => (
 	>
 		<div
 			key="content"
-			classes={[
-				css.pane,
-				css.left,
-				null,
-				null,
-				null,
-				fixedCss.paneFixed,
-				null,
-				fixedCss.leftFixed,
-				null,
-				null
-			]}
+			classes={[css.pane, css.left, null, null, null, fixedCss.paneFixed, fixedCss.leftFixed]}
 			styles={{
 				transform: undefined,
 				width: '320px',
@@ -64,10 +53,7 @@ const closedTemplateRight = closedTemplate.setProperty('@content', 'classes', [
 	null,
 	null,
 	fixedCss.paneFixed,
-	null,
-	fixedCss.rightFixed,
-	null,
-	null
+	fixedCss.rightFixed
 ]);
 
 const openTemplate = closedTemplate
@@ -87,10 +73,7 @@ const openTemplate = closedTemplate
 		null,
 		null,
 		fixedCss.paneFixed,
-		fixedCss.openFixed,
-		fixedCss.leftFixed,
-		null,
-		null
+		fixedCss.leftFixed
 	]);
 const openTemplateRight = openTemplate.setProperty('@content', 'classes', [
 	css.pane,
@@ -99,10 +82,7 @@ const openTemplateRight = openTemplate.setProperty('@content', 'classes', [
 	null,
 	null,
 	fixedCss.paneFixed,
-	fixedCss.openFixed,
-	fixedCss.rightFixed,
-	null,
-	null
+	fixedCss.rightFixed
 ]);
 
 registerSuite('SlidePane', {
@@ -140,10 +120,7 @@ registerSuite('SlidePane', {
 							css.slideIn,
 							null,
 							fixedCss.paneFixed,
-							fixedCss.openFixed,
-							fixedCss.leftFixed,
-							fixedCss.slideInFixed,
-							null
+							fixedCss.leftFixed
 						]}
 						styles={{
 							transform: undefined,
@@ -199,10 +176,7 @@ registerSuite('SlidePane', {
 									css.slideIn,
 									null,
 									fixedCss.paneFixed,
-									fixedCss.openFixed,
-									fixedCss.leftFixed,
-									fixedCss.slideInFixed,
-									null
+									fixedCss.leftFixed
 								],
 								styles: {
 									transform: undefined,
@@ -250,10 +224,7 @@ registerSuite('SlidePane', {
 									null,
 									css.slideOut,
 									fixedCss.paneFixed,
-									null,
-									fixedCss.leftFixed,
-									null,
-									fixedCss.slideOutFixed
+									fixedCss.leftFixed
 								],
 								styles: {
 									transform: undefined,
@@ -557,10 +528,7 @@ registerSuite('SlidePane', {
 					css.slideIn,
 					null,
 					fixedCss.paneFixed,
-					fixedCss.openFixed,
-					fixedCss.leftFixed,
-					fixedCss.slideInFixed,
-					null
+					fixedCss.leftFixed
 				])
 			);
 
@@ -585,10 +553,7 @@ registerSuite('SlidePane', {
 					null,
 					css.slideOut,
 					fixedCss.paneFixed,
-					null,
-					fixedCss.leftFixed,
-					null,
-					fixedCss.slideOutFixed
+					fixedCss.leftFixed
 				])
 			);
 		},
@@ -609,10 +574,7 @@ registerSuite('SlidePane', {
 					css.slideIn,
 					null,
 					fixedCss.paneFixed,
-					fixedCss.openFixed,
-					fixedCss.rightFixed,
-					fixedCss.slideInFixed,
-					null
+					fixedCss.rightFixed
 				])
 			);
 
@@ -628,10 +590,7 @@ registerSuite('SlidePane', {
 						null,
 						null,
 						fixedCss.paneFixed,
-						fixedCss.openFixed,
-						fixedCss.rightFixed,
-						null,
-						null
+						fixedCss.rightFixed
 					])
 					.setProperty('@content', 'styles', {
 						transform: 'translateX(31.25%)',
@@ -650,10 +609,7 @@ registerSuite('SlidePane', {
 					null,
 					css.slideOut,
 					fixedCss.paneFixed,
-					null,
-					fixedCss.rightFixed,
-					null,
-					fixedCss.slideOutFixed
+					fixedCss.rightFixed
 				])
 			);
 			assert(!properties.open);
