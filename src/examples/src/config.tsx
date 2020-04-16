@@ -238,6 +238,7 @@ import AlertResult from './widgets/result/Alert';
 import ErrorResult from './widgets/result/Error';
 import SuccessResult from './widgets/result/Success';
 import CustomIconResult from './widgets/result/CustomIcon';
+import PopupConfirmation from './widgets/popup-confirmation/Basic';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -1194,6 +1195,16 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicProgress
+				}
+			}
+		},
+		'popup-confirmation': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: PopupConfirmation,
+					sandbox: true,
+					size: 'medium'
 				}
 			}
 		},
