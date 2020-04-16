@@ -59,6 +59,8 @@ import FocusTrappedDialog from './widgets/dialog/FocusTrappedDialog';
 import ActionsDialog from './widgets/dialog/ActionsDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
 import Advanced from './widgets/grid/Advanced';
+import BasicFab from './widgets/floating-action-button/Basic';
+import ExtendedFab from './widgets/floating-action-button/Extended';
 import BasicForm from './widgets/form/Basic';
 import ControlledForm from './widgets/form/Basic';
 import ValidationForm from './widgets/form/Validation';
@@ -663,6 +665,21 @@ export const config = {
 					module: BasicEmailInput
 				}
 			}
+		},
+		'floating-action-button': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicFab
+				}
+			},
+			examples: [
+				{
+					title: 'Extended FAB',
+					module: ExtendedFab,
+					filename: 'Extended'
+				}
+			]
 		},
 		form: {
 			examples: [

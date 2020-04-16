@@ -1,0 +1,7 @@
+.root {
+	composes: mdc-fab from '@material/fab/dist/mdc.fab.css';
+}
+
+.extended {
+	composes: mdc-fab--extended from '@material/fab/dist/mdc.fab.css';
+}

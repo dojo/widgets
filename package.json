@@ -68,6 +68,7 @@
     "@material/chips": "5.1.0",
     "@material/dialog": "5.1.0",
     "@material/drawer": "5.1.0",
+    "@material/fab": "5.1.0",
     "@material/linear-progress": "5.1.0",
     "@material/list": "5.1.0",
     "@material/menu": "5.1.0",

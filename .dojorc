@@ -21,6 +21,7 @@
 			"src/date-input",
 			"src/dialog",
 			"src/email-input",
+			"src/floating-action-button",
 			"src/form",
 			"src/grid",
 			"src/header",
