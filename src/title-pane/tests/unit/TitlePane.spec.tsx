@@ -60,11 +60,7 @@ describe('TitlePane', () => {
 					<div
 						aria-hidden={isOpen ? null : 'true'}
 						aria-labelledby="test-title"
-						classes={[
-							themeCss.content,
-							themeCss.contentTransition,
-							fixedCss.contentFixed
-						]}
+						classes={[themeCss.content, false, fixedCss.contentFixed]}
 						id="test-content"
 						key="content"
 						styles={{
@@ -150,7 +146,13 @@ describe('TitlePane', () => {
 
 		h.trigger('@title-button', 'onclick', { stopPropagation: noop });
 
-		h.expect(getTemplate({ initialOpen: true }));
+		h.expect(
+			getTemplate({ initialOpen: true }).setProperty('@content', 'classes', [
+				themeCss.content,
+				themeCss.contentTransition,
+				fixedCss.contentFixed
+			])
+		);
 	});
 
 	it('closes an open pane', () => {
@@ -165,7 +167,15 @@ describe('TitlePane', () => {
 
 		h.trigger('@title-button', 'onclick', { stopPropagation: noop });
 
-		h.expect(getTemplate().setProperty('@title-button', 'aria-expanded', 'false'));
+		h.expect(
+			getTemplate()
+				.setProperty('@title-button', 'aria-expanded', 'false')
+				.setProperty('@content', 'classes', [
+					themeCss.content,
+					themeCss.contentTransition,
+					fixedCss.contentFixed
+				])
+		);
 	});
 
 	it('calls onOpen', () => {

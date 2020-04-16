@@ -64,6 +64,7 @@ export const TitlePane = factory(function TitlePane({
 
 	let { open } = properties();
 
+	const firstRender = icache.get('open') === undefined;
 	if (open === undefined) {
 		open = icache.get('open');
 		const existingInitialOpen = icache.get('initialOpen');
@@ -121,7 +122,11 @@ export const TitlePane = factory(function TitlePane({
 			<div
 				aria-hidden={open ? null : 'true'}
 				aria-labelledby={`${id}-title`}
-				classes={[themeCss.content, themeCss.contentTransition, fixedCss.contentFixed]}
+				classes={[
+					themeCss.content,
+					!firstRender && themeCss.contentTransition,
+					fixedCss.contentFixed
+				]}
 				id={`${id}-content`}
 				key="content"
 				styles={{
