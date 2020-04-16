@@ -49,26 +49,22 @@
 }
 
 .left {
-	transform: translateX(calc(-100% - 10px));
+	transform: translateX(calc(-100% - var(--box-shadow-blur-large)));
 }
 
 .right {
-	transform: translateX(calc(100% + 10px));
+	transform: translateX(calc(100% + var(--box-shadow-blur-large)));
 }
 
 .top {
-	transform: translateY(calc(-100% - 20px));
+	transform: translateY(calc(-100% - var(--box-shadow-blur-large) - var(--box-shadow-voffset)));
 }
 
 .bottom {
-	transform: translateY(calc(100% + 10px));
+	transform: translateY(calc(100% + var(--box-shadow-blur-large)));
 }
 
 .slideIn,
 .slideOut {
 	transition: transform ease-in-out var(--transition-duration);
-}
-
-.open {
-	transform: translateX(0%);
 }

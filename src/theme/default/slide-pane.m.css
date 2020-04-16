@@ -19,10 +19,6 @@
 .content {
 }
 
-/* Added to an open slide pane */
-.open {
-}
-
 /* Contains the pane */
 .pane {
 	background-color: var(--component-background);
@@ -57,16 +53,25 @@
 
 /* Added to a left-aligned pane */
 .left {
+	transform: translateX(-100%);
 }
 
 /* Added to a right-aligned pane */
 .right {
+	transform: translateX(100%);
 }
 
 /* Added to a top-aligned pane */
 .top {
+	transform: translateY(-100%);
 }
 
 /* Added to a bottom-aligned pane */
 .bottom {
+	transform: translateY(100%);
+}
+
+/* Added to an open slide pane */
+.open {
+	transform: translate(0, 0);
 }

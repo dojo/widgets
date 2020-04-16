@@ -32,56 +32,16 @@
 
 .leftFixed {
 	left: 0;
-	transform: translateX(-100%);
 }
 
 .rightFixed {
 	right: 0;
-	transform: translateX(100%);
 }
 
 .topFixed {
 	top: 0;
-	transform: translateY(-100%);
 }
 
 .bottomFixed {
 	bottom: 0;
-	transform: translateY(100%);
-}
-
-.leftFixed.slideOutFixed {
-	transform: translateX(-100%) !important;
-}
-
-.rightFixed.slideOutFixed {
-	transform: translateX(100%) !important;
-}
-
-.topFixed.slideOutFixed {
-	transform: translateY(-100%) !important;
-}
-
-.bottomFixed.slideOutFixed {
-	transform: translateY(100%) !important;
-}
-
-.leftFixed.slideInFixed {
-	transform: translateX(0%) !important;
-}
-
-.rightFixed.slideInFixed {
-	transform: translateX(0%) !important;
-}
-
-.topFixed.slideInFixed {
-	transform: translateY(0%) !important;
-}
-
-.bottomFixed.slideInFixed {
-	transform: translateY(0%) !important;
-}
-
-.openFixed {
-	transform: translateX(0%);
 }

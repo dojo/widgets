@@ -1294,7 +1294,7 @@ export const config = {
 					filename: 'Basic',
 					module: BasicSlidePane,
 					sandbox: true,
-					size: 'medium'
+					size: 'large'
 				}
 			},
 			examples: [
@@ -1303,35 +1303,35 @@ export const config = {
 					module: RightAlignSlidePane,
 					title: 'Right Aligned Slide Pane',
 					sandbox: true,
-					size: 'medium'
+					size: 'large'
 				},
 				{
 					filename: 'LeftAlignSlidePane',
 					module: LeftAlignSlidePane,
 					title: 'Left Aligned Slide Pane',
 					sandbox: true,
-					size: 'medium'
+					size: 'large'
 				},
 				{
 					filename: 'BottomAlignSlidePane',
 					module: BottomAlignSlidePane,
 					title: 'Bottom Aligned Slide Pane',
 					sandbox: true,
-					size: 'medium'
+					size: 'large'
 				},
 				{
 					filename: 'UnderlaySlidePane',
 					module: UnderlaySlidePane,
 					title: 'Underlaid Slide Pane',
 					sandbox: true,
-					size: 'medium'
+					size: 'large'
 				},
 				{
 					filename: 'FixedWidthSlidePane',
 					module: FixedWidthSlidePane,
 					title: 'Fixed Width Slide Pane',
 					sandbox: true,
-					size: 'medium'
+					size: 'large'
 				}
 			]
 		},
