@@ -66,4 +66,6 @@
 	--avatar-size-small: 24px;
 	--avatar-size-medium: 40px;
 	--avatar-size-large: 56px;
+
+	--tab-width: calc(var(--grid-base) * 16);
 }

@@ -48,4 +48,8 @@
 	--mdc-grid-base: 8px;
 	--mdc-font-size-small: 14px;
 	--mdc-disabled-color: #bbb;
+	--mdc-tooltip-grid-base: 8px;
+	--mdc-tooltip-spacing-regular: calc(var(--mdc-tooltip-grid-base) / 2);
+	--mdc-tooltip-grey-background: rgba(97, 97, 97, 0.9);
+	--mdc-tooltip-border-radius: 6px;
 }
