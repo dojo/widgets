@@ -51,7 +51,7 @@ import * as titlePane from './title-pane.m.css';
 import * as tooltip from './tooltip.m.css';
 import * as twoColumnLayout from './two-column-layout.m.css';
 import * as typeahead from './typeahead.m.css';
-import * as defaultVariant from './variants/default.m.css';
+import * as defaultVariant from './variants/dark.m.css';
 
 export default {
 	theme: {
