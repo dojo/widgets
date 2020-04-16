@@ -95,6 +95,7 @@ import DividedList from './widgets/list/Dividers';
 import ControlledList from './widgets/list/Controlled';
 import ItemRenderer from './widgets/list/ItemRenderer';
 import FetchedResource from './widgets/list/FetchedResource';
+import DisabledList from './widgets/list/Disabled';
 import Menu from './widgets/list/Menu';
 import CustomTransformer from './widgets/list/CustomTransformer';
 import BasicMultiSelectTypeahead from './widgets/multi-select-typeahead/Basic';
@@ -922,6 +923,13 @@ export const config = {
 					filename: 'Dividers',
 					module: DividedList,
 					title: 'Dividers'
+				},
+				{
+					description:
+						'This example shows how to disable a list item, even if the item is not marked as disabled in the resource.',
+					filename: 'Disabled',
+					module: DisabledList,
+					title: 'Disabled'
 				}
 			],
 			overview: {
