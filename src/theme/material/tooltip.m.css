@@ -3,10 +3,10 @@
 }
 
 .content {
-	background-color: var(--mdc-tooltip-grey-background);
-	border-radius: var(--mdc-tooltip-border-radius);
+	background-color: var(--mdc-tooltip-background);
+	border-radius: var(--mdc-theme-border-radius);
 	color: var(--mdc-theme-surface);
-	padding: var(--mdc-tooltip-spacing-regular) calc(var(--mdc-tooltip-spacing-regular) * 2);
+	padding: calc(var(--mdc-grid-base) / 2) var(--mdc-grid-base);
 	font-size: var(--mdc-theme-font-size-small);
 	line-height: calc(var(--mdc-tooltip-font-size) * 1.6);
 	z-index: var(--zindex-tooltip);
@@ -14,17 +14,17 @@
 }
 
 .bottom .content {
-	transform: translate(-50%, calc(100% + var(--mdc-tooltip-grid-base)));
+	transform: translate(-50%, calc(100% + var(--mdc-grid-base)));
 }
 
 .top .content {
-	transform: translate(-50%, calc(-100% - var(--mdc-tooltip-grid-base)));
+	transform: translate(-50%, calc(-100% - var(--mdc-grid-base)));
 }
 
 .left .content {
-	transform: translate(calc(-100% - var(--mdc-tooltip-grid-base)), -50%);
+	transform: translate(calc(-100% - var(--mdc-grid-base)), -50%);
 }
 
 .right .content {
-	transform: translate(calc(100% + var(--mdc-tooltip-grid-base)), -50%);
+	transform: translate(calc(100% + var(--mdc-grid-base)), -50%);
 }

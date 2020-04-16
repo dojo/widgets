@@ -38,7 +38,6 @@
 	--zindex-tooltip: 100;
 	--zindex-dialog: 400;
 	--mdc-border-color: rgba(0, 0, 0, 0.38);
-	--mdc-border-radius: 4px;
 	--mdc-border-width: 1px;
 	--mdc-avatar-size-small: 24px;
 	--mdc-avatar-size-medium: 40px;
@@ -48,8 +47,5 @@
 	--mdc-grid-base: 8px;
 	--mdc-font-size-small: 14px;
 	--mdc-disabled-color: #bbb;
-	--mdc-tooltip-grid-base: 8px;
-	--mdc-tooltip-spacing-regular: calc(var(--mdc-tooltip-grid-base) / 2);
-	--mdc-tooltip-grey-background: rgba(97, 97, 97, 0.9);
-	--mdc-tooltip-border-radius: 6px;
+	--mdc-tooltip-background: #6d6d6d;
 }
