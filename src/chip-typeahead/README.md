@@ -1,6 +1,6 @@
 # @dojo/widgets/chip-typeahead
 
-Dojo's `ChipTypeahead` widget allows users to select multiple values from a dropdown of preconfigured options. This widget composes the the `Typeahead` and `Chip` widgets.
+Dojo's `ChipTypeahead` widget allows users to select multiple values from a dropdown of preconfigured options. This widget composes the `Typeahead` and `Chip` widgets.
 
 ## Features
 
