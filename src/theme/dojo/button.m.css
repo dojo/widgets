@@ -7,12 +7,8 @@
 .root {
 	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
-	color: var(--color-highlight);
 	cursor: pointer;
 	display: inline-block;
-	font-size: var(--font-size-base);
-	font-weight: bold;
-	line-height: var(--line-height-base);
 	min-width: calc(var(--grid-base) * 20);
 	padding: var(--spacing-regular);
 	transition: box-shadow var(--transition-duration) var(--transition-easing);
@@ -39,4 +35,11 @@
 	box-shadow: none;
 	color: var(--color-text-faded);
 	cursor: default;
+}
+
+.label {
+	color: var(--color-highlight);
+	font-size: var(--font-size-base);
+	font-weight: bold;
+	line-height: var(--line-height-base);
 }

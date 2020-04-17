@@ -28,6 +28,7 @@
 }
 
 .label {
+	composes: label from './button.m.css';
 	display: flex;
 	align-items: center;
 	justify-content: center;
