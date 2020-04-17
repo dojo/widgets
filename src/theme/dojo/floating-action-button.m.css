@@ -1,0 +1,50 @@
+.root {
+	display: inline-flex;
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+	position: relative;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	padding: 0;
+}
+
+.root .icon {
+	font-size: var(--font-size-icon);
+}
+
+.root:not(.extended) {
+	border-radius: 50%;
+	width: 56px;
+	height: 56px;
+}
+
+.root:not(.pressed) {
+	background: none;
+	color: inherit;
+}
+
+.pressed {
+	composes: pressed from './button.m.css';
+}
+
+.label {
+	composes: label from './button.m.css';
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.extended {
+	border-radius: 24px;
+	padding: 0 20px;
+	height: 48px;
+}
+
+.root:hover,
+.root:focus {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+}
+
+.disabled:hover {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+}
