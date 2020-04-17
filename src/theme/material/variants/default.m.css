@@ -1,12 +1,10 @@
 .root {
+	/* variables taken from @material/theme/dist/mdc.theme.css */
 	--mdc-theme-primary: #6200ee;
 	--mdc-theme-secondary: #018786;
 	--mdc-theme-background: #fff;
 	--mdc-theme-surface: #fff;
 	--mdc-theme-error: #b00020;
-	--mdc-theme-info: #2196f3;
-	--mdc-theme-alert: #ff5722;
-	--mdc-theme-success: #4caf50;
 	--mdc-theme-on-primary: #fff;
 	--mdc-theme-on-secondary: #fff;
 	--mdc-theme-on-surface: #000;
@@ -26,25 +24,46 @@
 	--mdc-theme-text-hint-on-dark: rgba(255, 255, 255, 0.5);
 	--mdc-theme-text-disabled-on-dark: rgba(255, 255, 255, 0.5);
 	--mdc-theme-text-icon-on-dark: rgba(255, 255, 255, 0.5);
-	--mdc-theme-background-active: #f1f1f1;
-	--mdc-theme-background-selected: #e1e1e1;
+
+	/* supplementary colours */
+	--mdc-theme-info: #2196f3;
+	--mdc-theme-alert: #ff5722;
+	--mdc-theme-success: #4caf50;
+
+	/* layout */
+	--mdc-theme-grid-base: 8px;
 	--mdc-theme-border-radius: 4px;
+
+	/* elevations */
 	--mdc-theme-elevation-1: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
 		0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 	--mdc-theme-elevation-2: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14),
 		0 3px 14px 2px rgba(0, 0, 0, 0.12);
-	--mdc-theme-font-family: Roboto, sans-serif;
-	--mdc-theme-font-size-small: 0.875rem;
+
+	/* z-indexes */
 	--zindex-tooltip: 100;
 	--zindex-dialog: 400;
+
+	/* font details */
+	--mdc-theme-font-family: Roboto, sans-serif;
+	--mdc-theme-font-size-small: 0.875rem;
+
+	/* borders */
 	--mdc-border-color: rgba(0, 0, 0, 0.38);
 	--mdc-border-width: 1px;
+
+	/* avatar sizes */
 	--mdc-avatar-size-small: 24px;
 	--mdc-avatar-size-medium: 40px;
 	--mdc-avatar-size-large: 56px;
+
+	/* whats all this? */
+	--mdc-theme-background-active: #f1f1f1;
+	--mdc-theme-background-selected: #e1e1e1;
+
 	--mdc-theme-heading-font-weight: 500;
 	--mdc-theme-separator: #e0e0e0;
-	--mdc-grid-base: 8px;
+
 	--mdc-font-size-small: 14px;
 	--mdc-disabled-color: #bbb;
 	--mdc-tooltip-background: #6d6d6d;

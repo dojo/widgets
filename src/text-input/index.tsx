@@ -256,7 +256,14 @@ export const TextInput = factory(function TextInput({
 						{label}
 					</Label>
 				)}
-				<div key="inputWrapper" classes={themeCss.inputWrapper} role="presentation">
+				<div
+					key="inputWrapper"
+					classes={[
+						themeCss.inputWrapper,
+						inputFocused ? themeCss.inputWrapperFocused : undefined
+					]}
+					role="presentation"
+				>
 					{leading}
 					<input
 						{...formatAriaProperties(aria)}

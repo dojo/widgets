@@ -12,6 +12,9 @@
 /* Contains the input element */
 .inputWrapper {
 }
+
+.inputWrapperFocused {
+}
 /* Added to a disabled TextInput */
 .disabled {
 }

@@ -15,6 +15,11 @@
 /* Contains the input element */
 .inputWrapper {
 	width: 100%;
+	composes: mdc-line-ripple from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.inputWrapperFocused {
+	composes: mdc-line-ripple--active from '@material/textfield/dist/mdc.textfield.css';
 }
 
 .noLabel {
@@ -42,6 +47,19 @@
 .addonRoot {
 	composes: mdc-text-field__icon from '@material/textfield/dist/mdc.textfield.css';
 }
+
+.hasLeading.hasTrailing .addonRoot,
+.hasLeading .addonRoot {
+	left: 16px;
+	right: auto;
+}
+
+.hasLeading.hasTrailing .addonRoot ~ .addonRoot,
+.hasTrailing .addonRoot {
+	right: 12px;
+	left: auto;
+}
+
 /* Added at the root when there is leading content */
 .hasLeading {
 	composes: mdc-text-field--with-leading-icon from '@material/textfield/dist/mdc.textfield.css';

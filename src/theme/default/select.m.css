@@ -21,6 +21,14 @@
 .focused {
 }
 
+/* class added to the root when the menu is open */
+.expanded {
+}
+
+/* class added to value when the menu is open */
+.valueExpanded {
+}
+
 /* Wrapper around the widgets text value */
 .value {
 	flex-grow: 1;

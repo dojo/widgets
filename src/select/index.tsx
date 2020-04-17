@@ -123,6 +123,7 @@ export const Select = factory(function Select({
 	const dirty = icache.get('dirty');
 	const { messages } = i18n.localize(bundle);
 	const { get, getOptions, isLoading, getTotal } = data();
+	const expanded = icache.get('expanded');
 
 	if (required && dirty) {
 		const isValid = value !== undefined;
@@ -141,7 +142,8 @@ export const Select = factory(function Select({
 				disabled && themedCss.disabled,
 				valid === true && themedCss.valid,
 				valid === false && themedCss.invalid,
-				shouldFocus === true && themedCss.focused
+				shouldFocus === true && themedCss.focused,
+				expanded && themedCss.expanded
 			]}
 			key="root"
 		>
@@ -217,7 +219,9 @@ export const Select = factory(function Select({
 									}
 								}}
 							>
-								<span classes={themedCss.value}>
+								<span
+									classes={[themedCss.value, expanded && themedCss.valueExpanded]}
+								>
 									{(valueOption && valueOption.label) || value || (
 										<span classes={themedCss.placeholder}>{placeholder}</span>
 									)}

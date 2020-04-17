@@ -1,7 +1,7 @@
 .leading {
-	width: calc(var(--mdc-grid-base) * 40);
+	width: calc(var(--mdc-theme-grid-base) * 40);
 }
 
 .trailing {
-	width: calc(var(--mdc-grid-base) * 40);
+	width: calc(var(--mdc-theme-grid-base) * 40);
 }

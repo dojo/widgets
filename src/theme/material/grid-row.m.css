@@ -1,6 +1,6 @@
 .root {
 	box-sizing: border-box;
-	height: calc(var(--mdc-grid-base) * 5);
+	height: calc(var(--mdc-theme-grid-base) * 5);
 }
 
 .selected {
