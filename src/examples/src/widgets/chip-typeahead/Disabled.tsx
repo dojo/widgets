@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { defaultTransform } from '@dojo/widgets/select';
 import { createMemoryResourceWithDataAndFilter } from '../list/memoryTemplate';
-import MultiSelectTypeahead from '@dojo/widgets/multi-select-typeahead';
+import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 
 const factory = create();
 const options = [
@@ -15,7 +15,7 @@ const resource = createMemoryResourceWithDataAndFilter(options);
 export default factory(function Disabled() {
 	return (
 		<virtual>
-			<MultiSelectTypeahead
+			<ChipTypeahead
 				resource={resource}
 				transform={defaultTransform}
 				disabled
@@ -24,7 +24,7 @@ export default factory(function Disabled() {
 				{{
 					label: 'Disabled'
 				}}
-			</MultiSelectTypeahead>
+			</ChipTypeahead>
 		</virtual>
 	);
 });

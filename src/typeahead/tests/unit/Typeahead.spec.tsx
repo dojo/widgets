@@ -82,6 +82,7 @@ const listTemplate = assertionTemplate(() => (
 			key="menu"
 			focusable={false}
 			activeIndex={undefined}
+			disabled={undefined}
 			resource={{ resource: resource.resource(), createOptionsWrapper: noop }}
 			transform={defaultTransform}
 			onValue={noop}

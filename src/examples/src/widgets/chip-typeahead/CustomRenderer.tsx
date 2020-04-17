@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { defaultTransform } from '@dojo/widgets/select';
 import { createMemoryResourceWithDataAndFilter } from '../list/memoryTemplate';
-import MultiSelectTypeahead from '@dojo/widgets/multi-select-typeahead';
+import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import { ListItem } from '@dojo/widgets/list';
 
 const factory = create();
@@ -16,7 +16,7 @@ const resource = createMemoryResourceWithDataAndFilter(options);
 export default factory(function CustomRenderer() {
 	return (
 		<virtual>
-			<MultiSelectTypeahead resource={resource} transform={defaultTransform}>
+			<ChipTypeahead resource={resource} transform={defaultTransform}>
 				{{
 					label: 'Favorite Foods',
 					items: (item, props) => (
@@ -35,7 +35,7 @@ export default factory(function CustomRenderer() {
 						}
 					}
 				}}
-			</MultiSelectTypeahead>
+			</ChipTypeahead>
 		</virtual>
 	);
 });

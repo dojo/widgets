@@ -1,5 +1,5 @@
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
-import * as themeCss from '../../../theme/default/multi-select-typeahead.m.css';
+import * as themeCss from '../../../theme/default/chip-typeahead.m.css';
 import { tsx } from '@dojo/framework/core/vdom';
 import { compareTheme, createHarness } from '../../../common/tests/support/test-helpers';
 import Typeahead from '../../../typeahead';
@@ -7,13 +7,11 @@ import { createMemoryTemplate } from '../../../examples/src/widgets/list/memoryT
 import { createResource } from '@dojo/framework/core/resource';
 import { stub } from 'sinon';
 import { defaultTransform, ListOption, ListItem } from '../../../list';
-import MultiSelectTypeahead from '../../../multi-select-typeahead';
+import ChipTypeahead from '../..';
 import * as typeaheadCss from '../../../theme/default/typeahead.m.css';
 import * as chipCss from '../../../theme/default/chip.m.css';
-import * as iconCss from '../../../theme/default/icon.m.css';
 import * as labelCss from '../../../theme/default/label.m.css';
 import Chip from '../../../chip/index';
-import Icon from '../../../icon';
 import Label from '../../../label';
 
 const { assert } = intern.getPlugin('chai');
@@ -47,6 +45,7 @@ const baseAssertion = assertionTemplate(() => (
 			position={undefined}
 			name={undefined}
 			focus={() => false}
+			itemDisabled={stub()}
 			disabled={undefined}
 			resource={resource}
 			onValue={stub}
@@ -118,17 +117,13 @@ const labeledAssertion = baseAssertion
 		</Label>
 	]);
 
-registerSuite('MultiSelectTypeahead', {
+registerSuite('ChipTypeahead', {
 	tests: {
-		'renders an empty multiselecttypeahead'() {
+		'renders empty'() {
 			const h = harness(() => (
-				<MultiSelectTypeahead
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				>
+				<ChipTypeahead resource={resource} transform={defaultTransform} onValue={noop}>
 					{}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			h.expect(baseAssertion);
@@ -136,14 +131,14 @@ registerSuite('MultiSelectTypeahead', {
 
 		'renders with an initial value'() {
 			const h = harness(() => (
-				<MultiSelectTypeahead
+				<ChipTypeahead
 					resource={resource}
 					transform={defaultTransform}
 					onValue={noop}
 					initialValue={['cat']}
 				>
 					{}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			h.expect(hasValueAssertion);
@@ -172,14 +167,14 @@ registerSuite('MultiSelectTypeahead', {
 			};
 
 			const h = harness(() => (
-				<MultiSelectTypeahead
+				<ChipTypeahead
 					resource={resource}
 					transform={defaultTransform}
 					onValue={noop}
 					{...properties}
 				>
 					{}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			h.expect(hasValueAssertion);
@@ -223,7 +218,7 @@ registerSuite('MultiSelectTypeahead', {
 
 		'renders chips with custom renderer'() {
 			const h = harness(() => (
-				<MultiSelectTypeahead
+				<ChipTypeahead
 					resource={resource}
 					transform={defaultTransform}
 					onValue={noop}
@@ -232,7 +227,7 @@ registerSuite('MultiSelectTypeahead', {
 					{{
 						selected: (value) => value.toUpperCase()
 					}}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			h.expect(hasValueAssertion);
@@ -259,7 +254,7 @@ registerSuite('MultiSelectTypeahead', {
 			const valueStub = stub();
 
 			const h = harness(() => (
-				<MultiSelectTypeahead
+				<ChipTypeahead
 					resource={resource}
 					transform={defaultTransform}
 					onValue={valueStub}
@@ -268,7 +263,7 @@ registerSuite('MultiSelectTypeahead', {
 					{{
 						selected: (value) => value.toUpperCase()
 					}}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			h.expect(hasValueAssertion);
@@ -287,15 +282,11 @@ registerSuite('MultiSelectTypeahead', {
 			const valueStub = stub();
 
 			const h = harness(() => (
-				<MultiSelectTypeahead
-					resource={resource}
-					transform={defaultTransform}
-					onValue={valueStub}
-				>
+				<ChipTypeahead resource={resource} transform={defaultTransform} onValue={valueStub}>
 					{{
 						selected: (value) => value.toUpperCase()
 					}}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			h.trigger('@typeahead', 'onValue', 'cat');
@@ -320,34 +311,11 @@ registerSuite('MultiSelectTypeahead', {
 			);
 		},
 
-		'selecting a selected value deselects the value'() {
-			const valueStub = stub();
-
-			const h = harness(() => (
-				<MultiSelectTypeahead
-					resource={resource}
-					transform={defaultTransform}
-					onValue={valueStub}
-					initialValue={['cat']}
-				>
-					{{
-						selected: (value) => value.toUpperCase()
-					}}
-				</MultiSelectTypeahead>
-			));
-
-			h.trigger('@typeahead', 'onValue', 'cat');
-
-			assert.isTrue(valueStub.calledWith([]));
-
-			h.expect(baseAssertion);
-		},
-
 		'tracks focus'() {
 			const h = harness(() => (
-				<MultiSelectTypeahead resource={resource} transform={defaultTransform}>
+				<ChipTypeahead resource={resource} transform={defaultTransform}>
 					{}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			h.trigger('@typeahead', 'onFocus');
@@ -359,13 +327,13 @@ registerSuite('MultiSelectTypeahead', {
 
 		'the default item renderer shows selected items'() {
 			const h = harness(() => (
-				<MultiSelectTypeahead
+				<ChipTypeahead
 					resource={resource}
 					transform={defaultTransform}
 					initialValue={['cat']}
 				>
 					{}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			const itemRenderer = h.trigger('@typeahead', (node: any) => () =>
@@ -380,18 +348,7 @@ registerSuite('MultiSelectTypeahead', {
 						widgetId=""
 						selected={true}
 					>
-						<div classes={[themeCss.item, themeCss.selected]}>
-							<Icon
-								type="checkIcon"
-								theme={{ '@dojo/widgets/Icon': iconCss }}
-								classes={{
-									'@dojo/widgets/icon': {
-										icon: [themeCss.selectedIcon]
-									}
-								}}
-							/>
-							Cat
-						</div>
+						<div classes={[themeCss.item, themeCss.selected]}>Cat</div>
 					</ListItem>
 				),
 				() =>
@@ -422,7 +379,7 @@ registerSuite('MultiSelectTypeahead', {
 
 		'uses a custom item renderer'() {
 			const h = harness(() => (
-				<MultiSelectTypeahead
+				<ChipTypeahead
 					resource={resource}
 					transform={defaultTransform}
 					initialValue={['cat']}
@@ -431,7 +388,7 @@ registerSuite('MultiSelectTypeahead', {
 						items: (item: any) =>
 							`Item ${item.value}, selected = ${item.selected ? 'true' : 'false'}`
 					}}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			const itemRenderer = h.trigger('@typeahead', (node: any) => () =>
@@ -443,14 +400,14 @@ registerSuite('MultiSelectTypeahead', {
 
 		'can place chips on the bottom instead of inline'() {
 			const h = harness(() => (
-				<MultiSelectTypeahead
+				<ChipTypeahead
 					resource={resource}
 					transform={defaultTransform}
 					initialValue={['cat']}
 					placement="bottom"
 				>
 					{}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			h.expect(bottomAssertion);
@@ -461,14 +418,14 @@ registerSuite('MultiSelectTypeahead', {
 
 		'renders as disabled'() {
 			const h = harness(() => (
-				<MultiSelectTypeahead
+				<ChipTypeahead
 					resource={resource}
 					transform={defaultTransform}
 					initialValue={['cat']}
 					disabled
 				>
 					{}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			h.expect(disabledAssertion);
@@ -491,14 +448,53 @@ registerSuite('MultiSelectTypeahead', {
 
 		'renders with labels'() {
 			const h = harness(() => (
-				<MultiSelectTypeahead resource={resource} transform={defaultTransform}>
+				<ChipTypeahead resource={resource} transform={defaultTransform}>
 					{{
 						label: 'Label'
 					}}
-				</MultiSelectTypeahead>
+				</ChipTypeahead>
 			));
 
 			h.expect(labeledAssertion);
+		},
+
+		'disables items that are selected'() {
+			const h = harness(() => (
+				<ChipTypeahead
+					resource={resource}
+					transform={defaultTransform}
+					initialValue={['cat']}
+				>
+					{}
+				</ChipTypeahead>
+			));
+
+			const disabled = h.trigger('@typeahead', (node: any) => () =>
+				node.properties.itemDisabled
+			);
+
+			assert.isTrue(disabled({ value: 'cat' }));
+			assert.isFalse(disabled({ value: 'dog' }));
+		},
+
+		'allows duplicate values if duplicates are allowed'() {
+			const h = harness(() => (
+				<ChipTypeahead
+					resource={resource}
+					transform={defaultTransform}
+					initialValue={['cat']}
+					duplicates
+				>
+					{}
+				</ChipTypeahead>
+			));
+
+			const disabled = h.trigger('@typeahead', (node: any) => () =>
+				node.properties.itemDisabled
+			);
+
+			assert.isFalse(disabled({ value: 'cat' }));
+			assert.isFalse(disabled({ value: 'dog' }));
 		}
 	}
 });
