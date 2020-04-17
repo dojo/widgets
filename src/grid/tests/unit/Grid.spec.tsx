@@ -1,7 +1,7 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 import { v, w } from '@dojo/framework/core/vdom';
 import Dimensions from '@dojo/framework/core/meta/Dimensions';
 import Resize from '@dojo/framework/core/meta/Resize';

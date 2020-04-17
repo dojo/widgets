@@ -3,7 +3,7 @@ import { Keys } from '../../../common/util';
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import { tsx } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import Icon from '../../../icon';
 import {
 	compareAriaLabelledBy,

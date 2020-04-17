@@ -1,6 +1,6 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import focus from '@dojo/framework/core/middleware/focus';
 import createFocusMock from '@dojo/framework/testing/mocks/middleware/focus';
 import { tsx } from '@dojo/framework/core/vdom';

@@ -2,8 +2,8 @@ const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import { stub } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import select from '@dojo/framework/testing/support/selector';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import select from '@dojo/framework/testing/harness/support/selector';
 import { Keys } from '../../common/util';
 import {
 	compareAriaControls,

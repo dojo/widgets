@@ -1,6 +1,6 @@
 const { describe, it, afterEach, beforeEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 import { v, w } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
 

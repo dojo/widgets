@@ -1,4 +1,4 @@
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import * as themeCss from '../../../theme/default/multi-select-typeahead.m.css';
 import { tsx } from '@dojo/framework/core/vdom';
 import { compareTheme, createHarness } from '../../../common/tests/support/test-helpers';

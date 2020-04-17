@@ -1,11 +1,11 @@
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import { compareId, compareForId } from '../../../common/tests/support/test-helpers';
 
 import { tsx, create } from '@dojo/framework/core/vdom';
 import * as sinon from 'sinon';
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 
 import Label from '../../../label/index';
 import Checkbox from '../../index';

@@ -1,8 +1,8 @@
 import { WNode } from '@dojo/framework/core/interfaces';
 
 const { describe, it, beforeEach } = intern.getInterface('bdd');
-import testHarness from '@dojo/framework/testing/harness';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import testHarness from '@dojo/framework/testing/harness/harness';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import breakpointMiddleware from '@dojo/framework/core/middleware/breakpoint';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import * as fixedCss from '../styles/three-column-layout.m.css';

@@ -3,11 +3,11 @@ import { tsx } from '@dojo/framework/core/vdom';
 
 import EmailInput from '../index';
 import TextInput from '../../text-input';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import { noop } from '../../common/tests/support/test-helpers';
 import * as textInputCss from '../../theme/default/text-input.m.css';
 import { compareTheme } from '../../common/tests/support/test-helpers';
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 
 const expected = assertionTemplate(() => (
 	<TextInput

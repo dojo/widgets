@@ -1,4 +1,4 @@
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 
 import ConstrainedInput from '../..';
 import { tsx, create } from '@dojo/framework/core/vdom';

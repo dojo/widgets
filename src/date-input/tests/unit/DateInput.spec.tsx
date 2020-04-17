@@ -4,8 +4,8 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { tsx, create } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import select from '@dojo/framework/testing/support/selector';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import select from '@dojo/framework/testing/harness/support/selector';
 import focus from '@dojo/framework/core/middleware/focus';
 
 import { compareTheme, createHarness, stubEvent } from '../../../common/tests/support/test-helpers';

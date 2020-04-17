@@ -3,8 +3,8 @@ import * as themeCss from '../../../theme/default/accordion.m.css';
 import * as titlePaneCss from '../../../theme/default/title-pane.m.css';
 import Accordion, { Pane } from '../../index';
 import TitlePane from '../../../title-pane';
-import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
-import harness from '@dojo/framework/testing/harness';
+import assertationTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import harness from '@dojo/framework/testing/harness/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 const noop = () => {};

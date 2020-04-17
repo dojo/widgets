@@ -2,8 +2,8 @@ const { describe, it } = intern.getInterface('bdd');
 import * as css from '../../theme/default/radio-group.m.css';
 import Radio from '../../radio/index';
 import RadioGroup from '../index';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import harness from '@dojo/framework/testing/harness';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import harness from '@dojo/framework/testing/harness/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 function noop() {}

@@ -1,8 +1,8 @@
 const { describe, it } = intern.getInterface('bdd');
 import * as classes from '../../../theme/default/loading-indicator.m.css';
 import LoadingIndicator from '../..';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import harness from '@dojo/framework/testing/harness';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import harness from '@dojo/framework/testing/harness/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 const baseTemplate = assertionTemplate(() => (

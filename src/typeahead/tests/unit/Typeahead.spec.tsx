@@ -1,4 +1,4 @@
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import * as themedCss from '../../../theme/default/typeahead.m.css';
 import TriggerPopup from '../../../trigger-popup';
 import HelperText from '../../../helper-text';

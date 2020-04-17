@@ -1,9 +1,9 @@
 const { registerSuite } = intern.getInterface('object');
 
-import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertationTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import * as css from '../../../theme/default/helper-text.m.css';
 import HelperText from '../../index';
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 const baseTemplate = assertationTemplate(() => {

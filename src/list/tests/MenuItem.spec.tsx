@@ -1,7 +1,7 @@
 import { sandbox } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import harness from '@dojo/framework/testing/harness';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import harness from '@dojo/framework/testing/harness/harness';
 import * as css from '../../theme/default/menu-item.m.css';
 import { MenuItem } from '../../list';
 const { describe, it, after } = intern.getInterface('bdd');

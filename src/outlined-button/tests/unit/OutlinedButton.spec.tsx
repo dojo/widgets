@@ -1,9 +1,9 @@
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 
 const { registerSuite } = intern.getInterface('object');
 
 import { tsx } from '@dojo/framework/core/vdom';
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 
 import OutlinedButton from '../../index';
 import * as buttonCss from '../../../theme/default/button.m.css';

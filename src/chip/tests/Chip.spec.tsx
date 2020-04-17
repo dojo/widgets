@@ -2,8 +2,8 @@ import { Keys } from '../../common/util';
 
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import harness from '@dojo/framework/testing/harness';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import harness from '@dojo/framework/testing/harness/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 import * as sinon from 'sinon';
 import Chip from '../index';

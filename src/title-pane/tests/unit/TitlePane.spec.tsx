@@ -5,8 +5,8 @@ import * as fixedCss from '../../styles/title-pane.m.css';
 import * as themeCss from '../../../theme/default/title-pane.m.css';
 import Icon from '../../../icon';
 import TitlePane, { TitlePaneProperties } from '../../index';
-import assertationTemplate from '@dojo/framework/testing/assertionTemplate';
-import harness from '@dojo/framework/testing/harness';
+import assertationTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import harness from '@dojo/framework/testing/harness/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 import { stub } from 'sinon';
 

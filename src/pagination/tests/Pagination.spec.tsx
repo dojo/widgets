@@ -4,11 +4,11 @@ import * as sinon from 'sinon';
 
 import { tsx, node } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 import resize from '@dojo/framework/core/middleware/resize';
 import { createResizeMock } from '@dojo/framework/testing/mocks/middleware/resize';
 import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 
 import { stubEvent } from '../../common/tests/support/test-helpers';
 

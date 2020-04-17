@@ -3,8 +3,8 @@ const { assert } = intern.getPlugin('chai');
 
 import focus from '@dojo/framework/core/middleware/focus';
 import { create, tsx } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import harness from '@dojo/framework/testing/harness';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import harness from '@dojo/framework/testing/harness/harness';
 
 import { compareId, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 import * as css from '../../../theme/default/button.m.css';

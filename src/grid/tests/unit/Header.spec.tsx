@@ -2,7 +2,7 @@ const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
 import { stub } from 'sinon';
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 import { tsx, v, w } from '@dojo/framework/core/vdom';
 import TextInput from '../../../text-input/index';
 import Icon from '../../../icon/index';

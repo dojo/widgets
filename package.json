@@ -51,7 +51,7 @@
     }
   },
   "peerDependencies": {
-    "@dojo/framework": "7.0.0-alpha.16"
+    "@dojo/framework": "7.0.0-beta.1"
   },
   "devDependencies": {
     "@dojo/cli": "7.0.0-alpha.1",
@@ -59,7 +59,7 @@
     "@dojo/cli-build-theme": "7.0.0-alpha.6",
     "@dojo/cli-build-widget": "7.0.0-alpha.8",
     "@dojo/cli-test-intern": "7.0.0-alpha.6",
-    "@dojo/framework": "7.0.0-alpha.16",
+    "@dojo/framework": "7.0.0-beta.1",
     "@dojo/parade": "0.0.15",
     "@dojo/scripts": "^4.0.3",
     "@material/button": "2.1.1",
