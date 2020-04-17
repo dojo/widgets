@@ -16,8 +16,8 @@
 .select {
 	appearance: none;
 	-webkit-appearance: none;
-	background: var(--component-background);
-	border: 1px solid var(--component-color);
+	background: var(--color-background);
+	border: 1px solid var(--color-text-primary);
 	border-radius: 0;
 	cursor: pointer;
 	display: block;

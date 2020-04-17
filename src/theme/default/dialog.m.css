@@ -12,7 +12,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background: var(--component-background);
+	background: var(--color-background);
 	width: 450px;
 	overflow: hidden;
 	outline: none;
