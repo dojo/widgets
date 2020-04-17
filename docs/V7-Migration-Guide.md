@@ -19,30 +19,13 @@ In an effort to make widgets easier and simpler to use out of the box we have ch
 ### Validated widgets
 Many of our form widgets are now capable of validating themselves. In many cases this is done in an uncontrolled way meaning the widget will display its valid state / error message and will call the `onValidate` callback when valid state changes.
 
-* Overview of breaking changes
-* Normalization of properties across the library, eg onValue, value/initialValue
-* Simplification of properties for some widgets
-* Removal/Replacement of certain widgets like combobox/listbox for select/typeahead
-* Other general breaking changes
-
-
-## Per widget we should cover:
-
-* Summarize the changes to the widget properties
-* Additional mandatory properties
-* Replaced properties/functionality by other properties
-* Removed properties, if the functionality can still be done, explain how (maybe via children instead etc)
-* Summarize changes to behavior that are not covered in the above
-* Simple example of a v6 widget moving to a v7 widget.
-* link to the widget examples on widgets.dojo.io
-
 ---
 
 ## Individual Widget Changes
 
-### Accordion
+### AccordionPane
 
-- `Accordion` was renamed from `AccordionPane`.
+- Renamed to `Accordion`.
 
 #### Property changes
 ##### Added properties
@@ -54,6 +37,7 @@ Many of our form widgets are now capable of validating themselves. In many cases
 	- This property no longer accepts `TitlePane` widgets.
 	- This property accepts a renderer function that returns child panes.
 	- Child panes use renderer function arguments as properties.
+	- `Pane` is exported from `Accordion`
 
 ##### Removed properties
 - `onRequestClose?(key: string): void`
@@ -363,8 +347,8 @@ Latest example can be found at [widgets.dojo.io/#widget/dialog/overview](https:/
 
 ---
 
-### Header
-- The `Header` was renamed from `Toolbar`.
+### Toolbar
+- Renamed to `Header`.
 
 #### Property changes
 ##### Added properties
@@ -417,8 +401,8 @@ The `Header` no longer auto-collapses action items into a `SlidePane`. Instead, 
 ```tsx
 <Header>
 	{{
-		title: () => 'Title',
-		actions: () => [
+		title: 'Title',
+		actions: [
 			<Link to="#foo">Foo</Link>,
 			<Link to="#bar">Bar</Link>,
 			<Link to="#baz">Baz</Link>
@@ -545,55 +529,6 @@ Latest example can be found at [widgets.dojo.io/#widget/list/overview](https://w
 
 ---
 
-### NativeSelect
-- Split out of `Select`, now a separate widget.
-
-#### Property changes
-##### Added properties
-- `initialValue?: string;`
-	- Can be used to set an initial value and then let the component act in an uncontrolled manner.
-
-##### Additional Mandatory Properties
-- `options: MenuOption[];`
-	- The options for the menu.
-
-##### Changed properties
-- `onValue: (value string) => void;
-	- This prop replaces `onChange`.
-
-#### Changes in behavior
-
-Native select is controllable with `value` but can also be used as an uncontrolled component.
-
-#### Example of migration from v6 to v7
-
-##### v6 Example
-```tsx
-<Select
-	options={[]}
-	onChange={value => {
-		icache.set('value', value);
-	}}
-	value={icache.get('value')}
-	useNativeElement={true}
-/>
-```
-
-##### v7 Example
-```tsx
-<NativeSelect
-	options={[]}
-	onValue={value => {
-		icache.set('value', value);
-	}}
-	initialValue={icache.get('value')}
-/>
-```
-
-Latest example can be found at [widgets.dojo.io/#widget/native-select/overview](https://widgets.dojo.io/#widget/native-select/overview)
-
----
-
 ### Progress
 
 #### Property changes
@@ -717,6 +652,8 @@ Latest example can be found at [widgets.dojo.io/#widget/range-slider/overview](h
 
 ### Select
 - Now uses list, no longer supports using the native element.
+- `NativeSelect` is now it's own widget
+- Select now uses `resource` and the `data` middleware.
 
 #### Property changes
 ##### Changed properties
@@ -731,7 +668,8 @@ Latest example can be found at [widgets.dojo.io/#widget/range-slider/overview](h
 
 #### Changes in behavior
 
-Can now be used in an uncontrolled or controlled manner
+- Can now be used in an uncontrolled or controlled manner.
+- Accepts a resource, please see `Listbox` migration for more information as this is used internally by `Select`.
 
 #### Example of migration from v6 to v7
 
@@ -747,8 +685,17 @@ Can now be used in an uncontrolled or controlled manner
 
 ##### v7 Example
 ```tsx
+const animals = [{ value: 'cat' }, { value: 'dog' }, { value: 'mouse' }, { value: 'rat' }];
+const resource = createResource(createMemoryTemplate());
 
-<Select />
+<Select
+	initialValue='cat'
+	resource={{ resource: () => resource, data: animals }}
+	transform={defaultTransform}
+	onValue={(value: string) => {
+		icache.set('value', value);
+	}}
+/>
 ```
 
 Latest example can be found at [widgets.dojo.io/#widget/select/overview](https://widgets.dojo.io/#widget/select/overview)
@@ -1129,6 +1076,7 @@ Latest example can be found at [widgets.dojo.io/#widget/text-area/overview](http
 #### Changes in behavior
 
 - `TextInput` is now uncontrolled by default, meaning parent widgets are no longer responsible for updating the current value in response to changes or events. The widget is controllable with `value`.
+- `Addon` widget is now exported from `TextInput` which can be used to wrap the `leading` / `trailing` sections.
 
 #### Example of migration from v6 to v7
 
@@ -1148,8 +1096,8 @@ Latest example can be found at [widgets.dojo.io/#widget/text-area/overview](http
 <TextInput type="text" value="Initial value">
 	{{
 		label: 'Input Label',
-		leading: <span>A</span>,
-		trailing: <span>Z</span>
+		leading: <Addon>A</Addon>,
+		trailing: <Addon filled>Z</Addon>
 	}}
 </TextInput>
 ```
