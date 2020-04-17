@@ -1,8 +1,7 @@
-# Widgets 6 to 7 Migration Guide (In Progress)
+# Widgets 6 to 7 Migration Guide
 
 ## Breaking changes
 
-Across the widget suite we have made a number of breaking changes:
 
 ### Removal of touch/mouse/pointer events
 
@@ -463,7 +462,7 @@ Latest example can be found at [widgets.dojo.io/#widget/label/overview](https://
 	- replaced by `focusable: boolean`.
 	- determines if the List can be focused and capture key press events
 - `onActiveIndexChange`
-	- only recieved the index of the item requesting to be made active
+	- only received the index of the item requesting to be made active
 	- keyboard navigation is now partially controlled, you need only pass the `onActiveIndexChange` & `activeIndex` properties if you wish to fully control them.
 - `onOptionSelect`
 	- replaced by `onValue` which returns the selected item value
