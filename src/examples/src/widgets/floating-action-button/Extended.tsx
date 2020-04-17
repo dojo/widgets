@@ -7,7 +7,7 @@ export default factory(function Extended() {
 	return (
 		<FloatingActionButton extended>
 			<Icon type="plusIcon" />
-			<span styles={{ marginLeft: '8px' }}>Add Something</span>
+			<span>Add Something</span>
 		</FloatingActionButton>
 	);
 });

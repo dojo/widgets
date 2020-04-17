@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@dojo/cli": "7.0.0-alpha.1",
-    "@dojo/cli-build-app": "7.0.0-beta.1",
+    "@dojo/cli-build-app": "7.0.0-alpha.11",
     "@dojo/cli-build-theme": "7.0.0-beta.1",
     "@dojo/cli-build-widget": "7.0.0-beta.1",
     "@dojo/cli-test-intern": "7.0.0-beta.1",

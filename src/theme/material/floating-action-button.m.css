@@ -1,5 +1,15 @@
 .root {
-	composes: mdc-fab mdc-fab__ripple from '@material/fab/dist/mdc.fab.css';
+	composes: mdc-fab from '@material/fab/dist/mdc.fab.css';
+}
+
+.effect {
+	composes: mdc-fab__ripple from '@material/fab/dist/mdc.fab.css';
+}
+
+.label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .extended {

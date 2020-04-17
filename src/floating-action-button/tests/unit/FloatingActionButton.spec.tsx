@@ -18,7 +18,9 @@ const baseTemplate = assertionTemplate(() => (
 				root: [undefined]
 			}
 		}}
-	/>
+	>
+		<span aria="hidden" classes={css.effect} />
+	</Button>
 ));
 
 registerSuite('FloatingActionButton', {
@@ -51,7 +53,9 @@ registerSuite('FloatingActionButton', {
 					type="submit"
 					name="bar"
 					disabled={true}
-				/>
+				>
+					<span aria="hidden" classes={css.effect} />
+				</Button>
 			));
 		}
 	}

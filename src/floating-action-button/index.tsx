@@ -50,6 +50,7 @@ export const FloatingActionButton = factory(function FloatingActionButton({
 				}
 			}}
 		>
+			<span aria="hidden" classes={classes.effect} />
 			{children()}
 		</Button>
 	);

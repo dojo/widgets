@@ -27,6 +27,12 @@
 	composes: pressed from './button.m.css';
 }
 
+.label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .extended {
 	border-radius: 24px;
 	padding: 0 20px;
