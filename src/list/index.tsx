@@ -172,6 +172,8 @@ export interface ListProperties {
 	menu?: boolean;
 	/** The id to be applied to the root of this widget, if not passed, one will be generated for a11y reasons */
 	widgetId?: string;
+	/** Callback to determine if a list item is disabled. If not provided, ListOption.disabled will be used */
+	disabled?: (item: ListOption) => boolean;
 }
 
 export interface ListChildren {
@@ -261,14 +263,21 @@ export const List = factory(function List({
 	}
 
 	function onKeyDown(event: KeyboardEvent, total: number) {
+		const { disabled } = properties();
+
 		event.stopPropagation();
 
 		switch (event.which) {
 			case Keys.Enter:
 			case Keys.Space:
 				event.preventDefault();
-				if (activeItem && !activeItem.disabled) {
-					setValue(activeItem.value);
+
+				if (activeItem) {
+					const itemDisabled = disabled ? disabled(activeItem) : activeItem.disabled;
+
+					if (!itemDisabled) {
+						setValue(activeItem.value);
+					}
 				}
 				break;
 			case Keys.Down:
@@ -326,10 +335,15 @@ export const List = factory(function List({
 		const allItems = get({ query: getOptions().query }) as ListOption[];
 		let foundIndex: number | undefined = undefined;
 
+		const { disabled } = properties();
+
 		allItems.some((option, index) => {
-			const { disabled, value, label } = option;
+			const { disabled: optionDisabled, value, label } = option;
+			const itemDisabled = disabled ? disabled(option) : optionDisabled;
+
 			const match =
-				!disabled && (label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0;
+				!itemDisabled &&
+				(label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0;
 			if (match) {
 				foundIndex = index;
 				return true;
@@ -408,7 +422,9 @@ export const List = factory(function List({
 	}
 
 	function renderItem(data: ListOption, index: number) {
-		const { value, label, divider, disabled = false } = data;
+		const { disabled } = properties();
+		const { value, label, divider, disabled: optionDisabled = false } = data;
+		const itemDisabled = disabled ? disabled(data) : optionDisabled;
 		const selected = value === selectedValue;
 		const active = index === computedActiveIndex;
 		if (active) {
@@ -424,7 +440,7 @@ export const List = factory(function List({
 			onRequestActive: () => {
 				setActiveIndex(index);
 			},
-			disabled
+			disabled: itemDisabled
 		};
 
 		let item: RenderResult;
@@ -434,7 +450,7 @@ export const List = factory(function List({
 				{
 					value,
 					label,
-					disabled,
+					disabled: itemDisabled,
 					active,
 					selected
 				},

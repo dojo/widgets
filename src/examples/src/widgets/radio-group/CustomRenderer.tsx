@@ -47,7 +47,6 @@ const App = factory(function({ middleware: { icache } }) {
 							);
 						});
 					}
-
 				}}
 			</RadioGroup>
 			<pre>{`${get('custom')}`}</pre>

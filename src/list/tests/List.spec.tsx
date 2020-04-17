@@ -368,6 +368,41 @@ describe('List', () => {
 		h.expect(spacePressTemplate);
 		assert.isTrue(onValue.calledOnceWith('cat'));
 	});
+
+	it('disables items with the disabled property', () => {
+		const h = harness(() => (
+			<List
+				onValue={noop}
+				resource={{
+					resource: () => createResource(memoryTemplate),
+					data: animalOptions
+				}}
+				transform={defaultTransform}
+				disabled={(item) => item.value === 'cat'}
+			>
+				{}
+			</List>
+		));
+		const itemRendererTemplate = template.setChildren('@transformer', () =>
+			animalOptions.map(({ value, label, disabled = false }, index) => {
+				return (
+					<ListItem
+						key={`item-${index}`}
+						onSelect={noop}
+						active={index === 0}
+						onRequestActive={noop}
+						disabled={value === 'cat'}
+						widgetId={`menu-test-item-${index}`}
+						selected={false}
+						theme={{}}
+					>
+						{label || value}
+					</ListItem>
+				);
+			})
+		);
+		h.expect(itemRendererTemplate);
+	});
 });
 
 describe('List - Menu', () => {
