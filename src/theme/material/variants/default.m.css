@@ -67,4 +67,8 @@
 	--mdc-font-size-small: 14px;
 	--mdc-disabled-color: #bbb;
 	--mdc-tooltip-background: #6d6d6d;
+
+	/* Speed Dial */
+	--mdc-dial-radius: 32px;
+	--mdc-action-spacing: 16px;
 }

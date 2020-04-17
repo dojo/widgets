@@ -1,0 +1,92 @@
+.root {
+	display: flex;
+	align-items: center;
+}
+
+.up,
+.up .actions {
+	flex-direction: column-reverse;
+}
+.up .actions {
+	margin-bottom: calc(-1 * var(--dial-radius));
+	padding-bottom: calc(var(--action-spacing) + var(--dial-radius));
+}
+
+.down,
+.down .actions {
+	flex-direction: column;
+}
+.down .actions {
+	margin-top: calc(-1 * var(--dial-radius));
+	padding-top: calc(var(--action-spacing) + var(--dial-radius));
+}
+
+.left,
+.left .actions {
+	flex-direction: row-reverse;
+}
+.left .actions {
+	margin-right: calc(-1 * var(--dial-radius));
+	padding-right: calc(var(--action-spacing) + var(--dial-radius));
+}
+
+.right,
+.right .actions {
+	flex-direction: row;
+}
+.right .actions {
+	margin-left: calc(-1 * var(--dial-radius));
+	padding-left: calc(var(--action-spacing) + var(--dial-radius));
+}
+
+.actions {
+	display: flex;
+}
+
+.actionsClosed {
+	transition: top 0s linear 0.2s;
+}
+
+.action {
+	margin: var(--grid-base);
+}
+
+.action,
+.staticTooltip {
+	opacity: 1;
+	transition: opacity var(--transition-duration) var(--transition-easing);
+}
+
+.actionClosed {
+	opacity: 0;
+	transform: scale(0);
+}
+
+.staticTooltipClosed {
+	opacity: 0;
+	transform: scale(0.5);
+}
+
+.iconOpen {
+	transform: rotate(45deg);
+}
+
+.action0 {
+	transition-delay: 150ms;
+}
+
+.action1 {
+	transition-delay: 120ms;
+}
+
+.action2 {
+	transition-delay: 90ms;
+}
+
+.action3 {
+	transition-delay: 60ms;
+}
+
+.action4 {
+	transition-delay: 30ms;
+}

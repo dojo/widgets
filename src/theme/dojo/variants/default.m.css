@@ -68,4 +68,8 @@
 	--avatar-size-large: 56px;
 
 	--tab-width: calc(var(--grid-base) * 16);
+
+	/* Speed Dial */
+	--dial-radius: 32px;
+	--action-spacing: 16px;
 }
