@@ -1,6 +1,12 @@
+/* the root of the widget */
 .root {
 }
+/* class added when in extended mode */
 .extended {
 }
+/* class added to the icon */
 .icon {
+}
+/* class added to add a hover opacity effect */
+.effect {
 }
