@@ -1,7 +1,11 @@
 .root {
-	composes: mdc-fab from '@material/fab/dist/mdc.fab.css';
+	composes: mdc-fab mdc-fab__ripple from '@material/fab/dist/mdc.fab.css';
 }
 
 .extended {
 	composes: mdc-fab--extended from '@material/fab/dist/mdc.fab.css';
+}
+
+.icon {
+	composes: mdc-fab__icon from '@material/fab/dist/mdc.fab.css';
 }
