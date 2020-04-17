@@ -7,7 +7,7 @@ import harness from '@dojo/framework/testing/harness/harness';
 import TriggerPopup from '../index';
 import Popup from '../../popup';
 import * as fixedCss from '../trigger-popup.m.css';
-import { stub } from 'sinon';
+import { stub, match } from 'sinon';
 
 const baseTemplate = assertionTemplate(() => (
 	<virtual>
@@ -110,8 +110,7 @@ describe('TriggerPopup', () => {
 		const contentTemplate = baseTemplate
 			.setProperty('@popup', 'xLeft', 50)
 			.setProperty('@popup', 'yTop', 100)
-			.setProperty('@popup', 'yBottom', 50)
-			.setProperty('@trigger-wrapper', 'styles', { width: '150px' });
+			.setProperty('@popup', 'yBottom', 50);
 
 		h.expect(contentTemplate);
 
@@ -121,7 +120,7 @@ describe('TriggerPopup', () => {
 					hello world
 				</div>
 			),
-			() => h.trigger('@popup', (node: any) => () => node.children[0])
+			() => h.trigger('@popup', (node: any) => () => node.children[0]())
 		);
 	});
 	it('renders with unmatched size', () => {
@@ -134,7 +133,7 @@ describe('TriggerPopup', () => {
 			</TriggerPopup>
 		));
 
-		h.expect(baseTemplate.setProperty('@trigger-wrapper', 'styles', { width: 'auto' }));
+		h.expect(baseTemplate);
 
 		h.expect(
 			() => (
@@ -142,7 +141,7 @@ describe('TriggerPopup', () => {
 					hello world
 				</div>
 			),
-			() => h.trigger('@popup', (node: any) => () => node.children[0])
+			() => h.trigger('@popup', (node: any) => () => node.children[0]())
 		);
 	});
 
@@ -157,5 +156,23 @@ describe('TriggerPopup', () => {
 		));
 
 		h.expect(baseTemplate.setProperty('@popup', 'underlayVisible', true));
+	});
+
+	it('passed optional position to content', () => {
+		const onContent = stub().returns('hello world');
+
+		const h = harness(() => (
+			<TriggerPopup>
+				{{
+					trigger: () => undefined,
+					content: onContent
+				}}
+			</TriggerPopup>
+		));
+
+		h.expect(baseTemplate);
+		h.trigger('@popup', (node: any) => () => node.children[0]('above'));
+
+		assert.isTrue(onContent.calledWith(match.func, 'above'));
 	});
 });

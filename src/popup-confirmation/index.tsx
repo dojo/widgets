@@ -39,7 +39,6 @@ export default factory(function PopupConfirmation({
 		confirmText = 'Yes',
 		onCancel,
 		onConfirm,
-		position = 'below',
 		...otherProperties
 	} = properties();
 	const [{ content, trigger }] = children();
@@ -47,7 +46,7 @@ export default factory(function PopupConfirmation({
 
 	return (
 		<div classes={classes.root}>
-			<TriggerPopup {...otherProperties} position={position}>
+			<TriggerPopup {...otherProperties}>
 				{{
 					trigger: (open) =>
 						typeof trigger === 'string' ? (
@@ -55,7 +54,7 @@ export default factory(function PopupConfirmation({
 						) : (
 							trigger(open)
 						),
-					content: (close) => (
+					content: (close, position) => (
 						<div
 							classes={[
 								classes.popupContainer,

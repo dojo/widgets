@@ -31,9 +31,13 @@ export interface PopupProperties extends BasePopupProperties {
 	open?: boolean;
 }
 
+export interface PopupChildren {
+	(position: PopupPosition): RenderResult;
+}
+
 const factory = create({ dimensions, theme, bodyScroll, resize })
 	.properties<PopupProperties>()
-	.children<RenderResult | undefined>();
+	.children<PopupChildren | RenderResult>();
 
 export const Popup = factory(function({
 	properties,
@@ -42,7 +46,6 @@ export const Popup = factory(function({
 }) {
 	const {
 		underlayVisible = false,
-		position = 'below',
 		yBottom,
 		yTop,
 		xRight,
@@ -50,6 +53,7 @@ export const Popup = factory(function({
 		onClose,
 		open
 	} = properties();
+	let { position = 'below' } = properties();
 
 	resize.get('wrapper');
 	const wrapperDimensions = dimensions.get('wrapper');
@@ -75,18 +79,11 @@ export const Popup = factory(function({
 			opacity: '1'
 		};
 
-		if (position === 'below') {
-			if (willFit.below) {
-				wrapperStyles.top = `${yTop}px`;
-			} else {
-				wrapperStyles.top = `${yBottom - wrapperDimensions.size.height}px`;
-			}
-		} else if (position === 'above') {
-			if (willFit.above) {
-				wrapperStyles.top = `${yBottom - wrapperDimensions.size.height}px`;
-			} else {
-				wrapperStyles.top = `${yTop}px`;
-			}
+		// change position if insufficient space
+		if (position === 'below' && !willFit.below && willFit.above) {
+			position = 'above';
+		} else if (!willFit.above && willFit.below) {
+			position = 'below';
 		}
 
 		if (position === 'left' || position === 'right') {
@@ -110,9 +107,13 @@ export const Popup = factory(function({
 				wrapperStyles.left = `${xLeft - wrapperDimensions.size.width}px`;
 			}
 		}
+		wrapperStyles.top =
+			position === 'above' ? `${yBottom - wrapperDimensions.size.height}px` : `${yTop}px`;
 	}
 
 	const classes = theme.classes(css);
+	const [content] = children();
+	const contentResult = typeof content === 'function' ? content(position) : content;
 
 	bodyScroll(!open);
 
@@ -133,7 +134,7 @@ export const Popup = factory(function({
 					classes={[theme.variant(), fixedCss.root]}
 					styles={wrapperStyles}
 				>
-					{children()}
+					{contentResult}
 				</div>
 			</body>
 		)
