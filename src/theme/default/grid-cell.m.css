@@ -1,6 +1,6 @@
 /* The root class of the grid's Cell */
 .root {
-	border: 1px solid var(--component-color);
+	border: 1px solid var(--color-text-primary);
 	border-top-style: none;
 	border-left-style: none;
 	padding: 2px 4px;
@@ -10,8 +10,8 @@
 
 /* Added to the input while editing */
 .input {
-	background: var(--component-background);
-	color: var(--component-color);
+	background: var(--color-background);
+	color: var(--color-text-primary);
 }
 
 /* Added to the edit button */

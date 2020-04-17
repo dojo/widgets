@@ -1,8 +1,11 @@
+.root {
+	background: var(--color-background);
+}
+
 .menu {
 	overflow: auto;
 	position: relative;
 	border: var(--border-width) solid var(--color-border);
-	background: var(--component-background);
 }
 
 .divider {
