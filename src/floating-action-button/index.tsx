@@ -6,8 +6,8 @@ import theme from '../middleware/theme';
 import IconBase, { IconProperties } from '../icon';
 
 export interface FloatingActionButtonProperties extends ButtonProperties {
+	/* puts button into extended mode */
 	extended?: boolean;
-	trailingIcon?: boolean;
 }
 
 const iconFactory = create({ theme }).properties<IconProperties>();

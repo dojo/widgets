@@ -3,10 +3,15 @@ import theme from '../middleware/theme';
 import * as css from '../theme/default/avatar.m.css';
 
 export interface AvatarProperties {
+	/* defines the avatar variant, defaults to circle */
 	variant?: 'square' | 'rounded' | 'circle';
+	/* determines if secondary color scheme should be used */
 	secondary?: boolean;
+	/* the image source used for this avatar */
 	src?: string;
+	/* size of the avatar, defaults to medium */
 	size?: 'small' | 'medium' | 'large';
+	/* alt text to be used for aria */
 	alt?: string;
 }
 
