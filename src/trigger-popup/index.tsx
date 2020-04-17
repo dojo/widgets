@@ -1,7 +1,7 @@
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import Popup, { BasePopupProperties } from '../popup';
+import Popup, { BasePopupProperties, PopupPosition } from '../popup';
 import * as fixedCss from './trigger-popup.m.css';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
@@ -14,7 +14,7 @@ export interface TriggerPopupProperties extends BasePopupProperties {
 
 export interface TriggerPopupChildren {
 	trigger: (toggleOpen: () => void) => RenderResult;
-	content: (close: () => void) => RenderResult;
+	content: (close: () => void, position: PopupPosition) => RenderResult;
 }
 
 interface TriggerPopupICache {
@@ -67,9 +67,11 @@ export const TriggerPopup = factory(function TriggerPopup({
 				onClose={close}
 				open={icache.get('open')}
 			>
-				<div key="trigger-wrapper" styles={wrapperStyles}>
-					{content(close)}
-				</div>
+				{(position) => (
+					<div key="trigger-wrapper" styles={wrapperStyles}>
+						{content(close, position)}
+					</div>
+				)}
 			</Popup>
 		</virtual>
 	);
