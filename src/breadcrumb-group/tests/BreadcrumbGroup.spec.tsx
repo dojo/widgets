@@ -1,6 +1,6 @@
 const { describe, it } = intern.getInterface('bdd');
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import harness from '@dojo/framework/testing/harness';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import harness from '@dojo/framework/testing/harness/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 import * as css from '../../theme/default/breadcrumb-group.m.css';

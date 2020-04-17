@@ -1,6 +1,6 @@
 const { describe, it, beforeEach } = intern.getInterface('bdd');
-import testHarness from '@dojo/framework/testing/harness';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import testHarness from '@dojo/framework/testing/harness/harness';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import * as fixedCss from '../styles/two-column-layout.m.css';
 import * as css from '../../theme/default/two-column-layout.m.css';

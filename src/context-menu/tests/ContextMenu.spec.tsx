@@ -1,7 +1,7 @@
 import { sandbox } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import { createHarness, compareTheme } from '../../common/tests/support/test-helpers';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import { stub } from 'sinon';
 import List from '../../list';
 import ContextMenu, { defaultTransform } from '../';

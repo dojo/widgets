@@ -2,8 +2,8 @@ const { describe, it, beforeEach } = intern.getInterface('bdd');
 import { assert } from 'chai';
 import { stub } from 'sinon';
 
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import harness from '@dojo/framework/testing/harness';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import harness from '@dojo/framework/testing/harness/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 
 import Button from '../../../button';

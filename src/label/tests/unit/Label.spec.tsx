@@ -1,7 +1,7 @@
 const { registerSuite } = intern.getInterface('object');
 
 import { tsx } from '@dojo/framework/core/vdom';
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 
 import * as baseCss from '../../../common/styles/base.m.css';
 import * as css from '../../../theme/default/label.m.css';

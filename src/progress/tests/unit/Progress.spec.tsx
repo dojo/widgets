@@ -1,9 +1,9 @@
 const { describe, it } = intern.getInterface('bdd');
 import { tsx } from '@dojo/framework/core/vdom';
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 import Progress from '../../index';
 import * as css from '../../../theme/default/progress.m.css';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 
 describe('Progress', () => {
 	const template = assertionTemplate(() => (

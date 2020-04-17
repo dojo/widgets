@@ -2,7 +2,7 @@ import { List, ListOption, defaultTransform as listTransform } from '../../../li
 import * as sinon from 'sinon';
 
 import { create, tsx } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import TriggerPopup from '../../../trigger-popup';
 import TextInput from '../../../text-input';
 
@@ -10,7 +10,7 @@ import TimePicker, { format24HourTime } from '../../index';
 import bundle from '../../nls/TimePicker';
 import * as css from '../../../theme/default/time-picker.m.css';
 import { padStart } from '@dojo/framework/shim/string';
-import select from '@dojo/framework/testing/support/selector';
+import select from '@dojo/framework/testing/harness/support/selector';
 import { createHarness, compareTheme, stubEvent } from '../../../common/tests/support/test-helpers';
 import { Keys } from '../../../common/util';
 import focus from '@dojo/framework/core/middleware/focus';

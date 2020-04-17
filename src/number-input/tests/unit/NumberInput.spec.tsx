@@ -3,8 +3,8 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { tsx } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import { harness } from '@dojo/framework/testing/harness';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import { harness } from '@dojo/framework/testing/harness/harness';
 
 import TextInput, { BaseInputProperties } from '../../../text-input';
 import * as textInputCss from '../../../theme/default/text-input.m.css';

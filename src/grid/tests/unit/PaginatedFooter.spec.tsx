@@ -1,8 +1,8 @@
 const { describe, it } = intern.getInterface('bdd');
 
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 import { v, w } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 
 import * as css from '../../../theme/default/grid-paginated-footer.m.css';
 import * as fixedCss from '../../styles/paginated-footer.m.css';

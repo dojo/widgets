@@ -14,7 +14,7 @@ import {
 	noop,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
-import { assertionTemplate } from '@dojo/framework/testing/assertionTemplate';
+import { assertionTemplate } from '@dojo/framework/testing/harness/assertionTemplate';
 
 const harness = createHarness([compareId, compareAriaLabelledBy]);
 

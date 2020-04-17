@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import focus from '@dojo/framework/core/middleware/focus';
 import validity from '@dojo/framework/core/middleware/validity';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import createFocusMock from '@dojo/framework/testing/mocks/middleware/focus';
 import createValidityMock from '@dojo/framework/testing/mocks/middleware/validity';
 

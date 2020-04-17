@@ -1,9 +1,9 @@
 const { describe, it, before } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import { tsx, node } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
-import harness from '@dojo/framework/testing/harness';
+import harness from '@dojo/framework/testing/harness/harness';
 import Popup from '../index';
 import * as fixedCss from '../popup.m.css';
 import * as css from '../../theme/default/popup.m.css';
