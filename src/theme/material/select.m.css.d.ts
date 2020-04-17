@@ -1,4 +1,5 @@
 export const root: string;
+export const expanded: string;
 export const focused: string;
 export const valid: string;
 export const invalid: string;
@@ -6,6 +7,7 @@ export const disabled: string;
 export const required: string;
 export const trigger: string;
 export const value: string;
+export const valueExpanded: string;
 export const arrow: string;
 export const labelRoot: string;
 export const labelActive: string;
