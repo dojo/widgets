@@ -455,28 +455,91 @@ Latest example can be found at [widgets.dojo.io/#widget/label/overview](https://
 
 ---
 
-### List
-- Renamed from `ListBox`
+### ListBox
+- Rewritten and renamed to `List`
+- Now uses a `resource` and the `data` middleware.
 
 #### Property changes
 ##### Additional Mandatory Properties
-- `foo: string;`
-	- this prop does x
+- `onValue(value: string)`
+	- this is the callback on value change.
+- `resource`
+	- this is the data resource for the List to use to generate the list items
+- `transform`
+	- a transform is required for the List as it uses a typed data middleware.
+	- a `defaultTransform` is exported from `List`
 
 ##### Changed properties
-- `bar: string;`
-	- this prop replaced x
-	- this prop does foo bar baz
-	- more info
+- `getOptionDisabled`
+	- replaced by `disabled(item: ListOption): boolean` callback
+- `optionData`
+	- replaced by `resource`
+	- widget is now data aware and uses `resources`
+- `visualFocus`
+	- replaced by `focusable: boolean`.
+	- determines if the List can be focused and capture key press events
+- `onActiveIndexChange`
+	- only recieved the index of the item requesting to be made active
+	- keyboard navigation is now partially controlled, you need only pass the `onActiveIndexChange` & `activeIndex` properties if you wish to fully control them.
+- `onOptionSelect`
+	- replaced by `onValue` which returns the selected item value
+- `getOptionSelected`
+	- replaced by partial control via internal state or fully controlled selections via `value` & `onValue` properties
 
 ##### Removed properties
-- `baz: string;`
-	- replaced by foo
-	- any additional info
+- `multiselect: boolean;`
+	- list is now single select but can be used as part of a multiselect typeahead implementation
+- `getOptionLabel`
+	- `label` is now passed via a `ListOption` from the `resource`. If a label is not passed, the `value` is used instead.
+- `getOptionId`
+	- an id is generated and used internally for each list item.
+- `tabIndex`
+	- the tab index is managed internally
+	- focus can be disabled via the `focusable` property.
 
 #### Changes in behavior
 
 #### Example of migration from v6 to v7
+
+##### v6 Example
+
+```tsx
+<Listbox
+	key='listbox1'
+	activeIndex={this._listbox1Index}
+	widgetId='listbox1'
+	optionData={this._options}
+	getOptionLabel={(option: CustomOption) => option.value}
+	getOptionDisabled={(option: CustomOption) => !!option.disabled}
+	getOptionSelected={(option: CustomOption) => option.value === this._listbox1Value}
+	onActiveIndexChange={(index: number) => {
+		this._listbox1Index = index;
+		this.invalidate();
+	}}
+	onOptionSelect={(option: any, index: number) => {
+		this._listbox1Value = option.value;
+		this._options = [...this._options];
+		this.invalidate();
+	}}
+></Listbox>
+```
+
+##### v7 Example
+
+```tsx
+const animals = [{ value: 'cat' }, { value: 'dog' }, { value: 'mouse' }, { value: 'rat' }];
+const resource = createResource(createMemoryTemplate());
+
+<List
+	widgetId='listbox1'
+	initialValue='cat'
+	resource={{ resource: () => resource, data: animals }}
+	transform={defaultTransform}
+	onValue={(value: string) => {
+		icache.set('value', value);
+	}}
+/>
+```
 
 Latest example can be found at [widgets.dojo.io/#widget/list/overview](https://widgets.dojo.io/#widget/list/overview)
 
@@ -609,7 +672,7 @@ Latest example can be found at [widgets.dojo.io/#widget/radio/overview](https://
 	- Passing a value allows the range-slider to be fully controlled
 - `label?: RenderResult;`
 	- Replaced with a child renderer
-- `output?(value: RangeValue): RenderResult;` 
+- `output?(value: RangeValue): RenderResult;`
 	- Replaced with a child renderer
 
 ##### Removed properties
@@ -1065,7 +1128,7 @@ Latest example can be found at [widgets.dojo.io/#widget/text-area/overview](http
 
 #### Changes in behavior
 
-- `TextInput` is now uncontrolled by default, meaning parent widgets are no longer responsible for updating the current value in response to changes or events. The widget is controllable with `value`. 
+- `TextInput` is now uncontrolled by default, meaning parent widgets are no longer responsible for updating the current value in response to changes or events. The widget is controllable with `value`.
 
 #### Example of migration from v6 to v7
 
