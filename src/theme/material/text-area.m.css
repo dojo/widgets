@@ -27,7 +27,7 @@
 
 .root .input {
 	border: 1px solid var(--mdc-border-color);
-	border-radius: var(--mdc-border-radius);
+	border-radius: var(--mdc-theme-border-radius);
 }
 
 .focused {

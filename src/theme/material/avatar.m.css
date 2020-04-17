@@ -46,5 +46,5 @@
 }
 
 .rounded {
-	border-radius: var(--mdc-border-radius);
+	border-radius: var(--mdc-theme-border-radius);
 }
