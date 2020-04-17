@@ -68,6 +68,4 @@
 	--avatar-size-large: 56px;
 
 	--tab-width: calc(var(--grid-base) * 16);
-
-	/* Floating action button */
 }
