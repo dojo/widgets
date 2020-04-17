@@ -13,16 +13,13 @@ import {
 	MenuItemProperties
 } from '../list';
 import Chip from '../chip';
-import Icon from '../icon';
 import focus from '@dojo/framework/core/middleware/focus';
 import * as typeaheadCss from '../theme/default/typeahead.m.css';
 import * as chipCss from '../theme/default/chip.m.css';
-import * as iconCss from '../theme/default/icon.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 import { PopupPosition } from '@dojo/widgets/popup';
 import { find } from '@dojo/framework/shim/array';
 import Label from '../label';
-import select from '@dojo/framework/testing/support/selector';
 
 export interface ChipTypeaheadProperties {
 	/** The initial selected value */

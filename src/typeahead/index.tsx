@@ -170,7 +170,7 @@ export const Typeahead = factory(function Typeahead({
 
 				const allItems = get({ query: getOptions().query });
 				if (allItems && allItems.length >= activeIndex) {
-					const { itemDisabled = (item) => item.disabled } = properties();
+					const { itemDisabled = (item: ListOption) => item.disabled } = properties();
 
 					const activeItem = allItems[activeIndex];
 

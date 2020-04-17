@@ -10,10 +10,8 @@ import { defaultTransform, ListOption, ListItem } from '../../../list';
 import ChipTypeahead from '../..';
 import * as typeaheadCss from '../../../theme/default/typeahead.m.css';
 import * as chipCss from '../../../theme/default/chip.m.css';
-import * as iconCss from '../../../theme/default/icon.m.css';
 import * as labelCss from '../../../theme/default/label.m.css';
 import Chip from '../../../chip/index';
-import Icon from '../../../icon';
 import Label from '../../../label';
 
 const { assert } = intern.getPlugin('chai');
