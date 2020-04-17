@@ -5,6 +5,12 @@
 .inputWrapper {
 	composes: mdc-select__anchor from '@material/select/dist/mdc.select.css';
 	width: 100%;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+	transition: border-color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.focused .inputWrapper {
+	border-bottom-color: var(--mdc-theme-primary);
 }
 
 .select {

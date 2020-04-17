@@ -2,6 +2,10 @@
 	composes: mdc-select from '@material/select/dist/mdc.select.css';
 }
 
+.expanded {
+	composes: mdc-select--activated from '@material/select/dist/mdc.select.css';
+}
+
 .focused {
 	composes: mdc-select--focused from '@material/select/dist/mdc.select.css';
 }
@@ -25,11 +29,16 @@
 	border: 0;
 	padding: 0;
 	width: 100%;
+	outline: none;
 }
 
 .value {
-	composes: mdc-select__selected-text from '@material/select/dist/mdc.select.css';
+	composes: mdc-select__selected-text mdc-line-ripple from '@material/select/dist/mdc.select.css';
 	text-align: left;
+}
+
+.valueExpanded {
+	composes: mdc-line-ripple--active from '@material/select/dist/mdc.select.css';
 }
 
 .arrow {

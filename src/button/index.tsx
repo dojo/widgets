@@ -91,7 +91,7 @@ export const Button = factory(function Button({
 			{...formatAriaProperties(aria)}
 			aria-pressed={typeof pressed === 'boolean' ? pressed.toString() : null}
 		>
-			{children()}
+			<span classes={themeCss.label}>{children()}</span>
 		</button>
 	);
 });

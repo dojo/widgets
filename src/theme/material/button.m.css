@@ -12,6 +12,10 @@
 	composes: mdc-button from '@material/button/dist/mdc.button.css';
 }
 
+.root:hover:not(:disabled)::after {
+	opacity: 0.04;
+}
+
 /* Styles taken from :active pseudo class */
 .pressed {
 }

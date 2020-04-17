@@ -41,7 +41,9 @@ const template = assertionTemplate(() => (
 		onpointerdown={noop}
 		onpointerup={noop}
 		aria-pressed={null}
-	/>
+	>
+		<span classes={css.label} />
+	</button>
 ));
 
 registerSuite('Button', {

@@ -5,20 +5,20 @@
 }
 
 .statusIcon {
-	font-size: calc(var(--mdc-grid-base) * 9);
-	height: calc(var(--mdc-grid-base) * 9);
-	width: calc(var(--mdc-grid-base) * 9);
+	font-size: calc(var(--mdc-theme-grid-base) * 9);
+	height: calc(var(--mdc-theme-grid-base) * 9);
+	width: calc(var(--mdc-theme-grid-base) * 9);
 }
 
 .iconIcon {
 	composes: icon from './icon.m.css';
-	font-size: calc(var(--mdc-grid-base) * 9);
+	font-size: calc(var(--mdc-theme-grid-base) * 9);
 }
 
 .actions {
 	display: flex;
 	flex-direction: row;
-	margin: var(--mdc-grid-base);
+	margin: var(--mdc-theme-grid-base);
 }
 
 .content {
@@ -27,12 +27,12 @@
 }
 
 .contentWrapper {
-	margin: var(--mdc-grid-base);
+	margin: var(--mdc-theme-grid-base);
 }
 
 .titleWrapper {
 	text-align: center;
-	margin: var(--mdc-grid-base);
+	margin: var(--mdc-theme-grid-base);
 }
 
 .subtitle {

@@ -96,7 +96,11 @@ const expected = function({
 						foo
 					</Label>
 				)}
-				<div key="inputWrapper" classes={css.inputWrapper} role="presentation">
+				<div
+					key="inputWrapper"
+					classes={[css.inputWrapper, focused ? css.inputWrapperFocused : undefined]}
+					role="presentation"
+				>
 					<input
 						aria-invalid={valid === false ? 'true' : null}
 						autocomplete={undefined}
@@ -162,7 +166,7 @@ const baseAssertion = assertionTemplate(() => {
 });
 
 const input = () => (
-	<div key="inputWrapper" role="presentation" classes={css.inputWrapper}>
+	<div key="inputWrapper" role="presentation" classes={[css.inputWrapper, undefined]}>
 		<input
 			key="input"
 			classes={css.input}

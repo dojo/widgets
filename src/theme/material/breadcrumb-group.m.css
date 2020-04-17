@@ -5,7 +5,7 @@
 
 .listItem,
 .listItem::before {
-	margin-right: var(--mdc-grid-base);
+	margin-right: var(--mdc-theme-grid-base);
 }
 .listItem::last-child {
 	margin-right: 0;

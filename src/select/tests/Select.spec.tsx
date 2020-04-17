@@ -32,7 +32,7 @@ const memoryTemplate = createMemoryTemplate();
 const harness = createHarness([compareTheme]);
 
 const baseTemplate = assertionTemplate(() => (
-	<div classes={[undefined, css.root, undefined, false, false, false]} key="root">
+	<div classes={[undefined, css.root, undefined, false, false, false, undefined]} key="root">
 		<TriggerPopup key="popup" onClose={() => {}} onOpen={() => {}} position={undefined}>
 			{{ trigger: () => <button />, content: () => <div /> }}
 		</TriggerPopup>
@@ -56,7 +56,7 @@ const buttonTemplate = assertionTemplate(() => (
 		name={undefined}
 		value={undefined}
 	>
-		<span classes={css.value}>
+		<span classes={[css.value, undefined]}>
 			<span classes={css.placeholder} />
 		</span>
 		<span classes={css.arrow}>
@@ -342,7 +342,7 @@ describe('Select', () => {
 
 		h.expect(
 			buttonTemplate.setProperty('@trigger', 'value', 'dog').setChildren('@trigger', () => [
-				<span classes={css.value}>Dog</span>,
+				<span classes={[css.value, undefined]}>Dog</span>,
 				<span classes={css.arrow}>
 					<Icon type="downIcon" theme={{}} classes={undefined} />
 				</span>
@@ -380,7 +380,7 @@ describe('Select', () => {
 
 		h.expect(
 			buttonTemplate.setProperty('@trigger', 'value', 'dog').setChildren('@trigger', () => [
-				<span classes={css.value}>Dog</span>,
+				<span classes={[css.value, undefined]}>Dog</span>,
 				<span classes={css.arrow}>
 					<Icon type="downIcon" theme={{}} classes={undefined} />
 				</span>
@@ -414,6 +414,7 @@ describe('Select', () => {
 					undefined,
 					false,
 					css.invalid,
+					false,
 					false
 				])
 				.setProperty('@helperText', 'text', messages.requiredMessage)

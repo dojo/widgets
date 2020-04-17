@@ -35,10 +35,10 @@
 	color: var(--mdc-theme-on-surface);
 	display: flex;
 	font-size: var(--mdc-font-size-small);
-	height: calc(var(--mdc-grid-base) * 4);
+	height: calc(var(--mdc-theme-grid-base) * 4);
 	justify-content: center;
-	margin: 0 calc(var(--mdc-grid-base) * 0.375);
-	min-width: calc(var(--mdc-grid-base) * 4);
+	margin: 0 calc(var(--mdc-theme-grid-base) * 0.375);
+	min-width: calc(var(--mdc-theme-grid-base) * 4);
 	padding: 0;
 }
 
