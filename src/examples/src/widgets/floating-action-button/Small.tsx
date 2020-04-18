@@ -3,11 +3,10 @@ import FloatingActionButton, { Icon } from '@dojo/widgets/floating-action-button
 
 const factory = create();
 
-export default factory(function Extended() {
+export default factory(function Small() {
 	return (
-		<FloatingActionButton size="extended">
+		<FloatingActionButton size="small">
 			<Icon type="plusIcon" />
-			<span>Add Something</span>
 		</FloatingActionButton>
 	);
 });

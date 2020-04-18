@@ -18,6 +18,11 @@
 	height: 56px;
 }
 
+.root.small {
+	width: 40px;
+	height: 40px;
+}
+
 .root:not(.pressed) {
 	background: none;
 	color: inherit;
