@@ -61,6 +61,7 @@ import BasicEmailInput from './widgets/email-input/Basic';
 import Advanced from './widgets/grid/Advanced';
 import BasicFab from './widgets/floating-action-button/Basic';
 import ExtendedFab from './widgets/floating-action-button/Extended';
+import SmallFab from './widgets/floating-action-button/Small';
 import BasicForm from './widgets/form/Basic';
 import ControlledForm from './widgets/form/Basic';
 import ValidationForm from './widgets/form/Validation';
@@ -167,6 +168,9 @@ import ErrorSnackbar from './widgets/snackbar/Error';
 import LeadingSnackbar from './widgets/snackbar/Leading';
 import StackedSnackbar from './widgets/snackbar/Stacked';
 import SuccessSnackbar from './widgets/snackbar/Success';
+import BasicSpeedDial from './widgets/speed-dial/Basic';
+import DirectionSpeedDial from './widgets/speed-dial/Direction';
+import ShowTooltipsSpeedDial from './widgets/speed-dial/ShowTooltips';
 import BasicSwitch from './widgets/switch/Basic';
 import DisabledSwitch from './widgets/switch/Disabled';
 import BasicTabContainer from './widgets/tab-container/Basic';
@@ -701,6 +705,11 @@ export const config = {
 					title: 'Extended FAB',
 					module: ExtendedFab,
 					filename: 'Extended'
+				},
+				{
+					title: 'Small FAB',
+					module: SmallFab,
+					filename: 'Small'
 				}
 			]
 		},
@@ -1493,6 +1502,26 @@ export const config = {
 					title: 'Leading Snackbar',
 					sandbox: true,
 					size: 'small'
+				}
+			]
+		},
+		'speed-dial': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicSpeedDial
+				}
+			},
+			examples: [
+				{
+					filename: 'Direction',
+					module: DirectionSpeedDial,
+					title: 'With a direction'
+				},
+				{
+					filename: 'ShowTooltips',
+					module: ShowTooltipsSpeedDial,
+					title: 'With tooltips always displayed'
 				}
 			]
 		},

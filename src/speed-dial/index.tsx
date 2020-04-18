@@ -1,12 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
-import FloatingActionButton, { FabIcon } from '@dojo/widgets/floating-action-button';
+import FloatingActionButton, { Icon as FabIcon } from '../floating-action-button';
 import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
 import * as css from '../theme/default/speed-dial.m.css';
+import * as fabCss from '../theme/default/floating-action-button.m.css';
+import * as tooltipCss from '../theme/default/tooltip.m.css';
 import Icon from '../icon';
+import Tooltip from '../tooltip';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import Avatar from '../avatar';
-import Button from '../button';
 
 export interface SpeedDialIconProperties {
 	open?: boolean;
@@ -36,7 +37,7 @@ export const SpeedDialIcon = iconFactory(function SpeedDialIcon({
 					type="plusIcon"
 					classes={{
 						'@dojo/widgets/icon': {
-							icon: [classes.openIcon]
+							icon: [classes.iconOpen]
 						}
 					}}
 				/>
@@ -46,7 +47,7 @@ export const SpeedDialIcon = iconFactory(function SpeedDialIcon({
 
 export interface SpeedDialAction {
 	tooltip?: string;
-	alwaysShowTooltip?: string;
+	alwaysShowTooltip?: boolean;
 	label: DNode;
 	onAction(): void;
 }
@@ -69,6 +70,7 @@ export interface SpeedDialProperties {
 interface SpeedDialIcache {
 	initialOpen?: boolean;
 	open?: boolean;
+	tooltips: { [index: number]: boolean };
 }
 
 interface SpeedDialChildren {
@@ -87,6 +89,14 @@ export const SpeedDial = factory(function SpeedDial({
 }) {
 	const { initialOpen, direction = 'right', onOpen, onClose, actions } = properties();
 	const classes = theme.classes(css);
+	const closingDelays = [
+		classes.action0,
+		classes.action1,
+		classes.action2,
+		classes.action3,
+		classes.action4
+	];
+	const openingDelays = [...closingDelays].reverse();
 
 	let { open } = properties();
 
@@ -105,6 +115,7 @@ export const SpeedDial = factory(function SpeedDial({
 	return (
 		<div
 			classes={[
+				theme.variant(),
 				classes.root,
 				direction === 'left' && classes.left,
 				direction === 'right' && classes.right,
@@ -113,12 +124,17 @@ export const SpeedDial = factory(function SpeedDial({
 			]}
 		>
 			<FloatingActionButton
+				theme={theme.compose(
+					fabCss,
+					css,
+					'toggle'
+				)}
 				onClick={() => {
 					if (open) {
 						icache.set('open', false);
 						onClose && onClose();
 					} else {
-						icache.set('open', false);
+						icache.set('open', true);
 						onOpen && onOpen();
 					}
 				}}
@@ -126,19 +142,84 @@ export const SpeedDial = factory(function SpeedDial({
 				{icon(open)}
 			</FloatingActionButton>
 			<div classes={[classes.actions, !open && classes.actionsClosed]}>
-				{actions.map(({ tooltip, alwaysShowTooltip, label, onAction }) => {
+				{actions.map(({ tooltip, alwaysShowTooltip, label, onAction }, index) => {
+					const tooltips = { ...icache.getOrSet('tooltips', {}) };
+					let actionDelayClass = undefined;
+
+					if (!firstRender && open) {
+						actionDelayClass = openingDelays[index - 1];
+					}
+
+					if (!firstRender && !open) {
+						const reverseIndex = actions.length - index - 1;
+						actionDelayClass = closingDelays[reverseIndex - 1];
+					}
+
 					const avatar = (
-						<div
-							classes={}
-							onclick={() => {
+						<FloatingActionButton
+							onOut={() => {
+								if (tooltip && !alwaysShowTooltip) {
+									tooltips[index] = false;
+									icache.set('tooltips', tooltips);
+								}
+							}}
+							onOver={() => {
+								if (tooltip && !alwaysShowTooltip) {
+									tooltips[index] = true;
+									icache.set('tooltips', tooltips);
+								}
+							}}
+							theme={theme.compose(
+								fabCss,
+								css,
+								'action'
+							)}
+							classes={{
+								'@dojo/widgets/floating-action-button': {
+									root: [
+										classes.action,
+										!firstRender && classes.actionTransition,
+										!open && classes.actionClosed,
+										actionDelayClass
+									]
+								}
+							}}
+							size="small"
+							onClick={() => {
 								onAction();
 								icache.set('open', false);
 								onClose && onClose();
 							}}
 						>
-							<Avatar secondary={true}>{label}</Avatar>
-						</div>
+							{label}
+						</FloatingActionButton>
 					);
+
+					if (tooltip) {
+						return (
+							<Tooltip
+								open={alwaysShowTooltip || tooltips[index]}
+								theme={theme.compose(
+									tooltipCss,
+									css,
+									'tooltip'
+								)}
+								classes={{
+									'@dojo/widgets/tooltip': {
+										content: [
+											classes.staticTooltip,
+											!firstRender && classes.actionTransition,
+											!open && classes.staticTooltipClosed,
+											actionDelayClass
+										]
+									}
+								}}
+							>
+								{{ content: tooltip, trigger: avatar }}
+							</Tooltip>
+						);
+					}
+					return avatar;
 				})}
 			</div>
 		</div>

@@ -7,7 +7,7 @@ const factory = create();
 export default factory(function Extended() {
 	return (
 		<Example>
-			<FloatingActionButton extended>
+			<FloatingActionButton size="extended">
 				<Icon type="plusIcon" />
 				<span>Add Something</span>
 			</FloatingActionButton>
