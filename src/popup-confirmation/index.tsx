@@ -1,14 +1,15 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import i18n from '@dojo/framework/core/middleware/i18n';
+import { RenderResult } from '@dojo/framework/core/interfaces';
+
 import theme from '../middleware/theme';
 import TriggerPopup from '../trigger-popup';
 import Button from '../button';
+import { BasePopupProperties } from '../popup';
 
 import * as buttonCss from '../theme/default/button.m.css';
 import * as css from '../theme/default/popup-confirmation.m.css';
-import { RenderResult } from '@dojo/framework/core/interfaces';
-import { BasePopupProperties } from '../popup';
+import bundle from './nls/PopupConfirmation';
 
 export interface PopupConfirmationProperties extends BasePopupProperties {
 	onConfirm?(): void;
@@ -22,27 +23,19 @@ export interface PopupConfirmationChildren {
 	trigger: string | ((open: () => void) => RenderResult);
 }
 
-interface PopupConfirmationCache {}
-
-const icache = createICacheMiddleware<PopupConfirmationCache>();
-const factory = create({ theme, icache, i18n })
+const factory = create({ theme, i18n })
 	.properties<PopupConfirmationProperties>()
 	.children<PopupConfirmationChildren>();
 
 export default factory(function PopupConfirmation({
-	middleware: { theme, icache, i18n },
+	middleware: { theme, i18n },
 	properties,
 	children
 }) {
-	const {
-		cancelText = 'No',
-		confirmText = 'Yes',
-		onCancel,
-		onConfirm,
-		...otherProperties
-	} = properties();
+	const { cancelText, confirmText, onCancel, onConfirm, ...otherProperties } = properties();
 	const [{ content, trigger }] = children();
 	const classes = theme.classes(css);
+	const { messages } = i18n.localize(bundle);
 
 	return (
 		<div classes={[classes.root, theme.variant()]}>
@@ -77,7 +70,7 @@ export default factory(function PopupConfirmation({
 											onCancel && onCancel();
 										}}
 									>
-										{cancelText}
+										{cancelText || messages.no}
 									</Button>
 									<Button
 										key="confirm-button"
@@ -92,7 +85,7 @@ export default factory(function PopupConfirmation({
 											onConfirm && onConfirm();
 										}}
 									>
-										{confirmText}
+										{confirmText || messages.yes}
 									</Button>
 								</div>
 							</div>
