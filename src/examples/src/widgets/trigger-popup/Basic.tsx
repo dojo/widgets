@@ -3,12 +3,14 @@ import TriggerPopup from '@dojo/widgets/trigger-popup';
 import Button from '@dojo/widgets/button';
 import Example from '../../Example';
 
+import * as css from './styles/Basic.m.css';
+
 const factory = create();
 
 export default factory(function Basic() {
 	return (
 		<Example>
-			<div>
+			<div classes={css.root}>
 				<TriggerPopup position="below">
 					{{
 						trigger: (onToggleOpen) => (
