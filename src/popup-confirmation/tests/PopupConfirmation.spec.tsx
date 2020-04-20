@@ -1,19 +1,21 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
+import * as sinon from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
+import select from '@dojo/framework/testing/support/selector';
 import { createHarness, compareTheme } from '../../common/tests/support/test-helpers';
-import * as sinon from 'sinon';
 
 import Button from '../../button';
 import { PopupPosition } from '../../popup';
 import TriggerPopup from '../../trigger-popup';
 import PopupConfirmation from '../';
 
+import bundle from '../nls/PopupConfirmation';
 import * as css from '../../theme/default/popup-confirmation.m.css';
-import select from '@dojo/framework/testing/support/selector';
 
+const { messages } = bundle;
 const noop = () => {};
 const harness = createHarness([compareTheme]);
 
@@ -31,8 +33,8 @@ describe('PopupConfirmation', () => {
 
 	const popupTemplate = (
 		content: RenderResult,
-		cancelText = 'No',
-		confirmText = 'Yes',
+		cancelText = messages.no,
+		confirmText = messages.yes,
 		position: PopupPosition = 'below'
 	) =>
 		assertionTemplate(() => (
