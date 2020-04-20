@@ -45,8 +45,8 @@ export default factory(function PopupConfirmation({
 	const classes = theme.classes(css);
 
 	return (
-		<div classes={classes.root}>
-			<TriggerPopup {...otherProperties}>
+		<div classes={[classes.root, theme.variant()]}>
+			<TriggerPopup key="trigger-popup" {...otherProperties}>
 				{{
 					trigger: (open) =>
 						typeof trigger === 'string' ? (
@@ -65,6 +65,7 @@ export default factory(function PopupConfirmation({
 								<div classes={classes.popupContent}>{content()}</div>
 								<div classes={classes.popupControls}>
 									<Button
+										key="cancel-button"
 										type="button"
 										theme={theme.compose(
 											buttonCss,
@@ -79,6 +80,7 @@ export default factory(function PopupConfirmation({
 										{cancelText}
 									</Button>
 									<Button
+										key="confirm-button"
 										type="button"
 										theme={theme.compose(
 											buttonCss,
