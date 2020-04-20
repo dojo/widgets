@@ -43,7 +43,7 @@ export const Popup = factory(function({
 	middleware: { dimensions, theme, bodyScroll, resize }
 }) {
 	const { underlayVisible = false, x, yBottom, yTop, onClose, open } = properties();
-	let { position = 'below' } = properties();
+	let { position = 'below' as PopupPosition } = properties();
 
 	resize.get('wrapper');
 	const wrapperDimensions = dimensions.get('wrapper');
