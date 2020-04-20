@@ -3,12 +3,14 @@ import TriggerPopup from '@dojo/widgets/trigger-popup';
 import Button from '@dojo/widgets/button';
 import Example from '../../Example';
 
+import * as css from './styles/Basic.m.css';
+
 const factory = create();
 
 export default factory(function Basic() {
 	return (
 		<Example>
-			<div styles={{ paddingTop: '100px' }}>
+			<div classes={css.root} styles={{ paddingTop: '100px' }}>
 				<TriggerPopup position="below">
 					{{
 						trigger: (onToggleOpen) => (
