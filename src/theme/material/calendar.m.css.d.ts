@@ -3,7 +3,6 @@ export const monthTrigger: string;
 export const yearTrigger: string;
 export const previous: string;
 export const next: string;
-export const datePicker: string;
 export const topMatter: string;
 export const weekday: string;
 export const date: string;

@@ -71,6 +71,6 @@
 	--mdc-theme-separator: #e0e0e0;
 
 	--mdc-font-size-small: 14px;
-	--mdc-disabled-color: #bbb;
+	--mdc-disabled-color: var(--mdc-theme-text-hint-on-dark);
 	--mdc-tooltip-background: #6d6d6d;
 }
