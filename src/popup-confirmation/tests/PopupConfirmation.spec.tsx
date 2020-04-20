@@ -3,8 +3,8 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import select from '@dojo/framework/testing/support/selector';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import select from '@dojo/framework/testing/harness/support/selector';
 import { createHarness, compareTheme } from '../../common/tests/support/test-helpers';
 
 import Button from '../../button';
