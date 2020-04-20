@@ -1,0 +1,41 @@
+.popupContainer {
+	position: relative;
+	min-width: 300px;
+	z-index: var(--zindex-dialog);
+}
+
+.above {
+	left: 50%;
+	bottom: var(--mdc-grid-base);
+	transform: translateX(-50%);
+}
+
+.below {
+	left: 50%;
+	top: var(--mdc-grid-base);
+	transform: translateX(-50%);
+}
+
+.popup {
+	background-color: var(--mdc-theme-background);
+	border-radius: var(--mdc-theme-border-radius);
+	box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.15), 0 6px 16px 0 rgba(0, 0, 0, 0.1),
+		0 9px 28px 8px rgba(0, 0, 0, 0.07);
+	padding: 15px;
+}
+
+.popupControls {
+	display: flex;
+	justify-content: right;
+	margin-top: calc(var(--mdc-grid-base) * 2);
+}
+
+.cancelRoot,
+.confirmRoot {
+	composes: root from './button.m.css';
+	min-width: 80px;
+}
+
+.cancelRoot {
+	margin-right: var(--mdc-grid-base);
+}
