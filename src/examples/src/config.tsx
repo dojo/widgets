@@ -239,6 +239,7 @@ import ErrorResult from './widgets/result/Error';
 import SuccessResult from './widgets/result/Success';
 import CustomIconResult from './widgets/result/CustomIcon';
 import PopupConfirmation from './widgets/popup-confirmation/Basic';
+import PopupConfirmationUnderlay from './widgets/popup-confirmation/Underlay';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -1206,7 +1207,16 @@ export const config = {
 					sandbox: true,
 					size: 'medium'
 				}
-			}
+			},
+			examples: [
+				{
+					filename: 'Underlay',
+					module: PopupConfirmationUnderlay,
+					title: 'Visible Underlay',
+					sandbox: true,
+					size: 'medium'
+				}
+			]
 		},
 		radio: {
 			overview: {
