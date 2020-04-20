@@ -27,7 +27,8 @@
 	--mdc-theme-text-icon-on-dark: rgba(255, 255, 255, 0.5);
 
 	--mdc-text-color: var(--mdc-theme-text-primary-on-light);
-	--mdc-label-color: var(--mdc-theme-text-secondary-on-light);
+	--mdc-secondary-text-color: var(--mdc-theme-text-secondary-on-light);
+	--mdc-raised-surface-background: var(--mdc-theme-surface);
 
 	/* supplementary colours */
 	--mdc-theme-info: #2196f3;
@@ -53,8 +54,8 @@
 	--mdc-theme-font-size-small: 0.875rem;
 
 	/* borders */
-	--mdc-border-color: rgba(255, 255, 255, 0.38);
-	--mdc-border-color-hover: rgba(255, 255, 255, 0.25);
+	--mdc-border-color: rgba(0, 0, 0, 0.38);
+	--mdc-border-color-hover: rgba(0, 0, 0, 0.25);
 	--mdc-border-width: 1px;
 
 	/* avatar sizes */

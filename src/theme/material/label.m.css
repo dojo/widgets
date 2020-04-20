@@ -15,5 +15,5 @@
 }
 
 .root:not(.active) {
-	color: var(--mdc-label-color) !important;
+	color: var(--mdc-secondary-text-color) !important;
 }

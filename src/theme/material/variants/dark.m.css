@@ -1,4 +1,5 @@
 .root {
+	/* variables taken from @material/theme/dist/mdc.theme.css */
 	--mdc-theme-primary: #bb86fc;
 	--mdc-theme-secondary: #03dac6;
 	--mdc-theme-background: #121212;
@@ -26,7 +27,8 @@
 	--mdc-theme-text-icon-on-dark: rgba(255, 255, 255, 0.5);
 
 	--mdc-text-color: var(--mdc-theme-text-primary-on-dark);
-	--mdc-label-color: var(--mdc-theme-text-secondary-on-dark);
+	--mdc-secondary-text-color: var(--mdc-theme-text-secondary-on-dark);
+	--mdc-raised-surface-background: #424242;
 
 	/* supplementary colours */
 	--mdc-theme-info: #2196f3;
