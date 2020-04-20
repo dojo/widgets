@@ -9,3 +9,11 @@
 .root.secondary {
 	position: relative;
 }
+
+.root:not(.disabled).active {
+	color: var(--mdc-theme-primary) !important;
+}
+
+.root:not(.active) {
+	color: var(--mdc-label-color) !important;
+}
