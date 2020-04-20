@@ -53,7 +53,7 @@ export const Popup = factory(function({
 		onClose,
 		open
 	} = properties();
-	let { position = 'below' } = properties();
+	let { position = 'below' as PopupPosition } = properties();
 
 	resize.get('wrapper');
 	const wrapperDimensions = dimensions.get('wrapper');
