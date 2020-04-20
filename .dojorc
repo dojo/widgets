@@ -38,6 +38,7 @@
 			"src/pagination",
 			"src/password-input",
 			"src/popup",
+			"src/popup-confirmation",
 			"src/progress",
 			"src/radio",
 			"src/radio-group",
