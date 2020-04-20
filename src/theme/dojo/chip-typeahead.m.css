@@ -1,3 +1,7 @@
+.root {
+	font-family: var(--font-family);
+}
+
 .value {
 	margin: 2px;
 }

@@ -2,6 +2,7 @@
 .root:before,
 .root:after {
 	box-sizing: border-box;
+	font: var(--font-family);
 }
 
 .root {
@@ -42,4 +43,8 @@
 	font-size: var(--font-size-base);
 	font-weight: bold;
 	line-height: var(--line-height-base);
+}
+
+.pressed .label {
+	color: var(--color-text-inverted);
 }

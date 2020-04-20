@@ -1,19 +1,29 @@
 .root {
+	font-family: var(--font-family);
 	border: 0;
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 	font-size: inherit;
 	line-height: var(--line-height-base);
 	min-width: calc(var(--grid-base) * 20);
 	padding: var(--spacing-regular);
-}
-
-.root:not(.pressed) {
-	background: none;
-	color: inherit;
+	background-color: var(--color-background);
 }
 
 .pressed {
-	composes: pressed from './button.m.css';
+	background-color: var(--color-highlight);
+	border-color: var(--color-highlight);
+	color: var(--color-text-inverted);
+}
+
+.label {
+	color: var(--color-highlight);
+	font-size: var(--font-size-base);
+	font-weight: bold;
+	line-height: var(--line-height-base);
+}
+
+.pressed .label {
+	color: var(--color-text-inverted);
 }
 
 .root:hover,

@@ -2,6 +2,7 @@
 	align-items: center;
 	display: flex;
 	justify-content: center;
+	font-family: var(--font-family);
 }
 
 .linksWrapper {
@@ -38,7 +39,7 @@
 
 .link,
 .currentPage {
-	background-color: unset;
+	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
 	border-right-width: 0;
 	border-bottom-color: var(--color-border-strong);
@@ -60,6 +61,7 @@
 .link {
 	cursor: pointer;
 	transition: box-shadow var(--transition-duration) var(--transition-easing);
+	color: var(--color-text-primary);
 }
 
 .link:last-of-type {

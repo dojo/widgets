@@ -5,6 +5,7 @@
 	line-height: var(--line-height-base);
 	overflow: hidden;
 	min-height: calc(var(--font-size-title) + 2 * var(--grid-base));
+	font-family: var(--font-family);
 }
 
 .titleButton {
@@ -36,6 +37,8 @@
 	border-left: var(--border-width) solid var(--color-border);
 	border-right: var(--border-width) solid var(--color-border);
 	padding: var(--grid-base);
+	background-color: var(--color-background);
+	color: var(--color-text-primary);
 }
 
 .contentTransition {

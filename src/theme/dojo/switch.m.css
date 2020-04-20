@@ -3,6 +3,7 @@
 	position: relative;
 	line-height: var(--line-height-base);
 	min-height: var(--line-height-base);
+	font-family: var(--font-family);
 }
 
 .inputWrapper {

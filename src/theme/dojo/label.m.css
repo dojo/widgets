@@ -2,6 +2,8 @@
 	transition: color var(--transition-duration) var(--transition-easing);
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
+	color: var(--color-text-primary);
+	font-family: var(--font-family);
 }
 
 .secondary {

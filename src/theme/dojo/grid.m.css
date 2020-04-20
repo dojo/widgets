@@ -1,6 +1,7 @@
 .root {
 	border: var(--border-width) solid var(--color-border);
 	background: var(--color-background);
+	font-family: var(--font-family);
 }
 
 .header {

@@ -3,6 +3,7 @@
 	font-size: var(--font-size-base);
 	display: flex;
 	flex-direction: column;
+	font-family: var(--font-family);
 }
 
 /* Wrapper class for native select and dropdown arrow */
@@ -30,6 +31,7 @@
 	width: 100%;
 	border: var(--border-width) solid var(--color-border);
 	border-bottom-color: var(--color-border-strong);
+	color: var(--color-text-primary);
 }
 
 /* Class for dojo stylized dropdown arrow */

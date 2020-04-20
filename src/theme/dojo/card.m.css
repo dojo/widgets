@@ -1,4 +1,7 @@
 .root {
+	font-family: var(--font-family);
+	background-color: var(--color-background);
+	color: var(--color-text-primary);
 	display: flex;
 	flex-direction: column;
 	border-radius: 4px;

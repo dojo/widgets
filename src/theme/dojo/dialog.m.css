@@ -2,14 +2,13 @@
 	color: var(--color-text-primary);
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
-}
-
-.root {
+	font-family: var(--font-family);
 	box-sizing: border-box;
 }
 
 .main {
-	background: #fff;
+	background-color: var(--color-background);
+	color: var(--color-text-primary);
 	border: var(--border-width) solid var(--color-border);
 	box-shadow: var(--box-shadow-dimensions-large) var(--color-box-shadow-strong);
 	display: flex;
@@ -58,6 +57,7 @@
 	right: calc(2 * var(--grid-base));
 	top: 50%;
 	transform: translateY(-50%);
+	color: var(--color-text-primary);
 }
 
 .close .closeIcon {

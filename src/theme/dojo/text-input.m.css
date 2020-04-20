@@ -1,4 +1,5 @@
 .root {
+	font-family: var(--font-family);
 }
 
 .wrapper {
@@ -20,6 +21,8 @@
 	line-height: var(--line-height-base);
 	padding: var(--grid-base);
 	box-sizing: border-box;
+	background-color: var(--color-background);
+	color: var(--color-text-primary);
 }
 
 .input:focus {
@@ -31,6 +34,8 @@
 }
 
 .inputWrapper {
+	background-color: var(--color-background);
+	color: var(--color-text-primary);
 	border: var(--border-width) solid var(--color-border);
 	border-bottom-color: var(--color-border-strong);
 	width: 100%;
