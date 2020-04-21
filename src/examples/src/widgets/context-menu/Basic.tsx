@@ -2,7 +2,6 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import ContextMenu, { defaultTransform } from '@dojo/widgets/context-menu';
 import { createMemoryResourceWithData } from '../list/memoryTemplate';
-import Example from '../../Example';
 
 const factory = create({ icache });
 const options = [{ value: 'print', label: 'Print' }, { value: 'delete', label: 'Delete' }];
@@ -16,7 +15,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 	const printedText = icache.getOrSet('printedText', '');
 
 	return (
-		<Example>
+		<virtual>
 			<ContextMenu
 				resource={resource}
 				transform={defaultTransform}
@@ -41,6 +40,6 @@ export default factory(function Basic({ middleware: { icache } }) {
 				{text}
 			</ContextMenu>
 			<div>Printed Text: {printedText}</div>
-		</Example>
+		</virtual>
 	);
 });

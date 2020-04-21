@@ -10,6 +10,7 @@
 	min-width: calc(var(--grid-base) * 20);
 	padding: var(--spacing-regular);
 	margin: 0;
+	font-family: var(--font-family);
 }
 
 .root:hover {
@@ -24,10 +25,18 @@
 	color: var(--color-text-inverted);
 }
 
+.root:hover .label {
+	color: var(--color-text-inverted);
+}
+
 .disabled,
 .disabled:hover {
 	background-color: initial;
 	border-color: var(--color-border);
 	color: var(--color-text-faded);
 	cursor: default;
+}
+
+.disabled:hover .label {
+	color: var(--color-text-faded);
 }

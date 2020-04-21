@@ -3,6 +3,7 @@
 }
 
 .root {
+	font-family: var(--font-family);
 	border: var(--border-width) solid var(--color-border);
 	display: inline-block;
 	font-size: var(--font-size-base);
@@ -13,6 +14,8 @@
 
 .dateGrid {
 	width: 100%;
+	background-color: var(--color-background);
+	color: var(--color-text-primary);
 }
 
 /* Date grid */

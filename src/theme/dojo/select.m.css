@@ -2,6 +2,7 @@
 	font-size: var(--font-size-base);
 	display: flex;
 	flex-direction: column;
+	font-family: var(--font-family);
 }
 
 /* custom input styles */
@@ -30,6 +31,7 @@
 .value {
 	padding: var(--spacing-regular) calc(var(--spacing-regular) * 3) var(--spacing-regular)
 		var(--spacing-regular);
+	color: var(--color-text-primary);
 }
 
 .trigger:focus {

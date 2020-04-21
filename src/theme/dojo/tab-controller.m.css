@@ -3,6 +3,7 @@
 	color: var(--color-text-primary);
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
+	font-family: var(--font-family);
 }
 
 .tabButtons {
@@ -28,6 +29,7 @@
 	white-space: nowrap;
 	width: var(--tab-width);
 	margin: 0;
+	background-color: var(--color-background);
 }
 
 .tabButton:hover:not(.disabledTabButton):not(.activeTabButton) {
@@ -76,6 +78,7 @@
 
 .tab {
 	position: relative;
+	background-color: var(--color-background);
 }
 
 .alignLeft .tabs {

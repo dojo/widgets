@@ -3,6 +3,7 @@
 	color: var(--color-text-primary);
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
+	font-family: var(--font-family);
 }
 
 .underlayVisible {
@@ -42,6 +43,7 @@
 	right: var(--grid-base);
 	top: 50%;
 	transform: translateY(-50%);
+	color: var(--color-text-primary);
 }
 
 .close .closeIcon {

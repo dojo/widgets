@@ -1,3 +1,4 @@
+export const root: string;
 export const header: string;
 export const headerContent: string;
 export const avatar: string;

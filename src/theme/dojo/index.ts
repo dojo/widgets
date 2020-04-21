@@ -53,6 +53,7 @@ import * as tooltip from './tooltip.m.css';
 import * as twoColumnLayout from './two-column-layout.m.css';
 import * as typeahead from './typeahead.m.css';
 import * as defaultVariant from './variants/default.m.css';
+import * as darkVariant from './variants/dark.m.css';
 
 export default {
 	theme: {
@@ -112,6 +113,7 @@ export default {
 		'@dojo/widgets/typeahead': typeahead
 	},
 	variants: {
-		default: defaultVariant
+		default: defaultVariant,
+		dark: darkVariant
 	}
 };

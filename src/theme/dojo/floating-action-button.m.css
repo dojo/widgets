@@ -1,4 +1,5 @@
 .root {
+	font-family: var(--font-family);
 	display: inline-flex;
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 	position: relative;
