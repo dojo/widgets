@@ -74,5 +74,8 @@
 
 	--mdc-font-size-small: 14px;
 	--mdc-disabled-color: var(--mdc-theme-text-hint-on-dark);
+
 	--mdc-tooltip-background: #6d6d6d;
+	--mdc-chip-background: #6d6d6d;
+	--mdc-chip-background-hover: #8d8d8d;
 }
