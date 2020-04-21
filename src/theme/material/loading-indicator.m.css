@@ -6,6 +6,10 @@
 	composes: mdc-linear-progress__buffer from '@material/linear-progress/dist/mdc.linear-progress.css';
 }
 
+.root .buffer {
+	background-color: var(--mdc-theme-on-surface);
+}
+
 .bar {
 	composes: mdc-linear-progress__bar from '@material/linear-progress/dist/mdc.linear-progress.css';
 }
