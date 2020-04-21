@@ -5,5 +5,10 @@
 }
 
 .legend {
+	composes: root from './label.m.css';
 	padding: 0;
+}
+
+.root .legend {
+	position: relative;
 }
