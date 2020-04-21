@@ -15,10 +15,18 @@
 	z-index: calc(var(--zindex-dialog) + 1);
 }
 
+.root .main {
+	background-color: var(--mdc-raised-surface-background);
+}
+
 /* Contains the title of the dialog */
 .title {
 	composes: mdc-dialog__title from '@material/dialog/dist/mdc.dialog.css';
 	padding-top: 20px;
+}
+
+.root .title {
+	color: var(--mdc-text-color);
 }
 
 .title:before {
@@ -28,6 +36,10 @@
 /* Contains the content of the dialog */
 .content {
 	composes: mdc-dialog__content from '@material/dialog/dist/mdc.dialog.css';
+}
+
+.root .content {
+	color: var(--mdc-secondary-text-color);
 }
 
 .close {
@@ -44,6 +56,11 @@
 
 .closeIcon {
 	font-size: 1.25rem;
+	color: var(--mdc-secondary-text-color);
+}
+
+.closeIcon:hover {
+	color: var(--mdc-text-color);
 }
 
 .underlayVisible {
