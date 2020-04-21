@@ -171,6 +171,7 @@ import SuccessSnackbar from './widgets/snackbar/Success';
 import BasicSpeedDial from './widgets/speed-dial/Basic';
 import DirectionSpeedDial from './widgets/speed-dial/Direction';
 import ShowTooltipsSpeedDial from './widgets/speed-dial/ShowTooltips';
+import CustomIconSpeedDial from './widgets/speed-dial/CustomIcons';
 import BasicSwitch from './widgets/switch/Basic';
 import DisabledSwitch from './widgets/switch/Disabled';
 import BasicTabController from './widgets/tab-controller/Basic';
@@ -1499,6 +1500,11 @@ export const config = {
 					filename: 'ShowTooltips',
 					module: ShowTooltipsSpeedDial,
 					title: 'With tooltips always displayed'
+				},
+				{
+					filename: 'CustomIcons',
+					module: CustomIconSpeedDial,
+					title: 'With custom icons'
 				}
 			]
 		},

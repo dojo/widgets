@@ -16,14 +16,42 @@ export default factory(function Basic({ middleware: { icache } }) {
 						onAction() {
 							icache.set('action', 'Mailing');
 						},
-						tooltip: 'Mail something'
+						tooltip: 'Mail'
 					},
 					{
 						label: <Icon type="dateIcon" />,
 						onAction() {
 							icache.set('action', 'Scheduling something');
 						},
-						tooltip: 'Schedule something'
+						tooltip: 'Schedule'
+					},
+					{
+						label: <Icon type="clockIcon" />,
+						onAction() {
+							icache.set('action', 'Clock');
+						},
+						tooltip: 'Clock'
+					},
+					{
+						label: <Icon type="editIcon" />,
+						onAction() {
+							icache.set('action', 'Editing');
+						},
+						tooltip: 'Edit'
+					},
+					{
+						label: <Icon type="searchIcon" />,
+						onAction() {
+							icache.set('action', 'Searching');
+						},
+						tooltip: 'Search'
+					},
+					{
+						label: <Icon type="downIcon" />,
+						onAction() {
+							icache.set('action', 'Navigating');
+						},
+						tooltip: 'Down'
 					}
 				]}
 			/>

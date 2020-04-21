@@ -15,7 +15,7 @@ const baseTemplate = assertionTemplate(() => (
 		theme={{ '@dojo/widgets/button': buttonCss }}
 		classes={{
 			'@dojo/widgets/button': {
-				root: [undefined]
+				root: [false, false]
 			}
 		}}
 	>
@@ -34,7 +34,7 @@ registerSuite('FloatingActionButton', {
 			const h = harness(
 				() => (
 					<FloatingActionButton
-						extended={true}
+						size="extended"
 						type="submit"
 						name="bar"
 						disabled={true}
@@ -47,7 +47,31 @@ registerSuite('FloatingActionButton', {
 					theme={{ '@dojo/widgets/button': buttonCss }}
 					classes={{
 						'@dojo/widgets/button': {
-							root: [css.extended]
+							root: [css.extended, false]
+						}
+					}}
+					type="submit"
+					name="bar"
+					disabled={true}
+				>
+					<span aria="hidden" classes={css.effect} />
+				</Button>
+			));
+		},
+
+		small() {
+			const h = harness(
+				() => (
+					<FloatingActionButton size="small" type="submit" name="bar" disabled={true} />
+				),
+				[compareTheme]
+			);
+			h.expect(() => (
+				<Button
+					theme={{ '@dojo/widgets/button': buttonCss }}
+					classes={{
+						'@dojo/widgets/button': {
+							root: [false, css.small]
 						}
 					}}
 					type="submit"

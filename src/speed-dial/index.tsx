@@ -6,7 +6,7 @@ import * as css from '../theme/default/speed-dial.m.css';
 import * as fabCss from '../theme/default/floating-action-button.m.css';
 import * as tooltipCss from '../theme/default/tooltip.m.css';
 import Icon from '../icon';
-import Tooltip from '../tooltip';
+import Tooltip, { Orientation } from '../tooltip';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
 export interface SpeedDialIconProperties {
@@ -55,6 +55,8 @@ export interface SpeedDialAction {
 export interface SpeedDialProperties {
 	/** Speed dial direction. Defaults to "right" */
 	direction?: 'up' | 'left' | 'down' | 'right';
+	/** Orientation of tooltips. Defaults to "left" */
+	tooltipOrientation?: Orientation;
 	/** Set an initial value for the open property */
 	initialOpen?: boolean;
 	/** Control the open property */
@@ -70,7 +72,7 @@ export interface SpeedDialProperties {
 interface SpeedDialIcache {
 	initialOpen?: boolean;
 	open?: boolean;
-	tooltips: { [index: number]: boolean };
+	tooltip?: number;
 }
 
 interface SpeedDialChildren {
@@ -87,16 +89,22 @@ export const SpeedDial = factory(function SpeedDial({
 	children,
 	middleware: { theme, icache }
 }) {
-	const { initialOpen, direction = 'right', onOpen, onClose, actions } = properties();
+	const {
+		initialOpen,
+		tooltipOrientation = Orientation.left,
+		direction = 'right',
+		onOpen,
+		onClose,
+		actions
+	} = properties();
 	const classes = theme.classes(css);
-	const closingDelays = [
-		classes.action0,
-		classes.action1,
-		classes.action2,
+	const delays = [
+		classes.action4,
 		classes.action3,
-		classes.action4
+		classes.action2,
+		classes.action1,
+		classes.action0
 	];
-	const openingDelays = [...closingDelays].reverse();
 
 	let { open } = properties();
 
@@ -114,6 +122,7 @@ export const SpeedDial = factory(function SpeedDial({
 	const [icon = (open?: boolean) => <SpeedDialIcon open={open} />] = children();
 	return (
 		<div
+			key="root"
 			classes={[
 				theme.variant(),
 				classes.root,
@@ -122,51 +131,51 @@ export const SpeedDial = factory(function SpeedDial({
 				direction === 'down' && classes.down,
 				direction === 'up' && classes.up
 			]}
+			onpointerleave={() => {
+				icache.set('open', false);
+				onClose && onClose();
+			}}
 		>
 			<FloatingActionButton
+				key="trigger"
 				theme={theme.compose(
 					fabCss,
 					css,
 					'toggle'
 				)}
-				onClick={() => {
-					if (open) {
-						icache.set('open', false);
-						onClose && onClose();
-					} else {
-						icache.set('open', true);
-						onOpen && onOpen();
-					}
+				onOver={() => {
+					icache.set('open', true);
+					onOpen && onOpen();
 				}}
 			>
 				{icon(open)}
 			</FloatingActionButton>
-			<div classes={[classes.actions, !open && classes.actionsClosed]}>
+			<div key="actions" classes={[classes.actions, !open && classes.actionsClosed]}>
 				{actions.map(({ tooltip, alwaysShowTooltip, label, onAction }, index) => {
-					const tooltips = { ...icache.getOrSet('tooltips', {}) };
+					const tooltipIndex = icache.get('tooltip');
 					let actionDelayClass = undefined;
 
 					if (!firstRender && open) {
-						actionDelayClass = openingDelays[index - 1];
+						actionDelayClass = delays[index - 1];
 					}
 
 					if (!firstRender && !open) {
 						const reverseIndex = actions.length - index - 1;
-						actionDelayClass = closingDelays[reverseIndex - 1];
+						actionDelayClass = delays[reverseIndex - 1];
 					}
 
 					const avatar = (
 						<FloatingActionButton
 							onOut={() => {
 								if (tooltip && !alwaysShowTooltip) {
-									tooltips[index] = false;
-									icache.set('tooltips', tooltips);
+									if (icache.get('tooltip') === index) {
+										icache.delete('tooltip');
+									}
 								}
 							}}
 							onOver={() => {
 								if (tooltip && !alwaysShowTooltip) {
-									tooltips[index] = true;
-									icache.set('tooltips', tooltips);
+									icache.set('tooltip', index);
 								}
 							}}
 							theme={theme.compose(
@@ -198,7 +207,8 @@ export const SpeedDial = factory(function SpeedDial({
 					if (tooltip) {
 						return (
 							<Tooltip
-								open={alwaysShowTooltip || tooltips[index]}
+								orientation={tooltipOrientation}
+								open={alwaysShowTooltip || tooltipIndex === index}
 								theme={theme.compose(
 									tooltipCss,
 									css,
