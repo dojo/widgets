@@ -30,6 +30,7 @@
 
 	--mdc-text-color: var(--mdc-theme-text-primary-on-dark);
 	--mdc-secondary-text-color: var(--mdc-theme-text-secondary-on-dark);
+	--mdc-disabled-text-color: var(--mdc-theme-text-disabled-on-background);
 	--mdc-raised-surface-background: #424242;
 
 	/* supplementary colours */

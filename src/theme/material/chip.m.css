@@ -5,7 +5,7 @@
 }
 
 .root.disabled .label {
-	color: var(--mdc-theme-text-disabled-on-background) !important;
+	color: var(--mdc-disabled-text-color) !important;
 }
 
 .root:not(.disabled):hover {

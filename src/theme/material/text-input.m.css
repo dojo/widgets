@@ -19,11 +19,11 @@
 }
 
 .root .wrapper {
-	background: var(--mdc-theme-on-surface);
+	background-color: var(--mdc-theme-on-surface);
 }
 
 .root:hover:not(.disabled) .wrapper {
-	background: var(--mdc-theme-on-surface-hover);
+	background-color: var(--mdc-theme-on-surface-hover);
 }
 
 .inputWrapperFocused {

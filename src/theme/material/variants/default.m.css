@@ -28,6 +28,7 @@
 
 	--mdc-text-color: var(--mdc-theme-text-primary-on-light);
 	--mdc-secondary-text-color: var(--mdc-theme-text-secondary-on-light);
+	--mdc-disabled-text-color: var(--mdc-theme-text-disabled-on-light);
 	--mdc-raised-surface-background: var(--mdc-theme-surface);
 
 	/* supplementary colours */
