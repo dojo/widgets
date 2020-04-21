@@ -55,6 +55,9 @@
 .addonRoot {
 	composes: mdc-text-field__icon from '@material/textfield/dist/mdc.textfield.css';
 }
+.root .addonRoot {
+	color: var(--mdc-secondary-text-color);
+}
 
 .hasLeading.hasTrailing .addonRoot,
 .hasLeading .addonRoot {
