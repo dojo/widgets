@@ -104,6 +104,8 @@
 	top: calc(var(--grid-base) * 2.5);
 	transform: translate(-50%, 0);
 	transition: opacity var(--transition-duration) var(--transition-easing);
+	background-color: var(--mdc-raised-surface-background);
+	border-radius: var(--mdc-theme-border-radius);
 }
 
 .outputTooltip::before {
