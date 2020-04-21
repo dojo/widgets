@@ -1,4 +1,5 @@
 const { it, describe } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/framework/testing/harness/harness';
 import * as css from '../../../theme/default/speed-dial.m.css';
@@ -81,29 +82,12 @@ const baseTemplate = assertionTemplate(() => (
 				}}
 			>
 				{{
-					content: actions[0].tooltip,
-					trigger: (
-						<FloatingActionButton
-							onOut={noop}
-							onOver={noop}
-							theme={{
-								'@dojo/widgets/floating-action-button': fabCss
-							}}
-							classes={{
-								'@dojo/widgets/floating-action-button': {
-									root: [css.action, false, css.actionClosed, undefined]
-								}
-							}}
-							size="small"
-							onClick={noop}
-						>
-							{actions[1].label}
-						</FloatingActionButton>
-					)
+					content: undefined,
+					trigger: undefined
 				}}
 			</Tooltip>
 			<FloatingActionButton
-				assertion-key="fab"
+				key="fab-2"
 				onOut={noop}
 				onOver={noop}
 				theme={{
@@ -129,6 +113,76 @@ describe('SpeedDial', () => {
 		h.expect(baseTemplate);
 	});
 
+	it('registers action clicks', () => {
+		const h = harness(() => <SpeedDial actions={actions} />, [compareTheme]);
+		h.expect(baseTemplate);
+
+		h.trigger('@fab-2', 'onClick');
+		assert.equal(clicked, 'Action 3');
+	});
+
+	it('renders with other directions', () => {
+		let h = harness(() => <SpeedDial actions={actions} direction="left" />, [compareTheme]);
+		h.expect(
+			baseTemplate.setProperty(':root', 'classes', [
+				undefined,
+				css.root,
+				css.left,
+				false,
+				false,
+				false
+			])
+		);
+
+		h = harness(() => <SpeedDial actions={actions} direction="down" />, [compareTheme]);
+		h.expect(
+			baseTemplate.setProperty(':root', 'classes', [
+				undefined,
+				css.root,
+				false,
+				false,
+				css.down,
+				false
+			])
+		);
+
+		h = harness(() => <SpeedDial actions={actions} direction="up" />, [compareTheme]);
+		h.expect(
+			baseTemplate.setProperty(':root', 'classes', [
+				undefined,
+				css.root,
+				false,
+				false,
+				false,
+				css.up
+			])
+		);
+	});
+
+	it('renders initially open', () => {
+		const h = harness(() => <SpeedDial actions={actions} initialOpen={true} />, [compareTheme]);
+		h.expect(
+			baseTemplate
+				.setProperty('@speedDialIcon', 'open', true)
+				.setProperty('@actions', 'classes', [css.actions, false])
+				.setProperty('@tooltip-1', 'classes', {
+					'@dojo/widgets/tooltip': {
+						content: [css.staticTooltip, false, false, undefined]
+					}
+				})
+				.setProperty('@tooltip-2', 'classes', {
+					'@dojo/widgets/tooltip': {
+						content: [css.staticTooltip, false, false, undefined]
+					}
+				})
+				.setProperty('@fab-2', 'classes', {
+					'@dojo/widgets/floating-action-button': {
+						root: [css.action, false, false, undefined]
+					}
+				})
+		);
+	});
+
 	it('renders open', () => {
 		const h = harness(() => <SpeedDial actions={actions} open={true} />, [compareTheme]);
 		h.expect(
@@ -145,7 +199,7 @@ describe('SpeedDial', () => {
 						content: [css.staticTooltip, false, false, undefined]
 					}
 				})
-				.setProperty('@fab', 'classes', {
+				.setProperty('@fab-2', 'classes', {
 					'@dojo/widgets/floating-action-button': {
 						root: [css.action, false, false, undefined]
 					}
@@ -160,6 +214,7 @@ describe('SpeedDial', () => {
 		h.expect(
 			() => (
 				<FloatingActionButton
+					key="fab-0"
 					onOut={noop}
 					onOver={noop}
 					theme={{
@@ -195,7 +250,7 @@ describe('SpeedDial', () => {
 					content: [css.staticTooltip, false, false, undefined]
 				}
 			})
-			.setProperty('@fab', 'classes', {
+			.setProperty('@fab-2', 'classes', {
 				'@dojo/widgets/floating-action-button': {
 					root: [css.action, false, false, undefined]
 				}
@@ -225,7 +280,7 @@ describe('SpeedDial', () => {
 					content: [css.staticTooltip, css.actionTransition, false, css.action4]
 				}
 			})
-			.setProperty('@fab', 'classes', {
+			.setProperty('@fab-2', 'classes', {
 				'@dojo/widgets/floating-action-button': {
 					root: [css.action, css.actionTransition, false, css.action3]
 				}
@@ -256,7 +311,7 @@ describe('SpeedDial', () => {
 						]
 					}
 				})
-				.setProperty('@fab', 'classes', {
+				.setProperty('@fab-2', 'classes', {
 					'@dojo/widgets/floating-action-button': {
 						root: [css.action, css.actionTransition, css.actionClosed, undefined]
 					}

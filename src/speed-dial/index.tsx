@@ -166,6 +166,7 @@ export const SpeedDial = factory(function SpeedDial({
 
 					const avatar = (
 						<FloatingActionButton
+							key={`fab-${index}`}
 							onOut={() => {
 								if (tooltip && !alwaysShowTooltip) {
 									if (icache.get('tooltip') === index) {
