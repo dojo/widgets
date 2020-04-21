@@ -1,5 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import BreadcrumbGroup from '@dojo/widgets/breadcrumb-group';
+import Example from '../../Example';
 
 const factory = create();
 
@@ -18,7 +19,11 @@ const App = factory(function() {
 		}
 	];
 
-	return <BreadcrumbGroup label="breadcrumb" items={items} />;
+	return (
+		<Example>
+			<BreadcrumbGroup label="breadcrumb" items={items} />
+		</Example>
+	);
 });
 
 export default App;

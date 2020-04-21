@@ -3,13 +3,14 @@ import List, { defaultTransform, ListItem } from '@dojo/widgets/list';
 import states from './states';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createMemoryResourceWithData } from './memoryTemplate';
+import Example from '../../Example';
 
 const factory = create({ icache });
 const resource = createMemoryResourceWithData(states);
 
 export default factory(function ItemRenderer({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<List
 				resource={resource}
 				transform={defaultTransform}
@@ -28,6 +29,6 @@ export default factory(function ItemRenderer({ middleware: { icache } }) {
 				}}
 			</List>
 			<p>{`Clicked On: ${icache.getOrSet('value', '')}`}</p>
-		</virtual>
+		</Example>
 	);
 });

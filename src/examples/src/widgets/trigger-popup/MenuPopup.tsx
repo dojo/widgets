@@ -3,6 +3,7 @@ import List, { defaultTransform } from '@dojo/widgets/list';
 import Button from '@dojo/widgets/button';
 import TriggerPopup from '@dojo/widgets/trigger-popup';
 import { createMemoryResourceWithData } from '../list/memoryTemplate';
+import Example from '../../Example';
 
 const factory = create();
 const options = [
@@ -14,15 +15,21 @@ const resource = createMemoryResourceWithData(options);
 
 export default factory(function MenuTriggerPopup() {
 	return (
-		<TriggerPopup position="below">
-			{{
-				trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Menu Popup</Button>,
-				content: (onClose) => (
-					<div styles={{ border: '1px solid black' }}>
-						<List resource={resource} transform={defaultTransform} onValue={onClose} />
-					</div>
-				)
-			}}
-		</TriggerPopup>
+		<Example>
+			<TriggerPopup position="below">
+				{{
+					trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Menu Popup</Button>,
+					content: (onClose) => (
+						<div styles={{ border: '1px solid black' }}>
+							<List
+								resource={resource}
+								transform={defaultTransform}
+								onValue={onClose}
+							/>
+						</div>
+					)
+				}}
+			</TriggerPopup>
+		</Example>
 	);
 });

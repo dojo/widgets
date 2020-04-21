@@ -3,10 +3,10 @@
 	width: calc(var(--mdc-theme-grid-base) * 32);
 	font-family: var(--mdc-theme-font-family);
 	font-size: var(--mdc-font-size-small);
-	color: var(--mdc-theme-on-surface);
-	padding-left: calc(var(--mdc-theme-grid-base) * 2);
-	padding-right: calc(var(--mdc-theme-grid-base) * 2);
+	color: var(--mdc-text-color);
+	padding: calc(var(--mdc-theme-grid-base) * 2);
 	user-select: none;
+	background: var(--mdc-raised-surface-background);
 }
 
 .monthTrigger,
@@ -27,10 +27,6 @@
 .yearTrigger {
 	padding-right: calc(var(--mdc-theme-grid-base) * 0.75);
 	padding-left: calc(var(--mdc-theme-grid-base) * 1);
-}
-
-.datePicker {
-	padding-top: calc(var(--mdc-theme-grid-base) * 1.75);
 }
 
 .topMatter {
@@ -58,13 +54,13 @@
 }
 
 .inactiveDate {
-	color: var(--mdc-disabled-color);
+	color: var(--mdc-secondary-text-color);
 }
 
 .weekday .abbr {
 	font-weight: 300;
 	text-decoration: none;
-	color: var(--mdc-disabled-color);
+	color: var(--mdc-secondary-text-color);
 }
 
 .selectedDate {

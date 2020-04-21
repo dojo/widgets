@@ -5,6 +5,7 @@ import Button from '@dojo/widgets/button';
 import TextInput from '@dojo/widgets/text-input';
 import Form from '@dojo/widgets/form';
 import { FormMiddleware } from '@dojo/widgets/form/middleware';
+import Example from '../../Example';
 
 const icache = createICacheMiddleware<{
 	basic?: Partial<Fields>;
@@ -23,7 +24,7 @@ const App = factory(function({ middleware: { icache } }) {
 	const results = icache.get('basic');
 
 	return (
-		<virtual>
+		<Example>
 			<Form onSubmit={(values) => icache.set('basic', values)}>
 				{({ valid, field }: FormMiddleware<Fields>) => {
 					const firstName = field('firstName', true);
@@ -90,7 +91,7 @@ const App = factory(function({ middleware: { icache } }) {
 					</ul>
 				</div>
 			)}
-		</virtual>
+		</Example>
 	);
 });
 

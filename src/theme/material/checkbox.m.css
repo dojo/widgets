@@ -16,6 +16,10 @@
 	composes: mdc-checkbox__background from '@material/checkbox/dist/mdc.checkbox.css';
 }
 
+.root .input:enabled:not(:checked):not(:indeterminate) ~ .background {
+	border-color: var(--mdc-border-color);
+}
+
 .background::after {
 	content: '';
 	opacity: 0;

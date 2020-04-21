@@ -18,6 +18,14 @@
 	composes: mdc-line-ripple from '@material/textfield/dist/mdc.textfield.css';
 }
 
+.root .wrapper {
+	background: var(--mdc-theme-on-surface);
+}
+
+.root:hover:not(.disabled) .wrapper {
+	background: var(--mdc-theme-on-surface-hover);
+}
+
 .inputWrapperFocused {
 	composes: mdc-line-ripple--active from '@material/textfield/dist/mdc.textfield.css';
 }
@@ -83,4 +91,16 @@
 /* Styles the input when the input is valid */
 .valid .input {
 	border-color: var(--success-color);
+}
+
+.wrapper:not(.disabled) .input {
+	color: var(--mdc-text-color);
+}
+
+.wrapper:not(.disabled):not(.focused) .inputWrapper:before {
+	border-bottom-color: var(--mdc-border-color);
+}
+
+.wrapper:not(.disabled):not(.focused) .inputWrapper:hover:before {
+	border-bottom-color: var(--mdc-border-color-hover);
 }

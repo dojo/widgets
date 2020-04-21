@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import Select, { defaultTransform } from '@dojo/widgets/select';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createMemoryResourceWithData } from '../list/memoryTemplate';
+import Example from '../../Example';
 
 const factory = create({ icache });
 const options = [
@@ -14,7 +15,7 @@ const resource = createMemoryResourceWithData(options);
 
 export default factory(function Basic({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<Select
 				resource={resource}
 				transform={defaultTransform}
@@ -27,6 +28,6 @@ export default factory(function Basic({ middleware: { icache } }) {
 				}}
 			</Select>
 			<pre>{icache.getOrSet('value', '')}</pre>
-		</virtual>
+		</Example>
 	);
 });

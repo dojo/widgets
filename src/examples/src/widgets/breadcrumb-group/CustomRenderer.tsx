@@ -3,6 +3,7 @@ import BreadcrumbGroup, { Breadcrumb, BreadcrumbSeparator } from '@dojo/widgets/
 import Icon from '@dojo/widgets/icon';
 
 import * as css from './CustomRenderer.m.css';
+import Example from '../../Example';
 
 const factory = create();
 
@@ -15,39 +16,41 @@ const App = factory(function() {
 	];
 
 	return (
-		<BreadcrumbGroup label="breadcrumb" items={items}>
-			{(items) =>
-				items.map((item, i) => (
-					<virtual>
-						{i !== 0 && (
-							<BreadcrumbSeparator key={`${item.key}-separator`}>
-								<Icon type="rightIcon" />
-							</BreadcrumbSeparator>
-						)}
-
-						<Breadcrumb
-							key={`${item.key}`}
-							classes={{
-								'@dojo/widgets/breadcrumb-group': {
-									breadcrumb: [item.current ? css.current : undefined]
-								}
-							}}
-							current={item.current ? 'step' : undefined}
-							href={item.href}
-							title={item.title}
-						>
-							{item.completed && (
-								<Icon
-									classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
-									type="checkIcon"
-								/>
+		<Example>
+			<BreadcrumbGroup label="breadcrumb" items={items}>
+				{(items) =>
+					items.map((item, i) => (
+						<virtual>
+							{i !== 0 && (
+								<BreadcrumbSeparator key={`${item.key}-separator`}>
+									<Icon type="rightIcon" />
+								</BreadcrumbSeparator>
 							)}
-							<span>{item.label}</span>
-						</Breadcrumb>
-					</virtual>
-				))
-			}
-		</BreadcrumbGroup>
+
+							<Breadcrumb
+								key={`${item.key}`}
+								classes={{
+									'@dojo/widgets/breadcrumb-group': {
+										breadcrumb: [item.current ? css.current : undefined]
+									}
+								}}
+								current={item.current ? 'step' : undefined}
+								href={item.href}
+								title={item.title}
+							>
+								{item.completed && (
+									<Icon
+										classes={{ '@dojo/widgets/icon': { icon: [css.icon] } }}
+										type="checkIcon"
+									/>
+								)}
+								<span>{item.label}</span>
+							</Breadcrumb>
+						</virtual>
+					))
+				}
+			</BreadcrumbGroup>
+		</Example>
 	);
 });
 

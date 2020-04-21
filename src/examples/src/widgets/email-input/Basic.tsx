@@ -1,10 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import EmailInput from '@dojo/widgets/email-input';
+import Example from '../../Example';
 
 const factory = create();
 
-const Example = factory(function() {
-	return <EmailInput />;
+export default factory(function() {
+	return (
+		<Example>
+			<EmailInput />
+		</Example>
+	);
 });
-
-export default Example;

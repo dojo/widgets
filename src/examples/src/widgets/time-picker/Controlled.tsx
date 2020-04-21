@@ -1,12 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import TimePicker from '@dojo/widgets/time-picker';
 import icache from '@dojo/framework/core/middleware/icache';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
 export default factory(function Controlled({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<TimePicker
 				step={1800}
 				value={icache.get('value')}
@@ -15,6 +16,6 @@ export default factory(function Controlled({ middleware: { icache } }) {
 				{{ label: 'Time: ' }}
 			</TimePicker>
 			<div>The value is {icache.get('value') || 'not set'}</div>
-		</virtual>
+		</Example>
 	);
 });

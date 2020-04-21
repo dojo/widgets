@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import List, { defaultTransform } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createMemoryResourceWithData } from './memoryTemplate';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
@@ -18,7 +19,7 @@ const resource = createMemoryResourceWithData(options);
 
 export default factory(function Menu({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<List
 				menu
 				resource={resource}
@@ -29,6 +30,6 @@ export default factory(function Menu({ middleware: { icache } }) {
 				itemsInView={8}
 			/>
 			<p>{`Selected: ${icache.getOrSet('value', '')}`}</p>
-		</virtual>
+		</Example>
 	);
 });

@@ -1,12 +1,13 @@
 import RangeSlider from '@dojo/widgets/range-slider';
 import icache from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
 export default factory(function EventsRangeSlider({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<RangeSlider
 				initialValue={{
 					min: 0,
@@ -19,6 +20,6 @@ export default factory(function EventsRangeSlider({ middleware: { icache } }) {
 				onOver={() => icache.set('event', 'onOver')}
 			/>
 			<span>{`Last event: ${icache.get('event') || 'Awaiting first event'}`}</span>
-		</virtual>
+		</Example>
 	);
 });
