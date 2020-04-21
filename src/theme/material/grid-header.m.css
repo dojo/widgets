@@ -8,7 +8,7 @@
 	border: none;
 	font-weight: var(--mdc-theme-heading-font-weight);
 	padding: 16px;
-	color: var(--mdc-theme-text-primary-on-light);
+	color: var(--mdc-text-color);
 }
 
 .sort {

@@ -6,7 +6,7 @@
 	position: relative;
 	align-items: center;
 	justify-content: flex-end;
-	color: var(--mdc-theme-text-primary-on-background);
+	color: var(--mdc-text-color);
 	font-size: var(--mdc-theme-font-size-small);
 	font-family: var(--mdc-theme-font-family);
 	border-top: 1px solid var(--mdc-theme-separator);
