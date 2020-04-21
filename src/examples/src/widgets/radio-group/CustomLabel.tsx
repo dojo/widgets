@@ -1,6 +1,7 @@
 import RadioGroup from '@dojo/widgets/radio-group';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { icache } from '@dojo/framework/core/middleware/icache';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
@@ -8,7 +9,7 @@ const App = factory(function({ properties, middleware: { icache } }) {
 	const { get, set } = icache;
 
 	return (
-		<virtual>
+		<Example>
 			<RadioGroup
 				name="colours"
 				options={[
@@ -25,7 +26,7 @@ const App = factory(function({ properties, middleware: { icache } }) {
 				}}
 			</RadioGroup>
 			<pre>{`${get('colours')}`}</pre>
-		</virtual>
+		</Example>
 	);
 });
 

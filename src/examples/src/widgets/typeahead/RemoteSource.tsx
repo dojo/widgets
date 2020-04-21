@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import Typeahead from '@dojo/widgets/typeahead';
 import { createResource, createTransformer, DataTemplate } from '@dojo/framework/core/resource';
+import Example from '../../Example';
 
 const fetcher = async (options: any) => {
 	const { offset, size, query } = options;
@@ -46,7 +47,7 @@ const factory = create({ icache });
 
 export default factory(function Remote({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<Typeahead
 				helperText="Type to filter by last name"
 				resource={resource}
@@ -60,6 +61,6 @@ export default factory(function Remote({ middleware: { icache } }) {
 				}}
 			</Typeahead>
 			<pre>{icache.getOrSet('value', '')}</pre>
-		</virtual>
+		</Example>
 	);
 });

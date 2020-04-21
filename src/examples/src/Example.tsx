@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '@dojo/framework/core/middleware/theme';
-import css from './Example.m.css';
+import * as css from './Example.m.css';
 
 const factory = create({ theme });
 
