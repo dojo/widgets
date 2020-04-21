@@ -89,8 +89,8 @@
 }
 
 .output {
-	background-color: var(--color-background-inverted);
-	color: var(--color-text-inverted);
+	background-color: var(--mdc-theme-background);
+	color: var(--mdc-text-color);
 	display: inline-block;
 	margin: var(--spacing-regular) 0 0;
 	padding: var(--spacing-regular);
@@ -109,7 +109,7 @@
 .outputTooltip::before {
 	border-left: var(--grid-base) solid transparent;
 	border-right: var(--grid-base) solid transparent;
-	border-bottom: var(--grid-base) solid var(--color-background-inverted);
+	border-bottom: var(--grid-base) solid var(--mdc-theme-secondary);
 	content: '';
 	left: 50%;
 	margin-left: calc(var(--grid-base) * -1);
@@ -121,26 +121,26 @@
 /* disabled and readonly styles */
 .disabled .filled,
 .readonly .filled {
-	background-color: var(--color-border);
+	background-color: var(--mdc-border-color);
 }
 
 .disabled .thumb,
 .readonly .thumb {
-	background-color: var(--color-background-faded);
+	background-color: var(--mdc-border-color);
 }
 
 /* invalid style */
 .invalid .filled {
-	background-color: var(--color-error);
+	background-color: var(--mdc-theme-error);
 }
 .invalid .thumb {
-	border-color: var(--color-error);
+	border-color: var(--mdc-theme-error);
 }
 
 /* valid style */
 .valid .filled {
-	background-color: var(--color-success);
+	background-color: var(--mdc-theme-success);
 }
 .valid .thumb {
-	border-color: var(--color-success);
+	border-color: var(--mdc-theme-success);
 }
