@@ -1,8 +1,8 @@
 .root {
 	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
 	background-color: var(--mdc-theme-on-surface) !important;
-	display: block;
-	height: auto;
+	height: auto !important;
+	display: block !important;
 }
 
 .focused {
