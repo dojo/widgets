@@ -4,7 +4,7 @@
 }
 
 .inputWrapper {
-	margin: var(--spacing-regular) 0;
+	margin: var(--mdc-theme-grid-base) 0;
 	position: relative;
 }
 
@@ -92,8 +92,8 @@
 	background-color: var(--mdc-theme-background);
 	color: var(--mdc-text-color);
 	display: inline-block;
-	margin: var(--spacing-regular) 0 0;
-	padding: var(--spacing-regular);
+	margin: var(--mdc-theme-grid-base) 0 0;
+	padding: var(--mdc-theme-grid-base);
 }
 
 .outputTooltip {

@@ -5,7 +5,7 @@
 .inputWrapper {
 	composes: mdc-slider__track-container from '@material/slider/dist/mdc.slider.css';
 	height: calc(var(--mdc-border-width) * 2);
-	margin: calc(var(--spacing-regular) * 1.5) 0;
+	margin: calc(var(--mdc-theme-grid-base) * 1.5) 0;
 	overflow: inherit;
 	position: relative;
 	top: auto;
@@ -92,8 +92,8 @@
 	background-color: var(--mdc-theme-background);
 	color: var(--mdc-text-color);
 	display: inline-block;
-	margin: var(--spacing-regular) 0 0;
-	padding: var(--spacing-regular);
+	margin: var(--mdc-theme-grid-base) 0 0;
+	padding: var(--mdc-theme-grid-base);
 }
 
 .outputTooltip {
