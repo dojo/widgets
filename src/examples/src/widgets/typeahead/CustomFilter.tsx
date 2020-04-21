@@ -4,6 +4,7 @@ import icache from '@dojo/framework/core/middleware/icache';
 import { createMemoryResourceWithDataAndFilter } from '../list/memoryTemplate';
 import Typeahead from '@dojo/widgets/typeahead';
 import states from './states';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
@@ -29,7 +30,7 @@ const resource = createMemoryResourceWithDataAndFilter(states, (query, option) =
 
 export default factory(function CustomFilter({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<Typeahead
 				resource={resource}
 				transform={defaultTransform}
@@ -42,6 +43,6 @@ export default factory(function CustomFilter({ middleware: { icache } }) {
 				}}
 			</Typeahead>
 			<pre>{icache.getOrSet('value', '')}</pre>
-		</virtual>
+		</Example>
 	);
 });

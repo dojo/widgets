@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import Pagination from '@dojo/widgets/pagination';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import Slider from '@dojo/widgets/slider';
+import Example from '../../Example';
 
 interface BasicCache {
 	currentPage: number;
@@ -10,21 +11,11 @@ interface BasicCache {
 const icache = createICacheMiddleware<BasicCache>();
 const factory = create({ icache });
 
-const Example = factory(function Example({ middleware: { icache } }) {
+export default factory(function Controlled({ middleware: { icache } }) {
 	const currentPage = icache.getOrSet('currentPage', 8);
 
 	return (
-		<div>
-			<div>
-				<label>Current Page:</label>
-				<Slider
-					initialValue={currentPage}
-					min={1}
-					max={25}
-					onValue={(value) => icache.set('currentPage', value || 1)}
-				/>
-			</div>
-
+		<Example>
 			<Pagination
 				page={currentPage}
 				pageSize={10}
@@ -33,8 +24,14 @@ const Example = factory(function Example({ middleware: { icache } }) {
 					icache.set('currentPage', value);
 				}}
 			/>
-		</div>
+			<Slider
+				initialValue={currentPage}
+				min={1}
+				max={25}
+				onValue={(value) => icache.set('currentPage', value || 1)}
+			>
+				{{ label: 'Current Page: ' }}
+			</Slider>
+		</Example>
 	);
 });
-
-export default Example;

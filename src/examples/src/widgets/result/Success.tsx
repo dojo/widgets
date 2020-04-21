@@ -1,12 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Result from '@dojo/widgets/result';
 import Button from '@dojo/widgets/button';
+import Example from '../../Example';
 
 const factory = create();
 
 export default factory(function Error() {
 	return (
-		<div>
+		<Example>
 			<Result title="Success Result" subtitle="This is an success result." status="success">
 				{{
 					content: <span>This is the success content.</span>,
@@ -17,6 +18,6 @@ export default factory(function Error() {
 					)
 				}}
 			</Result>
-		</div>
+		</Example>
 	);
 });

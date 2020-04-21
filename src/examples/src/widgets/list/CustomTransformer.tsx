@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createMemoryResourceWithData } from './memoryTemplate';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
@@ -15,7 +16,7 @@ const resource = createMemoryResourceWithData(animals);
 
 export default factory(function CustomTransformer({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<List
 				resource={resource}
 				transform={{
@@ -27,6 +28,6 @@ export default factory(function CustomTransformer({ middleware: { icache } }) {
 				}}
 			/>
 			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
-		</virtual>
+		</Example>
 	);
 });

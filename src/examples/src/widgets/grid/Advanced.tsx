@@ -3,6 +3,7 @@ import Grid from '@dojo/widgets/grid';
 import icache from '@dojo/framework/core/middleware/icache';
 import { FetcherOptions, FetcherResult, ColumnConfig } from '@dojo/widgets/grid/interfaces';
 import TextInput from '@dojo/widgets/text-input';
+import Example from '../../Example';
 
 /**
  * Custom fetcher that builds the API url based on the page/pageSize and filters.
@@ -101,7 +102,7 @@ export default factory(function Advanced({ middleware: { icache } }) {
 	const selectedItems = icache.getOrSet<Item[]>('selected', []);
 
 	return (
-		<div>
+		<Example>
 			<Grid
 				height={500}
 				pagination={true}
@@ -133,6 +134,6 @@ export default factory(function Advanced({ middleware: { icache } }) {
 					);
 				})}
 			</div>
-		</div>
+		</Example>
 	);
 });

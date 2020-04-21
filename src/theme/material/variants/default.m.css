@@ -7,7 +7,8 @@
 	--mdc-theme-error: #b00020;
 	--mdc-theme-on-primary: #fff;
 	--mdc-theme-on-secondary: #fff;
-	--mdc-theme-on-surface: #000;
+	--mdc-theme-on-surface: rgba(0, 0, 0, 0.09);
+	--mdc-theme-on-surface-hover: rgba(0, 0, 0, 0.13);
 	--mdc-theme-on-error: #fff;
 	--mdc-theme-text-primary-on-background: rgba(0, 0, 0, 0.87);
 	--mdc-theme-text-secondary-on-background: rgba(0, 0, 0, 0.54);
@@ -24,6 +25,10 @@
 	--mdc-theme-text-hint-on-dark: rgba(255, 255, 255, 0.5);
 	--mdc-theme-text-disabled-on-dark: rgba(255, 255, 255, 0.5);
 	--mdc-theme-text-icon-on-dark: rgba(255, 255, 255, 0.5);
+
+	--mdc-text-color: var(--mdc-theme-text-primary-on-light);
+	--mdc-secondary-text-color: var(--mdc-theme-text-secondary-on-light);
+	--mdc-raised-surface-background: var(--mdc-theme-surface);
 
 	/* supplementary colours */
 	--mdc-theme-info: #2196f3;
@@ -50,6 +55,7 @@
 
 	/* borders */
 	--mdc-border-color: rgba(0, 0, 0, 0.38);
+	--mdc-border-color-hover: rgba(0, 0, 0, 0.25);
 	--mdc-border-width: 1px;
 
 	/* avatar sizes */

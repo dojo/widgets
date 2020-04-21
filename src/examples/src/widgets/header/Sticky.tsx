@@ -1,12 +1,13 @@
 import Header from '@dojo/widgets/header';
 import { Link } from '@dojo/framework/routing/Link';
 import { create, tsx } from '@dojo/framework/core/vdom';
+import Example from '../../Example';
 
 const factory = create();
 
 export default factory(function Basic() {
 	return (
-		<virtual>
+		<Example>
 			<Header sticky>
 				{{
 					title: 'My App',
@@ -59,6 +60,6 @@ export default factory(function Basic() {
 				Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna. Sed turpis
 				tincidunt id aliquet. Accumsan sit amet nulla facilisi morbi tempus iaculis.
 			</p>
-		</virtual>
+		</Example>
 	);
 });

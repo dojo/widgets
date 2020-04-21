@@ -1,5 +1,5 @@
 .root {
-	color: var(--mdc-theme-text-secondary-on-background);
+	color: var(--mdc-text-color);
 	composes: mdc-typography mdc-typography--body1 from '@material/typography/dist/mdc.typography.css';
 }
 
@@ -12,5 +12,5 @@
 }
 
 .current {
-	color: var(--mdc-theme-text-primary-on-background);
+	color: var(--mdc-secondary-text-color);
 }

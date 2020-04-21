@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import Chip from '@dojo/widgets/chip';
 import Icon from '@dojo/widgets/icon';
 import { icache } from '@dojo/framework/core/middleware/icache';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
@@ -10,7 +11,7 @@ const App = factory(function ClosableRenderer({ middleware: { icache } }) {
 	const closed = get<boolean>('closed');
 
 	return (
-		<virtual>
+		<Example>
 			{!closed && (
 				<Chip
 					onClose={() => {
@@ -23,7 +24,7 @@ const App = factory(function ClosableRenderer({ middleware: { icache } }) {
 					}}
 				</Chip>
 			)}
-		</virtual>
+		</Example>
 	);
 });
 

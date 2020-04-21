@@ -1,5 +1,7 @@
 .root {
 	composes: mdc-card from '@material/card/dist/mdc.card.css';
+	background: var(--mdc-raised-surface-background);
+	color: var(--mdc-text-color);
 }
 
 .actions {
@@ -14,6 +16,7 @@
 
 .actionIcons {
 	composes: mdc-card__action-icons from '@material/card/dist/mdc.card.css';
+	color: var(--mdc-text-color);
 }
 
 .primary {
@@ -32,7 +35,7 @@
 
 .contentWrapper {
 	padding: 0 1rem 8px;
-	color: var(--mdc-theme-text-secondary-on-background);
+	color: var(--mdc-text-secondary-color);
 	composes: mdc-typography mdc-typography--body2 from '@material/typography/dist/mdc.typography.css';
 }
 
@@ -84,6 +87,6 @@
 
 .subtitle {
 	composes: mdc-typography mdc-typography--subtitle2 from '@material/typography/dist/mdc.typography.css';
-	color: var(--mdc-theme-text-secondary-on-background);
+	color: var(--mdc-text-secondary-color);
 	margin: 0;
 }

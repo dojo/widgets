@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createResource, createTransformer, DataTemplate } from '@dojo/framework/core/resource';
+import Example from '../../Example';
 
 const fetcher = async (options: any) => {
 	const { offset, size, query } = options;
@@ -46,7 +47,7 @@ const factory = create({ icache });
 
 export default factory(function FetchedResource({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<List
 				resource={resource}
 				transform={transformer}
@@ -56,6 +57,6 @@ export default factory(function FetchedResource({ middleware: { icache } }) {
 				itemsInView={10}
 			/>
 			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
-		</virtual>
+		</Example>
 	);
 });

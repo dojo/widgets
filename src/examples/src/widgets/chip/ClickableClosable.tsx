@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Chip from '@dojo/widgets/chip';
 import { icache } from '@dojo/framework/core/middleware/icache';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
@@ -9,7 +10,7 @@ const App = factory(function ClickableClosable({ middleware: { icache } }) {
 	const clickableClosedCount = icache.getOrSet<number>('clickableClosedCount', 0);
 
 	return (
-		<virtual>
+		<Example>
 			{!clickableClosed && (
 				<Chip
 					onClick={() => {
@@ -26,7 +27,7 @@ const App = factory(function ClickableClosable({ middleware: { icache } }) {
 				</Chip>
 			)}
 			<div>Clicked {String(clickableClosedCount)} times</div>
-		</virtual>
+		</Example>
 	);
 });
 
