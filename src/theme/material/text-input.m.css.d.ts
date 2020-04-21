@@ -12,5 +12,4 @@ export const invalid: string;
 export const addonRoot: string;
 export const hasLeading: string;
 export const hasTrailing: string;
-export const helperText: string;
 export const valid: string;

@@ -78,16 +78,6 @@
 	composes: mdc-text-field--with-trailing-icon from '@material/textfield/dist/mdc.textfield.css';
 }
 
-/* Styles the helper text when the input is invalid */
-.invalid .helperText {
-	color: var(--error-color);
-}
-
-/* Styles the input when the input is invalid */
-.invalid .input {
-	border-color: var(--error-color);
-}
-
 /* Styles the input when the input is valid */
 .valid .input {
 	border-color: var(--success-color);
