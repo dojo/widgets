@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import SpeedDial from '@dojo/widgets/speed-dial';
 import Icon from '@dojo/widgets/icon';
 import icache from '@dojo/framework/core/middleware/icache';
+import { Orientation } from '@dojo/widgets/tooltip';
 
 const factory = create({ icache });
 
@@ -10,6 +11,8 @@ export default factory(function ShowTooltips({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<SpeedDial
+				direction="up"
+				tooltipOrientation={Orientation.right}
 				actions={[
 					{
 						label: <Icon type="mailIcon" />,

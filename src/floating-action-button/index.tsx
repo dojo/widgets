@@ -6,7 +6,7 @@ import theme from '../middleware/theme';
 import IconBase, { IconProperties } from '../icon';
 
 export interface FloatingActionButtonProperties extends ButtonProperties {
-	/* Sets size of the button to small, normal, or extended. Defaults to normal */
+	/** Sets size of the button to small, normal, or extended. Defaults to normal */
 	size?: 'small' | 'normal' | 'extended';
 }
 

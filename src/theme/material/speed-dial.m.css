@@ -1,3 +1,8 @@
+.root {
+	display: flex;
+	align-items: center;
+}
+
 .up,
 .up .actions {
 	flex-direction: column-reverse;
@@ -43,7 +48,7 @@
 }
 
 .action {
-	margin: var(--mdc-grid-base);
+	margin: var(--mdc-theme-grid-base);
 }
 
 .action,

@@ -7,6 +7,7 @@ export const right: string;
 export const actionsClosed: string;
 export const action: string;
 export const staticTooltip: string;
+export const actionTransition: string;
 export const actionClosed: string;
 export const staticTooltipClosed: string;
 export const iconOpen: string;

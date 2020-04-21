@@ -1,17 +1,16 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import SpeedDial from '@dojo/widgets/speed-dial';
 import Icon from '@dojo/widgets/icon';
+import { Icon as FABIcon } from '@dojo/widgets/floating-action-button';
 import icache from '@dojo/framework/core/middleware/icache';
-import NativeSelect from '@dojo/widgets/native-select';
 
 const factory = create({ icache });
 
-export default factory(function Direction({ middleware: { icache } }) {
-	const direction = icache.getOrSet('direction', 'right');
+export default factory(function CustomIcons({ middleware: { icache } }) {
+	const action = icache.getOrSet('action', '');
 	return (
-		<div styles={{ width: '500px', height: '500px' }}>
+		<virtual>
 			<SpeedDial
-				direction={direction}
 				actions={[
 					{
 						label: <Icon type="mailIcon" />,
@@ -28,21 +27,10 @@ export default factory(function Direction({ middleware: { icache } }) {
 						tooltip: 'Schedule something'
 					}
 				]}
-			/>
-			<div styles={{ marginTop: '20px' }}>
-				<NativeSelect
-					value={direction}
-					options={[
-						{ value: 'right' },
-						{ value: 'left' },
-						{ value: 'up' },
-						{ value: 'down' }
-					]}
-					onValue={(direction) => {
-						icache.set('direction', direction);
-					}}
-				/>
-			</div>
-		</div>
+			>
+				{(open) => (open ? <FABIcon type="clockIcon" /> : <FABIcon type="editIcon" />)}
+			</SpeedDial>
+			<div>Last action: {action}</div>
+		</virtual>
 	);
 });
