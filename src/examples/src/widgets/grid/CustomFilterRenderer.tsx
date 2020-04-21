@@ -8,6 +8,7 @@ import * as css from './CustomFilterRenderer.m.css';
 
 import Button from '@dojo/widgets/button';
 import TextInput from '@dojo/widgets/text-input';
+import Example from '../../Example';
 
 const columnConfig: ColumnConfig[] = [
 	{
@@ -58,57 +59,59 @@ const factory = create();
 
 export default factory(function CustomFilterRenderer() {
 	return (
-		<Grid
-			fetcher={fetcher}
-			columnConfig={columnConfig}
-			height={450}
-			customRenderers={{
-				filterRenderer: (columnConfig: ColumnConfig, filterValue, doFilter, title) => {
-					if (columnConfig.id === 'gender') {
+		<Example>
+			<Grid
+				fetcher={fetcher}
+				columnConfig={columnConfig}
+				height={450}
+				customRenderers={{
+					filterRenderer: (columnConfig: ColumnConfig, filterValue, doFilter, title) => {
+						if (columnConfig.id === 'gender') {
+							return (
+								<div>
+									<Button
+										classes={{ '@dojo/widgets/button': { root: [css.filter] } }}
+										pressed={filterValue === 'female'}
+										onClick={() => {
+											if (filterValue === 'female') {
+												doFilter('');
+											} else {
+												doFilter('female');
+											}
+										}}
+									>
+										Female
+									</Button>
+									<Button
+										classes={{ '@dojo/widgets/button': { root: [css.filter] } }}
+										pressed={filterValue === 'male'}
+										onClick={() => {
+											if (filterValue === 'male') {
+												doFilter('');
+											} else {
+												doFilter('male');
+											}
+										}}
+									>
+										Male
+									</Button>
+								</div>
+							);
+						}
 						return (
-							<div>
-								<Button
-									classes={{ '@dojo/widgets/button': { root: [css.filter] } }}
-									pressed={filterValue === 'female'}
-									onClick={() => {
-										if (filterValue === 'female') {
-											doFilter('');
-										} else {
-											doFilter('female');
-										}
-									}}
-								>
-									Female
-								</Button>
-								<Button
-									classes={{ '@dojo/widgets/button': { root: [css.filter] } }}
-									pressed={filterValue === 'male'}
-									onClick={() => {
-										if (filterValue === 'male') {
-											doFilter('');
-										} else {
-											doFilter('male');
-										}
-									}}
-								>
-									Male
-								</Button>
-							</div>
+							<TextInput
+								key="filter"
+								labelHidden={true}
+								type="search"
+								initialValue={filterValue}
+								onValue={doFilter}
+							>
+								{{ label: `Filter by ${title}` }}
+							</TextInput>
 						);
 					}
-					return (
-						<TextInput
-							key="filter"
-							labelHidden={true}
-							type="search"
-							initialValue={filterValue}
-							onValue={doFilter}
-						>
-							{{ label: `Filter by ${title}` }}
-						</TextInput>
-					);
-				}
-			}}
-		/>
+				}}
+			/>
+		</Example>
 	);
 });

@@ -5,7 +5,7 @@ import Button from '@dojo/widgets/button';
 
 const factory = create({ icache });
 
-const Example = factory(function Controlled({ middleware: { icache } }) {
+export default factory(function Controlled({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<TextInput
@@ -27,5 +27,3 @@ const Example = factory(function Controlled({ middleware: { icache } }) {
 		</virtual>
 	);
 });
-
-export default Example;

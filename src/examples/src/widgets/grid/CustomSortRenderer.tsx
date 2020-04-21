@@ -6,6 +6,7 @@ import { createFetcher } from '@dojo/widgets/grid/utils';
 
 import { createData } from './data';
 import * as css from './CustomSortRenderer.m.css';
+import Example from '../../Example';
 
 const columnConfig: ColumnConfig[] = [
 	{
@@ -29,21 +30,23 @@ const factory = create();
 
 export default factory(() => {
 	return (
-		<Grid
-			fetcher={fetcher}
-			columnConfig={columnConfig}
-			height={450}
-			customRenderers={{
-				sortRenderer: (columnConfig: ColumnConfig, direction?: 'asc' | 'desc') => {
-					let classes = [css.sort, 'fa', 'fa-sort'];
-					if (direction === 'asc') {
-						classes = [css.sort, 'fa', 'fa-sort-amount-asc'];
-					} else if (direction === 'desc') {
-						classes = [css.sort, 'fa', 'fa-sort-amount-desc'];
+		<Example>
+			<Grid
+				fetcher={fetcher}
+				columnConfig={columnConfig}
+				height={450}
+				customRenderers={{
+					sortRenderer: (columnConfig: ColumnConfig, direction?: 'asc' | 'desc') => {
+						let classes = [css.sort, 'fa', 'fa-sort'];
+						if (direction === 'asc') {
+							classes = [css.sort, 'fa', 'fa-sort-amount-asc'];
+						} else if (direction === 'desc') {
+							classes = [css.sort, 'fa', 'fa-sort-amount-desc'];
+						}
+						return <i classes={classes} />;
 					}
-					return <i classes={classes} />;
-				}
-			}}
-		/>
+				}}
+			/>
+		</Example>
 	);
 });

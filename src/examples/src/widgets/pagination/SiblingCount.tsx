@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Pagination from '@dojo/widgets/pagination';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import Example from '../../Example';
 
 interface BasicCache {
 	currentPage: number;
@@ -9,11 +10,11 @@ interface BasicCache {
 const icache = createICacheMiddleware<BasicCache>();
 const factory = create({ icache });
 
-const Example = factory(function Example({ middleware: { icache } }) {
+export default factory(function Sibling({ middleware: { icache } }) {
 	const currentPage = icache.getOrSet('currentPage', 8);
 
 	return (
-		<div>
+		<Example>
 			<Pagination
 				initialPage={8}
 				total={25}
@@ -23,8 +24,6 @@ const Example = factory(function Example({ middleware: { icache } }) {
 				}}
 			/>
 			<div>Current page is: {currentPage.toString()}</div>
-		</div>
+		</Example>
 	);
 });
-
-export default Example;

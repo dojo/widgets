@@ -2,6 +2,7 @@ import { tsx, create } from '@dojo/framework/core/vdom';
 
 import Grid from '@dojo/widgets/grid';
 import { createFetcher } from '@dojo/widgets/grid/utils';
+import Example from '../../Example';
 
 const columnConfig = [
 	{
@@ -29,5 +30,9 @@ const fetcher = createFetcher([
 const factory = create();
 
 export default factory(function Basic() {
-	return <Grid fetcher={fetcher} columnConfig={columnConfig} height={200} />;
+	return (
+		<Example>
+			<Grid fetcher={fetcher} columnConfig={columnConfig} height={200} />
+		</Example>
+	);
 });

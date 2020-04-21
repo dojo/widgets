@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import List, { defaultTransform } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createMemoryResourceWithData } from './memoryTemplate';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
@@ -10,7 +11,7 @@ const resource = createMemoryResourceWithData(animals);
 
 export default factory(function Disabled({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<List
 				resource={resource}
 				transform={defaultTransform}
@@ -19,6 +20,6 @@ export default factory(function Disabled({ middleware: { icache } }) {
 				}}
 				disabled={(item) => item.value === 'mouse'}
 			/>
-		</virtual>
+		</Example>
 	);
 });

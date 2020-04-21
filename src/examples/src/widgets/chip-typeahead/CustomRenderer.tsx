@@ -3,6 +3,7 @@ import { defaultTransform } from '@dojo/widgets/select';
 import { createMemoryResourceWithDataAndFilter } from '../list/memoryTemplate';
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import { ListItem } from '@dojo/widgets/list';
+import Example from '../../Example';
 
 const factory = create();
 const options = [
@@ -15,7 +16,7 @@ const resource = createMemoryResourceWithDataAndFilter(options);
 
 export default factory(function CustomRenderer() {
 	return (
-		<virtual>
+		<Example>
 			<ChipTypeahead resource={resource} transform={defaultTransform}>
 				{{
 					label: 'Favorite Foods',
@@ -36,6 +37,6 @@ export default factory(function CustomRenderer() {
 					}
 				}}
 			</ChipTypeahead>
-		</virtual>
+		</Example>
 	);
 });

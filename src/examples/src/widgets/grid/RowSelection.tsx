@@ -4,6 +4,7 @@ import Grid from '@dojo/widgets/grid';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createFetcher } from '@dojo/widgets/grid/utils';
 import { createData } from './data';
+import Example from '../../Example';
 
 const columnConfig = [
 	{
@@ -34,7 +35,7 @@ const factory = create({ icache });
 export default factory(function Selection({ middleware: { icache } }) {
 	const selected = icache.get<any[]>('selected');
 	return (
-		<virtual>
+		<Example>
 			<Grid
 				onRowSelect={(items) => {
 					icache.set('selected', items);
@@ -50,6 +51,6 @@ export default factory(function Selection({ middleware: { icache } }) {
 					))}
 				</div>
 			)}
-		</virtual>
+		</Example>
 	);
 });

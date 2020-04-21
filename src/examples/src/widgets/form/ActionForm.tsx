@@ -4,6 +4,7 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import TextInput from '@dojo/widgets/text-input';
 import Form from '@dojo/widgets/form';
 import { FormMiddleware } from '@dojo/widgets/form/middleware';
+import Example from '../../Example';
 
 const icache = createICacheMiddleware<{
 	basic?: Partial<Fields>;
@@ -22,7 +23,7 @@ const App = factory(function({ middleware: { icache } }) {
 	const results = icache.get('basic');
 
 	return (
-		<virtual>
+		<Example>
 			<Form
 				name="actionForm"
 				action="action-url"
@@ -84,7 +85,7 @@ const App = factory(function({ middleware: { icache } }) {
 					</ul>
 				</div>
 			)}
-		</virtual>
+		</Example>
 	);
 });
 

@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import List, { defaultTransform } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import { createMemoryResourceWithData } from './memoryTemplate';
+import Example from '../../Example';
 
 const factory = create({ icache });
 const options = [
@@ -15,7 +16,7 @@ const resource = createMemoryResourceWithData(options);
 
 export default factory(function Dividers({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<List
 				resource={resource}
 				transform={defaultTransform}
@@ -24,6 +25,6 @@ export default factory(function Dividers({ middleware: { icache } }) {
 				}}
 			/>
 			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
-		</virtual>
+		</Example>
 	);
 });

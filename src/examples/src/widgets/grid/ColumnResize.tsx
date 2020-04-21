@@ -5,6 +5,7 @@ import { ColumnConfig } from '@dojo/widgets/grid/interfaces';
 import { createFetcher } from '@dojo/widgets/grid/utils';
 
 import { createData } from './data';
+import Example from '../../Example';
 
 const columnConfig: ColumnConfig[] = [
 	{
@@ -36,5 +37,9 @@ const fetcher = createFetcher(createData());
 const factory = create();
 
 export default factory(function ColumnResize() {
-	return <Grid fetcher={fetcher} columnConfig={columnConfig} height={450} />;
+	return (
+		<Example>
+			<Grid fetcher={fetcher} columnConfig={columnConfig} height={450} />
+		</Example>
+	);
 });

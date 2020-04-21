@@ -1,0 +1,4 @@
+.root {
+	background: var(--example-background, #fff);
+	padding: 10px;
+}

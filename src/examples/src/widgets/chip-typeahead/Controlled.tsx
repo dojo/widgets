@@ -4,6 +4,7 @@ import icache from '@dojo/framework/core/middleware/icache';
 import { createMemoryResourceWithDataAndFilter } from '../list/memoryTemplate';
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import Icon from '@dojo/widgets/icon';
+import Example from '../../Example';
 
 const factory = create({ icache });
 const options = [
@@ -16,7 +17,7 @@ const resource = createMemoryResourceWithDataAndFilter(options);
 
 export default factory(function Controlled({ middleware: { icache } }) {
 	return (
-		<virtual>
+		<Example>
 			<ChipTypeahead
 				resource={resource}
 				transform={defaultTransform}
@@ -48,6 +49,6 @@ export default factory(function Controlled({ middleware: { icache } }) {
 					))}
 				</ul>
 			</div>
-		</virtual>
+		</Example>
 	);
 });

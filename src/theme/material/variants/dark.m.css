@@ -1,4 +1,6 @@
 .root {
+	--example-background: var(--mdc-theme-surface);
+
 	/* variables taken from @material/theme/dist/mdc.theme.css */
 	--mdc-theme-primary: #bb86fc;
 	--mdc-theme-secondary: #03dac6;
