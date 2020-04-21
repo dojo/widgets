@@ -3,13 +3,14 @@ import SpeedDial from '@dojo/widgets/speed-dial';
 import Icon from '@dojo/widgets/icon';
 import { Icon as FABIcon } from '@dojo/widgets/floating-action-button';
 import icache from '@dojo/framework/core/middleware/icache';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
 export default factory(function CustomIcons({ middleware: { icache } }) {
 	const action = icache.getOrSet('action', '');
 	return (
-		<virtual>
+		<Example>
 			<SpeedDial
 				actions={[
 					{
@@ -31,6 +32,6 @@ export default factory(function CustomIcons({ middleware: { icache } }) {
 				{(open) => (open ? <FABIcon type="clockIcon" /> : <FABIcon type="editIcon" />)}
 			</SpeedDial>
 			<div>Last action: {action}</div>
-		</virtual>
+		</Example>
 	);
 });
