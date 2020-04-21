@@ -156,12 +156,12 @@ export const SpeedDial = factory(function SpeedDial({
 					let actionDelayClass = undefined;
 
 					if (!firstRender && open) {
-						actionDelayClass = delays[index - 1];
+						actionDelayClass = delays[Math.min(index - 1, delays.length - 1)];
 					}
 
 					if (!firstRender && !open) {
 						const reverseIndex = actions.length - index - 1;
-						actionDelayClass = delays[reverseIndex - 1];
+						actionDelayClass = delays[Math.min(reverseIndex - 1, delays.length - 1)];
 					}
 
 					const avatar = (
