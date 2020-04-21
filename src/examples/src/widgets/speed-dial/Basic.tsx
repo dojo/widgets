@@ -2,13 +2,14 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import SpeedDial from '@dojo/widgets/speed-dial';
 import Icon from '@dojo/widgets/icon';
 import icache from '@dojo/framework/core/middleware/icache';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
 export default factory(function Basic({ middleware: { icache } }) {
 	const action = icache.getOrSet('action', '');
 	return (
-		<virtual>
+		<Example>
 			<SpeedDial
 				actions={[
 					{
@@ -56,6 +57,6 @@ export default factory(function Basic({ middleware: { icache } }) {
 				]}
 			/>
 			<div>Last action: {action}</div>
-		</virtual>
+		</Example>
 	);
 });

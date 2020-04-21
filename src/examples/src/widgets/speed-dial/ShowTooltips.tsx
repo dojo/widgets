@@ -3,13 +3,14 @@ import SpeedDial from '@dojo/widgets/speed-dial';
 import Icon from '@dojo/widgets/icon';
 import icache from '@dojo/framework/core/middleware/icache';
 import { Orientation } from '@dojo/widgets/tooltip';
+import Example from '../../Example';
 
 const factory = create({ icache });
 
 export default factory(function ShowTooltips({ middleware: { icache } }) {
 	const action = icache.getOrSet('action', '');
 	return (
-		<virtual>
+		<Example>
 			<SpeedDial
 				direction="up"
 				tooltipOrientation={Orientation.right}
@@ -33,6 +34,6 @@ export default factory(function ShowTooltips({ middleware: { icache } }) {
 				]}
 			/>
 			<div>Last action: {action}</div>
-		</virtual>
+		</Example>
 	);
 });
