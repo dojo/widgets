@@ -284,7 +284,7 @@ registerSuite('TabController', {
 			let currentActive = 'tab2';
 			const h = harness(() => (
 				<TabContainer
-					activeTab="tab2"
+					activeIndex="tab2"
 					tabs={tabs}
 					onActiveTab={(tabId) => {
 						currentActive = tabId;

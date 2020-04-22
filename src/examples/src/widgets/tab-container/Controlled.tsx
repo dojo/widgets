@@ -18,7 +18,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<Example>
 			<TabContainer
-				activeTab={icache.getOrSet('activeTab', 'tab2')}
+				activeIndex={icache.getOrSet('activeTab', 'tab2')}
 				onActiveTab={(activeTab) => icache.set('activeTab', activeTab)}
 				tabs={tabs}
 			>
