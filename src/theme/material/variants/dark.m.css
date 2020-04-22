@@ -30,7 +30,7 @@
 
 	--mdc-text-color: var(--mdc-theme-text-primary-on-dark);
 	--mdc-secondary-text-color: var(--mdc-theme-text-secondary-on-dark);
-	--mdc-disabled-text-color: var(--mdc-theme-text-disabled-on-background);
+	--mdc-disabled-text-color: var(--mdc-theme-text-disabled-on-dark);
 	--mdc-raised-surface-background: #424242;
 
 	/* supplementary colours */
@@ -76,6 +76,7 @@
 	--mdc-font-size-small: 14px;
 	--mdc-disabled-color: var(--mdc-theme-text-hint-on-dark);
 
+	--mdc-tab-background: var(--mdc-raised-surface-background);
 	--mdc-tooltip-background: #6d6d6d;
 	--mdc-chip-background: #6d6d6d;
 	--mdc-chip-background-hover: #8d8d8d;

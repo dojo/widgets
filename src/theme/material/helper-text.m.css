@@ -11,7 +11,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	color: var(--mdc-secondary-text-color);
+	color: var(--mdc-disabled-text-color) !important;
 }
 
 .valid,
@@ -19,10 +19,10 @@
 	composes: mdc-text-field-helper-text--validation-msg from '@material/textfield/dist/mdc.textfield.css';
 }
 
-.valid .text {
+.root.valid .text {
 	color: var(--mdc-theme-success) !important;
 }
 
-.invalid .text {
+.root.invalid .text {
 	color: var(--mdc-theme-error) !important;
 }
