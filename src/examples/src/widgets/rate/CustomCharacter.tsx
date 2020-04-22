@@ -8,6 +8,7 @@ const factory = create({ icache });
 
 const App = factory(function({ properties, middleware: { icache } }) {
 	const { get, set } = icache;
+	icache.getOrSet('emoji', 3.5);
 
 	return (
 		<virtual>
@@ -18,10 +19,11 @@ const App = factory(function({ properties, middleware: { icache } }) {
 				}}
 				classes={{
 					'@dojo/widgets/rate': {
-						integer: [css.integer],
-						selectedInteger: [css.selectedInteger],
+						root: [css.root],
 						filled: [css.filled],
-						empty: [css.empty]
+						empty: [css.empty],
+						star: [css.star],
+						selectedStar: [css.selectedStar]
 					}
 				}}
 			>
@@ -41,8 +43,24 @@ const App = factory(function({ properties, middleware: { icache } }) {
 				}}
 			>
 				{{
-					character: (filled) => {
-						return <span styles={{ textAlign: 'center' }}>{filled ? '🌕' : '🌑'}</span>;
+					character: (fill, integer, selected, over) => {
+						let moon = '🌑';
+						const active = over !== undefined ? over : selected;
+						if (active) {
+							if (Math.ceil(active) === integer) {
+								switch (Math.round((active % 1) * 2)) {
+									case 0:
+										moon = '🌕';
+										break;
+									case 1:
+										moon = '🌗';
+										break;
+								}
+							} else if (active > integer) {
+								moon = '🌕';
+							}
+						}
+						return <div classes={css.black}>{moon}</div>;
 					}
 				}}
 			</Rate>

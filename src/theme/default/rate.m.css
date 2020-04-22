@@ -1,18 +1,15 @@
 .root {
 }
 
-.filled {
-	color: #fadb14;
-}
-
 .empty {
 	color: var(--color-dark);
 }
 
-.star {
+.filled {
+	color: #fadb14;
 }
 
-.character ~ .character {
+.partial ~ .partial {
 	overflow: hidden;
 	position: absolute;
 	top: 0;
@@ -20,13 +17,16 @@
 	bottom: 0;
 }
 
-.halfCharacters .character ~ .character {
+.halfStars .partial ~ .partial {
 	width: 50%;
 }
 
-.halfCharacters .character ~ .character .radioRoot {
+.halfStars .partial ~ .partial .radioRoot {
 	position: absolute;
 	right: 0;
+}
+
+.selectedPartial {
 }
 
 .labelRoot {
@@ -46,66 +46,13 @@
 .over {
 }
 
-.integer {
+.star {
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
 }
 
-/* fill all icons */
-.on {
-	display: inline;
-}
-.off {
-	display: none;
-}
-
-/* empty icons if there is no selection */
-.unselected .on {
-	display: none;
-}
-.unselected .off {
-	display: inline;
-}
-
-/* empty icons after the selected icon */
-.selectedInteger ~ .integer .on {
-	display: none;
-}
-.selectedInteger ~ .integer .off {
-	display: inline;
-}
-
-/* empty icon segments after the selected one */
-.selectedInteger .selectedCharacter ~ .character .on {
-	display: none;
-}
-.selectedInteger .selectedCharacter ~ .character .off {
-	display: inline;
-}
-
-/* fill all icons when the widget is hovered */
-.hoverable:hover .integer .on {
-	display: inline;
-}
-.hoverable:hover .integer .off {
-	display: none;
-}
-
-/* empty all icons after the hovered icon */
-.integer:hover ~ .integer .on {
-	display: none;
-}
-.integer:hover ~ .integer .off {
-	display: inline;
-}
-
-/* empty icon segments after the hovered one */
-.integer .character:hover ~ .character .on {
-	display: none;
-}
-.integer .character:hover ~ .character .off {
-	display: inline;
+.selectedStar {
 }
 
 /* Added to disabled ratings group */

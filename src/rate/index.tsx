@@ -35,11 +35,17 @@ export interface RateProperties {
 
 export interface RateChildren {
 	label?: RenderResult;
-	character?: (filled: boolean, integer: number) => RenderResult;
+	character?: (
+		filled: boolean,
+		integer: number,
+		selected?: number,
+		over?: number
+	) => RenderResult;
 }
 
 interface RateICache {
 	selected?: number;
+	hover?: number;
 }
 
 const icache = createICacheMiddleware<RateICache>();
@@ -70,8 +76,8 @@ export const Rate = factory(function Rate({
 	} = properties();
 	const interaction = !disabled && !readOnly;
 	const [{ character, label } = {} as RateChildren] = children();
+	const hover = icache.get('hover');
 	const selected = icache.getOrSet('selected', initialValue);
-	const shouldFocus = focus.shouldFocus();
 
 	const _onValue = (value?: string) => {
 		if (!value) {
@@ -99,7 +105,7 @@ export const Rate = factory(function Rate({
 
 	const renderIcon = (filled: boolean, value: number) =>
 		character ? (
-			character(filled, Math.ceil(value))
+			character(filled, Math.ceil(value), selected, hover)
 		) : (
 			<Icon
 				theme={theme.compose(
@@ -111,22 +117,26 @@ export const Rate = factory(function Rate({
 			/>
 		);
 
-	const renderLabel = (value: number) => (
+	const renderLabel = (value: number, icon: RenderResult) => (
 		<virtual>
 			<span key="radioLabel" classes={baseCss.visuallyHidden}>
 				{format('starLabels', { rating: value })}
 			</span>
-			<span classes={[themeCss.on, themeCss.filled]}>{renderIcon(true, value)}</span>
-			<span classes={[themeCss.off, themeCss.empty]}>{renderIcon(false, value)}</span>
+			<span>{icon}</span>
 		</virtual>
 	);
 
-	const renderRadio = (value: number, forId: string, checked: RadioChecked, label: DNode) => (
+	const renderRadio = (
+		filled: boolean,
+		value: number,
+		forId: string,
+		checked: RadioChecked,
+		label: DNode
+	) => (
 		<Radio
 			widgetId={forId}
 			key="radio"
 			name={name}
-			focus={() => false}
 			checked={checked()}
 			disabled={!interaction}
 			onValue={checked}
@@ -140,33 +150,35 @@ export const Rate = factory(function Rate({
 					inputWrapper: [baseCss.visuallyHidden]
 				},
 				'@dojo/widgets/label': {
-					root: [themeCss.labelRoot]
+					root: [themeCss.labelRoot, filled ? themeCss.filled : themeCss.empty]
 				}
 			}}
-			label={label}
-		/>
+		>
+			{label || undefined}
+		</Radio>
 	);
 
-	const renderCharacter = (value: number, clear: RadioChecked, radio: RenderResult) => (
+	const renderPartial = (value: number, clear: RadioChecked, radio: RenderResult) => (
 		<div
 			key={`${value === 0 ? '' : value}`}
 			classes={[
-				themeCss.character,
-				selected && value === selected ? themeCss.selectedCharacter : null
+				themeCss.partial,
+				selected && value === selected ? themeCss.selectedPartial : null
 			]}
+			onpointerenter={() => interaction && icache.set('hover', value)}
 			onclick={() => interaction && allowClear && value === selected && clear(true)}
 		>
 			{radio}
 		</div>
 	);
 
-	const renderInteger = (integer: number, radios: RenderResult) => (
+	const renderStar = (integer: number, radios: RenderResult) => (
 		<div
 			key={integer}
 			classes={[
-				themeCss.integer,
+				integer === 0 ? baseCss.visuallyHidden : null,
 				themeCss.star,
-				selected && Math.ceil(selected) === integer ? themeCss.selectedInteger : null
+				selected && Math.ceil(selected) === integer ? themeCss.selectedStar : null
 			]}
 		>
 			{radios}
@@ -174,24 +186,28 @@ export const Rate = factory(function Rate({
 	);
 
 	const renderChildren: RadioGroupChildren['radios'] = (name, middleware, options) => {
+		const active = hover === undefined ? selected : hover;
 		const radioIntegers: DNode[][] = [];
 		for (const option of options) {
 			const value = parseFloat(option.value) || 0;
 			const key = option.value ? `${value}` : '';
-			const label = renderLabel(value);
+			const filled = Boolean(active && value <= active);
+			const icon = renderIcon(filled, value);
+			const label = renderLabel(value, icon);
 			const radio = renderRadio(
+				filled,
 				value,
 				`${id}-${name}-${key}`,
 				middleware(key).checked,
 				label
 			);
-			const step = renderCharacter(value, middleware('').checked, radio);
+			const step = renderPartial(value, middleware('').checked, radio);
 			const integer = Math.ceil(value);
 			(radioIntegers[integer] = radioIntegers[integer] || []).push(step);
 		}
 
 		return radioIntegers.reduce((nodes, radios, integer) => {
-			nodes.push(renderInteger(integer, radios));
+			nodes.push(renderStar(integer, radios));
 			return nodes;
 		}, []);
 	};
@@ -199,17 +215,15 @@ export const Rate = factory(function Rate({
 	return (
 		<div
 			key="root"
-			tabIndex={0}
-			focus={shouldFocus}
+			focus={focus.shouldFocus}
 			classes={[
 				theme.variant(),
 				themeCss.root,
-				themeCss.hoverable,
-				selected === undefined ? themeCss.unselected : null,
-				allowHalf ? themeCss.halfCharacters : null,
+				allowHalf ? themeCss.halfStars : null,
 				readOnly ? themeCss.readOnly : null,
 				disabled ? themeCss.disabled : null
 			]}
+			onpointerleave={() => interaction && icache.set('hover', undefined)}
 		>
 			<RadioGroup
 				key="radioGroup"

@@ -1,16 +1,18 @@
-.integer:hover {
+.star:hover {
 	background: #ccc;
 }
 
-.integer {
+.star {
 	border-bottom: 1px solid transparent;
-}
-
-.selectedInteger {
-	border-bottom: 1px solid #369;
-}
-
-.filled,
-.empty {
 	color: black;
+}
+
+.root .filled,
+.root .empty,
+.black {
+	color: black;
+}
+
+.selectedStar {
+	border-bottom: 1px solid #369;
 }
