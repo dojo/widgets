@@ -1,7 +1,7 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 
-import TabController from '@dojo/widgets/tab-controller';
-import TabContent from '@dojo/widgets/tab-controller/TabContent';
+import TabContainer from '@dojo/widgets/tab-container';
+import TabContent from '@dojo/widgets/tab-container/TabContent';
 import { icache } from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
 
@@ -17,7 +17,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 
 	return (
 		<Example>
-			<TabController
+			<TabContainer
 				activeTab={icache.getOrSet('activeTab', 'tab2')}
 				onActiveTab={(activeTab) => icache.set('activeTab', activeTab)}
 				tabs={tabs}
@@ -36,7 +36,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 						Hello Tab Four
 					</TabContent>
 				]}
-			</TabController>
+			</TabContainer>
 		</Example>
 	);
 });

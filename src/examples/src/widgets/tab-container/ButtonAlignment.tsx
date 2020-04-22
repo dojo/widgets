@@ -1,9 +1,9 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 
-import TabContainer, { Align } from './node_modules/@dojo/widgets/tab-container';
-import TabContent from './node_modules/@dojo/widgets/tab-container/TabContent';
-import Select, { defaultTransform } from './node_modules/@dojo/widgets/select';
+import TabContainer, { Align } from '@dojo/widgets/tab-container';
+import TabContent from '@dojo/widgets/tab-container/TabContent';
+import Select, { defaultTransform } from '@dojo/widgets/select';
 import { createMemoryResourceWithData } from '../list/memoryTemplate';
 import Example from '../../Example';
 

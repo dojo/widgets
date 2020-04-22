@@ -8,7 +8,7 @@ import { DNode } from '@dojo/framework/core/interfaces';
 
 import commonBundle from '../../../common/nls/common';
 import { Keys } from '../../../common/util';
-import TabController, { Align, TabControllerChildren, TabItem } from '../../index';
+import TabContainer, { Align, TabContainerChildren, TabItem } from '../../index';
 import TabContent from '../../TabContent';
 import * as css from '../../../theme/default/tab-controller.m.css';
 import {
@@ -33,7 +33,7 @@ const createMockKeydownEvent = (which: number) => {
 	} as any;
 };
 
-const tabChildren = (tabs: TabItem[]): TabControllerChildren => {
+const tabChildren = (tabs: TabItem[]): TabContainerChildren => {
 	return (_, active, closed) =>
 		tabs.map((_tab, i) => {
 			const key = `tab${i}`;
@@ -74,7 +74,7 @@ const expectedTabButtons = (tabs: TabItem[], activeIndex = 0, closedIndex = -1):
 					tabIndex={active ? 0 : -1}
 				>
 					<span classes={css.tabButtonContent}>
-						{tab.label}
+						{tab.name}
 						{tab.closeable ? (
 							<button
 								tabIndex={active ? 0 : -1}
@@ -140,16 +140,16 @@ registerSuite('TabController', {
 	tests: {
 		'default properties'() {
 			const tabs: TabItem[] = [];
-			const h = harness(() => <TabController tabs={tabs}>{() => []}</TabController>);
+			const h = harness(() => <TabContainer tabs={tabs}>{() => []}</TabContainer>);
 			h.expect(() => expected([expectedTabButtons(tabs), expectedTabContent(tabs)]));
 		},
 
 		'aria properties'() {
 			const tabs: TabItem[] = [];
 			const h = harness(() => (
-				<TabController aria={{ describedBy: 'foo', orientation: 'overridden' }} tabs={tabs}>
+				<TabContainer aria={{ describedBy: 'foo', orientation: 'overridden' }} tabs={tabs}>
 					{() => []}
-				</TabController>
+				</TabContainer>
 			));
 
 			h.expect(() => expected([expectedTabButtons(tabs), expectedTabContent(tabs)], 'foo'));
@@ -158,9 +158,9 @@ registerSuite('TabController', {
 		'custom orientation'() {
 			const tabs: TabItem[] = [];
 			let h = harness(() => (
-				<TabController alignButtons={Align.bottom} tabs={tabs}>
+				<TabContainer alignButtons={Align.bottom} tabs={tabs}>
 					{() => []}
-				</TabController>
+				</TabContainer>
 			));
 			h.expect(() =>
 				expected([expectedTabContent(tabs), expectedTabButtons(tabs)], '', [
@@ -171,9 +171,9 @@ registerSuite('TabController', {
 			);
 
 			h = harness(() => (
-				<TabController alignButtons={Align.right} tabs={[]}>
+				<TabContainer alignButtons={Align.right} tabs={[]}>
 					{() => []}
-				</TabController>
+				</TabContainer>
 			));
 			h.expect(() =>
 				expected(
@@ -185,9 +185,9 @@ registerSuite('TabController', {
 			);
 
 			h = harness(() => (
-				<TabController alignButtons={Align.left} tabs={[]}>
+				<TabContainer alignButtons={Align.left} tabs={[]}>
 					{() => []}
-				</TabController>
+				</TabContainer>
 			));
 			h.expect(() =>
 				expected(
@@ -208,7 +208,7 @@ registerSuite('TabController', {
 			let currentActiveTab = 'tab2';
 
 			const h = harness(() => (
-				<TabController
+				<TabContainer
 					initialActiveTab="tab2"
 					onActiveTab={(tabId) => {
 						currentActiveTab = tabId;
@@ -216,7 +216,7 @@ registerSuite('TabController', {
 					tabs={tabs}
 				>
 					{tabChildren(tabs)}
-				</TabController>
+				</TabContainer>
 			));
 
 			h.trigger('@0-tabbutton', 'onclick');
@@ -240,9 +240,9 @@ registerSuite('TabController', {
 				{ closeable: true, id: 'tab2', label: 'Tab 3' }
 			];
 			const h = harness(() => (
-				<TabController initialActiveTab="tab2" tabs={tabs}>
+				<TabContainer initialActiveTab="tab2" tabs={tabs}>
 					{tabChildren(tabs)}
-				</TabController>
+				</TabContainer>
 			));
 
 			const stopPropagation = sinon.spy();
@@ -258,9 +258,9 @@ registerSuite('TabController', {
 				.split('')
 				.map((n) => ({ id: `tab${n}`, label: `Tab ${n + 1}` }));
 			const h = harness(() => (
-				<TabController initialActiveTab="tab2" tabs={tabs}>
+				<TabContainer initialActiveTab="tab2" tabs={tabs}>
 					{tabChildren(tabs)}
-				</TabController>
+				</TabContainer>
 			));
 
 			h.trigger('@2-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Right));
@@ -283,7 +283,7 @@ registerSuite('TabController', {
 				.map((n) => ({ id: `tab${n}`, label: `Tab ${n + 1}` }));
 			let currentActive = 'tab2';
 			const h = harness(() => (
-				<TabController
+				<TabContainer
 					activeTab="tab2"
 					tabs={tabs}
 					onActiveTab={(tabId) => {
@@ -291,7 +291,7 @@ registerSuite('TabController', {
 					}}
 				>
 					{tabChildren(tabs)}
-				</TabController>
+				</TabContainer>
 			));
 
 			// Navigation shouldn't have an effect if activeTab isn't changed
@@ -324,7 +324,7 @@ registerSuite('TabController', {
 			];
 			let properties: any = { initialActiveTab: 'tab0', tabs };
 			const h = harness(() => (
-				<TabController {...properties}>{tabChildren(tabs)}</TabController>
+				<TabContainer {...properties}>{tabChildren(tabs)}</TabContainer>
 			));
 			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Left));
 			h.expect(() => expected([expectedTabButtons(tabs, 2), expectedTabContent(tabs, 2)]));
@@ -342,7 +342,7 @@ registerSuite('TabController', {
 				tabs
 			};
 			const h = harness(() => (
-				<TabController {...properties}>{tabChildren(tabs)}</TabController>
+				<TabContainer {...properties}>{tabChildren(tabs)}</TabContainer>
 			));
 
 			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Down));
@@ -404,9 +404,9 @@ registerSuite('TabController', {
 				{ id: 'tab2', label: 'Tab 3' }
 			];
 			const h = harness(() => (
-				<TabController initialActiveTab="tab3" tabs={tabs}>
+				<TabContainer initialActiveTab="tab3" tabs={tabs}>
 					{tabChildren(tabs)}
-				</TabController>
+				</TabContainer>
 			));
 			const tabButtons = expectedTabButtons(tabs, 2);
 			const tabContent = expectedTabContent(tabs, 2);
@@ -420,9 +420,9 @@ registerSuite('TabController', {
 				{ id: 'tab2', label: 'Tab 3' }
 			];
 			const h = harness(() => (
-				<TabController initialActiveTab="tab1" tabs={tabs}>
+				<TabContainer initialActiveTab="tab1" tabs={tabs}>
 					{tabChildren(tabs)}
-				</TabController>
+				</TabContainer>
 			));
 			const tabButtons = expectedTabButtons(tabs, 2);
 			const tabContent = expectedTabContent(tabs, 2);
@@ -431,16 +431,13 @@ registerSuite('TabController', {
 
 		'Calls focus when arrowing through tabs'() {
 			const tabs = [{ id: 'tab0', label: 'Tab 1' }, { id: 'tab1', label: 'Tab 2' }];
-			const h = harness(
-				() => <TabController tabs={tabs}>{tabChildren(tabs)}</TabController>,
-				[
-					{
-						selector: '@1-tabbutton',
-						property: 'focus',
-						comparator: isFocusedComparator
-					}
-				]
-			);
+			const h = harness(() => <TabContainer tabs={tabs}>{tabChildren(tabs)}</TabContainer>, [
+				{
+					selector: '@1-tabbutton',
+					property: 'focus',
+					comparator: isFocusedComparator
+				}
+			]);
 			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Right));
 			const tabButtons = expectedTabButtons(tabs, 1);
 			const tabContent = expectedTabContent(tabs, 1);
@@ -452,16 +449,13 @@ registerSuite('TabController', {
 				{ closeable: true, id: 'tab0', label: 'Tab 1' },
 				{ id: 'tab1', label: 'Tab 2' }
 			];
-			const h = harness(
-				() => <TabController tabs={tabs}>{tabChildren(tabs)}</TabController>,
-				[
-					{
-						selector: '@0-tabbutton',
-						property: 'focus',
-						comparator: isFocusedComparator
-					}
-				]
-			);
+			const h = harness(() => <TabContainer tabs={tabs}>{tabChildren(tabs)}</TabContainer>, [
+				{
+					selector: '@0-tabbutton',
+					property: 'focus',
+					comparator: isFocusedComparator
+				}
+			]);
 			const stopPropagation = sinon.spy();
 			h.trigger('@0-tabbutton-close', 'onclick', { stopPropagation });
 			assert.isTrue(stopPropagation.called, 'clicking close button calls stopPropagation');

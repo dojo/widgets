@@ -1,7 +1,7 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 
-import TabContainer from './node_modules/@dojo/widgets/tab-container';
-import TabContent from './node_modules/@dojo/widgets/tab-container/TabContent';
+import TabContainer from '@dojo/widgets/tab-container';
+import TabContent from '@dojo/widgets/tab-container/TabContent';
 import Example from '../../Example';
 
 const factory = create();

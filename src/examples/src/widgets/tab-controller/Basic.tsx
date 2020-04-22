@@ -1,7 +1,7 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 
-import TabController from '@dojo/widgets/tab-controller';
-import TabContent from '@dojo/widgets/tab-controller/TabContent';
+import TabContainer from './node_modules/@dojo/widgets/tab-container';
+import TabContent from './node_modules/@dojo/widgets/tab-container/TabContent';
 import Example from '../../Example';
 
 const factory = create();
@@ -16,7 +16,7 @@ export default factory(function Basic() {
 
 	return (
 		<Example>
-			<TabController tabs={tabs}>
+			<TabContainer tabs={tabs}>
 				{(_tabs, isActive) => [
 					<TabContent key="tab0" active={isActive('tab0')}>
 						Hello Tab One
@@ -31,7 +31,7 @@ export default factory(function Basic() {
 						Hello Tab Four
 					</TabContent>
 				]}
-			</TabController>
+			</TabContainer>
 		</Example>
 	);
 });

@@ -24,11 +24,10 @@ export enum Align {
 export interface TabItem {
 	closeable?: boolean;
 	disabled?: boolean;
-	id: string;
-	label: DNode;
+	name: string;
 }
 
-export interface TabControllerProperties {
+export interface TabContainerProperties {
 	/** Orientation of the tab buttons */
 	alignButtons?: Align;
 	/** Custom aria attributes */
@@ -43,7 +42,7 @@ export interface TabControllerProperties {
 	tabs: TabItem[];
 }
 
-export interface TabControllerChildren {
+export interface TabContainerChildren {
 	(
 		tabs: TabItem[],
 		active: (id: string) => boolean,
@@ -51,7 +50,7 @@ export interface TabControllerChildren {
 	): RenderResult;
 }
 
-interface TabControllerICache {
+interface TabContainerICache {
 	activeId: string | undefined;
 	closedIds: Set<string>;
 }
@@ -59,11 +58,11 @@ interface TabControllerICache {
 const factory = create({
 	focus,
 	i18n,
-	icache: createICacheMiddleware<TabControllerICache>(),
+	icache: createICacheMiddleware<TabContainerICache>(),
 	theme
 })
-	.properties<TabControllerProperties>()
-	.children<TabControllerChildren>();
+	.properties<TabContainerProperties>()
+	.children<TabContainerChildren>();
 
 const tabIndicesById = new WeakMap<TabItem[], { [key: string]: number }>();
 const findTabIndex = (tabs: TabItem[], id: string | undefined) => {
@@ -81,7 +80,7 @@ const findTabIndex = (tabs: TabItem[], id: string | undefined) => {
 	return indices[id];
 };
 
-export const TabController = factory(function TabController({
+export const TabContainer = factory(function TabController({
 	children,
 	id,
 	middleware: { focus, i18n, icache, theme },
@@ -249,7 +248,7 @@ export const TabController = factory(function TabController({
 	const tabContents = renderer(tabs, (id) => id === activeId, (id) => closedIds.has(id));
 
 	const renderTab = (tab: TabItem, index: number) => {
-		const { closeable, disabled, label } = tab;
+		const { closeable, disabled, name: label } = tab;
 		const active = tab.id === activeId;
 
 		if (closedIds.has(tab.id)) {
@@ -351,4 +350,4 @@ export const TabController = factory(function TabController({
 	);
 });
 
-export default TabController;
+export default TabContainer;
