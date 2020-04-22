@@ -1,10 +1,10 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
+import { RenderResult, VNodeProperties } from '@dojo/framework/core/interfaces';
 import icache from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
-import { RenderResult, VNodeProperties } from '@dojo/framework/core/interfaces';
+import { create, tsx } from '@dojo/framework/core/vdom';
 
-import createFormMiddleware, { FormMiddleware, FormValue } from './middleware';
 import * as css from '../theme/default/form.m.css';
+import createFormMiddleware, { FormMiddleware, FormValue } from './middleware';
 
 const form = createFormMiddleware();
 
@@ -105,4 +105,48 @@ export default factory(function Form({
 	}
 
 	return <form {...formProps}>{renderer(form)}</form>;
+});
+
+export interface FormGroupProperties {
+	/** Render this grouping in a vertical column */
+	column?: boolean;
+}
+
+const formGroupFactory = create({ theme })
+	.properties<FormGroupProperties>()
+	.children();
+
+export const FormGroup = formGroupFactory(function FormRow({
+	properties,
+	children,
+	middleware: { theme }
+}) {
+	const { column } = properties();
+	const themedCss = theme.classes(css);
+
+	return (
+		<div
+			key="root"
+			classes={[
+				theme.variant(),
+				themedCss.groupRoot,
+				!column && themedCss.row,
+				column && themedCss.column
+			]}
+		>
+			{children()}
+		</div>
+	);
+});
+
+const formFieldFactory = create({ theme }).children();
+
+export const FormField = formFieldFactory(function FormField({ children, middleware: { theme } }) {
+	const themedCss = theme.classes(css);
+
+	return (
+		<div key="root" classes={[theme.variant(), themedCss.fieldRoot]}>
+			{children()}
+		</div>
+	);
 });

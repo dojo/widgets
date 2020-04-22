@@ -1,19 +1,18 @@
 const { describe, it, beforeEach } = intern.getInterface('bdd');
+
 import { assert } from 'chai';
 import { stub } from 'sinon';
 
+import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import harness from '@dojo/framework/testing/harness/harness';
-import { tsx } from '@dojo/framework/core/vdom';
 
 import Button from '../../../button';
-import TextInput from '../../../text-input';
-
 import { stubEvent } from '../../../common/tests/support/test-helpers';
-
+import TextInput from '../../../text-input';
 import * as css from '../../../theme/default/form.m.css';
+import Form, { FormField, FormGroup, FormGroupProperties } from '../../index';
 import { FormMiddleware, FormValue } from '../../middleware';
-import Form from '../../index';
 
 interface Fields {
 	firstName: string;
@@ -572,5 +571,42 @@ describe('Form', () => {
 			</form>
 		));
 		h.expect(actionTemplate);
+	});
+});
+
+describe('FormGroup', () => {
+	const getTemplate = ({ column }: FormGroupProperties) => (
+		<div
+			key="root"
+			classes={[undefined, css.groupRoot, !column && css.row, column && css.column]}
+		>
+			foo
+		</div>
+	);
+
+	it('renders', () => {
+		const h = harness(() => <FormGroup>foo</FormGroup>);
+
+		h.expect(assertionTemplate(() => getTemplate({})));
+	});
+
+	it('renders column', () => {
+		const h = harness(() => <FormGroup column>foo</FormGroup>);
+
+		h.expect(assertionTemplate(() => getTemplate({ column: true })));
+	});
+});
+
+describe('FormField', () => {
+	it('renders', () => {
+		const h = harness(() => <FormField>foo</FormField>);
+
+		h.expect(
+			assertionTemplate(() => (
+				<div key="root" classes={[undefined, css.fieldRoot]}>
+					foo
+				</div>
+			))
+		);
 	});
 });
