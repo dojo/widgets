@@ -71,13 +71,14 @@ const selectRadio = (h: HarnessAPI, value?: string, checkedStub?: SinonStub) => 
 		options
 	);
 };
-const createStar = (integer: number, selected: boolean, children: RenderResult) => (
+const createStar = (integer: number, selected: boolean, children: RenderResult, active = false) => (
 	<div
 		key={integer}
 		classes={[
 			integer === 0 ? baseCss.visuallyHidden : null,
 			css.star,
-			selected ? css.selectedStar : null
+			selected ? css.selectedStar : null,
+			active ? css.active : null
 		]}
 	>
 		{children}
@@ -103,6 +104,8 @@ const createRadio = (
 				name="rate"
 				checked={false}
 				disabled={disabled || readOnly}
+				onBlur={noop}
+				onFocus={noop}
 				onValue={noop}
 				theme={{}}
 				classes={{
@@ -166,13 +169,15 @@ describe('Rate', () => {
 		h.expect(baseTemplate(undefined, options));
 		const radios = selectRadio(h);
 		h.expect(
-			() => [
-				createStar(1, false, [createRadio(undefined, 1)]),
-				createStar(2, false, [createRadio(undefined, 2)]),
-				createStar(3, false, [createRadio(undefined, 3)]),
-				createStar(4, false, [createRadio(undefined, 4)]),
-				createStar(5, false, [createRadio(undefined, 5)])
-			],
+			() => (
+				<div classes={null}>
+					{createStar(1, false, [createRadio(undefined, 1)])}
+					{createStar(2, false, [createRadio(undefined, 2)])}
+					{createStar(3, false, [createRadio(undefined, 3)])}
+					{createStar(4, false, [createRadio(undefined, 4)])}
+					{createStar(5, false, [createRadio(undefined, 5)])}
+				</div>
+			),
 			() => radios
 		);
 	});
@@ -185,10 +190,12 @@ describe('Rate', () => {
 		h.expect(baseTemplate(undefined, options));
 		const radios = selectRadio(h);
 		h.expect(
-			() => [
-				createStar(1, false, [createRadio(undefined, 1)]),
-				createStar(2, false, [createRadio(undefined, 2)])
-			],
+			() => (
+				<div classes={null}>
+					{createStar(1, false, [createRadio(undefined, 1)])}
+					{createStar(2, false, [createRadio(undefined, 2)])}
+				</div>
+			),
 			() => radios
 		);
 	});
@@ -202,13 +209,15 @@ describe('Rate', () => {
 		h.expect(baseTemplate(properties, options));
 		const radios = selectRadio(h);
 		h.expect(
-			() => [
-				createStar(1, false, [createRadio(properties, 1)]),
-				createStar(2, false, [createRadio(properties, 2)]),
-				createStar(3, false, [createRadio(properties, 3)]),
-				createStar(4, false, [createRadio(properties, 4)]),
-				createStar(5, false, [createRadio(properties, 5)])
-			],
+			() => (
+				<div classes={null}>
+					{createStar(1, false, [createRadio(properties, 1)])}
+					{createStar(2, false, [createRadio(properties, 2)])}
+					{createStar(3, false, [createRadio(properties, 3)])}
+					{createStar(4, false, [createRadio(properties, 4)])}
+					{createStar(5, false, [createRadio(properties, 5)])}
+				</div>
+			),
 			() => radios
 		);
 	});
@@ -225,14 +234,131 @@ describe('Rate', () => {
 		assert.exists(radio);
 		(radio.properties as any).onclick();
 		h.expect(
-			() => [
-				createStar(0, false, [createRadio(properties, undefined)]),
-				createStar(1, true, [createRadio(properties, 1, true, true)]),
-				createStar(2, false, [createRadio(properties, 2)]),
-				createStar(3, false, [createRadio(properties, 3)]),
-				createStar(4, false, [createRadio(properties, 4)]),
-				createStar(5, false, [createRadio(properties, 5)])
-			],
+			() => (
+				<div classes={null}>
+					{createStar(0, false, [createRadio(properties, undefined)])}
+					{createStar(1, true, [createRadio(properties, 1, true, true)])}
+					{createStar(2, false, [createRadio(properties, 2)])}
+					{createStar(3, false, [createRadio(properties, 3)])}
+					{createStar(4, false, [createRadio(properties, 4)])}
+					{createStar(5, false, [createRadio(properties, 5)])}
+				</div>
+			),
+			() => radios
+		);
+	});
+
+	it('receives focus and blur', () => {
+		const h = harness(() => <Rate name="rate" />, {
+			middleware: [[i18n, i18nMiddlewareMock]]
+		});
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
+		h.expect(baseTemplate(undefined, options));
+
+		let radios = selectRadio(h);
+		h.expect(
+			() => (
+				<div classes={null}>
+					{createStar(1, false, [createRadio(undefined, 1)])}
+					{createStar(2, false, [createRadio(undefined, 2)])}
+					{createStar(3, false, [createRadio(undefined, 3)])}
+					{createStar(4, false, [createRadio(undefined, 4)])}
+					{createStar(5, false, [createRadio(undefined, 5)])}
+				</div>
+			),
+			() => radios
+		);
+
+		// focus the 1 star rating
+		const [radio] = select('[key="1"] [key="radio"]', radios);
+		assert.exists(radio);
+		(radio.properties as any).onFocus();
+		radios = selectRadio(h);
+		h.expect(
+			() => (
+				<div classes={null}>
+					{createStar(1, false, [createRadio(undefined, 1)], true)}
+					{createStar(2, false, [createRadio(undefined, 2)])}
+					{createStar(3, false, [createRadio(undefined, 3)])}
+					{createStar(4, false, [createRadio(undefined, 4)])}
+					{createStar(5, false, [createRadio(undefined, 5)])}
+				</div>
+			),
+			() => radios
+		);
+
+		// select the value
+		h.trigger('@radioGroup', 'onValue', '1');
+		radios = selectRadio(h);
+		h.expect(
+			() => (
+				<div classes={null}>
+					{createStar(1, true, [createRadio(undefined, 1, true, true)], true)}
+					{createStar(2, false, [createRadio(undefined, 2)])}
+					{createStar(3, false, [createRadio(undefined, 3)])}
+					{createStar(4, false, [createRadio(undefined, 4)])}
+					{createStar(5, false, [createRadio(undefined, 5)])}
+				</div>
+			),
+			() => radios
+		);
+
+		// blur the 1 star rating
+		(radio.properties as any).onBlur();
+		radios = selectRadio(h);
+		h.expect(
+			() => (
+				<div classes={null}>
+					{createStar(1, true, [createRadio(undefined, 1, true, true)])}
+					{createStar(2, false, [createRadio(undefined, 2)])}
+					{createStar(3, false, [createRadio(undefined, 3)])}
+					{createStar(4, false, [createRadio(undefined, 4)])}
+					{createStar(5, false, [createRadio(undefined, 5)])}
+				</div>
+			),
+			() => radios
+		);
+	});
+
+	it('focus can target full widget', () => {
+		const h = harness(() => <Rate name="rate" allowClear={true} />, {
+			middleware: [[i18n, i18nMiddlewareMock]]
+		});
+		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
+		h.expect(baseTemplate(undefined, options));
+
+		let radios = selectRadio(h);
+		h.expect(
+			() => (
+				<div classes={null}>
+					{createStar(0, false, [createRadio()])}
+					{createStar(1, false, [createRadio(undefined, 1)])}
+					{createStar(2, false, [createRadio(undefined, 2)])}
+					{createStar(3, false, [createRadio(undefined, 3)])}
+					{createStar(4, false, [createRadio(undefined, 4)])}
+					{createStar(5, false, [createRadio(undefined, 5)])}
+				</div>
+			),
+			() => radios
+		);
+
+		// focus the undefined star
+		const [radio] = select('[key=""] [key="radio"]', radios);
+		assert.exists(radio);
+		(radio.properties as any).onFocus();
+
+		radios = selectRadio(h);
+		h.expect(
+			() => (
+				<div classes={css.active}>
+					{createStar(0, false, [createRadio()])}
+					{createStar(1, false, [createRadio(undefined, 1)])}
+					{createStar(2, false, [createRadio(undefined, 2)])}
+					{createStar(3, false, [createRadio(undefined, 3)])}
+					{createStar(4, false, [createRadio(undefined, 4)])}
+					{createStar(5, false, [createRadio(undefined, 5)])}
+				</div>
+			),
 			() => radios
 		);
 	});
@@ -270,26 +396,28 @@ describe('Rate', () => {
 		);
 		const radios = selectRadio(h);
 		h.expect(
-			() => [
-				createStar(0, false, [createRadio()]),
-				createStar(1, false, [
-					createRadio(undefined, 0.5, false, true),
-					createRadio(undefined, 1, false, true)
-				]),
-				createStar(2, false, [
-					createRadio(undefined, 1.5, false, true),
-					createRadio(undefined, 2, false, true)
-				]),
-				createStar(3, false, [
-					createRadio(undefined, 2.5, false, true),
-					createRadio(undefined, 3, false, true)
-				]),
-				createStar(4, true, [
-					createRadio(undefined, 3.5, true, true),
-					createRadio(undefined, 4)
-				]),
-				createStar(5, false, [createRadio(undefined, 4.5), createRadio(undefined, 5)])
-			],
+			() => (
+				<div classes={null}>
+					{createStar(0, false, [createRadio()])}
+					{createStar(1, false, [
+						createRadio(undefined, 0.5, false, true),
+						createRadio(undefined, 1, false, true)
+					])}
+					{createStar(2, false, [
+						createRadio(undefined, 1.5, false, true),
+						createRadio(undefined, 2, false, true)
+					])}
+					{createStar(3, false, [
+						createRadio(undefined, 2.5, false, true),
+						createRadio(undefined, 3, false, true)
+					])}
+					{createStar(4, true, [
+						createRadio(undefined, 3.5, true, true),
+						createRadio(undefined, 4)
+					])}
+					{createStar(5, false, [createRadio(undefined, 4.5), createRadio(undefined, 5)])}
+				</div>
+			),
 			() => radios
 		);
 	});

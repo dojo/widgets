@@ -10,5 +10,6 @@ export const groupRoot: string;
 export const over: string;
 export const star: string;
 export const selectedStar: string;
+export const active: string;
 export const disabled: string;
 export const readOnly: string;

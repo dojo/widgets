@@ -46,6 +46,7 @@ export interface RateChildren {
 interface RateICache {
 	selected?: number;
 	hover?: number;
+	focused?: number;
 }
 
 const icache = createICacheMiddleware<RateICache>();
@@ -77,7 +78,10 @@ export const Rate = factory(function Rate({
 	const interaction = !disabled && !readOnly;
 	const [{ character, label } = {} as RateChildren] = children();
 	const hover = icache.get('hover');
+	const focused = icache.get('focused');
+	const shouldFocus = hover !== undefined ? focus.shouldFocus() : focused !== undefined;
 	const selected = icache.getOrSet('selected', initialValue);
+	const active = hover === undefined ? selected : hover;
 
 	const _onValue = (value?: string) => {
 		if (!value) {
@@ -88,6 +92,7 @@ export const Rate = factory(function Rate({
 			icache.set('selected', decimal);
 			onValue && onValue(decimal);
 		}
+		focus.focus();
 	};
 
 	const createOption = (value?: number) => ({
@@ -139,6 +144,8 @@ export const Rate = factory(function Rate({
 			name={name}
 			checked={checked()}
 			disabled={!interaction}
+			onFocus={() => icache.set('focused', value)}
+			onBlur={() => icache.set('focused', undefined)}
 			onValue={checked}
 			theme={theme.compose(
 				radioCss,
@@ -178,7 +185,8 @@ export const Rate = factory(function Rate({
 			classes={[
 				integer === 0 ? baseCss.visuallyHidden : null,
 				themeCss.star,
-				selected && Math.ceil(selected) === integer ? themeCss.selectedStar : null
+				selected && Math.ceil(selected) === integer ? themeCss.selectedStar : null,
+				shouldFocus && focused && Math.ceil(focused) === integer ? themeCss.active : null
 			]}
 		>
 			{radios}
@@ -186,7 +194,6 @@ export const Rate = factory(function Rate({
 	);
 
 	const renderChildren: RadioGroupChildren['radios'] = (name, middleware, options) => {
-		const active = hover === undefined ? selected : hover;
 		const radioIntegers: DNode[][] = [];
 		for (const option of options) {
 			const value = parseFloat(option.value) || 0;
@@ -206,16 +213,20 @@ export const Rate = factory(function Rate({
 			(radioIntegers[integer] = radioIntegers[integer] || []).push(step);
 		}
 
-		return radioIntegers.reduce((nodes, radios, integer) => {
-			nodes.push(renderStar(integer, radios));
-			return nodes;
-		}, []);
+		return (
+			<div classes={shouldFocus && allowClear && focused === 0 ? themeCss.active : null}>
+				{radioIntegers.reduce((nodes, radios, integer) => {
+					nodes.push(renderStar(integer, radios));
+					return nodes;
+				}, [])}
+			</div>
+		);
 	};
 
 	return (
 		<div
 			key="root"
-			focus={focus.shouldFocus}
+			focus={() => shouldFocus}
 			classes={[
 				theme.variant(),
 				themeCss.root,

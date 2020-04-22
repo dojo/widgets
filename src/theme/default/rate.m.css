@@ -55,6 +55,11 @@
 .selectedStar {
 }
 
+/* Added to active items */
+.active {
+	outline: 1px solid #999;
+}
+
 /* Added to disabled ratings group */
 .disabled {
 	opacity: 0.5;
