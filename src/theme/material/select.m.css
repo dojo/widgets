@@ -28,6 +28,7 @@
 
 .disabled {
 	composes: mdc-select--disabled from '@material/select/dist/mdc.select.css';
+	background-color: var(--mdc-disabled-color);
 }
 
 .required {
@@ -46,6 +47,10 @@
 	composes: mdc-select__selected-text mdc-line-ripple from '@material/select/dist/mdc.select.css';
 	text-align: left;
 	color: var(--mdc-text-color) !important;
+}
+
+.disabled .value {
+	color: var(--mdc-disabled-text-color) !important;
 }
 
 .value::before {
