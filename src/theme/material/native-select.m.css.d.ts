@@ -7,4 +7,4 @@ export const select: string;
 export const arrow: string;
 export const labelRoot: string;
 export const labelActive: string;
-export const iconIcon: string;
+export const iconDownIcon: string;
