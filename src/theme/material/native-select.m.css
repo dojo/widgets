@@ -61,14 +61,19 @@
 	top: 26px;
 }
 
-.iconIcon {
-	display: none;
-}
-
 .root:not(.disabled):not(.focused) .inputWrapper {
 	border-bottom-color: var(--mdc-border-color);
 }
 
 .root:not(.disabled):not(.focused) .inputWrapper:hover {
 	border-bottom-color: var(--mdc-border-color-hover);
+}
+
+.iconDownIcon {
+	composes: downAltIcon from './icon.m.css';
+	color: var(--mdc-text-color);
+}
+
+.focused .iconDownIcon {
+	color: var(--mdc-theme-primary);
 }
