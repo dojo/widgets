@@ -113,7 +113,7 @@ export default {
 		'@dojo/widgets/typeahead': typeahead
 	},
 	variants: {
-		default: darkVariant,
+		default: defaultVariant,
 		light: defaultVariant,
 		dark: darkVariant
 	}
