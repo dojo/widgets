@@ -9,9 +9,9 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { create, tsx } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
-import { HarnessAPI } from '@dojo/framework/testing/harness';
-import select from '@dojo/framework/testing/support/selector';
+import assertationTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import { HarnessAPI } from '@dojo/framework/testing/harness/harness';
+import select from '@dojo/framework/testing/harness/support/selector';
 import {
 	compareTheme,
 	createHarness,
@@ -20,25 +20,27 @@ import {
 } from '../../../common/tests/support/test-helpers';
 import * as baseCss from '../../../common/styles/base.m.css';
 import * as css from '../../../theme/default/rate.m.css';
+import Icon from '../../../icon';
 import Radio from '../../../radio';
 import RadioGroup, { RadioGroupProperties } from '../../../radio-group';
 import Rate, { RateProperties } from '../../index';
 
 const i18nFactory = create();
+const format = (key: string, options?: Record<string, any>) => {
+	if (options) {
+		return `${key}&${Object.entries(options)
+			.sort(([a], [b]) => {
+				return a.localeCompare(b);
+			})
+			.map(([key, value]) => `${key}:${value}`)
+			.join('&')}`;
+	}
+	return key;
+};
 const i18nMiddlewareMock = i18nFactory(() => ({
 	localize() {
 		return {
-			format(key: string, options?: Record<string, any>) {
-				if (options) {
-					return `${key}&${Object.entries(options)
-						.sort(([a], [b]) => {
-							return a.localeCompare(b);
-						})
-						.map(([key, value]) => `${key}:${value}`)
-						.join('&')}`;
-				}
-				return key;
-			}
+			format
 		};
 	}
 }));
@@ -49,11 +51,6 @@ const harness = createHarness([
 		selector: '*',
 		property: 'widgetId',
 		comparator: isStringComparator
-	},
-	{
-		selector: '@radio',
-		property: 'label',
-		comparator: () => true
 	}
 ]);
 
@@ -74,28 +71,36 @@ const selectRadio = (h: HarnessAPI, value?: string, checkedStub?: SinonStub) => 
 		options
 	);
 };
-const createGroup = (integer: number, selected: boolean, children: RenderResult) => (
-	<div key={integer} classes={[css.integer, css.star, selected ? css.selectedInteger : null]}>
+const createStar = (integer: number, selected: boolean, children: RenderResult) => (
+	<div
+		key={integer}
+		classes={[
+			integer === 0 ? baseCss.visuallyHidden : null,
+			css.star,
+			selected ? css.selectedStar : null
+		]}
+	>
 		{children}
 	</div>
 );
 const createRadio = (
 	properties: Partial<RateProperties> = {},
 	value?: number,
-	selected = false
+	selected = false,
+	filled = false
 ) => {
 	const { disabled = false, readOnly = false } = properties;
 	return (
 		<div
 			key={`${value === undefined ? '' : value}`}
-			classes={[css.character, selected ? css.selectedCharacter : null]}
+			classes={[css.partial, selected ? css.selectedPartial : null]}
 			onclick={noop}
+			onpointerenter={noop}
 		>
 			<Radio
 				widgetId=""
 				key="radio"
 				name="rate"
-				focus={noop}
 				checked={false}
 				disabled={disabled || readOnly}
 				onValue={noop}
@@ -105,11 +110,19 @@ const createRadio = (
 						inputWrapper: [baseCss.visuallyHidden]
 					},
 					'@dojo/widgets/label': {
-						root: [css.labelRoot]
+						root: [css.labelRoot, filled ? css.filled : css.empty]
 					}
 				}}
-				label=""
-			/>
+			>
+				<virtual>
+					<span key="radioLabel" classes={baseCss.visuallyHidden}>
+						{format('starLabels', { rating: value || 0 })}
+					</span>
+					<span>
+						<Icon theme={{}} type="starIcon" />
+					</span>
+				</virtual>
+			</Radio>
 		</div>
 	);
 };
@@ -119,20 +132,18 @@ describe('Rate', () => {
 		properties: Partial<RateProperties> = {},
 		options: RadioGroupProperties['options'] = []
 	) =>
-		assertionTemplate(() => (
+		assertationTemplate(() => (
 			<div
 				key="root"
-				tabIndex={0}
-				focus={false}
+				focus={noop}
 				classes={[
 					undefined,
 					css.root,
-					css.hoverable,
-					properties.initialValue === undefined ? css.unselected : null,
-					properties.allowHalf ? css.halfCharacters : null,
+					properties.allowHalf ? css.halfStars : null,
 					properties.readOnly ? css.readOnly : null,
 					properties.disabled ? css.disabled : null
 				]}
+				onpointerleave={noop}
 			>
 				<RadioGroup
 					key="radioGroup"
@@ -156,11 +167,11 @@ describe('Rate', () => {
 		const radios = selectRadio(h);
 		h.expect(
 			() => [
-				createGroup(1, false, [createRadio(undefined, 1)]),
-				createGroup(2, false, [createRadio(undefined, 2)]),
-				createGroup(3, false, [createRadio(undefined, 3)]),
-				createGroup(4, false, [createRadio(undefined, 4)]),
-				createGroup(5, false, [createRadio(undefined, 5)])
+				createStar(1, false, [createRadio(undefined, 1)]),
+				createStar(2, false, [createRadio(undefined, 2)]),
+				createStar(3, false, [createRadio(undefined, 3)]),
+				createStar(4, false, [createRadio(undefined, 4)]),
+				createStar(5, false, [createRadio(undefined, 5)])
 			],
 			() => radios
 		);
@@ -175,8 +186,8 @@ describe('Rate', () => {
 		const radios = selectRadio(h);
 		h.expect(
 			() => [
-				createGroup(1, false, [createRadio(undefined, 1)]),
-				createGroup(2, false, [createRadio(undefined, 2)])
+				createStar(1, false, [createRadio(undefined, 1)]),
+				createStar(2, false, [createRadio(undefined, 2)])
 			],
 			() => radios
 		);
@@ -192,11 +203,11 @@ describe('Rate', () => {
 		const radios = selectRadio(h);
 		h.expect(
 			() => [
-				createGroup(1, false, [createRadio(properties, 1)]),
-				createGroup(2, false, [createRadio(properties, 2)]),
-				createGroup(3, false, [createRadio(properties, 3)]),
-				createGroup(4, false, [createRadio(properties, 4)]),
-				createGroup(5, false, [createRadio(properties, 5)])
+				createStar(1, false, [createRadio(properties, 1)]),
+				createStar(2, false, [createRadio(properties, 2)]),
+				createStar(3, false, [createRadio(properties, 3)]),
+				createStar(4, false, [createRadio(properties, 4)]),
+				createStar(5, false, [createRadio(properties, 5)])
 			],
 			() => radios
 		);
@@ -215,131 +226,16 @@ describe('Rate', () => {
 		(radio.properties as any).onclick();
 		h.expect(
 			() => [
-				createGroup(0, false, [createRadio(properties, undefined)]),
-				createGroup(1, true, [createRadio(properties, 1, true)]),
-				createGroup(2, false, [createRadio(properties, 2)]),
-				createGroup(3, false, [createRadio(properties, 3)]),
-				createGroup(4, false, [createRadio(properties, 4)]),
-				createGroup(5, false, [createRadio(properties, 5)])
+				createStar(0, false, [createRadio(properties, undefined)]),
+				createStar(1, true, [createRadio(properties, 1, true, true)]),
+				createStar(2, false, [createRadio(properties, 2)]),
+				createStar(3, false, [createRadio(properties, 3)]),
+				createStar(4, false, [createRadio(properties, 4)]),
+				createStar(5, false, [createRadio(properties, 5)])
 			],
 			() => radios
 		);
 	});
-
-	/*it('receives focus and blur', () => {
-		const h = harness(() => <Rate name="rate" />, {
-			middleware: [[i18n, i18nMiddlewareMock]]
-		});
-		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
-		h.expect(baseTemplate(undefined, options));
-
-		let radios = selectRadio(h);
-		h.expect(
-			() => [
-				createGroup(1, false, [createRadio(undefined, 1)]),
-				createGroup(2, false, [createRadio(undefined, 2)]),
-				createGroup(3, false, [createRadio(undefined, 3)]),
-				createGroup(4, false, [createRadio(undefined, 4)]),
-				createGroup(5, false, [createRadio(undefined, 5)])
-			],
-			() => radios
-		);
-
-		// focus the 1 star rating
-		const [radio] = select('[key="1"] [key="radio"]', radios);
-		assert.exists(radio);
-		(radio.properties as any).onFocus();
-		radios = selectRadio(h);
-		h.expect(
-			() => [
-				createGroup(1, false, [createRadio(undefined, 1)]),
-				createGroup(2, false, [createRadio(undefined, 2)]),
-				createGroup(3, false, [createRadio(undefined, 3)]),
-				createGroup(4, false, [createRadio(undefined, 4)]),
-				createGroup(5, false, [createRadio(undefined, 5)])
-			],
-			() => radios
-		);
-
-		// select the value
-		h.trigger('@radioGroup', 'onValue', '1');
-		radios = selectRadio(h);
-		h.expect(
-			() => [
-				createGroup(1, false, [createRadio(undefined, 1)]),
-				createGroup(2, false, [createRadio(undefined, 2)]),
-				createGroup(3, false, [createRadio(undefined, 3)]),
-				createGroup(4, false, [createRadio(undefined, 4)]),
-				createGroup(5, false, [createRadio(undefined, 5)])
-			],
-			() => radios
-		);
-
-		// blur the 1 star rating
-		(radio.properties as any).onBlur();
-		radios = selectRadio(h);
-		h.expect(
-			() => [
-				createGroup(1, false, [createRadio(undefined, 1)]),
-				createGroup(2, false, [createRadio(undefined, 2)]),
-				createGroup(3, false, [createRadio(undefined, 3)]),
-				createGroup(4, false, [createRadio(undefined, 4)]),
-				createGroup(5, false, [createRadio(undefined, 5)])
-			],
-			() => radios
-		);
-	});
-
-	it('focus can target full widget', () => {
-		const h = harness(() => <Rate name="rate" allowClear={true} />, {
-			middleware: [[i18n, i18nMiddlewareMock]]
-		});
-		const options = h.trigger('@radioGroup', (node: any) => () => node.properties.options);
-		h.expect(baseTemplate(undefined, options));
-
-		let radios = selectRadio(h);
-		h.expect(
-			() => [
-				createGroup(0, false, [createRadio()]),
-				createGroup(1, false, [createRadio(undefined, 1)]),
-				createGroup(2, false, [createRadio(undefined, 2)]),
-				createGroup(3, false, [createRadio(undefined, 3)]),
-				createGroup(4, false, [createRadio(undefined, 4)]),
-				createGroup(5, false, [createRadio(undefined, 5)])
-			],
-			() => radios
-		);
-		const [radio] = select('[key="1"] [key="radio"]', radios);
-		assert.exists(radio);
-		(radio.properties as any).onFocus();
-
-		radios = selectRadio(h);
-		h.expect(
-			() => [
-				createGroup(0, false, [createRadio()]),
-				createGroup(1, false, [createRadio(undefined, 1)]),
-				createGroup(2, false, [createRadio(undefined, 2)]),
-				createGroup(3, false, [createRadio(undefined, 3)]),
-				createGroup(4, false, [createRadio(undefined, 4)]),
-				createGroup(5, false, [createRadio(undefined, 5)])
-			],
-			() => radios
-		);
-
-		(radio.properties as any).onBlur();
-		radios = selectRadio(h);
-		h.expect(
-			() => [
-				createGroup(0, false, [createRadio()]),
-				createGroup(1, false, [createRadio(undefined, 1)]),
-				createGroup(2, false, [createRadio(undefined, 2)]),
-				createGroup(3, false, [createRadio(undefined, 3)]),
-				createGroup(4, false, [createRadio(undefined, 4)]),
-				createGroup(5, false, [createRadio(undefined, 5)])
-			],
-			() => radios
-		);
-	});*/
 
 	it('renders with initial value', () => {
 		const initialValue = 4;
@@ -375,24 +271,32 @@ describe('Rate', () => {
 		const radios = selectRadio(h);
 		h.expect(
 			() => [
-				createGroup(0, false, [createRadio()]),
-				createGroup(1, false, [createRadio(undefined, 0.5), createRadio(undefined, 1)]),
-				createGroup(2, false, [createRadio(undefined, 1.5), createRadio(undefined, 2)]),
-				createGroup(3, false, [createRadio(undefined, 2.5), createRadio(undefined, 3)]),
-				createGroup(4, true, [
-					createRadio(undefined, 3.5, true),
+				createStar(0, false, [createRadio()]),
+				createStar(1, false, [
+					createRadio(undefined, 0.5, false, true),
+					createRadio(undefined, 1, false, true)
+				]),
+				createStar(2, false, [
+					createRadio(undefined, 1.5, false, true),
+					createRadio(undefined, 2, false, true)
+				]),
+				createStar(3, false, [
+					createRadio(undefined, 2.5, false, true),
+					createRadio(undefined, 3, false, true)
+				]),
+				createStar(4, true, [
+					createRadio(undefined, 3.5, true, true),
 					createRadio(undefined, 4)
 				]),
-				createGroup(5, false, [createRadio(undefined, 4.5), createRadio(undefined, 5)])
+				createStar(5, false, [createRadio(undefined, 4.5), createRadio(undefined, 5)])
 			],
 			() => radios
 		);
 	});
 
-	/*
 	it('has hover state', () => {
 		const renderCharacter = sinon.stub();
-		const h = harness(() => <Rate name="rate">{renderCharacter}</Rate>, {
+		const h = harness(() => <Rate name="rate">{{ character: renderCharacter }}</Rate>, {
 			middleware: [[i18n, i18nMiddlewareMock]]
 		});
 		h.trigger('@root', 'onpointerenter');
@@ -415,7 +319,6 @@ describe('Rate', () => {
 		sinon.assert.callCount(renderCharacter, 5);
 		sinon.assert.calledWithExactly(renderCharacter, false, 5, undefined, undefined);
 	});
-	*/
 
 	it('changes value', () => {
 		const onValue = sinon.stub();

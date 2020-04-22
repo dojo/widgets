@@ -131,7 +131,7 @@ export const Rate = factory(function Rate({
 		value: number,
 		forId: string,
 		checked: RadioChecked,
-		label: DNode
+		label: NonNullable<RenderResult>
 	) => (
 		<Radio
 			widgetId={forId}
@@ -154,7 +154,7 @@ export const Rate = factory(function Rate({
 				}
 			}}
 		>
-			{label || undefined}
+			{label}
 		</Radio>
 	);
 
@@ -191,7 +191,7 @@ export const Rate = factory(function Rate({
 		for (const option of options) {
 			const value = parseFloat(option.value) || 0;
 			const key = option.value ? `${value}` : '';
-			const filled = Boolean(active && value <= active);
+			const filled = Boolean(active && value > 0 && value <= active);
 			const icon = renderIcon(filled, value);
 			const label = renderLabel(value, icon);
 			const radio = renderRadio(
