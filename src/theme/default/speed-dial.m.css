@@ -29,10 +29,7 @@
 .staticTooltip {
 }
 /* Class applied to each action when closed */
-.actionClosed {
-}
-/* Class applied to each action's tooltip when closed */
-.staticTooltipClosed {
+.closed {
 }
 /* Transition style class applied to action tooltips and actions after initial render */
 .actionTransition {
