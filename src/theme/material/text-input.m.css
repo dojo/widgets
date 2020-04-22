@@ -38,6 +38,11 @@
 .disabled {
 	composes: mdc-text-field--disabled from '@material/textfield/dist/mdc.textfield.css';
 }
+
+.root .disabled .input {
+	color: var(--mdc-secondary-text-color) !important;
+}
+
 /* Added to a focused input */
 .focused {
 	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';

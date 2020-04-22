@@ -17,3 +17,7 @@
 .root:not(.active) {
 	color: var(--mdc-secondary-text-color) !important;
 }
+
+.root.disabled {
+	color: var(--mdc-disabled-text-color) !important;
+}
