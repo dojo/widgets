@@ -1,11 +1,12 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import PopupConfirmation from '@dojo/widgets/popup-confirmation';
+import Example from '../../Example';
 
 import * as css from './styles/Basic.m.css';
 
 const factory = create();
 
-const Example = factory(function Example() {
+export default factory(function Basic() {
 	return (
 		<Example>
 			<div classes={[css.root, css.vcenter]}>
@@ -25,5 +26,3 @@ const Example = factory(function Example() {
 		</Example>
 	);
 });
-
-export default Example;
