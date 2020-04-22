@@ -1,3 +1,8 @@
+.root {
+	font-family: var(--mdc-theme-font-family);
+	color: var(--mdc-text-color);
+}
+
 .small {
 	width: calc(var(--mdc-theme-grid-base) * 40);
 }
