@@ -1,32 +1,33 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
-import { PopupPosition } from '@dojo/widgets/popup';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { createDataMiddleware } from '@dojo/framework/core/middleware/data';
+import focus from '@dojo/framework/core/middleware/focus';
+import i18n from '@dojo/framework/core/middleware/i18n';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import { find } from '@dojo/framework/shim/array';
+import { PopupPosition } from '@dojo/widgets/popup';
+
+import { Keys } from '../common/util';
+import HelperText from '../helper-text';
 import List, {
 	ItemRendererProperties,
-	ListOption,
 	ListItemProperties,
-	MenuItemProperties,
-	ListProperties
+	ListOption,
+	ListProperties,
+	MenuItemProperties
 } from '../list';
+import LoadingIndicator from '../loading-indicator';
 import theme from '../middleware/theme';
-import focus from '@dojo/framework/core/middleware/focus';
+import bundle from '../select/select.nls';
+import TextInput from '../text-input';
+import * as listCss from '../theme/default/list.m.css';
+import * as inputCss from '../theme/default/text-input.m.css';
 import * as css from '../theme/default/typeahead.m.css';
 import TriggerPopup from '../trigger-popup';
-import { find } from '@dojo/framework/shim/array';
-import TextInput from '../text-input';
-import bundle from '../select/select.nls';
-import i18n from '@dojo/framework/core/middleware/i18n';
-import HelperText from '../helper-text';
-import * as listCss from '../theme/default/list.m.css';
-import { Keys } from '../common/util';
-import LoadingIndicator from '../loading-indicator';
-import * as inputCss from '../theme/default/text-input.m.css';
 
 export interface TypeaheadProperties {
 	/** Callback called when user selects a value */
-	onValue(value: string): void;
+	onValue(value: string, custom: boolean): void;
 	/** The initial selected value */
 	initialValue?: string;
 	/** Property to determine how many items to render. Defaults to 6 */
@@ -171,17 +172,19 @@ export const Typeahead = factory(function Typeahead({
 				const allItems = get({ query: getOptions().query });
 				if (allItems && allItems.length >= activeIndex) {
 					const { itemDisabled = (item: ListOption) => item.disabled } = properties();
-
+					const { onValue } = properties();
 					const activeItem = allItems[activeIndex];
+					const { value: queryValue = '' } = getOptions().query || {};
+					const value = activeItem ? activeItem.value : queryValue;
 
-					if (!itemDisabled(activeItem)) {
-						const { onValue } = properties();
-
-						icache.set('value', activeItem.value);
-						onClose();
-						onValue(activeItem.value);
-						icache.set('lastValue', activeItem.value);
+					if (activeItem && itemDisabled(activeItem)) {
+						return;
 					}
+
+					icache.set('value', value);
+					onClose();
+					onValue(value, !activeItem);
+					icache.set('lastValue', value);
 				}
 				break;
 		}
@@ -315,7 +318,7 @@ export const Typeahead = factory(function Typeahead({
 										focus.focus();
 										closeMenu();
 										value !== icache.get('value') && icache.set('value', value);
-										onValue(value);
+										onValue(value, true);
 										icache.set('lastValue', value);
 									}}
 									onRequestClose={closeMenu}
