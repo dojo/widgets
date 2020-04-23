@@ -2,6 +2,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	font-family: var(--mdc-theme-font-family);
 }
 
 .statusIcon {
@@ -28,18 +29,20 @@
 
 .contentWrapper {
 	margin: var(--mdc-theme-grid-base);
+	color: var(--mdc-text-color);
 }
 
 .titleWrapper {
 	text-align: center;
 	margin: var(--mdc-theme-grid-base);
+	color: var(--mdc-text-color);
 }
 
 .subtitle {
-	color: var(--color-text-faded);
 	font-size: var(--mdc-theme-font-size-small);
-	font-weight: var(--normal-font-weight);
+	font-weight: bold;
 	margin: 0;
+	color: var(--mdc-secondary-text-color);
 }
 
 /* Status Styles */

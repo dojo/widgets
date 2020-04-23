@@ -1,3 +1,9 @@
+.root {
+	font-family: var(--font-family);
+	background-color: var(--color-background);
+	color: var(--color-text-primary);
+}
+
 .listItem,
 .listItem::before {
 	margin-right: var(--grid-base);

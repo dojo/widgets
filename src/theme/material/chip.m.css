@@ -1,5 +1,19 @@
 .root {
 	composes: mdc-chip from '@material/chips/dist/mdc.chips.css';
+	background: var(--mdc-chip-background);
+	color: var(--mdc-text-color);
+}
+
+.root.disabled .label {
+	color: var(--mdc-disabled-text-color) !important;
+}
+
+.root:not(.disabled):hover {
+	background: var(--mdc-chip-background-hover);
+}
+
+.root:not(.disabled):hover .label {
+	color: var(--mdc-text-color);
 }
 
 .iconWrapper,
@@ -10,6 +24,8 @@
 
 .iconWrapper {
 	composes: mdc-chip__icon--leading from '@material/chips/dist/mdc.chips.css';
+	font-size: 18px;
+	color: var(--mdc-text-color);
 }
 
 .label {
@@ -19,6 +35,7 @@
 .closeIconWrapper {
 	composes: mdc-chip__icon--trailing from '@material/chips/dist/mdc.chips.css';
 	cursor: pointer;
+	color: var(--mdc-text-color);
 }
 
 .clickable {

@@ -1,8 +1,6 @@
 .root {
+	font-family: var(--font-family);
 	box-sizing: border-box;
-}
-
-.root {
 	display: block;
 	font: var(--font-size-base);
 	line-height: var(--line-height-base);

@@ -1,11 +1,9 @@
 .root {
 	box-sizing: border-box;
-}
-
-.root {
 	display: block;
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
+	font-family: var(--font-family);
 }
 
 .input {
@@ -18,6 +16,8 @@
 	width: 100%;
 	border-radius: 0;
 	margin: 0;
+	background-color: var(--color-background);
+	color: var(--color-text-primary);
 }
 
 .input:focus {

@@ -1,6 +1,9 @@
 .root {
 	padding: var(--spacing-regular);
 	border: 1px solid transparent;
+	color: var(--color-text-primary);
+	font-family: var(--font-family);
+	cursor: pointer;
 }
 
 .active {

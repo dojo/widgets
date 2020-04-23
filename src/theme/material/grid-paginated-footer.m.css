@@ -6,7 +6,7 @@
 	position: relative;
 	align-items: center;
 	justify-content: flex-end;
-	color: var(--mdc-theme-text-primary-on-background);
+	color: var(--mdc-text-color);
 	font-size: var(--mdc-theme-font-size-small);
 	font-family: var(--mdc-theme-font-family);
 	border-top: 1px solid var(--mdc-theme-separator);
@@ -32,19 +32,19 @@
 }
 
 .pageNav {
-	color: var(--mdc-theme-text-secondary-on-background);
+	color: var(--mdc-text-color);
 	font-size: var(--mdc-theme-font-size-small);
 	font-family: var(--mdc-theme-font-family);
 	margin: 0 16px;
 }
 
 .pageNumber {
-	color: var(--mdc-theme-text-secondary-on-background);
+	color: var(--mdc-secondary-text-color);
 	font-size: var(--mdc-theme-font-size-small);
 	font-family: var(--mdc-theme-font-family);
 	margin: 0 4px;
 }
 
 .active {
-	color: var(--mdc-theme-text-primary-on-background);
+	color: var(--mdc-text-color);
 }

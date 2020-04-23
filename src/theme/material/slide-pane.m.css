@@ -3,6 +3,16 @@
 	z-index: 400;
 }
 
+.root .pane {
+	background-color: var(--mdc-raised-surface-background);
+}
+
+.root .titleContent,
+.root .content,
+.root .closeIcon {
+	color: var(--mdc-text-color);
+}
+
 .title {
 	composes: mdc-drawer__header from '@material/drawer/dist/mdc.drawer.css';
 	position: relative;
@@ -22,6 +32,7 @@
 }
 
 .right {
+	left: initial;
 	transform: translateX(calc(100% + 32px));
 }
 
@@ -31,4 +42,9 @@
 
 .bottom {
 	transform: translateY(calc(100% + 26px));
+}
+
+.underlayVisible {
+	background: var(--mdc-theme-elevation-1);
+	z-index: var(--zindex-dialog);
 }

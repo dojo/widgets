@@ -1,15 +1,17 @@
 .root {
+	--example-background: var(--mdc-theme-surface);
+
 	/* variables taken from @material/theme/dist/mdc.theme.css */
-	--mdc-theme-primary: #6200ee;
-	--mdc-theme-secondary: #018786;
-	--mdc-theme-background: #fff;
-	--mdc-theme-surface: #fff;
-	--mdc-theme-error: #b00020;
-	--mdc-theme-on-primary: #fff;
-	--mdc-theme-on-secondary: #fff;
-	--mdc-theme-on-surface: rgba(0, 0, 0, 0.09);
-	--mdc-theme-on-surface-hover: rgba(0, 0, 0, 0.13);
-	--mdc-theme-on-error: #fff;
+	--mdc-theme-primary: #bb86fc;
+	--mdc-theme-secondary: #03dac6;
+	--mdc-theme-background: #121212;
+	--mdc-theme-surface: #121212;
+	--mdc-theme-error: #cf6679;
+	--mdc-theme-on-primary: #000;
+	--mdc-theme-on-secondary: #000;
+	--mdc-theme-on-surface: rgba(255, 255, 255, 0.09);
+	--mdc-theme-on-surface-hover: rgba(255, 255, 255, 0.13);
+	--mdc-theme-on-error: #000;
 	--mdc-theme-text-primary-on-background: rgba(0, 0, 0, 0.87);
 	--mdc-theme-text-secondary-on-background: rgba(0, 0, 0, 0.54);
 	--mdc-theme-text-hint-on-background: rgba(0, 0, 0, 0.38);
@@ -26,10 +28,10 @@
 	--mdc-theme-text-disabled-on-dark: rgba(255, 255, 255, 0.5);
 	--mdc-theme-text-icon-on-dark: rgba(255, 255, 255, 0.5);
 
-	--mdc-text-color: var(--mdc-theme-text-primary-on-light);
-	--mdc-secondary-text-color: var(--mdc-theme-text-secondary-on-light);
-	--mdc-disabled-text-color: var(--mdc-theme-text-disabled-on-light);
-	--mdc-raised-surface-background: var(--mdc-theme-surface);
+	--mdc-text-color: var(--mdc-theme-text-primary-on-dark);
+	--mdc-secondary-text-color: var(--mdc-theme-text-secondary-on-dark);
+	--mdc-disabled-text-color: var(--mdc-theme-text-disabled-on-dark);
+	--mdc-raised-surface-background: #424242;
 
 	/* supplementary colours */
 	--mdc-theme-info: #2196f3;
@@ -55,8 +57,8 @@
 	--mdc-theme-font-size-small: 0.875rem;
 
 	/* borders */
-	--mdc-border-color: rgba(0, 0, 0, 0.38);
-	--mdc-border-color-hover: rgba(0, 0, 0, 0.25);
+	--mdc-border-color: rgba(255, 255, 255, 0.8);
+	--mdc-border-color-hover: rgba(255, 255, 255);
 	--mdc-border-width: 1px;
 
 	/* avatar sizes */
@@ -72,16 +74,11 @@
 	--mdc-theme-separator: #e0e0e0;
 
 	--mdc-font-size-small: 14px;
-	--mdc-disabled-color: #bbb;
+	--mdc-disabled-color: var(--mdc-theme-text-hint-on-dark);
 
-	--mdc-tab-background: var(--mdc-theme-surface);
+	--mdc-tab-background: var(--mdc-raised-surface-background);
 	--mdc-tooltip-background: #6d6d6d;
-
-	/* Speed Dial */
-	--mdc-dial-radius: 32px;
-	--mdc-action-spacing: 16px;
-
-	--mdc-chip-background: var(--mdc-theme-on-surface);
-	--mdc-chip-background-hover: var(--mdc-theme-on-surface-hover);
-	--mdc-snackbar-background: #333333;
+	--mdc-chip-background: #6d6d6d;
+	--mdc-chip-background-hover: #8d8d8d;
+	--mdc-snackbar-background: var(--mdc-raised-surface-background);
 }

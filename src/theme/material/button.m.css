@@ -23,3 +23,8 @@
 	transition-duration: 75ms;
 	opacity: 0.12;
 }
+
+.root.disabled:disabled {
+	color: var(--mdc-disabled-text-color);
+	border-color: var(--mdc-disabled-text-color);
+}

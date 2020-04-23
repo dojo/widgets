@@ -44,3 +44,12 @@
 .readonly {
 	composes: mdc-checkbox--disabled from '@material/checkbox/dist/mdc.checkbox.css';
 }
+
+.root.disabled .background {
+	border-color: var(--mdc-border-color) !important;
+	opacity: 0.5;
+}
+
+.root.disabled.checked .background {
+	background-color: var(--mdc-theme-secondary) !important;
+}

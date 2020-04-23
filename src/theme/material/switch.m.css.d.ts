@@ -9,4 +9,3 @@ export const nativeControl: string;
 export const offLabel: string;
 export const onLabel: string;
 export const disabled: string;
-export const readonly: string;

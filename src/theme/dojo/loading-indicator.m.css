@@ -3,6 +3,7 @@
 	height: calc(var(--grid-base) / 2);
 	position: relative;
 	overflow: hidden;
+	font-family: var(--font-family);
 }
 
 .buffer {

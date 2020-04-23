@@ -30,6 +30,10 @@
 	composes: mdc-switch__track from '@material/switch/dist/mdc.switch.css';
 }
 
+.root .track {
+	background-color: var(--mdc-border-color) !important;
+}
+
 .underlay {
 	composes: mdc-switch__thumb-underlay from '@material/switch/dist/mdc.switch.css';
 }
@@ -43,8 +47,8 @@
 	border-color: var(--mdc-theme-secondary);
 }
 
-.checked .track {
-	background-color: var(--mdc-theme-secondary);
+.root.checked .track {
+	background-color: var(--mdc-theme-secondary) !important;
 	border-color: var(--mdc-theme-secondary);
 }
 
@@ -53,16 +57,6 @@
 	padding-right: 10px;
 }
 
-/* Disabled */
-
-.checked.disabled .thumb,
-.checked.readonly .thumb {
-	background-color: var(--color-background-faded);
-	border-color: var(--color-border-strong);
-}
-
-.checked.disabled .track,
-.checked.readonly .track {
-	background-color: var(--color-background-faded);
-	border-color: var(--color-border-strong);
+.root.disabled .inputWrapper {
+	opacity: 0.5;
 }

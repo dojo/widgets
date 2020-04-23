@@ -21,6 +21,6 @@
 
 .subtitle {
 	composes: mdc-typography mdc-typography--subtitle2 from '@material/typography/dist/mdc.typography.css';
-	color: var(--mdc-theme-text-secondary-on-background);
+	color: var(--mdc-secondary-text-color);
 	margin: 0;
 }

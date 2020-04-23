@@ -7,7 +7,10 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<Example>
-			<Radio disabled={true} />
+			<div>
+				<Radio disabled />
+				<Radio checked disabled />
+			</div>
 		</Example>
 	);
 });

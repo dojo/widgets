@@ -1,3 +1,7 @@
+.root {
+	font-family: var(--font-family);
+}
+
 /* The wrapper around a header */
 .header {
 	display: flex;

@@ -42,14 +42,19 @@
 	padding: 0;
 }
 
-.link:hover,
 .currentPage {
 	background-color: var(--mdc-theme-primary);
 	border-radius: 50%;
-	color: var(--mdc-theme-on-primary);
+	color: var(--mdc-theme-on-secondary);
+}
+
+.link:hover {
+	background-color: var(--mdc-theme-on-surface-hover);
+	border-radius: 50%;
 }
 
 .link {
 	cursor: pointer;
 	border: 0;
+	color: var(--mdc-text-color);
 }

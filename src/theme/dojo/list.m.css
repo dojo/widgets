@@ -1,5 +1,6 @@
 .root {
 	background: var(--color-background);
+	font-family: var(--font-family);
 }
 
 .menu {

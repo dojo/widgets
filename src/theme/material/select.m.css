@@ -1,5 +1,15 @@
 .root {
 	composes: mdc-select from '@material/select/dist/mdc.select.css';
+	display: flex;
+	flex-direction: column;
+}
+
+.root:not(.disabled) .trigger {
+	background-color: var(--mdc-theme-on-surface);
+}
+
+.root:hover:not(.disabled) .trigger {
+	background-color: var(--mdc-theme-on-surface-hover);
 }
 
 .expanded {
@@ -18,6 +28,7 @@
 
 .disabled {
 	composes: mdc-select--disabled from '@material/select/dist/mdc.select.css';
+	background-color: var(--mdc-disabled-color);
 }
 
 .required {
@@ -35,6 +46,15 @@
 .value {
 	composes: mdc-select__selected-text mdc-line-ripple from '@material/select/dist/mdc.select.css';
 	text-align: left;
+	color: var(--mdc-text-color) !important;
+}
+
+.disabled .value {
+	color: var(--mdc-disabled-text-color) !important;
+}
+
+.value::before {
+	border-bottom-color: var(--mdc-text-color) !important;
 }
 
 .valueExpanded {
@@ -48,10 +68,12 @@
 .labelRoot {
 	composes: mdc-floating-label from '@material/select/dist/mdc.select.css';
 	z-index: 10;
+	color: var(--mdc-text-color) !important;
 }
 
 .labelActive {
 	composes: mdc-floating-label--float-above from '@material/textfield/dist/mdc.textfield.css';
+	color: var(--mdc-theme-primary) !important;
 }
 
 .root .labelActive {
@@ -64,6 +86,11 @@
 	overflow: hidden;
 }
 
-.iconIcon {
-	display: none;
+.iconDownIcon {
+	composes: downAltIcon from './icon.m.css';
+	color: var(--mdc-text-color);
+}
+
+.focused .iconDownIcon {
+	color: var(--mdc-theme-primary);
 }

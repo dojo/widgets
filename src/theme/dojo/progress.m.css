@@ -1,3 +1,7 @@
+.root {
+	font-family: var(--font-family);
+}
+
 .output {
 	display: inline-block;
 	padding: var(--spacing-regular);
@@ -7,6 +11,7 @@
 	border: var(--border-width) solid var(--color-border);
 	height: 24px;
 	border-radius: 3px;
+	background-color: var(--color-background);
 }
 
 .progress {
