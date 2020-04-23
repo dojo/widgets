@@ -1,16 +1,16 @@
-# @dojo/widgets/tab-controller
+# @dojo/widgets/tab-container
 
-Dojo's `TabController` widget provides a user interface capable of displaying tabbed content. The content shown at any given time is based on the children of the currently-selected tab button.
+Dojo's `TabContainer` widget provides a user interface capable of displaying tabbed content. The content shown at any given time is based on the children of the currently-selected tab button.
 
 ## Features
 
 - Tab buttons can be positioned above, below, before, or after tab content
-- Tabs can be closeable, disabled, and can fetch data asynchronously
+- Tabs can be closeable and disabled
 - Completely keyboard accessible
 
 ### Keyboard Usage
 
-`TabController` supports standard keyboard navigation for switching between and closing tabs.
+`TabContainer` supports standard keyboard navigation for switching between and closing tabs.
 
 **Tab Button Events**
 
@@ -24,4 +24,4 @@ Dojo's `TabController` widget provides a user interface capable of displaying ta
 
 ### Accessibility Features
 
-Beyond complete keyboard accessibility, `TabController` ensures that all appropriate ARIA attributes are included.
+Beyond complete keyboard accessibility, `TabContainer` ensures that all appropriate ARIA attributes are included.
