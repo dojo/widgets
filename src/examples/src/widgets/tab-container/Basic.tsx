@@ -16,8 +16,10 @@ export default factory(function Basic() {
 	return (
 		<Example>
 			<TabContainer tabs={tabs}>
-				<div key="tab0">Hello Tab One</div>,<div key="tab1">Hello Tab Two</div>,
-				<div key="tab2">Hello Tab Three</div>,<div key="tab3">Hello Tab Four</div>
+				<div key="tab0">Hello Tab One</div>
+				<div key="tab1">Hello Tab Two</div>
+				<div key="tab2">Hello Tab Three</div>
+				<div key="tab3">Hello Tab Four</div>
 			</TabContainer>
 		</Example>
 	);

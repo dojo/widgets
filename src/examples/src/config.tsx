@@ -1482,7 +1482,7 @@ export const config = {
 				}
 			}
 		},
-		'tab-controller': {
+		'tab-container': {
 			examples: [
 				{
 					filename: 'Controlled',

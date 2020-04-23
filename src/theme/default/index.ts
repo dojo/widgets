@@ -42,7 +42,7 @@ import * as slidePane from './slide-pane.m.css';
 import * as slider from './slider.m.css';
 import * as snackbar from './snackbar.m.css';
 import * as switchControl from './switch.m.css';
-import * as tabController from './tab-controller.m.css';
+import * as tabContainer from './tab-container.m.css';
 import * as textArea from './text-area.m.css';
 import * as textInput from './text-input.m.css';
 import * as threeColumnLayout from './three-column-layout.m.css';
@@ -99,7 +99,7 @@ export default {
 		'@dojo/widgets/switch': switchControl,
 		'@dojo/widgets/slider': slider,
 		'@dojo/widgets/snackbar': snackbar,
-		'@dojo/widgets/tab-controller': tabController,
+		'@dojo/widgets/tab-container': tabContainer,
 		'@dojo/widgets/text-area': textArea,
 		'@dojo/widgets/text-input': textInput,
 		'@dojo/widgets/three-column-layout': threeColumnLayout,
