@@ -4,23 +4,18 @@ const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { tsx } from '@dojo/framework/core/vdom';
-import { DNode } from '@dojo/framework/core/interfaces';
 
-import commonBundle from '../../common/nls/common';
 import { Keys } from '../../common/util';
-import TabContainer, { Align, TabItem } from '../index';
+import TabContainer from '../index';
 import * as css from '../../theme/default/tab-container.m.css';
 import {
 	createHarness,
 	compareId,
 	compareWidgetId,
-	isFocusedComparator,
 	isStringComparator,
 	noop
 } from '../../common/tests/support/test-helpers';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
-
-const { messages } = commonBundle;
 
 const compareLabelledBy = { selector: '*', property: 'labelledBy', comparator: isStringComparator };
 const compareControls = { selector: '*', property: 'controls', comparator: isStringComparator };
@@ -111,7 +106,7 @@ registerSuite('TabController', {
 		'renders with custom orientation'() {
 			const tabs = [{ name: 'test' }];
 			const h = harness(() => (
-				<TabContainer tabs={tabs} alignButtons={Align.right}>
+				<TabContainer tabs={tabs} alignButtons="right">
 					<div>tab</div>
 				</TabContainer>
 			));

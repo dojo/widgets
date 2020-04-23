@@ -1,21 +1,21 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
-import TabContainer, { Align } from '@dojo/widgets/tab-container';
+import TabContainer from '@dojo/widgets/tab-container';
 import Select, { defaultTransform } from '@dojo/widgets/select';
 import { createMemoryResourceWithData } from '../list/memoryTemplate';
 import Example from '../../Example';
 
 const factory = create({ icache });
 const options = [
-	{ value: Align.top, label: 'Top' },
-	{ value: Align.left, label: 'Left' },
-	{ value: Align.right, label: 'Right' },
-	{ value: Align.bottom, label: 'Bottom' }
+	{ value: 'top', label: 'Top' },
+	{ value: 'left', label: 'Left' },
+	{ value: 'right', label: 'Right' },
+	{ value: 'bottom', label: 'Bottom' }
 ];
 const resource = createMemoryResourceWithData(options);
 
 export default factory(function ButtonAlignment({ middleware: { icache } }) {
-	const alignButtons = icache.getOrSet('align', Align.top);
+	const alignButtons = icache.getOrSet('align', 'top');
 
 	const tabs = [
 		{ name: 'Tab One' },

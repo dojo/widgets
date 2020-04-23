@@ -8,16 +8,6 @@ import commonBundle from '../common/nls/common';
 import { formatAriaProperties, Keys } from '../common/util';
 import * as css from '../theme/default/tab-container.m.css';
 
-/**
- * Enum for tab button alignment
- */
-export enum Align {
-	bottom = 'bottom',
-	left = 'left',
-	right = 'right',
-	top = 'top'
-}
-
 export interface TabItem {
 	closeable?: boolean;
 	disabled?: boolean;
@@ -25,8 +15,8 @@ export interface TabItem {
 }
 
 export interface TabContainerProperties {
-	/** Orientation of the tab buttons */
-	alignButtons?: Align;
+	/** Orientation of the tab buttons, defaults to top */
+	alignButtons?: 'bottom' | 'top' | 'left' | 'right';
 	/** callback when a tabs close icon is clicked */
 	onClose?(index: number): void;
 	/** Custom aria attributes */
@@ -61,7 +51,7 @@ export const TabContainer = factory(function TabController({
 	properties
 }) {
 	const {
-		alignButtons,
+		alignButtons = 'top',
 		aria = {},
 		initialActiveIndex = 0,
 		tabs,
@@ -195,16 +185,16 @@ export const TabContainer = factory(function TabController({
 	let orientation = 'horizontal';
 
 	switch (alignButtons) {
-		case Align.right:
+		case 'right':
 			alignClass = themeCss.alignRight;
 			orientation = 'vertical';
 			content.reverse();
 			break;
-		case Align.bottom:
+		case 'bottom':
 			alignClass = themeCss.alignBottom;
 			content.reverse();
 			break;
-		case Align.left:
+		case 'left':
 			alignClass = themeCss.alignLeft;
 			orientation = 'vertical';
 			break;
