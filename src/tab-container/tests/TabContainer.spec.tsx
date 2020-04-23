@@ -200,12 +200,18 @@ registerSuite('TabController', {
 		},
 
 		'keyboard navigation including wrapping'() {
-			const tabs = [{ name: 'tab0' }, { name: 'tab1' }, { name: 'tab2' }];
+			const tabs = [{ name: 'tab0', closeable: true }, { name: 'tab1' }, { name: 'tab2' }];
 
 			const onActiveIndexStub = sinon.stub();
+			const onCloseStub = sinon.stub();
 
 			const h = harness(() => (
-				<TabContainer initialActiveIndex={0} onActiveIndex={onActiveIndexStub} tabs={tabs}>
+				<TabContainer
+					initialActiveIndex={0}
+					onActiveIndex={onActiveIndexStub}
+					onClose={onCloseStub}
+					tabs={tabs}
+				>
 					<div>tab0</div>
 					<div>tab1</div>
 					<div>tab2</div>
@@ -227,6 +233,18 @@ registerSuite('TabController', {
 			onActiveIndexStub.resetHistory();
 			h.trigger('@2-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Right));
 			assert.isTrue(onActiveIndexStub.calledWith(0));
+
+			onActiveIndexStub.resetHistory();
+			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.End));
+			assert.isTrue(onActiveIndexStub.calledWith(2));
+
+			onActiveIndexStub.resetHistory();
+			h.trigger('@2-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Home));
+			assert.isTrue(onActiveIndexStub.calledWith(0));
+
+			onActiveIndexStub.resetHistory();
+			h.trigger('@0-tabbutton', 'onkeydown', createMockKeydownEvent(Keys.Escape));
+			assert.isTrue(onCloseStub.calledWith(0));
 		},
 
 		'does not display disabled tabs'() {
