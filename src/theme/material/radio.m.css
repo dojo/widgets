@@ -22,17 +22,16 @@
 	composes: mdc-radio__inner-circle from '@material/radio/dist/mdc.radio.css';
 }
 
-.checked {
+.root .input:enabled:not(:checked) + .radioBackground .radioOuter,
+.root.disabled .input:not(:checked) + .radioBackground .radioOuter {
+	border-color: var(--mdc-border-color);
 }
 
-.focused {
+.root.disabled.checked .radioOuter,
+.root.disabled.checked .radioInner {
+	border-color: var(--mdc-border-color) !important;
 }
 
-.disabled {
-}
-
-.readonly {
-}
-
-.required {
+.root.disabled .inputWrapper {
+	opacity: 0.5;
 }

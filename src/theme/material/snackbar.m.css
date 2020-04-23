@@ -6,6 +6,10 @@
 	composes: mdc-snackbar__surface from '@material/snackbar/dist/mdc.snackbar.css';
 }
 
+.root .content {
+	background: var(--mdc-snackbar-background);
+}
+
 .label {
 	composes: mdc-snackbar__label from '@material/snackbar/dist/mdc.snackbar.css';
 }

@@ -123,7 +123,6 @@ import ProgressWithCustomOutput from './widgets/progress/ProgressWithCustomOutpu
 import ProgressWithMax from './widgets/progress/ProgressWithMax';
 import ProgressWithoutOutput from './widgets/progress/ProgressWithoutOutput';
 import BasicRadio from './widgets/radio/Basic';
-import CheckedRadio from './widgets/radio/Checked';
 import EventsRadio from './widgets/radio/Events';
 import DisabledRadio from './widgets/radio/Disabled';
 import LabelledRadio from './widgets/radio/Labelled';
@@ -1165,11 +1164,6 @@ export const config = {
 					filename: 'Labelled',
 					module: LabelledRadio,
 					title: 'Labelled Radio Button'
-				},
-				{
-					filename: 'Checked',
-					module: CheckedRadio,
-					title: 'Checked Radio Button'
 				},
 				{
 					filename: 'Disabled',

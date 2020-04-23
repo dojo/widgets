@@ -3,6 +3,11 @@
 	cursor: pointer;
 	display: flex;
 	pointer-events: all;
+	color: var(--mdc-secondary-text-color);
+}
+
+.toggleCalendarButton:hover {
+	color: var(--mdc-text-color);
 }
 
 .popup {

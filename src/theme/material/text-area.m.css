@@ -5,16 +5,16 @@
 	composes: mdc-text-field mdc-text-field--textarea mdc-text-field--fullwidth from '@material/textfield/dist/mdc.textfield.css';
 }
 
+.root .input {
+	color: var(--mdc-text-color) !important;
+}
+
+.root .disabled .input {
+	color: var(--mdc-secondary-text-color) !important;
+}
+
 .input {
 	composes: mdc-text-field__input from '@material/textfield/dist/mdc.textfield.css';
-}
-
-.disabled {
-	composes: mdc-text-field--disabled from '@material/textfield/dist/mdc.textfield.css';
-}
-
-.wrapper.disabled .input {
-	border-bottom: 1px solid var(--mdc-border-color);
 }
 
 .focused {
@@ -28,6 +28,10 @@
 .root .input {
 	border: 1px solid var(--mdc-border-color);
 	border-radius: var(--mdc-theme-border-radius);
+}
+
+.root .focused .input {
+	border-color: var(--mdc-theme-primary);
 }
 
 .focused {

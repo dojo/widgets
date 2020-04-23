@@ -17,11 +17,12 @@
 	margin: auto;
 	width: calc(var(--mdc-theme-grid-base) * 2.5);
 	height: calc(var(--mdc-theme-grid-base) * 2.5);
-	border: 2px solid var(--mdc-theme-text-secondary-on-light);
+	border: 2px solid var(--mdc-secondary-text-color);
 	border-radius: 50%;
 	border-top-color: transparent;
 	animation: spin 1s ease infinite;
 	will-change: auto;
+	color: var(--mdc-secondary-text-color);
 }
 
 @keyframes spin {

@@ -4,9 +4,9 @@
 }
 
 .selected {
-	background-color: var(--mdc-theme-background-selected);
+	background-color: var(--mdc-theme-on-surface);
 }
 
 .selectable:hover {
-	background-color: var(--mdc-theme-background-active);
+	background-color: var(--mdc-theme-on-surface-hover);
 }

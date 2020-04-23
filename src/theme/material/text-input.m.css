@@ -19,11 +19,11 @@
 }
 
 .root .wrapper {
-	background: var(--mdc-theme-on-surface);
+	background-color: var(--mdc-theme-on-surface);
 }
 
 .root:hover:not(.disabled) .wrapper {
-	background: var(--mdc-theme-on-surface-hover);
+	background-color: var(--mdc-theme-on-surface-hover);
 }
 
 .inputWrapperFocused {
@@ -38,6 +38,11 @@
 .disabled {
 	composes: mdc-text-field--disabled from '@material/textfield/dist/mdc.textfield.css';
 }
+
+.root .disabled .input {
+	color: var(--mdc-secondary-text-color) !important;
+}
+
 /* Added to a focused input */
 .focused {
 	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';
@@ -54,6 +59,9 @@
 /* Contains leading content */
 .addonRoot {
 	composes: mdc-text-field__icon from '@material/textfield/dist/mdc.textfield.css';
+}
+.root .addonRoot {
+	color: var(--mdc-secondary-text-color);
 }
 
 .hasLeading.hasTrailing .addonRoot,
@@ -76,16 +84,6 @@
 /* Added at the root when there is trailing content */
 .hasTrailing {
 	composes: mdc-text-field--with-trailing-icon from '@material/textfield/dist/mdc.textfield.css';
-}
-
-/* Styles the helper text when the input is invalid */
-.invalid .helperText {
-	color: var(--error-color);
-}
-
-/* Styles the input when the input is invalid */
-.invalid .input {
-	border-color: var(--error-color);
 }
 
 /* Styles the input when the input is valid */

@@ -9,6 +9,10 @@
 	pointer-events: all;
 }
 
+.tabButton:not(.activeTabButton) .tabButtonContent {
+	color: var(--mdc-secondary-text-color);
+}
+
 .tabButtonContent {
 	composes: mdc-tab__text-label from '@material/tab/dist/mdc.tab.css';
 }
@@ -17,10 +21,12 @@
 	composes: mdc-tab--active from '@material/tab/dist/mdc.tab.css';
 }
 
-.disabledTabButton {
-	font-style: italic;
+.root .disabledTabButton {
 	cursor: default;
-	color: var(--disabled-color);
+}
+
+.root .disabledTabButton .tabButtonContent {
+	color: var(--mdc-disabled-text-color);
 }
 
 .close {
@@ -54,13 +60,17 @@
 	composes: mdc-tab-indicator__content mdc-tab-indicator__content--underline from '@material/tab-indicator/dist/mdc.tab-indicator.css';
 }
 
-.indicatorActive .indicatorContent {
-	background-color: var(--primary-inverse);
-}
-
 /* TABS */
 .tab {
 	composes: mdc-tab__content from '@material/tab/dist/mdc.tab.css';
+}
+
+.root {
+	background-color: var(--mdc-tab-background);
+}
+
+.root .tab {
+	color: var(--mdc-text-color);
 }
 
 /* OTHER ALIGNMENTS */
