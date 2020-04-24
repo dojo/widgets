@@ -34,7 +34,6 @@ export const Accordion = factory(function LoadingIndicator({
 	const { exclusive, panes } = properties();
 
 	const openIndexes = icache.getOrSet('openIndexes', new Set());
-	const contentPanes = children();
 
 	const onOpen = (index: number) => {
 		if (exclusive) {
@@ -70,11 +69,9 @@ export const Accordion = factory(function LoadingIndicator({
 							css,
 							'pane'
 						)}
+						name={paneName}
 					>
-						{{
-							title: paneName,
-							content: contentPanes[index]
-						}}
+						{children()[index]}
 					</TitlePane>
 				);
 			})}

@@ -13,17 +13,25 @@ describe('Accordion', () => {
 	const baseTemplate = assertationTemplate(() => {
 		return (
 			<div classes={[undefined, themeCss.root]}>
-				<TitlePane key="pane-0" onOpen={noop} onClose={noop} theme={{}} open={false}>
-					{{
-						title: 'foo title',
-						content: 'foo content'
-					}}
+				<TitlePane
+					key="pane-0"
+					onOpen={noop}
+					onClose={noop}
+					theme={{}}
+					open={false}
+					name="foo title"
+				>
+					foo content
 				</TitlePane>
-				<TitlePane key="pane-1" onOpen={noop} onClose={noop} theme={{}} open={false}>
-					{{
-						title: 'bar title',
-						content: 'bar content'
-					}}
+				<TitlePane
+					key="pane-1"
+					onOpen={noop}
+					onClose={noop}
+					theme={{}}
+					open={false}
+					name="bar title"
+				>
+					bar content
 				</TitlePane>
 			</div>
 		);
