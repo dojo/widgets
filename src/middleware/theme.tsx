@@ -29,7 +29,7 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 			css: T,
 			prefix?: string
 		): Theme | ThemeWithVariant => {
-			const theme = properties().theme || coreTheme.get();
+			const theme = properties().theme;
 			const baseKey = baseCss[THEME_KEY];
 			const variantKey = css[THEME_KEY];
 			const virtualCss = Object.keys(baseCss).reduce(
