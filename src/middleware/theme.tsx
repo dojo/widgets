@@ -77,8 +77,11 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 				if (isThemeWithVariant(theme)) {
 					return {
 						theme: {
-							...theme.theme,
-							[baseKey]: baseTheme
+							theme: {
+								...theme.theme.theme,
+								[baseKey]: baseTheme
+							},
+							variants: theme.theme.variants
 						},
 						variant: theme.variant
 					};
@@ -109,8 +112,11 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 			if (isThemeWithVariant(theme)) {
 				return {
 					theme: {
-						...theme.theme,
-						[baseKey]: constructedTheme
+						theme: {
+							...theme.theme.theme,
+							[baseKey]: constructedTheme
+						},
+						variants: theme.theme.variants
 					},
 					variant: theme.variant
 				};
