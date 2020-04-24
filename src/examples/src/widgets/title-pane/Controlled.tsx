@@ -13,17 +13,10 @@ export default factory(function Controlled({ middleware: { icache } }) {
 				open={open}
 				onClose={() => icache.set('open', false)}
 				onOpen={() => icache.set('open', true)}
+				name="Controlled Title Pane"
 			>
-				{{
-					title: 'Controlled Title Pane',
-					content: (
-						<div>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id
-							purus ipsum. Aenean ac purus purus. Nam sollicitudin varius augue, sed
-							lacinia felis tempor in.
-						</div>
-					)
-				}}
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque id purus ipsum.
+				Aenean ac purus purus. Nam sollicitudin varius augue, sed lacinia felis tempor in.
 			</TitlePane>
 		</Example>
 	);

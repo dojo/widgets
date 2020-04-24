@@ -18,7 +18,7 @@ describe('TitlePane', () => {
 		headingLevel,
 		initialOpen,
 		open
-	}: TitlePaneProperties = {}) {
+	}: Partial<TitlePaneProperties> = {}) {
 		const isOpen = open || initialOpen;
 
 		return assertationTemplate(() => {
@@ -75,24 +75,14 @@ describe('TitlePane', () => {
 	}
 
 	it('renders closed', () => {
-		const h = harness(() => (
-			<TitlePane>
-				{{
-					title: 'title',
-					content: 'content'
-				}}
-			</TitlePane>
-		));
+		const h = harness(() => <TitlePane name="title">content</TitlePane>);
 		h.expect(getTemplate());
 	});
 
 	it('renders open', () => {
 		const h = harness(() => (
-			<TitlePane initialOpen>
-				{{
-					title: 'title',
-					content: 'content'
-				}}
+			<TitlePane name="title" initialOpen>
+				content
 			</TitlePane>
 		));
 		h.expect(
@@ -104,11 +94,8 @@ describe('TitlePane', () => {
 
 	it('renders heading level', () => {
 		const h = harness(() => (
-			<TitlePane headingLevel={3}>
-				{{
-					title: 'title',
-					content: 'content'
-				}}
+			<TitlePane name="title" headingLevel={3}>
+				content
 			</TitlePane>
 		));
 		h.expect(
@@ -120,11 +107,8 @@ describe('TitlePane', () => {
 
 	it('renders not closeable', () => {
 		const h = harness(() => (
-			<TitlePane closeable={false}>
-				{{
-					title: 'title',
-					content: 'content'
-				}}
+			<TitlePane name="title" closeable={false}>
+				content
 			</TitlePane>
 		));
 		h.expect(
@@ -135,14 +119,7 @@ describe('TitlePane', () => {
 	});
 
 	it('opens a closed pane', () => {
-		const h = harness(() => (
-			<TitlePane>
-				{{
-					title: 'title',
-					content: 'content'
-				}}
-			</TitlePane>
-		));
+		const h = harness(() => <TitlePane name="title">content</TitlePane>);
 
 		h.trigger('@title-button', 'onclick', { stopPropagation: noop });
 
@@ -157,11 +134,8 @@ describe('TitlePane', () => {
 
 	it('closes an open pane', () => {
 		const h = harness(() => (
-			<TitlePane initialOpen>
-				{{
-					title: 'title',
-					content: 'content'
-				}}
+			<TitlePane name="title" initialOpen>
+				content
 			</TitlePane>
 		));
 
@@ -182,11 +156,8 @@ describe('TitlePane', () => {
 		const onOpen = stub();
 
 		const h = harness(() => (
-			<TitlePane onOpen={onOpen}>
-				{{
-					title: 'title',
-					content: 'content'
-				}}
+			<TitlePane name="title" onOpen={onOpen}>
+				content
 			</TitlePane>
 		));
 
@@ -198,11 +169,8 @@ describe('TitlePane', () => {
 		const onClose = stub();
 
 		const h = harness(() => (
-			<TitlePane initialOpen onClose={onClose}>
-				{{
-					title: 'title',
-					content: 'content'
-				}}
+			<TitlePane name="title" initialOpen onClose={onClose}>
+				content
 			</TitlePane>
 		));
 
@@ -213,11 +181,8 @@ describe('TitlePane', () => {
 	it('allows partial control', () => {
 		const getHarness = (open: boolean) =>
 			harness(() => (
-				<TitlePane open={open}>
-					{{
-						title: 'title',
-						content: 'content'
-					}}
+				<TitlePane name="title" open={open}>
+					content
 				</TitlePane>
 			));
 

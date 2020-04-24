@@ -1,4 +1,3 @@
-import { RenderResult } from '@dojo/framework/core/interfaces';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import focus from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
@@ -22,6 +21,8 @@ export interface TitlePaneProperties {
 	onClose?(): void;
 	/** Called when the title of an open pane is clicked */
 	onOpen?(): void;
+	/** The displayed title name for this pane */
+	name: string;
 }
 
 export interface TitlePaneICache {
@@ -29,21 +30,12 @@ export interface TitlePaneICache {
 	open?: boolean;
 }
 
-export type TitlePaneChildren = {
-	/** Renderer for the pane content */
-	content?: RenderResult;
-	/** Renderer for the pane title */
-	title: RenderResult;
-};
-
 const factory = create({
 	dimensions,
 	focus,
 	icache: createICacheMiddleware<TitlePaneICache>(),
 	theme
-})
-	.properties<TitlePaneProperties>()
-	.children<TitlePaneChildren>();
+}).properties<TitlePaneProperties>();
 
 export const TitlePane = factory(function TitlePane({
 	id,
@@ -58,10 +50,9 @@ export const TitlePane = factory(function TitlePane({
 		initialOpen,
 		onClose,
 		onOpen,
+		name,
 		theme: themeProp
 	} = properties();
-	const { content, title } = children()[0];
-
 	let { open } = properties();
 
 	const firstRender = icache.get('open') === undefined;
@@ -116,7 +107,7 @@ export const TitlePane = factory(function TitlePane({
 					<span classes={themeCss.arrow}>
 						<Icon type={open ? 'downIcon' : 'rightIcon'} theme={themeProp} />
 					</span>
-					{title}
+					{name}
 				</button>
 			</div>
 			<div
@@ -133,7 +124,7 @@ export const TitlePane = factory(function TitlePane({
 					marginTop: open ? '0px' : `-${dimensions.get('content').offset.height}px`
 				}}
 			>
-				{content}
+				{children()}
 			</div>
 		</div>
 	);
