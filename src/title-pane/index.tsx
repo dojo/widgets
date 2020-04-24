@@ -1,4 +1,3 @@
-import { RenderResult } from '@dojo/framework/core/interfaces';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import focus from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
