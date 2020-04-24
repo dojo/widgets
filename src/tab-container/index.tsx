@@ -44,7 +44,7 @@ const factory = create({
 	.properties<TabContainerProperties>()
 	.children();
 
-export const TabContainer = factory(function TabController({
+export const TabContainer = factory(function TabContainer({
 	children,
 	id,
 	middleware: { focus, i18n, icache, theme },

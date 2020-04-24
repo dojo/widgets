@@ -168,11 +168,11 @@ import StackedSnackbar from './widgets/snackbar/Stacked';
 import SuccessSnackbar from './widgets/snackbar/Success';
 import BasicSwitch from './widgets/switch/Basic';
 import DisabledSwitch from './widgets/switch/Disabled';
-import BasicTabController from './widgets/tab-container/Basic';
-import ControlledTabController from './widgets/tab-container/Controlled';
-import ButtonAlignmentTabController from './widgets/tab-container/ButtonAlignment';
-import CloseableTabController from './widgets/tab-container/Closeable';
-import DisabledTabController from './widgets/tab-container/Disabled';
+import BasicTabContainer from './widgets/tab-container/Basic';
+import ControlledTabContainer from './widgets/tab-container/Controlled';
+import ButtonAlignmentTabContainer from './widgets/tab-container/ButtonAlignment';
+import CloseableTabContainer from './widgets/tab-container/Closeable';
+import DisabledTabContainer from './widgets/tab-container/Disabled';
 import BasicTextArea from './widgets/text-area/Basic';
 import ControlledTextArea from './widgets/text-area/Controlled';
 import TextAreaWithLabel from './widgets/text-area/Label';
@@ -1486,30 +1486,30 @@ export const config = {
 			examples: [
 				{
 					filename: 'Controlled',
-					module: ControlledTabController,
-					title: 'Controlled TabController'
+					module: ControlledTabContainer,
+					title: 'Controlled TabContainer'
 				},
 				{
 					filename: 'Disabled',
-					module: DisabledTabController,
-					title: 'TabController with disabled tabs'
+					module: DisabledTabContainer,
+					title: 'TabContainer with disabled tabs'
 				},
 				{
 					filename: 'ButtonAlignment',
-					module: ButtonAlignmentTabController,
-					title: 'TabController with adjustable button alignment'
+					module: ButtonAlignmentTabContainer,
+					title: 'TabContainer with adjustable button alignment'
 				},
 				{
 					filename: 'Closeable',
-					module: CloseableTabController,
-					title: 'TabController with closeable tab'
+					module: CloseableTabContainer,
+					title: 'TabContainer with closeable tab'
 				}
 			],
 			filename: 'index',
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicTabController
+					module: BasicTabContainer
 				}
 			}
 		},

@@ -48,7 +48,7 @@
 			"src/slider",
 			"src/snackbar",
 			"src/switch",
-			"src/tab-controller",
+			"src/tab-container",
 			"src/text-area",
 			"src/text-input",
 			"src/three-column-layout",
