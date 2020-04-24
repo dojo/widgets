@@ -36,9 +36,7 @@ const factory = create({
 	focus,
 	icache: createICacheMiddleware<TitlePaneICache>(),
 	theme
-})
-	.properties<TitlePaneProperties>()
-	.children<RenderResult>();
+}).properties<TitlePaneProperties>();
 
 export const TitlePane = factory(function TitlePane({
 	id,
