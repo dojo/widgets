@@ -22,19 +22,14 @@ export interface TitlePaneProperties {
 	onClose?(): void;
 	/** Called when the title of an open pane is clicked */
 	onOpen?(): void;
+	/** The displayed title name for this pane */
+	name: string;
 }
 
 export interface TitlePaneICache {
 	initialOpen?: boolean;
 	open?: boolean;
 }
-
-export type TitlePaneChildren = {
-	/** Renderer for the pane content */
-	content?: RenderResult;
-	/** Renderer for the pane title */
-	title: RenderResult;
-};
 
 const factory = create({
 	dimensions,
@@ -43,7 +38,7 @@ const factory = create({
 	theme
 })
 	.properties<TitlePaneProperties>()
-	.children<TitlePaneChildren>();
+	.children<RenderResult>();
 
 export const TitlePane = factory(function TitlePane({
 	id,
@@ -58,10 +53,9 @@ export const TitlePane = factory(function TitlePane({
 		initialOpen,
 		onClose,
 		onOpen,
+		name,
 		theme: themeProp
 	} = properties();
-	const { content, title } = children()[0];
-
 	let { open } = properties();
 
 	const firstRender = icache.get('open') === undefined;
@@ -116,7 +110,7 @@ export const TitlePane = factory(function TitlePane({
 					<span classes={themeCss.arrow}>
 						<Icon type={open ? 'downIcon' : 'rightIcon'} theme={themeProp} />
 					</span>
-					{title}
+					{name}
 				</button>
 			</div>
 			<div
@@ -133,7 +127,7 @@ export const TitlePane = factory(function TitlePane({
 					marginTop: open ? '0px' : `-${dimensions.get('content').offset.height}px`
 				}}
 			>
-				{content}
+				{children()}
 			</div>
 		</div>
 	);
