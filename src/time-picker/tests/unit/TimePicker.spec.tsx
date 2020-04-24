@@ -14,7 +14,6 @@ import select from '@dojo/framework/testing/harness/support/selector';
 import { createHarness, compareTheme, stubEvent } from '../../../common/tests/support/test-helpers';
 import { Keys } from '../../../common/util';
 import focus from '@dojo/framework/core/middleware/focus';
-import { createMemoryTemplate } from '../../../examples/src/widgets/list/memoryTemplate';
 import { createResource } from '@dojo/framework/core/resource';
 
 const { describe, it, afterEach } = intern.getInterface('bdd');
@@ -24,7 +23,7 @@ const harness = createHarness([compareTheme]);
 const { messages } = bundle;
 const noop = () => {};
 
-const memoryTemplate = createMemoryTemplate();
+const resource = createResource<ListOption>();
 
 function createFocusMock({
 	shouldFocus = false,
@@ -121,10 +120,7 @@ const menuTemplate = assertionTemplate(() => {
 			<List
 				key="menu"
 				focus={() => false}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: options30Minutes
-				}}
+				resource={resource(options30Minutes)}
 				transform={listTransform}
 				onValue={noop}
 				onRequestClose={noop}
@@ -411,14 +407,17 @@ describe('TimePicker', () => {
 		);
 
 		h.expect(
-			menuTemplate.setProperty('@menu', 'resource', {
-				resource: () => createResource(memoryTemplate),
-				data: generateOptions(60 * 30, {
-					hour12: false,
-					hour: 'numeric',
-					minute: 'numeric'
-				})
-			}),
+			menuTemplate.setProperty(
+				'@menu',
+				'resource',
+				resource(
+					generateOptions(60 * 30, {
+						hour12: false,
+						hour: 'numeric',
+						minute: 'numeric'
+					})
+				)
+			),
 			() => contentResult
 		);
 	});

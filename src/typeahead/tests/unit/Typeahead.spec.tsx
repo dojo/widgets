@@ -6,8 +6,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import { compareTheme, createHarness } from '../../../common/tests/support/test-helpers';
 import Typeahead from '../../../typeahead';
 import List, { defaultTransform, ListOption } from '../../../list';
-import { createMemoryTemplate } from '../../../examples/src/widgets/list/memoryTemplate';
-import { createResource } from '@dojo/framework/core/resource';
+import { createResource, createMemoryTemplate } from '@dojo/framework/core/resource';
 import { stub } from 'sinon';
 import TextInput from '../../../text-input';
 import * as listCss from '../../../theme/default/list.m.css';
@@ -30,7 +29,7 @@ const animalOptions: ListOption[] = [
 const memoryTemplate = createMemoryTemplate();
 
 const resource = {
-	resource: () => createResource(memoryTemplate),
+	resource: createResource(memoryTemplate),
 	data: animalOptions
 };
 
@@ -83,7 +82,7 @@ const listTemplate = assertionTemplate(() => (
 			focusable={false}
 			activeIndex={undefined}
 			disabled={undefined}
-			resource={{ resource: resource.resource(), createOptionsWrapper: noop }}
+			resource={{ resource: resource.resource, createOptionsWrapper: noop }}
 			transform={defaultTransform}
 			onValue={noop}
 			onRequestClose={noop}

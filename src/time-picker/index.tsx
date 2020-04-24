@@ -25,7 +25,7 @@ function createMemoryTemplate<S = void>(): DataTemplate<S> {
 	};
 }
 
-const memoryTemplate = createMemoryTemplate();
+const memoryTemplate = createMemoryTemplate<ListOption>();
 
 export interface TimePickerProperties {
 	/** Set the disabled property of the control */
@@ -447,10 +447,7 @@ export const TimePicker = factory(function TimePicker({
 								<List
 									key="menu"
 									focus={() => shouldFocus && focusNode === 'menu'}
-									resource={{
-										resource: () => createResource(memoryTemplate),
-										data: options
-									}}
+									resource={createResource(memoryTemplate)(options)}
 									transform={listTransform}
 									onValue={(value: string) => {
 										if (controlledValue === undefined) {

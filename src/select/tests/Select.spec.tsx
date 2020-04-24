@@ -17,7 +17,6 @@ import HelperText from '../../helper-text';
 import Icon from '../../icon';
 import Label from '../../label';
 import List from '../../list';
-import { createMemoryTemplate } from '../../examples/src/widgets/list/memoryTemplate';
 import { createResource } from '@dojo/framework/core/resource';
 import TriggerPopup from '../../trigger-popup';
 import * as css from '../../theme/default/select.m.css';
@@ -27,7 +26,7 @@ import bundle from '../select.nls';
 const options = [{ value: 'dog' }, { value: 'cat' }, { value: 'fish' }];
 const { messages } = bundle;
 
-const memoryTemplate = createMemoryTemplate();
+const resource = createResource<{ value: string }>();
 
 const harness = createHarness([compareTheme]);
 
@@ -76,10 +75,7 @@ const menuTemplate = assertionTemplate(() => (
 		<List
 			key="menu"
 			focus={() => false}
-			resource={{
-				resource: () => createResource(memoryTemplate),
-				data: options
-			}}
+			resource={resource(options)}
 			transform={defaultTransform}
 			onValue={() => {}}
 			onRequestClose={() => {}}
@@ -96,14 +92,7 @@ const menuTemplate = assertionTemplate(() => (
 describe('Select', () => {
 	it('renders', () => {
 		const h = harness(() => (
-			<Select
-				onValue={() => {}}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: options
-				}}
-				transform={defaultTransform}
-			/>
+			<Select onValue={() => {}} resource={resource(options)} transform={defaultTransform} />
 		));
 		h.expect(baseTemplate);
 	});
@@ -113,10 +102,7 @@ describe('Select', () => {
 			() => (
 				<Select
 					onValue={() => {}}
-					resource={{
-						resource: () => createResource(memoryTemplate),
-						data: options
-					}}
+					resource={resource(options)}
 					transform={defaultTransform}
 					itemsInView={10}
 					position="above"
@@ -159,10 +145,7 @@ describe('Select', () => {
 			() => (
 				<Select
 					onValue={() => {}}
-					resource={{
-						resource: () => createResource(memoryTemplate),
-						data: options
-					}}
+					resource={resource(options)}
 					transform={defaultTransform}
 				/>
 			),
@@ -187,10 +170,7 @@ describe('Select', () => {
 				<Select
 					disabled
 					onValue={() => {}}
-					resource={{
-						resource: () => createResource(memoryTemplate),
-						data: options
-					}}
+					resource={resource(options)}
 					transform={defaultTransform}
 				/>
 			),
@@ -216,10 +196,7 @@ describe('Select', () => {
 			() => (
 				<Select
 					onValue={() => {}}
-					resource={{
-						resource: () => createResource(memoryTemplate),
-						data: options
-					}}
+					resource={resource(options)}
 					transform={defaultTransform}
 				/>
 			),
@@ -258,10 +235,7 @@ describe('Select', () => {
 			() => (
 				<Select
 					onValue={() => {}}
-					resource={{
-						resource: () => createResource(memoryTemplate),
-						data: options
-					}}
+					resource={resource(options)}
 					transform={defaultTransform}
 				/>
 			),
@@ -289,10 +263,7 @@ describe('Select', () => {
 			() => (
 				<Select
 					onValue={onValueStub}
-					resource={{
-						resource: () => createResource(memoryTemplate),
-						data: options
-					}}
+					resource={resource(options)}
 					transform={defaultTransform}
 				/>
 			),
@@ -323,10 +294,7 @@ describe('Select', () => {
 			() => (
 				<Select
 					onValue={onValueStub}
-					resource={{
-						resource: () => createResource(memoryTemplate),
-						data: options
-					}}
+					resource={resource(options)}
 					transform={defaultTransform}
 					initialValue="dog"
 				/>
@@ -361,10 +329,7 @@ describe('Select', () => {
 			() => (
 				<Select
 					onValue={onValueStub}
-					resource={{
-						resource: () => createResource(memoryTemplate),
-						data: options
-					}}
+					resource={resource(options)}
 					transform={defaultTransform}
 					value="dog"
 				/>
@@ -394,10 +359,7 @@ describe('Select', () => {
 		const h = harness(() => (
 			<Select
 				onValue={() => {}}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: options
-				}}
+				resource={resource(options)}
 				transform={defaultTransform}
 				required={true}
 				onValidate={onValidate}
