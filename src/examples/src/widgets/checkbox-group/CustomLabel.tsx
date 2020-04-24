@@ -6,8 +6,6 @@ import Example from '../../Example';
 const factory = create({ icache });
 
 const App = factory(function({ properties, middleware: { icache } }) {
-	const { get, set } = icache;
-
 	return (
 		<Example>
 			<CheckboxGroup
@@ -18,14 +16,14 @@ const App = factory(function({ properties, middleware: { icache } }) {
 					{ value: 'blue', label: 'Bleu' }
 				]}
 				onValue={(value) => {
-					set('colours', value);
+					icache.set('colours', value);
 				}}
 			>
 				{{
 					label: 'colours'
 				}}
 			</CheckboxGroup>
-			<pre>{`${get('colours')}`}</pre>
+			<pre>{`${icache.get('colours')}`}</pre>
 		</Example>
 	);
 });

@@ -6,23 +6,21 @@ import Example from '../../Example';
 const factory = create({ icache });
 
 const App = factory(function({ properties, middleware: { icache } }) {
-	const { get, set } = icache;
-
 	return (
 		<Example>
 			<RadioGroup
 				name="standard"
-				value={get('standard')}
+				value={icache.get('standard')}
 				options={[{ value: 'cat' }, { value: 'dog' }, { value: 'fish' }]}
 				onValue={(value) => {
-					set('standard', value);
+					icache.set('standard', value);
 				}}
 			>
 				{{
 					label: 'pets'
 				}}
 			</RadioGroup>
-			<pre>{`${get('standard')}`}</pre>
+			<pre>{`${icache.get('standard')}`}</pre>
 		</Example>
 	);
 });

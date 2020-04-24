@@ -7,15 +7,14 @@ import Example from '../../Example';
 const factory = create({ icache });
 
 const App = factory(function ClosableRenderer({ middleware: { icache } }) {
-	const { get, set } = icache;
-	const closed = get<boolean>('closed');
+	const closed = icache.get<boolean>('closed');
 
 	return (
 		<Example>
 			{!closed && (
 				<Chip
 					onClose={() => {
-						set('closed', true);
+						icache.set('closed', true);
 					}}
 				>
 					{{

@@ -7,15 +7,13 @@ import Example from '../../Example';
 const factory = create({ icache });
 
 const App = factory(function({ middleware: { icache } }) {
-	const { get, set } = icache;
-
 	return (
 		<Example>
 			<CheckboxGroup
 				name="custom"
 				options={[{ value: 'yes' }, { value: 'no' }, { value: 'maybe' }]}
 				onValue={(value) => {
-					set('custom', value);
+					icache.set('custom', value);
 				}}
 			>
 				{{
@@ -50,7 +48,7 @@ const App = factory(function({ middleware: { icache } }) {
 					}
 				}}
 			</CheckboxGroup>
-			<pre>{`${get('custom')}`}</pre>
+			<pre>{`${icache.get('custom')}`}</pre>
 		</Example>
 	);
 });

@@ -22,18 +22,17 @@ export const EmailInput = factory(function({
 	children,
 	middleware: { icache, theme }
 }) {
-	const { get, set } = icache;
 	const props = properties();
 	return (
 		<TextInput
 			{...props}
 			type={'email'}
 			onValidate={(valid, message) => {
-				set('valid', valid);
-				set('message', message);
+				icache.set('valid', valid);
+				icache.set('message', message);
 				props.onValidate && props.onValidate(valid, message);
 			}}
-			valid={{ valid: get('valid'), message: get('message') }}
+			valid={{ valid: icache.get('valid'), message: icache.get('message') }}
 			theme={theme.compose(
 				textInputCss,
 				emailInputCss

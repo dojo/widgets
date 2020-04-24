@@ -6,23 +6,21 @@ import Example from '../../Example';
 const factory = create({ icache });
 
 const App = factory(function({ properties, middleware: { icache } }) {
-	const { get, set } = icache;
-
 	return (
 		<Example>
 			<CheckboxGroup
-				value={get('controlled')}
+				value={icache.get('controlled')}
 				name="initial-value"
 				options={[{ value: 'tom' }, { value: 'dick' }, { value: 'harry' }]}
 				onValue={(value) => {
-					set('controlled', value);
+					icache.set('controlled', value);
 				}}
 			>
 				{{
 					label: 'favourite names'
 				}}
 			</CheckboxGroup>
-			<pre>{`${get('controlled')}`}</pre>
+			<pre>{`${icache.get('controlled')}`}</pre>
 		</Example>
 	);
 });
