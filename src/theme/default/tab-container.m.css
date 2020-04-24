@@ -53,7 +53,7 @@
 	z-index: calc(var(--zindex-base) + 1);
 }
 
-/* The root class of the TabController */
+/* The root class of the TabContainer */
 .root {
 	box-sizing: border-box;
 }

@@ -72,7 +72,7 @@ const tabButtonProperties = {
 	tabIndex: 0
 };
 
-registerSuite('TabController', {
+registerSuite('TabContainer', {
 	tests: {
 		'renders with aria'() {
 			const tabs = [{ name: 'test' }];
