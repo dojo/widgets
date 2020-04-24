@@ -459,34 +459,58 @@ describe('theme middleware', () => {
 
 		properties.theme = {
 			theme: {
-				'@dojo/widgets/Base': {
-					root: 'base_theme_root'
+				theme: {
+					'@dojo/widgets/Base': {
+						root: 'base_theme_root'
+					},
+					'@dojo/widgets/Variant': {
+						extra: 'variant_theme_extra',
+						selected: 'variant_theme_selected'
+					}
 				},
-				'@dojo/widgets/Variant': {
-					extra: 'variant_theme_extra',
-					selected: 'variant_theme_selected'
+				variants: {
+					default: {
+						root: 'default root variant'
+					}
 				}
 			},
-			variant: { root: 'foo' }
+			variant: {
+				name: 'default',
+				value: {
+					root: 'default root variant'
+				}
+			}
 		};
 
 		const composedClasses = composesInstance.compose(
 			baseClasses,
 			variantClasses
 		);
-		assert.deepEqual<any>(composedClasses, {
+		assert.deepEqual(composedClasses, {
 			theme: {
-				'@dojo/widgets/Base': {
-					root: 'base_theme_root',
-					selected: 'variant_theme_selected',
-					active: 'variant_active'
+				theme: {
+					'@dojo/widgets/Base': {
+						root: 'base_theme_root',
+						selected: 'variant_theme_selected',
+						active: 'variant_active'
+					},
+					'@dojo/widgets/Variant': {
+						extra: 'variant_theme_extra',
+						selected: 'variant_theme_selected'
+					}
 				},
-				'@dojo/widgets/Variant': {
-					extra: 'variant_theme_extra',
-					selected: 'variant_theme_selected'
+				variants: {
+					default: {
+						root: 'default root variant'
+					}
 				}
 			},
-			variant: { root: 'foo' }
+			variant: {
+				name: 'default',
+				value: {
+					root: 'default root variant'
+				}
+			}
 		});
 	});
 
@@ -505,15 +529,25 @@ describe('theme middleware', () => {
 
 		properties.theme = {
 			theme: {
-				'@dojo/widgets/Base': {
-					active: 'base_theme_active'
+				theme: {
+					'@dojo/widgets/Base': {
+						active: 'base_theme_active'
+					},
+					'@dojo/widgets/Variant': {
+						baseActive: 'variant_theme_active'
+					}
 				},
-				'@dojo/widgets/Variant': {
-					baseActive: 'variant_theme_active'
+				variants: {
+					default: {
+						root: 'default root variant'
+					}
 				}
 			},
 			variant: {
-				root: 'foo'
+				name: 'default',
+				value: {
+					root: 'default root variant'
+				}
 			}
 		};
 
@@ -522,18 +556,30 @@ describe('theme middleware', () => {
 			variantClasses,
 			'base'
 		);
-		assert.deepEqual<any>(composedClasses, {
+		assert.deepEqual(composedClasses, {
 			theme: {
-				'@dojo/widgets/Base': {
-					root: 'base_root',
-					selected: 'base_selected',
-					active: 'variant_theme_active'
+				theme: {
+					'@dojo/widgets/Base': {
+						root: 'base_root',
+						selected: 'base_selected',
+						active: 'variant_theme_active'
+					},
+					'@dojo/widgets/Variant': {
+						baseActive: 'variant_theme_active'
+					}
 				},
-				'@dojo/widgets/Variant': {
-					baseActive: 'variant_theme_active'
+				variants: {
+					default: {
+						root: 'default root variant'
+					}
 				}
 			},
-			variant: { root: 'foo' }
+			variant: {
+				name: 'default',
+				value: {
+					root: 'default root variant'
+				}
+			}
 		});
 	});
 });
