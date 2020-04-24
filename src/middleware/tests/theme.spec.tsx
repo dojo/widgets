@@ -474,7 +474,7 @@ describe('theme middleware', () => {
 			baseClasses,
 			variantClasses
 		);
-		assert.deepEqual(composedClasses, {
+		assert.deepEqual<any>(composedClasses, {
 			theme: {
 				'@dojo/widgets/Base': {
 					root: 'base_theme_root',
@@ -522,7 +522,7 @@ describe('theme middleware', () => {
 			variantClasses,
 			'base'
 		);
-		assert.deepEqual(composedClasses, {
+		assert.deepEqual<any>(composedClasses, {
 			theme: {
 				'@dojo/widgets/Base': {
 					root: 'base_root',
