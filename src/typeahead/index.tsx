@@ -201,9 +201,11 @@ export const Typeahead = factory(function Typeahead({
 						}
 					} else {
 						if (strict) {
-							icache.set('valid', false);
-							const { onValidate } = properties();
-							onValidate && onValidate(false);
+							const { onValidate, required } = properties();
+							if (required) {
+								icache.set('valid', false);
+								onValidate && onValidate(false);
+							}
 						} else {
 							const value = icache.getOrSet('value', '');
 							callOnValue(value);
