@@ -269,7 +269,6 @@ export const Typeahead = factory(function Typeahead({
 								onValue={(value) => {
 									if (value !== icache.get('value')) {
 										openMenu();
-
 										setOptions({ query: { value: value } });
 										icache.set('value', value || '');
 									}

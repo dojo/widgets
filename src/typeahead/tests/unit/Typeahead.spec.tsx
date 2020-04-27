@@ -355,6 +355,39 @@ registerSuite('Typeahead', {
 
 			assert.isTrue(onValue.calledWith(animalOptions[0].value));
 		},
+		'allows free text when not in strict mode'() {
+			const onValue = stub();
+
+			const h = harness(() => (
+				<Typeahead
+					strict={false}
+					resource={resource}
+					transform={defaultTransform}
+					onValue={onValue}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			const toggleOpenStub = stub();
+			const preventDefaultStub = stub();
+
+			const triggerRenderResult = h.trigger(
+				'@popup',
+				(node) => (node.children as any)[0].trigger,
+				toggleOpenStub
+			);
+
+			triggerRenderResult.properties.onValue('abc');
+			triggerRenderResult.properties.onKeyDown(Keys.Enter, preventDefaultStub);
+
+			assert.isTrue(onValue.calledWith('abc'));
+
+			triggerRenderResult.properties.onValue('xyz');
+			triggerRenderResult.properties.onBlur();
+
+			assert.isTrue(onValue.calledWith('xyz'));
+		},
 		'does not select a value on escape'() {
 			const onValue = stub();
 
