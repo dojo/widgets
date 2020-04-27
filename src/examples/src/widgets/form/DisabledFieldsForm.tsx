@@ -1,10 +1,10 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-
+import { create, tsx } from '@dojo/framework/core/vdom';
 import Button from '@dojo/widgets/button';
-import TextInput from '@dojo/widgets/text-input';
-import Form from '@dojo/widgets/form';
+import Form, { FormField, FormGroup } from '@dojo/widgets/form';
 import { FormMiddleware } from '@dojo/widgets/form/middleware';
+import TextInput from '@dojo/widgets/text-input';
+
 import Example from '../../Example';
 
 const icache = createICacheMiddleware<{
@@ -34,41 +34,53 @@ const App = factory(function({ middleware: { icache } }) {
 
 					return (
 						<virtual>
-							<TextInput
-								key="firstName"
-								placeholder="Enter first name	"
-								initialValue={firstName.value()}
-								onValue={firstName.value}
-							>
-								{{ label: 'First Name' }}
-							</TextInput>
-							<TextInput
-								key="middleName"
-								placeholder="Enter a middle name"
-								initialValue={middleName.value()}
-								onValue={middleName.value}
-								disabled={true}
-							>
-								{{ label: 'Middle Name' }}
-							</TextInput>
-							<TextInput
-								key="lastName"
-								placeholder="Enter a last name"
-								initialValue={lastName.value()}
-								onValue={lastName.value}
-							>
-								{{ label: 'Last Name' }}
-							</TextInput>
-							<TextInput
-								key="email"
-								placeholder="Enter an email address"
-								initialValue={email.value()}
-								onValue={email.value}
-								type="email"
-								disabled={email.disabled()}
-							>
-								{{ label: 'Email' }}
-							</TextInput>
+							<FormGroup>
+								<FormField>
+									<TextInput
+										key="firstName"
+										placeholder="Enter first name	"
+										initialValue={firstName.value()}
+										onValue={firstName.value}
+									>
+										{{ label: 'First Name' }}
+									</TextInput>
+								</FormField>
+								<FormField>
+									<TextInput
+										key="middleName"
+										placeholder="Enter a middle name"
+										initialValue={middleName.value()}
+										onValue={middleName.value}
+										disabled={true}
+									>
+										{{ label: 'Middle Name' }}
+									</TextInput>
+								</FormField>
+								<FormField>
+									<TextInput
+										key="lastName"
+										placeholder="Enter a last name"
+										initialValue={lastName.value()}
+										onValue={lastName.value}
+									>
+										{{ label: 'Last Name' }}
+									</TextInput>
+								</FormField>
+							</FormGroup>
+							<FormGroup>
+								<FormField>
+									<TextInput
+										key="email"
+										placeholder="Enter an email address"
+										initialValue={email.value()}
+										onValue={email.value}
+										type="email"
+										disabled={email.disabled()}
+									>
+										{{ label: 'Email' }}
+									</TextInput>
+								</FormField>
+							</FormGroup>
 							<Button
 								key="disableEmail"
 								type="button"

@@ -6,30 +6,31 @@ import * as calendar from './calendar.m.css';
 import * as card from './card.m.css';
 import * as checkboxGroup from './checkbox-group.m.css';
 import * as checkbox from './checkbox.m.css';
+import * as chipTypeahead from './chip-typeahead.m.css';
 import * as chip from './chip.m.css';
 import * as dateInput from './date-input.m.css';
 import * as dialog from './dialog.m.css';
 import * as floatingActionButton from './floating-action-button.m.css';
-import * as grid from './grid.m.css';
+import * as form from './form.m.css';
 import * as gridBody from './grid-body.m.css';
 import * as gridCell from './grid-cell.m.css';
 import * as gridFooter from './grid-footer.m.css';
 import * as gridHeader from './grid-header.m.css';
-import * as gridPlaceholderRow from './grid-placeholder-row.m.css';
 import * as gridPaginatedFooter from './grid-paginated-footer.m.css';
+import * as gridPlaceholderRow from './grid-placeholder-row.m.css';
 import * as gridRow from './grid-row.m.css';
+import * as grid from './grid.m.css';
 import * as headerCard from './header-card.m.css';
 import * as header from './header.m.css';
 import * as helperText from './helper-text.m.css';
 import * as icon from './icon.m.css';
 import * as label from './label.m.css';
 import * as listItem from './list-item.m.css';
-import * as loadingIndicator from './loading-indicator.m.css';
 import * as list from './list.m.css';
+import * as loadingIndicator from './loading-indicator.m.css';
 import * as menuItem from './menu-item.m.css';
-import * as chipTypeahead from './chip-typeahead.m.css';
-import * as outlinedButton from './outlined-button.m.css';
 import * as nativeSelect from './native-select.m.css';
+import * as outlinedButton from './outlined-button.m.css';
 import * as pagination from './pagination.m.css';
 import * as passwordInput from './password-input.m.css';
 import * as progress from './progress.m.css';
@@ -52,8 +53,8 @@ import * as titlePane from './title-pane.m.css';
 import * as tooltip from './tooltip.m.css';
 import * as twoColumnLayout from './two-column-layout.m.css';
 import * as typeahead from './typeahead.m.css';
-import * as defaultVariant from './variants/default.m.css';
 import * as darkVariant from './variants/dark.m.css';
+import * as defaultVariant from './variants/default.m.css';
 
 export default {
 	theme: {
@@ -69,6 +70,7 @@ export default {
 		'@dojo/widgets/date-input': dateInput,
 		'@dojo/widgets/dialog': dialog,
 		'@dojo/widgets/floating-action-button': floatingActionButton,
+		'@dojo/widgets/form': form,
 		'@dojo/widgets/grid-body': gridBody,
 		'@dojo/widgets/grid-cell': gridCell,
 		'@dojo/widgets/grid-footer': gridFooter,
