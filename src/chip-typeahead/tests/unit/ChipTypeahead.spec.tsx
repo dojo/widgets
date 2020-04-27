@@ -31,6 +31,7 @@ const resource = createResource<ListOption>();
 const baseAssertion = assertionTemplate(() => (
 	<div key="root" classes={[undefined, themeCss.root, null, null, null]}>
 		<Typeahead
+			strict={undefined}
 			key="typeahead"
 			theme={{
 				'@dojo/widgets/typeahead': typeaheadCss
@@ -497,6 +498,26 @@ registerSuite('ChipTypeahead', {
 
 			assert.isFalse(disabled({ value: 'cat' }));
 			assert.isFalse(disabled({ value: 'dog' }));
+		},
+
+		'allows free text values if strict is set to false'() {
+			const onValueStub = stub();
+			const h = harness(() => (
+				<ChipTypeahead
+					resource={resource(animalOptions)}
+					transform={defaultTransform}
+					onValue={onValueStub}
+					strict={false}
+				>
+					{}
+				</ChipTypeahead>
+			));
+
+			h.trigger('@typeahead', (node: any) => () => {
+				node.properties.onValue('abc');
+			});
+
+			assert.isTrue(onValueStub.calledWith(['abc']));
 		}
 	}
 });

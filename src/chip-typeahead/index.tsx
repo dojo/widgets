@@ -40,6 +40,8 @@ export interface ChipTypeaheadProperties {
 	placement?: 'inline' | 'bottom';
 	/** Allow duplicates of the same value to be selected. Default is false */
 	duplicates?: boolean;
+	/** Flag to indicate if values other than those in the resource can be entered, defaults to true */
+	strict?: boolean;
 }
 
 export interface ChipTypeaheadChildren {
@@ -96,7 +98,8 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 		itemsInView,
 		position,
 		name,
-		placement = 'inline'
+		placement = 'inline',
+		strict
 	} = properties();
 	const [{ label, items, selected } = {} as ChipTypeaheadChildren] = children();
 	const themeCss = theme.classes(css);
@@ -194,6 +197,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 					css,
 					'input'
 				)}
+				strict={strict}
 				itemsInView={itemsInView}
 				position={position}
 				name={name}

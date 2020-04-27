@@ -355,6 +355,80 @@ registerSuite('Typeahead', {
 
 			assert.isTrue(onValue.calledWith(animalOptions[0].value));
 		},
+		'allows free text when not in strict mode'() {
+			const onValue = stub();
+			const onValidate = stub();
+
+			const h = harness(() => (
+				<Typeahead
+					strict={false}
+					resource={resource}
+					transform={defaultTransform}
+					onValue={onValue}
+					onValidate={onValidate}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			const toggleOpenStub = stub();
+			const preventDefaultStub = stub();
+
+			const triggerRenderResult = h.trigger(
+				'@popup',
+				(node) => (node.children as any)[0].trigger,
+				toggleOpenStub
+			);
+
+			triggerRenderResult.properties.onValue('abc');
+			triggerRenderResult.properties.onKeyDown(Keys.Enter, preventDefaultStub);
+
+			assert.isTrue(onValue.calledWith('abc'));
+
+			onValue.resetHistory();
+			triggerRenderResult.properties.onValue('xyz');
+			triggerRenderResult.properties.onBlur();
+
+			assert.isTrue(onValue.calledOnceWith('xyz'));
+
+			onValue.resetHistory();
+			triggerRenderResult.properties.onValue('');
+			triggerRenderResult.properties.onBlur();
+
+			assert.isTrue(onValue.notCalled);
+			assert.isTrue(onValidate.calledWith(undefined));
+		},
+		'validates when using free text and required'() {
+			const onValue = stub();
+			const onValidate = stub();
+
+			const h = harness(() => (
+				<Typeahead
+					strict={false}
+					required
+					resource={resource}
+					transform={defaultTransform}
+					onValue={onValue}
+					onValidate={onValidate}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			const toggleOpenStub = stub();
+
+			const triggerRenderResult = h.trigger(
+				'@popup',
+				(node) => (node.children as any)[0].trigger,
+				toggleOpenStub
+			);
+
+			triggerRenderResult.properties.onValue('');
+			triggerRenderResult.properties.onBlur();
+
+			assert.isTrue(onValue.notCalled);
+			assert.isTrue(onValidate.calledWith(false));
+		},
 		'does not select a value on escape'() {
 			const onValue = stub();
 
