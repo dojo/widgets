@@ -1,8 +1,8 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { defaultTransform } from '@dojo/widgets/select';
-import { createMemoryResourceWithDataAndFilter } from '../list/memoryTemplate';
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import Example from '../../Example';
+import { createResource, createMemoryTemplate, defaultFilter } from '@dojo/framework/core/resource';
 
 const factory = create();
 const options = [
@@ -12,12 +12,12 @@ const options = [
 	{ value: 'onions', label: 'Onions 🧅' }
 ];
 
-const resource = createMemoryResourceWithDataAndFilter(options);
+const resource = createResource(createMemoryTemplate({ filter: defaultFilter }));
 
 export default factory(function Duplicates() {
 	return (
 		<Example>
-			<ChipTypeahead resource={resource} transform={defaultTransform} duplicates>
+			<ChipTypeahead resource={resource(options)} transform={defaultTransform} duplicates>
 				{{
 					label: 'Select Pizza Toppings'
 				}}

@@ -7,7 +7,6 @@ import { compareId, createHarness, compareTheme } from '../../common/tests/suppo
 import { Keys } from '../../common/util';
 import * as css from '../../theme/default/list.m.css';
 import * as fixedCss from '../list.m.css';
-import { createMemoryTemplate } from '../../examples/src/widgets/list/memoryTemplate';
 import { createResource } from '@dojo/framework/core/resource';
 const { assert } = intern.getPlugin('chai');
 const { describe, it, before, after } = intern.getInterface('bdd');
@@ -29,7 +28,7 @@ describe('List', () => {
 		{ value: 'fish', disabled: true }
 	];
 
-	const memoryTemplate = createMemoryTemplate();
+	const resource = createResource<ListOption>();
 
 	const template = assertionTemplate(() => (
 		<div
@@ -95,14 +94,7 @@ describe('List', () => {
 
 	it('renders options', () => {
 		const h = harness(() => (
-			<List
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
-				transform={defaultTransform}
-				onValue={noop}
-			/>
+			<List resource={resource(animalOptions)} transform={defaultTransform} onValue={noop} />
 		));
 		h.expect(template);
 	});
@@ -112,10 +104,7 @@ describe('List', () => {
 			<List
 				initialValue="dog"
 				onValue={noop}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
+				resource={resource(animalOptions)}
 				transform={defaultTransform}
 			/>
 		));
@@ -145,14 +134,7 @@ describe('List', () => {
 
 	it('takes a custom renderer', () => {
 		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
-				transform={defaultTransform}
-			>
+			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform}>
 				{({ label, value }, props) => (
 					<ListItem {...props}>
 						<span>label is {label || value}</span>
@@ -183,10 +165,7 @@ describe('List', () => {
 		const h = harness(() => (
 			<List
 				onValue={noop}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
+				resource={resource(animalOptions)}
 				transform={defaultTransform}
 				itemsInView={2}
 			/>
@@ -199,14 +178,7 @@ describe('List', () => {
 
 	it('changes active item on arrow key down', () => {
 		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
-				transform={defaultTransform}
-			/>
+			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
 		));
 		const mockArrowDownEvent = {
 			stopPropagation: sb.stub(),
@@ -229,10 +201,7 @@ describe('List', () => {
 					currentActiveValue = value;
 				}}
 				value="dog"
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
+				resource={resource(animalOptions)}
 				transform={defaultTransform}
 			/>
 		));
@@ -262,14 +231,7 @@ describe('List', () => {
 
 	it('changes active item on arrow key up and loops to last item', () => {
 		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
-				transform={defaultTransform}
-			/>
+			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
 		));
 		const mockArrowUpEvent = {
 			stopPropagation: sb.stub(),
@@ -289,10 +251,7 @@ describe('List', () => {
 		const h = harness(() => (
 			<List
 				onValue={noop}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
+				resource={resource(animalOptions)}
 				transform={defaultTransform}
 				onActiveIndexChange={onActiveIndexChange}
 			/>
@@ -310,14 +269,7 @@ describe('List', () => {
 
 	it('sets active item to be the one starting with letter key pressed', () => {
 		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
-				transform={defaultTransform}
-			/>
+			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
 		));
 		const mockCPressEvent = {
 			stopPropagation: sb.stub(),
@@ -337,10 +289,7 @@ describe('List', () => {
 		const h = harness(() => (
 			<List
 				onValue={onValue}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
+				resource={resource(animalOptions)}
 				transform={defaultTransform}
 			/>
 		));
@@ -373,10 +322,7 @@ describe('List', () => {
 		const h = harness(() => (
 			<List
 				onValue={noop}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
+				resource={resource(animalOptions)}
 				transform={defaultTransform}
 				disabled={(item) => item.value === 'cat'}
 			>
@@ -412,7 +358,7 @@ describe('List - Menu', () => {
 		{ value: 'fish', disabled: true }
 	];
 
-	const memoryTemplate = createMemoryTemplate();
+	const resource = createResource<ListOption>();
 
 	const template = assertionTemplate(() => (
 		<div
@@ -480,10 +426,7 @@ describe('List - Menu', () => {
 			<List
 				onValue={noop}
 				menu
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
+				resource={resource(animalOptions)}
 				transform={defaultTransform}
 			/>
 		));
@@ -495,10 +438,10 @@ describe('List - Menu', () => {
 			<List
 				onValue={noop}
 				menu
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: [{ ...animalOptions[0], divider: true }, ...animalOptions.slice(1)]
-				}}
+				resource={resource([
+					{ ...animalOptions[0], divider: true },
+					...animalOptions.slice(1)
+				])}
 				transform={defaultTransform}
 			/>
 		));
@@ -510,10 +453,7 @@ describe('List - Menu', () => {
 		const h = harness(() => (
 			<List
 				onValue={noop}
-				resource={{
-					resource: () => createResource(memoryTemplate),
-					data: animalOptions
-				}}
+				resource={resource(animalOptions)}
 				transform={defaultTransform}
 				menu
 			>

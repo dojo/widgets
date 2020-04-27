@@ -1,11 +1,11 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import ContextMenu, { defaultTransform } from '@dojo/widgets/context-menu';
-import { createMemoryResourceWithData } from '../list/memoryTemplate';
+import { createResource } from '@dojo/framework/core/resource';
 
 const factory = create({ icache });
 const options = [{ value: 'print', label: 'Print' }, { value: 'delete', label: 'Delete' }];
-const resource = createMemoryResourceWithData(options);
+const resource = createResource();
 
 export default factory(function Basic({ middleware: { icache } }) {
 	const text = icache.getOrSet(
@@ -17,7 +17,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<virtual>
 			<ContextMenu
-				resource={resource}
+				resource={resource(options)}
 				transform={defaultTransform}
 				onSelect={(value) => {
 					const selection = window.getSelection() || '';

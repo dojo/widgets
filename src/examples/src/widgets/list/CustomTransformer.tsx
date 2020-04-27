@@ -1,8 +1,8 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
-import { createMemoryResourceWithData } from './memoryTemplate';
 import Example from '../../Example';
+import { createResource } from '@dojo/framework/core/resource';
 
 const factory = create({ icache });
 
@@ -12,13 +12,13 @@ const animals = [
 	{ name: 'mickey', type: 'rodent' }
 ];
 
-const resource = createMemoryResourceWithData(animals);
+const resource = createResource();
 
 export default factory(function CustomTransformer({ middleware: { icache } }) {
 	return (
 		<Example>
 			<List
-				resource={resource}
+				resource={resource(animals)}
 				transform={{
 					value: ['type'],
 					label: ['name']

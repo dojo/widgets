@@ -284,10 +284,9 @@ export default factory(function Pagination({
 								pageSize === undefined ? currentPageSize.toString() : undefined
 							}
 							value={pageSize === undefined ? undefined : pageSize.toString()}
-							resource={{
-								resource: () => pageSizesResource,
-								data: pageSizes.map((ps) => ({ value: ps.toString() }))
-							}}
+							resource={pageSizesResource(
+								pageSizes.map((ps) => ({ value: ps.toString() }))
+							)}
 							transform={defaultTransform}
 							onValue={(value) => {
 								onPageSize && onPageSize(parseInt(value, 10));

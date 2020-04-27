@@ -3,7 +3,6 @@ import * as themeCss from '../../../theme/default/chip-typeahead.m.css';
 import { tsx } from '@dojo/framework/core/vdom';
 import { compareTheme, createHarness } from '../../../common/tests/support/test-helpers';
 import Typeahead from '../../../typeahead';
-import { createMemoryTemplate } from '../../../examples/src/widgets/list/memoryTemplate';
 import { createResource } from '@dojo/framework/core/resource';
 import { stub } from 'sinon';
 import { defaultTransform, ListOption, ListItem } from '../../../list';
@@ -27,12 +26,7 @@ const animalOptions: ListOption[] = [
 	{ value: 'fish', disabled: true }
 ];
 
-const memoryTemplate = createMemoryTemplate();
-
-const resource = {
-	resource: () => createResource(memoryTemplate),
-	data: animalOptions
-};
+const resource = createResource<ListOption>();
 
 const baseAssertion = assertionTemplate(() => (
 	<div key="root" classes={[undefined, themeCss.root, null, null, null]}>
@@ -47,7 +41,7 @@ const baseAssertion = assertionTemplate(() => (
 			focus={() => false}
 			itemDisabled={stub()}
 			disabled={undefined}
-			resource={resource}
+			resource={resource(animalOptions)}
 			onValue={stub}
 			transform={defaultTransform}
 			value=""
@@ -121,7 +115,11 @@ registerSuite('ChipTypeahead', {
 	tests: {
 		'renders empty'() {
 			const h = harness(() => (
-				<ChipTypeahead resource={resource} transform={defaultTransform} onValue={noop}>
+				<ChipTypeahead
+					resource={resource(animalOptions)}
+					transform={defaultTransform}
+					onValue={noop}
+				>
 					{}
 				</ChipTypeahead>
 			));
@@ -132,7 +130,7 @@ registerSuite('ChipTypeahead', {
 		'renders with an initial value'() {
 			const h = harness(() => (
 				<ChipTypeahead
-					resource={resource}
+					resource={resource(animalOptions)}
 					transform={defaultTransform}
 					onValue={noop}
 					initialValue={['cat']}
@@ -168,7 +166,7 @@ registerSuite('ChipTypeahead', {
 
 			const h = harness(() => (
 				<ChipTypeahead
-					resource={resource}
+					resource={resource(animalOptions)}
 					transform={defaultTransform}
 					onValue={noop}
 					{...properties}
@@ -219,7 +217,7 @@ registerSuite('ChipTypeahead', {
 		'renders chips with custom renderer'() {
 			const h = harness(() => (
 				<ChipTypeahead
-					resource={resource}
+					resource={resource(animalOptions)}
 					transform={defaultTransform}
 					onValue={noop}
 					initialValue={['cat']}
@@ -255,7 +253,7 @@ registerSuite('ChipTypeahead', {
 
 			const h = harness(() => (
 				<ChipTypeahead
-					resource={resource}
+					resource={resource(animalOptions)}
 					transform={defaultTransform}
 					onValue={valueStub}
 					initialValue={['cat']}
@@ -282,7 +280,11 @@ registerSuite('ChipTypeahead', {
 			const valueStub = stub();
 
 			const h = harness(() => (
-				<ChipTypeahead resource={resource} transform={defaultTransform} onValue={valueStub}>
+				<ChipTypeahead
+					resource={resource(animalOptions)}
+					transform={defaultTransform}
+					onValue={valueStub}
+				>
 					{{
 						selected: (value) => value.toUpperCase()
 					}}
@@ -313,7 +315,7 @@ registerSuite('ChipTypeahead', {
 
 		'tracks focus'() {
 			const h = harness(() => (
-				<ChipTypeahead resource={resource} transform={defaultTransform}>
+				<ChipTypeahead resource={resource(animalOptions)} transform={defaultTransform}>
 					{}
 				</ChipTypeahead>
 			));
@@ -328,7 +330,7 @@ registerSuite('ChipTypeahead', {
 		'the default item renderer shows selected items'() {
 			const h = harness(() => (
 				<ChipTypeahead
-					resource={resource}
+					resource={resource(animalOptions)}
 					transform={defaultTransform}
 					initialValue={['cat']}
 				>
@@ -380,7 +382,7 @@ registerSuite('ChipTypeahead', {
 		'uses a custom item renderer'() {
 			const h = harness(() => (
 				<ChipTypeahead
-					resource={resource}
+					resource={resource(animalOptions)}
 					transform={defaultTransform}
 					initialValue={['cat']}
 				>
@@ -401,7 +403,7 @@ registerSuite('ChipTypeahead', {
 		'can place chips on the bottom instead of inline'() {
 			const h = harness(() => (
 				<ChipTypeahead
-					resource={resource}
+					resource={resource(animalOptions)}
 					transform={defaultTransform}
 					initialValue={['cat']}
 					placement="bottom"
@@ -419,7 +421,7 @@ registerSuite('ChipTypeahead', {
 		'renders as disabled'() {
 			const h = harness(() => (
 				<ChipTypeahead
-					resource={resource}
+					resource={resource(animalOptions)}
 					transform={defaultTransform}
 					initialValue={['cat']}
 					disabled
@@ -448,7 +450,7 @@ registerSuite('ChipTypeahead', {
 
 		'renders with labels'() {
 			const h = harness(() => (
-				<ChipTypeahead resource={resource} transform={defaultTransform}>
+				<ChipTypeahead resource={resource(animalOptions)} transform={defaultTransform}>
 					{{
 						label: 'Label'
 					}}
@@ -461,7 +463,7 @@ registerSuite('ChipTypeahead', {
 		'disables items that are selected'() {
 			const h = harness(() => (
 				<ChipTypeahead
-					resource={resource}
+					resource={resource(animalOptions)}
 					transform={defaultTransform}
 					initialValue={['cat']}
 				>
@@ -480,7 +482,7 @@ registerSuite('ChipTypeahead', {
 		'allows duplicate values if duplicates are allowed'() {
 			const h = harness(() => (
 				<ChipTypeahead
-					resource={resource}
+					resource={resource(animalOptions)}
 					transform={defaultTransform}
 					initialValue={['cat']}
 					duplicates
