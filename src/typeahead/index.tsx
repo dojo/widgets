@@ -51,6 +51,8 @@ export interface TypeaheadProperties {
 	onFocus?(): void;
 	/** Callback to determine if an individual item is disabled */
 	itemDisabled?: ListProperties['disabled'];
+	/** Flag to indicate if values other than those in the resource can be entered, defaults to true */
+	strict?: boolean;
 }
 
 export interface TypeaheadICache {
@@ -61,7 +63,7 @@ export interface TypeaheadICache {
 	expanded: boolean;
 	focusNode: string;
 	initial: string;
-	valid: boolean;
+	valid: boolean | undefined;
 }
 
 export interface TypeaheadChildren {
@@ -101,6 +103,7 @@ export const Typeahead = factory(function Typeahead({
 		itemsInView,
 		transform,
 		onValidate,
+		strict = true,
 		value: controlledValue
 	} = properties();
 	const themedCss = theme.classes(css);
@@ -140,6 +143,20 @@ export const Typeahead = factory(function Typeahead({
 		}
 	}
 
+	function callOnValue(value: string) {
+		const { onValidate, onValue, required } = properties();
+		let valid = required ? true : undefined;
+
+		if (required && !value) {
+			valid = false;
+		}
+
+		icache.set('lastValue', value);
+		icache.set('valid', valid);
+		value && onValue && onValue(value);
+		onValidate && onValidate(valid);
+	}
+
 	function onKeyDown(
 		event: number,
 		preventDefault: () => void,
@@ -170,17 +187,27 @@ export const Typeahead = factory(function Typeahead({
 
 				const allItems = get({ query: getOptions().query });
 				if (allItems && allItems.length >= activeIndex) {
-					const { itemDisabled = (item: ListOption) => item.disabled } = properties();
+					const { itemDisabled } = properties();
 
 					const activeItem = allItems[activeIndex];
+					let disabled = false;
+					if (activeItem) {
+						disabled = itemDisabled ? itemDisabled(activeItem) : !!activeItem.disabled;
 
-					if (!itemDisabled(activeItem)) {
-						const { onValue } = properties();
-
-						icache.set('value', activeItem.value);
-						onClose();
-						onValue(activeItem.value);
-						icache.set('lastValue', activeItem.value);
+						if (!disabled) {
+							icache.set('value', activeItem.value);
+							onClose();
+							callOnValue(activeItem.value);
+						}
+					} else {
+						if (strict) {
+							icache.set('valid', false);
+							const { onValidate } = properties();
+							onValidate && onValidate(false);
+						} else {
+							const value = icache.getOrSet('value', '');
+							callOnValue(value);
+						}
 					}
 				}
 				break;
@@ -254,11 +281,15 @@ export const Typeahead = factory(function Typeahead({
 								)}
 								onFocus={() => {
 									const { onFocus } = properties();
-
 									onFocus && onFocus();
 								}}
 								onBlur={() => {
 									const { onBlur } = properties();
+
+									if (!strict) {
+										const value = icache.getOrSet('value', '');
+										callOnValue(value);
+									}
 
 									closeMenu();
 									onBlur && onBlur();
@@ -311,11 +342,12 @@ export const Typeahead = factory(function Typeahead({
 									transform={transform}
 									disabled={itemDisabled}
 									onValue={(value) => {
-										const { onValue } = properties();
+										const { onValue, required } = properties();
 										focus.focus();
 										closeMenu();
 										value !== icache.get('value') && icache.set('value', value);
 										onValue(value);
+										icache.set('valid', required ? true : undefined);
 										icache.set('lastValue', value);
 									}}
 									onRequestClose={closeMenu}

@@ -106,6 +106,7 @@ import DisabledChipTypeahead from './widgets/chip-typeahead/Disabled';
 import CustomRendererChipTypeahead from './widgets/chip-typeahead/CustomRenderer';
 import BottomChipTypeahead from './widgets/chip-typeahead/BottomPlacement';
 import DuplicatesChipTypeahead from './widgets/chip-typeahead/Duplicates';
+import FreeTextChipTypeahead from './widgets/chip-typeahead/FreeText';
 import BasicNumberInput from './widgets/number-input/Basic';
 import ValidatedNumberInput from './widgets/number-input/Validation';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
@@ -223,6 +224,7 @@ import BasicTypeahead from './widgets/typeahead/Basic';
 import RemoteTypeahead from './widgets/typeahead/RemoteSource';
 import CustomFilterTypeahead from './widgets/typeahead/CustomFilter';
 import ValidatedTypeahead from './widgets/typeahead/Validation';
+import FreeTextTypeahead from './widgets/typeahead/FreeText';
 import BasicTwoColumnLayout from './widgets/two-column-layout/Basic';
 import TrailingBiasTwoColumnLayout from './widgets/two-column-layout/TrailingBias';
 import CollapsingLayout from './widgets/two-column-layout/Collapsing';
@@ -1063,6 +1065,11 @@ export const config = {
 					title: 'Duplicates',
 					filename: 'Duplicates',
 					module: DuplicatesChipTypeahead
+				},
+				{
+					title: 'Free Text',
+					filename: 'FreeText',
+					module: FreeTextChipTypeahead
 				}
 			]
 		},
@@ -1738,6 +1745,11 @@ export const config = {
 					filename: 'Validation',
 					module: ValidatedTypeahead,
 					title: 'Validation'
+				},
+				{
+					filename: 'FreeText',
+					module: FreeTextTypeahead,
+					title: 'Free Text Typeahead'
 				}
 			],
 			overview: {
