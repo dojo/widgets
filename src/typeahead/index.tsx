@@ -145,8 +145,13 @@ export const Typeahead = factory(function Typeahead({
 
 	function callOnValue(value: string) {
 		const { onValidate, onValue, required } = properties();
-		let valid = required ? true : undefined;
+		const lastValue = icache.get('lastValue');
 
+		if (lastValue === value) {
+			return;
+		}
+
+		let valid = required ? true : undefined;
 		if (required && !value) {
 			valid = false;
 		}
@@ -343,13 +348,13 @@ export const Typeahead = factory(function Typeahead({
 									transform={transform}
 									disabled={itemDisabled}
 									onValue={(value) => {
-										const { onValue, required } = properties();
 										focus.focus();
 										closeMenu();
 										value !== icache.get('value') && icache.set('value', value);
-										onValue(value);
-										icache.set('valid', required ? true : undefined);
-										icache.set('lastValue', value);
+										callOnValue(value);
+										// onValue(value);
+										// icache.set('valid', required ? true : undefined);
+										// icache.set('lastValue', value);
 									}}
 									onRequestClose={closeMenu}
 									onBlur={closeMenu}

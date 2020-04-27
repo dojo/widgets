@@ -389,7 +389,7 @@ registerSuite('Typeahead', {
 			triggerRenderResult.properties.onValue('xyz');
 			triggerRenderResult.properties.onBlur();
 
-			assert.isTrue(onValue.calledWith('xyz'));
+			assert.isTrue(onValue.calledOnceWith('xyz'));
 
 			onValue.resetHistory();
 			triggerRenderResult.properties.onValue('');
