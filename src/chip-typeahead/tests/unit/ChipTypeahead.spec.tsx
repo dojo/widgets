@@ -292,7 +292,9 @@ registerSuite('ChipTypeahead', {
 				</ChipTypeahead>
 			));
 
+			h.trigger('@typeahead', 'onFocus');
 			h.trigger('@typeahead', 'onValue', 'cat');
+			h.trigger('@typeahead', 'onBlur');
 
 			assert.isTrue(valueStub.calledWith(['cat']));
 
@@ -513,6 +515,7 @@ registerSuite('ChipTypeahead', {
 				</ChipTypeahead>
 			));
 
+			h.trigger('@typeahead', 'onFocus');
 			h.trigger('@typeahead', (node: any) => () => {
 				node.properties.onValue('abc');
 			});
