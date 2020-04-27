@@ -293,13 +293,14 @@ export const Typeahead = factory(function Typeahead({
 								onBlur={() => {
 									const { onBlur } = properties();
 
+									onBlur && onBlur();
+
 									if (!strict) {
 										const value = icache.getOrSet('value', '');
 										callOnValue(value);
 									}
 
 									closeMenu();
-									onBlur && onBlur();
 								}}
 								name={name}
 								initialValue={valueOption ? valueOption.label : value}

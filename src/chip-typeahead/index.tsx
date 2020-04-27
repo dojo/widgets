@@ -205,13 +205,15 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 				disabled={disabled}
 				resource={resource}
 				onValue={(value) => {
-					const { onValue } = properties();
+					if (icache.get('focused')) {
+						const { onValue } = properties();
 
-					const values = [...icache.getOrSet('value', []), value];
-					icache.set('value', values);
-					onValue && onValue(values);
+						const values = [...icache.getOrSet('value', []), value];
+						icache.set('value', values);
+						onValue && onValue(values);
 
-					focus.focus();
+						focus.focus();
+					}
 				}}
 				transform={transform}
 				value=""
