@@ -14,7 +14,6 @@ const factory = create({ icache });
 
 interface Fields {
 	firstName?: string;
-	middleName?: string;
 	lastName?: string;
 	email?: string;
 }
@@ -31,7 +30,6 @@ const App = factory(function({ middleware: { icache } }) {
 			>
 				{({ field }: FormMiddleware<Fields>) => {
 					const firstName = field('firstName');
-					const middleName = field('middleName');
 					const lastName = field('lastName');
 					const email = field('email');
 
@@ -46,16 +44,6 @@ const App = factory(function({ middleware: { icache } }) {
 										onValue={firstName.value}
 									>
 										{{ label: 'First Name' }}
-									</TextInput>
-								</FormField>
-								<FormField>
-									<TextInput
-										key="middleName"
-										placeholder="Enter a middle name"
-										value={middleName.value()}
-										onValue={middleName.value}
-									>
-										{{ label: 'Middle Name' }}
 									</TextInput>
 								</FormField>
 								<FormField>
@@ -91,7 +79,6 @@ const App = factory(function({ middleware: { icache } }) {
 					<h2>onValue Results</h2>
 					<ul>
 						<li>First Name: {results.firstName}</li>
-						<li>Middle Name: {results.middleName}</li>
 						<li>Last Name: {results.lastName}</li>
 						<li>Email: {results.email}</li>
 					</ul>

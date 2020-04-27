@@ -15,7 +15,6 @@ const factory = create({ icache });
 
 interface Fields {
 	firstName: string;
-	middleName?: string;
 	lastName: string;
 	email?: string;
 }
@@ -28,7 +27,6 @@ const App = factory(function({ middleware: { icache } }) {
 			<Form onSubmit={(values) => icache.set('basic', values)}>
 				{({ valid, field }: FormMiddleware<Fields>) => {
 					const firstName = field('firstName', true);
-					const middleName = field('middleName');
 					const lastName = field('lastName', true);
 					const email = field('email');
 
@@ -46,16 +44,6 @@ const App = factory(function({ middleware: { icache } }) {
 										onValidate={firstName.valid}
 									>
 										{{ label: 'First Name' }}
-									</TextInput>
-								</FormField>
-								<FormField>
-									<TextInput
-										key="middleName"
-										placeholder="Enter a middle name"
-										initialValue={middleName.value()}
-										onValue={middleName.value}
-									>
-										{{ label: 'Middle Name' }}
 									</TextInput>
 								</FormField>
 								<FormField>
@@ -97,7 +85,6 @@ const App = factory(function({ middleware: { icache } }) {
 					<h2>onSubmit Results</h2>
 					<ul>
 						<li>First Name: {results.firstName}</li>
-						<li>Middle Name: {results.middleName}</li>
 						<li>Last Name: {results.lastName}</li>
 						<li>Email: {results.email}</li>
 					</ul>

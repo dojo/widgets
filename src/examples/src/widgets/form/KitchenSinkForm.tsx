@@ -16,7 +16,6 @@ const factory = create({ icache });
 
 interface Fields {
 	firstName: string;
-	middleName?: string;
 	lastName: string;
 	email?: string;
 }
@@ -38,7 +37,6 @@ const App = factory(function({ middleware: { icache } }) {
 			>
 				{({ value, valid, disabled, field, reset }: FormMiddleware<Fields>) => {
 					const firstName = field('firstName', true);
-					const middleName = field('middleName');
 					const lastName = field('lastName', true);
 					const email = field('email');
 
@@ -58,21 +56,6 @@ const App = factory(function({ middleware: { icache } }) {
 										disabled={firstName.disabled()}
 									>
 										{{ label: 'First Name' }}
-									</TextInput>
-								</FormField>
-								<FormField>
-									<TextInput
-										key="middleName"
-										placeholder="Enter a middle name"
-										required={middleName.required()}
-										initialValue={middleName.value()}
-										valid={middleName.valid()}
-										onValue={middleName.value}
-										onValidate={middleName.valid}
-										maxLength={5}
-										disabled={middleName.disabled()}
-									>
-										{{ label: 'Middle Name' }}
 									</TextInput>
 								</FormField>
 								<FormField>
@@ -116,22 +99,12 @@ const App = factory(function({ middleware: { icache } }) {
 								onClick={() => {
 									value({
 										firstName: 'Billy',
-										middleName: '',
+										email: 'foo@bar.com',
 										lastName: 'Bob'
 									});
 								}}
 							>
 								Fill
-							</Button>
-							<Button
-								key="requireMiddleName"
-								type="button"
-								disabled={disabled()}
-								onClick={() => middleName.required(!middleName.required())}
-							>
-								{`Make middle name ${
-									middleName.required() ? 'optional' : 'required'
-								}`}
 							</Button>
 							<Button
 								key="reset"
@@ -168,7 +141,6 @@ const App = factory(function({ middleware: { icache } }) {
 					<h2>onValue Results</h2>
 					<ul>
 						<li>First Name: {onValueResults.firstName}</li>
-						<li>Middle Name: {onValueResults.middleName}</li>
 						<li>Last Name: {onValueResults.lastName}</li>
 						<li>Email: {onValueResults.email}</li>
 					</ul>
@@ -179,7 +151,6 @@ const App = factory(function({ middleware: { icache } }) {
 					<h2>onSubmit Results</h2>
 					<ul>
 						<li>First Name: {results.firstName}</li>
-						<li>Middle Name: {results.middleName}</li>
 						<li>Last Name: {results.lastName}</li>
 						<li>Email: {results.email}</li>
 					</ul>
