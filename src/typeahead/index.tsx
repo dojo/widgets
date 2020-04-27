@@ -213,6 +213,7 @@ export const Typeahead = factory(function Typeahead({
 							}
 						} else {
 							const value = icache.getOrSet('value', '');
+							onClose();
 							callOnValue(value);
 						}
 					}
@@ -352,9 +353,6 @@ export const Typeahead = factory(function Typeahead({
 										closeMenu();
 										value !== icache.get('value') && icache.set('value', value);
 										callOnValue(value);
-										// onValue(value);
-										// icache.set('valid', required ? true : undefined);
-										// icache.set('lastValue', value);
 									}}
 									onRequestClose={closeMenu}
 									onBlur={closeMenu}
