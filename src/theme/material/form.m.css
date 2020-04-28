@@ -7,7 +7,6 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	left: calc(-1 * var(--spacing));
-	margin-bottom: calc(var(--spacing) * 2);
 	position: relative;
 	width: calc(100% + (var(--spacing) * 2));
 }
@@ -30,6 +29,7 @@
 
 .fieldRoot {
 	flex: 1;
+	margin-bottom: calc(var(--spacing) * 2);
+	min-width: calc(10 * var(--spacing));
 	padding: 0 var(--spacing);
-	min-width: calc(20 * var(--spacing));
 }
