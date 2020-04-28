@@ -102,3 +102,7 @@
 .wrapper:not(.disabled):not(.focused) .inputWrapper:hover:before {
 	border-bottom-color: var(--mdc-border-color-hover);
 }
+
+.input::-ms-clear {
+	display: none;
+}
