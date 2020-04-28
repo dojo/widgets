@@ -7,6 +7,7 @@
 	align-items: flex-start;
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 }
 
 /* Root class of colum form groups */
@@ -21,4 +22,5 @@
 /* Root class of form fields within a group */
 .fieldRoot {
 	flex: 1;
+	min-width: 160px;
 }
