@@ -5,6 +5,7 @@
 .groupRoot {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 	left: calc(-1 * var(--spacing));
 	margin-bottom: calc(var(--spacing) * 2);
 	position: relative;
@@ -30,4 +31,5 @@
 .fieldRoot {
 	flex: 1;
 	padding: 0 var(--spacing);
+	min-width: calc(20 * var(--spacing));
 }
