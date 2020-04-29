@@ -8,8 +8,10 @@ export default factory(function Disabled() {
 	return (
 		<Example>
 			<div>
-				<Checkbox disabled>Disabled Checkbox</Checkbox>
-				<Checkbox checked disabled>
+				<Checkbox checked={false} disabled onValue={() => {}}>
+					Disabled Checkbox
+				</Checkbox>
+				<Checkbox checked disabled onValue={() => {}}>
 					Disabled Checkbox (Checked)
 				</Checkbox>
 			</div>

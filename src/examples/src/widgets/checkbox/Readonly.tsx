@@ -8,8 +8,10 @@ export default factory(function Readonly() {
 	return (
 		<Example>
 			<div>
-				<Checkbox readOnly>Readonly Checkbox</Checkbox>
-				<Checkbox checked readOnly>
+				<Checkbox checked={false} onValue={() => {}} readOnly>
+					Readonly Checkbox
+				</Checkbox>
+				<Checkbox checked readOnly onValue={() => {}}>
 					Readonly Checkbox (Checked)
 				</Checkbox>
 			</div>

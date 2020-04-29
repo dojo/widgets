@@ -115,14 +115,14 @@ const expected = ({
 registerSuite('Switch', {
 	tests: {
 		'default properties'() {
-			const h = harness(() => <Switch />, [compareId]);
+			const h = harness(() => <Switch value={false} onValue={noop} />, [compareId]);
 			h.expect(expected());
 		},
 
 		'custom properties'() {
 			const h = harness(
 				() => (
-					<Switch aria={{ describedBy: 'foo' }} value={true} name="bar">
+					<Switch aria={{ describedBy: 'foo' }} value={true} name="bar" onValue={noop}>
 						{{ onLabel: 'on', offLabel: 'off' }}
 					</Switch>
 				),
@@ -139,7 +139,14 @@ registerSuite('Switch', {
 		},
 
 		label() {
-			const h = harness(() => <Switch>{{ label: 'foo' }}</Switch>, [compareId, compareForId]);
+			const h = harness(
+				() => (
+					<Switch value={false} onValue={noop}>
+						{{ label: 'foo' }}
+					</Switch>
+				),
+				[compareId, compareForId]
+			);
 
 			h.expect(expected({ label: true }));
 		},
@@ -152,6 +159,8 @@ registerSuite('Switch', {
 			const h = harness(
 				() => (
 					<Switch
+						value={false}
+						onValue={noop}
 						valid={valid}
 						disabled={disabled}
 						readOnly={readOnly}
@@ -174,7 +183,14 @@ registerSuite('Switch', {
 		'state properties on label'() {
 			const h = harness(
 				() => (
-					<Switch valid={false} disabled={true} readOnly={true} required={true}>
+					<Switch
+						value={false}
+						onValue={noop}
+						valid={false}
+						disabled={true}
+						readOnly={true}
+						required={true}
+					>
 						{{ label: 'foo' }}
 					</Switch>
 				),
@@ -198,7 +214,7 @@ registerSuite('Switch', {
 				focused: true,
 				isFocused: true
 			});
-			const h = harness(() => <Switch />, {
+			const h = harness(() => <Switch value={false} onValue={noop} />, {
 				middleware: [[focus, focusMock]],
 				customComparator: [compareId]
 			});
@@ -210,7 +226,9 @@ registerSuite('Switch', {
 			const onValue = sinon.stub();
 			const onFocus = sinon.stub();
 
-			const h = harness(() => <Switch onBlur={onBlur} onValue={onValue} onFocus={onFocus} />);
+			const h = harness(() => (
+				<Switch value={false} onBlur={onBlur} onValue={onValue} onFocus={onFocus} />
+			));
 
 			h.trigger('input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');

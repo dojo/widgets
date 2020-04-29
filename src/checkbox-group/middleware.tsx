@@ -47,17 +47,23 @@ export const checkboxGroup = factory(({ middleware: { icache } }) => {
 			}, []);
 		}
 
-		return (key: string) => ({
-			checked(checked?: boolean) {
+		return (key: string) => {
+			function checked(): boolean;
+			function checked(checked: boolean): void;
+			function checked(checked?: boolean): boolean | void {
 				const values = icache.getOrSet('values', {});
 
 				if (checked === undefined) {
-					return values[key];
+					return !!values[key];
 				} else if (values[key] !== checked) {
 					icache.set('values', { ...values, [key]: checked });
 					onValue(getAllValues());
 				}
 			}
-		});
+
+			return {
+				checked
+			};
+		};
 	};
 });

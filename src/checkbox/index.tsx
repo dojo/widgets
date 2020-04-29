@@ -12,7 +12,7 @@ export interface CheckboxProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
 	/**  Checked/unchecked property of the control */
-	checked?: boolean;
+	checked: boolean;
 	/** Set the disabled property of the control */
 	disabled?: boolean;
 	/** Hides the label from view while still remaining accessible for screen readers */
@@ -28,7 +28,7 @@ export interface CheckboxProperties {
 	/** Handler for when the pointer moves over the element */
 	onOver?(): void;
 	/** Handler for when the value of the widget changes */
-	onValue?(checked: boolean): void;
+	onValue(checked: boolean): void;
 	/** Makes the checkbox readonly (it may be focused but not changed) */
 	readOnly?: boolean;
 	/** Sets the checkbox input as required to complete the form */
@@ -108,7 +108,7 @@ export const Checkbox = factory(function Checkbox({
 					onchange={(event: Event) => {
 						event.stopPropagation();
 						const checkbox = event.target as HTMLInputElement;
-						onValue && onValue(checkbox.checked);
+						onValue(checkbox.checked);
 					}}
 					onfocus={() => onFocus && onFocus()}
 					onpointerenter={() => onOver && onOver()}

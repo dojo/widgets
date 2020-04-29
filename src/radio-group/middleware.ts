@@ -20,17 +20,23 @@ export const radioGroup = factory(({ middleware: { icache } }) => {
 			}
 		}
 
-		return (key: string) => ({
-			checked(checked?: boolean) {
+		return (key: string) => {
+			function checked(): boolean;
+			function checked(checked: boolean): void;
+			function checked(checked?: boolean): boolean | void {
 				const existingValue = value === undefined ? icache.get('value') : value;
 
-				if (!checked && existingValue === key) {
-					return existingValue === key && true;
+				if (checked === undefined) {
+					return existingValue === key;
 				} else if (checked && existingValue !== key) {
 					icache.set('value', key);
 					onValue(key);
 				}
 			}
-		});
+
+			return {
+				checked
+			};
+		};
 	};
 });
