@@ -12,8 +12,6 @@ import * as chipCss from '../../../theme/default/chip.m.css';
 import * as labelCss from '../../../theme/default/label.m.css';
 import Chip from '../../../chip/index';
 import Label from '../../../label';
-import ChipTypeahead from '@dojo/widgets/chip-typeahead';
-import { defaultTransform } from '@dojo/widgets/list';
 
 const { assert } = intern.getPlugin('chai');
 

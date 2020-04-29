@@ -12,8 +12,6 @@ import TextInput from '../../../text-input';
 import * as listCss from '../../../theme/default/list.m.css';
 import * as inputCss from '../../../theme/default/text-input.m.css';
 import { Keys } from '../../../common/util';
-import Typeahead from '@dojo/widgets/typeahead';
-import { defaultTransform } from '@dojo/widgets/list';
 
 const { assert } = intern.getPlugin('chai');
 
