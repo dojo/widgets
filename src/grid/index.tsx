@@ -19,6 +19,7 @@ import PaginatedBody from './PaginatedBody';
 import PaginatedFooter from './PaginatedFooter';
 import { ColumnConfig, Fetcher, GridState, Updater } from './interfaces';
 import {
+	clearSelectionProcess,
 	fetcherProcess,
 	filterProcess,
 	pageChangeProcess,
@@ -164,7 +165,10 @@ export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProp
 	}
 
 	private _pageChange(page: number) {
-		const { storeId } = this._getProperties();
+		const { pagination, storeId } = this._getProperties();
+		if (pagination) {
+			clearSelectionProcess(this._store)({ id: storeId });
+		}
 		pageChangeProcess(this._store)({ id: storeId, page });
 	}
 
