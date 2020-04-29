@@ -10,7 +10,9 @@ export default factory(function LabelledRadioButton({ middleware: { icache } }) 
 		<Example>
 			<Radio
 				checked={icache.getOrSet('checked', false)}
-				onValue={(checked) => icache.set('checked', checked)}
+				onValue={(checked) => {
+					icache.set('checked', checked);
+				}}
 			>
 				Radio Button 1
 			</Radio>

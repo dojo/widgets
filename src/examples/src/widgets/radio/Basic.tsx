@@ -10,7 +10,9 @@ export default factory(function Basic({ middleware: { icache } }) {
 		<Example>
 			<Radio
 				checked={icache.getOrSet('checked', false)}
-				onValue={(checked) => icache.set('checked', checked)}
+				onValue={(checked) => {
+					icache.set('checked', checked);
+				}}
 			/>
 		</Example>
 	);
