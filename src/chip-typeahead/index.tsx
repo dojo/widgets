@@ -225,11 +225,11 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 					}
 				}}
 				itemDisabled={(item) => {
-					const { duplicates = false } = properties();
+					const { duplicates = false, strict = true } = properties();
 
 					const selected = icache.getOrSet('value', []).indexOf(item.value) !== -1;
 
-					return item.disabled || (!duplicates && selected);
+					return item.disabled || (!duplicates && strict && selected);
 				}}
 			>
 				{{

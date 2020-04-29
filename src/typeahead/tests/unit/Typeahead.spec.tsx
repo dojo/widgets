@@ -12,6 +12,8 @@ import TextInput from '../../../text-input';
 import * as listCss from '../../../theme/default/list.m.css';
 import * as inputCss from '../../../theme/default/text-input.m.css';
 import { Keys } from '../../../common/util';
+import Typeahead from '@dojo/widgets/typeahead';
+import { defaultTransform } from '@dojo/widgets/list';
 
 const { assert } = intern.getPlugin('chai');
 
@@ -163,6 +165,40 @@ registerSuite('Typeahead', {
 			triggerRenderResult.properties.onValue('value');
 
 			assert.isTrue(toggleOpenStub.calledOnce);
+		},
+
+		'shows an option label when the value is entered'() {
+			const h = harness(() => (
+				<Typeahead
+					initialValue="cat"
+					resource={resource}
+					transform={defaultTransform}
+					onValue={noop}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			h.expect(inputTemplate.setProperty('@trigger', 'initialValue', 'Cat'), () =>
+				h.trigger('@popup', (node) => (node.children as any)[0].trigger, stub)
+			);
+		},
+
+		'shows an option value when the value is entered and there is no label'() {
+			const h = harness(() => (
+				<Typeahead
+					initialValue="dog"
+					resource={resource}
+					transform={defaultTransform}
+					onValue={noop}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			h.expect(inputTemplate.setProperty('@trigger', 'initialValue', 'dog'), () =>
+				h.trigger('@popup', (node) => (node.children as any)[0].trigger, stub)
+			);
 		},
 
 		'opens the typeahead on input click'() {

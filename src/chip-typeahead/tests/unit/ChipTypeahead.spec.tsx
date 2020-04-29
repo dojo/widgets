@@ -12,6 +12,8 @@ import * as chipCss from '../../../theme/default/chip.m.css';
 import * as labelCss from '../../../theme/default/label.m.css';
 import Chip from '../../../chip/index';
 import Label from '../../../label';
+import ChipTypeahead from '@dojo/widgets/chip-typeahead';
+import { defaultTransform } from '@dojo/widgets/list';
 
 const { assert } = intern.getPlugin('chai');
 
@@ -487,6 +489,26 @@ registerSuite('ChipTypeahead', {
 					transform={defaultTransform}
 					initialValue={['cat']}
 					duplicates
+				>
+					{}
+				</ChipTypeahead>
+			));
+
+			const disabled = h.trigger('@typeahead', (node: any) => () =>
+				node.properties.itemDisabled
+			);
+
+			assert.isFalse(disabled({ value: 'cat' }));
+			assert.isFalse(disabled({ value: 'dog' }));
+		},
+
+		'allows duplicate values if not strict'() {
+			const h = harness(() => (
+				<ChipTypeahead
+					resource={resource(animalOptions)}
+					transform={defaultTransform}
+					initialValue={['cat']}
+					strict={false}
 				>
 					{}
 				</ChipTypeahead>
