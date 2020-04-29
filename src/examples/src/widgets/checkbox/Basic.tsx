@@ -6,7 +6,7 @@ import Example from '../../Example';
 const factory = create({ icache });
 
 export default factory(function Basic({ middleware: { icache } }) {
-	const checked = icache.getOrSet('checked', false);
+	const checked = icache.getOrSet('checked', true);
 	return (
 		<Example>
 			<Checkbox
