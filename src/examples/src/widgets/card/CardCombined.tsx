@@ -10,7 +10,7 @@ const factory = create();
 export default factory(function CardWithMediaContent() {
 	return (
 		<Example>
-			<div styles={{ width: '400px' }}>
+			<div styles={{ maxWidth: '400px' }}>
 				<Card
 					onAction={() => {}}
 					mediaSrc={mediaSrc}

@@ -9,7 +9,7 @@ export default factory(function Basic() {
 		<Example>
 			<div
 				styles={{
-					width: '400px',
+					maxWidth: '400px',
 					display: 'flex',
 					justifyContent: 'space-around',
 					alignItems: 'center'

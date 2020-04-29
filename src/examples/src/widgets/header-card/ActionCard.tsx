@@ -12,7 +12,7 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<Example>
-			<div styles={{ width: '400px' }}>
+			<div styles={{ maxWidth: '400px' }}>
 				<HeaderCard title="Hello, World" subtitle="Lorem ipsum" mediaSrc={mediaSrc}>
 					{{
 						avatar: <Avatar src={avatar} />,

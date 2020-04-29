@@ -10,7 +10,7 @@ export default factory(function ActionButtons({ middleware: { icache } }) {
 	const clickCount = icache.getOrSet<number>('clickCount', 0);
 	return (
 		<Example>
-			<div styles={{ width: '400px' }}>
+			<div styles={{ maxWidth: '400px' }}>
 				<Card title="Hello, World">
 					{{
 						actionButtons: (
