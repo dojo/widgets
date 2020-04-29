@@ -97,7 +97,7 @@ const expected = ({
 registerSuite('Checkbox', {
 	tests: {
 		'default properties'() {
-			const h = harness(() => <Checkbox />, [compareId]);
+			const h = harness(() => <Checkbox checked={false} onValue={noop} />, [compareId]);
 			h.expect(expected());
 		},
 
@@ -105,6 +105,7 @@ registerSuite('Checkbox', {
 			const h = harness(
 				() => (
 					<Checkbox
+						onValue={noop}
 						aria={{ describedBy: 'foo' }}
 						checked={true}
 						widgetId="foo"
@@ -122,7 +123,14 @@ registerSuite('Checkbox', {
 		},
 
 		label() {
-			const h = harness(() => <Checkbox>foo</Checkbox>, [compareId, compareForId]);
+			const h = harness(
+				() => (
+					<Checkbox checked={false} onValue={noop}>
+						foo
+					</Checkbox>
+				),
+				[compareId, compareForId]
+			);
 
 			h.expect(expected({ label: true }));
 		},
@@ -135,6 +143,8 @@ registerSuite('Checkbox', {
 			const h = harness(
 				() => (
 					<Checkbox
+						checked={false}
+						onValue={noop}
 						valid={valid}
 						disabled={disabled}
 						readOnly={readOnly}
@@ -157,7 +167,14 @@ registerSuite('Checkbox', {
 		'state properties on label'() {
 			const h = harness(
 				() => (
-					<Checkbox valid={false} disabled={true} readOnly={true} required={true}>
+					<Checkbox
+						checked={false}
+						onValue={noop}
+						valid={false}
+						disabled={true}
+						readOnly={true}
+						required={true}
+					>
 						foo
 					</Checkbox>
 				),
@@ -181,7 +198,7 @@ registerSuite('Checkbox', {
 				focused: true,
 				isFocused: true
 			});
-			const h = harness(() => <Checkbox />, {
+			const h = harness(() => <Checkbox checked={false} onValue={noop} />, {
 				middleware: [[focus, focusMock]],
 				customComparator: [compareId]
 			});
@@ -194,7 +211,7 @@ registerSuite('Checkbox', {
 			const onFocus = sinon.stub();
 
 			const h = harness(() => (
-				<Checkbox onBlur={onBlur} onValue={onValue} onFocus={onFocus} />
+				<Checkbox checked={false} onBlur={onBlur} onValue={onValue} onFocus={onFocus} />
 			));
 
 			h.trigger('input', 'onblur', stubEvent);

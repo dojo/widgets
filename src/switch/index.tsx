@@ -25,7 +25,7 @@ interface SwitchProperties {
 	/** Handler for events triggered by "on over" */
 	onOver?(): void;
 	/** Handler for when the value of the widget changes */
-	onValue?(checked: boolean): void;
+	onValue(checked: boolean): void;
 	/** Makes the switch readonly (it may be focused but not changed) */
 	readOnly?: boolean;
 	/** Determines if this input is required, styles accordingly */
@@ -33,7 +33,7 @@ interface SwitchProperties {
 	/** Toggles the invalid/valid states of the switch */
 	valid?: boolean;
 	/** The current value; checked state of the switch */
-	value?: boolean;
+	value: boolean;
 }
 
 export interface SwitchChildren {
@@ -120,7 +120,7 @@ export default factory(function Switch({ children, properties, id, middleware: {
 							onchange={(event: Event) => {
 								event.stopPropagation();
 								const checkbox = event.target as HTMLInputElement;
-								onValue && onValue(checkbox.checked);
+								onValue(checkbox.checked);
 							}}
 							onfocus={() => onFocus && onFocus()}
 							onpointerenter={() => onOver && onOver()}

@@ -35,7 +35,7 @@ describe('CheckboxGroup-middleware', () => {
 		const test1Api = checkboxGroup('test1');
 		const test2Api = checkboxGroup('test2');
 
-		assert.isUndefined(test1Api.checked());
+		assert.isFalse(test1Api.checked());
 		test1Api.checked(true);
 		assert.isTrue(test1Api.checked());
 		assert.isTrue(onValueStub.calledWith(['test1']));

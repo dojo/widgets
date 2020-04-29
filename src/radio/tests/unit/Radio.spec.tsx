@@ -100,14 +100,20 @@ const expected = ({
 registerSuite('Radio', {
 	tests: {
 		'default properties'() {
-			const h = harness(() => <Radio />, [compareId]);
+			const h = harness(() => <Radio checked={false} onValue={noop} />, [compareId]);
 			h.expect(expected());
 		},
 
 		'custom properties'() {
 			const h = harness(
 				() => (
-					<Radio aria={{ describedBy: 'foo' }} checked={true} widgetId="foo" name="bar" />
+					<Radio
+						aria={{ describedBy: 'foo' }}
+						checked={true}
+						onValue={noop}
+						widgetId="foo"
+						name="bar"
+					/>
 				),
 				[compareId]
 			);
@@ -120,7 +126,14 @@ registerSuite('Radio', {
 		},
 
 		label() {
-			const h = harness(() => <Radio>foo</Radio>, [compareId, compareForId]);
+			const h = harness(
+				() => (
+					<Radio checked={false} onValue={noop}>
+						foo
+					</Radio>
+				),
+				[compareId, compareForId]
+			);
 
 			h.expect(expected({ label: true }));
 		},
@@ -133,6 +146,8 @@ registerSuite('Radio', {
 			const h = harness(
 				() => (
 					<Radio
+						checked={false}
+						onValue={noop}
 						valid={valid}
 						disabled={disabled}
 						readOnly={readOnly}
@@ -155,7 +170,14 @@ registerSuite('Radio', {
 		'state properties on label'() {
 			const h = harness(
 				() => (
-					<Radio valid={false} disabled={true} readOnly={true} required={true}>
+					<Radio
+						checked={false}
+						onValue={noop}
+						valid={false}
+						disabled={true}
+						readOnly={true}
+						required={true}
+					>
 						foo
 					</Radio>
 				),
@@ -179,7 +201,7 @@ registerSuite('Radio', {
 				focused: true,
 				isFocused: true
 			});
-			const h = harness(() => <Radio />, {
+			const h = harness(() => <Radio checked={false} onValue={noop} />, {
 				middleware: [[focus, focusMock]],
 				customComparator: [compareId]
 			});
@@ -191,7 +213,9 @@ registerSuite('Radio', {
 			const onValue = sinon.stub();
 			const onFocus = sinon.stub();
 
-			const h = harness(() => <Radio onBlur={onBlur} onValue={onValue} onFocus={onFocus} />);
+			const h = harness(() => (
+				<Radio checked={false} onBlur={onBlur} onValue={onValue} onFocus={onFocus} />
+			));
 
 			h.trigger('input', 'onblur', stubEvent);
 			assert.isTrue(onBlur.called, 'onBlur called');

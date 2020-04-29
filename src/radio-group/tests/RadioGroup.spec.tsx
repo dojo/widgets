@@ -22,13 +22,13 @@ describe('RadioGroup', () => {
 			/>
 		));
 		const optionTemplate = template.setChildren('@root', () => [
-			<Radio name="test" value="cat" checked={undefined} onValue={noop}>
+			<Radio name="test" value="cat" checked={false} onValue={noop}>
 				cat
 			</Radio>,
-			<Radio name="test" value="fish" checked={undefined} onValue={noop}>
+			<Radio name="test" value="fish" checked={false} onValue={noop}>
 				fish
 			</Radio>,
-			<Radio name="test" value="dog" checked={undefined} onValue={noop}>
+			<Radio name="test" value="dog" checked={false} onValue={noop}>
 				dog
 			</Radio>
 		]);
@@ -45,7 +45,7 @@ describe('RadioGroup', () => {
 		));
 		const labelTemplate = template.setChildren('@root', () => [
 			<legend classes={css.legend}>test label</legend>,
-			<Radio name="test" value="cat" checked={undefined} onValue={noop}>
+			<Radio name="test" value="cat" checked={false} onValue={noop}>
 				cat
 			</Radio>
 		]);
@@ -62,13 +62,13 @@ describe('RadioGroup', () => {
 			/>
 		));
 		const optionTemplate = template.setChildren('@root', () => [
-			<Radio name="test" value="cat" checked={undefined} onValue={noop}>
+			<Radio name="test" value="cat" checked={false} onValue={noop}>
 				cat
 			</Radio>,
 			<Radio name="test" value="fish" checked={true} onValue={noop}>
 				fish
 			</Radio>,
-			<Radio name="test" value="dog" checked={undefined} onValue={noop}>
+			<Radio name="test" value="dog" checked={false} onValue={noop}>
 				dog
 			</Radio>
 		]);
@@ -86,13 +86,13 @@ describe('RadioGroup', () => {
 			/>
 		));
 		const optionTemplate = template.setChildren('@root', () => [
-			<Radio name="test" value="cat" checked={undefined} onValue={noop}>
+			<Radio name="test" value="cat" checked={false} onValue={noop}>
 				cat
 			</Radio>,
 			<Radio name="test" value="fish" checked={true} onValue={noop}>
 				fish
 			</Radio>,
-			<Radio name="test" value="dog" checked={undefined} onValue={noop}>
+			<Radio name="test" value="dog" checked={false} onValue={noop}>
 				dog
 			</Radio>
 		]);
