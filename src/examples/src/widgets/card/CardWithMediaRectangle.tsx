@@ -8,7 +8,7 @@ const factory = create();
 export default factory(function CardWithMediaRectangle() {
 	return (
 		<Example>
-			<div styles={{ width: '400px' }}>
+			<div styles={{ maxWidth: '400px' }}>
 				<Card mediaSrc={mediaSrc} title="Hello, World" subtitle="Lorem ipsum">
 					{{
 						content: <span>Content goes here.</span>

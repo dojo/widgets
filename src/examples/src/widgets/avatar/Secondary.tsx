@@ -7,7 +7,7 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<Example>
-			<div styles={{ width: '400px', display: 'flex', justifyContent: 'space-around' }}>
+			<div styles={{ maxWidth: '400px', display: 'flex', justifyContent: 'space-around' }}>
 				<Avatar secondary variant="circle">
 					A
 				</Avatar>
