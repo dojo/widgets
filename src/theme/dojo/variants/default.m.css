@@ -1,4 +1,6 @@
 .root {
+	--example-background: var(--color-background);
+
 	/* Spacing */
 	--grid-base: 8px;
 	--spacing-regular: var(--grid-base);

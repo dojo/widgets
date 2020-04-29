@@ -234,9 +234,26 @@ import ErrorResult from './widgets/result/Error';
 import SuccessResult from './widgets/result/Success';
 import CustomIconResult from './widgets/result/CustomIcon';
 
+import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
+import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
+
 `!has('docs')`;
 import testsContext from './tests';
 const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
+
+const dojoDarkTheme = {
+	theme: { ...dojoTheme.theme },
+	variants: {
+		default: dojoDarkVariant
+	}
+};
+
+const materialDarkTheme = {
+	theme: { ...materialTheme.theme },
+	variants: {
+		default: materialDarkVariant
+	}
+};
 
 export const config = {
 	name: '@dojo/widgets',
@@ -244,6 +261,8 @@ export const config = {
 	themes: [
 		{ label: 'dojo', theme: dojoTheme },
 		{ label: 'material', theme: materialTheme },
+		{ label: 'dojo-dark', theme: dojoDarkTheme },
+		{ label: 'material-dark', theme: materialDarkTheme },
 		{ label: 'default', theme: {} }
 	],
 	tests,
