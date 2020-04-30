@@ -507,6 +507,7 @@ registerSuite('ChipTypeahead', {
 					transform={defaultTransform}
 					initialValue={['cat']}
 					strict={false}
+					duplicates
 				>
 					{}
 				</ChipTypeahead>
