@@ -389,6 +389,37 @@ registerSuite('Typeahead', {
 
 			assert.isTrue(onValue.calledWith(animalOptions[0].value));
 		},
+		'does not call on value if option is disabled'() {
+			const onValue = stub();
+
+			const h = harness(() => (
+				<Typeahead
+					resource={createResource()(animalOptions)}
+					strict={false}
+					transform={defaultTransform}
+					onValue={onValue}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			const toggleOpenStub = stub();
+			const preventDefaultStub = stub();
+
+			const triggerRenderResult = h.trigger(
+				'@popup',
+				(node) => (node.children as any)[0].trigger,
+				toggleOpenStub
+			);
+
+			// first to open the popup
+			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
+			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
+			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
+			triggerRenderResult.properties.onKeyDown(Keys.Enter, preventDefaultStub);
+
+			assert.isTrue(onValue.notCalled);
+		},
 		'allows free text when not in strict mode'() {
 			const onValue = stub();
 			const onValidate = stub();
