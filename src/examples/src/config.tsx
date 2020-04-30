@@ -238,8 +238,11 @@ import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
 
 `!has('docs')`;
-import testsContext from './tests';
-const tests = typeof testsContext !== 'undefined' ? testsContext : { keys: () => [] };
+import * as testsContext from './tests';
+const tests =
+	typeof testsContext !== 'undefined' && typeof testsContext.default !== 'undefined'
+		? testsContext.default
+		: { keys: () => [] };
 
 const dojoDarkTheme = {
 	theme: { ...dojoTheme.theme },

@@ -18,6 +18,7 @@
   },
   "scripts": {
     "dev": "dojo build app -m dev -w -s",
+    "dev:legacy": "dojo build app -m dev -w -s -l",
     "prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "dojo-package": "dojo-package",
     "dojo-release": "dojo-release",
@@ -28,7 +29,7 @@
     "test:watch": "dojo test --watch",
     "test:ci": "run-s clean build:test test:headless",
     "build:ce": "dojo build widget",
-    "build:docs": "dojo build app -f docs=true",
+    "build:docs": "dojo build app -f docs=true -l",
     "build:themes": "dojo build theme",
     "build:examples": "dojo build app -f docs=true && dojo build app -m dev",
     "build:docs:dev": "dojo build app -m dev -w -s",
@@ -51,15 +52,15 @@
     }
   },
   "peerDependencies": {
-    "@dojo/framework": "7.0.0-rc.2"
+    "@dojo/framework": "7.0.0-rc.3"
   },
   "devDependencies": {
     "@dojo/cli": "7.0.0-rc.1",
-    "@dojo/cli-build-app": "7.0.0-rc.1",
+    "@dojo/cli-build-app": "7.0.0-rc.2",
     "@dojo/cli-build-theme": "7.0.0-rc.1",
     "@dojo/cli-build-widget": "7.0.0-rc.1",
     "@dojo/cli-test-intern": "7.0.0-rc.1",
-    "@dojo/framework": "7.0.0-rc.2",
+    "@dojo/framework": "7.0.0-rc.3",
     "@dojo/parade": "1.0.0-rc.3",
     "@dojo/scripts": "^4.0.3",
     "@material/button": "3.0.0",
