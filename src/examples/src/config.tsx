@@ -240,6 +240,7 @@ import AlertResult from './widgets/result/Alert';
 import ErrorResult from './widgets/result/Error';
 import SuccessResult from './widgets/result/Success';
 import CustomIconResult from './widgets/result/CustomIcon';
+import BasicSteppedWizard from './widgets/stepped-wizard/Basic';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -1538,6 +1539,14 @@ export const config = {
 					title: 'Title Text on Actions'
 				}
 			]
+		},
+		'stepped-wizard': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicSteppedWizard
+				}
+			}
 		},
 		switch: {
 			examples: [

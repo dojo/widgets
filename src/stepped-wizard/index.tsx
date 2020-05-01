@@ -1,70 +1,119 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '@dojo/widgets/middleware/theme';
+import Icon from '../icon';
 import * as css from '../theme/default/stepped-wizard.m.css';
+import Avatar from '../avatar';
 
 export interface SteppedWizardProperties {
-	/** Initial active step ID. Defaults to the first step's ID. */
-	initialActiveStep?: string;
-	/** Controlled active step ID */
-	activeStep?: string;
-	/** Callback fired when a step is changed it `activeStep` is passed */
-	onActiveStep?(stepId: string): void;
+	/** Controlled active step index. Defaults to the first step. */
+	activeStep?: number;
+	/** The number of steps in the wizard */
+	numberOfSteps: number;
+	/** If there is an error in the active step it can be passed here. */
+	error?: string;
+	/** Direction for steps. Defaults to horizontal */
+	direction?: 'horizontal' | 'vertical';
 }
 
 export interface SteppedWizardChildren {
-	steps(statuses: { [id: string]: StepStatus }, activeStep: string): RenderResult;
+	(statuses: StepStatus[], error?: string): RenderResult;
 }
 
-export type StepStatus = 'pending' | 'inProgress' | 'complete' | 'error';
+export type StepStatus = 'pending' | 'inProgress' | 'complete';
 
 export interface StepProperties {
 	/** Current step status Defaults to `'pending'` */
 	status?: StepStatus;
 	/** Index of the step */
+	index: number;
+	/** Optional callback indicating that the step should be clickable */
+	onClick?(): void;
 }
 
 export interface StepChildren {
 	title?: RenderResult;
 	subTitle?: RenderResult;
 	icon?(status: StepStatus): RenderResult;
+	description?: RenderResult;
 }
 
-const stepFactory = create({ theme }).properties<StepProperties>().children<StepChildren | undefined>();
+const stepFactory = create({ theme })
+	.properties<StepProperties>()
+	.children<StepChildren | undefined>();
 
 export const Step = stepFactory(({ properties, children, middleware: { theme } }) => {
-	const { status = 'pending' } = properties();
-	const [{ title, subTitle, icon } = { title: undefined, subTitle: undefined, icon: undefined }] = children();
+	const { status = 'pending', index, onClick } = properties();
+	const [
+		{ title, subTitle, icon, description } = {
+			description: undefined,
+			title: undefined,
+			subTitle: undefined,
+			icon: undefined
+		}
+	] = children();
 	const themedCss = theme.classes(css);
 
 	return (
-		<div classes={themedCss.step}>
-			{icon ? icon(status) : <div classes={themedCss.stepIcon}>{
-				status === 'complete' ?
-			}</div>
-			{(title || subTitle) && (
-				<div>
-					{title}
-					{subTitle}
+		<div
+			classes={[themedCss.step, onClick && themedCss.clickable]}
+			onclick={() => {
+				onClick && onClick();
+			}}
+		>
+			{icon ? (
+				icon(status)
+			) : (
+				<div classes={themedCss.stepIcon}>
+					{status === 'complete' ? (
+						<Icon type="checkIcon" />
+					) : (
+						<Avatar>{String(index)}</Avatar>
+					)}
 				</div>
 			)}
+			<div classes={themedCss.stepContent}>
+				{(title || subTitle) && (
+					<div classes={themedCss.stepTitle}>
+						{title}
+						<div classes={themedCss.stepSubTitle}>{subTitle}</div>
+					</div>
+				)}
+				{description && <div classes={themedCss.stepDescription}>{description}</div>}
+			</div>
 		</div>
 	);
 });
 
+const factory = create({ theme })
+	.properties<SteppedWizardProperties>()
+	.children<SteppedWizardChildren>();
 
-export interface StepContentProperties {
-	active?: boolean;
-}
+export default factory(function SteppedWizard({ properties, children, middleware: { theme } }) {
+	const classes = theme.classes(css);
+	const { direction = 'horizontal', numberOfSteps, activeStep = 0, error } = properties();
+	const [render] = children();
+	const statuses: StepStatus[] = Array.from({ length: numberOfSteps }, (_, index) => {
+		if (index < activeStep) {
+			return 'complete';
+		}
 
-const factory = create().properties<SteppedWizardProperties>();
+		if (index === activeStep) {
+			return 'inProgress';
+		}
 
-export default factory(function SteppedWizard({properties, children})
-{
-	const x = properties();
+		if (index > activeStep) {
+			return 'pending';
+		}
+	});
 	return (
-		<div/>
+		<div
+			classes={[
+				classes.root,
+				direction === 'horizontal' ? classes.horizontal : classes.vertical
+			]}
+		>
+			{render(statuses, error)}
+		</div>
 	);
-}
-)
-;
+});
