@@ -500,6 +500,27 @@ registerSuite('ChipTypeahead', {
 			assert.isFalse(disabled({ value: 'dog' }));
 		},
 
+		'allows duplicate values if not strict'() {
+			const h = harness(() => (
+				<ChipTypeahead
+					resource={resource(animalOptions)}
+					transform={defaultTransform}
+					initialValue={['cat']}
+					strict={false}
+					duplicates
+				>
+					{}
+				</ChipTypeahead>
+			));
+
+			const disabled = h.trigger('@typeahead', (node: any) => () =>
+				node.properties.itemDisabled
+			);
+
+			assert.isFalse(disabled({ value: 'cat' }));
+			assert.isFalse(disabled({ value: 'dog' }));
+		},
+
 		'allows free text values if strict is set to false'() {
 			const onValueStub = stub();
 			const h = harness(() => (

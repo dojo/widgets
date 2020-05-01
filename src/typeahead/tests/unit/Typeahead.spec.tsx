@@ -165,6 +165,40 @@ registerSuite('Typeahead', {
 			assert.isTrue(toggleOpenStub.calledOnce);
 		},
 
+		'shows an option label when the value is entered'() {
+			const h = harness(() => (
+				<Typeahead
+					initialValue="cat"
+					resource={resource}
+					transform={defaultTransform}
+					onValue={noop}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			h.expect(inputTemplate.setProperty('@trigger', 'initialValue', 'Cat'), () =>
+				h.trigger('@popup', (node) => (node.children as any)[0].trigger, stub)
+			);
+		},
+
+		'shows an option value when the value is entered and there is no label'() {
+			const h = harness(() => (
+				<Typeahead
+					initialValue="dog"
+					resource={resource}
+					transform={defaultTransform}
+					onValue={noop}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			h.expect(inputTemplate.setProperty('@trigger', 'initialValue', 'dog'), () =>
+				h.trigger('@popup', (node) => (node.children as any)[0].trigger, stub)
+			);
+		},
+
 		'opens the typeahead on input click'() {
 			const h = harness(() => (
 				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
@@ -354,6 +388,67 @@ registerSuite('Typeahead', {
 			triggerRenderResult.properties.onKeyDown(Keys.Enter, preventDefaultStub);
 
 			assert.isTrue(onValue.calledWith(animalOptions[0].value));
+		},
+		'does not call on value if option is disabled'() {
+			const onValue = stub();
+
+			const h = harness(() => (
+				<Typeahead
+					resource={createResource()(animalOptions)}
+					strict={false}
+					transform={defaultTransform}
+					onValue={onValue}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			const toggleOpenStub = stub();
+			const preventDefaultStub = stub();
+
+			const triggerRenderResult = h.trigger(
+				'@popup',
+				(node) => (node.children as any)[0].trigger,
+				toggleOpenStub
+			);
+
+			// first to open the popup
+			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
+			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
+			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
+			triggerRenderResult.properties.onKeyDown(Keys.Enter, preventDefaultStub);
+
+			assert.isTrue(onValue.notCalled);
+		},
+		'does not call on value if option is disabled and in strict mode'() {
+			const onValue = stub();
+
+			const h = harness(() => (
+				<Typeahead
+					resource={createResource()(animalOptions)}
+					transform={defaultTransform}
+					onValue={onValue}
+				>
+					{{ label: 'Test' }}
+				</Typeahead>
+			));
+
+			const toggleOpenStub = stub();
+			const preventDefaultStub = stub();
+
+			const triggerRenderResult = h.trigger(
+				'@popup',
+				(node) => (node.children as any)[0].trigger,
+				toggleOpenStub
+			);
+
+			// first to open the popup
+			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
+			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
+			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
+			triggerRenderResult.properties.onKeyDown(Keys.Enter, preventDefaultStub);
+
+			assert.isTrue(onValue.notCalled);
 		},
 		'allows free text when not in strict mode'() {
 			const onValue = stub();

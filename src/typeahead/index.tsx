@@ -203,6 +203,10 @@ export const Typeahead = factory(function Typeahead({
 							icache.set('value', activeItem.value);
 							onClose();
 							callOnValue(activeItem.value);
+						} else if (!strict) {
+							const value = icache.getOrSet('value', '');
+							onClose();
+							callOnValue(value);
 						}
 					} else {
 						if (strict) {
@@ -302,7 +306,9 @@ export const Typeahead = factory(function Typeahead({
 									onBlur && onBlur();
 								}}
 								name={name}
-								initialValue={valueOption ? valueOption.label : value}
+								initialValue={
+									valueOption ? valueOption.label || valueOption.value : value
+								}
 								focus={() =>
 									icache.get('focusNode') === 'trigger' && focus.shouldFocus()
 								}
