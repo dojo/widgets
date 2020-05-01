@@ -235,8 +235,8 @@ export const TimePicker = factory(function TimePicker({
 					minute: 'numeric',
 					second: hideSeconds ? undefined : 'numeric'
 				})
-				.replace(/[^a-zA-Z\d:.]/g, '');
-		} else if (format === '12') {
+				.replace(/[^a-zA-Z\d\s:.]/g, '');
+		} else {
 			return time
 				.toLocaleTimeString(undefined, {
 					hour12: true,
@@ -244,15 +244,7 @@ export const TimePicker = factory(function TimePicker({
 					minute: 'numeric',
 					second: hideSeconds ? undefined : 'numeric'
 				})
-				.replace(/[^a-zA-Z\d:.]/g, '');
-		} else {
-			return time
-				.toLocaleTimeString(undefined, {
-					hour: 'numeric',
-					minute: 'numeric',
-					second: hideSeconds ? undefined : 'numeric'
-				})
-				.replace(/[^a-zA-Z\d:.]/g, '');
+				.replace(/[^a-zA-Z\d\s:.]/g, '');
 		}
 	};
 

@@ -15,6 +15,7 @@ import { createHarness, compareTheme, stubEvent } from '../../../common/tests/su
 import { Keys } from '../../../common/util';
 import focus from '@dojo/framework/core/middleware/focus';
 import { createResource } from '@dojo/framework/core/resource';
+import TimePicker, { format24HourTime } from '@dojo/widgets/time-picker';
 
 const { describe, it, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
@@ -110,6 +111,12 @@ function generateOptions(step: number, dateOptions: Intl.DateTimeFormatOptions =
 
 const options30Minutes = generateOptions(1800, {
 	hour12: false,
+	hour: 'numeric',
+	minute: 'numeric'
+});
+
+const options30Minutes12 = generateOptions(1800, {
+	hour12: true,
 	hour: 'numeric',
 	minute: 'numeric'
 });
@@ -262,6 +269,42 @@ describe('TimePicker', () => {
 			onClose
 		);
 		h.expect(menuTemplate, () => contentResult);
+
+		// Find the calendar widget and trigger a date selected
+		const [menu] = select('@menu', contentResult);
+		onValue.resetHistory();
+		menu.properties.onValue(format24HourTime(expected));
+
+		// Find the input; it should contain the new value
+		h.expect(baseTemplate(expected));
+		const [input] = select(
+			'@input',
+			h.trigger('@popup', (node) => (node.children as any)[0].trigger)
+		);
+		assert(input.properties.initialValue, format24HourTime(expected));
+
+		// If `onValue` is called, the input was accepted & validated
+		sinon.assert.calledWith(onValue, format24HourTime(expected));
+
+		// The calendar popup should be closed after a selection
+		sinon.assert.calledOnce(onClose);
+	});
+
+	it('allows time picker selection with 12 hour format', () => {
+		const expected = new Date(2019, 11, 19); // Dec 19, 2019
+		const h = harness(() => <TimePicker format="12" name="timeInput" onValue={onValue} />);
+		h.expect(baseTemplate());
+
+		const onClose = sinon.stub();
+		const contentResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].content,
+			onClose
+		);
+		h.expect(
+			menuTemplate.setProperty('@menu', 'resource', resource(options30Minutes12)),
+			() => contentResult
+		);
 
 		// Find the calendar widget and trigger a date selected
 		const [menu] = select('@menu', contentResult);
