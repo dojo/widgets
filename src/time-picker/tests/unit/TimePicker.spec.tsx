@@ -15,7 +15,6 @@ import { createHarness, compareTheme, stubEvent } from '../../../common/tests/su
 import { Keys } from '../../../common/util';
 import focus from '@dojo/framework/core/middleware/focus';
 import { createResource } from '@dojo/framework/core/resource';
-import TimePicker, { format24HourTime } from '@dojo/widgets/time-picker';
 
 const { describe, it, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
