@@ -228,25 +228,31 @@ export const TimePicker = factory(function TimePicker({
 		const hideSeconds = step >= 60 && time.getSeconds() === 0;
 
 		if (format === '24') {
-			return time.toLocaleTimeString(undefined, {
-				hour12: false,
-				hour: 'numeric',
-				minute: 'numeric',
-				second: hideSeconds ? undefined : 'numeric'
-			});
+			return time
+				.toLocaleTimeString(undefined, {
+					hour12: false,
+					hour: 'numeric',
+					minute: 'numeric',
+					second: hideSeconds ? undefined : 'numeric'
+				})
+				.replace(/[^a-zA-Z\d:.]/g, '');
 		} else if (format === '12') {
-			return time.toLocaleTimeString(undefined, {
-				hour12: true,
-				hour: 'numeric',
-				minute: 'numeric',
-				second: hideSeconds ? undefined : 'numeric'
-			});
+			return time
+				.toLocaleTimeString(undefined, {
+					hour12: true,
+					hour: 'numeric',
+					minute: 'numeric',
+					second: hideSeconds ? undefined : 'numeric'
+				})
+				.replace(/[^a-zA-Z\d:.]/g, '');
 		} else {
-			return time.toLocaleTimeString(undefined, {
-				hour: 'numeric',
-				minute: 'numeric',
-				second: hideSeconds ? undefined : 'numeric'
-			});
+			return time
+				.toLocaleTimeString(undefined, {
+					hour: 'numeric',
+					minute: 'numeric',
+					second: hideSeconds ? undefined : 'numeric'
+				})
+				.replace(/[^a-zA-Z\d:.]/g, '');
 		}
 	};
 
