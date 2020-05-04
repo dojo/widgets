@@ -11,11 +11,8 @@ export default factory(function SetWidth() {
 			<TriggerPopup position="below" matchWidth={false}>
 				{{
 					trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Own Width</Button>,
-					content: (onClose) => (
-						<div
-							onpointerleave={onClose}
-							styles={{ background: 'orange', width: '350px', fontSize: '32px' }}
-						>
+					content: () => (
+						<div styles={{ background: 'orange', width: '350px', fontSize: '32px' }}>
 							My Width is 150px!
 						</div>
 					)
