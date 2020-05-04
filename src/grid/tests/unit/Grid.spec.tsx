@@ -1,23 +1,26 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
-import harness from '@dojo/framework/testing/harness/harness';
-import { v, w } from '@dojo/framework/core/vdom';
+import { spy, stub } from 'sinon';
+
 import Dimensions from '@dojo/framework/core/meta/Dimensions';
 import Resize from '@dojo/framework/core/meta/Resize';
+import { v, w } from '@dojo/framework/core/vdom';
 import { Store } from '@dojo/framework/stores/Store';
 import { OperationType } from '@dojo/framework/stores/state/Patch';
 import { Pointer } from '@dojo/framework/stores/state/Pointer';
+import harness from '@dojo/framework/testing/harness/harness';
 
-import Grid from '../../index';
-import * as css from '../../../theme/default/grid.m.css';
-import * as fixedCss from '../../styles/grid.m.css';
-import { ColumnConfig } from '../../interfaces';
-import { stub, spy } from 'sinon';
 import { MockMetaMixin } from '../../../common/tests/support/test-helpers';
-import Header from '../../Header';
+import * as css from '../../../theme/default/grid.m.css';
 import Body from '../../Body';
 import Footer from '../../Footer';
+import Header from '../../Header';
+import PaginatedBody from '../../PaginatedBody';
+import PaginatedFooter from '../../PaginatedFooter';
+import Grid from '../../index';
+import { ColumnConfig } from '../../interfaces';
+import * as fixedCss from '../../styles/grid.m.css';
 
 const noop: any = () => {};
 
@@ -727,7 +730,8 @@ describe('Grid', () => {
 				updater: noop,
 				columnConfig,
 				height: 500,
-				onRowSelect: noop
+				onRowSelect: noop,
+				pagination: true
 			})
 		);
 
@@ -779,18 +783,16 @@ describe('Grid', () => {
 							)
 						]
 					),
-					w(Body, {
-						key: 'body',
+					w(PaginatedBody, {
+						key: 'paginated-body',
 						i18nBundle: undefined,
 						pages: {},
-						totalRows: undefined,
 						pageSize: 100,
 						columnConfig,
 						columnWidths: {
 							id: 500,
 							name: 500
 						},
-						pageChange: noop,
 						updater: noop,
 						fetcher: noop,
 						onScroll: noop,
@@ -799,11 +801,12 @@ describe('Grid', () => {
 						theme: undefined,
 						width: 1000,
 						onRowSelect: noop,
-						selectedRows: [1]
+						selectedRows: [1],
+						pageNumber: 1
 					}),
 					v('div', { key: 'footer' }, [
-						w(Footer, {
-							key: 'footer-row',
+						w(PaginatedFooter, {
+							onPageChange: noop,
 							i18nBundle: undefined,
 							total: undefined,
 							page: 1,
