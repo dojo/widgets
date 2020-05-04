@@ -597,6 +597,7 @@ export const List = factory(function List({
 			}}
 			focus={() => shouldFocus}
 			onfocus={onFocus}
+			onpointerdown={focusable ? undefined : (event) => event.preventDefault()}
 			onblur={onBlur}
 			scrollTop={scrollTop}
 			onscroll={(e) => {
