@@ -13,7 +13,7 @@
 .yearTrigger,
 .previous,
 .next {
-	background: inherit;
+	background: none;
 	border: 0;
 	color: inherit;
 	font-family: inherit;
