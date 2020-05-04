@@ -1,30 +1,31 @@
-import WidgetBase from '@dojo/framework/core/WidgetBase';
-import { v, w } from '@dojo/framework/core/vdom';
-import ThemedMixin, { theme, ThemedProperties } from '@dojo/framework/core/mixins/Themed';
-import diffProperty from '@dojo/framework/core/decorators/diffProperty';
-import { DNode } from '@dojo/framework/core/interfaces';
-import { reference } from '@dojo/framework/core/diff';
-import { Store } from '@dojo/framework/stores/Store';
-import Dimensions from '@dojo/framework/core/meta/Dimensions';
-import Resize from '@dojo/framework/core/meta/Resize';
 import './utils';
 
-import { Fetcher, ColumnConfig, GridState, Updater } from './interfaces';
-import {
-	fetcherProcess,
-	pageChangeProcess,
-	sortProcess,
-	filterProcess,
-	updaterProcess,
-	selectionProcess
-} from './processes';
+import WidgetBase from '@dojo/framework/core/WidgetBase';
+import diffProperty from '@dojo/framework/core/decorators/diffProperty';
+import { reference } from '@dojo/framework/core/diff';
+import { DNode } from '@dojo/framework/core/interfaces';
+import Dimensions from '@dojo/framework/core/meta/Dimensions';
+import Resize from '@dojo/framework/core/meta/Resize';
+import ThemedMixin, { ThemedProperties, theme } from '@dojo/framework/core/mixins/Themed';
+import { v, w } from '@dojo/framework/core/vdom';
+import { Store } from '@dojo/framework/stores/Store';
 
-import Header, { SortRenderer, FilterRenderer } from './Header';
+import * as css from '../theme/grid.m.css';
 import Body from './Body';
 import Footer from './Footer';
-import PaginatedFooter from './PaginatedFooter';
+import Header, { FilterRenderer, SortRenderer } from './Header';
 import PaginatedBody from './PaginatedBody';
-import * as css from '../theme/grid.m.css';
+import PaginatedFooter from './PaginatedFooter';
+import { ColumnConfig, Fetcher, GridState, Updater } from './interfaces';
+import {
+	clearSelectionProcess,
+	fetcherProcess,
+	filterProcess,
+	pageChangeProcess,
+	selectionProcess,
+	sortProcess,
+	updaterProcess
+} from './processes';
 import * as fixedCss from './styles/grid.m.css';
 
 const defaultGridMeta = {
@@ -158,7 +159,10 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 	}
 
 	private _pageChange(page: number) {
-		const { storeId } = this._getProperties();
+		const { pagination, storeId } = this._getProperties();
+		if (pagination) {
+			clearSelectionProcess(this._store)({ id: storeId });
+		}
 		pageChangeProcess(this._store)({ id: storeId, page });
 	}
 
@@ -169,10 +173,12 @@ export default class Grid<S> extends ThemedMixin(WidgetBase)<GridProperties<S>> 
 			this._store.get(this._store.path(storeId, 'meta', 'selection')) || [];
 		const items = [];
 		const data = this._store.get(this._store.path(storeId, 'data', 'pages'));
+		const pageNumber = this._store.get(this._store.path(storeId, 'meta', 'page'));
+
 		for (let i = 0; i < selectedIndexes.length; i++) {
 			const selectedIndex = selectedIndexes[i];
-			const pageNumber = Math.floor(selectedIndex / this._pageSize) + 1;
-			const itemIndex = selectedIndex - (pageNumber - 1) * this._pageSize;
+			const offset = Math.floor(selectedIndex / this._pageSize) + 1;
+			const itemIndex = selectedIndex - (offset - 1) * this._pageSize;
 			if (data[`page-${pageNumber}`]) {
 				items.push(data[`page-${pageNumber}`][itemIndex]);
 			}

@@ -1,15 +1,16 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
-import harness from '@dojo/framework/testing/harness';
-import { v, w } from '@dojo/framework/core/vdom';
 import { stub } from 'sinon';
-import Row from '../../Row';
 
-import * as fixedCss from './../../styles/row.m.css';
+import { v, w } from '@dojo/framework/core/vdom';
+import harness from '@dojo/framework/testing/harness';
+
 import * as css from '../../../theme/grid-row.m.css';
-import { ColumnConfig } from '../../interfaces';
+import * as fixedCss from './../../styles/row.m.css';
 import Cell from '../../Cell';
+import Row from '../../Row';
+import { ColumnConfig } from '../../interfaces';
 
 const noop = () => {};
 
