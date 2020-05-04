@@ -11,11 +11,8 @@ export default factory(function Underlay() {
 			<TriggerPopup position="below" underlayVisible={true}>
 				{{
 					trigger: (onToggleOpen) => <Button onClick={onToggleOpen}>Underlay</Button>,
-					content: (onClose) => (
-						<div
-							onpointerleave={onClose}
-							styles={{ background: 'yellow', height: '150px', fontSize: '32px' }}
-						>
+					content: () => (
+						<div styles={{ background: 'yellow', height: '150px', fontSize: '32px' }}>
 							I'm on a visible underlay
 						</div>
 					)

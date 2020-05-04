@@ -14,11 +14,8 @@ export default factory(function Basic() {
 						trigger: (onToggleOpen) => (
 							<Button onClick={onToggleOpen}>Popup Below</Button>
 						),
-						content: (onClose) => (
-							<div
-								onpointerleave={onClose}
-								styles={{ background: 'red', height: '100px', fontSize: '32px' }}
-							>
+						content: () => (
+							<div styles={{ background: 'red', height: '100px', fontSize: '32px' }}>
 								Hello Below!
 							</div>
 						)
@@ -29,9 +26,8 @@ export default factory(function Basic() {
 						trigger: (onToggleOpen) => (
 							<Button onClick={onToggleOpen}>Popup Above</Button>
 						),
-						content: (onClose) => (
+						content: () => (
 							<div
-								onpointerleave={onClose}
 								styles={{ background: 'green', height: '100px', fontSize: '32px' }}
 							>
 								Hello Above!
