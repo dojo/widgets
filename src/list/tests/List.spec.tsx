@@ -37,6 +37,7 @@ describe('List', () => {
 			tabIndex={0}
 			onkeydown={noop}
 			focus={noop}
+			onpointerdown={undefined}
 			onfocus={undefined}
 			onblur={undefined}
 			styles={{ maxHeight: '450px' }}
@@ -349,6 +350,22 @@ describe('List', () => {
 		);
 		h.expect(itemRendererTemplate);
 	});
+
+	it('renders not focusable', () => {
+		const h = harness(() => (
+			<List
+				onValue={noop}
+				resource={resource(animalOptions)}
+				transform={defaultTransform}
+				focusable={false}
+			/>
+		));
+		h.expect(
+			template
+				.setProperty('@root', 'tabIndex', -1)
+				.setProperty('@root', 'onpointerdown', noop)
+		);
+	});
 });
 
 describe('List - Menu', () => {
@@ -367,6 +384,7 @@ describe('List - Menu', () => {
 			tabIndex={0}
 			onkeydown={noop}
 			focus={noop}
+			onpointerdown={undefined}
 			onfocus={undefined}
 			onblur={undefined}
 			styles={{ maxHeight: '450px' }}
