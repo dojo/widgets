@@ -1,12 +1,25 @@
 .root {
 }
-.steps {
+.vertical {
 }
-.stepsVertical {
+.tail {
 }
-.content {
+.complete {
+}
+.pending {
 }
 .step {
+}
+.stepContent {
+}
+.stepTitle {
+}
+.stepSubTitle {
+}
+.stepDescription {
+}
+.clickable {
+	cursor: pointer;
 }
 .stepIcon {
 }

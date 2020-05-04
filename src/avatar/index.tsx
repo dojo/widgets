@@ -7,6 +7,8 @@ export interface AvatarProperties {
 	variant?: 'square' | 'rounded' | 'circle';
 	/* determines if secondary color scheme should be used */
 	secondary?: boolean;
+	/* Determines if avatar should be rendered as an outline */
+	outline?: boolean;
 	/* the image source used for this avatar */
 	src?: string;
 	/* size of the avatar, defaults to medium */
@@ -19,7 +21,7 @@ const factory = create({ theme }).properties<AvatarProperties>();
 
 export const Avatar = factory(function Avatar({ middleware: { theme }, properties, children }) {
 	const themeCss = theme.classes(css);
-	const { secondary, src, alt, variant = 'circle', size = 'medium' } = properties();
+	const { secondary, outline, src, alt, variant = 'circle', size = 'medium' } = properties();
 	return (
 		<div
 			key="root"
@@ -29,6 +31,7 @@ export const Avatar = factory(function Avatar({ middleware: { theme }, propertie
 				theme.variant(),
 				themeCss.root,
 				secondary ? themeCss.avatarColorSecondary : themeCss.avatarColor,
+				outline && themeCss.avatarOutline,
 				themeCss[size],
 				themeCss[variant]
 			]}

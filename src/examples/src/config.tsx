@@ -8,6 +8,7 @@ import AvatarVariant from './widgets/avatar/Variant';
 import AvatarSize from './widgets/avatar/Size';
 import AvatarIcon from './widgets/avatar/Icon';
 import AvatarSecondary from './widgets/avatar/Secondary';
+import AvatarOutlines from './widgets/avatar/Outline';
 import Exclusive from './widgets/accordion/Exclusive';
 import BasicBreadcrumbGroup from './widgets/breadcrumb-group/Basic';
 import CustomRendererBreadcrumbGroup from './widgets/breadcrumb-group/CustomRenderer';
@@ -241,6 +242,7 @@ import ErrorResult from './widgets/result/Error';
 import SuccessResult from './widgets/result/Success';
 import CustomIconResult from './widgets/result/CustomIcon';
 import BasicSteppedWizard from './widgets/stepped-wizard/Basic';
+import VerticalSteppedWizard from './widgets/stepped-wizard/Vertical';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -327,6 +329,11 @@ export const config = {
 					title: 'Avatar with Icons',
 					filename: 'Icon',
 					module: AvatarIcon
+				},
+				{
+					title: 'Avatar with outline styles',
+					filename: 'Outline',
+					module: AvatarOutlines
 				}
 			],
 			filename: 'index',
@@ -1546,7 +1553,14 @@ export const config = {
 					filename: 'Basic',
 					module: BasicSteppedWizard
 				}
-			}
+			},
+			examples: [
+				{
+					filename: 'Vertical',
+					module: VerticalSteppedWizard,
+					title: 'Vertical Stepped Wizard'
+				}
+			]
 		},
 		switch: {
 			examples: [

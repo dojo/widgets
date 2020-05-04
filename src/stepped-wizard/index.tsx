@@ -3,6 +3,7 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '@dojo/widgets/middleware/theme';
 import Icon from '../icon';
 import * as css from '../theme/default/stepped-wizard.m.css';
+import * as avatarCss from '../theme/default/avatar.m.css';
 import Avatar from '../avatar';
 
 export interface SteppedWizardProperties {
@@ -56,30 +57,39 @@ export const Step = stepFactory(({ properties, children, middleware: { theme } }
 
 	return (
 		<div
-			classes={[themedCss.step, onClick && themedCss.clickable]}
+			classes={[
+				themedCss.step,
+				onClick && themedCss.clickable,
+				status === 'complete' && themedCss.complete,
+				status === 'pending' && themedCss.pending
+			]}
 			onclick={() => {
 				onClick && onClick();
 			}}
 		>
+			<div classes={themedCss.tail} />
 			{icon ? (
 				icon(status)
 			) : (
 				<div classes={themedCss.stepIcon}>
-					{status === 'complete' ? (
-						<Icon type="checkIcon" />
-					) : (
-						<Avatar>{String(index)}</Avatar>
-					)}
+					<Avatar
+						theme={theme.compose(
+							avatarCss,
+							css,
+							'stepAvatar'
+						)}
+						outline={status !== 'inProgress'}
+					>
+						{status === 'complete' ? <Icon type="checkIcon" /> : String(index)}
+					</Avatar>
 				</div>
 			)}
 			<div classes={themedCss.stepContent}>
-				{(title || subTitle) && (
-					<div classes={themedCss.stepTitle}>
-						{title}
-						<div classes={themedCss.stepSubTitle}>{subTitle}</div>
-					</div>
-				)}
-				{description && <div classes={themedCss.stepDescription}>{description}</div>}
+				<div classes={themedCss.stepTitle}>
+					{title}
+					<div classes={themedCss.stepSubTitle}>{subTitle}</div>
+				</div>
+				<div classes={themedCss.stepDescription}>{description}</div>
 			</div>
 		</div>
 	);

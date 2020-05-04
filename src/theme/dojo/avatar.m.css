@@ -21,6 +21,21 @@
 	background-color: var(--color-background-inverted);
 }
 
+.avatarOutline {
+	background-color: var(--color-background);
+	border: 1px solid;
+}
+
+.avatarOutline.avatarColor {
+	color: var(--color-highlight);
+	border-color: var(--color-highlight);
+}
+
+.avatarOutline.avatarColorSecondary {
+	color: var(--color-background-inverted);
+	border-color: var(--color-background-inverted);
+}
+
 .small {
 	width: var(--avatar-size-small);
 	height: var(--avatar-size-small);
