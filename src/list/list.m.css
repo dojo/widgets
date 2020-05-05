@@ -10,4 +10,5 @@
 
 .root {
 	overflow: auto;
+	scroll-behavior: smooth;
 }

@@ -602,8 +602,14 @@ export const List = factory(function List({
 			scrollTop={scrollTop}
 			onscroll={(e) => {
 				const newScrollTop = (e.target as HTMLElement).scrollTop;
-				if (scrollTop !== newScrollTop) {
-					icache.set('scrollTop', newScrollTop);
+				const remainder = newScrollTop % itemHeight;
+				let targetTop = newScrollTop - remainder;
+				if (remainder >= itemHeight / 2) {
+					targetTop = newScrollTop - remainder + itemHeight;
+				}
+
+				if (scrollTop !== targetTop) {
+					icache.set('scrollTop', targetTop);
 				}
 			}}
 			styles={rootStyles}
