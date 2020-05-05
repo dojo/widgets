@@ -5,7 +5,7 @@ export const left: string;
 export const right: string;
 export const iconOpen: string;
 export const actions: string;
-export const actionsClosed: string;
+export const open: string;
 export const action: string;
 export const staticTooltip: string;
 export const closed: string;

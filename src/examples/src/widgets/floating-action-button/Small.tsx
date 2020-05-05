@@ -1,5 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import FloatingActionButton, { Icon } from '@dojo/widgets/floating-action-button';
+import FloatingActionButton from '@dojo/widgets/floating-action-button';
+import Icon from '@dojo/widgets/icon';
 
 const factory = create();
 

@@ -41,6 +41,7 @@ const template = assertionTemplate(() => (
 		onpointerdown={noop}
 		onpointerup={noop}
 		aria-pressed={null}
+		title={undefined}
 	>
 		<span classes={css.label} />
 	</button>

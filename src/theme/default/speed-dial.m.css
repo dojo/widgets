@@ -19,8 +19,8 @@
 /* Class applied to the actions wrapper */
 .actions {
 }
-/* Class applied to the action wrapper when closed */
-.actionsClosed {
+/* Class applied to the action wrapper when open */
+.open {
 }
 /* Class applied to each action */
 .action {

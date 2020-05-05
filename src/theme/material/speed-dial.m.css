@@ -7,84 +7,52 @@
 .up .actions {
 	flex-direction: column-reverse;
 }
+.up .action,
 .up .actions {
-	margin-bottom: calc(-1 * var(--mdc-dial-radius));
-	padding-bottom: calc(var(--mdc-action-spacing) + var(--mdc-dial-radius));
+	margin-bottom: var(--mdc-theme-grid-base);
 }
 
 .down,
 .down .actions {
 	flex-direction: column;
 }
+.down .action,
 .down .actions {
-	margin-top: calc(-1 * var(--mdc-dial-radius));
-	padding-top: calc(var(--mdc-action-spacing) + var(--mdc-dial-radius));
+	margin-top: var(--mdc-theme-grid-base);
 }
 
 .left,
 .left .actions {
 	flex-direction: row-reverse;
 }
+.left .action,
 .left .actions {
-	margin-right: calc(-1 * var(--mdc-dial-radius));
-	padding-right: calc(var(--mdc-action-spacing) + var(--mdc-dial-radius));
+	margin-right: var(--mdc-theme-grid-base);
 }
 
 .right,
 .right .actions {
 	flex-direction: row;
 }
+.right .action,
 .right .actions {
-	margin-left: calc(-1 * var(--mdc-dial-radius));
-	padding-left: calc(var(--mdc-action-spacing) + var(--mdc-dial-radius));
+	margin-left: var(--mdc-theme-grid-base);
 }
 
 .actions {
 	display: flex;
 }
 
-.actionsClosed {
-	transition: top 0s linear 0.2s;
-}
-
 .action {
-	margin: var(--mdc-theme-grid-base);
-}
-
-.action,
-.staticTooltip {
-	opacity: 1;
-}
-
-.actionTransition {
-	transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, opacity 0.8s;
-}
-
-.closed {
 	opacity: 0;
 	transform: scale(0);
 }
 
-.iconOpen {
-	transform: rotate(45deg);
+.open .action {
+	opacity: 1;
+	transform: scale(1);
 }
 
-.action0 {
-	transition-delay: 150ms;
-}
-
-.action1 {
-	transition-delay: 120ms;
-}
-
-.action2 {
-	transition-delay: 90ms;
-}
-
-.action3 {
-	transition-delay: 60ms;
-}
-
-.action4 {
-	transition-delay: 30ms;
+.actionTransition {
+	transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, opacity 0.5s;
 }

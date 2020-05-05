@@ -88,6 +88,7 @@ import Sorting from './widgets/grid/Sorting';
 import AltTextIcon from './widgets/icon/AltText';
 import BasicIcons from './widgets/icon/Basic';
 import IconButton from './widgets/icon/IconButton';
+import IconSizes from './widgets/icon/Sizes';
 import BasicLabel from './widgets/label/Basic';
 import HiddenLabel from './widgets/label/HiddenLabel';
 import InvalidLabel from './widgets/label/InvalidLabel';
@@ -170,7 +171,6 @@ import StackedSnackbar from './widgets/snackbar/Stacked';
 import SuccessSnackbar from './widgets/snackbar/Success';
 import BasicSpeedDial from './widgets/speed-dial/Basic';
 import DirectionSpeedDial from './widgets/speed-dial/Direction';
-import ShowTooltipsSpeedDial from './widgets/speed-dial/ShowTooltips';
 import CustomIconSpeedDial from './widgets/speed-dial/CustomIcons';
 import BasicSwitch from './widgets/switch/Basic';
 import DisabledSwitch from './widgets/switch/Disabled';
@@ -897,6 +897,11 @@ export const config = {
 					filename: 'IconButton',
 					module: IconButton,
 					title: 'Icon within a button'
+				},
+				{
+					filename: 'Sizes',
+					module: IconSizes,
+					title: 'Icon Sizes'
 				}
 			],
 			overview: {
@@ -1518,11 +1523,6 @@ export const config = {
 					filename: 'Direction',
 					module: DirectionSpeedDial,
 					title: 'With a direction'
-				},
-				{
-					filename: 'ShowTooltips',
-					module: ShowTooltipsSpeedDial,
-					title: 'With tooltips always displayed'
 				},
 				{
 					filename: 'CustomIcons',

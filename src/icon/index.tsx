@@ -13,6 +13,7 @@ export interface IconProperties {
 	aria?: { [key: string]: string | null };
 	/** Icon type, e.g. downIcon, searchIcon, etc. */
 	type: IconType;
+	size?: 'small' | 'medium' | 'large';
 }
 
 const factory = create({ theme }).properties<IconProperties>();
@@ -23,15 +24,17 @@ export const Icon = factory(function Icon({ properties, middleware: { theme } })
 			hidden: 'true'
 		},
 		type,
-		altText
+		altText,
+		size
 	} = properties();
 
 	const classes = theme.classes(css);
+	const sizeClass = size && classes[size as keyof typeof classes];
 
 	return (
 		<virtual>
 			<i
-				classes={[theme.variant(), classes.icon, classes[type]]}
+				classes={[theme.variant(), classes.icon, classes[type], sizeClass]}
 				{...formatAriaProperties(aria)}
 			/>
 			{altText ? <span classes={baseCss.visuallyHidden}>{altText}</span> : null}

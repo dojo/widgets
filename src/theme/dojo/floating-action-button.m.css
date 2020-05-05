@@ -9,10 +9,6 @@
 	padding: 0;
 }
 
-.root .icon {
-	font-size: var(--font-size-icon);
-}
-
 .root:not(.extended) {
 	border-radius: 50%;
 	width: 56px;
