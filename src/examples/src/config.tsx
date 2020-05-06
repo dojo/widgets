@@ -172,6 +172,7 @@ import SuccessSnackbar from './widgets/snackbar/Success';
 import BasicSpeedDial from './widgets/speed-dial/Basic';
 import DirectionSpeedDial from './widgets/speed-dial/Direction';
 import CustomIconSpeedDial from './widgets/speed-dial/CustomIcons';
+import TitleText from './widgets/speed-dial/TitleText';
 import BasicSwitch from './widgets/switch/Basic';
 import DisabledSwitch from './widgets/switch/Disabled';
 import BasicTabContainer from './widgets/tab-container/Basic';
@@ -244,6 +245,7 @@ import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark
 
 `!has('docs')`;
 import * as testsContext from './tests';
+
 const tests =
 	typeof testsContext !== 'undefined' && typeof testsContext.default !== 'undefined'
 		? testsContext.default
@@ -1528,6 +1530,11 @@ export const config = {
 					filename: 'CustomIcons',
 					module: CustomIconSpeedDial,
 					title: 'With custom icons'
+				},
+				{
+					filename: 'TitleText',
+					module: TitleText,
+					title: 'Title Text on Actions'
 				}
 			]
 		},

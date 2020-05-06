@@ -27,31 +27,24 @@ export default factory(function Basic({ middleware: { icache } }) {
 				</Action>
 				<Action
 					onClick={() => {
-						icache.set('action', 'Mailing');
+						icache.set('action', 'Timing');
 					}}
 				>
-					<Icon type="mailIcon" />
+					<Icon type="clockIcon" />
 				</Action>
 				<Action
 					onClick={() => {
-						icache.set('action', 'Save');
+						icache.set('action', 'Looking');
 					}}
 				>
-					<Icon type="starIcon" />
+					<Icon type="eyeIcon" />
 				</Action>
 				<Action
 					onClick={() => {
-						icache.set('action', 'Mailing');
+						icache.set('action', 'Locating');
 					}}
 				>
-					<Icon type="mailIcon" />
-				</Action>
-				<Action
-					onClick={() => {
-						icache.set('action', 'Save');
-					}}
-				>
-					<Icon type="starIcon" />
+					<Icon type="locationIcon" />
 				</Action>
 			</SpeedDial>
 			<div>Last action: {action}</div>

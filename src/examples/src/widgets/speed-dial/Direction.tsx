@@ -14,22 +14,6 @@ export default factory(function Direction({ middleware: { icache } }) {
 			<div styles={{ width: '500px', height: '500px' }}>
 				<SpeedDial direction={direction}>
 					<Action
-						title="boo"
-						onClick={() => {
-							icache.set('action', 'Mailing');
-						}}
-					>
-						<Icon type="mailIcon" />
-					</Action>
-					<Action
-						title="apple"
-						onClick={() => {
-							icache.set('action', 'Save');
-						}}
-					>
-						<Icon type="starIcon" />
-					</Action>
-					<Action
 						onClick={() => {
 							icache.set('action', 'Mailing');
 						}}
@@ -45,17 +29,24 @@ export default factory(function Direction({ middleware: { icache } }) {
 					</Action>
 					<Action
 						onClick={() => {
-							icache.set('action', 'Mailing');
+							icache.set('action', 'Timing');
 						}}
 					>
-						<Icon type="mailIcon" />
+						<Icon type="clockIcon" />
 					</Action>
 					<Action
 						onClick={() => {
-							icache.set('action', 'Save');
+							icache.set('action', 'Looking');
 						}}
 					>
-						<Icon type="starIcon" />
+						<Icon type="eyeIcon" />
+					</Action>
+					<Action
+						onClick={() => {
+							icache.set('action', 'Locating');
+						}}
+					>
+						<Icon type="locationIcon" />
 					</Action>
 				</SpeedDial>
 				<div styles={{ marginTop: '20px' }}>

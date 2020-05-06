@@ -94,6 +94,22 @@ export const SpeedDial = factory(function SpeedDial({
 
 	const actions = children();
 
+	function toggleOpen() {
+		const open = icache.get('open');
+		if (!open) {
+			icache.set('open', true);
+			onOpen && onOpen();
+		}
+	}
+
+	function toggleClose() {
+		const open = icache.get('open');
+		if (open) {
+			icache.set('open', false);
+			onClose && onClose();
+		}
+	}
+
 	return (
 		<div
 			key="root"
@@ -105,19 +121,28 @@ export const SpeedDial = factory(function SpeedDial({
 				direction === 'down' && classes.down,
 				direction === 'up' && classes.up
 			]}
-			onpointerenter={() => {
-				icache.set('open', true);
-				onOpen && onOpen();
-			}}
-			onpointerleave={() => {
-				icache.set('open', false);
-				onClose && onClose();
-			}}
+			onmouseleave={toggleClose}
 		>
-			<FloatingActionButton key="trigger" theme={themeProp}>
+			<FloatingActionButton
+				key="trigger"
+				theme={themeProp}
+				onOver={toggleOpen}
+				onClick={() => {
+					const open = icache.get('open');
+					if (open) {
+						toggleClose();
+					} else {
+						toggleOpen();
+					}
+				}}
+			>
 				<Icon size="large" theme={themeProp} type={iconType} />
 			</FloatingActionButton>
-			<div key="actions" classes={[classes.actions, open && classes.open]}>
+			<div
+				key="actions"
+				classes={[classes.actions, open && classes.open]}
+				onpointerdown={toggleClose}
+			>
 				{actions.map((child, index) => {
 					const delayMultiplyer = open ? index : actions.length - index;
 					const calculatedDelay = `${delayMultiplyer * delay}ms`;

@@ -6,12 +6,13 @@ import Example from '../../Example';
 
 const factory = create({ icache });
 
-export default factory(function CustomIcon({ middleware: { icache } }) {
+export default factory(function TitleText({ middleware: { icache } }) {
 	const action = icache.getOrSet('action', '');
 	return (
 		<Example>
-			<SpeedDial iconType="editIcon">
+			<SpeedDial>
 				<Action
+					title="Mail"
 					onClick={() => {
 						icache.set('action', 'Mailing');
 					}}
@@ -19,6 +20,7 @@ export default factory(function CustomIcon({ middleware: { icache } }) {
 					<Icon type="mailIcon" />
 				</Action>
 				<Action
+					title="Save"
 					onClick={() => {
 						icache.set('action', 'Save');
 					}}
@@ -26,6 +28,7 @@ export default factory(function CustomIcon({ middleware: { icache } }) {
 					<Icon type="starIcon" />
 				</Action>
 				<Action
+					title="Time"
 					onClick={() => {
 						icache.set('action', 'Timing');
 					}}
@@ -33,6 +36,7 @@ export default factory(function CustomIcon({ middleware: { icache } }) {
 					<Icon type="clockIcon" />
 				</Action>
 				<Action
+					title="Look"
 					onClick={() => {
 						icache.set('action', 'Looking');
 					}}
@@ -40,6 +44,7 @@ export default factory(function CustomIcon({ middleware: { icache } }) {
 					<Icon type="eyeIcon" />
 				</Action>
 				<Action
+					title="Locate"
 					onClick={() => {
 						icache.set('action', 'Locating');
 					}}
