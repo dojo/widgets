@@ -125,7 +125,11 @@ export const SpeedDial = factory(function SpeedDial({
 		>
 			<FloatingActionButton
 				key="trigger"
-				theme={themeProp}
+				theme={theme.compose(
+					fabCss,
+					css,
+					'trigger'
+				)}
 				onOver={toggleOpen}
 				onClick={() => {
 					const open = icache.get('open');
@@ -140,11 +144,11 @@ export const SpeedDial = factory(function SpeedDial({
 			</FloatingActionButton>
 			<div
 				key="actions"
-				classes={[classes.actions, open && classes.open]}
+				classes={[classes.actions, open ? classes.open : undefined]}
 				onpointerdown={toggleClose}
 			>
 				{actions.map((child, index) => {
-					const delayMultiplyer = open ? index : actions.length - index;
+					const delayMultiplyer = open ? index : actions.length - index - 1;
 					const calculatedDelay = `${delayMultiplyer * delay}ms`;
 					return (
 						<div

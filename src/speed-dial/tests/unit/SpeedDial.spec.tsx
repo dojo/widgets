@@ -1,279 +1,350 @@
-// const { it, describe } = intern.getInterface('bdd');
-// const { assert } = intern.getPlugin('chai');
+const { it, describe } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
 
-// import harness from '@dojo/framework/testing/harness/harness';
-// import * as css from '../../../theme/default/speed-dial.m.css';
-// import { tsx } from '@dojo/framework/core/vdom';
-// import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
-// import * as sinon from 'sinon';
+import harness from '@dojo/framework/testing/harness/harness';
+import * as css from '../../../theme/default/speed-dial.m.css';
+import { tsx } from '@dojo/framework/core/vdom';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import * as sinon from 'sinon';
 
-// import SpeedDial, { SpeedDialIcon } from '../../index';
-// import FloatingActionButton from '../../../floating-action-button';
-// import * as fabCss from '../../../theme/default/floating-action-button.m.css';
-// import { compareTheme, noop } from '../../../common/tests/support/test-helpers';
+import SpeedDial, { Action } from '../../index';
+import FloatingActionButton from '../../../floating-action-button';
+import * as fabCss from '../../../theme/default/floating-action-button.m.css';
+import { compareTheme, noop } from '../../../common/tests/support/test-helpers';
+import Icon from '../../../icon';
 
-// const actions = () => [<div>Child-1</div>, <div>Child-2</div>];
-// const baseTemplate = assertionTemplate(() => (
-// 	<div
-// 		key="root"
-// 		classes={[undefined, css.root, false, css.right, false, false]}
-// 		onpointerleave={noop}
-// 	>
-// 		<FloatingActionButton
-// 			key="trigger"
-// 			theme={{
-// 				'@dojo/widgets/floating-action-button': fabCss
-// 			}}
-// 			onOver={noop}
-// 			onClick={noop}
-// 		>
-// 			<SpeedDialIcon assertion-key="speedDialIcon" open={undefined} />
-// 		</FloatingActionButton>
-// 		<div key="actions" classes={[css.actions, css.actionsClosed]}>
-// 			<div key="action-0" classes={[css.action, false, css.closed, undefined]}>
-// 				<div>Child-1</div>
-// 			</div>
-// 			<div key="action-1" classes={[css.action, false, css.closed, undefined]}>
-// 				<div>Child-2</div>
-// 			</div>
-// 		</div>
-// 	</div>
-// ));
+const baseTemplate = assertionTemplate(() => (
+	<div
+		key="root"
+		classes={[undefined, css.root, false, css.right, false, false]}
+		onmouseleave={noop}
+	>
+		<FloatingActionButton
+			key="trigger"
+			theme={{
+				'@dojo/widgets/floating-action-button': fabCss
+			}}
+			onOver={noop}
+			onClick={noop}
+		>
+			<Icon size="large" theme={undefined} type="plusIcon" />
+		</FloatingActionButton>
+		<div key="actions" classes={[css.actions, undefined]} onpointerdown={noop}>
+			<div
+				key="action-wrapper-0"
+				styles={{ transitionDelay: '30ms' }}
+				classes={[css.action, css.actionTransition]}
+			>
+				<Action key="edit" onClick={noop}>
+					<Icon type="editIcon" />
+				</Action>
+			</div>
+			<div
+				key="action-wrapper-1"
+				styles={{ transitionDelay: '0ms' }}
+				classes={[css.action, css.actionTransition]}
+			>
+				<Action key="star" onClick={noop}>
+					<Icon type="starIcon" />
+				</Action>
+			</div>
+		</div>
+	</div>
+));
 
-// describe('SpeedDial', () => {
-// 	it('renders', () => {
-// 		const h = harness(() => <SpeedDial>{{ actions }}</SpeedDial>, [compareTheme]);
-// 		h.expect(baseTemplate);
-// 	});
+describe('SpeedDial', () => {
+	it('renders with actions', () => {
+		const h = harness(
+			() => (
+				<SpeedDial>
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(baseTemplate);
+	});
 
-// 	it('renders initially open', () => {
-// 		const h = harness(() => <SpeedDial initialOpen={true}>{{ actions }}</SpeedDial>, [
-// 			compareTheme
-// 		]);
-// 		h.expect(
-// 			baseTemplate
-// 				.setProperty('@speedDialIcon', 'open', true)
-// 				.setProperty('@actions', 'classes', [css.actions, false])
-// 				.setProperty('@action-0', 'classes', [css.action, false, false, undefined])
-// 				.setProperty('@action-1', 'classes', [css.action, false, false, undefined])
-// 		);
-// 	});
+	it('renders initially open', () => {
+		const h = harness(
+			() => (
+				<SpeedDial initialOpen>
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate
+				.setProperty('@actions', 'classes', [css.actions, css.open])
+				.setProperty('@action-wrapper-0', 'styles', { transitionDelay: '0ms' })
+				.setProperty('@action-wrapper-1', 'styles', { transitionDelay: '30ms' })
+		);
+	});
 
-// 	it('renders with other directions', () => {
-// 		let h = harness(() => <SpeedDial direction="left">{{ actions }}</SpeedDial>, [
-// 			compareTheme
-// 		]);
-// 		h.expect(
-// 			baseTemplate.setProperty(':root', 'classes', [
-// 				undefined,
-// 				css.root,
-// 				css.left,
-// 				false,
-// 				false,
-// 				false
-// 			])
-// 		);
+	it('accepts different transition delay', () => {
+		const h = harness(
+			() => (
+				<SpeedDial delay={50}>
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate
+				.setProperty('@action-wrapper-0', 'styles', { transitionDelay: '50ms' })
+				.setProperty('@action-wrapper-1', 'styles', { transitionDelay: '0ms' })
+		);
+	});
 
-// 		h = harness(() => <SpeedDial direction="down">{{ actions }}</SpeedDial>, [compareTheme]);
-// 		h.expect(
-// 			baseTemplate.setProperty(':root', 'classes', [
-// 				undefined,
-// 				css.root,
-// 				false,
-// 				false,
-// 				css.down,
-// 				false
-// 			])
-// 		);
+	it('direction up', () => {
+		const h = harness(
+			() => (
+				<SpeedDial direction="up">
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				false,
+				false,
+				false,
+				css.up
+			])
+		);
+	});
 
-// 		h = harness(() => <SpeedDial direction="up">{{ actions }}</SpeedDial>, [compareTheme]);
-// 		h.expect(
-// 			baseTemplate.setProperty(':root', 'classes', [
-// 				undefined,
-// 				css.root,
-// 				false,
-// 				false,
-// 				false,
-// 				css.up
-// 			])
-// 		);
-// 	});
+	it('direction down', () => {
+		const h = harness(
+			() => (
+				<SpeedDial direction="down">
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				false,
+				false,
+				css.down,
+				false
+			])
+		);
+	});
 
-// 	it('renders open', () => {
-// 		const h = harness(() => <SpeedDial open={true}>{{ actions }}</SpeedDial>, [compareTheme]);
-// 		h.expect(
-// 			baseTemplate
-// 				.setProperty('@speedDialIcon', 'open', true)
-// 				.setProperty('@actions', 'classes', [css.actions, false])
-// 				.setProperty('@action-0', 'classes', [css.action, false, false, undefined])
-// 				.setProperty('@action-1', 'classes', [css.action, false, false, undefined])
-// 		);
-// 	});
+	it('direction left', () => {
+		const h = harness(
+			() => (
+				<SpeedDial direction="left">
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				css.left,
+				false,
+				false,
+				false
+			])
+		);
+	});
 
-// 	it('shows animations when transitioning', () => {
-// 		const h = harness(() => <SpeedDial>{{ actions }}</SpeedDial>, [compareTheme]);
-// 		h.expect(baseTemplate);
+	it('renders controlled open', () => {
+		const h = harness(
+			() => (
+				<SpeedDial open>
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate
+				.setProperty('@actions', 'classes', [css.actions, css.open])
+				.setProperty('@action-wrapper-0', 'styles', { transitionDelay: '0ms' })
+				.setProperty('@action-wrapper-1', 'styles', { transitionDelay: '30ms' })
+		);
+	});
 
-// 		h.trigger('@trigger', 'onOver');
-// 		h.expect(
-// 			baseTemplate
-// 				.setProperty('@speedDialIcon', 'open', true)
-// 				.setProperty('@actions', 'classes', [css.actions, false])
-// 				.setProperty('@action-0', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					false,
-// 					undefined
-// 				])
-// 				.setProperty('@action-1', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					false,
-// 					css.action4
-// 				])
-// 		);
-// 		h.trigger('@root', 'onpointerleave');
+	it('opens and closes when clicked', () => {
+		const onOpenStub = sinon.stub();
+		const onCloseStub = sinon.stub();
+		const h = harness(
+			() => (
+				<SpeedDial onOpen={onOpenStub} onClose={onCloseStub}>
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(baseTemplate);
 
-// 		h.expect(
-// 			baseTemplate
-// 				.setProperty('@speedDialIcon', 'open', false)
-// 				.setProperty('@action-0', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					css.closed,
-// 					css.action4
-// 				])
-// 				.setProperty('@action-1', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					css.closed,
-// 					undefined
-// 				])
-// 		);
-// 	});
+		h.trigger('@trigger', 'onClick');
+		h.expect(
+			baseTemplate
+				.setProperty('@actions', 'classes', [css.actions, css.open])
+				.setProperty('@action-wrapper-0', 'styles', { transitionDelay: '0ms' })
+				.setProperty('@action-wrapper-1', 'styles', { transitionDelay: '30ms' })
+		);
 
-// 	it('opens when clicked', () => {
-// 		const h = harness(() => <SpeedDial>{{ actions }}</SpeedDial>, [compareTheme]);
-// 		h.expect(baseTemplate);
+		assert.isTrue(onOpenStub.calledOnce);
 
-// 		// Opens on click
-// 		h.trigger('@trigger', 'onClick');
-// 		h.expect(
-// 			baseTemplate
-// 				.setProperty('@speedDialIcon', 'open', true)
-// 				.setProperty('@actions', 'classes', [css.actions, false])
-// 				.setProperty('@action-0', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					false,
-// 					undefined
-// 				])
-// 				.setProperty('@action-1', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					false,
-// 					css.action4
-// 				])
-// 		);
-// 		// Closes on second click (pointer leave after onOver)
-// 		h.trigger('@trigger', 'onOver');
-// 		h.trigger('@root', 'onpointerleave');
-// 		h.expect(
-// 			baseTemplate
-// 				.setProperty('@speedDialIcon', 'open', false)
-// 				.setProperty('@action-0', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					css.closed,
-// 					css.action4
-// 				])
-// 				.setProperty('@action-1', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					css.closed,
-// 					undefined
-// 				])
-// 		);
-// 		// Same click event, doesn't open
-// 		h.trigger('@trigger', 'onClick');
-// 		h.expect(
-// 			baseTemplate
-// 				.setProperty('@speedDialIcon', 'open', false)
-// 				.setProperty('@action-0', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					css.closed,
-// 					css.action4
-// 				])
-// 				.setProperty('@action-1', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					css.closed,
-// 					undefined
-// 				])
-// 		);
-// 		// New click event, opens
-// 		h.trigger('@trigger', 'onClick');
-// 		h.expect(
-// 			baseTemplate
-// 				.setProperty('@speedDialIcon', 'open', true)
-// 				.setProperty('@actions', 'classes', [css.actions, false])
-// 				.setProperty('@action-0', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					false,
-// 					undefined
-// 				])
-// 				.setProperty('@action-1', 'classes', [
-// 					css.action,
-// 					css.actionTransition,
-// 					false,
-// 					css.action4
-// 				])
-// 		);
-// 	});
+		h.trigger('@trigger', 'onClick');
+		h.expect(baseTemplate);
 
-// 	it('calls callbacks when transitioning', () => {
-// 		const onOpen = sinon.spy();
-// 		const onClose = sinon.spy();
-// 		const h = harness(
-// 			() => (
-// 				<SpeedDial onOpen={onOpen} onClose={onClose}>
-// 					{{ actions }}
-// 				</SpeedDial>
-// 			),
-// 			[compareTheme]
-// 		);
-// 		h.expect(baseTemplate);
+		assert.isTrue(onCloseStub.calledOnce);
+	});
 
-// 		h.trigger('@trigger', 'onOver');
-// 		assert.isTrue(onOpen.calledOnce);
-// 		h.trigger('@root', 'onpointerleave');
-// 		assert.isTrue(onClose.calledOnce);
-// 	});
+	it('opens and closes on mouse enter / leave', () => {
+		const onOpenStub = sinon.stub();
+		const onCloseStub = sinon.stub();
+		const h = harness(
+			() => (
+				<SpeedDial onOpen={onOpenStub} onClose={onCloseStub}>
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(baseTemplate);
 
-// 	it('passes close callback and direction to renderer', () => {
-// 		const onClose = sinon.spy();
-// 		const h = harness(
-// 			() => (
-// 				<SpeedDial onClose={onClose}>
-// 					{{
-// 						actions(onClose, direction) {
-// 							onClose();
-// 							return [direction];
-// 						}
-// 					}}
-// 				</SpeedDial>
-// 			),
-// 			[compareTheme]
-// 		);
-// 		h.expect(
-// 			baseTemplate.setChildren('@actions', () => [
-// 				<div key="action-0" classes={[css.action, false, css.closed, undefined]}>
-// 					right
-// 				</div>
-// 			])
-// 		);
-// 		assert.isTrue(onClose.calledOnce);
-// 	});
-// });
+		h.trigger('@trigger', 'onOver');
+		h.expect(
+			baseTemplate
+				.setProperty('@actions', 'classes', [css.actions, css.open])
+				.setProperty('@action-wrapper-0', 'styles', { transitionDelay: '0ms' })
+				.setProperty('@action-wrapper-1', 'styles', { transitionDelay: '30ms' })
+		);
+
+		assert.isTrue(onOpenStub.calledOnce);
+
+		h.trigger('@root', 'onmouseleave');
+		h.expect(baseTemplate);
+
+		assert.isTrue(onCloseStub.calledOnce);
+	});
+
+	it('does not close on pointer leave after clicked open', () => {
+		const onOpenStub = sinon.stub();
+		const onCloseStub = sinon.stub();
+		const h = harness(
+			() => (
+				<SpeedDial onOpen={onOpenStub} onClose={onCloseStub}>
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(baseTemplate);
+
+		h.trigger('@trigger', 'onClick');
+		const openTemplate = baseTemplate
+			.setProperty('@actions', 'classes', [css.actions, css.open])
+			.setProperty('@action-wrapper-0', 'styles', { transitionDelay: '0ms' })
+			.setProperty('@action-wrapper-1', 'styles', { transitionDelay: '30ms' });
+		h.expect(openTemplate);
+
+		assert.isTrue(onOpenStub.calledOnce);
+
+		h.trigger('@root', 'onpointerleave');
+		h.expect(openTemplate);
+
+		assert.isTrue(onCloseStub.notCalled);
+	});
+
+	it('closes when an action is clicked', () => {
+		const onOpenStub = sinon.stub();
+		const onCloseStub = sinon.stub();
+		const h = harness(
+			() => (
+				<SpeedDial onOpen={onOpenStub} onClose={onCloseStub}>
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(baseTemplate);
+
+		h.trigger('@trigger', 'onClick');
+		h.expect(
+			baseTemplate
+				.setProperty('@actions', 'classes', [css.actions, css.open])
+				.setProperty('@action-wrapper-0', 'styles', { transitionDelay: '0ms' })
+				.setProperty('@action-wrapper-1', 'styles', { transitionDelay: '30ms' })
+		);
+
+		assert.isTrue(onOpenStub.calledOnce);
+
+		h.trigger('@actions', 'onpointerdown');
+		h.expect(baseTemplate);
+
+		assert.isTrue(onCloseStub.calledOnce);
+	});
+});
