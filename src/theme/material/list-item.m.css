@@ -2,6 +2,9 @@
 	composes: mdc-list-item from '@material/list/dist/mdc.list.css';
 	background: var(--mdc-raised-surface-background);
 	color: var(--mdc-text-color);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .root:hover {
