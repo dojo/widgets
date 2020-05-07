@@ -34,6 +34,8 @@ export interface ButtonProperties {
 	value?: string;
 	/** `id` set on the root button DOM node */
 	widgetId?: string;
+	/** The title text for the button node */
+	title?: string;
 }
 
 const factory = create({ focus, theme }).properties<ButtonProperties>();
@@ -58,7 +60,8 @@ export const Button = factory(function Button({
 		onDown,
 		onUp,
 		onBlur,
-		onFocus
+		onFocus,
+		title
 	} = properties();
 
 	const themeCss = theme.classes(css);
@@ -72,6 +75,7 @@ export const Button = factory(function Button({
 				disabled ? themeCss.disabled : null,
 				pressed ? themeCss.pressed : null
 			]}
+			title={title}
 			disabled={disabled}
 			id={idBase}
 			focus={focus.shouldFocus()}

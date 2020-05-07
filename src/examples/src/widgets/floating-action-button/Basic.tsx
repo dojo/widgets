@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import FloatingActionButton, { Icon } from '@dojo/widgets/floating-action-button';
+import FloatingActionButton from '@dojo/widgets/floating-action-button';
 import Example from '../../Example';
+import { Icon } from '@dojo/widgets/icon';
 
 const factory = create();
 
@@ -8,7 +9,7 @@ export default factory(function Basic() {
 	return (
 		<Example>
 			<FloatingActionButton>
-				<Icon type="plusIcon" />
+				<Icon size="large" type="plusIcon" />
 			</FloatingActionButton>
 		</Example>
 	);

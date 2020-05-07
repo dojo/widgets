@@ -1,4 +1,7 @@
 export const root: string;
+export const medium: string;
+export const large: string;
+export const small: string;
 export const icon: string;
 export const clockIcon: string;
 export const downIcon: string;

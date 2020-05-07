@@ -11,6 +11,18 @@
 .root {
 }
 
+.medium {
+	font-size: 24px;
+}
+
+.large {
+	font-size: 36px;
+}
+
+.small {
+	font-size: 18px;
+}
+
 /* Added to the icon */
 .icon {
 	/* use !important to prevent issues with browser extensions that change fonts */

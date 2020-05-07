@@ -1,0 +1,51 @@
+/* Root of the speed dial component */
+.root {
+}
+/* Class applied to the root when its direction is "up" */
+.up {
+}
+/* Class applied to the root when its direction is "down" */
+.down {
+}
+/* Class applied to the root when its direction is "left" */
+.left {
+}
+/* Class applied to the root when its direction is "right" */
+.right {
+}
+/* Class applied to the icon when it the component is open */
+.iconOpen {
+}
+/* Class applied to the actions wrapper */
+.actions {
+}
+/* Class applied to the action wrapper when open */
+.open {
+}
+/* Class applied to each action */
+.action {
+}
+/* Class applied to each action's tooltip */
+.staticTooltip {
+}
+/* Class applied to each action when closed */
+.closed {
+}
+/* Transition style class applied to action tooltips and actions after initial render */
+.actionTransition {
+}
+/* Class applied to the first action when closing, and the last when opening */
+.action0 {
+}
+/* Class applied to the second action when closing, and the second to last when opening */
+.action1 {
+}
+/* Class applied to the third action when closing, and the third to last when opening */
+.action2 {
+}
+/* Class applied to the fourth action when closing, and the fourth to last when opening */
+.action3 {
+}
+/* Class applied to the fifth action when closing, and the fifth to last when opening */
+.action4 {
+}

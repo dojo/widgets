@@ -9,14 +9,15 @@
 	padding: 0;
 }
 
-.root .icon {
-	font-size: var(--font-size-icon);
-}
-
 .root:not(.extended) {
 	border-radius: 50%;
 	width: 56px;
 	height: 56px;
+}
+
+.root.small {
+	width: 40px;
+	height: 40px;
 }
 
 .root:not(.pressed) {

@@ -61,6 +61,7 @@ import BasicEmailInput from './widgets/email-input/Basic';
 import Advanced from './widgets/grid/Advanced';
 import BasicFab from './widgets/floating-action-button/Basic';
 import ExtendedFab from './widgets/floating-action-button/Extended';
+import SmallFab from './widgets/floating-action-button/Small';
 import BasicForm from './widgets/form/Basic';
 import ControlledForm from './widgets/form/Basic';
 import ValidationForm from './widgets/form/Validation';
@@ -87,6 +88,7 @@ import Sorting from './widgets/grid/Sorting';
 import AltTextIcon from './widgets/icon/AltText';
 import BasicIcons from './widgets/icon/Basic';
 import IconButton from './widgets/icon/IconButton';
+import IconSizes from './widgets/icon/Sizes';
 import BasicLabel from './widgets/label/Basic';
 import HiddenLabel from './widgets/label/HiddenLabel';
 import InvalidLabel from './widgets/label/InvalidLabel';
@@ -167,6 +169,10 @@ import ErrorSnackbar from './widgets/snackbar/Error';
 import LeadingSnackbar from './widgets/snackbar/Leading';
 import StackedSnackbar from './widgets/snackbar/Stacked';
 import SuccessSnackbar from './widgets/snackbar/Success';
+import BasicSpeedDial from './widgets/speed-dial/Basic';
+import DirectionSpeedDial from './widgets/speed-dial/Direction';
+import CustomIconSpeedDial from './widgets/speed-dial/CustomIcons';
+import TitleText from './widgets/speed-dial/TitleText';
 import BasicSwitch from './widgets/switch/Basic';
 import DisabledSwitch from './widgets/switch/Disabled';
 import BasicTabContainer from './widgets/tab-container/Basic';
@@ -239,6 +245,7 @@ import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark
 
 `!has('docs')`;
 import * as testsContext from './tests';
+
 const tests =
 	typeof testsContext !== 'undefined' && typeof testsContext.default !== 'undefined'
 		? testsContext.default
@@ -701,6 +708,11 @@ export const config = {
 					title: 'Extended FAB',
 					module: ExtendedFab,
 					filename: 'Extended'
+				},
+				{
+					title: 'Small FAB',
+					module: SmallFab,
+					filename: 'Small'
 				}
 			]
 		},
@@ -887,6 +899,11 @@ export const config = {
 					filename: 'IconButton',
 					module: IconButton,
 					title: 'Icon within a button'
+				},
+				{
+					filename: 'Sizes',
+					module: IconSizes,
+					title: 'Icon Sizes'
 				}
 			],
 			overview: {
@@ -1493,6 +1510,31 @@ export const config = {
 					title: 'Leading Snackbar',
 					sandbox: true,
 					size: 'small'
+				}
+			]
+		},
+		'speed-dial': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicSpeedDial
+				}
+			},
+			examples: [
+				{
+					filename: 'Direction',
+					module: DirectionSpeedDial,
+					title: 'With a direction'
+				},
+				{
+					filename: 'CustomIcons',
+					module: CustomIconSpeedDial,
+					title: 'With custom icons'
+				},
+				{
+					filename: 'TitleText',
+					module: TitleText,
+					title: 'Title Text on Actions'
 				}
 			]
 		},

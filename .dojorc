@@ -47,6 +47,7 @@
 			"src/slide-pane",
 			"src/slider",
 			"src/snackbar",
+			"src/speed-dial",
 			"src/switch",
 			"src/tab-container",
 			"src/text-area",

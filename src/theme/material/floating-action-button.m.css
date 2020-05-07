@@ -2,6 +2,10 @@
 	composes: mdc-fab from '@material/fab/dist/mdc.fab.css';
 }
 
+.small {
+	composes: mdc-fab--mini from '@material/fab/dist/mdc.fab.css';
+}
+
 .effect {
 	composes: mdc-fab__ripple from '@material/fab/dist/mdc.fab.css';
 }
