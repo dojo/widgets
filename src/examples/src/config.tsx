@@ -223,6 +223,7 @@ import BasicHeader from './widgets/header/Basic';
 import LeadingHeader from './widgets/header/Leading';
 import StickyHeader from './widgets/header/Sticky';
 import TrailingHeader from './widgets/header/Trailing';
+import BasicRate from './widgets/rate/Basic';
 import BasicGlobalEvent from './widgets/global-event/Basic';
 import Pagination from './widgets/pagination/Basic';
 import PaginationPageSizeSelector from './widgets/pagination/PageSizeSelector';
@@ -1050,6 +1051,14 @@ export const config = {
 					module: NoRules
 				}
 			]
+		},
+		rate: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicRate
+				}
+			}
 		},
 		'trigger-popup': {
 			overview: {

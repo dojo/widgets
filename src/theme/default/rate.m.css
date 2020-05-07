@@ -1,0 +1,13 @@
+.root {
+	display: inline-block;
+}
+
+.icon {
+	cursor: pointer;
+	transition: color cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.checked {
+	color: gold;
+	fill: gold;
+}
