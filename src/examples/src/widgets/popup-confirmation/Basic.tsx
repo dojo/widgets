@@ -13,13 +13,13 @@ export default factory(function Basic() {
 			<div classes={[css.root, css.vcenter]}>
 				<PopupConfirmation>
 					{{
-						content: () => 'Are you sure you want to delete this?',
+						content: 'Are you sure you want to delete this?',
 						trigger: (open) => <Button onClick={open}>Trigger Below</Button>
 					}}
 				</PopupConfirmation>
 				<PopupConfirmation position="above">
 					{{
-						content: () => 'Are you sure you want to delete this?',
+						content: 'Are you sure you want to delete this?',
 						trigger: (open) => <Button onClick={open}>Trigger Above</Button>
 					}}
 				</PopupConfirmation>

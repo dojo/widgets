@@ -58,7 +58,7 @@ describe('PopupConfirmation', () => {
 			<PopupConfirmation>
 				{{
 					trigger: () => <button>Delete</button>,
-					content: () => 'Sure?'
+					content: 'Sure?'
 				}}
 			</PopupConfirmation>
 		));
@@ -72,7 +72,7 @@ describe('PopupConfirmation', () => {
 			<PopupConfirmation>
 				{{
 					trigger: () => expected,
-					content: () => 'Sure?'
+					content: 'Sure?'
 				}}
 			</PopupConfirmation>
 		));
@@ -87,7 +87,7 @@ describe('PopupConfirmation', () => {
 			<PopupConfirmation>
 				{{
 					trigger: () => 'Delete',
-					content: () => content
+					content
 				}}
 			</PopupConfirmation>
 		));
@@ -102,7 +102,7 @@ describe('PopupConfirmation', () => {
 			<PopupConfirmation cancelText="No Go" confirmText="Go Go">
 				{{
 					trigger: () => 'Delete',
-					content: () => content
+					content
 				}}
 			</PopupConfirmation>
 		));
@@ -118,7 +118,7 @@ describe('PopupConfirmation', () => {
 			<PopupConfirmation onCancel={onCancel} onConfirm={onConfirm}>
 				{{
 					trigger: () => 'Delete',
-					content: () => 'Sure?'
+					content: 'Sure?'
 				}}
 			</PopupConfirmation>
 		));
@@ -142,7 +142,7 @@ describe('PopupConfirmation', () => {
 			<PopupConfirmation onCancel={onCancel} onConfirm={onConfirm}>
 				{{
 					trigger: () => 'Delete',
-					content: () => 'Sure?'
+					content: 'Sure?'
 				}}
 			</PopupConfirmation>
 		));
