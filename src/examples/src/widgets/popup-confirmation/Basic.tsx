@@ -3,6 +3,7 @@ import PopupConfirmation from '@dojo/widgets/popup-confirmation';
 import Example from '../../Example';
 
 import * as css from './styles/Basic.m.css';
+import Button from '@dojo/widgets/button';
 
 const factory = create();
 
@@ -13,13 +14,13 @@ export default factory(function Basic() {
 				<PopupConfirmation>
 					{{
 						content: () => 'Are you sure you want to delete this?',
-						trigger: 'Trigger Below'
+						trigger: (open) => <Button onClick={open}>Trigger Below</Button>
 					}}
 				</PopupConfirmation>
 				<PopupConfirmation position="above">
 					{{
 						content: () => 'Are you sure you want to delete this?',
-						trigger: 'Trigger Above'
+						trigger: (open) => <Button onClick={open}>Trigger Above</Button>
 					}}
 				</PopupConfirmation>
 			</div>

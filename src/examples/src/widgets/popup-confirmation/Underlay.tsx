@@ -3,6 +3,7 @@ import PopupConfirmation from '@dojo/widgets/popup-confirmation';
 import Example from '../../Example';
 
 import * as css from './styles/Basic.m.css';
+import Button from '@dojo/widgets/button';
 
 const factory = create();
 
@@ -13,7 +14,7 @@ export default factory(function Underlay() {
 				<PopupConfirmation underlayVisible={true}>
 					{{
 						content: () => 'Are you sure you want to delete this?',
-						trigger: 'Trigger With Underlay'
+						trigger: (open) => <Button onClick={open}>Trigger With Underlay</Button>
 					}}
 				</PopupConfirmation>
 			</div>
