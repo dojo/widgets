@@ -19,8 +19,8 @@ export interface PopupConfirmationProperties extends BasePopupProperties {
 }
 
 export interface PopupConfirmationChildren {
+	trigger: (toggleOpen: () => void) => RenderResult;
 	content(): RenderResult;
-	trigger: string | ((open: () => void) => RenderResult);
 }
 
 const factory = create({ theme, i18n })
@@ -41,12 +41,7 @@ export default factory(function PopupConfirmation({
 		<div classes={[classes.root, theme.variant()]}>
 			<TriggerPopup key="trigger-popup" {...otherProperties}>
 				{{
-					trigger: (open) =>
-						typeof trigger === 'string' ? (
-							<Button onClick={() => open()}>{trigger}</Button>
-						) : (
-							trigger(open)
-						),
+					trigger,
 					content: (close, position) => (
 						<div
 							classes={[

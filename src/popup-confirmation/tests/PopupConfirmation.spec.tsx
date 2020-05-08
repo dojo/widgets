@@ -57,27 +57,13 @@ describe('PopupConfirmation', () => {
 		const h = harness(() => (
 			<PopupConfirmation>
 				{{
-					trigger: 'Delete',
+					trigger: () => <button>Delete</button>,
 					content: () => 'Sure?'
 				}}
 			</PopupConfirmation>
 		));
 
 		h.expect(baseTemplate);
-	});
-
-	it('Renders with built-in button trigger', () => {
-		const h = harness(() => (
-			<PopupConfirmation>
-				{{
-					trigger: 'Delete',
-					content: () => 'Sure?'
-				}}
-			</PopupConfirmation>
-		));
-
-		const trigger = h.trigger('@trigger-popup', (node: any) => node.children[0].trigger, noop);
-		h.expect(() => <Button onClick={noop}>Delete</Button>, () => trigger);
 	});
 
 	it('Renders with custom trigger', () => {
