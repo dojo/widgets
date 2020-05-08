@@ -4,6 +4,9 @@
 	color: var(--color-text-primary);
 	font-family: var(--font-family);
 	cursor: pointer;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .active {
