@@ -13,7 +13,7 @@ export default factory(function Underlay() {
 			<div classes={css.root}>
 				<PopupConfirmation underlayVisible={true}>
 					{{
-						content: () => 'Are you sure you want to delete this?',
+						content: 'Are you sure you want to delete this?',
 						trigger: (open) => <Button onClick={open}>Trigger With Underlay</Button>
 					}}
 				</PopupConfirmation>

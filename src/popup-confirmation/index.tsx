@@ -20,7 +20,7 @@ export interface PopupConfirmationProperties extends BasePopupProperties {
 
 export interface PopupConfirmationChildren {
 	trigger: (toggleOpen: () => void) => RenderResult;
-	content(): RenderResult;
+	content: RenderResult;
 }
 
 const factory = create({ theme, i18n })
@@ -50,7 +50,7 @@ export default factory(function PopupConfirmation({
 							]}
 						>
 							<div classes={classes.popup}>
-								<div classes={classes.popupContent}>{content()}</div>
+								<div classes={classes.popupContent}>{content}</div>
 								<div classes={classes.popupControls}>
 									<Button
 										key="cancel-button"
