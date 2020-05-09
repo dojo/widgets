@@ -12,14 +12,24 @@ import * as css from '../theme/default/popup-confirmation.m.css';
 import bundle from './nls/PopupConfirmation';
 
 export interface PopupConfirmationProperties extends BasePopupProperties {
+	/* Callback when the dialog has been confirmed; dialog will be closed */
 	onConfirm?(): void;
+
+	/* Callback when the dialog has been canceled; dialog will be closed */
 	onCancel?(): void;
+
+	/* Custom text for cancel button; defaults to "No" */
 	cancelText?: string;
+
+	/* Custom text for confirm button; default to "Yes" */
 	confirmText?: string;
 }
 
 export interface PopupConfirmationChildren {
+	/* Callback for rendering the trigger content */
 	trigger: (toggleOpen: () => void) => RenderResult;
+
+	/* Content for confirmation dialog */
 	content: RenderResult;
 }
 
