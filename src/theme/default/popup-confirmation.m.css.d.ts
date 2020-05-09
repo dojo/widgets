@@ -5,7 +5,3 @@ export const above: string;
 export const below: string;
 export const popupContent: string;
 export const popupControls: string;
-export const popupConfirm: string;
-export const popupCancel: string;
-export const confirmButton: string;
-export const cancelButton: string;
