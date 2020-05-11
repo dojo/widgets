@@ -1,7 +1,3 @@
-:root {
-	--marker-size: 9px;
-}
-
 .popupContainer {
 	position: relative;
 	min-width: 300px;
@@ -10,13 +6,13 @@
 
 .above {
 	left: 50%;
-	bottom: calc(var(--marker-size) + var(--spacing-regular));
+	bottom: calc(9px + var(--spacing-regular));
 	transform: translateX(-50%);
 }
 
 .below {
 	left: 50%;
-	top: calc(var(--marker-size) + var(--spacing-regular));
+	top: calc(9px + var(--spacing-regular));
 	transform: translateX(-50%);
 }
 
@@ -30,25 +26,25 @@
 
 .popup::before {
 	background-color: var(--color-background);
-	border: calc(var(--marker-size) / 2) solid var(--color-background);
+	border: calc(9px / 2) solid var(--color-background);
 	content: '';
 	display: block;
-	height: var(--marker-size);
+	height: 9px;
 	position: absolute;
 	transform: rotate(45deg);
-	width: var(--marker-size);
+	width: 9px;
 }
 
 .below .popup::before {
 	box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.08);
-	left: calc(50% - calc(var(--marker-size) / 2));
-	top: calc(var(--marker-size) / -2);
+	left: calc(50% - calc(9px / 2));
+	top: calc(9px / -2);
 }
 
 .above .popup::before {
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.08);
-	left: calc(50% - calc(var(--marker-size) / 2));
-	bottom: calc(var(--marker-size) / -2);
+	left: calc(50% - calc(9px / 2));
+	bottom: calc(9px / -2);
 }
 
 .popupControls {
