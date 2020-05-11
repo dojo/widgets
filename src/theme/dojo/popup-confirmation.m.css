@@ -53,7 +53,7 @@
 
 .popupControls {
 	display: flex;
-	justify-content: right;
+	justify-content: flex-end;
 	margin-top: var(--spacing-large);
 }
 
