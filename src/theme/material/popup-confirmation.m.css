@@ -27,7 +27,7 @@
 
 .popupControls {
 	display: flex;
-	justify-content: right;
+	justify-content: flex-end;
 	margin-top: calc(var(--mdc-grid-base) * 2);
 }
 
