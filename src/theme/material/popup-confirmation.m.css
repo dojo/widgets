@@ -1,7 +1,8 @@
 .popupContainer {
+	composes: mdc-dialog from '@material/dialog/dist/mdc.dialog.css';
+	display: block;
 	position: relative;
 	min-width: 300px;
-	z-index: var(--zindex-dialog);
 }
 
 .above {
@@ -17,12 +18,8 @@
 }
 
 .popup {
-	background-color: var(--mdc-theme-background);
-	border-radius: var(--mdc-theme-border-radius);
-	box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.15), 0 6px 16px 0 rgba(0, 0, 0, 0.1),
-		0 9px 28px 8px rgba(0, 0, 0, 0.07);
-	color: var(--mdc-text-color);
-	padding: 15px;
+	composes: mdc-dialog__surface from '@material/dialog/dist/mdc.dialog.css';
+	padding: calc(var(--mdc-theme-grid-base) * 2);
 }
 
 .popupControls {
