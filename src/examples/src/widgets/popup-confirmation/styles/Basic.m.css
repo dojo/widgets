@@ -1,15 +1,8 @@
 .root {
 	align-items: center;
+	justify-content: center;
 	display: flex;
 	flex-direction: column;
-
-	position: absolute;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
-}
-
-.vcenter {
-	justify-content: center;
+	height: 100%;
+	width: 100%;
 }
