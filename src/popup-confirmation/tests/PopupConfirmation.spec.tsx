@@ -2,13 +2,11 @@ const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
-import { RenderResult } from '@dojo/framework/core/interfaces';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import select from '@dojo/framework/testing/harness/support/selector';
 import { createHarness, compareTheme } from '../../common/tests/support/test-helpers';
 
 import Button from '../../button';
-import { PopupPosition } from '../../popup';
 import TriggerPopup from '../../trigger-popup';
 import PopupConfirmation from '../';
 
@@ -31,27 +29,17 @@ describe('PopupConfirmation', () => {
 		</div>
 	));
 
-	const popupTemplate = (
-		content: RenderResult,
-		cancelText = messages.no,
-		confirmText = messages.yes,
-		position: PopupPosition = 'below'
-	) =>
-		assertionTemplate(() => (
-			<div classes={[css.popupContainer, css[position]]}>
-				<div classes={css.popup}>
-					<div classes={css.popupContent}>{content}</div>
-					<div classes={css.popupControls}>
-						<Button key="cancel-button" type="button" theme={{}} onClick={noop}>
-							{cancelText}
-						</Button>
-						<Button key="confirm-button" type="button" theme={{}} onClick={noop}>
-							{confirmText}
-						</Button>
-					</div>
+	const popupTemplate = assertionTemplate(() => (
+		<div classes={[css.popupContainer, css['below']]}>
+			<div classes={css.popup}>
+				<div assertion-key="content" classes={css.popupContent} />
+				<div classes={css.popupControls}>
+					<Button key="cancel-button" type="button" theme={{}} onClick={noop} />
+					<Button key="confirm-button" type="button" theme={{}} onClick={noop} />
 				</div>
 			</div>
-		));
+		</div>
+	));
 
 	it('Renders', () => {
 		const h = harness(() => (
@@ -93,7 +81,13 @@ describe('PopupConfirmation', () => {
 		));
 
 		const actual = h.trigger('@trigger-popup', (node: any) => node.children[0].content, noop);
-		h.expect(popupTemplate(content), () => actual);
+		h.expect(
+			popupTemplate
+				.replaceChildren('@content', [content])
+				.replaceChildren('@cancel-button', [messages.no])
+				.replaceChildren('@confirm-button', [messages.yes]),
+			() => actual
+		);
 	});
 
 	it('Renders content with custom control labels', () => {
@@ -108,7 +102,13 @@ describe('PopupConfirmation', () => {
 		));
 
 		const actual = h.trigger('@trigger-popup', (node: any) => node.children[0].content, noop);
-		h.expect(popupTemplate(content, 'No Go', 'Go Go'), () => actual);
+		h.expect(
+			popupTemplate
+				.replaceChildren('@content', [content])
+				.replaceChildren('@cancel-button', ['No Go'])
+				.replaceChildren('@confirm-button', ['Go Go']),
+			() => actual
+		);
 	});
 
 	it('Raises event/closes content on cancel', () => {
