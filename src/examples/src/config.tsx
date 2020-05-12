@@ -244,6 +244,10 @@ import CustomIconResult from './widgets/result/CustomIcon';
 import BasicWizard from './widgets/wizard/Basic';
 import VerticalWizard from './widgets/wizard/Vertical';
 import ErrorWizard from './widgets/wizard/Error';
+import BasicTree from './widgets/tree/Basic';
+import CheckableTree from './widgets/tree/Checkable';
+import CustomIconsTree from './widgets/tree/CustomIcons';
+import AdvancedTree from './widgets/tree/Advanced';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -1780,6 +1784,31 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicTooltip
+				}
+			}
+		},
+		tree: {
+			examples: [
+				{
+					filename: 'Checkable',
+					module: CheckableTree,
+					title: 'Checkable Nodes'
+				},
+				{
+					filename: 'CustomIcons',
+					module: CustomIconsTree,
+					title: 'Custom Icons'
+				},
+				{
+					filename: 'Advanced',
+					module: AdvancedTree,
+					title: 'Advanced Usage'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicTree
 				}
 			}
 		},

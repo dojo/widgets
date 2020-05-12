@@ -1,0 +1,64 @@
+.root {
+	padding-left: 0;
+}
+
+.contentWrapper,
+.childrenWrapper {
+	display: flex;
+}
+
+.spacer {
+	width: 16px;
+}
+
+.content {
+	align-items: center;
+	box-sizing: content-box;
+	display: flex;
+	padding: 0 4px;
+	width: 100%;
+}
+
+.contentWrapper:hover {
+	background-color: var(--color-background-faded);
+}
+
+.selectable > .contentWrapper {
+	cursor: pointer;
+}
+
+.selected > .contentWrapper {
+	background-color: var(--color-background-faded);
+	color: var(--color-highlight);
+}
+
+.leaf .content {
+	margin-left: 21px;
+}
+
+.title {
+	align-items: center;
+	display: flex;
+	flex-grow: 1;
+}
+
+.icon {
+	align-items: center;
+	display: flex;
+	margin-right: 5px;
+}
+
+.expander {
+	margin-right: 5px;
+}
+
+.children {
+	/* margin-left: 16px; */
+	padding-left: 0px;
+	width: 100%;
+}
+
+.child {
+	list-style-type: none;
+	width: 100%;
+}
