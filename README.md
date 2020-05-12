@@ -9,9 +9,8 @@ These widgets are built using Dojo's widget authoring system [(@dojo/framework/c
 
 - [Usage](#usage)
 - [Features](#features)
+- [Examples](#examples)
 - [Conventions](#conventions)
-  - [Icons](#icons)
-  - [Coding conventions](#coding-conventions)
 - [How Do I Contribute?](#how-do-i-contribute)
     - [Installation](#installation)
     - [Testing](#testing)
@@ -50,86 +49,15 @@ This allows our [`dojo cli`](https://github.com/dojo/cli) build tooling to make 
 
 - All widgets are designed to be accessible. If custom ARIA semantics are required, widgets have an `aria` property that may be passed an object with custom `aria-*` attributes.
 
-- All widgets are fully themeable. Example themes are available in the [@dojo/themes](https://github.com/dojo/themes) repository.
+- All widgets are fully themeable. Example themes are available in the [/theme](https://github.com/dojo/widgets/tree/master/src/theme) folder.
 
 - All widgets support internationalization (`i18n`)
 
-## Widgets
+## Examples
 
-Live examples of current widgets are available in the [widget showcase](https://dojo.github.io/examples/widget-showcase/).
-
-### Form widgets
-[Button](src/button/README.md)
-
-[Calendar](src/calendar/README.md)
-
-[Checkbox/Toggle](src/checkbox/README.md)
-
-[ComboBox](src/combobox/README.md)
-
-[Label](src/label/README.md)
-
-[Listbox](src/listbox/README.md)
-
-[Radio](src/radio/README.md)
-
-[RangeSlider](src/range-slider/README.md)
-
-[Select](src/select/README.md)
-
-[NativeSelect](src/native-select/README.md)
-
-[Slider](src/slider/README.md)
-
-[TextArea](src/text-area/README.md)
-
-[TextInput](src/text-input/README.md)
-
-[TimePicker](src/time-picker/README.md)
-
-### Layout widgets
-[Accordion](src/accordion/README.md)
-
-[SlidePane](src/slide-pane/README.md)
-
-[SplitPane](src/split-pane/README.md)
-
-[TabController](src/tab-controller/README.md)
-
-[TitlePane](src/title-pane/README.md)
-
-### Misc widgets
-[Grid](src/grid/README.md)
-
-[Dialog](src/dialog/README.md)
-
-[GlobalEvent](src/global-event/README.md)
-
-[Icon](src/icon/README.md)
-
-[Progress](src/progress/README.md)
-
-[Toolbar](src/toolbar/README.md)
-
-[Tooltip](src/tooltip/README.md)
+Live examples of current widgets are available at [widgets.dojo.io](https://widgets.dojo.io ).
 
 ## Conventions
-
-### EventHandlers
-
-You can register event handlers that get called when the corresponding events occur by passing the handlers into a widget's `properties`.
-The naming convention for event handlers is as follows:
-
-- if the parent of the widget has the power to decide *if* an event is successful, i.e. can cancel the event, then the child widget will call an event handler in the following format:
-
- `onRequest[X]`, e.g. for a `close` event, the event handler called by the child widget must be called `onRequestClose`
-
- Here the child widget is requesting that the `close` event take place.
-
-- for events that will occur regardless of child/parent interaction, then the `Request` naming convention is dropped:
-
-`on[X]`, e.g. for a `dismiss` event, the event handler called by the child widget must be called `onDismiss`
-
 
 ### Icons
 
@@ -140,7 +68,7 @@ Icon fonts are generated using [IcoMoon](https://icomoon.io/app). If a new icon 
 
 To make use of the new icons it is necessary to update the `icon.m.css` file in the theme folder with the new unicode icon like so:
 
-```
+```css
 .newIcon:before {
 	content: "\f123";
 }
@@ -169,30 +97,6 @@ The range definitions are as follows:
 - **500 +***: Alerts and special cases. Toast notifications could potentially be in this range, or any component important enough to interrupt all other interaction.
 
 
-## How to customize a widget
-
-There are many ways in which you can customize the behavior and appearance of Dojo widgets.
-See the [`core`](https://github.com/dojo/framework/blob/master/src/core/README.md) README for examples of how to customize the theme or a specific CSS class of a widget.
-
-Or can you write your own widget that extends an official widget.
-
-### Extending widgets
-
-Because all Dojo widgets are Classes, you can simply extend the Class to add or change its behavior.
-
-```ts
-export class MyWidget extends Button {
-...
-}
-```
-
-Dojo widgets provide standard extension points to allow you to customize their behavior. For more details, please refer to the [widget authoring system](https://github.com/dojo/framework/blob/master/src/core/README.md#decorator-lifecycle-hooks).
-
-Individual widgets also provide certain types of extension points where applicable:
-- `render*`: Large render functions are split up into multiple smaller pieces that can be more easily overridden to create custom vdom.
-- `getModifierClasses`: Modify the array of conditionally applied classes like `css.selected` or `css.disabled`.
-Not all widgets include these extension points, and some have additional overridable methods.
-
 ## Widget Variants
 
 When writing a widget variant, ie. `RaisedButton`, you should ensure that you use `theme.compose` from the widget [theme middleware](https://github.com/dojo/widgets/blob/master/src/middleware/theme.ts). This allows your variant to interit css from it's base widget whilst allowing it to be themed separately.
@@ -201,8 +105,6 @@ When writing a widget variant, ie. `RaisedButton`, you should ensure that you us
 
 We appreciate your interest!  Please see the [Dojo Meta Repository](https://github.com/dojo/meta#readme) for the
 Contributing Guidelines and Style Guide.
-
-Note that all changes to widgets should work with the [dojo theme](https://github.com/dojo/themes/). To test this start the example page (instructions at [Installation](#installation) section) and select the dojo option at the top of the page.
 
 ### Installation
 
@@ -220,9 +122,9 @@ To test locally in node run:
 
 `npm run test`
 
-### Widget Examples
+### Adding Examples
 
-The Dojo widget examples application is located in `src/examples`.
+We use [Parade](https://github.com/dojo/parade) to showcase our widget examples. The latest deployment of this can be found at [widgets.dojo.io](https://widgets.dojo.io ).
 
 To add a new example, create a directory that matches the directory name of the widget e.g. `src/examples/src/widgets/text-input`. Each widget _must_ have an example called `Basic.tsx` and an entry in the `src/examples/src/config.ts` keyed by the name of the widget directory. The widget example should import widgets from `@dojo/widgets` and not via a relative import. It is very important that the config entry name (ie. `text-input`) matches the folder name / css file name of the widget otherwise the doc build will fail.
 
@@ -271,6 +173,7 @@ interface ExampleProperties {
     /** This is the description for bar */
     bar: string;
 }
+```
 
 To build the documentation run `npm run build:docs` and to build and serve the documentation in watch mode run `npm run build:docs:dev`
 
@@ -280,4 +183,4 @@ The examples also run on Codesanbox, to run the examples on the master branch go
 
 ## Licensing information
 
-© 2018 [JS Foundation](https://js.foundation/). [New BSD](http://opensource.org/licenses/BSD-3-Clause) license.
+© 2020 [JS Foundation](https://js.foundation/). [New BSD](http://opensource.org/licenses/BSD-3-Clause) license.
