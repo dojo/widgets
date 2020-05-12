@@ -57,33 +57,77 @@ This allows our [`dojo cli`](https://github.com/dojo/cli) build tooling to make 
 
 Live examples of current widgets are available at [widgets.dojo.io](https://widgets.dojo.io ).
 
-## Conventions
+## Writing widgets
 
-### Icons
+### Properties
+TBD
 
-We use [font awesome](http://fontawesome.io/) for icons.
-Where a theme requires specific icons that are not part of the Font Awesome set, then those themes will ship their own icons.
+### Event callbacks
+TBD
 
-Icon fonts are generated using [IcoMoon](https://icomoon.io/app). If a new icon is required, it is possible to upload the current `dojoSelect.json` from `src/theme/fonts` and then add new icons by selecting from the Font Awesome library. After selecting the new icons from the library, merge them down into the current icon set, then delete the rest of the Font Awesome icons that were added by IcoMoon. After this you can export and download them as a zip. Once downloaded you will also need to unzip them and replace the font files (svg, woff, ttf) in `src/theme/fonts`. Now download the new selection JSON file from the `projects` page of IcoMoon and replace the current `dojoSelection.json` file.
+### Control patterns
+TBD
 
-To make use of the new icons it is necessary to update the `icon.m.css` file in the theme folder with the new unicode icon like so:
+#### Partial control
+TBD
 
-```css
-.newIcon:before {
-	content: "\f123";
-}
-```
+#### Fully controlled
+TBD
 
-Where `\f123` is the unicode character for the new icon. To check the new icon works you can render it in the `src/widgets/examples/icon/Basic.tsx` to make sure everything renders correctly.
+### Children
+TBD
 
-There is an [icon widget](src/icon/README.md) that aids in creating in proper semantics and provides type-checking for the type of icon.
+#### Normal children
+TBD
 
-### Coding conventions
+#### Named children
+TBD
+
+#### Child render functions
+TBD
+
+### Types of widgets
+TBD
+
+#### Form Inputs
+TBD
+
+- name / value
+- native form submissions
+#### Containers
+TBD
+
+- child renders
+- avoiding functions where possible
+#### Grouping
+TBD
+
+- radio / checkbox groups
+- middleware
+- custom child renderers
+### Custom Elements
+TBD
+
+#### Simple children / named children over child renderers
+TBD
+
+- usage differences
+- slots
+#### Attributes over properties
+TBD
+
+### Styling
+TBD
+
+#### CSS modules
+TBD
+
+#### CSS unit conventions
 
 `px vs. em` - we specify font sizes in `px`.
 When creating a widget, spacing (margin, padding) should be specified using `px` unless the design calls for proportional spacing, in which case `em` can be used.
 
-### Z-index layering
+#### Z-index layering
 
 Widgets adhere to a basic convention for using specific ranges of z-index values based on function and visual context. This convention is followed in both individual widget CSS and in the Dojo theme styles. These values can be overridden in a custom theme if necessary since no `z-index` values are set in fixed styles.
 
@@ -96,31 +140,39 @@ The range definitions are as follows:
 - **400 - 500**: Dialogs and other full-page overlays. Slide panes are another good example of a common UI pattern in this range. It includes any widget that is intended to cover all page content, or that often is used with an underlay.
 - **500 +***: Alerts and special cases. Toast notifications could potentially be in this range, or any component important enough to interrupt all other interaction.
 
+### Theming
+TBD
 
-## Widget Variants
+#### Theme classes
+TBD
 
+#### Theme variants
+TBD
+
+#### Theme composition
+TBD
+
+### Pointer events
+TBD
+
+### Widget state
+TBD
+
+### Widget variants
+TBD
 When writing a widget variant, ie. `RaisedButton`, you should ensure that you use `theme.compose` from the widget [theme middleware](https://github.com/dojo/widgets/blob/master/src/middleware/theme.ts). This allows your variant to interit css from it's base widget whilst allowing it to be themed separately.
 
-## How do I contribute?
-
-We appreciate your interest!  Please see the [Dojo Meta Repository](https://github.com/dojo/meta#readme) for the
-Contributing Guidelines and Style Guide.
-
-### Installation
-
-To start working with this package, clone the repository and run `npm install`.
-
-In order to build the project run `npm run build`.
-
 ### Testing
+TBD
 
-Test cases MUST be written using [Intern](https://theintern.github.io) using the Object test interface and Assert assertion interface.
+#### Unit Tests
+TBD
 
-90% branch coverage MUST be provided for all code submitted to this repository, as reported by istanbul’s combined coverage results for all supported platforms.
+#### Harness
+TBD
 
-To test locally in node run:
-
-`npm run test`
+#### Assertion templates
+TBD
 
 ### Adding Examples
 
@@ -156,9 +208,30 @@ To add a new example, create a directory that matches the directory name of the 
 
  To view the examples locally run `npm run dev` in the root directory and navigate to http://localhost:9999, this starts the examples in watch mode and should update widget module are changed. Note that you do not have to install dependencies in the `src/examples` project, this will result in an error.
 
+## How do I contribute?
+
+We appreciate your interest!  Please see the [Dojo Meta Repository](https://github.com/dojo/meta#readme) for the
+Contributing Guidelines and Style Guide.
+
+### Installation
+
+To start working with this package, clone the repository and run `npm install`.
+
+In order to build the project run `npm run build`.
+
+### Testing
+
+Test cases MUST be written using [Intern](https://theintern.github.io) using the Object test interface and Assert assertion interface.
+
+90% branch coverage MUST be provided for all code submitted to this repository, as reported by istanbul’s combined coverage results for all supported platforms.
+
+To test locally in node run:
+
+`npm run test`
+
 ### Widget Documentation
 
-The widget examples and documentation is automatically generated by the `examples` application when built with the `docs` feature flag set to `true`. The site relies on a few conventions in order to be able do this:
+The widget examples and documentation is automatically generated by the `parade` application when built with the `docs` feature flag set to `true`. The site relies on a few conventions in order to be able do this:
 
 1. A widgets properties interface must be the name of the widget with a suffix of `Properties`, e.g. for `text-input` the properties interface would be `TextInputProperties`
 2. The widget properties must be exported to ensure they are visible in the generated widget documentation.
