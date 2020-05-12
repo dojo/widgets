@@ -56,6 +56,7 @@
 			"src/time-picker",
 			"src/title-pane",
 			"src/tooltip",
+			"src/tree",
 			"src/trigger-popup",
 			"src/two-column-layout",
 			"src/typeahead"
