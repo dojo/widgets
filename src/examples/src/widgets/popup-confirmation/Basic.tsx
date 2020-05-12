@@ -10,7 +10,7 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<Example>
-			<div classes={[css.root, css.vcenter]}>
+			<div classes={css.root}>
 				<PopupConfirmation>
 					{{
 						content: 'Are you sure you want to delete this?',
