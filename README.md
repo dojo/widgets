@@ -210,7 +210,7 @@ To add a new example, create a directory that matches the directory name of the 
 
 ## How do I contribute?
 
-We appreciate your interest!  Please see the [Dojo Meta Repository](https://github.com/dojo/meta#readme) for the
+We appreciate your interest! Please see the [Dojo Meta Repository](https://github.com/dojo/meta#readme) for the
 Contributing Guidelines and Style Guide.
 
 ### Installation
