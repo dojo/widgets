@@ -10,6 +10,8 @@ export default factory(function Basic({ middleware: { icache } }) {
 	const basicValue = icache.getOrSet('basic-value', 0);
 	const maxValue = icache.getOrSet('max-value', 0);
 	const lookValue = icache.getOrSet('look-value', 0);
+	const halfValue = icache.getOrSet('half-value', 0);
+	const halfCustomValue = icache.getOrSet('half-custom-value', 0);
 	return (
 		<Example>
 			<div>
@@ -46,6 +48,33 @@ export default factory(function Basic({ middleware: { icache } }) {
 					}}
 				</Rate>
 				<span>{`${lookValue} out of 5`}</span>
+				<br />
+				<Rate
+					key="half"
+					allowHalf
+					onValue={(value) => {
+						icache.set('half-value', value);
+					}}
+				>
+					{{
+						label: 'What about half a sausage?'
+					}}
+				</Rate>
+				<span>{`${halfValue} out of 5`}</span>
+				<br />
+				<Rate
+					key="half-custom"
+					allowHalf
+					onValue={(value) => {
+						icache.set('half-custom-value', value);
+					}}
+				>
+					{{
+						label: 'Any large half questions?',
+						icon: <Icon size="large" type="helpIcon" />
+					}}
+				</Rate>
+				<span>{`${halfCustomValue} out of 5`}</span>
 			</div>
 		</Example>
 	);

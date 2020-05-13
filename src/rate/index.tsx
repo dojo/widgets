@@ -1,11 +1,9 @@
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { create, tsx } from '@dojo/framework/core/vdom';
-
-// import { formatAriaProperties } from '../common/util';
 import theme from '../middleware/theme';
 import * as css from '../theme/default/rate.m.css';
+import * as fixedCss from './rate.m.css';
 import * as baseCss from '../common/styles/base.m.css';
-// import Label from '../label';
 import RadioGroup from '../radio-group';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import Icon from '../icon';
@@ -20,6 +18,10 @@ export interface RateProperties {
 	initialValue?: number;
 	/* Controlled value for this widget */
 	value?: number;
+	/* The form name for this rate widget */
+	name?: string;
+	/* Flag to indicate if half stars should be used */
+	allowHalf?: boolean;
 }
 
 export interface RateChildren {
@@ -43,7 +45,8 @@ export const Rate = factory(function Radio({
 	children,
 	middleware: { focus, theme, icache }
 }) {
-	const { onValue, max = 5, initialValue } = properties();
+	const idBase = `rate-${id}`;
+	const { onValue, max = 5, initialValue, allowHalf, name = idBase } = properties();
 	let { value } = properties();
 	const [{ label, icon } = { label: undefined, icon: undefined }] = children();
 
@@ -71,10 +74,10 @@ export const Rate = factory(function Radio({
 		<div classes={[themeCss.root, theme.variant()]}>
 			<RadioGroup
 				key="radio-group"
-				name="rate"
+				name={name}
 				options={options}
 				onValue={(value: string) => {
-					const numberVal = parseInt(value, 10);
+					const numberVal = parseFloat(value);
 					icache.set('value', numberVal);
 					icache.delete('valueHovered');
 					onValue(numberVal);
@@ -84,38 +87,58 @@ export const Rate = factory(function Radio({
 					label,
 					radios: (name, radioGroup, options) => {
 						return options.map(({ value: stringValue }) => {
-							const numValue = parseInt(stringValue, 10);
-							const { checked } = radioGroup(stringValue);
-							const visiblyChecked = hoveredValue
-								? numValue <= hoveredValue
-								: !!value && numValue <= value;
+							function renderRadio(stringValue: string) {
+								const numValue = parseFloat(stringValue);
+								const { checked } = radioGroup(stringValue);
+								const visiblyChecked = hoveredValue
+									? numValue <= hoveredValue
+									: !!value && numValue <= value;
 
-							return (
-								<label
-									classes={[themeCss.icon, visiblyChecked && themeCss.checked]}
-									onmouseenter={() => {
-										icache.set('valueHovered', numValue);
-									}}
-									onmouseleave={() => {
-										icache.delete('valueHovered');
-									}}
-									title={stringValue}
-								>
-									{icon || <Icon size="medium" type="starIcon" />}
-									<input
-										classes={baseCss.visuallyHidden}
-										type="radio"
-										checked={checked()}
-										name={name}
-										value={stringValue}
-										onchange={(event: Event) => {
-											event.stopPropagation();
-											const radio = event.target as HTMLInputElement;
-											checked(radio.checked);
+								return (
+									<label
+										classes={[
+											fixedCss.labelFixed,
+											themeCss.icon,
+											visiblyChecked && themeCss.checked
+										]}
+										onmouseenter={() => {
+											icache.set('valueHovered', numValue);
 										}}
-									/>
-								</label>
-							);
+										onmouseleave={() => {
+											icache.delete('valueHovered');
+										}}
+										title={stringValue}
+									>
+										<span classes={fixedCss.iconWrapperFixed}>
+											{icon || <Icon size="medium" type="starIcon" />}
+										</span>
+										<input
+											classes={baseCss.visuallyHidden}
+											type="radio"
+											checked={checked()}
+											name={name}
+											value={stringValue}
+											onchange={(event: Event) => {
+												event.stopPropagation();
+												const radio = event.target as HTMLInputElement;
+												checked(radio.checked);
+											}}
+										/>
+									</label>
+								);
+							}
+
+							if (allowHalf) {
+								const halfValue = parseFloat(stringValue) - 0.5;
+								return (
+									<span classes={fixedCss.halfWrapperFixed}>
+										{renderRadio(`${halfValue}`)}
+										{renderRadio(stringValue)}
+									</span>
+								);
+							} else {
+								return renderRadio(stringValue);
+							}
 						});
 					}
 				}}
