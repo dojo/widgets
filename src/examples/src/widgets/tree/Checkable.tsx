@@ -6,27 +6,29 @@ const factory = create();
 export default factory(function Checkable() {
 	const nodes = [
 		{
-			title: 'parent 1',
+			content: 'parent 1',
 			expanded: true,
 			children: [
 				{
-					title: 'parent 1-0',
+					content: 'parent 1-0',
 					expanded: true,
+					disabled: true,
 					children: [
 						{
-							title: 'leaf'
+							disabled: true,
+							content: 'leaf'
 						},
 						{
-							title: 'leaf'
+							content: 'leaf'
 						}
 					]
 				},
 				{
-					title: 'parent 1-1',
+					content: 'parent 1-1',
 					expanded: true,
 					children: [
 						{
-							title: 'sss'
+							content: 'sss'
 						}
 					]
 				}

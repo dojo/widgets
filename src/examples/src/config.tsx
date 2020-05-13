@@ -247,7 +247,7 @@ import ErrorWizard from './widgets/wizard/Error';
 import BasicTree from './widgets/tree/Basic';
 import CheckableTree from './widgets/tree/Checkable';
 import CustomIconsTree from './widgets/tree/CustomIcons';
-import AdvancedTree from './widgets/tree/Advanced';
+import ControlledTree from './widgets/tree/Controlled';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -1800,9 +1800,9 @@ export const config = {
 					title: 'Custom Icons'
 				},
 				{
-					filename: 'Advanced',
-					module: AdvancedTree,
-					title: 'Advanced Usage'
+					filename: 'Controlled',
+					module: ControlledTree,
+					title: 'Controlled Usage'
 				}
 			],
 			overview: {

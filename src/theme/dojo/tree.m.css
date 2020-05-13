@@ -19,12 +19,16 @@
 	width: 100%;
 }
 
+.contentWrapper {
+	cursor: pointer;
+}
+
 .contentWrapper:hover {
 	background-color: var(--color-background-faded);
 }
 
-.selectable > .contentWrapper {
-	cursor: pointer;
+.disabled {
+	color: var(--color-text-faded);
 }
 
 .selected > .contentWrapper {
