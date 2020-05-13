@@ -4,6 +4,7 @@ export const contentWrapper: string;
 export const content: string;
 export const spacer: string;
 export const leaf: string;
+export const disabled: string;
 export const selectable: string;
 export const selected: string;
 export const expander: string;

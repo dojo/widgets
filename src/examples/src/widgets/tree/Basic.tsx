@@ -32,5 +32,5 @@ export default factory(function Basic() {
 		}
 	];
 
-	return <Tree nodes={nodes} selectable={true} />;
+	return <Tree nodes={nodes} />;
 });
