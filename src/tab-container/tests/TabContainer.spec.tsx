@@ -6,6 +6,7 @@ import * as sinon from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 
 import { Keys } from '../../common/util';
+import Icon from '../../icon';
 import TabContainer from '../index';
 import * as css from '../../theme/default/tab-container.m.css';
 import {
@@ -193,6 +194,56 @@ registerSuite('TabContainer', {
 					<div>tab1</div>
 				</TabContainer>
 			));
+
+			h.expect(
+				baseTemplate
+					.setChildren('@buttons', () => [
+						<div
+							{...tabButtonProperties}
+							classes={[css.tabButton, css.activeTabButton, null, null]}
+						>
+							<span key="tabButtonContent" classes={css.tabButtonContent}>
+								tab0
+								<span classes={[css.indicator, css.indicatorActive]}>
+									<span classes={css.indicatorContent} />
+								</span>
+							</span>
+						</div>,
+						<div
+							{...tabButtonProperties}
+							aria-controls="test-tab-1"
+							key="1-tabbutton"
+							aria-selected="false"
+							classes={[css.tabButton, null, css.closeable, null]}
+							tabIndex={-1}
+						>
+							<span key="tabButtonContent" classes={css.tabButtonContent}>
+								tab1
+								<button
+									disabled={undefined}
+									tabIndex={-1}
+									classes={css.close}
+									key="1-tabbutton-close"
+									type="button"
+									onclick={noop}
+								>
+									<Icon type="closeIcon" altText="close" size="small" />
+								</button>
+								<span classes={[css.indicator, false]}>
+									<span classes={css.indicatorContent} />
+								</span>
+							</span>
+						</div>
+					])
+					.setChildren('@tabs', () => [
+						<div classes={css.tab} hidden={false}>
+							<div>tab0</div>
+						</div>,
+						<div classes={undefined} hidden={true}>
+							<div>tab1</div>
+						</div>
+					])
+			);
 
 			h.trigger('@1-tabbutton-close', 'onclick', mockClickEvent);
 			assert.isTrue(onCloseStub.calledOnceWith(1));
