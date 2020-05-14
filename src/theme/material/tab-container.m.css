@@ -33,7 +33,7 @@
 	composes: nativeResetRoot from './button.m.css';
 	position: absolute;
 	top: 50%;
-	transform: translateY(-50%) scale(0.7);
+	transform: translateY(-50%);
 	right: 5px;
 	cursor: pointer;
 	padding: 1px 3px;

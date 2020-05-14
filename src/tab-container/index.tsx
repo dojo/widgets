@@ -154,7 +154,7 @@ export const TabContainer = factory(function TabContainer({
 								}
 							}}
 						>
-							<Icon type="closeIcon" altText={messages.close} />
+							<Icon type="closeIcon" altText={messages.close} size="small" />
 						</button>
 					) : null}
 					<span classes={[themeCss.indicator, active && themeCss.indicatorActive]}>
