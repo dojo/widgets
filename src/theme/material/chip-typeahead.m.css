@@ -14,11 +14,14 @@
 }
 
 .value {
-	margin: 2px;
+	margin-bottom: 2px;
+	margin-right: 2px;
+	/* nasty !important needed to override the material 32px */
+	height: 28px !important;
 }
 
 .root.hasLabel .wrapper .inputWrapper .input {
-	padding: 20px 16px 6px;
+	padding: 0px 16px 6px;
 }
 
 .selectedIcon {
@@ -35,9 +38,10 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
+	padding-top: 20px;
 }
 
-.value {
+.values .value {
 	margin: 4px 4px 4px 0;
 }
 
@@ -54,16 +58,12 @@
 	padding-left: 16px;
 }
 
-.root.hasValue.hasLabel .inputWrapper {
-	padding-top: 24px;
-}
-
 .root .wrapper {
 	height: auto;
 }
 
 .root .input {
-	height: auto;
+	height: 36px;
 	padding-left: 16px;
 }
 
@@ -73,5 +73,4 @@
 
 .values {
 	padding-left: 16px;
-	padding-top: 4px;
 }
