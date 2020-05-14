@@ -3,6 +3,7 @@ import i18n from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
+import Icon from '../icon';
 
 import commonBundle from '../common/nls/common';
 import { formatAriaProperties, Keys } from '../common/util';
@@ -153,7 +154,7 @@ export const TabContainer = factory(function TabContainer({
 								}
 							}}
 						>
-							{messages.close}
+							<Icon type="closeIcon" altText={messages.close} />
 						</button>
 					) : null}
 					<span classes={[themeCss.indicator, active && themeCss.indicatorActive]}>
