@@ -246,7 +246,7 @@ import VerticalWizard from './widgets/wizard/Vertical';
 import ErrorWizard from './widgets/wizard/Error';
 import BasicTree from './widgets/tree/Basic';
 import CheckableTree from './widgets/tree/Checkable';
-import CustomIconsTree from './widgets/tree/CustomIcons';
+import CustomRendererTree from './widgets/tree/CustomRenderer';
 import ControlledTree from './widgets/tree/Controlled';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
@@ -1795,9 +1795,9 @@ export const config = {
 					title: 'Checkable Nodes'
 				},
 				{
-					filename: 'CustomIcons',
-					module: CustomIconsTree,
-					title: 'Custom Icons'
+					filename: 'CustomRenderer',
+					module: CustomRendererTree,
+					title: 'Custom Renderer'
 				},
 				{
 					filename: 'Controlled',

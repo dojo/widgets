@@ -6,6 +6,7 @@ import Icon from '../icon';
 import Checkbox from '../checkbox';
 
 import * as css from '../theme/default/tree.m.css';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
 /*******************
  * Tree
@@ -30,6 +31,10 @@ export interface TreeProperties {
 	onExpand?(node: string, expanded: boolean): void;
 }
 
+export interface TreeChildren {
+	(node: TreeNode): RenderResult;
+}
+
 interface TreeCache {
 	selectedNode?: string;
 }
@@ -41,9 +46,11 @@ interface LinkedTreeNode {
 }
 
 const icache = createICacheMiddleware<TreeCache>();
-const factory = create({ theme, icache }).properties<TreeProperties>();
+const factory = create({ theme, icache })
+	.properties<TreeProperties>()
+	.children<TreeChildren | undefined>();
 
-export default factory(function({ middleware: { theme, icache }, properties }) {
+export default factory(function({ middleware: { theme, icache }, properties, children }) {
 	const {
 		nodes,
 		checkable = false,
@@ -57,6 +64,8 @@ export default factory(function({ middleware: { theme, icache }, properties }) {
 		expandedNodes
 	} = properties();
 	const classes = theme.classes(css);
+	const defaultRenderer = (n: TreeNode) => n.value;
+	const [itemRenderer] = children();
 
 	// convert TreeNode to LinkedTreeNodes
 	const nodeMap = new Map<string, LinkedTreeNode>();
@@ -102,7 +111,9 @@ export default factory(function({ middleware: { theme, icache }, properties }) {
 						onExpand={(n, e) => {
 							onExpand && onExpand(n, e);
 						}}
-					/>
+					>
+						{itemRenderer || defaultRenderer}
+					</Node>
 				</li>
 			))}
 		</ol>
@@ -127,6 +138,10 @@ interface TreeNodeProperties {
 	onExpand(node: string, expanded: boolean): void;
 }
 
+interface TreeNodeChildren {
+	(node: TreeNode): RenderResult;
+}
+
 interface TreeNodeCache {
 	node: TreeNode;
 	expanded: boolean;
@@ -135,10 +150,15 @@ interface TreeNodeCache {
 }
 
 const treeNodeCache = createICacheMiddleware<TreeNodeCache>();
-const treeNodeFactory = create({ theme, icache: treeNodeCache, diffProperty }).properties<
-	TreeNodeProperties
->();
-const Node = treeNodeFactory(function({ middleware: { theme, icache, diffProperty }, properties }) {
+const treeNodeFactory = create({ theme, icache: treeNodeCache, diffProperty })
+	.properties<TreeNodeProperties>()
+	.children<TreeNodeChildren>();
+
+const Node = treeNodeFactory(function({
+	middleware: { theme, icache, diffProperty },
+	properties,
+	children
+}) {
 	const {
 		node,
 		checkable,
@@ -152,6 +172,7 @@ const Node = treeNodeFactory(function({ middleware: { theme, icache, diffPropert
 		onCheck,
 		onExpand
 	} = properties();
+	const [itemRenderer] = children();
 
 	// Merge controlled properties with our internally-tracked ones
 	diffProperty(
@@ -237,7 +258,7 @@ const Node = treeNodeFactory(function({ middleware: { theme, icache, diffPropert
 							/>
 						</div>
 					)}
-					<div classes={classes.title}>{node.node.value}</div>
+					<div classes={classes.title}>{itemRenderer(node.node)}</div>
 				</div>
 			</div>
 			{node.children && expanded && (
@@ -257,7 +278,9 @@ const Node = treeNodeFactory(function({ middleware: { theme, icache, diffPropert
 									onSelect={onSelect}
 									onCheck={onCheck}
 									onExpand={onExpand}
-								/>
+								>
+									{itemRenderer}
+								</Node>
 							</li>
 						))}
 					</ol>
