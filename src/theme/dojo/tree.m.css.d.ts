@@ -3,6 +3,7 @@ export const contentWrapper: string;
 export const childrenWrapper: string;
 export const spacer: string;
 export const content: string;
+export const disabled: string;
 export const selected: string;
 export const leaf: string;
 export const title: string;
