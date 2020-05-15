@@ -40,13 +40,6 @@
 	margin-top: -1px;
 }
 
-.close:after {
-	content: '✕';
-	display: block;
-	font-size: 14px;
-	line-height: 14px;
-}
-
 /* TAB INDICATOR */
 .indicator {
 	composes: mdc-tab-indicator from '@material/tab-indicator/dist/mdc.tab-indicator.css';
