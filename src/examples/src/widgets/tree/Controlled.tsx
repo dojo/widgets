@@ -1,49 +1,64 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import icache from '@dojo/framework/core/middleware/icache';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import Tree, { TreeNode } from '@dojo/widgets/tree';
 
+interface ControlledCache {
+	expanded?: string[];
+	checked?: string[];
+}
+const icache = createICacheMiddleware<ControlledCache>();
 const factory = create({ icache });
 
 export default factory(function Advanced({ middleware: { icache } }) {
-	const nodes: TreeNode[] = icache.getOrSet('nodes', [
+	const nodes: TreeNode[] = [
 		{
-			content: 'parent 1',
-			expanded: true,
-			children: [
-				{
-					content: 'parent 1-0',
-					expanded: true,
-					children: [
-						{
-							content: 'leaf'
-						},
-						{
-							content: 'leaf'
-						}
-					]
-				},
-				{
-					content: 'parent 1-1',
-					expanded: true,
-					children: [
-						{
-							content: 'sss'
-						}
-					]
-				}
-			]
+			id: 'parent-1',
+			value: 'parent 1'
+		},
+		{
+			id: 'parent-1-0',
+			value: 'parent 1-0',
+			parent: 'parent-1'
+		},
+		{
+			id: 'leaf-1-0-1',
+			value: 'leaf',
+			parent: 'parent-1-0'
+		},
+		{
+			id: 'leaf-1-0-2',
+			value: 'leaf',
+			parent: 'parent-1-0'
+		},
+		{
+			id: 'parent-1-1',
+			value: 'parent 1-1',
+			parent: 'parent-1'
+		},
+		{
+			id: 'leaf-1-1-1',
+			value: 'leaf',
+			parent: 'parent-1-1'
 		}
-	]);
+	];
+
+	const expanded = icache.get('expanded');
+	const checked = icache.get('checked');
 
 	return (
 		<div>
-			<Tree nodes={nodes} checkable={true} selectable={true} />
+			<Tree
+				nodes={nodes}
+				checkable={true}
+				selectable={true}
+				expandedNodes={expanded}
+				checkedNodes={checked}
+			/>
 			<ul>
 				<li>
 					<button
 						onclick={() => {
-							nodes[0].expanded = !nodes[0].expanded;
-							icache.set('nodes', nodes);
+							icache.set('expanded', expanded ? undefined : ['parent-1']);
 						}}
 					>
 						Toggle Expand
@@ -52,8 +67,7 @@ export default factory(function Advanced({ middleware: { icache } }) {
 				<li>
 					<button
 						onclick={() => {
-							nodes[0].checked = !nodes[0].checked;
-							icache.set('nodes', nodes);
+							icache.set('checked', checked ? undefined : ['parent-1']);
 						}}
 					>
 						Toggle Checked

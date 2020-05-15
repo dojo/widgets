@@ -1,69 +1,96 @@
 import { create, tsx, diffProperty } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
-import { RenderResult } from '@dojo/framework/core/interfaces';
-import Icon, { IconType } from '../icon';
 
-import * as css from '../theme/default/tree.m.css';
+import Icon from '../icon';
 import Checkbox from '../checkbox';
 
+import * as css from '../theme/default/tree.m.css';
+
+/*******************
+ * Tree
+ *******************/
+
 export interface TreeNode {
-	content: string | RenderResult;
-	icon?: IconType;
-	children?: TreeNode[];
-	expanded?: boolean;
-	checked?: boolean;
-	disabled?: boolean;
+	id: string;
+	parent?: string;
+	value: string;
 }
 
 export interface TreeProperties {
 	nodes: TreeNode[];
 	checkable?: boolean;
 	selectable?: boolean;
-	selectedNode?: TreeNode;
-	onSelect?(node: TreeNode): void;
-	onCheck?(node: TreeNode, checked: boolean): void;
-	onExpand?(node: TreeNode, expanded: boolean): void;
+	checkedNodes?: string[];
+	expandedNodes?: string[];
+	selectedNodes?: string[];
+	disabledNodes?: string[];
+	onSelect?(node: string): void;
+	onCheck?(node: string, checked: boolean): void;
+	onExpand?(node: string, expanded: boolean): void;
 }
 
-/*******************
- * Tree
- *******************/
-
 interface TreeCache {
-	selectedNode?: TreeNode;
+	selectedNode?: string;
+}
+
+interface LinkedTreeNode {
+	id: string;
+	node: TreeNode;
+	children: LinkedTreeNode[];
 }
 
 const icache = createICacheMiddleware<TreeCache>();
-const factory = create({ theme, icache, diffProperty }).properties<TreeProperties>();
+const factory = create({ theme, icache }).properties<TreeProperties>();
 
-export default factory(function({ middleware: { theme, icache, diffProperty }, properties }) {
-	diffProperty('selectedNode', (current: TreeProperties, next: TreeProperties) => {
-		if (current.selectedNode !== next.selectedNode) {
-			icache.set('selectedNode', next.selectedNode);
-		}
-	});
-
+export default factory(function({ middleware: { theme, icache }, properties }) {
 	const {
 		nodes,
 		checkable = false,
 		selectable = false,
 		onSelect,
 		onCheck,
-		onExpand
+		onExpand,
+		checkedNodes,
+		selectedNodes,
+		disabledNodes,
+		expandedNodes
 	} = properties();
 	const classes = theme.classes(css);
-	const selectedNode = icache.get('selectedNode');
+
+	// convert TreeNode to LinkedTreeNodes
+	const nodeMap = new Map<string, LinkedTreeNode>();
+	for (let node of nodes) {
+		nodeMap.set(node.id, {
+			id: node.id,
+			node,
+			children: []
+		});
+	}
+	const rootNodes: LinkedTreeNode[] = [];
+	for (let linked of nodeMap.values()) {
+		if (linked.node.parent) {
+			const parent = nodeMap.get(linked.node.parent);
+			if (parent) {
+				parent.children.push(linked);
+			}
+		} else {
+			rootNodes.push(linked);
+		}
+	}
 
 	return (
 		<ol classes={[classes.root, theme.variant()]}>
-			{nodes.map((node) => (
+			{rootNodes.map((node) => (
 				<li classes={classes.child}>
 					<Node
 						level={0}
 						checkable={checkable}
 						selectable={selectable}
-						selectedNode={selectedNode}
+						checkedNodes={checkedNodes || []}
+						selectedNodes={selectedNodes || []}
+						disabledNodes={disabledNodes || []}
+						expandedNodes={expandedNodes || []}
 						node={node}
 						onSelect={(n) => {
 							icache.set('selectedNode', n);
@@ -90,48 +117,83 @@ interface TreeNodeProperties {
 	checkable: boolean;
 	level: number;
 	selectable: boolean;
-	selectedNode?: TreeNode;
-	node: TreeNode;
-	onSelect(node: TreeNode): void;
-	onCheck(node: TreeNode, checked: boolean): void;
-	onExpand(node: TreeNode, expanded: boolean): void;
+	checkedNodes: string[];
+	selectedNodes: string[];
+	disabledNodes: string[];
+	expandedNodes: string[];
+	node: LinkedTreeNode;
+	onSelect(node: string): void;
+	onCheck(node: string, checked: boolean): void;
+	onExpand(node: string, expanded: boolean): void;
 }
 
 interface TreeNodeCache {
 	node: TreeNode;
 	expanded: boolean;
 	checked: boolean;
+	selected: boolean;
 }
 
 const treeNodeCache = createICacheMiddleware<TreeNodeCache>();
-const treeNodeFactory = create({ theme, icache: treeNodeCache }).properties<TreeNodeProperties>();
-const Node = treeNodeFactory(function({ middleware: { theme, icache }, properties }) {
+const treeNodeFactory = create({ theme, icache: treeNodeCache, diffProperty }).properties<
+	TreeNodeProperties
+>();
+const Node = treeNodeFactory(function({ middleware: { theme, icache, diffProperty }, properties }) {
 	const {
 		node,
 		checkable,
 		level,
 		selectable,
-		selectedNode,
+		checkedNodes,
+		selectedNodes,
+		disabledNodes,
+		expandedNodes,
 		onSelect,
 		onCheck,
 		onExpand
 	} = properties();
+
+	// Merge controlled properties with our internally-tracked ones
+	diffProperty(
+		'expandedNodes',
+		(
+			{ expandedNodes: current }: TreeNodeProperties,
+			{ expandedNodes: next }: TreeNodeProperties
+		) => {
+			if ((current && current.includes(node.id)) || (next && next.includes(node.id))) {
+				icache.set('expanded', next.includes(node.id));
+			}
+		}
+	);
+	diffProperty(
+		'checkedNodes',
+		(
+			{ checkedNodes: current }: TreeNodeProperties,
+			{ checkedNodes: next }: TreeNodeProperties
+		) => {
+			if ((current && current.includes(node.id)) || (next && next.includes(node.id))) {
+				icache.set('checked', next.includes(node.id));
+			}
+		}
+	);
+	diffProperty(
+		'selectedNodes',
+		(
+			{ selectedNodes: current }: TreeNodeProperties,
+			{ selectedNodes: next }: TreeNodeProperties
+		) => {
+			if ((current && current.includes(node.id)) || (next && next.includes(node.id))) {
+				icache.set('selected', next.includes(node.id));
+			}
+		}
+	);
+
 	const classes = theme.classes(css);
-
-	// check for specific property changes
-	const lastNode = icache.getOrSet('node', node);
-	icache.set('node', node, false);
-	if (node.checked !== undefined && node.checked !== lastNode.checked) {
-		icache.set('checked', node.checked);
-	}
-	if (node.expanded !== undefined && node.expanded !== lastNode.expanded) {
-		icache.set('expanded', node.expanded);
-	}
-
-	const expanded = icache.getOrSet('expanded', node.expanded || false);
-	const checked = icache.getOrSet('checked', node.checked || false);
+	const expanded = icache.getOrSet('expanded', false);
+	const checked = icache.getOrSet('checked', false);
+	const isSelected = icache.getOrSet('selected', false);
+	const isDisabled = disabledNodes && disabledNodes.includes(node.id);
 	const isLeaf = !node.children || node.children.length === 0;
-	const isSelected = selectedNode && selectedNode === node;
 	const spacers = new Array(level).fill(<div classes={classes.spacer} />);
 
 	return (
@@ -140,8 +202,7 @@ const Node = treeNodeFactory(function({ middleware: { theme, icache }, propertie
 				classes.nodeRoot,
 				isLeaf && classes.leaf,
 				selectable && classes.selectable,
-				isSelected && classes.selected,
-				node.disabled && classes.disabled
+				isSelected && classes.selected
 			]}
 		>
 			<div classes={classes.contentWrapper}>
@@ -150,8 +211,8 @@ const Node = treeNodeFactory(function({ middleware: { theme, icache }, propertie
 					classes={classes.content}
 					onclick={() => {
 						icache.set('expanded', !expanded);
-						selectable && node.disabled !== true && onSelect(node);
-						onExpand(node, !expanded);
+						selectable && isDisabled !== true && onSelect(node.id);
+						onExpand(node.id, !expanded);
 					}}
 				>
 					{!isLeaf && (
@@ -170,18 +231,13 @@ const Node = treeNodeFactory(function({ middleware: { theme, icache }, propertie
 								checked={checked}
 								onValue={(value) => {
 									icache.set('checked', value);
-									onCheck(node, value);
+									onCheck(node.id, value);
 								}}
-								disabled={node.disabled}
+								disabled={isDisabled}
 							/>
 						</div>
 					)}
-					{node.icon && (
-						<div classes={classes.icon}>
-							<Icon type={node.icon} />
-						</div>
-					)}
-					<div classes={classes.title}>{node.content}</div>
+					<div classes={classes.title}>{node.node.value}</div>
 				</div>
 			</div>
 			{node.children && expanded && (
@@ -193,7 +249,10 @@ const Node = treeNodeFactory(function({ middleware: { theme, icache }, propertie
 									checkable={checkable}
 									level={level + 1}
 									selectable={selectable}
-									selectedNode={selectedNode}
+									checkedNodes={checkedNodes}
+									selectedNodes={selectedNodes}
+									disabledNodes={disabledNodes}
+									expandedNodes={expandedNodes}
 									node={child}
 									onSelect={onSelect}
 									onCheck={onCheck}
