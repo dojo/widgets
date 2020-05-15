@@ -60,67 +60,140 @@ Live examples of current widgets are available at [widgets.dojo.io](https://widg
 ## Writing widgets
 
 ### Properties
-TBD
+- defining properties
+- passing properties
+- reading properties
 
 ### Event callbacks
-TBD
+- defining callbacks
+- passing callbacks
+- using event callbacks
 
 ### Control patterns
-TBD
+
+Widgets should work out of the box wherever possible and be easy to use without needing to be fully controlled. What we mean by this is that a widget should be able to manage it's own state and perform as would a native input component when placed on a page. As a result, we have re-written most of our widgets to use the icache middleware and maintain their own state.
+
+```tsx
+// place uncontrolled text-input on a page
+<TextInput />
+```
+
+Most widgets offer both partial and fully controlled properties and callbacks as covered below.
 
 #### Partial control
-TBD
+
+Partially controlled widgets accept properties prefixed with `initial`, the most common of which is `initialValue`. This will allow you to pass an initial value to a widget without needing to write a feedback function that constantly re-set's the value each time it's changed. If the `initialValue` changes from it's previous value, then the widget should react to this change and display the new value.
+
+```tsx
+// text-input with initial value of foo
+<TextInput initialValue='foo' />
+```
 
 #### Fully controlled
-TBD
+
+Fully controlled widget properties are those which are **not** prefixed with `initial`. For example, if you were to set a `value` property on the above `TextInput` example without keeping it upto date each time it's accompanying `onValue` callback is called.
+The lower level inputs, text-input, radio and checkbox are the exceptions to the "uncontrolled" approach as they are generally used as building blocks for more specialised widgets. For example, text-input allows you to control validation whereas the email-input, which utilises a text-input internally, is uncontrolled and manages its own validation state.
+In the same fashion, checkboxes and radio buttons are fully controlled but we anticipate them to be used most frequently via checkbox-group and radio-group, both of which are partially controlled and follow the same initialValue pattern as other input widgets.
+
+```tsx
+// controlled input
+let value = 'foo';
+<TextInput value={value} onValue={(newValue) => { value = newValue; invalidator(); }} />
+
+// uncontrolled input
+<TextInput initialValue={'foo'} />
+```
 
 ### Children
 TBD
 
 #### Normal children
-TBD
+If a node is rendered inside a widget, it should be passed as a child rather than via a child renderer. This child could be any RenderResult.
 
-#### Named children
-TBD
+If the widget doesn’t need to determine where the children are rendered, or when they are rendered in a single location, then normal children are fine.
+
+```tsx
+<ParentWidget>
+	<ChildWidget />
+</ParentWidget>
+
+<ParentWidget>
+	<ChildWidget />
+	<ChildWidget />
+	<ChildWidget />
+</ParentWidget>
+
+<ParentWidget>
+	Hello, World
+</ParentWidget>
+```
 
 #### Child render functions
-TBD
+When a widget needs to inject functions or properties into the child widgets, a child function should be used:
+
+```tsx
+<ParentWidget>
+	{ (foo) => <ChildWidget foo={foo('a')} /> }
+</ParentWidget>
+```
+
+#### Named children
+When multiple children are accepted and are to be placed in different locations by the parent widget, a child object should be used. This approach is use for example in our Card widget as it accepts content for different sections of the card and renders them in the appropriate locations with wrapping styles / classes. The child object can contain a mix of both RenderResult and functions that return a RenderResult.
+
+```tsx
+<ParentWidget>{{
+	foo: (foo) => <ChildWidget foo={foo('a')} />,
+	bar: <span>bar</span>,
+	baz: 'hello, world'
+}}</ParentWidget>
+```
 
 ### Types of widgets
-TBD
 
 #### Form Inputs
-TBD
 
+- intro
 - name / value
 - native form submissions
-#### Containers
-TBD
+- render result label
+- example
 
-- child renders
+#### Containers
+
+- intro
+- child renders / slots
 - avoiding functions where possible
+- example
+
 #### Grouping
-TBD
 
 - radio / checkbox groups
+- name / value / native forms
 - middleware
 - custom child renderers
+- example
+
 ### Custom Elements
-TBD
+
+- intro - widgets are released as custom elements as well
+- designed for ease of use
+- add to dojorc
 
 #### Simple children / named children over child renderers
-TBD
-
 - usage differences
 - slots
+
 #### Attributes over properties
-TBD
+- attributes directly on the widget
+- props have to be set
 
 ### Styling
-TBD
 
 #### CSS modules
-TBD
+- simple class names
+- avoid bem
+- variables can be used but not imported
+- don't use tag selectors
 
 #### CSS unit conventions
 
@@ -141,38 +214,69 @@ The range definitions are as follows:
 - **500 +***: Alerts and special cases. Toast notifications could potentially be in this range, or any component important enough to interrupt all other interaction.
 
 ### Theming
-TBD
+
+- intro
+- theme structure
+- variants (link to section)
 
 #### Theme classes
-TBD
+
+- intro
+- theme middleware
+- theme.classes
+- fixed classes reference
+- example
 
 #### Theme variants
-TBD
+
+- structure
+- usage
+- example
 
 #### Theme composition
-TBD
+
+- intro
+- variant use
+- prefix use
+- example
 
 ### Pointer events
-TBD
+
+- intro
+- example
 
 ### Widget state
-TBD
+
+- intro
+- icache
+- example
 
 ### Widget variants
-TBD
+
+- link back to theme-variants
+
 When writing a widget variant, ie. `RaisedButton`, you should ensure that you use `theme.compose` from the widget [theme middleware](https://github.com/dojo/widgets/blob/master/src/middleware/theme.ts). This allows your variant to interit css from it's base widget whilst allowing it to be themed separately.
 
 ### Testing
-TBD
+
+- intern
+- coverage
 
 #### Unit Tests
-TBD
+
+- sinon
+- assert chai
+- example
 
 #### Harness
-TBD
+
+- link to harness docs
+- example
 
 #### Assertion templates
-TBD
+
+- intro
+- example
 
 ### Adding Examples
 
@@ -209,6 +313,8 @@ To add a new example, create a directory that matches the directory name of the 
  To view the examples locally run `npm run dev` in the root directory and navigate to http://localhost:9999, this starts the examples in watch mode and should update widget module are changed. Note that you do not have to install dependencies in the `src/examples` project, this will result in an error.
 
 ## How do I contribute?
+
+TODO: Where does this live now?
 
 We appreciate your interest! Please see the [Dojo Meta Repository](https://github.com/dojo/meta#readme) for the
 Contributing Guidelines and Style Guide.
