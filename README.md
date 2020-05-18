@@ -59,6 +59,8 @@ Live examples of current widgets are available at [widgets.dojo.io](https://widg
 
 ## Writing widgets
 
+When writing a widget there are multiple thing to consider. From accessibility to usability. This section covers
+
 ### Properties
 - defining properties
 - passing properties
@@ -128,15 +130,6 @@ If the widget doesn’t need to determine where the children are rendered, or wh
 </ParentWidget>
 ```
 
-#### Child render functions
-When a widget needs to inject functions or properties into the child widgets, a child function should be used:
-
-```tsx
-<ParentWidget>
-	{ (foo) => <ChildWidget foo={foo('a')} /> }
-</ParentWidget>
-```
-
 #### Named children
 When multiple children are accepted and are to be placed in different locations by the parent widget, a child object should be used. This approach is use for example in our Card widget as it accepts content for different sections of the card and renders them in the appropriate locations with wrapping styles / classes. The child object can contain a mix of both RenderResult and functions that return a RenderResult.
 
@@ -147,6 +140,19 @@ When multiple children are accepted and are to be placed in different locations 
 	baz: 'hello, world'
 }}</ParentWidget>
 ```
+
+#### Child render functions
+When a widget needs to inject functions or properties into the child widgets, a child function should be used:
+
+```tsx
+<ParentWidget>
+	{ (foo) => <ChildWidget foo={foo('a')} /> }
+</ParentWidget>
+```
+
+#### Named child render functions
+
+
 
 ### Types of widgets
 
