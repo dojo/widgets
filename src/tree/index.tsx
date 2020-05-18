@@ -1,6 +1,7 @@
 import { create, tsx, diffProperty } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
+import { fill } from '@dojo/framework/shim/array';
 
 import Icon from '../icon';
 import Checkbox from '../checkbox';
@@ -215,7 +216,8 @@ const Node = treeNodeFactory(function({
 	const isSelected = icache.getOrSet('selected', false);
 	const isDisabled = disabledNodes && disabledNodes.includes(node.id);
 	const isLeaf = !node.children || node.children.length === 0;
-	const spacers = new Array(level).fill(<div classes={classes.spacer} />);
+	const spacers = new Array(level);
+	fill(spacers, <div classes={classes.spacer} />);
 
 	return (
 		<div
