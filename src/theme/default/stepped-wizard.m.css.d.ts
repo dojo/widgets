@@ -1,5 +1,6 @@
 export const root: string;
 export const vertical: string;
+export const horizontal: string;
 export const tail: string;
 export const complete: string;
 export const pending: string;

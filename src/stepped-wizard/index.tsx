@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import theme from '@dojo/widgets/middleware/theme';
+import theme from '../middleware/theme';
 import Icon from '../icon';
 import * as css from '../theme/default/stepped-wizard.m.css';
 import * as avatarCss from '../theme/default/avatar.m.css';
@@ -80,7 +80,7 @@ export const Step = stepFactory(({ properties, children, middleware: { theme } }
 						)}
 						outline={status !== 'inProgress'}
 					>
-						{status === 'complete' ? <Icon type="checkIcon" /> : String(index)}
+						{status === 'complete' ? <Icon type="checkIcon" /> : String(index + 1)}
 					</Avatar>
 				</div>
 			)}
@@ -106,16 +106,13 @@ export default factory(function SteppedWizard({ properties, children, middleware
 	const statuses: StepStatus[] = Array.from({ length: numberOfSteps }, (_, index) => {
 		if (index < activeStep) {
 			return 'complete';
-		}
-
-		if (index === activeStep) {
+		} else if (index === activeStep) {
 			return 'inProgress';
-		}
-
-		if (index > activeStep) {
+		} else {
 			return 'pending';
 		}
 	});
+
 	return (
 		<div
 			classes={[
