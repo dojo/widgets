@@ -12,12 +12,12 @@ import Icon from '../../../icon';
 
 describe('SteppedWizard', () => {
 	const baseAssertion = assertionTemplate(() => (
-		<div classes={[css.root, css.horizontal]}>
+		<div classes={[undefined, css.root, css.horizontal]}>
 			<div>rendered child</div>
 		</div>
 	));
 	const baseStepAssertion = assertionTemplate(() => (
-		<div classes={[css.step, undefined, false, css.pending]} onclick={noop}>
+		<div classes={[undefined, css.step, undefined, false, css.pending]} onclick={noop}>
 			<div classes={css.tail} />
 			<div assertion-key="stepIcon" classes={css.stepIcon}>
 				<Avatar assertion-key="avatar" theme={{}} outline={true}>
@@ -66,7 +66,9 @@ describe('SteppedWizard', () => {
 			[compareTheme]
 		);
 
-		h.expect(baseAssertion.setProperty(':root', 'classes', [css.root, css.vertical]));
+		h.expect(
+			baseAssertion.setProperty(':root', 'classes', [undefined, css.root, css.vertical])
+		);
 	});
 
 	it('renders a pending step by default', () => {
@@ -84,7 +86,7 @@ describe('SteppedWizard', () => {
 		h.expect(
 			baseStepAssertion
 				.setProperty('@avatar', 'outline', false)
-				.setProperty(':root', 'classes', [css.step, undefined, false, false])
+				.setProperty(':root', 'classes', [undefined, css.step, undefined, false, false])
 		);
 	});
 
@@ -93,7 +95,13 @@ describe('SteppedWizard', () => {
 
 		h.expect(
 			baseStepAssertion
-				.setProperty(':root', 'classes', [css.step, undefined, css.complete, false])
+				.setProperty(':root', 'classes', [
+					undefined,
+					css.step,
+					undefined,
+					css.complete,
+					false
+				])
 				.setChildren('@avatar', () => [<Icon type="checkIcon" />])
 		);
 	});

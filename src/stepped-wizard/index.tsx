@@ -58,6 +58,7 @@ export const Step = stepFactory(({ properties, children, middleware: { theme } }
 	return (
 		<div
 			classes={[
+				theme.variant(),
 				themedCss.step,
 				onClick && themedCss.clickable,
 				status === 'complete' && themedCss.complete,
@@ -116,6 +117,7 @@ export default factory(function SteppedWizard({ properties, children, middleware
 	return (
 		<div
 			classes={[
+				theme.variant(),
 				classes.root,
 				direction === 'horizontal' ? classes.horizontal : classes.vertical
 			]}
