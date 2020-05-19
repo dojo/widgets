@@ -19,21 +19,8 @@
 	width: 100%;
 }
 
-.contentWrapper {
-	cursor: pointer;
-}
-
-.contentWrapper:hover {
-	background-color: var(--color-background-faded);
-}
-
 .disabled {
 	color: var(--color-text-faded);
-}
-
-.selected > .contentWrapper {
-	background-color: var(--color-background-faded);
-	color: var(--color-highlight);
 }
 
 .leaf .content {

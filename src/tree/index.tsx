@@ -5,6 +5,7 @@ import { fill } from '@dojo/framework/shim/array';
 
 import Icon from '../icon';
 import Checkbox from '../checkbox';
+import { ListItem } from '../list';
 
 import * as css from '../theme/default/tree.m.css';
 import { RenderResult } from '@dojo/framework/core/interfaces';
@@ -25,7 +26,7 @@ export interface TreeProperties {
 	selectable?: boolean;
 	checkedNodes?: string[];
 	expandedNodes?: string[];
-	selectedNodes?: string[];
+	selectedNode?: string;
 	disabledNodes?: string[];
 	onSelect?(node: string): void;
 	onCheck?(node: string, checked: boolean): void;
@@ -37,6 +38,7 @@ export interface TreeChildren {
 }
 
 interface TreeCache {
+	activeNode?: string;
 	selectedNode?: string;
 }
 
@@ -47,11 +49,24 @@ interface LinkedTreeNode {
 }
 
 const icache = createICacheMiddleware<TreeCache>();
-const factory = create({ theme, icache })
+const factory = create({ theme, icache, diffProperty })
 	.properties<TreeProperties>()
 	.children<TreeChildren | undefined>();
 
-export default factory(function({ middleware: { theme, icache }, properties, children }) {
+export default factory(function({
+	middleware: { theme, icache, diffProperty },
+	properties,
+	children
+}) {
+	diffProperty(
+		'selectedNode',
+		({ selectedNode: current }, { selectedNode: next }: TreeNodeProperties) => {
+			if ((current || next) && current !== next) {
+				icache.set('selectedNode', next);
+			}
+		}
+	);
+
 	const {
 		nodes,
 		checkable = false,
@@ -60,7 +75,6 @@ export default factory(function({ middleware: { theme, icache }, properties, chi
 		onCheck,
 		onExpand,
 		checkedNodes,
-		selectedNodes,
 		disabledNodes,
 		expandedNodes
 	} = properties();
@@ -95,13 +109,17 @@ export default factory(function({ middleware: { theme, icache }, properties, chi
 				<li classes={classes.child}>
 					<Node
 						level={0}
+						activeNode={icache.get('activeNode')}
 						checkable={checkable}
 						selectable={selectable}
 						checkedNodes={checkedNodes || []}
-						selectedNodes={selectedNodes || []}
+						selectedNode={icache.get('selectedNode')}
 						disabledNodes={disabledNodes || []}
 						expandedNodes={expandedNodes || []}
 						node={node}
+						onActive={(n) => {
+							icache.set('activeNode', n);
+						}}
 						onSelect={(n) => {
 							icache.set('selectedNode', n);
 							onSelect && onSelect(n);
@@ -129,11 +147,13 @@ interface TreeNodeProperties {
 	checkable: boolean;
 	level: number;
 	selectable: boolean;
+	activeNode?: string;
 	checkedNodes: string[];
-	selectedNodes: string[];
+	selectedNode?: string;
 	disabledNodes: string[];
 	expandedNodes: string[];
 	node: LinkedTreeNode;
+	onActive(node: string): void;
 	onSelect(node: string): void;
 	onCheck(node: string, checked: boolean): void;
 	onExpand(node: string, expanded: boolean): void;
@@ -165,10 +185,12 @@ const Node = treeNodeFactory(function({
 		checkable,
 		level,
 		selectable,
+		activeNode,
+		selectedNode,
 		checkedNodes,
-		selectedNodes,
 		disabledNodes,
 		expandedNodes,
+		onActive,
 		onSelect,
 		onCheck,
 		onExpand
@@ -198,22 +220,12 @@ const Node = treeNodeFactory(function({
 			}
 		}
 	);
-	diffProperty(
-		'selectedNodes',
-		(
-			{ selectedNodes: current }: TreeNodeProperties,
-			{ selectedNodes: next }: TreeNodeProperties
-		) => {
-			if ((current && current.includes(node.id)) || (next && next.includes(node.id))) {
-				icache.set('selected', next.includes(node.id));
-			}
-		}
-	);
 
 	const classes = theme.classes(css);
 	const expanded = icache.getOrSet('expanded', false);
 	const checked = icache.getOrSet('checked', false);
-	const isSelected = icache.getOrSet('selected', false);
+	const isActive = node.id === activeNode;
+	const isSelected = node.id === selectedNode;
 	const isDisabled = disabledNodes && disabledNodes.includes(node.id);
 	const isLeaf = !node.children || node.children.length === 0;
 	const spacers = new Array(level);
@@ -228,55 +240,65 @@ const Node = treeNodeFactory(function({
 				isSelected && classes.selected
 			]}
 		>
-			<div classes={classes.contentWrapper}>
-				{...spacers}
-				<div
-					classes={classes.content}
-					onclick={() => {
-						icache.set('expanded', !expanded);
-						selectable && isDisabled !== true && onSelect(node.id);
-						onExpand(node.id, !expanded);
-					}}
-				>
-					{!isLeaf && (
-						<div classes={classes.expander}>
-							<Icon type={expanded ? 'downIcon' : 'rightIcon'} />
-						</div>
-					)}
-					{checkable && (
-						<div
-							onclick={(event: Event) => {
-								// don't allow the check's activity to effect our expand/collapse
-								event.stopPropagation();
-							}}
-						>
-							<Checkbox
-								checked={checked}
-								onValue={(value) => {
-									icache.set('checked', value);
-									onCheck(node.id, value);
+			<ListItem
+				active={isActive}
+				selected={isSelected}
+				onRequestActive={() => {
+					onActive(node.id);
+				}}
+				onSelect={() => {
+					icache.set('expanded', !expanded);
+					onExpand(node.id, !expanded);
+					selectable && onSelect(node.id);
+				}}
+				disabled={isDisabled}
+				widgetId={node.id}
+			>
+				<div classes={classes.contentWrapper}>
+					{...spacers}
+					<div classes={classes.content}>
+						{!isLeaf && (
+							<div classes={classes.expander}>
+								<Icon type={expanded ? 'downIcon' : 'rightIcon'} />
+							</div>
+						)}
+						{checkable && (
+							<div
+								onclick={(event: Event) => {
+									// don't allow the check's activity to effect our expand/collapse
+									event.stopPropagation();
 								}}
-								disabled={isDisabled}
-							/>
-						</div>
-					)}
-					<div classes={classes.title}>{itemRenderer(node.node)}</div>
+							>
+								<Checkbox
+									checked={checked}
+									onValue={(value) => {
+										icache.set('checked', value);
+										onCheck(node.id, value);
+									}}
+									disabled={isDisabled}
+								/>
+							</div>
+						)}
+						<div classes={classes.title}>{itemRenderer(node.node)}</div>
+					</div>
 				</div>
-			</div>
+			</ListItem>
 			{node.children && expanded && (
 				<div classes={classes.childrenWrapper}>
 					<ol classes={classes.children}>
 						{node.children.map((child) => (
 							<li classes={classes.child}>
 								<Node
+									activeNode={activeNode}
 									checkable={checkable}
 									level={level + 1}
 									selectable={selectable}
 									checkedNodes={checkedNodes}
-									selectedNodes={selectedNodes}
+									selectedNode={selectedNode}
 									disabledNodes={disabledNodes}
 									expandedNodes={expandedNodes}
 									node={child}
+									onActive={onActive}
 									onSelect={onSelect}
 									onCheck={onCheck}
 									onExpand={onExpand}
