@@ -19,21 +19,8 @@
 	width: 100%;
 }
 
-.contentWrapper {
-	cursor: pointer;
-}
-
-.contentWrapper:hover {
-	background-color: var(--mdc-theme-background-active);
-}
-
 .disabled {
 	color: var(--color-text-faded);
-}
-
-.selected > .contentWrapper {
-	background-color: var(--mdc-theme-background-selected);
-	color: var(--mdc-theme-primary);
 }
 
 .leaf .content {
