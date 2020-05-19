@@ -43,7 +43,7 @@ import * as slidePane from './slide-pane.m.css';
 import * as slider from './slider.m.css';
 import * as snackbar from './snackbar.m.css';
 import * as speedDial from './speed-dial.m.css';
-import * as steppedWizard from './stepped-wizard.m.css';
+import * as wizard from './wizard.m.css';
 import * as switchControl from './switch.m.css';
 import * as tabContainer from './tab-container.m.css';
 import * as textArea from './text-area.m.css';
@@ -104,7 +104,7 @@ export default {
 		'@dojo/widgets/switch': switchControl,
 		'@dojo/widgets/slider': slider,
 		'@dojo/widgets/snackbar': snackbar,
-		'@dojo/widgets/stepped-wizard': steppedWizard,
+		'@dojo/widgets/wizard': wizard,
 		'@dojo/widgets/tab-container': tabContainer,
 		'@dojo/widgets/text-area': textArea,
 		'@dojo/widgets/text-input': textInput,

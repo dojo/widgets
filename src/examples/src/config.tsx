@@ -241,8 +241,10 @@ import AlertResult from './widgets/result/Alert';
 import ErrorResult from './widgets/result/Error';
 import SuccessResult from './widgets/result/Success';
 import CustomIconResult from './widgets/result/CustomIcon';
-import BasicSteppedWizard from './widgets/stepped-wizard/Basic';
-import VerticalSteppedWizard from './widgets/stepped-wizard/Vertical';
+import BasicWizard from './widgets/wizard/Basic';
+import VerticalWizard from './widgets/wizard/Vertical';
+import ControlledWizard from './widgets/wizard/Controlled';
+import ErrorWizard from './widgets/wizard/Error';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -1547,21 +1549,6 @@ export const config = {
 				}
 			]
 		},
-		'stepped-wizard': {
-			overview: {
-				example: {
-					filename: 'Basic',
-					module: BasicSteppedWizard
-				}
-			},
-			examples: [
-				{
-					filename: 'Vertical',
-					module: VerticalSteppedWizard,
-					title: 'Vertical Stepped Wizard'
-				}
-			]
-		},
 		switch: {
 			examples: [
 				{
@@ -1846,6 +1833,31 @@ export const config = {
 					module: BasicTypeahead
 				}
 			}
+		},
+		wizard: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicWizard
+				}
+			},
+			examples: [
+				{
+					filename: 'Vertical',
+					module: VerticalWizard,
+					title: 'Vertical Wizard'
+				},
+				{
+					filename: 'Controlled',
+					module: ControlledWizard,
+					title: 'Controlled Wizard'
+				},
+				{
+					filename: 'Error',
+					module: ErrorWizard,
+					title: 'Wizard with an error'
+				}
+			]
 		}
 	}
 };

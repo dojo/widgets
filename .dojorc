@@ -53,7 +53,7 @@
 			"src/slider",
 			"src/snackbar",
 			"src/speed-dial",
-			"src/stepped-wizard",
+			"src/wizard",
 			"src/switch",
 			"src/tab-container",
 			"src/text-area",

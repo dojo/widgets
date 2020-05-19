@@ -16,23 +16,23 @@
 	display: block;
 	position: absolute;
 	top: 0;
-	left: calc(var(--avatar-size-medium) / 2);
+	left: calc(var(--mdc-avatar-size-medium) / 2);
 	width: 1px;
 	height: 100%;
-	padding: calc(var(--grid-base) * 5) 0 var(--grid-base);
+	padding: calc(var(--mdc-theme-grid-base) * 5) 0 var(--mdc-theme-grid-base);
 }
 
 .vertical .tail::after {
 	display: inline-block;
 	width: 1px;
 	height: 100%;
-	background-color: var(--color-text-faded);
+	background-color: var(--mdc-disabled-text-color);
 	border-radius: 1px;
 	content: '';
 }
 
 .complete .tail::after {
-	background-color: var(--color-highlight);
+	background-color: var(--mdc-theme-primary);
 }
 
 .horizontal .tail,
@@ -46,6 +46,7 @@
 	flex: 1;
 	overflow: hidden;
 	vertical-align: top;
+	cursor: pointer;
 }
 
 .vertical .step {
@@ -56,7 +57,7 @@
 
 .vertical .stepIcon {
 	float: left;
-	margin: 0 calc(var(--grid-base) * 2) 0 0;
+	margin: 0 calc(var(--mdc-theme-grid-base) * 2) 0 0;
 }
 
 .stepContent {
@@ -66,30 +67,30 @@
 
 .vertical .stepContent {
 	display: block;
-	min-height: calc(var(--grid-base) * 6);
+	min-height: calc(var(--mdc-theme-grid-base) * 6);
 	overflow: hidden;
 }
 
 .vertical .stepDescription {
-	padding-bottom: calc(var(--grid-base) * 1.5);
+	padding-bottom: calc(var(--mdc-theme-grid-base) * 1.5);
 }
 
 .stepTitle {
 	position: relative;
 	display: inline-block;
 	vertical-align: top;
-	padding-right: calc(var(--grid-base) * 2);
-	color: var(--color-text-primary);
+	padding-right: calc(var(--mdc-theme-grid-base) * 2);
+	color: var(--mdc-text-color);
 }
 
 .stepTitle::after {
 	position: absolute;
-	top: calc(var(--grid-base) * 2);
+	top: calc(var(--mdc-theme-grid-base) * 2);
 	left: 100%;
 	display: block;
 	width: 9999px;
 	height: 1px;
-	background: var(--color-text-faded);
+	background: var(--mdc-disabled-text-color);
 	content: '';
 }
 
@@ -99,17 +100,17 @@
 }
 
 .complete .stepTitle::after {
-	background-color: var(--color-highlight);
+	background-color: var(--mdc-theme-primary);
 }
 
 .stepSubTitle {
 	display: inline;
-	margin-left: var(--grid-base);
-	color: var(--color-text-primary);
+	margin-left: var(--mdc-theme-grid-base);
+	color: var(--mdc-text-color);
 }
 
 .stepDescription {
-	color: var(--color-text-primary);
+	color: var(--mdc-text-color);
 }
 
 .completed .stepTitle,
@@ -124,32 +125,49 @@
 	opacity: 45%;
 }
 
-.clickable {
-	cursor: pointer;
-}
-
-.clickable:hover .stepTitle,
-.clickable:hover .stepSubTitle,
-.clickable:hover .stepDescription {
-	color: var(--color-highlight);
+.step:hover .stepTitle,
+.step:hover .stepSubTitle,
+.step:hover .stepDescription {
+	color: var(--mdc-theme-primary);
 	opacity: 1;
 }
 
 .stepIcon {
 	display: inline-block;
 	vertical-align: top;
-	margin-right: var(--grid-base);
+	margin-right: var(--mdc-theme-grid-base);
 }
 .stepAvatarRoot {
 	composes: root from './avatar.m.css';
 }
 
 .root .pending.step .stepAvatarRoot {
-	color: var(--color-text-faded);
-	border-color: var(--color-text-faded);
+	color: var(--mdc-disabled-text-color);
+	border-color: var(--mdc-disabled-text-color);
 }
 
-.root .pending.step.clickable:hover .stepAvatarRoot {
-	color: var(--color-highlight);
-	border-color: var(--color-highlight);
+.root .pending.step:hover .stepAvatarRoot {
+	color: var(--mdc-theme-primary);
+	border-color: var(--mdc-theme-primary);
+}
+
+.pendingAvatar {
+	color: var(--mdc-disabled-text-color);
+}
+
+.error.step ~ .pending.step {
+	cursor: unset;
+}
+
+.error,
+.error .stepAvatarRoot,
+.error.step .stepTitle,
+.error.step .stepSubTitle,
+.error.step .stepDescription,
+.error.step:hover .stepTitle,
+.error.step:hover .stepSubTitle,
+.error.step:hover .stepDescription {
+	color: var(--mdc-theme-error);
+	border-color: var(--mdc-theme-error);
+	opacity: 1;
 }
