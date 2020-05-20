@@ -40,6 +40,8 @@ export interface TreeChildren {
 interface TreeCache {
 	activeNode?: string;
 	selectedNode?: string;
+	expandedNodes: string[];
+	checkedNodes: string[];
 }
 
 interface LinkedTreeNode {
@@ -60,9 +62,28 @@ export default factory(function({
 }) {
 	diffProperty(
 		'selectedNode',
-		({ selectedNode: current }, { selectedNode: next }: TreeNodeProperties) => {
+		properties,
+		({ selectedNode: current }, { selectedNode: next }) => {
 			if ((current || next) && current !== next) {
 				icache.set('selectedNode', next);
+			}
+		}
+	);
+	diffProperty(
+		'expandedNodes',
+		properties,
+		({ expandedNodes: current }, { expandedNodes: next }) => {
+			if ((current || next) && current !== next) {
+				icache.set('expandedNodes', next || []);
+			}
+		}
+	);
+	diffProperty(
+		'checkedNodes',
+		properties,
+		({ checkedNodes: current }, { checkedNodes: next }) => {
+			if ((current || next) && current !== next) {
+				icache.set('checkedNodes', next || []);
 			}
 		}
 	);
@@ -74,13 +95,13 @@ export default factory(function({
 		onSelect,
 		onCheck,
 		onExpand,
-		checkedNodes,
-		disabledNodes,
-		expandedNodes
+		disabledNodes
 	} = properties();
 	const classes = theme.classes(css);
 	const defaultRenderer = (n: TreeNode) => n.value;
 	const [itemRenderer] = children();
+	const expandedNodes = icache.getOrSet('expandedNodes', []);
+	const checkedNodes = icache.getOrSet('checkedNodes', []);
 
 	// convert TreeNode to LinkedTreeNodes
 	const nodeMap = new Map<string, LinkedTreeNode>();
@@ -112,10 +133,10 @@ export default factory(function({
 						activeNode={icache.get('activeNode')}
 						checkable={checkable}
 						selectable={selectable}
-						checkedNodes={checkedNodes || []}
+						checkedNodes={checkedNodes}
 						selectedNode={icache.get('selectedNode')}
 						disabledNodes={disabledNodes || []}
-						expandedNodes={expandedNodes || []}
+						expandedNodes={expandedNodes}
 						node={node}
 						onActive={(n) => {
 							icache.set('activeNode', n);
@@ -124,11 +145,23 @@ export default factory(function({
 							icache.set('selectedNode', n);
 							onSelect && onSelect(n);
 						}}
-						onCheck={(n, c) => {
-							onCheck && onCheck(n, c);
+						onCheck={(n, checked) => {
+							if (checked) {
+								checkedNodes.push(n);
+							} else {
+								checkedNodes.splice(checkedNodes.indexOf(n), 1);
+							}
+							icache.set('checkedNodes', checkedNodes);
+							onCheck && onCheck(n, checked);
 						}}
-						onExpand={(n, e) => {
-							onExpand && onExpand(n, e);
+						onExpand={(n, expanded) => {
+							if (expanded) {
+								expandedNodes.push(n);
+							} else {
+								expandedNodes.splice(expandedNodes.indexOf(n), 1);
+							}
+							icache.set('expandedNodes', expandedNodes);
+							onExpand && onExpand(n, expanded);
 						}}
 					>
 						{itemRenderer || defaultRenderer}
@@ -148,8 +181,8 @@ interface TreeNodeProperties {
 	level: number;
 	selectable: boolean;
 	activeNode?: string;
-	checkedNodes: string[];
 	selectedNode?: string;
+	checkedNodes: string[];
 	disabledNodes: string[];
 	expandedNodes: string[];
 	node: LinkedTreeNode;
@@ -163,23 +196,14 @@ interface TreeNodeChildren {
 	(node: TreeNode): RenderResult;
 }
 
-interface TreeNodeCache {
-	node: TreeNode;
-	expanded: boolean;
-	checked: boolean;
-	selected: boolean;
-}
+interface TreeNodeCache {}
 
 const treeNodeCache = createICacheMiddleware<TreeNodeCache>();
-const treeNodeFactory = create({ theme, icache: treeNodeCache, diffProperty })
+const treeNodeFactory = create({ theme, icache: treeNodeCache })
 	.properties<TreeNodeProperties>()
 	.children<TreeNodeChildren>();
 
-const Node = treeNodeFactory(function({
-	middleware: { theme, icache, diffProperty },
-	properties,
-	children
-}) {
+const Node = treeNodeFactory(function({ middleware: { theme, icache }, properties, children }) {
 	const {
 		node,
 		checkable,
@@ -196,36 +220,11 @@ const Node = treeNodeFactory(function({
 		onExpand
 	} = properties();
 	const [itemRenderer] = children();
-
-	// Merge controlled properties with our internally-tracked ones
-	diffProperty(
-		'expandedNodes',
-		(
-			{ expandedNodes: current }: TreeNodeProperties,
-			{ expandedNodes: next }: TreeNodeProperties
-		) => {
-			if ((current && current.includes(node.id)) || (next && next.includes(node.id))) {
-				icache.set('expanded', next.includes(node.id));
-			}
-		}
-	);
-	diffProperty(
-		'checkedNodes',
-		(
-			{ checkedNodes: current }: TreeNodeProperties,
-			{ checkedNodes: next }: TreeNodeProperties
-		) => {
-			if ((current && current.includes(node.id)) || (next && next.includes(node.id))) {
-				icache.set('checked', next.includes(node.id));
-			}
-		}
-	);
-
 	const classes = theme.classes(css);
-	const expanded = icache.getOrSet('expanded', false);
-	const checked = icache.getOrSet('checked', false);
 	const isActive = node.id === activeNode;
 	const isSelected = node.id === selectedNode;
+	const expanded = expandedNodes.includes(node.id);
+	const checked = checkedNodes.includes(node.id);
 	const isDisabled = disabledNodes && disabledNodes.includes(node.id);
 	const isLeaf = !node.children || node.children.length === 0;
 	const spacers = new Array(level);
@@ -247,7 +246,6 @@ const Node = treeNodeFactory(function({
 					onActive(node.id);
 				}}
 				onSelect={() => {
-					icache.set('expanded', !expanded);
 					onExpand(node.id, !expanded);
 					selectable && onSelect(node.id);
 				}}
@@ -272,7 +270,6 @@ const Node = treeNodeFactory(function({
 								<Checkbox
 									checked={checked}
 									onValue={(value) => {
-										icache.set('checked', value);
 										onCheck(node.id, value);
 									}}
 									disabled={isDisabled}
