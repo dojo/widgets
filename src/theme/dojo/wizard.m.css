@@ -155,11 +155,13 @@
 .root .pending.step .stepAvatarRoot {
 	color: var(--color-text-faded);
 	border-color: var(--color-text-faded);
+	opacity: 0.25;
 }
 
 .root .pending.step:hover .stepAvatarRoot {
 	color: var(--color-highlight);
 	border-color: var(--color-highlight);
+	opacity: 1;
 }
 
 .error.step ~ .pending.step {
