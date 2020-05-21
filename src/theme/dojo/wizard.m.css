@@ -87,6 +87,10 @@
 	line-height: calc(var(--grid-base) * 4);
 }
 
+.vertical .noDescription {
+	padding-bottom: calc(var(--grid-base) * 2.875);
+}
+
 :not(.pending):not(.complete).step .stepTitle {
 	font-weight: var(--bold-font-weight);
 }

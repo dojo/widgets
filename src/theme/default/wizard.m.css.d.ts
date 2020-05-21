@@ -7,6 +7,7 @@ export const pending: string;
 export const step: string;
 export const stepContent: string;
 export const stepTitle: string;
+export const noDescription: string;
 export const stepSubTitle: string;
 export const stepDescription: string;
 export const stepIcon: string;

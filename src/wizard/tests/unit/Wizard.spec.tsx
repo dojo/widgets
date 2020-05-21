@@ -1,7 +1,7 @@
-import { tsx } from '@dojo/framework/core/vdom';
+import { create, tsx } from '@dojo/framework/core/vdom';
 const { it, describe } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
-import harness from '@dojo/framework/testing/harness/harness';
+import testHarness from '@dojo/framework/testing/harness/harness';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 
 import Wizard, { Step } from '../../index';
@@ -9,10 +9,26 @@ import * as css from '../../../theme/default/wizard.m.css';
 import Avatar from '../../../avatar';
 import { compareTheme, noop } from '../../../common/tests/support/test-helpers';
 import Icon from '../../../icon';
+import { WNode } from '@dojo/framework/core/interfaces';
+import dimensions from '@dojo/framework/core/middleware/dimensions';
 
 describe('Wizard', () => {
+	const factory = create();
+	let width = 10000;
+	const mockDimensions = factory(() => {
+		return {
+			get() {
+				return { size: { width } };
+			}
+		};
+	});
+	const harness = (renderFunc: () => WNode) =>
+		testHarness(renderFunc, {
+			customComparator: [compareTheme],
+			middleware: [[dimensions, () => mockDimensions()]] as any
+		});
 	const baseAssertion = assertionTemplate(() => (
-		<div classes={[undefined, css.root, css.horizontal, css.clickable]}>
+		<div key="root" classes={[undefined, css.root, css.horizontal, css.clickable]}>
 			<div key="step1" classes={[css.step, css.complete, false, undefined]} onclick={noop}>
 				<div classes={css.tail} />
 				<div classes={css.stepIcon}>
@@ -44,7 +60,7 @@ describe('Wizard', () => {
 	));
 	const baseStepAssertion = assertionTemplate(() => (
 		<div classes={[undefined, css.stepContent]}>
-			<div classes={css.stepTitle}>
+			<div classes={[css.stepTitle, css.noDescription]}>
 				<div classes={css.stepSubTitle} />
 			</div>
 			<div classes={css.stepDescription} />
@@ -52,31 +68,25 @@ describe('Wizard', () => {
 	));
 
 	it('renders', () => {
-		const h = harness(
-			() => (
-				<Wizard initialActiveStep={1}>
-					<div>Step 1</div>
-					<div>Step 2</div>
-					<div>Step 3</div>
-				</Wizard>
-			),
-			[compareTheme]
-		);
+		const h = harness(() => (
+			<Wizard initialActiveStep={1}>
+				<div>Step 1</div>
+				<div>Step 2</div>
+				<div>Step 3</div>
+			</Wizard>
+		));
 
 		h.expect(baseAssertion);
 	});
 
 	it('renders vertically', () => {
-		const h = harness(
-			() => (
-				<Wizard direction="vertical" initialActiveStep={1}>
-					<div>Step 1</div>
-					<div>Step 2</div>
-					<div>Step 3</div>
-				</Wizard>
-			),
-			[compareTheme]
-		);
+		const h = harness(() => (
+			<Wizard direction="vertical" initialActiveStep={1}>
+				<div>Step 1</div>
+				<div>Step 2</div>
+				<div>Step 3</div>
+			</Wizard>
+		));
 
 		h.expect(
 			baseAssertion.setProperty(':root', 'classes', [
@@ -88,17 +98,35 @@ describe('Wizard', () => {
 		);
 	});
 
-	it('renders wich "clickable" set to false', () => {
-		const h = harness(
-			() => (
-				<Wizard clickable={false} initialActiveStep={1}>
-					<div>Step 1</div>
-					<div>Step 2</div>
-					<div>Step 3</div>
-				</Wizard>
-			),
-			[compareTheme]
+	it('forces rendering vertically at smaller widths', () => {
+		width = 400;
+		const h = harness(() => (
+			<Wizard initialActiveStep={1}>
+				<div>Step 1</div>
+				<div>Step 2</div>
+				<div>Step 3</div>
+			</Wizard>
+		));
+
+		h.expect(
+			baseAssertion.setProperty(':root', 'classes', [
+				undefined,
+				css.root,
+				css.vertical,
+				css.clickable
+			])
 		);
+		width = 10000;
+	});
+
+	it('renders wich "clickable" set to false', () => {
+		const h = harness(() => (
+			<Wizard clickable={false} initialActiveStep={1}>
+				<div>Step 1</div>
+				<div>Step 2</div>
+				<div>Step 3</div>
+			</Wizard>
+		));
 
 		h.expect(
 			baseAssertion.setProperty(':root', 'classes', [
@@ -111,16 +139,13 @@ describe('Wizard', () => {
 	});
 
 	it('renders with an error', () => {
-		const h = harness(
-			() => (
-				<Wizard error initialActiveStep={1}>
-					<div>Step 1</div>
-					<div>Step 2</div>
-					<div>Step 3</div>
-				</Wizard>
-			),
-			[compareTheme]
-		);
+		const h = harness(() => (
+			<Wizard error initialActiveStep={1}>
+				<div>Step 1</div>
+				<div>Step 2</div>
+				<div>Step 3</div>
+			</Wizard>
+		));
 
 		h.expect(
 			baseAssertion
@@ -133,16 +158,13 @@ describe('Wizard', () => {
 	});
 
 	it('changes the active step when clicked', () => {
-		const h = harness(
-			() => (
-				<Wizard initialActiveStep={1}>
-					<div>Step 1</div>
-					<div>Step 2</div>
-					<div>Step 3</div>
-				</Wizard>
-			),
-			[compareTheme]
-		);
+		const h = harness(() => (
+			<Wizard initialActiveStep={1}>
+				<div>Step 1</div>
+				<div>Step 2</div>
+				<div>Step 3</div>
+			</Wizard>
+		));
 
 		h.expect(baseAssertion);
 
@@ -173,22 +195,19 @@ describe('Wizard', () => {
 
 	it('only the previous nodes can be selected when there is an error', () => {
 		let activeIndex = 1;
-		const h = harness(
-			() => (
-				<Wizard
-					error={activeIndex === 1}
-					initialActiveStep={activeIndex}
-					onActiveStep={(index) => {
-						activeIndex = index;
-					}}
-				>
-					<div>Step 1</div>
-					<div>Step 2</div>
-					<div>Step 3</div>
-				</Wizard>
-			),
-			[compareTheme]
-		);
+		const h = harness(() => (
+			<Wizard
+				error={activeIndex === 1}
+				initialActiveStep={activeIndex}
+				onActiveStep={(index) => {
+					activeIndex = index;
+				}}
+			>
+				<div>Step 1</div>
+				<div>Step 2</div>
+				<div>Step 3</div>
+			</Wizard>
+		));
 
 		const errorAssertion = baseAssertion
 			.setProperty('@step1', 'classes', [css.step, css.complete, false, false])
@@ -216,21 +235,18 @@ describe('Wizard', () => {
 
 	it('controlled property overrides internal step changes', () => {
 		let activeIndex;
-		const h = harness(
-			() => (
-				<Wizard
-					activeStep={1}
-					onActiveStep={(index) => {
-						activeIndex = index;
-					}}
-				>
-					<div>Step 1</div>
-					<div>Step 2</div>
-					<div>Step 3</div>
-				</Wizard>
-			),
-			[compareTheme]
-		);
+		const h = harness(() => (
+			<Wizard
+				activeStep={1}
+				onActiveStep={(index) => {
+					activeIndex = index;
+				}}
+			>
+				<div>Step 1</div>
+				<div>Step 2</div>
+				<div>Step 3</div>
+			</Wizard>
+		));
 
 		h.expect(baseAssertion);
 		h.trigger('@step3', 'onclick');
@@ -244,26 +260,23 @@ describe('Wizard', () => {
 
 	describe('step', () => {
 		it('renders step by default', () => {
-			const h = harness(() => <Step />, [compareTheme]);
+			const h = harness(() => <Step />);
 			h.expect(baseStepAssertion);
 		});
 
 		it('renders with title, subtitle, and description', () => {
-			const h = harness(
-				() => (
-					<Step>
-						{{
-							title: 'title',
-							subTitle: 'subTitle',
-							description: 'description'
-						}}
-					</Step>
-				),
-				[compareTheme]
-			);
+			const h = harness(() => (
+				<Step>
+					{{
+						title: 'title',
+						subTitle: 'subTitle',
+						description: 'description'
+					}}
+				</Step>
+			));
 			h.expect(
 				baseStepAssertion.replaceChildren(':root', () => [
-					<div classes={css.stepTitle}>
+					<div classes={[css.stepTitle, false]}>
 						title
 						<div classes={css.stepSubTitle}>subTitle</div>
 					</div>,

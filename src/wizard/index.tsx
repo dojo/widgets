@@ -6,6 +6,8 @@ import * as css from '../theme/default/wizard.m.css';
 import * as avatarCss from '../theme/default/avatar.m.css';
 import Avatar from '../avatar';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import dimensions from '@dojo/framework/core/middleware/dimensions';
+import resize from '@dojo/framework/core/middleware/resize';
 
 export interface WizardProperties {
 	/** Set an initial active step and then let the component handle it internally */
@@ -44,7 +46,7 @@ export const Step = stepFactory(({ properties, children, middleware: { theme } }
 
 	return (
 		<div classes={[theme.variant(), themedCss.stepContent]}>
-			<div classes={themedCss.stepTitle}>
+			<div classes={[themedCss.stepTitle, !description && themedCss.noDescription]}>
 				{title}
 				<div classes={themedCss.stepSubTitle}>{subTitle}</div>
 			</div>
@@ -59,9 +61,13 @@ interface WizardIcache {
 	errorTooltip: boolean;
 }
 const icache = createICacheMiddleware<WizardIcache>();
-const factory = create({ theme, icache }).properties<WizardProperties>();
+const factory = create({ theme, icache, dimensions, resize }).properties<WizardProperties>();
 
-export default factory(function Wizard({ properties, children, middleware: { theme, icache } }) {
+export default factory(function Wizard({
+	properties,
+	children,
+	middleware: { theme, icache, dimensions, resize }
+}) {
 	const classes = theme.classes(css);
 	const {
 		direction = 'horizontal',
@@ -71,6 +77,8 @@ export default factory(function Wizard({ properties, children, middleware: { the
 		clickable = true
 	} = properties();
 	let { activeStep } = properties();
+	resize.get('root');
+	const width = dimensions.get('root').size.width;
 
 	if (typeof activeStep === 'undefined') {
 		if (
@@ -84,6 +92,7 @@ export default factory(function Wizard({ properties, children, middleware: { the
 	}
 
 	const stepNodes = children();
+	const forceVertical = width < 200 * stepNodes.length;
 	const statuses: StepStatus[] = stepNodes.map((_, index) => {
 		if (index < (activeStep || 0)) {
 			return 'complete';
@@ -118,10 +127,13 @@ export default factory(function Wizard({ properties, children, middleware: { the
 
 	return (
 		<div
+			key="root"
 			classes={[
 				theme.variant(),
 				classes.root,
-				direction === 'horizontal' ? classes.horizontal : classes.vertical,
+				!forceVertical && direction === 'horizontal'
+					? classes.horizontal
+					: classes.vertical,
 				clickable && classes.clickable
 			]}
 		>

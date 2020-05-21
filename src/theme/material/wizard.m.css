@@ -87,6 +87,10 @@
 	line-height: calc(var(--mdc-theme-grid-base) * 4);
 }
 
+.vertical .noDescription {
+	padding-bottom: calc(var(--mdc-theme-grid-base) * 2.875);
+}
+
 :not(.pending):not(.complete).step .stepTitle {
 	font-weight: var(--mdc-theme-heading-font-weight);
 }
@@ -126,14 +130,14 @@
 
 .completed .stepTitle,
 .stepDescription {
-	opacity: 65%;
+	opacity: 0.65;
 }
 
 .stepSubTitle,
 .pending .stepTitle,
 .pending .stepDescription,
 .completed .stepDescription {
-	opacity: 45%;
+	opacity: 0.45;
 }
 
 .step:hover .stepTitle,
