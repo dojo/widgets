@@ -11,3 +11,4 @@ export const stepSubTitle: string;
 export const stepDescription: string;
 export const stepIcon: string;
 export const error: string;
+export const clickable: string;

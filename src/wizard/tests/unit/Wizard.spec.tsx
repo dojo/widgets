@@ -12,7 +12,7 @@ import Icon from '../../../icon';
 
 describe('Wizard', () => {
 	const baseAssertion = assertionTemplate(() => (
-		<div classes={[undefined, css.root, css.horizontal]}>
+		<div classes={[undefined, css.root, css.horizontal, css.clickable]}>
 			<div key="step1" classes={[css.step, css.complete, false, undefined]} onclick={noop}>
 				<div classes={css.tail} />
 				<div classes={css.stepIcon}>
@@ -79,7 +79,34 @@ describe('Wizard', () => {
 		);
 
 		h.expect(
-			baseAssertion.setProperty(':root', 'classes', [undefined, css.root, css.vertical])
+			baseAssertion.setProperty(':root', 'classes', [
+				undefined,
+				css.root,
+				css.vertical,
+				css.clickable
+			])
+		);
+	});
+
+	it('renders wich "clickable" set to false', () => {
+		const h = harness(
+			() => (
+				<Wizard clickable={false} initialActiveStep={1}>
+					<div>Step 1</div>
+					<div>Step 2</div>
+					<div>Step 3</div>
+				</Wizard>
+			),
+			[compareTheme]
+		);
+
+		h.expect(
+			baseAssertion.setProperty(':root', 'classes', [
+				undefined,
+				css.root,
+				css.horizontal,
+				false
+			])
 		);
 	});
 

@@ -18,6 +18,8 @@ export interface WizardProperties {
 	error?: boolean;
 	/** Direction for steps. Defaults to horizontal */
 	direction?: 'horizontal' | 'vertical';
+	/** Indicates whether steps should respond to clicks. Defaults to true */
+	clickable?: boolean;
 }
 
 export type StepStatus = 'pending' | 'inProgress' | 'complete';
@@ -61,7 +63,13 @@ const factory = create({ theme, icache }).properties<WizardProperties>();
 
 export default factory(function Wizard({ properties, children, middleware: { theme, icache } }) {
 	const classes = theme.classes(css);
-	const { direction = 'horizontal', initialActiveStep, onActiveStep, error } = properties();
+	const {
+		direction = 'horizontal',
+		initialActiveStep,
+		onActiveStep,
+		error,
+		clickable = true
+	} = properties();
 	let { activeStep } = properties();
 
 	if (typeof activeStep === 'undefined') {
@@ -113,7 +121,8 @@ export default factory(function Wizard({ properties, children, middleware: { the
 			classes={[
 				theme.variant(),
 				classes.root,
-				direction === 'horizontal' ? classes.horizontal : classes.vertical
+				direction === 'horizontal' ? classes.horizontal : classes.vertical,
+				clickable && classes.clickable
 			]}
 		>
 			{steps.map((step, index) => (
@@ -126,7 +135,7 @@ export default factory(function Wizard({ properties, children, middleware: { the
 						error && statuses[index] === 'inProgress' && classes.error
 					]}
 					onclick={() => {
-						if (!error || index < (activeStep || 0)) {
+						if (clickable && (!error || index < (activeStep || 0))) {
 							icache.set('activeStep', index);
 							onActiveStep && onActiveStep(index);
 						}
