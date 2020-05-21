@@ -19,7 +19,7 @@ export default factory(function Basic() {
 					{{
 						title: 'Title',
 						subTitle: 'SubTitle',
-						description: 'Description'
+						description: 'This is a description'
 					}}
 				</Step>
 			</Wizard>

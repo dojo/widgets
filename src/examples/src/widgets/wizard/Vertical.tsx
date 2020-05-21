@@ -17,7 +17,8 @@ export default factory(function Vertical() {
 				<Step>
 					{{
 						title: 'Title',
-						subTitle: 'SubTitle'
+						subTitle: 'SubTitle',
+						description: 'This is a description'
 					}}
 				</Step>
 				<Step>

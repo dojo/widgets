@@ -4,6 +4,7 @@ export const horizontal: string;
 export const step: string;
 export const tail: string;
 export const complete: string;
+export const clickable: string;
 export const stepIcon: string;
 export const stepContent: string;
 export const stepDescription: string;

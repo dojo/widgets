@@ -19,7 +19,7 @@
 	left: calc(var(--avatar-size-medium) / 2);
 	width: 1px;
 	height: 100%;
-	padding: calc(var(--grid-base) * 5) 0 var(--grid-base);
+	padding: calc(var(--grid-base) * 5.5) 0 calc(var(--grid-base) * 0.5);
 }
 
 .vertical .tail::after {
@@ -84,6 +84,11 @@
 	vertical-align: top;
 	padding-right: calc(var(--grid-base) * 2);
 	color: var(--color-text-primary);
+	line-height: calc(var(--grid-base) * 4);
+}
+
+:not(.pending):not(.complete).step .stepTitle {
+	font-weight: var(--bold-font-weight);
 }
 
 .stepTitle::after {
@@ -110,22 +115,25 @@
 	display: inline;
 	margin-left: var(--grid-base);
 	color: var(--color-text-primary);
+	font-size: var(--font-size-small);
 }
 
 .stepDescription {
 	color: var(--color-text-primary);
+	font-size: var(--font-size-small);
+	white-space: normal;
 }
 
 .completed .stepTitle,
 .stepDescription {
-	opacity: 65%;
+	opacity: 0.65;
 }
 
 .stepSubTitle,
 .pending .stepTitle,
 .pending .stepDescription,
 .completed .stepDescription {
-	opacity: 45%;
+	opacity: 0.45;
 }
 
 .step:hover .stepTitle,
