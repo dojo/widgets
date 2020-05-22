@@ -1,5 +1,5 @@
 export const root: string;
-export const nodeRoot: string;
+export const node: string;
 export const contentWrapper: string;
 export const content: string;
 export const spacer: string;

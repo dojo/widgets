@@ -1,8 +1,10 @@
 import { create, tsx, diffProperty } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '@dojo/framework/core/middleware/theme';
+import focus from '@dojo/framework/core/middleware/focus';
 import { fill } from '@dojo/framework/shim/array';
 
+import { Keys } from '../common/util';
 import Icon from '../icon';
 import Checkbox from '../checkbox';
 import { ListItem } from '../list';
@@ -38,6 +40,8 @@ export interface TreeChildren {
 }
 
 interface TreeCache {
+	rootNodes: LinkedTreeNode[];
+	nodeMap: Map<string, LinkedTreeNode>;
 	activeNode?: string;
 	selectedNode?: string;
 	expandedNodes: string[];
@@ -47,19 +51,27 @@ interface TreeCache {
 interface LinkedTreeNode {
 	id: string;
 	node: TreeNode;
+	depth: number;
 	children: LinkedTreeNode[];
 }
 
 const icache = createICacheMiddleware<TreeCache>();
-const factory = create({ theme, icache, diffProperty })
+const factory = create({ theme, icache, diffProperty, focus })
 	.properties<TreeProperties>()
 	.children<TreeChildren | undefined>();
 
 export default factory(function({
-	middleware: { theme, icache, diffProperty },
+	middleware: { theme, icache, diffProperty, focus },
 	properties,
 	children
 }) {
+	diffProperty('nodes', properties, ({ nodes: current }, { nodes: next }) => {
+		if (current !== next) {
+			const [nodeMap, rootNodes] = createLinkedNodes(next);
+			icache.set('nodeMap', nodeMap);
+			icache.set('rootNodes', rootNodes);
+		}
+	});
 	diffProperty(
 		'selectedNode',
 		properties,
@@ -89,7 +101,6 @@ export default factory(function({
 	);
 
 	const {
-		nodes,
 		checkable = false,
 		selectable = false,
 		onSelect,
@@ -100,77 +111,175 @@ export default factory(function({
 	const classes = theme.classes(css);
 	const defaultRenderer = (n: TreeNode) => n.value;
 	const [itemRenderer] = children();
+
+	const rootNodes = icache.getOrSet('rootNodes', []);
+	const activeNode = icache.get('activeNode');
+	const selectedNode = icache.get('selectedNode');
 	const expandedNodes = icache.getOrSet('expandedNodes', []);
 	const checkedNodes = icache.getOrSet('checkedNodes', []);
+	const shouldFocus = focus.shouldFocus();
 
-	// convert TreeNode to LinkedTreeNodes
+	const nodes: LinkedTreeNode[] = [];
+	const queue: LinkedTreeNode[] = [...rootNodes];
+	let activeIndex: number | undefined = undefined;
+
+	let current = queue.shift();
+	while (current) {
+		if (current.children.length > 0 && expandedNodes.includes(current.id)) {
+			queue.unshift(...current.children);
+		}
+		if (activeNode && current.id === activeNode) {
+			activeIndex = nodes.length;
+		}
+
+		nodes.push(current);
+		current = queue.shift();
+	}
+
+	function onKeyDown(event: KeyboardEvent) {
+		event.stopPropagation();
+
+		switch (event.which) {
+			// select
+			case Keys.Enter:
+			case Keys.Space:
+				event.preventDefault();
+				if (activeNode && selectedNode !== activeNode) {
+					icache.set('selectedNode', activeNode);
+				}
+				break;
+
+			// next
+			case Keys.Down:
+				event.preventDefault();
+				if (activeIndex !== undefined && activeIndex < nodes.length - 1) {
+					icache.set('activeNode', nodes[activeIndex + 1].id);
+				}
+				break;
+
+			// previous
+			case Keys.Up:
+				event.preventDefault();
+				if (activeIndex !== undefined && activeIndex > 0) {
+					icache.set('activeNode', nodes[activeIndex - 1].id);
+				}
+				break;
+
+			// expand
+			case Keys.Right:
+				event.preventDefault();
+				if (activeNode && !expandedNodes.includes(activeNode)) {
+					expandedNodes.push(activeNode);
+					icache.set('expandedNodes', expandedNodes);
+				}
+				break;
+
+			// collapse
+			case Keys.Left:
+				event.preventDefault();
+				if (activeNode && expandedNodes.includes(activeNode)) {
+					expandedNodes.splice(expandedNodes.indexOf(activeNode), 1);
+					icache.set('expandedNodes', expandedNodes);
+				}
+				break;
+		}
+	}
+
+	return (
+		<ol
+			classes={[classes.root, theme.variant()]}
+			focus={() => shouldFocus}
+			onkeydown={onKeyDown}
+			tabIndex={0}
+		>
+			{nodes.map((node) => (
+				<Node
+					depth={node.depth}
+					activeNode={activeNode}
+					checkable={checkable}
+					selectable={selectable}
+					checkedNodes={checkedNodes}
+					selectedNode={selectedNode}
+					disabledNodes={disabledNodes || []}
+					expandedNodes={expandedNodes}
+					node={node}
+					onActive={(n) => {
+						icache.set('activeNode', n);
+					}}
+					onSelect={(n) => {
+						icache.set('selectedNode', n);
+						onSelect && onSelect(n);
+					}}
+					onCheck={(n, checked) => {
+						if (checked) {
+							checkedNodes.push(n);
+						} else {
+							checkedNodes.splice(checkedNodes.indexOf(n), 1);
+						}
+						icache.set('checkedNodes', checkedNodes);
+						onCheck && onCheck(n, checked);
+					}}
+					onExpand={(n, expanded) => {
+						if (expanded) {
+							expandedNodes.push(n);
+						} else {
+							expandedNodes.splice(expandedNodes.indexOf(n), 1);
+						}
+						icache.set('expandedNodes', expandedNodes);
+						onExpand && onExpand(n, expanded);
+					}}
+				>
+					{itemRenderer || defaultRenderer}
+				</Node>
+			))}
+		</ol>
+	);
+});
+
+function createLinkedNodes(nodes: TreeNode[]): [Map<string, LinkedTreeNode>, LinkedTreeNode[]] {
+	// create a map of all nodes
 	const nodeMap = new Map<string, LinkedTreeNode>();
 	for (let node of nodes) {
 		nodeMap.set(node.id, {
 			id: node.id,
 			node,
+			depth: 0,
 			children: []
 		});
 	}
+
+	// organize into a tree such that only root nodes are top-level
 	const rootNodes: LinkedTreeNode[] = [];
-	for (let linked of nodeMap.values()) {
-		if (linked.node.parent) {
-			const parent = nodeMap.get(linked.node.parent);
+	for (let current of nodeMap.values()) {
+		if (current.node.parent) {
+			const parent = nodeMap.get(current.node.parent);
 			if (parent) {
-				parent.children.push(linked);
+				parent.children.push(current);
+			} else {
+				// a parent that doesn't exist?
+				// this node will not be included in the tree
 			}
 		} else {
-			rootNodes.push(linked);
+			rootNodes.push(current);
 		}
 	}
 
-	return (
-		<ol classes={[classes.root, theme.variant()]}>
-			{rootNodes.map((node) => (
-				<li classes={classes.child}>
-					<Node
-						level={0}
-						activeNode={icache.get('activeNode')}
-						checkable={checkable}
-						selectable={selectable}
-						checkedNodes={checkedNodes}
-						selectedNode={icache.get('selectedNode')}
-						disabledNodes={disabledNodes || []}
-						expandedNodes={expandedNodes}
-						node={node}
-						onActive={(n) => {
-							icache.set('activeNode', n);
-						}}
-						onSelect={(n) => {
-							icache.set('selectedNode', n);
-							onSelect && onSelect(n);
-						}}
-						onCheck={(n, checked) => {
-							if (checked) {
-								checkedNodes.push(n);
-							} else {
-								checkedNodes.splice(checkedNodes.indexOf(n), 1);
-							}
-							icache.set('checkedNodes', checkedNodes);
-							onCheck && onCheck(n, checked);
-						}}
-						onExpand={(n, expanded) => {
-							if (expanded) {
-								expandedNodes.push(n);
-							} else {
-								expandedNodes.splice(expandedNodes.indexOf(n), 1);
-							}
-							icache.set('expandedNodes', expandedNodes);
-							onExpand && onExpand(n, expanded);
-						}}
-					>
-						{itemRenderer || defaultRenderer}
-					</Node>
-				</li>
-			))}
-		</ol>
-	);
-});
+	const queue = [...rootNodes];
+	let current = queue.shift();
+	while (current) {
+		if (current.node.parent) {
+			const parent = nodeMap.get(current.node.parent);
+			if (parent) {
+				current.depth = parent.depth + 1;
+			}
+		}
+
+		queue.unshift(...current.children);
+		current = queue.shift();
+	}
+
+	return [nodeMap, rootNodes];
+}
 
 /*******************
  * TreeNode
@@ -178,7 +287,7 @@ export default factory(function({
 
 interface TreeNodeProperties {
 	checkable: boolean;
-	level: number;
+	depth: number;
 	selectable: boolean;
 	activeNode?: string;
 	selectedNode?: string;
@@ -207,7 +316,7 @@ const Node = treeNodeFactory(function({ middleware: { theme, icache }, propertie
 	const {
 		node,
 		checkable,
-		level,
+		depth,
 		selectable,
 		activeNode,
 		selectedNode,
@@ -227,13 +336,13 @@ const Node = treeNodeFactory(function({ middleware: { theme, icache }, propertie
 	const checked = checkedNodes.includes(node.id);
 	const isDisabled = disabledNodes && disabledNodes.includes(node.id);
 	const isLeaf = !node.children || node.children.length === 0;
-	const spacers = new Array(level);
+	const spacers = new Array(depth);
 	fill(spacers, <div classes={classes.spacer} />);
 
 	return (
-		<div
+		<li
 			classes={[
-				classes.nodeRoot,
+				classes.node,
 				isLeaf && classes.leaf,
 				selectable && classes.selectable,
 				isSelected && classes.selected
@@ -262,7 +371,7 @@ const Node = treeNodeFactory(function({ middleware: { theme, icache }, propertie
 						)}
 						{checkable && (
 							<div
-								onclick={(event: Event) => {
+								onpointerdown={(event: Event) => {
 									// don't allow the check's activity to effect our expand/collapse
 									event.stopPropagation();
 								}}
@@ -280,33 +389,6 @@ const Node = treeNodeFactory(function({ middleware: { theme, icache }, propertie
 					</div>
 				</div>
 			</ListItem>
-			{node.children && expanded && (
-				<div classes={classes.childrenWrapper}>
-					<ol classes={classes.children}>
-						{node.children.map((child) => (
-							<li classes={classes.child}>
-								<Node
-									activeNode={activeNode}
-									checkable={checkable}
-									level={level + 1}
-									selectable={selectable}
-									checkedNodes={checkedNodes}
-									selectedNode={selectedNode}
-									disabledNodes={disabledNodes}
-									expandedNodes={expandedNodes}
-									node={child}
-									onActive={onActive}
-									onSelect={onSelect}
-									onCheck={onCheck}
-									onExpand={onExpand}
-								>
-									{itemRenderer}
-								</Node>
-							</li>
-						))}
-					</ol>
-				</div>
-			)}
-		</div>
+		</li>
 	);
 });
