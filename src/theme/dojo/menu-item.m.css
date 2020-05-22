@@ -7,6 +7,10 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	align-items: center;
+	justify-content: flex-start;
+	height: calc(var(--grid-base * 5.5));
+	display: flex;
 }
 
 .active {
