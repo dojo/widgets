@@ -12,7 +12,6 @@ import * as fixedCss from './list.m.css';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import LoadingIndicator from '../loading-indicator';
 import { throttle } from '@dojo/framework/core/util';
-import { fill } from '@dojo/framework/shim/array';
 
 export interface MenuItemProperties {
 	/** Callback used when the item is clicked */
