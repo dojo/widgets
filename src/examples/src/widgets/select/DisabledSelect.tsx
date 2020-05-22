@@ -1,21 +1,24 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Select, { defaultTransform } from '@dojo/widgets/select';
+import Select from '@dojo/widgets/select';
 import icache from '@dojo/framework/core/middleware/icache';
-import { createResource } from '@dojo/framework/core/resource';
 import Example from '../../Example';
 import { ListOption } from '@dojo/widgets/list';
+import {
+	createMemoryResourceTemplate,
+	createResourceMiddleware
+} from '@dojo/framework/core/middleware/resources';
 
-const factory = create({ icache });
+const resource = createResourceMiddleware();
+const factory = create({ icache, resource });
 const options = [{ value: 'cat' }, { value: 'dog' }, { value: 'fish' }];
 
-const resource = createResource<ListOption>();
+const template = createMemoryResourceTemplate<ListOption>();
 
-export default factory(function DisabledSelect() {
+export default factory(function DisabledSelect({ id, middleware: { resource } }) {
 	return (
 		<Example>
 			<Select
-				resource={resource(options)}
-				transform={defaultTransform}
+				resource={resource({ template, initOptions: { id, data: options } })}
 				disabled
 				onValue={() => {}}
 			>

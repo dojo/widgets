@@ -1,4 +1,5 @@
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
+import { resize } from '@dojo/framework/core/middleware/resize';
 import { theme } from '@dojo/framework/core/middleware/theme';
 import { bodyScroll } from '../middleware/bodyScroll';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -28,14 +29,14 @@ export interface PopupProperties extends BasePopupProperties {
 	open?: boolean;
 }
 
-const factory = create({ dimensions, theme, bodyScroll })
+const factory = create({ dimensions, theme, bodyScroll, resize })
 	.properties<PopupProperties>()
 	.children<RenderResult | undefined>();
 
 export const Popup = factory(function({
 	properties,
 	children,
-	middleware: { dimensions, theme, bodyScroll }
+	middleware: { dimensions, theme, bodyScroll, resize }
 }) {
 	const {
 		underlayVisible = false,
@@ -47,6 +48,7 @@ export const Popup = factory(function({
 		open
 	} = properties();
 
+	resize.get('wrapper');
 	const wrapperDimensions = dimensions.get('wrapper');
 	const bottomOfVisibleScreen =
 		document.documentElement.scrollTop + document.documentElement.clientHeight;

@@ -1,10 +1,14 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { defaultTransform } from '@dojo/widgets/list';
+import List, { ListOption } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
-import { createResource } from '@dojo/framework/core/resource';
+import {
+	createMemoryResourceTemplate,
+	createResourceMiddleware
+} from '@dojo/framework/core/middleware/resources';
 
-const factory = create({ icache });
+const resource = createResourceMiddleware();
+const factory = create({ icache, resource });
 const options = [
 	{ value: 'Save' },
 	{ value: 'Delete', divider: true },
@@ -13,14 +17,13 @@ const options = [
 	{ value: 'Edit' }
 ];
 
-const resource = createResource();
+const template = createMemoryResourceTemplate<ListOption>();
 
-export default factory(function Dividers({ middleware: { icache } }) {
+export default factory(function Dividers({ id, middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<List
-				resource={resource(options)}
-				transform={defaultTransform}
+				resource={resource({ template, initOptions: { id, data: options } })}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}

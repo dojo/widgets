@@ -1,10 +1,14 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { defaultTransform } from '@dojo/widgets/list';
+import List, { ListOption } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
-import { createResource } from '@dojo/framework/core/resource';
+import {
+	createMemoryResourceTemplate,
+	createResourceMiddleware
+} from '@dojo/framework/core/middleware/resources';
 
-const factory = create({ icache });
+const resource = createResourceMiddleware();
+const factory = create({ icache, resource });
 
 const options = [
 	{ value: 'Save' },
@@ -15,15 +19,14 @@ const options = [
 	{ value: 'Share' }
 ];
 
-const resource = createResource();
+const template = createMemoryResourceTemplate<ListOption>();
 
-export default factory(function Menu({ middleware: { icache } }) {
+export default factory(function Menu({ id, middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<List
 				menu
-				resource={resource(options)}
-				transform={defaultTransform}
+				resource={resource({ template, initOptions: { id, data: options } })}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}

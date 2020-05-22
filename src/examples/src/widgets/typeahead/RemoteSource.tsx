@@ -1,57 +1,68 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import Typeahead from '@dojo/widgets/typeahead';
-import { createResource, createTransformer, DataTemplate } from '@dojo/framework/core/resource';
 import Example from '../../Example';
 
-const fetcher = async (options: any) => {
-	const { offset, size, query } = options;
-	let url = `https://mixolydian-appendix.glitch.me/user?`;
+import {
+	createResourceTemplate,
+	createResourceMiddleware,
+	defaultFind
+} from '@dojo/framework/core/middleware/resources';
 
-	const pageNumber = offset / size + 1;
-	url = `${url}page=${pageNumber}&size=${size}`;
+interface User {
+	firstName: string;
+	lastName: string;
+}
 
-	if (query) {
-		query.forEach(({ keys, value }: { keys: string[]; value: string }) => {
-			keys.forEach((key) => {
-				url = `${url}&${key}=${value}`;
+const template = createResourceTemplate<User>({
+	find: defaultFind,
+	read: async (request, { put }) => {
+		const { offset, size, query } = request;
+		let url = `https://mixolydian-appendix.glitch.me/user?`;
+
+		const pageNumber = offset / size + 1;
+		url = `${url}page=${pageNumber}&size=${size}`;
+
+		if (query) {
+			Object.keys(query).forEach((key) => {
+				if (query[key as keyof User]) {
+					url = `${url}&${key}=${query[key as keyof User]}`;
+				}
 			});
-		});
-	}
-
-	const response = await fetch(url, {
-		headers: {
-			'Content-Type': 'application/json'
 		}
-	});
-	const data = await response.json();
 
-	return {
-		data: data.data,
-		total: data.total
-	};
-};
+		const response = await fetch(url, {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+		const data: {
+			data: User[];
+			total: number;
+		} = await response.json();
 
-const template: DataTemplate<{ firstName: string; lastName: string }> = {
-	read: fetcher
-};
-
-const transformer = createTransformer(template, {
-	value: ['lastName'],
-	label: ['firstName', 'lastName']
+		put(
+			{
+				data: data.data,
+				total: data.total
+			},
+			request
+		);
+	}
 });
 
-const resource = createResource(template);
+const resource = createResourceMiddleware();
+const factory = create({ icache, resource });
 
-const factory = create({ icache });
-
-export default factory(function Remote({ middleware: { icache } }) {
+export default factory(function Remote({ middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<Typeahead
 				helperText="Type to filter by last name"
-				resource={resource}
-				transform={transformer}
+				resource={resource({
+					template,
+					transform: { value: 'firstName', label: 'firstName' }
+				})}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}

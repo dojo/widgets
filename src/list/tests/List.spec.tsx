@@ -2,12 +2,17 @@ import { sandbox } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
-import List, { ListOption, defaultTransform, MenuItem, ListItem } from '..';
-import { compareId, createHarness, compareTheme } from '../../common/tests/support/test-helpers';
+import List, { ListOption, MenuItem, ListItem } from '..';
+import {
+	compareId,
+	createHarness,
+	compareTheme,
+	compareResource,
+	createTestResource
+} from '../../common/tests/support/test-helpers';
 import { Keys } from '../../common/util';
 import * as css from '../../theme/default/list.m.css';
 import * as fixedCss from '../list.m.css';
-import { createResource } from '@dojo/framework/core/resource';
 const { assert } = intern.getPlugin('chai');
 const { describe, it, before, after } = intern.getInterface('bdd');
 
@@ -19,7 +24,12 @@ const compareAriaActiveDescendant = {
 	comparator: (property: any) => typeof property === 'string'
 };
 
-const harness = createHarness([compareTheme, compareId, compareAriaActiveDescendant]);
+const harness = createHarness([
+	compareTheme,
+	compareId,
+	compareAriaActiveDescendant,
+	compareResource
+]);
 
 describe('List', () => {
 	const animalOptions: ListOption[] = [
@@ -27,8 +37,6 @@ describe('List', () => {
 		{ value: 'cat', label: 'Cat' },
 		{ value: 'fish', disabled: true }
 	];
-
-	const resource = createResource<ListOption>();
 
 	const template = assertionTemplate(() => (
 		<div
@@ -95,19 +103,14 @@ describe('List', () => {
 
 	it('renders options', () => {
 		const h = harness(() => (
-			<List resource={resource(animalOptions)} transform={defaultTransform} onValue={noop} />
+			<List resource={createTestResource(animalOptions)} onValue={noop} />
 		));
 		h.expect(template);
 	});
 
 	it('renders with an initialValue', () => {
 		const h = harness(() => (
-			<List
-				initialValue="dog"
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-			/>
+			<List initialValue="dog" onValue={noop} resource={createTestResource(animalOptions)} />
 		));
 		const mockArrowDownEvent = {
 			stopPropagation: sb.stub(),
@@ -135,7 +138,7 @@ describe('List', () => {
 
 	it('takes a custom renderer', () => {
 		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform}>
+			<List onValue={noop} resource={createTestResource(animalOptions)}>
 				{({ label, value }, props) => (
 					<ListItem {...props}>
 						<span>label is {label || value}</span>
@@ -164,12 +167,7 @@ describe('List', () => {
 
 	it('takes a number in view property', () => {
 		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-				itemsInView={2}
-			/>
+			<List onValue={noop} resource={createTestResource(animalOptions)} itemsInView={2} />
 		));
 		const numberInViewTemplate = template.setProperty('@root', 'styles', {
 			maxHeight: '90px'
@@ -179,7 +177,7 @@ describe('List', () => {
 
 	it('changes active item on arrow key down', () => {
 		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
+			<List onValue={noop} resource={createTestResource(animalOptions)} />
 		));
 		const mockArrowDownEvent = {
 			stopPropagation: sb.stub(),
@@ -202,8 +200,7 @@ describe('List', () => {
 					currentActiveValue = value;
 				}}
 				value="dog"
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
+				resource={createTestResource(animalOptions)}
 			/>
 		));
 		const mockArrowDownEvent = {
@@ -232,7 +229,7 @@ describe('List', () => {
 
 	it('changes active item on arrow key up and loops to last item', () => {
 		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
+			<List onValue={noop} resource={createTestResource(animalOptions)} />
 		));
 		const mockArrowUpEvent = {
 			stopPropagation: sb.stub(),
@@ -252,8 +249,7 @@ describe('List', () => {
 		const h = harness(() => (
 			<List
 				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
+				resource={createTestResource(animalOptions)}
 				onActiveIndexChange={onActiveIndexChange}
 			/>
 		));
@@ -270,7 +266,7 @@ describe('List', () => {
 
 	it('sets active item to be the one starting with letter key pressed', () => {
 		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
+			<List onValue={noop} resource={createTestResource(animalOptions)} />
 		));
 		const mockCPressEvent = {
 			stopPropagation: sb.stub(),
@@ -288,11 +284,7 @@ describe('List', () => {
 	it('selects item on key press', () => {
 		const onValue = sb.stub();
 		const h = harness(() => (
-			<List
-				onValue={onValue}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-			/>
+			<List onValue={onValue} resource={createTestResource(animalOptions)} />
 		));
 
 		const mockArrowDownEvent = {
@@ -323,8 +315,7 @@ describe('List', () => {
 		const h = harness(() => (
 			<List
 				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
+				resource={createTestResource(animalOptions)}
 				disabled={(item) => item.value === 'cat'}
 			>
 				{}
@@ -353,12 +344,7 @@ describe('List', () => {
 
 	it('renders not focusable', () => {
 		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-				focusable={false}
-			/>
+			<List onValue={noop} resource={createTestResource(animalOptions)} focusable={false} />
 		));
 		h.expect(
 			template
@@ -374,8 +360,6 @@ describe('List - Menu', () => {
 		{ value: 'cat', label: 'Cat' },
 		{ value: 'fish', disabled: true }
 	];
-
-	const resource = createResource<ListOption>();
 
 	const template = assertionTemplate(() => (
 		<div
@@ -441,12 +425,7 @@ describe('List - Menu', () => {
 
 	it('renders options', () => {
 		const h = harness(() => (
-			<List
-				onValue={noop}
-				menu
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-			/>
+			<List onValue={noop} menu resource={createTestResource(animalOptions)} />
 		));
 		h.expect(template);
 	});
@@ -456,11 +435,10 @@ describe('List - Menu', () => {
 			<List
 				onValue={noop}
 				menu
-				resource={resource([
+				resource={createTestResource([
 					{ ...animalOptions[0], divider: true },
 					...animalOptions.slice(1)
 				])}
-				transform={defaultTransform}
 			/>
 		));
 
@@ -469,12 +447,7 @@ describe('List - Menu', () => {
 
 	it('takes a custom renderer', () => {
 		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-				menu
-			>
+			<List onValue={noop} resource={createTestResource(animalOptions)} menu>
 				{({ label, value }, props) => (
 					<MenuItem {...props}>
 						<span>label is {label || value}</span>

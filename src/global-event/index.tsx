@@ -7,7 +7,7 @@ export interface ListenerObject {
 	[index: string]: (event?: any) => void;
 }
 
-export interface GlobalEventProperties extends Partial<RegisteredListeners> {
+export interface GlobalEventProperties {
 	/** The global window object */
 	window?: ListenerObject;
 	/** The document for this context */
@@ -31,24 +31,26 @@ const factory = create({
 
 export const GlobalEvent = factory(function({
 	children,
+	properties,
 	middleware: { destroy, diffProperty, icache }
 }) {
 	const registerListeners = (
 		type: 'window' | 'document',
-		previousListeners: RegisteredListeners,
-		newListeners: RegisteredListeners
+		previousListeners: ListenerObject | undefined,
+		newListeners: ListenerObject | undefined
 	) => {
 		const currentListeners = icache.getOrSet('listeners', {
 			window: {},
 			document: {}
 		});
 		const registeredListeners: ListenerObject = {};
-		previousListeners[type] &&
-			Object.keys(previousListeners[type]).forEach((eventName) => {
-				const newListener = newListeners[type][eventName];
+
+		previousListeners &&
+			Object.keys(previousListeners).forEach((eventName) => {
+				const newListener = newListeners ? newListeners[eventName] : undefined;
 				if (newListener === undefined) {
 					global[type].removeEventListener(eventName, currentListeners[type][eventName]);
-				} else if (previousListeners[type][eventName] !== newListener) {
+				} else if (previousListeners[eventName] !== newListener) {
 					global[type].removeEventListener(eventName, currentListeners[type][eventName]);
 					global[type].addEventListener(eventName, newListener);
 					registeredListeners[eventName] = newListener;
@@ -57,14 +59,11 @@ export const GlobalEvent = factory(function({
 				}
 			});
 
-		newListeners[type] &&
-			Object.keys(newListeners[type]).forEach((eventName) => {
-				if (
-					previousListeners[type] === undefined ||
-					previousListeners[type][eventName] === undefined
-				) {
-					global[type].addEventListener(eventName, newListeners[type][eventName]);
-					registeredListeners[eventName] = newListeners[type][eventName];
+		newListeners &&
+			Object.keys(newListeners).forEach((eventName) => {
+				if (previousListeners === undefined || previousListeners[eventName] === undefined) {
+					global[type].addEventListener(eventName, newListeners[eventName]);
+					registeredListeners[eventName] = newListeners[eventName];
 				}
 			});
 		currentListeners[type] = registeredListeners;
@@ -72,13 +71,13 @@ export const GlobalEvent = factory(function({
 		icache.set('listeners', currentListeners);
 	};
 
-	diffProperty('window', (previous: RegisteredListeners, next: RegisteredListeners) => {
-		const { changed } = shallow(previous, next);
-		changed && registerListeners('window', previous, next);
+	diffProperty('window', properties, (previous, next) => {
+		const { changed } = shallow(previous.window, next.window);
+		changed && registerListeners('window', previous.window, next.window);
 	});
-	diffProperty('document', (previous: RegisteredListeners, next: RegisteredListeners) => {
-		const { changed } = shallow(previous, next);
-		changed && registerListeners('document', previous, next);
+	diffProperty('document', properties, (previous, next) => {
+		const { changed } = shallow(previous.document, next.document);
+		changed && registerListeners('document', previous.document, next.document);
 	});
 
 	const removeAllRegisteredListeners = (type: 'window' | 'document') => {

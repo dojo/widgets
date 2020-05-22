@@ -2,7 +2,6 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { PopupPosition } from '@dojo/widgets/popup';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { createDataMiddleware } from '@dojo/framework/core/middleware/data';
 import List, {
 	ItemRendererProperties,
 	ListOption,
@@ -14,7 +13,7 @@ import theme from '../middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
 import * as css from '../theme/default/typeahead.m.css';
 import TriggerPopup from '../trigger-popup';
-import { find } from '@dojo/framework/shim/array';
+import { createResourceMiddleware, ResourceMeta } from '@dojo/framework/core/middleware/resources';
 import TextInput from '../text-input';
 import bundle from '../select/select.nls';
 import i18n from '@dojo/framework/core/middleware/i18n';
@@ -23,6 +22,7 @@ import * as listCss from '../theme/default/list.m.css';
 import { Keys } from '../common/util';
 import LoadingIndicator from '../loading-indicator';
 import * as inputCss from '../theme/default/text-input.m.css';
+import { flat } from '@dojo/framework/shim/array';
 
 export interface TypeaheadProperties {
 	/** Callback called when user selects a value */
@@ -64,6 +64,8 @@ export interface TypeaheadICache {
 	focusNode: string;
 	initial: string;
 	valid: boolean | undefined;
+	selected: boolean;
+	meta?: ResourceMeta;
 }
 
 export interface TypeaheadChildren {
@@ -79,7 +81,7 @@ export interface TypeaheadChildren {
 
 const factory = create({
 	icache: createICacheMiddleware<TypeaheadICache>(),
-	data: createDataMiddleware<ListOption>(),
+	resource: createResourceMiddleware<ListOption>(),
 	theme,
 	focus,
 	i18n
@@ -91,8 +93,9 @@ export const Typeahead = factory(function Typeahead({
 	id,
 	properties,
 	children,
-	middleware: { icache, data, theme, focus, i18n }
+	middleware: { icache, resource, theme, focus, i18n }
 }) {
+	const { createOptions, isLoading, meta, find, getOrRead } = resource;
 	const {
 		initialValue,
 		disabled,
@@ -101,15 +104,14 @@ export const Typeahead = factory(function Typeahead({
 		name,
 		helperText,
 		itemsInView,
-		transform,
 		onValidate,
 		strict = true,
-		value: controlledValue
+		value: controlledValue,
+		itemDisabled,
+		resource: { template, options = createOptions(id) }
 	} = properties();
 	const themedCss = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
-	const { get, getOptions, setOptions, shared, getTotal, isLoading } = data();
-	const sharedResource = shared();
 
 	const [{ label, items, leading } = {} as TypeaheadChildren] = children();
 
@@ -125,11 +127,11 @@ export const Typeahead = factory(function Typeahead({
 	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
 		icache.set('value', controlledValue);
 		icache.set('lastValue', controlledValue);
-		setOptions({ query: { value: controlledValue } });
+		options({ query: { value: controlledValue } });
 	}
 
 	let valid = icache.get('valid');
-	const value = icache.get('value');
+	let value = icache.get('value');
 	const listId = `typeahead-list-${id}`;
 	const triggerId = `typeahead-trigger-${id}`;
 	const dirty = icache.get('dirty');
@@ -169,7 +171,8 @@ export const Typeahead = factory(function Typeahead({
 		onClose: () => void
 	) {
 		const activeIndex = icache.getOrSet('activeIndex', 0);
-		const total = getTotal(getOptions()) || 0;
+		const metaInfo = meta(template, options()) || icache.get('meta');
+		const total = (metaInfo && metaInfo.total) || 0;
 
 		switch (event) {
 			case Keys.Escape:
@@ -189,41 +192,43 @@ export const Typeahead = factory(function Typeahead({
 				break;
 			case Keys.Enter:
 				preventDefault();
-
-				const allItems = get({ query: getOptions().query });
-				if (allItems && allItems.length >= activeIndex) {
-					const { itemDisabled } = properties();
-
-					const activeItem = allItems[activeIndex];
-					let disabled = false;
-					if (activeItem) {
-						disabled = itemDisabled ? itemDisabled(activeItem) : !!activeItem.disabled;
-
-						if (!disabled) {
-							icache.set('value', activeItem.value);
-							onClose();
-							callOnValue(activeItem.value);
-						} else if (!strict) {
-							const value = icache.getOrSet('value', '');
-							onClose();
-							callOnValue(value);
-						}
-					} else {
-						if (strict) {
-							const { onValidate, required } = properties();
-							if (required) {
-								icache.set('valid', false);
-								onValidate && onValidate(false);
-							}
-						} else {
-							const value = icache.getOrSet('value', '');
-							onClose();
-							callOnValue(value);
-						}
-					}
-				}
+				icache.set('selected', true);
+				onClose();
 				break;
 		}
+	}
+
+	const activeIndex = icache.getOrSet('activeIndex', 0) % (options().size || 0);
+	const currentItems = flat(getOrRead(template, options()));
+	const isCurrentlyLoading = isLoading(template, options());
+	const metaInfo = icache.set('meta', (current) => {
+		const newMeta = meta(template, options());
+		return newMeta || current;
+	});
+	const activeItem = currentItems[activeIndex];
+	if (icache.get('selected') && !isCurrentlyLoading) {
+		if (currentItems && currentItems.length === 0) {
+			if (strict) {
+				if (required) {
+					icache.set('valid', false);
+					onValidate && onValidate(false);
+				}
+			} else {
+				const value = icache.getOrSet('value', '');
+				callOnValue(value);
+			}
+			icache.set('selected', false);
+		} else if (activeItem) {
+			let disabled = itemDisabled ? itemDisabled(activeItem) : !!activeItem.disabled;
+			if (!disabled) {
+				value = icache.set('value', activeItem.value);
+				callOnValue(currentItems[activeIndex].value);
+			} else if (!strict) {
+				value = icache.getOrSet('value', '');
+				callOnValue(value);
+			}
+		}
+		icache.set('selected', false);
 	}
 
 	return (
@@ -270,10 +275,18 @@ export const Typeahead = factory(function Typeahead({
 							}
 						}
 
-						let valueOption: ListOption | undefined;
-						const currentOptions = get(getOptions());
-						if (currentOptions && currentOptions.length) {
-							valueOption = find(currentOptions, (option) => option.value === value);
+						let valueOption: any;
+						if (value) {
+							valueOption = (
+								find(template, {
+									options: options(),
+									start: 0,
+									query: { value },
+									type: 'exact'
+								}) || {
+									item: undefined
+								}
+							).item;
 						}
 
 						return (
@@ -281,7 +294,7 @@ export const Typeahead = factory(function Typeahead({
 								onValue={(value) => {
 									if (value !== icache.get('value')) {
 										openMenu();
-										setOptions({ query: { value: value } });
+										options({ query: { value } });
 										icache.set('value', value || '');
 									}
 								}}
@@ -343,7 +356,7 @@ export const Typeahead = factory(function Typeahead({
 
 						const { itemDisabled } = properties();
 
-						return getTotal(getOptions()) === undefined && isLoading(getOptions()) ? (
+						return metaInfo === undefined && isLoading(template, options()) ? (
 							<LoadingIndicator key="loading" />
 						) : (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
@@ -351,8 +364,7 @@ export const Typeahead = factory(function Typeahead({
 									key="menu"
 									focusable={false}
 									activeIndex={icache.get('activeIndex')}
-									resource={sharedResource}
-									transform={transform}
+									resource={resource({ template, options })}
 									disabled={itemDisabled}
 									onValue={(value) => {
 										focus.focus();

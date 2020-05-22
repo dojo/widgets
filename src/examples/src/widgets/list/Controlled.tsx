@@ -1,14 +1,18 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { defaultTransform } from '@dojo/widgets/list';
+import List, { ListOption } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import states from './states';
 import Example from '../../Example';
-import { createResource } from '@dojo/framework/core/resource';
+import {
+	createMemoryResourceTemplate,
+	createResourceMiddleware
+} from '@dojo/framework/core/middleware/resources';
 
-const factory = create({ icache });
-const resource = createResource();
+const resource = createResourceMiddleware();
+const factory = create({ icache, resource });
+const template = createMemoryResourceTemplate<ListOption>();
 
-export default factory(function Controlled({ middleware: { icache } }) {
+export default factory(function Controlled({ id, middleware: { icache, resource } }) {
 	const activeIndex = icache.getOrSet('activeIndex', 0);
 
 	return (
@@ -48,8 +52,7 @@ export default factory(function Controlled({ middleware: { icache } }) {
 				<List
 					focusable={false}
 					itemsInView={4}
-					resource={resource(states)}
-					transform={defaultTransform}
+					resource={resource({ template, initOptions: { id, data: states } })}
 					onActiveIndexChange={(index: number) => {
 						icache.set('activeIndex', index);
 					}}

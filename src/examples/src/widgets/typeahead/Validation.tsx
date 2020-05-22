@@ -1,25 +1,28 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { defaultTransform } from '@dojo/widgets/select';
 import icache from '@dojo/framework/core/middleware/icache';
 import Typeahead from '@dojo/widgets/typeahead';
 import Example from '../../Example';
-import { createResource, createMemoryTemplate, defaultFilter } from '@dojo/framework/core/resource';
+import {
+	createMemoryResourceTemplate,
+	createResourceMiddleware
+} from '@dojo/framework/core/middleware/resources';
+import { ListOption } from '@dojo/widgets/list';
 
-const factory = create({ icache });
+const resource = createResourceMiddleware();
+const factory = create({ icache, resource });
 const options = [
 	{ value: 'cat', label: 'Cat' },
 	{ value: 'dog', label: 'Dog' },
 	{ value: 'fish', label: 'Fish' }
 ];
 
-const resource = createResource(createMemoryTemplate({ filter: defaultFilter }));
+const template = createMemoryResourceTemplate<ListOption>();
 
-export default factory(function Validation({ middleware: { icache } }) {
+export default factory(function Validation({ id, middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<Typeahead
-				resource={resource(options)}
-				transform={defaultTransform}
+				resource={resource({ template, initOptions: { id, data: options } })}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}

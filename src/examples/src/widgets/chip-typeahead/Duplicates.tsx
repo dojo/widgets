@@ -1,10 +1,14 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { defaultTransform } from '@dojo/widgets/select';
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import Example from '../../Example';
-import { createResource, createMemoryTemplate, defaultFilter } from '@dojo/framework/core/resource';
+import {
+	createMemoryResourceTemplate,
+	createResourceMiddleware
+} from '@dojo/framework/core/middleware/resources';
+import { ListOption } from '@dojo/widgets/list';
 
-const factory = create();
+const resource = createResourceMiddleware();
+const factory = create({ resource });
 const options = [
 	{ value: 'cheese', label: 'Cheese 🧀' },
 	{ value: 'pineapple', label: 'Pineapple 🍍' },
@@ -12,12 +16,15 @@ const options = [
 	{ value: 'onions', label: 'Onions 🧅' }
 ];
 
-const resource = createResource(createMemoryTemplate({ filter: defaultFilter }));
+const template = createMemoryResourceTemplate<ListOption>();
 
-export default factory(function Duplicates() {
+export default factory(function Duplicates({ id, middleware: { resource } }) {
 	return (
 		<Example>
-			<ChipTypeahead resource={resource(options)} transform={defaultTransform} duplicates>
+			<ChipTypeahead
+				resource={resource({ template, initOptions: { id, data: options } })}
+				duplicates
+			>
 				{{
 					label: 'Select Pizza Toppings'
 				}}
