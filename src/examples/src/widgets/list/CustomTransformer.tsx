@@ -2,27 +2,33 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
-import { createResource } from '@dojo/framework/core/resource';
+import { createMemoryResourceTemplate, createResourceMiddleware } from '@dojo/widgets/resources';
 
-const factory = create({ icache });
+const resource = createResourceMiddleware();
+const factory = create({ icache, resource });
 
-const animals = [
+interface Animal {
+	name: string;
+	type: string;
+}
+
+const animals: Animal[] = [
 	{ name: 'whiskers', type: 'feline' },
 	{ name: 'fido', type: 'kanine' },
 	{ name: 'mickey', type: 'rodent' }
 ];
 
-const resource = createResource();
+const template = createMemoryResourceTemplate<Animal>();
 
-export default factory(function CustomTransformer({ middleware: { icache } }) {
+export default factory(function CustomTransformer({ id, middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<List
-				resource={resource(animals)}
-				transform={{
-					value: ['type'],
-					label: ['name']
-				}}
+				resource={resource({
+					template,
+					transform: { value: 'type', label: 'name' },
+					initOptions: { id, data: animals }
+				})}
 				onValue={(value: string) => {
 					icache.set('value', value);
 				}}

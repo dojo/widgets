@@ -1,4 +1,4 @@
-import { List, ListOption, defaultTransform as listTransform } from '../../../list';
+import { List, ListOption } from '../../../list';
 import * as sinon from 'sinon';
 
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -11,19 +11,22 @@ import bundle from '../../nls/TimePicker';
 import * as css from '../../../theme/default/time-picker.m.css';
 import { padStart } from '@dojo/framework/shim/string';
 import select from '@dojo/framework/testing/harness/support/selector';
-import { createHarness, compareTheme, stubEvent } from '../../../common/tests/support/test-helpers';
+import {
+	createHarness,
+	compareTheme,
+	stubEvent,
+	compareResource,
+	createTestResource
+} from '../../../common/tests/support/test-helpers';
 import { Keys } from '../../../common/util';
 import focus from '@dojo/framework/core/middleware/focus';
-import { createResource } from '@dojo/framework/core/resource';
 
 const { describe, it, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
-const harness = createHarness([compareTheme]);
+const harness = createHarness([compareTheme, compareResource]);
 
 const { messages } = bundle;
 const noop = () => {};
-
-const resource = createResource<ListOption>();
 
 function createFocusMock({
 	shouldFocus = false,
@@ -126,8 +129,7 @@ const menuTemplate = assertionTemplate(() => {
 			<List
 				key="menu"
 				focus={() => false}
-				resource={resource(options30Minutes)}
-				transform={listTransform}
+				resource={createTestResource(options30Minutes)}
 				onValue={noop}
 				onRequestClose={noop}
 				onBlur={noop}
@@ -301,7 +303,7 @@ describe('TimePicker', () => {
 			onClose
 		);
 		h.expect(
-			menuTemplate.setProperty('@menu', 'resource', resource(options30Minutes12)),
+			menuTemplate.setProperty('@menu', 'resource', createTestResource(options30Minutes12)),
 			() => contentResult
 		);
 
@@ -452,7 +454,7 @@ describe('TimePicker', () => {
 			menuTemplate.setProperty(
 				'@menu',
 				'resource',
-				resource(
+				createTestResource(
 					generateOptions(60 * 30, {
 						hour12: false,
 						hour: 'numeric',

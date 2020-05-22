@@ -4,22 +4,27 @@ import * as sinon from 'sinon';
 
 import { tsx, node } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
-import harness from '@dojo/framework/testing/harness/harness';
+import {
+	createHarness,
+	stubEvent,
+	compareResource,
+	createTestResource
+} from '../../common/tests/support/test-helpers';
 import resize from '@dojo/framework/core/middleware/resize';
 import { createResizeMock } from '@dojo/framework/testing/mocks/middleware/resize';
 import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 
-import { stubEvent } from '../../common/tests/support/test-helpers';
-
 import Icon from '../../icon';
-import Select, { defaultTransform } from '../../select';
+import Select from '../../select';
 
 import Pagination from '..';
 import * as css from '../../theme/default/pagination.m.css';
 import bundle from '../Pagination.nls';
 
 const { messages } = bundle;
+
+const harness = createHarness([compareResource]);
 
 describe('Pagination', () => {
 	const noop = () => {};
@@ -268,16 +273,10 @@ describe('Pagination', () => {
 				<Select
 					key="page-size-select"
 					initialValue="20"
-					resource={{
-						resource: noop as any,
-						data: [{ value: '10' }, { value: '20' }]
-					}}
-					transform={defaultTransform}
+					resource={createTestResource([{ value: '10' }, { value: '20' }])}
 					onValue={noop}
 					value={undefined}
-				>
-					{noop as any}
-				</Select>
+				/>
 			</div>
 		]);
 		const pageSizes = [10, 20];

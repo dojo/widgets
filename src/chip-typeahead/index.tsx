@@ -2,7 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '../middleware/theme';
-import { createDataMiddleware } from '@dojo/framework/core/middleware/data';
+import { createResourceMiddleware } from '../resources';
 import Typeahead from '../typeahead';
 import * as css from '../theme/default/chip-typeahead.m.css';
 import {
@@ -18,7 +18,6 @@ import * as typeaheadCss from '../theme/default/typeahead.m.css';
 import * as chipCss from '../theme/default/chip.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 import { PopupPosition } from '@dojo/widgets/popup';
-import { find } from '@dojo/framework/shim/array';
 import Label from '../label';
 
 export interface ChipTypeaheadProperties {
@@ -65,7 +64,7 @@ export interface ChipTypeaheadIcache {
 const factory = create({
 	icache: createICacheMiddleware<ChipTypeaheadIcache>(),
 	theme,
-	data: createDataMiddleware<ListOption>(),
+	resource: createResourceMiddleware<ListOption>(),
 	focus
 })
 	.properties<ChipTypeaheadProperties>()
@@ -86,25 +85,25 @@ export function arraysDifferent(arr1: string[], arr2: string[]): boolean {
 }
 
 export const ChipTypeahead = factory(function ChipTypeahead({
-	middleware: { icache, theme, focus, data },
+	id,
+	middleware: { icache, theme, focus, resource },
 	properties,
 	children
 }) {
+	const { createOptions, find } = resource;
 	const {
 		initialValue = [],
-		resource,
-		transform,
 		disabled,
 		itemsInView,
 		position,
 		name,
 		placement = 'inline',
-		strict
+		strict,
+		resource: { template, options = createOptions(id) }
 	} = properties();
 	const [{ label, items, selected } = {} as ChipTypeaheadChildren] = children();
 	const themeCss = theme.classes(css);
 	const { value } = properties();
-	const { get, getOptions } = data();
 	const focused = icache.getOrSet('focused', false);
 
 	if (value !== undefined && arraysDifferent(value || [], icache.get('value') || [])) {
@@ -116,9 +115,20 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 		icache.set('initialValue', initialValue);
 	}
 
-	const currentOptions = get(getOptions());
 	const chips = icache.getOrSet('value', []).map((value, index) => {
-		let option = find(currentOptions || [], (option) => option.value === value);
+		let option: any;
+		if (value) {
+			option = (
+				find(template, {
+					options: options(),
+					start: 0,
+					query: { value },
+					type: 'exact'
+				}) || {
+					item: undefined
+				}
+			).item;
+		}
 
 		return (
 			<Chip
@@ -203,7 +213,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 				name={name}
 				focus={focus.shouldFocus}
 				disabled={disabled}
-				resource={resource}
+				resource={resource({ template, options })}
 				onValue={(value) => {
 					const { onValue } = properties();
 
@@ -213,7 +223,6 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 
 					focus.focus();
 				}}
-				transform={transform}
 				value=""
 				onFocus={() => icache.set('focused', true)}
 				onBlur={() => icache.set('focused', false)}

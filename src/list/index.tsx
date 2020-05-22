@@ -9,7 +9,7 @@ import * as listItemCss from '../theme/default/list-item.m.css';
 import * as menuItemCss from '../theme/default/menu-item.m.css';
 import * as css from '../theme/default/list.m.css';
 import * as fixedCss from './list.m.css';
-import { createDataMiddleware } from '@dojo/framework/core/middleware/data';
+import { createResourceMiddleware } from '../resources';
 import LoadingIndicator from '../loading-indicator';
 import { throttle } from '@dojo/framework/core/util';
 
@@ -203,6 +203,7 @@ interface ListICache {
 	value: string;
 	scrollTop: number;
 	previousActiveIndex: number;
+	requestedInputText: string;
 }
 
 const offscreenHeight = (dnode: RenderResult) => {
@@ -220,7 +221,7 @@ const factory = create({
 	icache: createICacheMiddleware<ListICache>(),
 	focus,
 	theme,
-	data: createDataMiddleware<ListOption>()
+	resource: createResourceMiddleware<ListOption>()
 })
 	.properties<ListProperties>()
 	.children<ListChildren | undefined>();
@@ -229,8 +230,9 @@ export const List = factory(function List({
 	children,
 	properties,
 	id,
-	middleware: { icache, focus, theme, data }
+	middleware: { icache, focus, theme, resource }
 }) {
+	const { getOrRead, createOptions, find, meta, isLoading } = resource;
 	const {
 		activeIndex,
 		focusable = true,
@@ -243,11 +245,10 @@ export const List = factory(function List({
 		onRequestClose,
 		onValue,
 		widgetId,
-		theme: themeProp
+		theme: themeProp,
+		resource: { template, options = createOptions(id) }
 	} = properties();
 	const [itemRenderer] = children();
-
-	const { get, getOrRead, getOptions, setOptions, getTotal, isLoading } = data();
 
 	function setActiveIndex(index: number) {
 		if (onActiveIndexChange) {
@@ -309,78 +310,49 @@ export const List = factory(function List({
 				setActiveIndex(total - 1);
 				break;
 			default:
-				if (event.metaKey || event.ctrlKey) {
-					return;
+				if (!event.metaKey && !event.ctrlKey && event.key.length === 1) {
+					icache.set('resetInputTextTimer', (existingTimer) => {
+						if (existingTimer) {
+							clearTimeout(existingTimer);
+						}
+						return setTimeout(() => {
+							icache.delete('inputText');
+						}, 800);
+					});
+					icache.set('inputText', (value = '') => {
+						return `${value}${event.key}`;
+					});
 				}
-
-				const newIndex = getComputedIndexFromInput(event.key);
-				if (newIndex !== undefined) {
-					setActiveIndex(newIndex);
-				}
+				break;
 		}
 	}
 
-	function getComputedIndexFromInput(key: string) {
-		const existingTimer = icache.get('resetInputTextTimer');
-		let inputText = icache.getOrSet('inputText', '') + `${key}`;
-		existingTimer && clearTimeout(existingTimer);
-
-		const resetTextTimeout = setTimeout(() => {
-			icache.set('inputText', '');
-		}, 800);
-
-		icache.set('resetInputTextTimer', resetTextTimeout);
-		icache.set('inputText', inputText);
-
-		const allItems = get({ query: getOptions().query }) as ListOption[];
-		let foundIndex: number | undefined = undefined;
-
-		const { disabled } = properties();
-
-		allItems.some((option, index) => {
-			const { disabled: optionDisabled, value, label } = option;
-			const itemDisabled = disabled ? disabled(option) : optionDisabled;
-
-			const match =
-				!itemDisabled &&
-				(label || value).toLowerCase().indexOf(inputText.toLowerCase()) === 0;
-			if (match) {
-				foundIndex = index;
-				return true;
-			}
-			return false;
-		});
-
-		return foundIndex;
-	}
-
-	function renderItems(start: number, count: number) {
+	function renderItems(start: number, count: number, startNode: number) {
 		const renderedItems = [];
-		const pages = [];
-		const loading = [];
-		getOrRead(getOptions());
-		const total = getTotal(getOptions());
-		if (total) {
-			for (let i = 0; i < Math.min(total - start, count); i++) {
+		const metaInfo = meta(template, options(), true);
+		if (metaInfo && metaInfo.total) {
+			const pages: number[] = [];
+			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
 				const index = i + startNode;
 				const page = Math.floor(index / count) + 1;
-				if (!pages[page]) {
-					const pageOptions = {
-						...getOptions(),
-						pageNumber: page
-					};
-					pages[page] = getOrRead(pageOptions) || [];
-					loading[page] = isLoading(pageOptions);
+				if (pages.indexOf(page) === -1) {
+					pages.push(page);
 				}
+			}
+			const pageItems = getOrRead(template, options({ page: pages }));
+			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
+				const index = i + startNode;
+				const page = Math.floor(index / count) + 1;
+				const pageIndex = pages.indexOf(page);
 				const indexWithinPage = index - (page - 1) * count;
-				const menuOption = pages[page][indexWithinPage];
-				const pageIsLoading = loading[page];
-				renderedItems[i] = pageIsLoading
-					? renderPlaceholder(index)
-					: renderItem(menuOption, index);
+				const items = pageItems[pageIndex];
+				if (items) {
+					renderedItems[i] = renderItem(items[indexWithinPage], index);
+				} else {
+					renderedItems[i] = renderPlaceholder(index);
+				}
 			}
 		}
-
 		return renderedItems;
 	}
 
@@ -404,7 +376,9 @@ export const List = factory(function List({
 					'item'
 				)}
 			>
-				<LoadingIndicator />
+				<div styles={{ height: '26px', paddingTop: '13px' }}>
+					<LoadingIndicator />
+				</div>
 			</MenuItem>
 		) : (
 			<ListItem
@@ -416,7 +390,9 @@ export const List = factory(function List({
 					'item'
 				)}
 			>
-				<LoadingIndicator />
+				<div styles={{ height: '26px', paddingTop: '13px' }}>
+					<LoadingIndicator />
+				</div>
 			</ListItem>
 		);
 	}
@@ -542,10 +518,39 @@ export const List = factory(function List({
 	const itemHeight = icache.getOrSet('itemHeight', 0);
 	let scrollTop = icache.getOrSet('scrollTop', 0);
 
-	const previousActiveIndex = icache.get('previousActiveIndex');
-	const computedActiveIndex =
+	const renderedItemsCount = itemsInView + 2 * nodePadding;
+	options({ size: renderedItemsCount });
+	let computedActiveIndex =
 		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
+	const inputText = icache.get('inputText');
+	const requestedInputText = icache.get('requestedInputText');
+	if (inputText || requestedInputText) {
+		const findOptions = {
+			options: options(),
+			start: computedActiveIndex + 1,
+			type: 'start' as const,
+			query: { value: inputText || requestedInputText }
+		};
+		if (!isLoading(template, findOptions)) {
+			const foundItem = find(template, findOptions);
+			if (!foundItem) {
+				if (inputText && (!requestedInputText || inputText !== requestedInputText)) {
+					icache.set('requestedInputText', inputText);
+				} else {
+					icache.delete('requestedInputText');
+				}
+			} else {
+				icache.delete('requestedInputText');
+			}
+			if (foundItem && computedActiveIndex !== foundItem.index) {
+				setActiveIndex(foundItem.index);
+			}
+		}
+	}
 
+	const previousActiveIndex = icache.get('previousActiveIndex');
+	computedActiveIndex =
+		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 	let activeItem: ListOption | undefined = undefined;
 
 	if (computedActiveIndex !== previousActiveIndex) {
@@ -567,24 +572,14 @@ export const List = factory(function List({
 	const startNode = Math.max(0, Math.floor(scrollTop / itemHeight) - nodePadding);
 	const offsetY = startNode * itemHeight;
 
-	const renderedItemsCount = itemsInView + 2 * nodePadding;
+	const items = renderItems(startNode, renderedItemsCount, startNode);
+	const metaInfo = meta(template, options(), true);
 
-	if (!getOptions().pageNumber || !getOptions().pageSize) {
-		const { pageSize = renderedItemsCount, pageNumber = 1, query } = getOptions();
-		setOptions({
-			pageNumber,
-			pageSize,
-			query
-		});
-	}
-
-	const items = renderItems(startNode, renderedItemsCount);
-	const total = getTotal(getOptions());
-
-	if (total === undefined) {
+	if (!metaInfo || metaInfo.total === undefined) {
 		return;
 	}
 
+	const total = metaInfo.total;
 	const totalContentHeight = total * itemHeight;
 
 	return (

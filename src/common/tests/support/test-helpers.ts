@@ -8,6 +8,7 @@ import {
 import { CustomComparator, harness } from '@dojo/framework/testing/harness/harness';
 import { SinonStub } from 'sinon';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
+import { createMemoryResourceTemplate } from '../../../resources';
 
 export const noop: any = () => {};
 
@@ -17,6 +18,7 @@ export const stubEvent = {
 	target: {}
 };
 
+export const isResourceComparator = (value: any) => Boolean(value && value.template);
 export const isObjectComparator = (value: any) => typeof value === 'object';
 export const isStringComparator = (value: any) => value === null || typeof value === 'string';
 export const isStringObjectComparator = (value: any) =>
@@ -115,3 +117,21 @@ export const compareTheme = {
 	property: 'theme',
 	comparator: isObjectComparator
 };
+
+export const compareResource = {
+	selector: '*',
+	property: 'resource',
+	comparator: isResourceComparator
+};
+
+export function createTestResource(data: any[], options?: any, transform?: any) {
+	return {
+		template: {
+			id: 'test',
+			template: createMemoryResourceTemplate<any>(),
+			initOptions: { id: 'test', data },
+			transform
+		},
+		options
+	};
+}

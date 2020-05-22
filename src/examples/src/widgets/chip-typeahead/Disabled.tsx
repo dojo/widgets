@@ -1,24 +1,24 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { defaultTransform } from '@dojo/widgets/select';
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import Example from '../../Example';
-import { createResource, createMemoryTemplate, defaultFilter } from '@dojo/framework/core/resource';
+import { createMemoryResourceTemplate, createResourceMiddleware } from '@dojo/widgets/resources';
+import { ListOption } from '@dojo/widgets/list';
 
-const factory = create();
+const resource = createResourceMiddleware();
+const factory = create({ resource });
 const options = [
 	{ value: 'cat', label: 'Cat' },
 	{ value: 'dog', label: 'Dog' },
 	{ value: 'fish', label: 'Fish' }
 ];
 
-const resource = createResource(createMemoryTemplate({ filter: defaultFilter }));
+const template = createMemoryResourceTemplate<ListOption>();
 
-export default factory(function Disabled() {
+export default factory(function Disabled({ id, middleware: { resource } }) {
 	return (
 		<Example>
 			<ChipTypeahead
-				resource={resource(options)}
-				transform={defaultTransform}
+				resource={resource({ template, initOptions: { id, data: options } })}
 				disabled
 				initialValue={['cat', 'dog']}
 			>

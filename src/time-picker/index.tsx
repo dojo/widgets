@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
 import { padStart } from '@dojo/framework/shim/string';
-import { List, ListOption, defaultTransform as listTransform } from '../list';
+import { List, ListOption } from '../list';
 import focus from '@dojo/framework/core/middleware/focus';
 import * as css from '../theme/default/time-picker.m.css';
 import * as inputCss from '../theme/default/text-input.m.css';
@@ -12,20 +12,9 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { Keys } from '../common/util';
 import bundle from './nls/TimePicker';
 import i18n from '@dojo/framework/core/middleware/i18n';
-import { createResource, DataTemplate } from '@dojo/framework/core/resource';
+import { createMemoryResourceTemplate, createResourceMiddleware } from '../resources';
+
 import { RenderResult } from '@dojo/framework/core/interfaces';
-
-function createMemoryTemplate<S = void>(): DataTemplate<S> {
-	return {
-		read: ({ query }, put, get) => {
-			let data: any[] = get();
-			put(0, data);
-			return { data, total: data.length };
-		}
-	};
-}
-
-const memoryTemplate = createMemoryTemplate<ListOption>();
 
 export interface TimePickerProperties {
 	/** Set the disabled property of the control */
@@ -84,7 +73,10 @@ export interface TimePickerICache {
 	initialValue?: string;
 }
 
+const resource = createResourceMiddleware();
+
 const factory = create({
+	resource,
 	theme,
 	i18n,
 	focus,
@@ -157,6 +149,8 @@ const formats24 = ['hh', 'hhmm', 'hhmmss'];
 
 const formats12 = ['hh', 'hhmm', 'hhmmss', 'hham', 'hhmmam', 'hhmmssam'];
 
+const template = createMemoryResourceTemplate<ListOption>();
+
 export function parseTime(time: string | undefined, hour12: boolean) {
 	if (!time) {
 		return undefined;
@@ -215,7 +209,8 @@ export function format24HourTime(dt: Date) {
 }
 
 export const TimePicker = factory(function TimePicker({
-	middleware: { theme, icache, focus, i18n },
+	id,
+	middleware: { theme, icache, focus, i18n, resource },
 	properties,
 	children
 }) {
@@ -354,7 +349,6 @@ export const TimePicker = factory(function TimePicker({
 
 	const { name } = properties();
 	const [{ label } = {} as TimePickerChildren] = children();
-
 	const options = generateOptions();
 
 	return (
@@ -445,8 +439,10 @@ export const TimePicker = factory(function TimePicker({
 								<List
 									key="menu"
 									focus={() => shouldFocus && focusNode === 'menu'}
-									resource={createResource(memoryTemplate)(options)}
-									transform={listTransform}
+									resource={resource({
+										template,
+										initOptions: { id, data: options }
+									})}
 									onValue={(value: string) => {
 										if (controlledValue === undefined) {
 											icache.set('inputValue', value);

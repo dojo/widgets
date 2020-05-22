@@ -1,19 +1,20 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { defaultTransform, ListOption } from '@dojo/widgets/list';
+import List, { ListOption } from '@dojo/widgets/list';
 import Button from '@dojo/widgets/button';
 import TriggerPopup from '@dojo/widgets/trigger-popup';
 import Example from '../../Example';
-import { createResource } from '@dojo/framework/core/resource';
+import { createMemoryResourceTemplate, createResourceMiddleware } from '@dojo/widgets/resources';
 
-const factory = create();
+const resource = createResourceMiddleware();
+const factory = create({ resource });
 const options = [
 	{ value: 'Save' },
 	{ value: 'copy', label: 'Copy' },
 	{ value: 'Paste', disabled: true }
 ];
-const resource = createResource<ListOption>();
+const template = createMemoryResourceTemplate<ListOption>();
 
-export default factory(function MenuTriggerPopup() {
+export default factory(function MenuTriggerPopup({ id, middleware: { resource } }) {
 	return (
 		<Example>
 			<TriggerPopup position="below">
@@ -22,8 +23,10 @@ export default factory(function MenuTriggerPopup() {
 					content: (onClose) => (
 						<div styles={{ border: '1px solid black' }}>
 							<List
-								resource={resource(options)}
-								transform={defaultTransform}
+								resource={resource({
+									template,
+									initOptions: { id, data: options }
+								})}
 								onValue={onClose}
 							/>
 						</div>

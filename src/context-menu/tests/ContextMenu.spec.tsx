@@ -1,23 +1,26 @@
 import { sandbox } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
-import { createHarness, compareTheme } from '../../common/tests/support/test-helpers';
+import {
+	createHarness,
+	compareTheme,
+	compareResource,
+	createTestResource
+} from '../../common/tests/support/test-helpers';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import { stub } from 'sinon';
-import List, { ListOption } from '../../list';
-import ContextMenu, { defaultTransform } from '../';
+import List from '../../list';
+import ContextMenu from '../';
 import ContextPopup from '../../context-popup';
-import { createResource } from '@dojo/framework/core/resource';
 const { describe, it, after, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
 const noop: any = () => {};
-const harness = createHarness([compareTheme]);
+const harness = createHarness([compareTheme, compareResource]);
 
 describe('ContextMenu', () => {
 	const sb = sandbox.create();
 	const children = <div>Children</div>;
 	const options = [{ value: 'foo', label: 'Foo' }];
-	const resource = createResource<ListOption>();
 
 	const template = assertionTemplate(() => (
 		<ContextPopup>
@@ -38,7 +41,7 @@ describe('ContextMenu', () => {
 
 	it('renders', () => {
 		const h = harness(() => (
-			<ContextMenu resource={resource(options)} transform={defaultTransform} onSelect={noop}>
+			<ContextMenu resource={createTestResource(options)} onSelect={noop}>
 				{children}
 			</ContextMenu>
 		));
@@ -48,7 +51,7 @@ describe('ContextMenu', () => {
 
 	it('passes children as `trigger`', () => {
 		const h = harness(() => (
-			<ContextMenu resource={resource(options)} transform={defaultTransform} onSelect={noop}>
+			<ContextMenu resource={createTestResource(options)} onSelect={noop}>
 				{children}
 			</ContextMenu>
 		));
@@ -65,11 +68,7 @@ describe('ContextMenu', () => {
 		const onSelect = stub();
 		const shouldFocus = stub();
 		const h = harness(() => (
-			<ContextMenu
-				resource={resource(options)}
-				transform={defaultTransform}
-				onSelect={onSelect}
-			>
+			<ContextMenu resource={createTestResource(options)} onSelect={onSelect}>
 				{children}
 			</ContextMenu>
 		));
@@ -82,8 +81,7 @@ describe('ContextMenu', () => {
 					menu
 					focus={() => null as any}
 					theme={{}}
-					resource={resource(options)}
-					transform={defaultTransform}
+					resource={createTestResource(options)}
 					onBlur={() => {}}
 					onRequestClose={() => {}}
 					onValue={() => {}}

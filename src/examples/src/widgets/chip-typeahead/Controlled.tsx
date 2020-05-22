@@ -1,26 +1,26 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { defaultTransform } from '@dojo/widgets/select';
 import icache from '@dojo/framework/core/middleware/icache';
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import Icon from '@dojo/widgets/icon';
 import Example from '../../Example';
-import { createResource, createMemoryTemplate, defaultFilter } from '@dojo/framework/core/resource';
+import { createMemoryResourceTemplate, createResourceMiddleware } from '@dojo/widgets/resources';
+import { ListOption } from '@dojo/widgets/list';
 
-const factory = create({ icache });
+const resource = createResourceMiddleware();
+const factory = create({ resource, icache });
 const options = [
 	{ value: 'cat', label: 'Cat' },
 	{ value: 'dog', label: 'Dog' },
 	{ value: 'fish', label: 'Fish' }
 ];
 
-const resource = createResource(createMemoryTemplate({ filter: defaultFilter }));
+const template = createMemoryResourceTemplate<ListOption>();
 
-export default factory(function Controlled({ middleware: { icache } }) {
+export default factory(function Controlled({ id, middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<ChipTypeahead
-				resource={resource(options)}
-				transform={defaultTransform}
+				resource={resource({ template, initOptions: { id, data: options } })}
 				value={icache.getOrSet('value', [])}
 				onValue={(value) => icache.set('value', value)}
 			>
