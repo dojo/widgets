@@ -243,7 +243,6 @@ import SuccessResult from './widgets/result/Success';
 import CustomIconResult from './widgets/result/CustomIcon';
 import BasicWizard from './widgets/wizard/Basic';
 import VerticalWizard from './widgets/wizard/Vertical';
-import ControlledWizard from './widgets/wizard/Controlled';
 import ErrorWizard from './widgets/wizard/Error';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
@@ -1846,11 +1845,6 @@ export const config = {
 					filename: 'Vertical',
 					module: VerticalWizard,
 					title: 'Vertical Wizard'
-				},
-				{
-					filename: 'Controlled',
-					module: ControlledWizard,
-					title: 'Controlled Wizard'
 				},
 				{
 					filename: 'Error',

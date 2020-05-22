@@ -9,6 +9,8 @@ export const stepIcon: string;
 export const stepContent: string;
 export const stepDescription: string;
 export const stepTitle: string;
+export const noDescription: string;
+export const noTitle: string;
 export const pending: string;
 export const stepSubTitle: string;
 export const completed: string;

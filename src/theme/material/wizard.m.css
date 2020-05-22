@@ -91,8 +91,17 @@
 	padding-bottom: calc(var(--mdc-theme-grid-base) * 2.875);
 }
 
+.noTitle {
+	width: 0;
+	padding-right: var(--mdc-theme-grid-base);
+}
+
 :not(.pending):not(.complete).step .stepTitle {
 	font-weight: var(--mdc-theme-heading-font-weight);
+}
+
+:not(.pending):not(.complete).step .stepSubTitle {
+	font-weight: unset;
 }
 
 .stepTitle::after {

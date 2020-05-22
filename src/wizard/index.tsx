@@ -5,26 +5,25 @@ import Icon from '../icon';
 import * as css from '../theme/default/wizard.m.css';
 import * as avatarCss from '../theme/default/avatar.m.css';
 import Avatar from '../avatar';
-import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import resize from '@dojo/framework/core/middleware/resize';
 
+export interface StepItem {
+	value?: string;
+	status?: StepStatus;
+}
 export interface WizardProperties {
-	/** Set an initial active step and then let the component handle it internally */
-	initialActiveStep?: number;
-	/** Optional controlled active step index. Defaults to the first step. */
-	activeStep?: number;
-	/** A callback that will be notified when the step should change */
-	onActiveStep?(step: number): void;
-	/** Indicates that there is an error in the active step. */
-	error?: boolean;
+	/** Specify step statuses and optional labels for step avatars */
+	steps: StepItem[];
+	/** A callback that will be notified when a step is clicked if this is clickable */
+	onStep?(step: number): void;
 	/** Direction for steps. Defaults to horizontal */
 	direction?: 'horizontal' | 'vertical';
 	/** Indicates whether steps should respond to clicks. Defaults to true */
 	clickable?: boolean;
 }
 
-export type StepStatus = 'pending' | 'inProgress' | 'complete';
+export type StepStatus = 'pending' | 'inProgress' | 'complete' | 'error';
 
 export interface StepChildren {
 	title?: RenderResult;
@@ -46,7 +45,13 @@ export const Step = stepFactory(({ properties, children, middleware: { theme } }
 
 	return (
 		<div classes={[theme.variant(), themedCss.stepContent]}>
-			<div classes={[themedCss.stepTitle, !description && themedCss.noDescription]}>
+			<div
+				classes={[
+					themedCss.stepTitle,
+					!title && themedCss.noTitle,
+					!description && themedCss.noDescription
+				]}
+			>
 				{title}
 				<div classes={themedCss.stepSubTitle}>{subTitle}</div>
 			</div>
@@ -55,55 +60,22 @@ export const Step = stepFactory(({ properties, children, middleware: { theme } }
 	);
 });
 
-interface WizardIcache {
-	initialActiveStep: number;
-	activeStep: number;
-	errorTooltip: boolean;
-}
-const icache = createICacheMiddleware<WizardIcache>();
-const factory = create({ theme, icache, dimensions, resize }).properties<WizardProperties>();
+const factory = create({ theme, dimensions, resize }).properties<WizardProperties>();
 
 export default factory(function Wizard({
 	properties,
 	children,
-	middleware: { theme, icache, dimensions, resize }
+	middleware: { theme, dimensions, resize }
 }) {
 	const classes = theme.classes(css);
-	const {
-		direction = 'horizontal',
-		initialActiveStep,
-		onActiveStep,
-		error,
-		clickable = true
-	} = properties();
-	let { activeStep } = properties();
+	const { direction = 'horizontal', onStep, steps, clickable = true } = properties();
 	resize.get('root');
 	const width = dimensions.get('root').size.width;
 
-	if (typeof activeStep === 'undefined') {
-		if (
-			typeof initialActiveStep === 'number' &&
-			initialActiveStep !== icache.get('initialActiveStep')
-		) {
-			icache.set('initialActiveStep', initialActiveStep);
-			icache.set('activeStep', initialActiveStep);
-		}
-		activeStep = icache.getOrSet('activeStep', 0);
-	}
-
 	const stepNodes = children();
 	const forceVertical = width < 200 * stepNodes.length;
-	const statuses: StepStatus[] = stepNodes.map((_, index) => {
-		if (index < (activeStep || 0)) {
-			return 'complete';
-		} else if (index === activeStep) {
-			return 'inProgress';
-		} else {
-			return 'pending';
-		}
-	});
 
-	const steps = stepNodes.map((step, index) => [
+	const stepWrappers = stepNodes.map((step, index) => [
 		<div classes={classes.stepIcon}>
 			<Avatar
 				theme={theme.compose(
@@ -111,14 +83,14 @@ export default factory(function Wizard({
 					css,
 					'stepAvatar'
 				)}
-				outline={Boolean(error || statuses[index] !== 'inProgress')}
+				outline={Boolean(steps[index].status !== 'inProgress')}
 			>
-				{statuses[index] === 'complete' ? (
+				{steps[index].status === 'complete' ? (
 					<Icon type="checkIcon" />
-				) : statuses[index] === 'inProgress' && error ? (
+				) : steps[index].status === 'error' ? (
 					<Icon type="closeIcon" />
 				) : (
-					String(index + 1)
+					steps[index].value || String(index + 1)
 				)}
 			</Avatar>
 		</div>,
@@ -137,19 +109,18 @@ export default factory(function Wizard({
 				clickable && classes.clickable
 			]}
 		>
-			{steps.map((step, index) => (
+			{stepWrappers.map((step, index) => (
 				<div
 					key={`step${index + 1}`}
 					classes={[
 						classes.step,
-						statuses[index] === 'complete' && classes.complete,
-						statuses[index] === 'pending' && classes.pending,
-						error && statuses[index] === 'inProgress' && classes.error
+						steps[index].status === 'complete' && classes.complete,
+						steps[index].status === 'pending' && classes.pending,
+						steps[index].status === 'error' && classes.error
 					]}
 					onclick={() => {
-						if (clickable && (!error || index < (activeStep || 0))) {
-							icache.set('activeStep', index);
-							onActiveStep && onActiveStep(index);
+						if (clickable && onStep) {
+							onStep(index);
 						}
 					}}
 				>

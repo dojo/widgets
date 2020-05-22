@@ -1,21 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Example from '../../Example';
 import Wizard, { Step } from '@dojo/widgets/wizard';
-import icache from '@dojo/framework/core/middleware/icache';
 
-const factory = create({ icache }).properties();
+const factory = create().properties();
 
-export default factory(function Error({ middleware: { icache } }) {
-	const activeStep = icache.getOrSet('activeStep', 1);
+export default factory(function Error() {
 	return (
 		<Example>
-			<Wizard
-				onActiveStep={(index) => {
-					icache.set('activeStep', index);
-				}}
-				initialActiveStep={1}
-				error={activeStep === 1}
-			>
+			<Wizard steps={[{ status: 'complete' }, { status: 'error' }, { status: 'pending' }]}>
 				<Step />
 				<Step>
 					{{

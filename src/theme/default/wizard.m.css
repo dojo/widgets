@@ -1,30 +1,111 @@
 .root {
+	display: flex;
+	width: 100%;
 }
 .vertical {
+	flex-direction: column;
 }
-.horizontal {
+
+.horizontal .step {
+	margin-right: 16px;
+	white-space: nowrap;
 }
-.tail {
+
+.horizontal .tail,
+.vertical .tail {
+	display: none;
+}
+
+.step {
+	position: relative;
+	display: inline-block;
+	flex: 1;
+	overflow: hidden;
+	vertical-align: top;
+}
+
+.clickable .step {
+	cursor: pointer;
+}
+
+.vertical .step {
+	display: block;
+	flex: 1 0 auto;
+	overflow: visible;
+}
+
+.vertical .stepIcon {
+	float: left;
+	margin: 0 calc(var(--mdc-theme-grid-base) * 2) 0 0;
+}
+
+.stepContent {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.vertical .stepContent {
+	display: block;
+	min-height: 48px;
+	overflow: hidden;
+}
+
+.vertical .stepDescription {
+	padding-bottom: 12px;
+}
+
+.stepTitle {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	padding-right: 16px;
+	line-height: 32px;
+}
+
+.vertical .noDescription {
+	padding-bottom: 23px;
+}
+
+.stepTitle::after {
+	position: absolute;
+	top: 16px;
+	left: 100%;
+	display: block;
+	width: 9999px;
+	height: 1px;
+	content: '';
+}
+
+.vertical .stepTitle::after,
+.step:last-child .stepTitle::after {
+	display: none;
+}
+
+.stepSubTitle {
+	display: inline;
+	margin-left: 8px;
+}
+
+.stepDescription {
+	white-space: normal;
+}
+
+.stepIcon {
+	display: inline-block;
+	vertical-align: top;
+	margin-right: 8px;
+}
+
+.stepAvatarRoot {
+	composes: root from './avatar.m.css';
+}
+
+.noTitle {
+}
+
+.pending {
 }
 .complete {
 }
-.pending {
-}
-.step {
-}
-.stepContent {
-}
-.stepTitle {
-}
-.noDescription {
-}
-.stepSubTitle {
-}
-.stepDescription {
-}
-.stepIcon {
-}
 .error {
-}
-.clickable {
 }
