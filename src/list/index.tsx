@@ -140,13 +140,6 @@ export const ListItem = listItemFactory(function ListItem({
 
 export type ListOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
-export const defaultTransform = {
-	value: ['value'],
-	label: ['label'],
-	divider: ['divider'],
-	disabled: ['disabled']
-};
-
 export interface ListProperties {
 	/** The initial selected value */
 	initialValue?: string;

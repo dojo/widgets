@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
-import List, { ListOption, defaultTransform as listTransform } from '../list/index';
+import List, { ListOption } from '../list/index';
 import * as menuCss from '../theme/default/list.m.css';
 import * as css from '../theme/default/context-menu.m.css';
 import ContextPopup from '../context-popup';
@@ -14,8 +14,6 @@ export interface ContextMenuProperties {
 const factory = create({ theme, resource: createResourceMiddleware<ListOption>() }).properties<
 	ContextMenuProperties
 >();
-
-export const defaultTransform = listTransform;
 
 export const ContextMenu = factory(function({ properties, children, middleware: { theme } }) {
 	const { resource, onSelect } = properties();

@@ -13,7 +13,6 @@ import {
 	ItemRendererProperties,
 	List,
 	ListOption,
-	defaultTransform as listTransform,
 	ListItemProperties,
 	MenuItemProperties
 } from '../list';
@@ -61,8 +60,6 @@ export interface SelectChildren {
 	/** The label to show */
 	label?: RenderResult;
 }
-
-export const defaultTransform = listTransform;
 
 interface SelectICache {
 	dirty: boolean;
