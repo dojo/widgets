@@ -12,7 +12,7 @@ const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
 const options = [
 	{ value: 'cat', label: 'Cat' },
-	{ value: 'dog', label: 'Dog' },
+	{ value: 'dog', label: 'Dog', disabled: true },
 	{ value: 'fish', label: 'Fish' }
 ];
 

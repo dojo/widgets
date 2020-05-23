@@ -27,7 +27,7 @@ const factory = create({ dimensions, icache })
 	.properties<TriggerPopupProperties>()
 	.children<TriggerPopupChildren>();
 
-export const TriggerPopup = factory(function({
+export const TriggerPopup = factory(function TriggerPopup({
 	properties,
 	children,
 	middleware: { dimensions, icache }

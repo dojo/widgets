@@ -198,7 +198,7 @@ export const Typeahead = factory(function Typeahead({
 		}
 	}
 
-	const activeIndex = icache.getOrSet('activeIndex', 0) % (options().size || 0);
+	const activeIndex = icache.getOrSet('activeIndex', 0) % options().size;
 	const currentItems = flat(getOrRead(template, options()));
 	const isCurrentlyLoading = isLoading(template, options());
 	const metaInfo = icache.set('meta', (current) => {
@@ -210,7 +210,7 @@ export const Typeahead = factory(function Typeahead({
 		if (currentItems && currentItems.length === 0) {
 			if (strict) {
 				if (required) {
-					icache.set('valid', false);
+					valid = icache.set('valid', false);
 					onValidate && onValidate(false);
 				}
 			} else {
@@ -223,9 +223,6 @@ export const Typeahead = factory(function Typeahead({
 			if (!disabled) {
 				value = icache.set('value', activeItem.value);
 				callOnValue(currentItems[activeIndex].value);
-			} else if (!strict) {
-				value = icache.getOrSet('value', '');
-				callOnValue(value);
 			}
 		}
 		icache.set('selected', false);
