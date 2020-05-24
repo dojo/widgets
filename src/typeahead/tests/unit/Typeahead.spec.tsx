@@ -128,7 +128,7 @@ const baseAssertion = assertion(() => (
 	</WrappedRoot>
 ));
 
-describe('Typeaheadx', () => {
+describe('Typeahead', () => {
 	afterEach(() => {
 		sb.reset();
 	});
