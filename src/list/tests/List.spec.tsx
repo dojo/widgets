@@ -268,7 +268,6 @@ describe('List', () => {
 			});
 		const template = createResourceTemplate<{ value: string }>({
 			read: (request, { put }) => {
-				console.log('here', request);
 				if (request.offset === 0) {
 					return pageOnePromise.then((res) => {
 						put(res, request);
