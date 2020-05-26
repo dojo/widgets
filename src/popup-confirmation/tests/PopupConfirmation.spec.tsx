@@ -9,8 +9,10 @@ import TriggerPopup from '../../trigger-popup';
 import PopupConfirmation from '../';
 
 import bundle from '../nls/PopupConfirmation';
+import * as buttonCss from '../../theme/default/button.m.css';
 import * as css from '../../theme/default/popup-confirmation.m.css';
 
+const { ' _key': key, ...buttonTheme } = buttonCss as any;
 const { messages } = bundle;
 const noop = () => {};
 
@@ -32,7 +34,9 @@ describe('PopupConfirmation', () => {
 									<CancelButtonWrap
 										key="cancel-button"
 										type="button"
-										theme={{}}
+										theme={{
+											'@dojo/widgets/button': buttonTheme
+										}}
 										onClick={noop}
 									>
 										{messages.no}
@@ -40,7 +44,9 @@ describe('PopupConfirmation', () => {
 									<ConfirmButtonWrap
 										key="confirm-button"
 										type="button"
-										theme={{}}
+										theme={{
+											'@dojo/widgets/button': buttonTheme
+										}}
 										onClick={noop}
 									>
 										{messages.yes}
@@ -98,7 +104,9 @@ describe('PopupConfirmation', () => {
 								<CancelButtonWrap
 									key="cancel-button"
 									type="button"
-									theme={{}}
+									theme={{
+										'@dojo/widgets/button': buttonTheme
+									}}
 									onClick={noop}
 								>
 									No Go
@@ -106,7 +114,9 @@ describe('PopupConfirmation', () => {
 								<ConfirmButtonWrap
 									key="confirm-button"
 									type="button"
-									theme={{}}
+									theme={{
+										'@dojo/widgets/button': buttonTheme
+									}}
 									onClick={noop}
 								>
 									Go Go
