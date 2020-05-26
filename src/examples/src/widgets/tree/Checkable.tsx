@@ -1,5 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Tree, { TreeNode } from '@dojo/widgets/tree';
+import Example from '../../Example';
 
 const factory = create();
 
@@ -36,5 +37,9 @@ export default factory(function Checkable() {
 		}
 	];
 
-	return <Tree nodes={nodes} checkable={true} />;
+	return (
+		<Example>
+			<Tree nodes={nodes} checkable={true} />
+		</Example>
+	);
 });

@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Tree, { TreeNode } from '@dojo/widgets/tree';
 import Icon from '@dojo/widgets/icon';
+import Example from '../../Example';
 
 const factory = create();
 
@@ -38,15 +39,17 @@ export default factory(function CustomIcons() {
 	];
 
 	return (
-		<Tree nodes={nodes}>
-			{(node) => (
-				<div styles={{ display: 'flex' }}>
-					<div styles={{ marginRight: '5px' }}>
-						<Icon type="alertIcon" />
+		<Example>
+			<Tree nodes={nodes}>
+				{(node) => (
+					<div styles={{ display: 'flex' }}>
+						<div styles={{ marginRight: '5px' }}>
+							<Icon type="alertIcon" />
+						</div>
+						<div>{node.value}</div>
 					</div>
-					<div>{node.value}</div>
-				</div>
-			)}
-		</Tree>
+				)}
+			</Tree>
+		</Example>
 	);
 });
