@@ -2,8 +2,8 @@ import { create } from '@dojo/framework/core/vdom';
 import coreTheme, {
 	ThemeProperties as CoreThemeProperties
 } from '@dojo/framework/core/middleware/theme';
-import { ClassNames, Theme } from '@dojo/framework/core/mixins/Themed';
-import { ThemeWithVariant } from '@dojo/framework/core/interfaces';
+import { ThemeWithVariant, ClassNames, Theme } from '@dojo/framework/core/interfaces';
+import { isThemeInjectorPayloadWithVariant } from '@dojo/framework/core/ThemeInjector';
 
 const factory = create({ coreTheme });
 export const THEME_KEY = ' _key';
@@ -23,13 +23,27 @@ function isThemeWithVariant(theme: any): theme is ThemeWithVariant {
 export interface ThemeProperties extends CoreThemeProperties {}
 
 export const theme = factory(function({ middleware: { coreTheme }, properties }) {
+	function getTheme() {
+		const { theme } = properties();
+		if (theme) {
+			return theme;
+		}
+
+		const themePayload = coreTheme.get();
+		if (isThemeInjectorPayloadWithVariant(themePayload)) {
+			return { theme: themePayload.theme, variant: themePayload.variant };
+		} else if (themePayload) {
+			return themePayload.theme;
+		}
+	}
+
 	return {
 		compose: <T extends ClassNames, B extends ClassNames>(
 			baseCss: B,
 			css: T,
 			prefix?: string
 		): Theme | ThemeWithVariant => {
-			const theme = properties().theme;
+			const theme = getTheme();
 			const baseKey = baseCss[THEME_KEY];
 			const variantKey = css[THEME_KEY];
 			const virtualCss = Object.keys(baseCss).reduce(

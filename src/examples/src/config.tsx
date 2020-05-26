@@ -228,7 +228,6 @@ import PaginationControlled from './widgets/pagination/Controlled';
 import PaginationSiblingCount from './widgets/pagination/SiblingCount';
 import BasicTypeahead from './widgets/typeahead/Basic';
 import RemoteTypeahead from './widgets/typeahead/RemoteSource';
-import CustomFilterTypeahead from './widgets/typeahead/CustomFilter';
 import ValidatedTypeahead from './widgets/typeahead/Validation';
 import FreeTextTypeahead from './widgets/typeahead/FreeText';
 import BasicTwoColumnLayout from './widgets/two-column-layout/Basic';
@@ -1795,11 +1794,6 @@ export const config = {
 		},
 		typeahead: {
 			examples: [
-				{
-					filename: 'CustomFilter',
-					module: CustomFilterTypeahead,
-					title: 'Custom Filter'
-				},
 				{
 					filename: 'RemoteSource',
 					module: RemoteTypeahead,

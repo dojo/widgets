@@ -1,624 +1,549 @@
-import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
-import * as themedCss from '../../../theme/default/typeahead.m.css';
+const { describe, it, afterEach } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
+import { sandbox } from 'sinon';
+import { tsx } from '@dojo/framework/core/vdom';
+import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
+import { createMemoryResourceTemplate } from '@dojo/framework/core/middleware/resources';
+
+import Typeahead from '../../index';
 import TriggerPopup from '../../../trigger-popup';
 import HelperText from '../../../helper-text';
-import { tsx } from '@dojo/framework/core/vdom';
-import { compareTheme, createHarness } from '../../../common/tests/support/test-helpers';
-import Typeahead from '../../../typeahead';
-import List, { defaultTransform, ListOption } from '../../../list';
-import { createResource, createMemoryTemplate } from '@dojo/framework/core/resource';
-import { stub } from 'sinon';
 import TextInput from '../../../text-input';
-import * as listCss from '../../../theme/default/list.m.css';
+import { noop } from '../../../common/tests/support/test-helpers';
+
+import * as css from '../../../theme/default/typeahead.m.css';
 import * as inputCss from '../../../theme/default/text-input.m.css';
+import * as listCss from '../../../theme/default/list.m.css';
+import List from '../../../list';
 import { Keys } from '../../../common/util';
 
-const { assert } = intern.getPlugin('chai');
+const { ' _key': key, ...inputTheme } = inputCss as any;
+const { ' _key': listKey, ...listTheme } = listCss as any;
 
-const harness = createHarness([compareTheme]);
-
-const { registerSuite } = intern.getInterface('object');
-const noop = stub();
-
-const animalOptions: ListOption[] = [
-	{ value: 'dog' },
-	{ value: 'cat', label: 'Cat' },
-	{ value: 'fish', disabled: true }
+const data = [
+	{
+		value: 'dog'
+	},
+	{
+		value: 'cat',
+		label: 'Cat'
+	},
+	{
+		value: 'fish',
+		disabled: true
+	}
 ];
 
-const memoryTemplate = createMemoryTemplate();
+const template = createMemoryResourceTemplate<{ value: string }>();
+const WrappedRoot = wrap('div');
+const WrappedTrigger = wrap(TextInput);
+const WrappedPopup = wrap(TriggerPopup);
+const WrappedList = wrap(List);
+const WrappedHelperText = wrap(HelperText);
 
-const resource = {
-	resource: createResource(memoryTemplate),
-	data: animalOptions
-};
+const sb = sandbox.create();
+const onValueStub = sb.stub();
 
-const baseAssertion = assertionTemplate(() => (
-	<div key="root" classes={[undefined, themedCss.root, undefined, false, false]}>
-		<TriggerPopup key="popup" onOpen={noop} onClose={noop} position={undefined}>
-			{{
-				trigger: noop,
-				content: noop
-			}}
-		</TriggerPopup>
-		<HelperText key="helperText" text={undefined} valid={undefined} />
-	</div>
-));
-
-const inputTemplate = assertionTemplate(() => (
-	<TextInput
+const triggerAssertion = assertion(() => (
+	<WrappedTrigger
 		onValue={noop}
+		onKeyDown={noop}
 		onBlur={noop}
-		onFocus={noop}
-		name={undefined}
-		initialValue={undefined}
-		focus={noop}
 		aria={{
 			controls: 'typeahead-list-test',
-			haspopup: 'listbox',
-			expanded: 'false'
+			expanded: 'false',
+			haspopup: 'listbox'
 		}}
-		key="trigger"
-		widgetId="typeahead-trigger-test"
 		disabled={undefined}
+		focus={noop}
+		initialValue={undefined}
+		key={'trigger'}
+		name={undefined}
+		onClick={noop}
+		onFocus={noop}
+		valid={undefined}
+		widgetId={'typeahead-trigger-test'}
+		theme={{
+			'@dojo/widgets/text-input': inputTheme
+		}}
 		classes={{
 			'@dojo/widgets/text-input': {
-				root: [themedCss.trigger]
+				root: [css.trigger]
 			}
 		}}
-		onClick={noop}
-		onKeyDown={noop}
-		valid={undefined}
-		theme={{ '@dojo/widgets/text-input': inputCss }}
 	>
-		{{ label: 'Test', leading: undefined }}
-	</TextInput>
+		{{ label: undefined, leading: undefined }}
+	</WrappedTrigger>
 ));
 
-const listTemplate = assertionTemplate(() => (
-	<div key="menu-wrapper" classes={themedCss.menuWrapper}>
-		<List
-			key="menu"
-			focusable={false}
-			activeIndex={undefined}
+const expandedTriggerAssertion = triggerAssertion.setProperty(WrappedTrigger, 'aria', {
+	controls: 'typeahead-list-test',
+	expanded: 'true',
+	haspopup: 'listbox'
+});
+
+const contentAssertion = assertion(() => (
+	<div key="menu-wrapper" classes={css.menuWrapper}>
+		<WrappedList
+			activeIndex={0}
 			disabled={undefined}
-			resource={{ resource: resource.resource, createOptionsWrapper: noop }}
-			transform={defaultTransform}
-			onValue={noop}
-			onRequestClose={noop}
-			onBlur={noop}
+			focusable={false}
 			initialValue={undefined}
 			itemsInView={undefined}
-			theme={{ '@dojo/widgets/list': listCss }}
-			widgetId={'typeahead-list-test'}
-		>
-			{}
-		</List>
+			key="menu"
+			onBlur={noop}
+			onRequestClose={noop}
+			onValue={noop}
+			widgetId="typeahead-list-test"
+			theme={{
+				'@dojo/widgets/list': {
+					...listTheme,
+					wrapper: css.menuWrapper
+				}
+			}}
+			resource={{
+				options: noop,
+				template: {
+					template,
+					id: 'test',
+					initOptions: {
+						id: 'test',
+						data: [...data]
+					}
+				}
+			}}
+		/>
 	</div>
 ));
 
-registerSuite('Typeahead', {
-	tests: {
-		'renders a typeahead'() {
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			h.expect(baseAssertion);
-		},
-
-		'renders the typeahead trigger'() {
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			h.expect(inputTemplate, () => triggerRenderResult);
-		},
-
-		'renders the typeahead content'() {
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleCloseStub = stub();
-
-			const contentRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].content,
-				toggleCloseStub
-			);
-
-			h.expect(listTemplate, () => contentRenderResult);
-		},
-
-		'opens the typeahead on input value'() {
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			triggerRenderResult.properties.onValue('value');
-
-			assert.isTrue(toggleOpenStub.calledOnce);
-		},
-
-		'shows an option label when the value is entered'() {
-			const h = harness(() => (
-				<Typeahead
-					initialValue="cat"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			h.expect(inputTemplate.setProperty('@trigger', 'initialValue', 'Cat'), () =>
-				h.trigger('@popup', (node) => (node.children as any)[0].trigger, stub)
-			);
-		},
-
-		'shows an option value when the value is entered and there is no label'() {
-			const h = harness(() => (
-				<Typeahead
-					initialValue="dog"
-					resource={resource}
-					transform={defaultTransform}
-					onValue={noop}
-				>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			h.expect(inputTemplate.setProperty('@trigger', 'initialValue', 'dog'), () =>
-				h.trigger('@popup', (node) => (node.children as any)[0].trigger, stub)
-			);
-		},
-
-		'opens the typeahead on input click'() {
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			triggerRenderResult.properties.onClick();
-
-			assert.isTrue(toggleOpenStub.calledOnce);
-		},
-
-		'opens the typeahead on down press'() {
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			const preventDefaultStub = stub();
-
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-
-			assert.isTrue(preventDefaultStub.calledOnce);
-			assert.isTrue(toggleOpenStub.calledOnce);
-		},
-		'opens the typeahead on up press'() {
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			const preventDefaultStub = stub();
-
-			triggerRenderResult.properties.onKeyDown(Keys.Up, preventDefaultStub);
-
-			assert.isTrue(preventDefaultStub.calledOnce);
-			assert.isTrue(toggleOpenStub.calledOnce);
-		},
-		'controls the list with keyboard events'() {
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-			const toggleCloseStub = stub();
-			const preventDefaultStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			// first to open the popup
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-			// next to move the active index
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-
-			const contentRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].content,
-				toggleCloseStub
-			);
-
-			h.expect(
-				listTemplate.setProperty('@menu', 'activeIndex', 1),
-				() => contentRenderResult
-			);
-		},
-		'wraps list items when gets to the top'() {
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-			const toggleCloseStub = stub();
-			const preventDefaultStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			// first to open the popup
-			triggerRenderResult.properties.onKeyDown(Keys.Up, preventDefaultStub);
-			// second to wrap from the top ot the bottom
-			triggerRenderResult.properties.onKeyDown(Keys.Up, preventDefaultStub);
-
-			const contentRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].content,
-				toggleCloseStub
-			);
-
-			h.expect(
-				listTemplate.setProperty('@menu', 'activeIndex', 2),
-				() => contentRenderResult
-			);
-		},
-		'wraps list items when gets to the bottom'() {
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={noop}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-			const toggleCloseStub = stub();
-			const preventDefaultStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			// first to open the popup
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-
-			// loop through all options to wrap back to the top
-			animalOptions.forEach(() => {
-				triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-			});
-
-			const contentRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].content,
-				toggleCloseStub
-			);
-
-			h.expect(
-				listTemplate.setProperty('@menu', 'activeIndex', 0),
-				() => contentRenderResult
-			);
-		},
-		'selects a value on enter'() {
-			const onValue = stub();
-
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={onValue}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-			const preventDefaultStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			// first to open the popup
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-			triggerRenderResult.properties.onKeyDown(Keys.Enter, preventDefaultStub);
-
-			assert.isTrue(onValue.calledWith(animalOptions[0].value));
-		},
-		'does not call on value if option is disabled'() {
-			const onValue = stub();
-
-			const h = harness(() => (
-				<Typeahead
-					resource={createResource()(animalOptions)}
-					strict={false}
-					transform={defaultTransform}
-					onValue={onValue}
-				>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-			const preventDefaultStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			// first to open the popup
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-			triggerRenderResult.properties.onKeyDown(Keys.Enter, preventDefaultStub);
-
-			assert.isTrue(onValue.notCalled);
-		},
-		'does not call on value if option is disabled and in strict mode'() {
-			const onValue = stub();
-
-			const h = harness(() => (
-				<Typeahead
-					resource={createResource()(animalOptions)}
-					transform={defaultTransform}
-					onValue={onValue}
-				>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-			const preventDefaultStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			// first to open the popup
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-			triggerRenderResult.properties.onKeyDown(Keys.Enter, preventDefaultStub);
-
-			assert.isTrue(onValue.notCalled);
-		},
-		'allows free text when not in strict mode'() {
-			const onValue = stub();
-			const onValidate = stub();
-
-			const h = harness(() => (
-				<Typeahead
-					strict={false}
-					resource={resource}
-					transform={defaultTransform}
-					onValue={onValue}
-					onValidate={onValidate}
-				>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-			const preventDefaultStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			triggerRenderResult.properties.onValue('abc');
-			triggerRenderResult.properties.onKeyDown(Keys.Enter, preventDefaultStub);
-
-			assert.isTrue(onValue.calledWith('abc'));
-
-			onValue.resetHistory();
-			triggerRenderResult.properties.onValue('xyz');
-			triggerRenderResult.properties.onBlur();
-
-			assert.isTrue(onValue.calledOnceWith('xyz'));
-
-			onValue.resetHistory();
-			triggerRenderResult.properties.onValue('');
-			triggerRenderResult.properties.onBlur();
-
-			assert.isTrue(onValue.notCalled);
-			assert.isTrue(onValidate.calledWith(undefined));
-		},
-		'validates when using free text and required'() {
-			const onValue = stub();
-			const onValidate = stub();
-
-			const h = harness(() => (
-				<Typeahead
-					strict={false}
-					required
-					resource={resource}
-					transform={defaultTransform}
-					onValue={onValue}
-					onValidate={onValidate}
-				>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			triggerRenderResult.properties.onValue('');
-			triggerRenderResult.properties.onBlur();
-
-			assert.isTrue(onValue.notCalled);
-			assert.isTrue(onValidate.calledWith(false));
-		},
-		'does not select a value on escape'() {
-			const onValue = stub();
-
-			const h = harness(() => (
-				<Typeahead resource={resource} transform={defaultTransform} onValue={onValue}>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			const toggleOpenStub = stub();
-			const preventDefaultStub = stub();
-
-			const triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				toggleOpenStub
-			);
-
-			// first to open the popup
-			triggerRenderResult.properties.onKeyDown(Keys.Down, preventDefaultStub);
-			triggerRenderResult.properties.onKeyDown(Keys.Escape, preventDefaultStub);
-
-			assert.isFalse(onValue.called);
-		},
-
-		'allows manual control of values'() {
-			const properties = {
-				value: 'value'
-			};
-
-			const h = harness(() => (
-				<Typeahead
-					resource={resource}
-					transform={defaultTransform}
-					onValue={stub}
-					{...properties}
-				>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			let triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				stub
-			);
-
-			h.expect(
-				inputTemplate.setProperty('@trigger', 'initialValue', 'value'),
-				() => triggerRenderResult
-			);
-
-			properties.value = 'another value';
-
-			triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				stub
-			);
-
-			h.expect(
-				inputTemplate.setProperty('@trigger', 'initialValue', 'another value'),
-				() => triggerRenderResult
-			);
-		},
-
-		'tracks focus and blur'() {
-			const onFocus = stub();
-			const onBlur = stub();
-
-			const h = harness(() => (
-				<Typeahead
-					resource={resource}
-					transform={defaultTransform}
-					onFocus={onFocus}
-					onBlur={onBlur}
-					onValue={stub()}
-				>
-					{{ label: 'Test' }}
-				</Typeahead>
-			));
-
-			let triggerRenderResult = h.trigger(
-				'@popup',
-				(node) => (node.children as any)[0].trigger,
-				stub
-			);
-
-			triggerRenderResult.properties.onFocus();
-
-			assert.isTrue(onFocus.called);
-
-			triggerRenderResult.properties.onBlur();
-
-			assert.isTrue(onBlur.called);
-		}
-	}
+const baseAssertion = assertion(() => (
+	<WrappedRoot classes={[null, css.root, null, false, false]} key="root">
+		<WrappedPopup key="popup" onClose={noop} onOpen={noop} position={undefined}>
+			{{
+				trigger: triggerAssertion,
+				content: contentAssertion
+			}}
+		</WrappedPopup>
+		<WrappedHelperText key="helperText" text={undefined} valid={undefined} />
+	</WrappedRoot>
+));
+
+describe('Typeahead', () => {
+	afterEach(() => {
+		sb.reset();
+	});
+
+	it('Should render the typeahead in closed state', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion);
+	});
+
+	it('Should render the typeahead with an initial value', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+				initialValue="cat"
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'Cat'),
+				content: contentAssertion.setProperty(WrappedList, 'initialValue', 'cat')
+			}))
+		);
+	});
+
+	it('Should render the typeahead with a controlled value', () => {
+		const properties: any = {
+			value: 'cat'
+		};
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+				value={properties.value}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'Cat'),
+				content: contentAssertion.setProperty(WrappedList, 'initialValue', 'cat')
+			}))
+		);
+		properties.value = 'dog';
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'dog'),
+				content: contentAssertion.setProperty(WrappedList, 'initialValue', 'dog')
+			}))
+		);
+	});
+
+	it('Should show validation and call validate callback when required depending on typeahead state', () => {
+		const onValidateStub = sb.stub();
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				required={true}
+				onValidate={onValidateStub}
+				onValue={onValidateStub}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [() => {}]
+		});
+		r.expect(baseAssertion);
+		// open the drop down
+		r.property(WrappedTrigger, 'onClick');
+		// focus second item from the drop down, `cat`
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Down, () => {});
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: expandedTriggerAssertion,
+				content: contentAssertion.setProperty(WrappedList, 'activeIndex', 1)
+			}))
+		);
+		// select second item from the drop down, `cat`
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
+		// simulate `cat` value being selected on the list
+		r.property(WrappedList, 'onValue', 'cat');
+		// call `onClose` on the popup to simulate the dropdown closing
+		r.property(WrappedPopup, 'onClose');
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'classes', [null, css.root, null, css.valid, false])
+				.setProperty(WrappedHelperText, 'valid', true)
+				.replaceChildren(WrappedPopup, () => ({
+					trigger: triggerAssertion
+						.setProperty(WrappedTrigger, 'initialValue', 'Cat')
+						.setProperty(WrappedTrigger, 'valid', true),
+					content: contentAssertion
+						.setProperty(WrappedList, 'initialValue', 'cat')
+						.setProperty(WrappedList, 'activeIndex', 1)
+				}))
+		);
+		r.property(WrappedTrigger, 'onValue', '');
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'classes', [null, css.root, null, false, css.invalid])
+				.setProperty(WrappedHelperText, 'valid', false)
+				.setProperty(WrappedHelperText, 'text', 'Please select a value.')
+				.replaceChildren(WrappedPopup, () => ({
+					trigger: expandedTriggerAssertion
+						.setProperty(WrappedTrigger, 'valid', false)
+						.setProperty(WrappedTrigger, 'initialValue', ''),
+					content: contentAssertion.setProperty(WrappedList, 'initialValue', '')
+				}))
+		);
+	});
+
+	it('Should show validation and call validate callback when required depending on typeahead state in strict mode', () => {
+		const onValidateStub = sb.stub();
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				required={true}
+				strict={true}
+				onValidate={onValidateStub}
+				onValue={onValidateStub}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [() => {}]
+		});
+		r.expect(baseAssertion);
+		// open the drop down
+		r.property(WrappedTrigger, 'onValue', 'unknown');
+		r.property(WrappedList, 'onValue', 'unknown');
+		// focus second item from the drop down, `cat`
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'classes', [null, css.root, null, false, css.invalid])
+				.setProperty(WrappedHelperText, 'valid', false)
+				.setProperty(WrappedHelperText, 'text', 'Please select a value.')
+				.replaceChildren(WrappedPopup, () => ({
+					trigger: triggerAssertion
+						.setProperty(WrappedTrigger, 'valid', false)
+						.setProperty(WrappedTrigger, 'initialValue', 'unknown'),
+					content: contentAssertion.setProperty(WrappedList, 'initialValue', 'unknown')
+				}))
+		);
+	});
+
+	it('Should open dropdown on click ', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion);
+		r.property(WrappedTrigger, 'onClick');
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: expandedTriggerAssertion,
+				content: contentAssertion
+			}))
+		);
+	});
+
+	it('Should open dropdown on down key', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion);
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Down, () => {});
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: expandedTriggerAssertion,
+				content: contentAssertion
+			}))
+		);
+		assert.strictEqual(onValueStub.callCount, 0);
+	});
+
+	it('Should open dropdown on up key', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion);
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Up, () => {});
+		r.property(WrappedPopup, 'onOpen');
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: expandedTriggerAssertion,
+				content: contentAssertion
+			}))
+		);
+		assert.strictEqual(onValueStub.callCount, 0);
+	});
+
+	it('Should close the list on escape ', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion);
+		// open the drop down
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Down, () => {});
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: expandedTriggerAssertion,
+				content: contentAssertion
+			}))
+		);
+		// close the drop down
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Escape, () => {});
+		r.expect(baseAssertion);
+		assert.strictEqual(onValueStub.callCount, 0);
+	});
+
+	it('Should select item on enter ', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion);
+		// open the drop down
+		r.property(WrappedTrigger, 'onClick');
+		// focus second item from the drop down, `cat`
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Down, () => {});
+		// select second item from the drop down, `cat`
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'Cat'),
+				content: contentAssertion
+					.setProperty(WrappedList, 'initialValue', 'cat')
+					.setProperty(WrappedList, 'activeIndex', 1)
+			}))
+		);
+		assert.strictEqual(onValueStub.callCount, 1);
+	});
+
+	it('Should select value on blur in non-strict mode', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+				strict={false}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion);
+		// open the drop down
+		r.property(WrappedTrigger, 'onClick');
+		// focus second item from the drop down, `cat`
+		r.property(WrappedTrigger, 'onValue', 'c');
+		// blur to select the second item from the drop down, `cat`
+		r.property(WrappedTrigger, 'onBlur');
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'c'),
+				content: contentAssertion
+					.setProperty(WrappedList, 'initialValue', 'c')
+					.setProperty(WrappedList, 'activeIndex', 0)
+			}))
+		);
+		assert.strictEqual(onValueStub.callCount, 1);
+		assert.deepEqual(onValueStub.firstCall.args, ['c']);
+	});
+
+	it('Should not be able to select a disabled item', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion);
+		// open the drop down
+		r.property(WrappedTrigger, 'onClick');
+		// focus second item from the drop down, `cat`
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Down, () => {});
+		// focus third item from the drop down, `dog`
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Down, () => {});
+		// try to select disabled third item from the drop down, `dog`
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion,
+				content: contentAssertion.setProperty(WrappedList, 'activeIndex', 2)
+			}))
+		);
+		assert.strictEqual(onValueStub.callCount, 0);
+	});
+
+	it('Should not be able to select an item that is considered disabled by the `itemDisabled` property', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				itemDisabled={(item) => item.value === 'cat'}
+				onValue={onValueStub}
+			/>
+		));
+		const disabledContentAssertion = contentAssertion.setProperty(
+			WrappedList,
+			'disabled',
+			noop
+		);
+		const disabledAssertion = baseAssertion.replaceChildren(WrappedPopup, () => ({
+			trigger: triggerAssertion,
+			content: disabledContentAssertion
+		}));
+
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(disabledAssertion);
+		r.property(WrappedTrigger, 'onClick');
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Down, () => {});
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
+		r.expect(
+			disabledAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion,
+				content: disabledContentAssertion.setProperty(WrappedList, 'activeIndex', 1)
+			}))
+		);
+		assert.strictEqual(onValueStub.callCount, 0);
+	});
+
+	it('Should not be able to select an invalid item', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion);
+		r.property(WrappedTrigger, 'onClick');
+		r.property(WrappedTrigger, 'onValue', 'Unknown');
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'Unknown'),
+				content: contentAssertion
+					.setProperty(WrappedList, 'initialValue', 'Unknown')
+					.setProperty(WrappedList, 'activeIndex', 0)
+			}))
+		);
+		assert.strictEqual(onValueStub.callCount, 0);
+	});
+
+	it('Should be able to select a free text value in non-strict mode', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+				strict={false}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion);
+		r.property(WrappedTrigger, 'onClick');
+		r.property(WrappedTrigger, 'onValue', 'Unknown');
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'Unknown'),
+				content: contentAssertion
+					.setProperty(WrappedList, 'initialValue', 'Unknown')
+					.setProperty(WrappedList, 'activeIndex', 0)
+			}))
+		);
+		assert.strictEqual(onValueStub.callCount, 1);
+	});
 });

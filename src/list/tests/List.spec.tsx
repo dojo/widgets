@@ -1,503 +1,1934 @@
+const { describe, it, afterEach, beforeEach } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
 import { sandbox } from 'sinon';
-import { tsx } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
-import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
-import List, { ListOption, defaultTransform, MenuItem, ListItem } from '..';
-import { compareId, createHarness, compareTheme } from '../../common/tests/support/test-helpers';
+import { tsx } from '@dojo/framework/core/vdom';
+import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
+import {
+	createMemoryResourceTemplate,
+	createResourceTemplate
+} from '@dojo/framework/core/middleware/resources';
+import { noop } from '../../common/tests/support/test-helpers';
 import { Keys } from '../../common/util';
+import List, { ListItem, MenuItem } from '../index';
+import LoadingIndicator from '../../loading-indicator';
 import * as css from '../../theme/default/list.m.css';
 import * as fixedCss from '../list.m.css';
-import { createResource } from '@dojo/framework/core/resource';
-const { assert } = intern.getPlugin('chai');
-const { describe, it, before, after } = intern.getInterface('bdd');
+import * as listItemCss from '../../theme/default/list-item.m.css';
+import * as menuItemCss from '../../theme/default/menu-item.m.css';
 
-const noop: any = () => {};
+let template = createMemoryResourceTemplate<{ value: string }>();
+const data = [
+	{
+		value: 'dog'
+	},
+	{
+		value: 'cat',
+		label: 'Cat'
+	},
+	{
+		value: 'fish',
+		disabled: true
+	}
+];
+const sb = sandbox.create();
+const onValueStub = sb.stub();
 
-const compareAriaActiveDescendant = {
-	selector: '*',
-	property: 'aria-activedescendant',
-	comparator: (property: any) => typeof property === 'string'
-};
+function createMockEvent({
+	which,
+	key,
+	metaKey,
+	ctrlKey
+}: {
+	which: Keys;
+	key?: string;
+	metaKey?: boolean;
+	ctrlKey?: boolean;
+}) {
+	return {
+		stopPropagation: sb.stub(),
+		preventDefault: sb.stub(),
+		which,
+		key,
+		metaKey: !!metaKey,
+		ctrlKey: !!ctrlKey
+	};
+}
 
-const harness = createHarness([compareTheme, compareId, compareAriaActiveDescendant]);
+const WrappedItemContainer = wrap('div');
+const WrappedItemWrapper = wrap('div');
+const WrappedRoot = wrap('div');
+
+const baseAssertion = assertion(() => (
+	<WrappedRoot
+		aria-activedescendant={'menu-test-item-0'}
+		aria-orientation={'vertical'}
+		classes={[null, css.root, fixedCss.root]}
+		focus={noop}
+		id={'menu-test'}
+		key={'root'}
+		onblur={undefined}
+		onfocus={undefined}
+		onkeydown={noop}
+		onpointerdown={undefined}
+		onscroll={noop}
+		role={'listbox'}
+		scrollTop={0}
+		styles={{
+			maxHeight: '450px'
+		}}
+		tabIndex={0}
+	>
+		<WrappedItemWrapper
+			classes={fixedCss.wrapper}
+			key={'wrapper'}
+			styles={{
+				height: '0px'
+			}}
+		>
+			<WrappedItemContainer
+				classes={fixedCss.transformer}
+				key={'transformer'}
+				styles={{
+					transform: 'translateY(0px)'
+				}}
+			/>
+		</WrappedItemWrapper>
+	</WrappedRoot>
+));
+
+const listWithListItemsAssertion = baseAssertion
+	.setProperty(WrappedItemWrapper, 'styles', {
+		height: '135px'
+	})
+	.replaceChildren(WrappedItemContainer, () => [
+		<ListItem
+			active={true}
+			disabled={false}
+			key={'item-0'}
+			onRequestActive={noop}
+			onSelect={noop}
+			selected={false}
+			theme={{
+				'@dojo/widgets/list-item': {
+					active: listItemCss.active,
+					disabled: listItemCss.disabled,
+					root: listItemCss.root,
+					s: css.items,
+					selected: listItemCss.selected
+				}
+			}}
+			widgetId={'menu-test-item-0'}
+		>
+			dog
+		</ListItem>,
+		<ListItem
+			active={false}
+			disabled={false}
+			key={'item-1'}
+			onRequestActive={noop}
+			onSelect={noop}
+			selected={false}
+			theme={{
+				'@dojo/widgets/list-item': {
+					active: listItemCss.active,
+					disabled: listItemCss.disabled,
+					root: listItemCss.root,
+					s: css.items,
+					selected: listItemCss.selected
+				}
+			}}
+			widgetId={'menu-test-item-1'}
+		>
+			Cat
+		</ListItem>,
+		<ListItem
+			active={false}
+			disabled={true}
+			key={'item-2'}
+			onRequestActive={noop}
+			onSelect={noop}
+			selected={false}
+			theme={{
+				'@dojo/widgets/list-item': {
+					active: listItemCss.active,
+					disabled: listItemCss.disabled,
+					root: listItemCss.root,
+					s: css.items,
+					selected: listItemCss.selected
+				}
+			}}
+			widgetId={'menu-test-item-2'}
+		>
+			fish
+		</ListItem>
+	]);
+
+const listWithMenuItemsAssertion = baseAssertion
+	.setProperty(WrappedItemWrapper, 'styles', {
+		height: '135px'
+	})
+	.setProperty(WrappedRoot, 'role', 'menu')
+	.replaceChildren(WrappedItemContainer, () => [
+		<MenuItem
+			active={true}
+			disabled={false}
+			key={'item-0'}
+			onRequestActive={noop}
+			onSelect={noop}
+			theme={{
+				'@dojo/widgets/menu-item': {
+					active: menuItemCss.active,
+					disabled: menuItemCss.disabled,
+					root: menuItemCss.root,
+					s: css.items
+				}
+			}}
+			widgetId={'menu-test-item-0'}
+		>
+			dog
+		</MenuItem>,
+		<MenuItem
+			active={false}
+			disabled={false}
+			key={'item-1'}
+			onRequestActive={noop}
+			onSelect={noop}
+			theme={{
+				'@dojo/widgets/menu-item': {
+					active: menuItemCss.active,
+					disabled: menuItemCss.disabled,
+					root: menuItemCss.root,
+					s: css.items
+				}
+			}}
+			widgetId={'menu-test-item-1'}
+		>
+			Cat
+		</MenuItem>,
+		<MenuItem
+			active={false}
+			disabled={true}
+			key={'item-2'}
+			onRequestActive={noop}
+			onSelect={noop}
+			theme={{
+				'@dojo/widgets/menu-item': {
+					active: menuItemCss.active,
+					disabled: menuItemCss.disabled,
+					root: menuItemCss.root,
+					s: css.items
+				}
+			}}
+			widgetId={'menu-test-item-2'}
+		>
+			fish
+		</MenuItem>
+	]);
 
 describe('List', () => {
-	const animalOptions: ListOption[] = [
-		{ value: 'dog' },
-		{ value: 'cat', label: 'Cat' },
-		{ value: 'fish', disabled: true }
-	];
-
-	const resource = createResource<ListOption>();
-
-	const template = assertionTemplate(() => (
-		<div
-			key="root"
-			classes={[undefined, css.root, fixedCss.root]}
-			tabIndex={0}
-			onkeydown={noop}
-			focus={noop}
-			onpointerdown={undefined}
-			onfocus={undefined}
-			onblur={undefined}
-			styles={{ maxHeight: '450px' }}
-			id="test"
-			role="listbox"
-			aria-activedescendant="test"
-			aria-orientation="vertical"
-			scrollTop={0}
-			onscroll={() => {}}
-		>
-			<div
-				classes={fixedCss.wrapper}
-				styles={{
-					height: `135px`
-				}}
-				key="wrapper"
-			>
-				<div
-					classes={fixedCss.transformer}
-					styles={{
-						transform: `translateY(0px)`
-					}}
-					key="transformer"
-				>
-					{animalOptions.map(({ value, label, disabled = false }, index) => (
-						<ListItem
-							key={`item-${index}`}
-							onSelect={noop}
-							active={index === 0}
-							onRequestActive={noop}
-							disabled={disabled}
-							theme={{}}
-							selected={false}
-							widgetId={`menu-test-item-${index}`}
-						>
-							{label || value}
-						</ListItem>
-					))}
-				</div>
-			</div>
-		</div>
-	));
-
-	const sb = sandbox.create();
-
-	before(() => {
+	beforeEach(() => {
 		sb.stub(global.window.HTMLDivElement.prototype, 'getBoundingClientRect').callsFake(() => ({
 			height: 45
 		}));
+		template = createMemoryResourceTemplate<{ value: string }>();
 	});
 
-	after(() => {
+	afterEach(() => {
 		sb.restore();
 	});
 
-	it('renders options', () => {
-		const h = harness(() => (
-			<List resource={resource(animalOptions)} transform={defaultTransform} onValue={noop} />
-		));
-		h.expect(template);
-	});
-
-	it('renders with an initialValue', () => {
-		const h = harness(() => (
+	it('should render list with no data', () => {
+		const r = renderer(() => (
 			<List
-				initialValue="dog"
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
+				resource={{
+					template: { template, id: 'test', initOptions: { data: [], id: 'test' } }
+				}}
+				onValue={onValueStub}
 			/>
 		));
-		const mockArrowDownEvent = {
-			stopPropagation: sb.stub(),
-			preventDefault: sb.stub(),
-			which: Keys.Down
-		};
-		const mockSpacePressEvent = {
-			stopPropagation: sb.stub(),
-			preventDefault: sb.stub(),
-			which: Keys.Space
-		};
-		const selectedTemplate = template.setProperty('@item-0', 'selected', true);
-
-		h.expect(selectedTemplate);
-		h.trigger('@root', 'onkeydown', mockArrowDownEvent);
-		h.trigger('@root', 'onkeydown', mockSpacePressEvent);
-
-		const spacePressTemplate = selectedTemplate
-			.setProperty('@item-0', 'active', false)
-			.setProperty('@item-1', 'active', true)
-			.setProperty('@item-0', 'selected', false)
-			.setProperty('@item-1', 'selected', true);
-		h.expect(spacePressTemplate);
+		r.expect(baseAssertion);
 	});
 
-	it('takes a custom renderer', () => {
-		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform}>
-				{({ label, value }, props) => (
-					<ListItem {...props}>
-						<span>label is {label || value}</span>
-					</ListItem>
-				)}
-			</List>
-		));
-		const itemRendererTemplate = template.setChildren('@transformer', () =>
-			animalOptions.map(({ value, label, disabled = false }, index) => {
-				return (
-					<ListItem
-						key={`item-${index}`}
-						onSelect={noop}
-						active={index === 0}
-						onRequestActive={noop}
-						disabled={disabled}
-						widgetId={`menu-test-item-${index}`}
-					>
-						<span>label is {label || value}</span>
-					</ListItem>
-				);
-			})
-		);
-		h.expect(itemRendererTemplate);
-	});
-
-	it('takes a number in view property', () => {
-		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-				itemsInView={2}
-			/>
-		));
-		const numberInViewTemplate = template.setProperty('@root', 'styles', {
-			maxHeight: '90px'
+	it('should render with list item placeholders', async () => {
+		let pageOneResolver: (options: { data: any[]; total: number }) => void;
+		const pageOnePromise = new Promise<{ data: any[]; total: number }>((resolve) => {
+			pageOneResolver = resolve;
 		});
-		h.expect(numberInViewTemplate);
-	});
-
-	it('changes active item on arrow key down', () => {
-		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
-		));
-		const mockArrowDownEvent = {
-			stopPropagation: sb.stub(),
-			preventDefault: sb.stub(),
-			which: Keys.Down
-		};
-
-		h.trigger('@root', 'onkeydown', mockArrowDownEvent);
-		const arrowKeyDownTemplate = template
-			.setProperty('@item-0', 'active', false)
-			.setProperty('@item-1', 'active', true);
-		h.expect(arrowKeyDownTemplate);
-	});
-
-	it('ignores changes to selected item when controlled', () => {
-		let currentActiveValue;
-		const h = harness(() => (
-			<List
-				onValue={(value) => {
-					currentActiveValue = value;
-				}}
-				value="dog"
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-			/>
-		));
-		const mockArrowDownEvent = {
-			stopPropagation: sb.stub(),
-			preventDefault: sb.stub(),
-			which: Keys.Down
-		};
-		const mockSpacePressEvent = {
-			stopPropagation: sb.stub(),
-			preventDefault: sb.stub(),
-			which: Keys.Space
-		};
-		const selectedTemplate = template.setProperty('@item-0', 'selected', true);
-
-		h.expect(selectedTemplate);
-		h.trigger('@root', 'onkeydown', mockArrowDownEvent);
-		h.trigger('@root', 'onkeydown', mockSpacePressEvent);
-
-		const spacePressTemplate = selectedTemplate
-			.setProperty('@item-0', 'active', false)
-			.setProperty('@item-1', 'active', true);
-		h.expect(spacePressTemplate);
-		// Calls callback to request a value change
-		assert.equal(currentActiveValue, 'cat');
-	});
-
-	it('changes active item on arrow key up and loops to last item', () => {
-		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
-		));
-		const mockArrowUpEvent = {
-			stopPropagation: sb.stub(),
-			preventDefault: sb.stub(),
-			which: Keys.Up
-		};
-
-		h.trigger('@root', 'onkeydown', mockArrowUpEvent);
-		const arrowKeyUpTemplate = template
-			.setProperty('@item-0', 'active', false)
-			.setProperty('@item-2', 'active', true);
-		h.expect(arrowKeyUpTemplate);
-	});
-
-	it('calls onActiveIndexChange callback if passed and does not manage active index itself', () => {
-		const onActiveIndexChange = sb.stub();
-		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-				onActiveIndexChange={onActiveIndexChange}
-			/>
-		));
-		const mockArrowDownEvent = {
-			stopPropagation: sb.stub(),
-			preventDefault: sb.stub(),
-			which: Keys.Down
-		};
-
-		h.trigger('@root', 'onkeydown', mockArrowDownEvent);
-		h.expect(template);
-		assert.isTrue(onActiveIndexChange.calledOnceWith(1));
-	});
-
-	it('sets active item to be the one starting with letter key pressed', () => {
-		const h = harness(() => (
-			<List onValue={noop} resource={resource(animalOptions)} transform={defaultTransform} />
-		));
-		const mockCPressEvent = {
-			stopPropagation: sb.stub(),
-			preventDefault: sb.stub(),
-			key: 'c'
-		};
-
-		h.trigger('@root', 'onkeydown', mockCPressEvent);
-		const cPressTemplate = template
-			.setProperty('@item-0', 'active', false)
-			.setProperty('@item-1', 'active', true);
-		h.expect(cPressTemplate);
-	});
-
-	it('selects item on key press', () => {
-		const onValue = sb.stub();
-		const h = harness(() => (
-			<List
-				onValue={onValue}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-			/>
-		));
-
-		const mockArrowDownEvent = {
-			stopPropagation: sb.stub(),
-			preventDefault: sb.stub(),
-			which: Keys.Down
-		};
-
-		h.trigger('@root', 'onkeydown', mockArrowDownEvent);
-
-		const mockSpacePressEvent = {
-			stopPropagation: sb.stub(),
-			preventDefault: sb.stub(),
-			which: Keys.Space
-		};
-
-		h.trigger('@root', 'onkeydown', mockSpacePressEvent);
-
-		const spacePressTemplate = template
-			.setProperty('@item-0', 'active', false)
-			.setProperty('@item-1', 'active', true)
-			.setProperty('@item-1', 'selected', true);
-		h.expect(spacePressTemplate);
-		assert.isTrue(onValue.calledOnceWith('cat'));
-	});
-
-	it('disables items with the disabled property', () => {
-		const h = harness(() => (
-			<List
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-				disabled={(item) => item.value === 'cat'}
-			>
-				{}
-			</List>
-		));
-		const itemRendererTemplate = template.setChildren('@transformer', () =>
-			animalOptions.map(({ value, label, disabled = false }, index) => {
-				return (
-					<ListItem
-						key={`item-${index}`}
-						onSelect={noop}
-						active={index === 0}
-						onRequestActive={noop}
-						disabled={value === 'cat'}
-						widgetId={`menu-test-item-${index}`}
-						selected={false}
-						theme={{}}
-					>
-						{label || value}
-					</ListItem>
-				);
+		let pageTwoResolver: (options: { data: any[]; total: number }) => void;
+		const pageTwoPromise = new Promise<{ data: any[]; total: number }>((resolve) => {
+			pageTwoResolver = resolve;
+		});
+		const listAssertion = listWithListItemsAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '270px'
 			})
-		);
-		h.expect(itemRendererTemplate);
-	});
+			.setProperty(WrappedRoot, 'styles', {
+				maxHeight: '45px'
+			});
+		const template = createResourceTemplate<{ value: string }>({
+			read: (request, { put }) => {
+				if (request.offset === 0) {
+					return pageOnePromise.then((res) => {
+						put(res, request);
+					});
+				}
+				return pageTwoPromise.then((res) => {
+					put(res, request);
+				});
+			},
+			find: () => {}
+		});
 
-	it('renders not focusable', () => {
-		const h = harness(() => (
+		const r = renderer(() => (
 			<List
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-				focusable={false}
+				itemsInView={1}
+				resource={{ template: { template, id: 'test' } }}
+				onValue={onValueStub}
 			/>
 		));
-		h.expect(
-			template
-				.setProperty('@root', 'tabIndex', -1)
-				.setProperty('@root', 'onpointerdown', noop)
-		);
-	});
-});
-
-describe('List - Menu', () => {
-	const animalOptions: ListOption[] = [
-		{ value: 'dog' },
-		{ value: 'cat', label: 'Cat' },
-		{ value: 'fish', disabled: true }
-	];
-
-	const resource = createResource<ListOption>();
-
-	const template = assertionTemplate(() => (
-		<div
-			key="root"
-			classes={[undefined, css.root, fixedCss.root]}
-			tabIndex={0}
-			onkeydown={noop}
-			focus={noop}
-			onpointerdown={undefined}
-			onfocus={undefined}
-			onblur={undefined}
-			styles={{ maxHeight: '450px' }}
-			id="test"
-			role="menu"
-			aria-activedescendant="test"
-			aria-orientation="vertical"
-			scrollTop={0}
-			onscroll={() => {}}
-		>
-			<div
-				classes={fixedCss.wrapper}
-				styles={{
-					height: `135px`
+		r.expect(assertion(() => null));
+		pageOneResolver!({ data, total: 6 });
+		await pageOnePromise;
+		r.expect(listAssertion);
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.End }));
+		const endAssertion = listAssertion
+			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-5')
+			.setProperty(WrappedRoot, 'scrollTop', 225)
+			.setProperty(WrappedItemContainer, 'styles', { transform: 'translateY(180px)' });
+		const placeHolderAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
+			<ListItem
+				active={false}
+				disabled={true}
+				key={'item-4'}
+				onRequestActive={noop}
+				onSelect={noop}
+				selected={false}
+				theme={{
+					'@dojo/widgets/list-item': {
+						active: listItemCss.active,
+						disabled: listItemCss.disabled,
+						root: listItemCss.root,
+						s: css.items,
+						selected: listItemCss.selected
+					}
 				}}
-				key="wrapper"
+				widgetId={'menu-test-item-4'}
 			>
-				<div
-					classes={fixedCss.transformer}
-					styles={{
-						transform: `translateY(0px)`
+				<LoadingIndicator />
+			</ListItem>,
+			<ListItem
+				active={false}
+				disabled={true}
+				key={'item-5'}
+				onRequestActive={noop}
+				onSelect={noop}
+				selected={false}
+				theme={{
+					'@dojo/widgets/list-item': {
+						active: listItemCss.active,
+						disabled: listItemCss.disabled,
+						root: listItemCss.root,
+						s: css.items,
+						selected: listItemCss.selected
+					}
+				}}
+				widgetId={'menu-test-item-5'}
+			>
+				<LoadingIndicator />
+			</ListItem>
+		]);
+		r.expect(placeHolderAssertion);
+		pageTwoResolver!({ data, total: 6 });
+		await pageTwoPromise;
+		const lastPageItemsAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
+			<ListItem
+				active={false}
+				disabled={false}
+				key={'item-4'}
+				onRequestActive={noop}
+				onSelect={noop}
+				selected={false}
+				theme={{
+					'@dojo/widgets/list-item': {
+						active: listItemCss.active,
+						disabled: listItemCss.disabled,
+						root: listItemCss.root,
+						s: css.items,
+						selected: listItemCss.selected
+					}
+				}}
+				widgetId={'menu-test-item-4'}
+			>
+				Cat
+			</ListItem>,
+			<ListItem
+				active={true}
+				disabled={true}
+				key={'item-5'}
+				onRequestActive={noop}
+				onSelect={noop}
+				selected={false}
+				theme={{
+					'@dojo/widgets/list-item': {
+						active: listItemCss.active,
+						disabled: listItemCss.disabled,
+						root: listItemCss.root,
+						s: css.items,
+						selected: listItemCss.selected
+					}
+				}}
+				widgetId={'menu-test-item-5'}
+			>
+				fish
+			</ListItem>
+		]);
+		r.expect(lastPageItemsAssertion);
+	});
+
+	it('should render list with list items data', () => {
+		const r = renderer(() => (
+			<List
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+			/>
+		));
+		r.expect(listWithListItemsAssertion);
+	});
+
+	it('should render list with menu items data', () => {
+		const r = renderer(() => (
+			<List
+				menu
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+			/>
+		));
+		r.expect(listWithMenuItemsAssertion);
+	});
+
+	it('should render with menu item placeholders', async () => {
+		let pageOneResolver: (options: { data: any[]; total: number }) => void;
+		const pageOnePromise = new Promise<{ data: any[]; total: number }>((resolve) => {
+			pageOneResolver = resolve;
+		});
+		let pageTwoResolver: (options: { data: any[]; total: number }) => void;
+		const pageTwoPromise = new Promise<{ data: any[]; total: number }>((resolve) => {
+			pageTwoResolver = resolve;
+		});
+		const menuAssertion = listWithMenuItemsAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '270px'
+			})
+			.setProperty(WrappedRoot, 'styles', {
+				maxHeight: '45px'
+			});
+		const template = createResourceTemplate<{ value: string }>({
+			read: (request, { put }) => {
+				if (request.offset === 0) {
+					return pageOnePromise.then((res) => {
+						put(res, request);
+					});
+				}
+				return pageTwoPromise.then((res) => {
+					put(res, request);
+				});
+			},
+			find: () => {}
+		});
+
+		const r = renderer(() => (
+			<List
+				menu
+				itemsInView={1}
+				resource={{ template: { template, id: 'test' } }}
+				onValue={onValueStub}
+			/>
+		));
+		r.expect(assertion(() => null));
+		pageOneResolver!({ data, total: 6 });
+		await pageOnePromise;
+		r.expect(menuAssertion);
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.End }));
+		const endAssertion = menuAssertion
+			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-5')
+			.setProperty(WrappedRoot, 'scrollTop', 225)
+			.setProperty(WrappedItemContainer, 'styles', { transform: 'translateY(180px)' });
+		const placeHolderAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
+			<MenuItem
+				active={false}
+				disabled={true}
+				key={'item-4'}
+				onRequestActive={noop}
+				onSelect={noop}
+				theme={{
+					'@dojo/widgets/menu-item': {
+						active: menuItemCss.active,
+						disabled: menuItemCss.disabled,
+						root: menuItemCss.root,
+						s: css.items
+					}
+				}}
+				widgetId={'menu-test-item-4'}
+			>
+				<LoadingIndicator />
+			</MenuItem>,
+			<MenuItem
+				active={false}
+				disabled={true}
+				key={'item-5'}
+				onRequestActive={noop}
+				onSelect={noop}
+				theme={{
+					'@dojo/widgets/menu-item': {
+						active: menuItemCss.active,
+						disabled: menuItemCss.disabled,
+						root: menuItemCss.root,
+						s: css.items
+					}
+				}}
+				widgetId={'menu-test-item-5'}
+			>
+				<LoadingIndicator />
+			</MenuItem>
+		]);
+		r.expect(placeHolderAssertion);
+		pageTwoResolver!({ data, total: 6 });
+		await pageTwoPromise;
+		const lastPageItemsAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
+			<MenuItem
+				active={false}
+				disabled={false}
+				key={'item-4'}
+				onRequestActive={noop}
+				onSelect={noop}
+				theme={{
+					'@dojo/widgets/menu-item': {
+						active: menuItemCss.active,
+						disabled: menuItemCss.disabled,
+						root: menuItemCss.root,
+						s: css.items
+					}
+				}}
+				widgetId={'menu-test-item-4'}
+			>
+				Cat
+			</MenuItem>,
+			<MenuItem
+				active={true}
+				disabled={true}
+				key={'item-5'}
+				onRequestActive={noop}
+				onSelect={noop}
+				theme={{
+					'@dojo/widgets/menu-item': {
+						active: menuItemCss.active,
+						disabled: menuItemCss.disabled,
+						root: menuItemCss.root,
+						s: css.items
+					}
+				}}
+				widgetId={'menu-test-item-5'}
+			>
+				fish
+			</MenuItem>
+		]);
+		r.expect(lastPageItemsAssertion);
+	});
+
+	it('should be able to navigate the list using the keyboard', () => {
+		function createListItems(activeIndex = 0, selected?: number) {
+			return new Array(6).fill(undefined).map((_, index) => (
+				<ListItem
+					active={index === activeIndex}
+					disabled={testData[index].value === 'fish'}
+					key={`item-${index}`}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={!!selected && index === selected}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
 					}}
-					key="transformer"
+					widgetId={`menu-test-item-${index}`}
 				>
-					{animalOptions.map(({ value, label, disabled = false }, index) => (
-						<MenuItem
-							key={`item-${index}`}
-							onSelect={noop}
-							active={index === 0}
-							onRequestActive={noop}
-							disabled={disabled}
-							theme={{}}
-							widgetId={`menu-test-item-${index}`}
-						>
-							{label || value}
-						</MenuItem>
-					))}
-				</div>
-			</div>
-		</div>
-	));
-
-	const sb = sandbox.create();
-
-	before(() => {
-		sb.stub(global.window.HTMLDivElement.prototype, 'getBoundingClientRect').callsFake(() => ({
-			height: 45
-		}));
-	});
-
-	after(() => {
-		sb.restore();
-	});
-
-	it('renders options', () => {
-		const h = harness(() => (
+					{testData[index].label || testData[index].value}
+				</ListItem>
+			));
+		}
+		const onRequestCloseStub = sb.stub();
+		const testData = [
+			...data,
+			...[
+				{
+					value: 'panda'
+				},
+				{
+					value: 'crow',
+					label: 'Crow'
+				},
+				{
+					value: 'fire-bellied toad'
+				}
+			]
+		];
+		const r = renderer(() => (
 			<List
-				onValue={noop}
-				menu
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
+				resource={{
+					template: {
+						template,
+						id: 'test',
+						initOptions: { data: testData, id: 'test' }
+					}
+				}}
+				disabled={(item) => {
+					return item.value === 'fish';
+				}}
+				onValue={onValueStub}
+				onRequestClose={onRequestCloseStub}
 			/>
 		));
-		h.expect(template);
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems();
+				})
+		);
+		// navigate to last item from first item
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Up }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-5')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(5);
+				})
+		);
+		// navigate to first item from last item
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-0')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems();
+				})
+		);
+		// navigate to last item with cmd/meta down
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down, metaKey: true }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-5')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(5);
+				})
+		);
+		// navigate to first item with cmd/meta up
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Up, metaKey: true }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-0')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems();
+				})
+		);
+		// navigate to last item with ctrl down
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down, ctrlKey: true }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-5')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(5);
+				})
+		);
+		// navigate to first item with ctrl up
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Up, ctrlKey: true }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-0')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems();
+				})
+		);
+		// navigate to next item with down
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-1')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(1);
+				})
+		);
+		// navigate to next item with down
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-2')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(2);
+				})
+		);
+		// navigate to previous item with up
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Up }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-1')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(1);
+				})
+		);
+		// navigate to last item with end
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.End }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-5')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(5);
+				})
+		);
+		// navigate to first item with home
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Home }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems();
+				})
+		);
+		// navigate to next item with down
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-1')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(1);
+				})
+		);
+		assert.strictEqual(onValueStub.callCount, 0);
+		// select item with space
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Space }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-1')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(1, 1);
+				})
+		);
+		assert.strictEqual(onValueStub.callCount, 1);
+		// navigate to next item with down
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-2')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(2, 1);
+				})
+		);
+		assert.strictEqual(onValueStub.callCount, 1);
+		// try to select item with enter
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Enter }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-2')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(2, 1);
+				})
+		);
+		assert.strictEqual(onValueStub.callCount, 1);
+		assert.strictEqual(onRequestCloseStub.callCount, 0);
+		// navigate to next item with down
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-3')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(3, 1);
+				})
+		);
+		assert.strictEqual(onValueStub.callCount, 1);
+		assert.strictEqual(onRequestCloseStub.callCount, 0);
+		// select item with enter
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Enter }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-3')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(3, 3);
+				})
+		);
+		assert.strictEqual(onValueStub.callCount, 2);
+		assert.strictEqual(onRequestCloseStub.callCount, 0);
+		// call close with escape
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Escape }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-3')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(3, 3);
+				})
+		);
+		assert.strictEqual(onValueStub.callCount, 2);
+		assert.strictEqual(onRequestCloseStub.callCount, 1);
 	});
 
-	it('renders options with dividers', () => {
-		const h = harness(() => (
+	it('should set active item based on keyboard input', async () => {
+		const testData = [
+			{
+				value: 'Bob'
+			},
+			{
+				value: 'Adam'
+			},
+			{
+				value: 'Ant'
+			},
+			{
+				value: 'Anthony'
+			},
+			{
+				value: 'Bobby'
+			}
+		];
+		const r = renderer(() => (
 			<List
-				onValue={noop}
-				menu
-				resource={resource([
-					{ ...animalOptions[0], divider: true },
-					...animalOptions.slice(1)
-				])}
-				transform={defaultTransform}
+				resource={{
+					template: {
+						template,
+						id: 'test',
+						initOptions: { data: testData, id: 'test' }
+					}
+				}}
+				onValue={onValueStub}
 			/>
 		));
-
-		h.expect(template.insertAfter('@item-0', () => [<hr classes={css.divider} />]));
+		const listAssertion = baseAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '225px'
+			})
+			.replaceChildren(WrappedItemContainer, () => [
+				<ListItem
+					active={true}
+					disabled={false}
+					key={'item-0'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-0'}
+				>
+					Bob
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-1'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-1'}
+				>
+					Adam
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-2'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-2'}
+				>
+					Ant
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-3'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-3'}
+				>
+					Anthony
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-4'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-4'}
+				>
+					Bobby
+				</ListItem>
+			]);
+		r.expect(listAssertion);
+		r.property(
+			WrappedRoot,
+			'onkeydown',
+			createMockEvent({ which: 0, key: 'b', metaKey: true })
+		);
+		r.expect(listAssertion);
+		r.property(
+			WrappedRoot,
+			'onkeydown',
+			createMockEvent({ which: 0, key: 'b', ctrlKey: true })
+		);
+		r.expect(listAssertion);
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'bo' }));
+		r.expect(listAssertion);
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'a' }));
+		r.expect(
+			listAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-1')
+				.replaceChildren(WrappedItemContainer, () => [
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-0'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-0'}
+					>
+						Bob
+					</ListItem>,
+					<ListItem
+						active={true}
+						disabled={false}
+						key={'item-1'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-1'}
+					>
+						Adam
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-2'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-2'}
+					>
+						Ant
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-3'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-3'}
+					>
+						Anthony
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-4'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-4'}
+					>
+						Bobby
+					</ListItem>
+				])
+		);
+		await new Promise((resolve) => setTimeout(resolve, 800));
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'a' }));
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'n' }));
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 't' }));
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'h' }));
+		r.expect(
+			listAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-3')
+				.replaceChildren(WrappedItemContainer, () => [
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-0'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-0'}
+					>
+						Bob
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-1'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-1'}
+					>
+						Adam
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-2'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-2'}
+					>
+						Ant
+					</ListItem>,
+					<ListItem
+						active={true}
+						disabled={false}
+						key={'item-3'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-3'}
+					>
+						Anthony
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-4'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-4'}
+					>
+						Bobby
+					</ListItem>
+				])
+		);
+		await new Promise((resolve) => setTimeout(resolve, 800));
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'b' }));
+		r.expect(
+			listAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-4')
+				.replaceChildren(WrappedItemContainer, () => [
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-0'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-0'}
+					>
+						Bob
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-1'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-1'}
+					>
+						Adam
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-2'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-2'}
+					>
+						Ant
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-3'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-3'}
+					>
+						Anthony
+					</ListItem>,
+					<ListItem
+						active={true}
+						disabled={false}
+						key={'item-4'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-4'}
+					>
+						Bobby
+					</ListItem>
+				])
+		);
+		await new Promise((resolve) => setTimeout(resolve, 800));
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'a' }));
+		r.expect(
+			listAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-1')
+				.replaceChildren(WrappedItemContainer, () => [
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-0'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-0'}
+					>
+						Bob
+					</ListItem>,
+					<ListItem
+						active={true}
+						disabled={false}
+						key={'item-1'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-1'}
+					>
+						Adam
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-2'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-2'}
+					>
+						Ant
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-3'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-3'}
+					>
+						Anthony
+					</ListItem>,
+					<ListItem
+						active={false}
+						disabled={false}
+						key={'item-4'}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected
+							}
+						}}
+						widgetId={'menu-test-item-4'}
+					>
+						Bobby
+					</ListItem>
+				])
+		);
 	});
 
-	it('takes a custom renderer', () => {
-		const h = harness(() => (
+	it('should scroll list', () => {
+		const testData = [
+			{
+				value: 'Bob'
+			},
+			{
+				value: 'Adam'
+			},
+			{
+				value: 'Ant'
+			},
+			{
+				value: 'Anthony'
+			},
+			{
+				value: 'Bobby'
+			}
+		];
+		const r = renderer(() => (
 			<List
-				onValue={noop}
-				resource={resource(animalOptions)}
-				transform={defaultTransform}
-				menu
+				resource={{
+					template: {
+						template,
+						id: 'test',
+						initOptions: { data: testData, id: 'test' }
+					}
+				}}
+				onValue={onValueStub}
+			/>
+		));
+		const listAssertion = baseAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '225px'
+			})
+			.replaceChildren(WrappedItemContainer, () => [
+				<ListItem
+					active={true}
+					disabled={false}
+					key={'item-0'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-0'}
+				>
+					Bob
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-1'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-1'}
+				>
+					Adam
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-2'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-2'}
+				>
+					Ant
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-3'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-3'}
+				>
+					Anthony
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-4'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-4'}
+				>
+					Bobby
+				</ListItem>
+			]);
+		r.expect(listAssertion);
+		r.property(WrappedRoot, 'onscroll', {
+			target: {
+				scrollTop: 100
+			}
+		});
+		r.expect(listAssertion.setProperty(WrappedRoot, 'scrollTop', 100));
+	});
+
+	it('should use custom item renderer', () => {
+		const listWithListItemsAssertion = baseAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '135px'
+			})
+			.replaceChildren(WrappedItemContainer, () => [
+				<ListItem
+					active={true}
+					disabled={false}
+					key={'item-0'}
+					onRequestActive={noop}
+					onSelect={noop}
+					widgetId={'menu-test-item-0'}
+				>
+					dog
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-1'}
+					onRequestActive={noop}
+					onSelect={noop}
+					widgetId={'menu-test-item-1'}
+				>
+					Cat
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={true}
+					key={'item-2'}
+					onRequestActive={noop}
+					onSelect={noop}
+					widgetId={'menu-test-item-2'}
+				>
+					fish
+				</ListItem>
+			]);
+		const r = renderer(() => (
+			<List
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
 			>
-				{({ label, value }, props) => (
-					<MenuItem {...props}>
-						<span>label is {label || value}</span>
-					</MenuItem>
-				)}
+				{(item, itemProps) => {
+					return <ListItem {...itemProps}>{item.label || item.value}</ListItem>;
+				}}
 			</List>
 		));
-		const itemRendererTemplate = template.setChildren('@transformer', () =>
-			animalOptions.map(({ value, label, disabled = false }, index) => {
-				return (
-					<MenuItem
-						key={`item-${index}`}
-						onSelect={noop}
-						active={index === 0}
-						onRequestActive={noop}
-						disabled={disabled}
-						widgetId={`menu-test-item-${index}`}
-					>
-						<span>label is {label || value}</span>
-					</MenuItem>
-				);
+		r.expect(listWithListItemsAssertion);
+	});
+
+	it('should render with initial value', () => {
+		const r = renderer(() => (
+			<List
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+				initialValue="cat"
+			/>
+		));
+		const listAssertion = baseAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '135px'
 			})
-		);
-		h.expect(itemRendererTemplate);
+			.replaceChildren(WrappedItemContainer, () => [
+				<ListItem
+					active={true}
+					disabled={false}
+					key={'item-0'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-0'}
+				>
+					dog
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-1'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={true}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-1'}
+				>
+					Cat
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={true}
+					key={'item-2'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-2'}
+				>
+					fish
+				</ListItem>
+			]);
+		r.expect(listAssertion);
+	});
+
+	it('should render with value', () => {
+		const props = {
+			value: 'cat'
+		};
+		const r = renderer(() => (
+			<List
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+				value={props.value}
+			/>
+		));
+		let listAssertion = baseAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '135px'
+			})
+			.replaceChildren(WrappedItemContainer, () => [
+				<ListItem
+					active={true}
+					disabled={false}
+					key={'item-0'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-0'}
+				>
+					dog
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-1'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={true}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-1'}
+				>
+					Cat
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={true}
+					key={'item-2'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-2'}
+				>
+					fish
+				</ListItem>
+			]);
+		r.expect(listAssertion);
+		props.value = 'dog';
+		listAssertion = baseAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '135px'
+			})
+			.replaceChildren(WrappedItemContainer, () => [
+				<ListItem
+					active={true}
+					disabled={false}
+					key={'item-0'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={true}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-0'}
+				>
+					dog
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-1'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-1'}
+				>
+					Cat
+				</ListItem>,
+				<ListItem
+					active={false}
+					disabled={true}
+					key={'item-2'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-2'}
+				>
+					fish
+				</ListItem>
+			]);
+		r.expect(listAssertion);
+	});
+
+	it('should render a divider based on the data', () => {
+		const testData = [
+			{
+				value: 'dog',
+				divider: true
+			},
+			{
+				value: 'cat',
+				label: 'Cat',
+				divider: true
+			},
+			{
+				value: 'fish',
+				disabled: true
+			}
+		];
+		const r = renderer(() => (
+			<List
+				resource={{
+					template: { template, id: 'test', initOptions: { data: testData, id: 'test' } }
+				}}
+				onValue={onValueStub}
+			/>
+		));
+		const listAssertion = baseAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '135px'
+			})
+			.replaceChildren(WrappedItemContainer, () => [
+				<ListItem
+					active={true}
+					disabled={false}
+					key={'item-0'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-0'}
+				>
+					dog
+				</ListItem>,
+				<hr classes={css.divider} />,
+				<ListItem
+					active={false}
+					disabled={false}
+					key={'item-1'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-1'}
+				>
+					Cat
+				</ListItem>,
+				<hr classes={css.divider} />,
+				<ListItem
+					active={false}
+					disabled={true}
+					key={'item-2'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={{
+						'@dojo/widgets/list-item': {
+							active: listItemCss.active,
+							disabled: listItemCss.disabled,
+							root: listItemCss.root,
+							s: css.items,
+							selected: listItemCss.selected
+						}
+					}}
+					widgetId={'menu-test-item-2'}
+				>
+					fish
+				</ListItem>
+			]);
+		r.expect(listAssertion);
 	});
 });
