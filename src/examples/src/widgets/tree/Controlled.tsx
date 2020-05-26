@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import Tree, { TreeNode } from '@dojo/widgets/tree';
+import Example from '../../Example';
 
 interface ControlledCache {
 	expanded?: string[];
@@ -46,7 +47,7 @@ export default factory(function Advanced({ middleware: { icache } }) {
 	const checked = icache.get('checked');
 
 	return (
-		<div>
+		<Example>
 			<Tree
 				nodes={nodes}
 				checkable={true}
@@ -74,6 +75,6 @@ export default factory(function Advanced({ middleware: { icache } }) {
 					</button>
 				</li>
 			</ul>
-		</div>
+		</Example>
 	);
 });
