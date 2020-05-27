@@ -2,6 +2,8 @@ const { describe, it, before } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import { tsx, node } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import createMockResize from '@dojo/framework/testing/mocks/middleware/resize';
+import { resize } from '@dojo/framework/core/middleware/resize';
 import createNodeMock from '@dojo/framework/testing/mocks/middleware/node';
 import harness from '@dojo/framework/testing/harness/harness';
 import Popup from '../index';
@@ -82,7 +84,7 @@ describe('Popup', () => {
 					hello world
 				</Popup>
 			),
-			{ middleware: [[node, mockNode]] }
+			{ middleware: [[node, mockNode], [resize, createMockResize()]] }
 		);
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
 			<div
@@ -121,7 +123,7 @@ describe('Popup', () => {
 					hello world
 				</Popup>
 			),
-			{ middleware: [[node, mockNode]] }
+			{ middleware: [[node, mockNode], [resize, createMockResize()]] }
 		);
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
 			<div
@@ -161,7 +163,7 @@ describe('Popup', () => {
 					hello world
 				</Popup>
 			),
-			{ middleware: [[node, mockNode]] }
+			{ middleware: [[node, mockNode], [resize, createMockResize()]] }
 		);
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
 			<div
