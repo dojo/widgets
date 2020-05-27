@@ -10,7 +10,7 @@ export const stepDescription: string;
 export const stepTitle: string;
 export const noDescription: string;
 export const stepSubTitle: string;
-export const stepAvatarRoot: string;
+export const avatarRoot: string;
 export const noTitle: string;
 export const pending: string;
 export const complete: string;

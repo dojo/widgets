@@ -1,13 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 const { it, describe } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
-import testHarness from '@dojo/framework/testing/harness/harness';
-import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
 
 import Wizard, { Step } from '../../index';
 import * as css from '../../../theme/default/wizard.m.css';
+import * as avatarCss from '../../../theme/default/avatar.m.css';
 import Avatar from '../../../avatar';
-import { compareTheme, noop } from '../../../common/tests/support/test-helpers';
+import { noop } from '../../../common/tests/support/test-helpers';
 import Icon from '../../../icon';
 import { WNode } from '@dojo/framework/core/interfaces';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
@@ -22,53 +22,112 @@ describe('Wizard', () => {
 			}
 		};
 	});
-	const harness = (renderFunc: () => WNode) =>
-		testHarness(renderFunc, {
-			customComparator: [compareTheme],
-			middleware: [[dimensions, () => mockDimensions()]] as any
-		});
-	const baseAssertion = assertionTemplate(() => (
-		<div key="root" classes={[undefined, css.root, css.horizontal, false]}>
-			<div key="step1" classes={[css.step, css.complete, false, false]} onclick={noop}>
+	const mockedRenderer = (renderFunc: () => WNode) =>
+		renderer(renderFunc, { middleware: [[dimensions, mockDimensions]] });
+	const WrappedRoot = wrap('div');
+	const WrappedStep1 = wrap('div');
+	const WrappedStep2 = wrap('div');
+	const WrappedStep3 = wrap('div');
+	const WrappedAvatar = wrap(Avatar);
+	const baseAssertion = assertion(() => (
+		<WrappedRoot key="root" classes={[undefined, css.root, css.horizontal, false]}>
+			<WrappedStep1
+				key="step1"
+				classes={[css.step, css.complete, false, false]}
+				onclick={noop}
+			>
 				<div classes={css.tail} />
 				<div classes={css.stepIcon}>
-					<Avatar assertion-key="avatar1" theme={{}} outline={true}>
+					<Avatar
+						theme={{
+							'@dojo/widgets/avatar': {
+								avatarColor: avatarCss.avatarColor,
+								avatarColorSecondary: avatarCss.avatarColorSecondary,
+								avatarOutline: avatarCss.avatarOutline,
+								circle: avatarCss.circle,
+								large: avatarCss.large,
+								medium: avatarCss.medium,
+								root: css.avatarRoot,
+								rounded: avatarCss.rounded,
+								small: avatarCss.small,
+								square: avatarCss.square
+							}
+						}}
+						outline={true}
+					>
 						<Icon type="checkIcon" />
 					</Avatar>
 				</div>
 				<div>Step 1</div>
-			</div>
-			<div key="step2" classes={[css.step, false, false, false]} onclick={noop}>
+			</WrappedStep1>
+			<WrappedStep2 key="step2" classes={[css.step, false, false, false]} onclick={noop}>
 				<div classes={css.tail} />
 				<div classes={css.stepIcon}>
-					<Avatar assertion-key="avatar2" theme={{}} outline={false}>
+					<WrappedAvatar
+						theme={{
+							'@dojo/widgets/avatar': {
+								avatarColor: avatarCss.avatarColor,
+								avatarColorSecondary: avatarCss.avatarColorSecondary,
+								avatarOutline: avatarCss.avatarOutline,
+								circle: avatarCss.circle,
+								large: avatarCss.large,
+								medium: avatarCss.medium,
+								root: css.avatarRoot,
+								rounded: avatarCss.rounded,
+								small: avatarCss.small,
+								square: avatarCss.square
+							}
+						}}
+						outline={false}
+					>
 						2
-					</Avatar>
+					</WrappedAvatar>
 				</div>
 				<div>Step 2</div>
-			</div>
-			<div key="step3" classes={[css.step, false, css.pending, false]} onclick={noop}>
+			</WrappedStep2>
+			<WrappedStep3
+				key="step3"
+				classes={[css.step, false, css.pending, false]}
+				onclick={noop}
+			>
 				<div classes={css.tail} />
 				<div classes={css.stepIcon}>
-					<Avatar assertion-key="avatar3" theme={{}} outline={true}>
+					<Avatar
+						theme={{
+							'@dojo/widgets/avatar': {
+								avatarColor: avatarCss.avatarColor,
+								avatarColorSecondary: avatarCss.avatarColorSecondary,
+								avatarOutline: avatarCss.avatarOutline,
+								circle: avatarCss.circle,
+								large: avatarCss.large,
+								medium: avatarCss.medium,
+								root: css.avatarRoot,
+								rounded: avatarCss.rounded,
+								small: avatarCss.small,
+								square: avatarCss.square
+							}
+						}}
+						outline={true}
+					>
 						3
 					</Avatar>
 				</div>
 				<div>Step 3</div>
-			</div>
-		</div>
+			</WrappedStep3>
+		</WrappedRoot>
 	));
-	const baseStepAssertion = assertionTemplate(() => (
-		<div classes={[undefined, css.stepContent]}>
+	const WrappedStepRoot = wrap('div');
+	const baseStepAssertion = assertion(() => (
+		<WrappedStepRoot classes={[undefined, css.stepContent]}>
 			<div classes={[css.stepTitle, css.noTitle, css.noDescription]}>
 				<div classes={css.stepSubTitle} />
 			</div>
 			<div classes={css.stepDescription} />
-		</div>
+		</WrappedStepRoot>
 	));
 
 	it('renders', () => {
-		const h = harness(() => (
+		const r = mockedRenderer(() => (
 			<Wizard
 				steps={[{ status: 'complete' }, { status: 'inProgress' }, { status: 'pending' }]}
 			>
@@ -78,11 +137,11 @@ describe('Wizard', () => {
 			</Wizard>
 		));
 
-		h.expect(baseAssertion);
+		r.expect(baseAssertion);
 	});
 
 	it('renders vertically', () => {
-		const h = harness(() => (
+		const r = mockedRenderer(() => (
 			<Wizard
 				direction="vertical"
 				steps={[{ status: 'complete' }, { status: 'inProgress' }, { status: 'pending' }]}
@@ -93,8 +152,8 @@ describe('Wizard', () => {
 			</Wizard>
 		));
 
-		h.expect(
-			baseAssertion.setProperty(':root', 'classes', [
+		r.expect(
+			baseAssertion.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
 				css.vertical,
@@ -105,7 +164,7 @@ describe('Wizard', () => {
 
 	it('forces rendering vertically at smaller widths', () => {
 		width = 400;
-		const h = harness(() => (
+		const r = mockedRenderer(() => (
 			<Wizard
 				steps={[{ status: 'complete' }, { status: 'inProgress' }, { status: 'pending' }]}
 			>
@@ -115,19 +174,19 @@ describe('Wizard', () => {
 			</Wizard>
 		));
 
-		h.expect(
-			baseAssertion.setProperty(':root', 'classes', [
+		r.expect(
+			baseAssertion.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
 				css.vertical,
-				css.clickable
+				false
 			])
 		);
 		width = 10000;
 	});
 
 	it('renders with "clickable" set to true', () => {
-		const h = harness(() => (
+		const r = mockedRenderer(() => (
 			<Wizard
 				clickable
 				steps={[{ status: 'complete' }, { status: 'inProgress' }, { status: 'pending' }]}
@@ -138,8 +197,8 @@ describe('Wizard', () => {
 			</Wizard>
 		));
 
-		h.expect(
-			baseAssertion.setProperty(':root', 'classes', [
+		r.expect(
+			baseAssertion.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
 				css.horizontal,
@@ -149,7 +208,7 @@ describe('Wizard', () => {
 	});
 
 	it('renders with an error', () => {
-		const h = harness(() => (
+		const r = mockedRenderer(() => (
 			<Wizard steps={[{ status: 'complete' }, { status: 'error' }, { status: 'pending' }]}>
 				<div>Step 1</div>
 				<div>Step 2</div>
@@ -157,18 +216,18 @@ describe('Wizard', () => {
 			</Wizard>
 		));
 
-		h.expect(
+		r.expect(
 			baseAssertion
-				.setProperty('@step1', 'classes', [css.step, css.complete, false, false])
-				.setProperty('@step2', 'classes', [css.step, false, false, css.error])
-				.setProperty('@avatar2', 'outline', true)
-				.setChildren('@avatar2', () => [<Icon type="closeIcon" />])
-				.setProperty('@step3', 'classes', [css.step, false, css.pending, false])
+				.setProperty(WrappedStep1, 'classes', [css.step, css.complete, false, false])
+				.setProperty(WrappedStep2, 'classes', [css.step, false, false, css.error])
+				.setProperty(WrappedAvatar, 'outline', true)
+				.setChildren(WrappedAvatar, () => [<Icon type="closeIcon" />])
+				.setProperty(WrappedStep3, 'classes', [css.step, false, css.pending, false])
 		);
 	});
 
 	it('renders with a custom value', () => {
-		const h = harness(() => (
+		const r = mockedRenderer(() => (
 			<Wizard
 				steps={[
 					{ status: 'complete' },
@@ -182,13 +241,14 @@ describe('Wizard', () => {
 			</Wizard>
 		));
 
-		h.expect(baseAssertion.setChildren('@avatar2', () => ['A']));
+		r.expect(baseAssertion.setChildren(WrappedAvatar, () => ['A']));
 	});
 
-	it('triggers the callback clicked', () => {
+	it('triggers the callback when clicked', () => {
 		let requestIndex;
-		const h = harness(() => (
+		const r = mockedRenderer(() => (
 			<Wizard
+				clickable
 				onStep={(step) => {
 					requestIndex = step;
 				}}
@@ -200,21 +260,37 @@ describe('Wizard', () => {
 			</Wizard>
 		));
 
-		h.expect(baseAssertion);
+		r.expect(
+			baseAssertion.setProperty(WrappedRoot, 'classes', [
+				undefined,
+				css.root,
+				css.horizontal,
+				css.clickable
+			])
+		);
 
-		h.trigger('@step3', 'onclick');
+		r.property(WrappedStep3, 'onclick');
+
+		r.expect(
+			baseAssertion.setProperty(WrappedRoot, 'classes', [
+				undefined,
+				css.root,
+				css.horizontal,
+				css.clickable
+			])
+		);
 
 		assert.equal(requestIndex, 2);
 	});
 
 	describe('step', () => {
 		it('renders step by default', () => {
-			const h = harness(() => <Step />);
-			h.expect(baseStepAssertion);
+			const r = mockedRenderer(() => <Step />);
+			r.expect(baseStepAssertion);
 		});
 
 		it('renders with title, subtitle, and description', () => {
-			const h = harness(() => (
+			const r = mockedRenderer(() => (
 				<Step>
 					{{
 						title: 'title',
@@ -223,8 +299,8 @@ describe('Wizard', () => {
 					}}
 				</Step>
 			));
-			h.expect(
-				baseStepAssertion.replaceChildren(':root', () => [
+			r.expect(
+				baseStepAssertion.replaceChildren(WrappedStepRoot, () => [
 					<div classes={[css.stepTitle, false, false]}>
 						title
 						<div classes={css.stepSubTitle}>subTitle</div>

@@ -14,6 +14,6 @@ export const noTitle: string;
 export const pending: string;
 export const stepSubTitle: string;
 export const completed: string;
-export const stepAvatarRoot: string;
+export const avatarRoot: string;
 export const pendingAvatar: string;
 export const error: string;
