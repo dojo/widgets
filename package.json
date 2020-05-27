@@ -61,7 +61,7 @@
     "@dojo/cli-build-widget": "7.0.0",
     "@dojo/cli-test-intern": "~7.0.0",
     "@dojo/framework": "~7.0.0",
-    "@dojo/parade": "1.0.0-rc.3",
+    "@dojo/parade": "~1.0.0",
     "@dojo/scripts": "^4.0.3",
     "@material/button": "3.0.0",
     "@material/card": "5.1.0",
