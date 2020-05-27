@@ -21,8 +21,10 @@ export default factory(function Basic({ middleware: { icache } }) {
 					icache.set('activeStep', stepIndex);
 					icache.set(
 						'steps',
-						steps.map((_, index) => {
-							if (index < stepIndex) {
+						steps.map(({ status }, index) => {
+							if (status === 'error') {
+								return { status };
+							} else if (index < stepIndex) {
 								return { status: 'complete' };
 							} else if (index === stepIndex) {
 								return { status: 'inProgress' };
@@ -54,8 +56,10 @@ export default factory(function Basic({ middleware: { icache } }) {
 						activeStep = Math.max(activeStep - 1, -1);
 						icache.set(
 							'steps',
-							steps.map((_, index) => {
-								if (index < activeStep) {
+							steps.map(({ status }, index) => {
+								if (status === 'error') {
+									return { status };
+								} else if (index < activeStep) {
 									return { status: 'complete' };
 								} else if (index === activeStep) {
 									return { status: 'inProgress' };
@@ -74,8 +78,10 @@ export default factory(function Basic({ middleware: { icache } }) {
 						activeStep = Math.min(activeStep + 1, steps.length);
 						icache.set(
 							'steps',
-							steps.map((_, index) => {
-								if (index < activeStep) {
+							steps.map(({ status }, index) => {
+								if (status === 'error') {
+									return { status };
+								} else if (index < activeStep) {
 									return { status: 'complete' };
 								} else if (index === activeStep) {
 									return { status: 'inProgress' };

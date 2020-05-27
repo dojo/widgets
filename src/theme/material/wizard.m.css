@@ -161,17 +161,17 @@
 	vertical-align: top;
 	margin-right: var(--mdc-theme-grid-base);
 }
-.stepAvatarRoot {
+.avatarRoot {
 	composes: root from './avatar.m.css';
 }
 
-.root .pending.step .stepAvatarRoot {
+.root .pending.step .avatarRoot {
 	color: var(--mdc-disabled-text-color);
 	border-color: var(--mdc-disabled-text-color);
 	opacity: 0.25;
 }
 
-.root .pending.step:hover .stepAvatarRoot {
+.root .pending.step:hover .avatarRoot {
 	color: var(--mdc-theme-primary);
 	border-color: var(--mdc-theme-primary);
 	opacity: 1;
@@ -186,7 +186,7 @@
 }
 
 .error,
-.error .stepAvatarRoot,
+.error .avatarRoot,
 .error.step .stepTitle,
 .error.step .stepSubTitle,
 .error.step .stepDescription,

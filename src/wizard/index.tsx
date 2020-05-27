@@ -19,7 +19,7 @@ export interface WizardProperties {
 	onStep?(step: number): void;
 	/** Direction for steps. Defaults to horizontal */
 	direction?: 'horizontal' | 'vertical';
-	/** Indicates whether steps should respond to clicks. Defaults to true */
+	/** Indicates whether steps should respond to clicks. Defaults to false */
 	clickable?: boolean;
 }
 
@@ -68,34 +68,41 @@ export default factory(function Wizard({
 	middleware: { theme, dimensions, resize }
 }) {
 	const classes = theme.classes(css);
-	const { direction = 'horizontal', onStep, steps, clickable = true } = properties();
+	const { direction = 'horizontal', onStep, steps, clickable = false } = properties();
 	resize.get('root');
 	const width = dimensions.get('root').size.width;
 
 	const stepNodes = children();
 	const forceVertical = width < 200 * stepNodes.length;
 
-	const stepWrappers = stepNodes.map((step, index) => [
-		<div classes={classes.stepIcon}>
-			<Avatar
-				theme={theme.compose(
-					avatarCss,
-					css,
-					'stepAvatar'
-				)}
-				outline={Boolean(steps[index].status !== 'inProgress')}
-			>
-				{steps[index].status === 'complete' ? (
-					<Icon type="checkIcon" />
-				) : steps[index].status === 'error' ? (
-					<Icon type="closeIcon" />
-				) : (
-					steps[index].value || String(index + 1)
-				)}
-			</Avatar>
-		</div>,
-		step
-	]);
+	const stepWrappers = stepNodes.map((step, index) => {
+		let content;
+		switch (steps[index].status) {
+			case 'complete':
+				content = <Icon type="checkIcon" />;
+				break;
+			case 'error':
+				content = <Icon type="closeIcon" />;
+				break;
+			default:
+				content = steps[index].value || String(index + 1);
+		}
+		return [
+			<div classes={classes.stepIcon}>
+				<Avatar
+					theme={theme.compose(
+						avatarCss,
+						css,
+						'avatar'
+					)}
+					outline={Boolean(steps[index].status !== 'inProgress')}
+				>
+					{content}
+				</Avatar>
+			</div>,
+			step
+		];
+	});
 
 	return (
 		<div

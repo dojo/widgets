@@ -28,7 +28,7 @@ describe('Wizard', () => {
 			middleware: [[dimensions, () => mockDimensions()]] as any
 		});
 	const baseAssertion = assertionTemplate(() => (
-		<div key="root" classes={[undefined, css.root, css.horizontal, css.clickable]}>
+		<div key="root" classes={[undefined, css.root, css.horizontal, false]}>
 			<div key="step1" classes={[css.step, css.complete, false, false]} onclick={noop}>
 				<div classes={css.tail} />
 				<div classes={css.stepIcon}>
@@ -98,7 +98,7 @@ describe('Wizard', () => {
 				undefined,
 				css.root,
 				css.vertical,
-				css.clickable
+				false
 			])
 		);
 	});
@@ -126,10 +126,10 @@ describe('Wizard', () => {
 		width = 10000;
 	});
 
-	it('renders with "clickable" set to false', () => {
+	it('renders with "clickable" set to true', () => {
 		const h = harness(() => (
 			<Wizard
-				clickable={false}
+				clickable
 				steps={[{ status: 'complete' }, { status: 'inProgress' }, { status: 'pending' }]}
 			>
 				<div>Step 1</div>
@@ -143,7 +143,7 @@ describe('Wizard', () => {
 				undefined,
 				css.root,
 				css.horizontal,
-				false
+				css.clickable
 			])
 		);
 	});
