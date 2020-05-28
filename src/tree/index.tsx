@@ -1,4 +1,5 @@
 import { create, tsx, diffProperty } from '@dojo/framework/core/vdom';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import theme from '@dojo/framework/core/middleware/theme';
@@ -11,13 +12,12 @@ import Checkbox from '../checkbox';
 import { ListItem } from '../list';
 
 import * as css from '../theme/default/tree.m.css';
-import { RenderResult } from '@dojo/framework/core/interfaces';
 
 /*******************
  * Tree
  *******************/
 
-export interface TreeNode {
+export interface TreeNodeOption {
 	id: string;
 	parent?: string;
 	value: string;
@@ -36,7 +36,7 @@ export interface TreeProperties {
 }
 
 export interface TreeChildren {
-	(node: TreeNode): RenderResult;
+	(node: TreeNodeOption): RenderResult;
 }
 
 interface TreeCache {
@@ -48,12 +48,12 @@ interface TreeCache {
 
 interface LinkedTreeNode {
 	id: string;
-	node: TreeNode;
+	node: TreeNodeOption;
 	depth: number;
 	children: LinkedTreeNode[];
 }
 
-const resource = createResourceMiddleware<TreeNode>();
+const resource = createResourceMiddleware<TreeNodeOption>();
 const icache = createICacheMiddleware<TreeCache>();
 const factory = create({ theme, icache, diffProperty, focus, resource })
 	.properties<TreeProperties>()
@@ -104,7 +104,7 @@ export default factory(function({
 		resource: { template, options = createOptions(id) }
 	} = properties();
 	const classes = theme.classes(css);
-	const defaultRenderer = (n: TreeNode) => n.value;
+	const defaultRenderer = (n: TreeNodeOption) => n.value;
 	const [itemRenderer] = children();
 
 	const rootNodes = createLinkedNodes(flat(getOrRead(template, options())));
@@ -189,7 +189,7 @@ export default factory(function({
 			tabIndex={0}
 		>
 			{nodes.map((node) => (
-				<Node
+				<TreeNode
 					depth={node.depth}
 					activeNode={activeNode}
 					checkable={checkable}
@@ -226,13 +226,13 @@ export default factory(function({
 					}}
 				>
 					{itemRenderer || defaultRenderer}
-				</Node>
+				</TreeNode>
 			))}
 		</ol>
 	);
 });
 
-function createLinkedNodes(nodes: TreeNode[]): LinkedTreeNode[] {
+function createLinkedNodes(nodes: TreeNodeOption[]): LinkedTreeNode[] {
 	// create a map of all nodes
 	const nodeMap = new Map<string, LinkedTreeNode>();
 	for (let node of nodes) {
@@ -299,17 +299,14 @@ interface TreeNodeProperties {
 }
 
 interface TreeNodeChildren {
-	(node: TreeNode): RenderResult;
+	(node: TreeNodeOption): RenderResult;
 }
 
-interface TreeNodeCache {}
-
-const treeNodeCache = createICacheMiddleware<TreeNodeCache>();
-const treeNodeFactory = create({ theme, icache: treeNodeCache })
+const treeNodeFactory = create({ theme })
 	.properties<TreeNodeProperties>()
 	.children<TreeNodeChildren>();
 
-const Node = treeNodeFactory(function({ middleware: { theme, icache }, properties, children }) {
+export const TreeNode = treeNodeFactory(function({ middleware: { theme }, properties, children }) {
 	const {
 		node,
 		checkable,
