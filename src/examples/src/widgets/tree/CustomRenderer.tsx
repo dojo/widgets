@@ -3,13 +3,13 @@ import {
 	createMemoryResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
-import Tree, { TreeNode } from '@dojo/widgets/tree';
+import Tree, { TreeNodeOption } from '@dojo/widgets/tree';
 import Icon from '@dojo/widgets/icon';
 import Example from '../../Example';
 
 const resource = createResourceMiddleware();
 const factory = create({ resource });
-const nodes: TreeNode[] = [
+const nodes: TreeNodeOption[] = [
 	{
 		id: 'parent-1',
 		value: 'parent 1'
@@ -40,7 +40,7 @@ const nodes: TreeNode[] = [
 		parent: 'parent-1-1'
 	}
 ];
-const template = createMemoryResourceTemplate<TreeNode>();
+const template = createMemoryResourceTemplate<TreeNodeOption>();
 
 export default factory(function CustomIcons({ id, middleware: { resource } }) {
 	return (
