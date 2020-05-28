@@ -1,8 +1,9 @@
 import { create, tsx, diffProperty } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import theme from '@dojo/framework/core/middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
-import { fill } from '@dojo/framework/shim/array';
+import { fill, flat } from '@dojo/framework/shim/array';
 
 import { Keys } from '../common/util';
 import Icon from '../icon';
@@ -23,7 +24,6 @@ export interface TreeNode {
 }
 
 export interface TreeProperties {
-	nodes: TreeNode[];
 	checkable?: boolean;
 	selectable?: boolean;
 	checkedNodes?: string[];
@@ -40,8 +40,6 @@ export interface TreeChildren {
 }
 
 interface TreeCache {
-	rootNodes: LinkedTreeNode[];
-	nodeMap: Map<string, LinkedTreeNode>;
 	activeNode?: string;
 	selectedNode?: string;
 	expandedNodes: string[];
@@ -55,23 +53,18 @@ interface LinkedTreeNode {
 	children: LinkedTreeNode[];
 }
 
+const resource = createResourceMiddleware<TreeNode>();
 const icache = createICacheMiddleware<TreeCache>();
-const factory = create({ theme, icache, diffProperty, focus })
+const factory = create({ theme, icache, diffProperty, focus, resource })
 	.properties<TreeProperties>()
 	.children<TreeChildren | undefined>();
 
 export default factory(function({
-	middleware: { theme, icache, diffProperty, focus },
+	id,
+	middleware: { theme, icache, diffProperty, focus, resource },
 	properties,
 	children
 }) {
-	diffProperty('nodes', properties, ({ nodes: current }, { nodes: next }) => {
-		if (current !== next) {
-			const [nodeMap, rootNodes] = createLinkedNodes(next);
-			icache.set('nodeMap', nodeMap);
-			icache.set('rootNodes', rootNodes);
-		}
-	});
 	diffProperty(
 		'selectedNode',
 		properties,
@@ -100,25 +93,28 @@ export default factory(function({
 		}
 	);
 
+	const { getOrRead, createOptions } = resource;
 	const {
 		checkable = false,
 		selectable = false,
 		onSelect,
 		onCheck,
 		onExpand,
-		disabledNodes
+		disabledNodes,
+		resource: { template, options = createOptions(id) }
 	} = properties();
 	const classes = theme.classes(css);
 	const defaultRenderer = (n: TreeNode) => n.value;
 	const [itemRenderer] = children();
 
-	const rootNodes = icache.getOrSet('rootNodes', []);
+	const rootNodes = createLinkedNodes(flat(getOrRead(template, options())));
 	const activeNode = icache.get('activeNode');
 	const selectedNode = icache.get('selectedNode');
 	const expandedNodes = icache.getOrSet('expandedNodes', []);
 	const checkedNodes = icache.getOrSet('checkedNodes', []);
 	const shouldFocus = focus.shouldFocus();
 
+	// build visible list of nodes for rendering
 	const nodes: LinkedTreeNode[] = [];
 	const queue: LinkedTreeNode[] = [...rootNodes];
 	let activeIndex: number | undefined = undefined;
@@ -236,7 +232,7 @@ export default factory(function({
 	);
 });
 
-function createLinkedNodes(nodes: TreeNode[]): [Map<string, LinkedTreeNode>, LinkedTreeNode[]] {
+function createLinkedNodes(nodes: TreeNode[]): LinkedTreeNode[] {
 	// create a map of all nodes
 	const nodeMap = new Map<string, LinkedTreeNode>();
 	for (let node of nodes) {
@@ -264,6 +260,7 @@ function createLinkedNodes(nodes: TreeNode[]): [Map<string, LinkedTreeNode>, Lin
 		}
 	}
 
+	// track node depth
 	const queue = [...rootNodes];
 	let current = queue.shift();
 	while (current) {
@@ -278,7 +275,7 @@ function createLinkedNodes(nodes: TreeNode[]): [Map<string, LinkedTreeNode>, Lin
 		current = queue.shift();
 	}
 
-	return [nodeMap, rootNodes];
+	return rootNodes;
 }
 
 /*******************
