@@ -46,7 +46,7 @@ interface TreeCache {
 	checkedNodes: string[];
 }
 
-interface LinkedTreeNode {
+export interface LinkedTreeNode {
 	id: string;
 	node: TreeNodeOption;
 	depth: number;
