@@ -6,6 +6,8 @@ import { tsx } from '@dojo/framework/core/vdom';
 import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
 import { createMemoryResourceTemplate } from '@dojo/framework/core/middleware/resources';
 
+import { Keys } from '../../../common/util';
+import { stubEvent } from '../../../common/tests/support/test-helpers';
 import Tree, { TreeNode, TreeNodeOption } from '../../index';
 import * as css from '../../../theme/default/tree.m.css';
 
@@ -92,7 +94,55 @@ describe('Tree', () => {
 		);
 	});
 
+	it('can navigate active node with keyboard', () => {
+		const r = renderer(() => <Tree {...defaultProps} />);
+		r.expect(simpleTreeAssertion);
+
+		r.property(WrappedNode1, 'onActive', simpleTree[0].id);
+		r.expect(
+			simpleTreeAssertion
+				.setProperty(WrappedNode1, 'activeNode', simpleTree[0].id)
+				.setProperty(WrappedNode2, 'activeNode', simpleTree[0].id)
+		);
+
+		// navigate down to node 2
+		r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Down });
+		r.expect(
+			simpleTreeAssertion
+				.setProperty(WrappedNode1, 'activeNode', simpleTree[2].id)
+				.setProperty(WrappedNode2, 'activeNode', simpleTree[2].id)
+		);
+
+		// navigate back up to node 1
+		r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Up });
+		r.expect(
+			simpleTreeAssertion
+				.setProperty(WrappedNode1, 'activeNode', simpleTree[0].id)
+				.setProperty(WrappedNode2, 'activeNode', simpleTree[0].id)
+		);
+	});
+
 	describe('ExpandedNodes', () => {
+		const expandedNodes = [simpleTreeLinked[0].id];
+		const WrappedNode3 = wrap(TreeNode);
+		const expandedAssertion = simpleTreeAssertion
+			.setProperty(WrappedNode1, 'expandedNodes', expandedNodes)
+			.setProperty(WrappedNode2, 'expandedNodes', expandedNodes)
+			.insertAfter(
+				WrappedNode1,
+				() =>
+					(
+						<WrappedNode3
+							{...defaultNodeProps}
+							expandedNodes={expandedNodes}
+							depth={1}
+							node={simpleTreeLinked[1]}
+						>
+							{noop as any}
+						</WrappedNode3>
+					) as any
+			);
+
 		it('renders with expanded nodes', () => {
 			const expandedNodes = [simpleTree[0].id];
 			const nodeProps = {
@@ -118,34 +168,56 @@ describe('Tree', () => {
 		});
 
 		it('raises events on expand/collapse', () => {
-			const expandedNodes = [simpleTreeLinked[0].id];
-			const expandedAssertion = simpleTreeAssertion
-				.setProperty(WrappedNode1, 'expandedNodes', expandedNodes)
-				.setProperty(WrappedNode2, 'expandedNodes', expandedNodes)
-				.insertAfter(
-					WrappedNode1,
-					() =>
-						(
-							<TreeNode
-								{...defaultNodeProps}
-								expandedNodes={expandedNodes}
-								depth={1}
-								node={simpleTreeLinked[1]}
-							>
-								{noop as any}
-							</TreeNode>
-						) as any
-				);
-
 			const onExpand = sinon.stub();
 			const r = renderer(() => <Tree {...defaultProps} onExpand={onExpand} />);
 			r.expect(simpleTreeAssertion);
 
 			// simulate expand event
 			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, true);
-
 			r.expect(expandedAssertion);
 			assert(onExpand.calledWith(simpleTree[0].id, true));
+
+			// simulate collapse event
+			onExpand.resetHistory();
+			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, false);
+			r.expect(
+				simpleTreeAssertion
+					.setProperty(WrappedNode1, 'expandedNodes', [])
+					.setProperty(WrappedNode2, 'expandedNodes', [])
+			);
+			assert(onExpand.calledWith(simpleTree[0].id, false));
+		});
+
+		it('raises events on expand/collapse on keyboard navigation', () => {
+			const onExpand = sinon.stub();
+			const r = renderer(() => <Tree {...defaultProps} onExpand={onExpand} />);
+			r.expect(simpleTreeAssertion);
+
+			const nodeId = simpleTree[0].id;
+			const activeAssertion = simpleTreeAssertion
+				.setProperty(WrappedNode1, 'activeNode', nodeId)
+				.setProperty(WrappedNode2, 'activeNode', nodeId);
+
+			// activate our node
+			r.property(WrappedNode1, 'onActive', nodeId);
+			r.expect(activeAssertion);
+
+			// // with our node active, we can expand it via the "right" key
+			r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Right });
+			r.expect(
+				expandedAssertion
+					.setProperty(WrappedNode3, 'activeNode', nodeId)
+					.setProperty(WrappedNode1, 'activeNode', nodeId)
+					.setProperty(WrappedNode2, 'activeNode', nodeId)
+			);
+			assert(onExpand.calledWith(nodeId, true));
+
+			// we can now collapse it with "left" key
+			onExpand.resetHistory();
+			r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Left });
+
+			r.expect(activeAssertion);
+			assert(onExpand.calledWith(nodeId, false));
 		});
 	});
 
@@ -180,13 +252,22 @@ describe('Tree', () => {
 
 			// simulate check event
 			r.property(WrappedNode1, 'onCheck', simpleTree[0].id, true);
-
 			r.expect(
 				checkableAssertion
 					.setProperty(WrappedNode1, 'checkedNodes', [simpleTree[0].id])
 					.setProperty(WrappedNode2, 'checkedNodes', [simpleTree[0].id])
 			);
 			assert(onCheck.calledWith(simpleTree[0].id, true));
+
+			// simulate uncheck event
+			onCheck.resetHistory();
+			r.property(WrappedNode1, 'onCheck', simpleTree[0].id, false);
+			r.expect(
+				checkableAssertion
+					.setProperty(WrappedNode1, 'checkedNodes', [])
+					.setProperty(WrappedNode2, 'checkedNodes', [])
+			);
+			assert(onCheck.calledWith(simpleTree[0].id, false));
 		});
 	});
 
@@ -230,6 +311,30 @@ describe('Tree', () => {
 				selectableAssertion
 					.setProperty(WrappedNode1, 'selectedNode', selectedNode)
 					.setProperty(WrappedNode2, 'selectedNode', selectedNode)
+			);
+		});
+
+		it('can select the active node with keyboard', () => {
+			const r = renderer(() => <Tree {...defaultProps} selectable={true} />);
+			r.expect(selectableAssertion);
+
+			// activate our node
+			const nodeId = simpleTree[0].id;
+			r.property(WrappedNode1, 'onActive', nodeId);
+			r.expect(
+				selectableAssertion
+					.setProperty(WrappedNode1, 'activeNode', nodeId)
+					.setProperty(WrappedNode2, 'activeNode', nodeId)
+			);
+
+			// use keyboard to select our node
+			r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Enter });
+			r.expect(
+				selectableAssertion
+					.setProperty(WrappedNode1, 'selectedNode', nodeId)
+					.setProperty(WrappedNode2, 'selectedNode', nodeId)
+					.setProperty(WrappedNode1, 'activeNode', nodeId)
+					.setProperty(WrappedNode2, 'activeNode', nodeId)
 			);
 		});
 	});

@@ -132,6 +132,27 @@ export default factory(function({
 		current = queue.shift();
 	}
 
+	function activateNode(id: string) {
+		icache.set('activeNode', id);
+	}
+
+	function selectNode(id: string) {
+		icache.set('selectedNode', id);
+		onSelect && onSelect(id);
+	}
+
+	function expandNode(id: string) {
+		expandedNodes.push(id);
+		icache.set('expandedNodes', expandedNodes);
+		onExpand && onExpand(id, true);
+	}
+
+	function collapseNode(id: string) {
+		expandedNodes.splice(expandedNodes.indexOf(id), 1);
+		icache.set('expandedNodes', expandedNodes);
+		onExpand && onExpand(id, false);
+	}
+
 	function onKeyDown(event: KeyboardEvent) {
 		event.stopPropagation();
 
@@ -141,7 +162,7 @@ export default factory(function({
 			case Keys.Space:
 				event.preventDefault();
 				if (activeNode && selectedNode !== activeNode) {
-					icache.set('selectedNode', activeNode);
+					selectNode(activeNode);
 				}
 				break;
 
@@ -149,7 +170,7 @@ export default factory(function({
 			case Keys.Down:
 				event.preventDefault();
 				if (activeIndex !== undefined && activeIndex < nodes.length - 1) {
-					icache.set('activeNode', nodes[activeIndex + 1].id);
+					activateNode(nodes[activeIndex + 1].id);
 				}
 				break;
 
@@ -157,7 +178,7 @@ export default factory(function({
 			case Keys.Up:
 				event.preventDefault();
 				if (activeIndex !== undefined && activeIndex > 0) {
-					icache.set('activeNode', nodes[activeIndex - 1].id);
+					activateNode(nodes[activeIndex - 1].id);
 				}
 				break;
 
@@ -165,8 +186,7 @@ export default factory(function({
 			case Keys.Right:
 				event.preventDefault();
 				if (activeNode && !expandedNodes.includes(activeNode)) {
-					expandedNodes.push(activeNode);
-					icache.set('expandedNodes', expandedNodes);
+					expandNode(activeNode);
 				}
 				break;
 
@@ -174,8 +194,7 @@ export default factory(function({
 			case Keys.Left:
 				event.preventDefault();
 				if (activeNode && expandedNodes.includes(activeNode)) {
-					expandedNodes.splice(expandedNodes.indexOf(activeNode), 1);
-					icache.set('expandedNodes', expandedNodes);
+					collapseNode(activeNode);
 				}
 				break;
 		}
@@ -199,13 +218,8 @@ export default factory(function({
 					disabledNodes={disabledNodes || []}
 					expandedNodes={expandedNodes}
 					node={node}
-					onActive={(n) => {
-						icache.set('activeNode', n);
-					}}
-					onSelect={(n) => {
-						icache.set('selectedNode', n);
-						onSelect && onSelect(n);
-					}}
+					onActive={activateNode}
+					onSelect={selectNode}
 					onCheck={(n, checked) => {
 						if (checked) {
 							checkedNodes.push(n);
@@ -217,12 +231,10 @@ export default factory(function({
 					}}
 					onExpand={(n, expanded) => {
 						if (expanded) {
-							expandedNodes.push(n);
+							expandNode(n);
 						} else {
-							expandedNodes.splice(expandedNodes.indexOf(n), 1);
+							collapseNode(n);
 						}
-						icache.set('expandedNodes', expandedNodes);
-						onExpand && onExpand(n, expanded);
 					}}
 				>
 					{itemRenderer || defaultRenderer}
