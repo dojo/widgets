@@ -101,58 +101,41 @@ describe('Tree', () => {
 			};
 			const r = renderer(() => <Tree {...defaultProps} expandedNodes={expandedNodes} />);
 
-			// doesn't compile
-			// r.expect(
-			// 	baseAssertion
-			// 		.setProperty(WrappedNode1, 'expandedNodes', expandedNodes)
-			// 		.setProperty(WrappedNode2, 'expandedNodes', expandedNodes)
-			// 		.insertAfter(WrappedNode1, () => (
-			// 			<TreeNode {...nodeProps} depth={1} node={simpleTreeLinked[1]}>
-			// 				{noop as any}
-			// 			</TreeNode>
-			// 		))
-			// );
-
-			// compiles
 			r.expect(
-				baseAssertion.replaceChildren(WrappedRoot, () => [
-					<WrappedNode1
-						{...defaultNodeProps}
-						expandedNodes={expandedNodes}
-						node={simpleTreeLinked[0]}
-					>
-						{noop as any}
-					</WrappedNode1>,
-					<TreeNode {...nodeProps} depth={1} node={simpleTreeLinked[1]}>
-						{noop as any}
-					</TreeNode>,
-					<WrappedNode2
-						{...defaultNodeProps}
-						expandedNodes={expandedNodes}
-						node={simpleTreeLinked[2]}
-					>
-						{noop as any}
-					</WrappedNode2>
-				])
+				simpleTreeAssertion
+					.setProperty(WrappedNode1, 'expandedNodes', expandedNodes)
+					.setProperty(WrappedNode2, 'expandedNodes', expandedNodes)
+					.insertAfter(
+						WrappedNode1,
+						() =>
+							(
+								<TreeNode {...nodeProps} depth={1} node={simpleTreeLinked[1]}>
+									{noop as any}
+								</TreeNode>
+							) as any
+					)
 			);
 		});
 
 		it('raises events on expand/collapse', () => {
-			const expandedProps = {
-				...defaultNodeProps,
-				expandedNodes: [simpleTree[0].id]
-			};
-			const expandedAssertion = baseAssertion.replaceChildren(WrappedRoot, () => [
-				<WrappedNode1 {...expandedProps} node={simpleTreeLinked[0]}>
-					{noop as any}
-				</WrappedNode1>,
-				<TreeNode {...expandedProps} depth={1} node={simpleTreeLinked[1]}>
-					{noop as any}
-				</TreeNode>,
-				<WrappedNode2 {...expandedProps} node={simpleTreeLinked[2]}>
-					{noop as any}
-				</WrappedNode2>
-			]);
+			const expandedNodes = [simpleTreeLinked[0].id];
+			const expandedAssertion = simpleTreeAssertion
+				.setProperty(WrappedNode1, 'expandedNodes', expandedNodes)
+				.setProperty(WrappedNode2, 'expandedNodes', expandedNodes)
+				.insertAfter(
+					WrappedNode1,
+					() =>
+						(
+							<TreeNode
+								{...defaultNodeProps}
+								expandedNodes={expandedNodes}
+								depth={1}
+								node={simpleTreeLinked[1]}
+							>
+								{noop as any}
+							</TreeNode>
+						) as any
+				);
 
 			const onExpand = sinon.stub();
 			const r = renderer(() => <Tree {...defaultProps} onExpand={onExpand} />);
