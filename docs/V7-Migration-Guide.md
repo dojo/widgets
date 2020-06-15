@@ -410,7 +410,7 @@ The `Header` no longer auto-collapses action items into a `SlidePane`. Instead, 
 </Header>
 ```
 
-#### Example of pevious responsive toolbar behaviour using `Header` and `SlidePane`
+#### Example of responsive toolbar behaviour using `Header` and `SlidePane`
 
 ```tsx
 import { create, tsx } from '@dojo/framework/core/vdom';
