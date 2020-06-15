@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
-import states from '@dojo/widgets/examples/src/widgets/list/states';
+import states from '../list/states';
 import Example from '../../Example';
 import {
 	createMemoryResourceTemplate,

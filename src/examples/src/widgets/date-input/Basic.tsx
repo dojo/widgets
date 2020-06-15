@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import DateInput from '@dojo/widgets/date-input';
-import Example from '@dojo/widgets/examples/src/Example';
+import Example from '../../Example';
 
 const factory = create();
 
