@@ -75,7 +75,7 @@ export const TwoColumnLayout = factory(function({
 			>
 				{leading}
 			</div>
-			{resize && (
+			{resize && !shouldCollapse && (
 				<div classes={classes.divider}>
 					<div classes={classes.thumb} key="thumb" />
 				</div>

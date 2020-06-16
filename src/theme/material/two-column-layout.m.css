@@ -1,6 +1,7 @@
 .root {
 	font-family: var(--mdc-theme-font-family);
 	color: var(--mdc-text-color);
+	height: 100%;
 }
 
 .small {
@@ -9,7 +10,7 @@
 
 .divider {
 	width: 1px;
-	background-color: var(--mdc-theme-background);
+	background-color: var(--mdc-border-color);
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -20,11 +21,11 @@
 	position: absolute;
 	width: calc(var(--mdc-theme-grid-base) * 1.25);
 	height: calc(var(--mdc-theme-grid-base) * 6);
-	background-color: var(--mdc-raised-surface-background);
+	background-color: var(--mdc-border-color);
 	border-radius: var(--mdc-theme-border-radius);
 	cursor: col-resize;
 }
 
 .thumb:hover {
-	background-color: var(--mdc-theme-on-surface-hover);
+	background-color: var(--mdc-border-color-hover);
 }

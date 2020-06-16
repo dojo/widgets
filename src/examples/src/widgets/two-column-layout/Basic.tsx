@@ -7,7 +7,7 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<Example>
-			<TwoColumnLayout resize>
+			<TwoColumnLayout>
 				{{
 					leading: (
 						<div styles={{ textAlign: 'center', borderRight: '1px solid black' }}>

@@ -233,6 +233,7 @@ import FreeTextTypeahead from './widgets/typeahead/FreeText';
 import BasicTwoColumnLayout from './widgets/two-column-layout/Basic';
 import TrailingBiasTwoColumnLayout from './widgets/two-column-layout/TrailingBias';
 import CollapsingLayout from './widgets/two-column-layout/Collapsing';
+import ResizableTwoColumnLayout from './widgets/two-column-layout/Resize';
 import BasicResult from './widgets/result/Basic';
 import AlertResult from './widgets/result/Alert';
 import ErrorResult from './widgets/result/Error';
@@ -1783,6 +1784,11 @@ export const config = {
 					filename: 'Collapsing',
 					module: CollapsingLayout,
 					title: 'Collapsing columns'
+				},
+				{
+					filename: 'Resize',
+					module: ResizableTwoColumnLayout,
+					title: 'Resizable columns'
 				}
 			],
 			overview: {

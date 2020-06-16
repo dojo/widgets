@@ -1,9 +1,12 @@
+.root {
+	height: 100%;
+}
 .small {
 	width: calc(var(--grid-base) * 40);
 }
 .divider {
 	width: 1px;
-	background-color: var(--color-background);
+	background-color: var(--color-border);
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -14,7 +17,7 @@
 	position: absolute;
 	width: calc(var(--grid-base) * 1.25);
 	height: calc(var(--grid-base) * 6);
-	background-color: var(--color-dark);
+	background-color: var(--color-border);
 	border-radius: var(--border-radius);
 	cursor: col-resize;
 }
