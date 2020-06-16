@@ -15,7 +15,7 @@ describe('ListBoxItem', () => {
 			key="root"
 			onpointermove={noop}
 			classes={[undefined, css.root, false, false, false]}
-			onpointerdown={noop}
+			onclick={noop}
 			role="option"
 			aria-selected={false}
 			aria-disabled={false}
@@ -102,25 +102,25 @@ describe('ListBoxItem', () => {
 		assert.isTrue(onRequestActive.notCalled);
 	});
 
-	it('calls onSelect onpointerdown', () => {
+	it('calls onSelect onclick', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
 			<ListItem widgetId="test" onRequestActive={noop} onSelect={onSelect}>
 				test
 			</ListItem>
 		));
-		h.trigger('@root', 'onpointerdown');
+		h.trigger('@root', 'onclick');
 		assert.isTrue(onSelect.calledOnce);
 	});
 
-	it('does not call onSelect onpointerdown when disabled', () => {
+	it('does not call onSelect onclick when disabled', () => {
 		const onSelect = sb.stub();
 		const h = harness(() => (
 			<ListItem widgetId="test" disabled onRequestActive={noop} onSelect={onSelect}>
 				test
 			</ListItem>
 		));
-		h.trigger('@root', 'onpointerdown');
+		h.trigger('@root', 'onclick');
 		assert.isTrue(onSelect.notCalled);
 	});
 });
