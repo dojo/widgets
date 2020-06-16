@@ -24,7 +24,7 @@ export default factory(function CustomRenderer({ id, middleware: { icache, resou
 				}}
 			>
 				{{
-					label: 'Basic Select',
+					label: 'Custom Renderer',
 					items: ({ selected, value }, props) => {
 						return (
 							<ListItem {...props}>
