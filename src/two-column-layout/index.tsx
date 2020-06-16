@@ -47,8 +47,8 @@ export const TwoColumnLayout = factory(function({
 	const shouldCollapse = currentBreakpoint === 'SMALL';
 	const thumbDrag = drag.get('thumb');
 
-	if (resize && thumbDrag.isDragging) {
-		width = icache.set('width', size ? thumbDrag.delta.x + size.width : undefined);
+	if (resize && thumbDrag.isDragging && size) {
+		width = icache.set('width', thumbDrag.delta.x + size.width);
 	}
 	const classes = theme.classes(css);
 	const { leading, trailing } = children()[0];
