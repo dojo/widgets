@@ -26,7 +26,7 @@
 	border-radius: 50%;
 	height: calc(var(--grid-base) * 2);
 	left: 50%;
-	margin-left: 0;
+	margin-left: calc(var(--grid-base) * -1);
 	position: absolute;
 	top: -8px;
 	transition: border var(--transition-duration) var(--transition-easing),
@@ -34,7 +34,7 @@
 	width: calc(var(--grid-base) * 2);
 }
 
-.input {
+.root .input {
 	height: 15px;
 	outline: none;
 	top: -7px;
