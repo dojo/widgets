@@ -1,3 +1,24 @@
 .small {
 	width: calc(var(--grid-base) * 40);
 }
+.divider {
+	width: 1px;
+	background-color: var(--color-background);
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.thumb {
+	position: absolute;
+	width: calc(var(--grid-base) * 1.25);
+	height: calc(var(--grid-base) * 6);
+	background-color: var(--color-dark);
+	border-radius: var(--border-radius);
+	cursor: col-resize;
+}
+
+.thumb:hover {
+	background-color: var(--color-highlight);
+}

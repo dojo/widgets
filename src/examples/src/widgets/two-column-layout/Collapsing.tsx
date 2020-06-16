@@ -12,7 +12,7 @@ export default factory(function Collapsing({ middleware: { icache } }) {
 		<Example>
 			<div>
 				<div styles={{ width: `${width}px` }}>
-					<TwoColumnLayout breakpoint={400}>
+					<TwoColumnLayout breakpoint={400} resize>
 						{{
 							leading: (
 								<div styles={{ textAlign: 'center' }}>

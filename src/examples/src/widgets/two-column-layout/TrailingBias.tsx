@@ -7,7 +7,7 @@ const factory = create();
 export default factory(function TrailingBias() {
 	return (
 		<Example>
-			<TwoColumnLayout bias="trailing">
+			<TwoColumnLayout bias="trailing" resize>
 				{{
 					leading: <div styles={{ borderRight: '1px solid black' }}>Leading content</div>,
 					trailing: <div styles={{ textAlign: 'center' }}>Expanding trailing content</div>
