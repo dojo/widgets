@@ -29,7 +29,7 @@ export default factory(function Controlled({ id, middleware: { icache, resource 
 				value={icache.get('value')}
 			>
 				{{
-					label: 'Basic Select'
+					label: 'Controlled Select'
 				}}
 			</Select>
 			<pre>{icache.getOrSet('value', '')}</pre>
