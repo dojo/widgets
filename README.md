@@ -271,6 +271,7 @@ interface ExampleProperties {
     /** This is the description for bar */
     bar: string;
 }
+```
 
 To build the documentation run `npm run build:docs` and to build and serve the documentation in watch mode run `npm run build:docs:dev`
 
