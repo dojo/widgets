@@ -37,7 +37,7 @@
 	width: calc(var(--grid-base) * 2);
 }
 
-.input {
+.root .input {
 	height: 15px;
 	outline: none;
 	top: -7px;
