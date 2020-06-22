@@ -229,6 +229,26 @@ describe('RangeSlider', () => {
 		h.expect(testTemplate);
 	});
 
+	it('renders focused when inputs focus', () => {
+		const focusedTemplate = template.setProperty('@root', 'classes', [
+			undefined,
+			themeCss.root,
+			null,
+			themeCss.focused,
+			null,
+			null,
+			null,
+			null
+		]);
+
+		const h = harness(() => <RangeSlider />);
+		h.trigger('@slider1', 'onfocus', stubEvent);
+		h.expect(focusedTemplate);
+
+		h.trigger('@slider1', 'onblur', stubEvent);
+		h.expect(template);
+	});
+
 	it('calls event callbacks', () => {
 		const onBlurStub = stub();
 		const onFocusStub = stub();

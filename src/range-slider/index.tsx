@@ -73,6 +73,7 @@ export interface RangeSliderChildren {
 export interface RangeSliderICache {
 	initialValue?: RangeValue;
 	value?: RangeValue;
+	focused: boolean;
 }
 
 const factory = create({
@@ -139,6 +140,7 @@ export const RangeSlider = factory(function RangeSlider({
 
 	const themeCss = theme.classes(css);
 	const size = dimensions.get('root');
+	const isFocused = icache.getOrSet('focused', false);
 
 	const maxLabelId = `max-label-${id}`;
 	const minLabelId = `min-label-${id}`;
@@ -162,9 +164,11 @@ export const RangeSlider = factory(function RangeSlider({
 		min: `${minRestraint}`,
 		name: isSlider1 ? minName : maxName,
 		onblur: () => {
+			icache.set('focused', false);
 			onBlur && onBlur();
 		},
 		onfocus: () => {
+			icache.set('focused', true);
 			onFocus && onFocus();
 		},
 		oninput: (event: Event) => {
@@ -218,7 +222,7 @@ export const RangeSlider = factory(function RangeSlider({
 				theme.variant(),
 				themeCss.root,
 				disabled ? themeCss.disabled : null,
-				focus.isFocused('root') ? themeCss.focused : null,
+				isFocused ? themeCss.focused : null,
 				valid === false ? themeCss.invalid : null,
 				valid === true ? themeCss.valid : null,
 				readOnly ? themeCss.readonly : null,
@@ -229,7 +233,7 @@ export const RangeSlider = factory(function RangeSlider({
 				<Label
 					classes={classes}
 					disabled={disabled}
-					focused={focus.isFocused('root')}
+					focused={isFocused}
 					hidden={labelHidden}
 					key="label"
 					readOnly={readOnly}
