@@ -58,7 +58,7 @@ export const MenuItem = menuItemFactory(function MenuItem({
 				active && themedCss.active,
 				disabled && themedCss.disabled
 			]}
-			onpointerdown={() => {
+			onclick={() => {
 				requestActive();
 				select();
 			}}
@@ -125,7 +125,7 @@ export const ListItem = listItemFactory(function ListItem({
 				active && classes.active,
 				disabled && classes.disabled
 			]}
-			onpointerdown={() => {
+			onclick={() => {
 				requestActive();
 				select();
 			}}
