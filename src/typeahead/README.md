@@ -8,6 +8,7 @@ Dojo's `Typeahead` provides a form input with a filterable list of options. As t
 - Allows customization of option state and vdom
 - Keyboard accessible
 - Can be partially or fully controlled
+- Associates an accessible `<label>` with the input if a `label` child is added
 
 ### Keyboard Usage
 
@@ -27,7 +28,3 @@ The `Typeahead` supports keyboard navigation for opening and closing the options
 - Home/Page Up: highlights the first option
 - End/Page Down: highlights the last option
 - Escape Key: closes the options menu without selecting an option
-
-### Accessibility Features
-
-All instances of this widget should make use of the `label` property or a separate `label` node associated with the select's `widgetId` property.

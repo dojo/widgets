@@ -6,6 +6,8 @@ Dojo's `ChipTypeahead` widget allows users to select multiple values from a drop
 
 - Item and selection display can be customized
 - Selection can appear inline or below
+- Associates an accessible `<label>` with the input if a `label` child is added
+
 
 ### Accessiblity Features
 

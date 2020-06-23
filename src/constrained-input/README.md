@@ -6,6 +6,11 @@ Dojo's `ConstrainedInput` component creates a text input that follows certain pr
 
 - Handles validation state / messaging internally so the consumer does not have to
 - Easily validates against a set of predefined rules
+- Associates an accessible `<label>` with the input if a `label` child is added
+
+### Accessibility Features
+
+If a `label` child is not used, we recommend creating a separate `label` and pointing it at the input's `widgetId` property.
 
 ## Validation Rules
 
@@ -20,4 +25,3 @@ A number of validation options exist for validating common username / password s
 | `contains.numbers`           | The input value must contain at least `numbers` number of numeric characters. |
 | `contains.specialCharacters` | The input value must contain at least `specialCharacters` number of special characters. |
 | `contains.atLeast`           | The input value must match `atLeast` number of the `uppercase`, `numbers`, and `specialCharacters` rules. |
-

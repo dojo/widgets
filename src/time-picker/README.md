@@ -6,6 +6,7 @@ Dojo's `TimePicker` widget provides a form control that allows users to manually
 
 - Automatically generates all possible valid options based on the starting time, ending time, and step
 - Display times in 24-hour or 12-hour format.
+- Associates an accessible `<label>` with the input if a `label` child is added
 
 ### Keyboard Usage
 

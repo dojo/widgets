@@ -15,6 +15,8 @@ export interface PasswordInputProperties
 	rules?: ValidationRules;
 }
 
+export interface PasswordInputChildren extends TextInputChildren {}
+
 export interface PasswordInputState {
 	showPassword: boolean;
 	valid: { valid?: boolean; message?: string } | undefined;
@@ -25,7 +27,7 @@ const factory = create({
 	theme
 })
 	.properties<PasswordInputProperties>()
-	.children<TextInputChildren | undefined>();
+	.children<PasswordInputChildren | undefined>();
 
 export const PasswordInput = factory(function PasswordInput({
 	middleware: { theme, icache },

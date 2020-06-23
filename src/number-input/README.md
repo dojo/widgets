@@ -5,7 +5,7 @@ Dojo's `NumberInput` widget provides a basic number input widget with an optiona
 ## Features
 
 - Correctly handles a11y attributes
-- Associates an accessible `<label>` with the input when the `label` property is added
+- Associates an accessible `<label>` with the input if a `label` child is added
 - Allows leading / trailing icons / text to be added
 
 ### Accessibility Features

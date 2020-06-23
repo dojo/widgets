@@ -6,3 +6,4 @@ Dojo's `Native Select` provides a dropdown menu form control using the browser's
 
 - Exposes native select interface
 - Optional helpertext property adds text to the bottom the select element
+- Renders child content within a `label`.
