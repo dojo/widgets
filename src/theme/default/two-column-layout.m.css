@@ -1,10 +1,32 @@
+/* Root styles for the entire layout */
 .root {
+	height: 100%;
 }
+/* Styles applied to both columns */
 .column {
 }
+/* Styles applied to the smaller of the two columns */
 .small {
+	width: 320px;
 }
+/* Styles applied to the dividing line between columns if resizing is enabled */
 .divider {
+	width: 1px;
+	background-color: var(--component-color);
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
+/* Styles applied the handle used to resize columns */
 .thumb {
+	position: absolute;
+	width: 10px;
+	height: 6px;
+	background-color: var(--component-color);
+	border-radius: var(--border-radius);
+	cursor: col-resize;
+}
+.thumb:hover {
+	background-color: var(--selected-background);
 }

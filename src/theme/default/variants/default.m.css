@@ -12,6 +12,8 @@
 	--short-animation-duration: 0.2s;
 	--short-animation-easing: ease;
 
+	--border-radius: 4px;
+
 	/* Z-index levels */
 	--zindex-base: 0;
 	--zindex-tooltip: 100;
