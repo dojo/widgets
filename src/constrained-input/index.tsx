@@ -15,8 +15,6 @@ export interface ConstrainedInputProperties extends BaseInputProperties {
 	type?: TextInputType;
 }
 
-export interface ConstrainedInputChildren extends TextInputChildren {}
-
 export interface ConstrainedInputState {
 	valid: { valid?: boolean; message?: string } | undefined;
 }
@@ -27,7 +25,7 @@ const factory = create({
 	theme
 })
 	.properties<ConstrainedInputProperties>()
-	.children<ConstrainedInputChildren | undefined>();
+	.children<TextInputChildren | undefined>();
 
 export const ConstrainedInput = factory(function ConstrainedInput({
 	middleware: { icache, validation, theme },

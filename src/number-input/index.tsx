@@ -16,11 +16,9 @@ export interface NumberInputProperties extends BaseInputProperties<{ value: numb
 	valid?: { valid?: boolean; message?: string } | boolean;
 }
 
-export interface NumberInputChildren extends TextInputChildren {}
-
 const factory = create({ theme })
 	.properties<NumberInputProperties>()
-	.children<NumberInputChildren | undefined>();
+	.children<TextInputChildren | undefined>();
 
 export default factory(function NumberInput({ properties, children, middleware: { theme } }) {
 	const { initialValue, value, onValue } = properties();

@@ -7,8 +7,6 @@ import * as emailInputCss from '../theme/default/email-input.m.css';
 
 export interface EmailInputProperties extends BaseInputProperties {}
 
-export interface EmailInputChildren extends TextInputChildren {}
-
 interface EmailInputICache {
 	valid?: boolean;
 	message?: string;
@@ -17,7 +15,7 @@ interface EmailInputICache {
 const icache = createICacheMiddleware<EmailInputICache>();
 const factory = create({ icache, theme })
 	.properties<EmailInputProperties>()
-	.children<EmailInputChildren | undefined>();
+	.children<TextInputChildren | undefined>();
 
 export const EmailInput = factory(function({
 	properties,
