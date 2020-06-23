@@ -239,9 +239,13 @@ export const List = factory(function List({
 		onValue,
 		widgetId,
 		theme: themeProp,
-		resource: { template, options = createOptions(id) }
+		resource: resourceProp
 	} = properties();
 	const [itemRenderer] = children();
+	if (!resourceProp) {
+		return null;
+	}
+	const { template, options = createOptions(id) } = resourceProp;
 
 	function setActiveIndex(index: number) {
 		if (onActiveIndexChange) {

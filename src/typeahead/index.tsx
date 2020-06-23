@@ -108,11 +108,14 @@ export const Typeahead = factory(function Typeahead({
 		strict = true,
 		value: controlledValue,
 		itemDisabled,
-		resource: { template, options = createOptions(id) }
+		resource: resourceProp
 	} = properties();
 	const themedCss = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
-
+	if (!resourceProp) {
+		return null;
+	}
+	const { template, options = createOptions(id) } = resourceProp;
 	const [{ label, items, leading } = {} as TypeaheadChildren] = children();
 
 	if (

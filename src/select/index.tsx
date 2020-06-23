@@ -104,8 +104,12 @@ export const Select = factory(function Select({
 		position,
 		required,
 		name,
-		resource: { template, options = createOptions(id) }
+		resource: resourceProp
 	} = properties();
+	if (!resourceProp) {
+		return null;
+	}
+	const { template, options = createOptions(id) } = resourceProp;
 	const [{ items, label } = { items: undefined, label: undefined }] = children();
 
 	let { value } = properties();

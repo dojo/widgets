@@ -43,6 +43,7 @@
 			"src/radio-group",
 			"src/raised-button",
 			"src/range-slider",
+			"src/resource",
 			"src/result",
 			"src/select",
 			"src/slide-pane",

@@ -99,8 +99,12 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 		name,
 		placement = 'inline',
 		strict,
-		resource: { template, options = createOptions(id) }
+		resource: resourceProp
 	} = properties();
+	if (!resourceProp) {
+		return null;
+	}
+	const { template, options = createOptions(id) } = resourceProp;
 	const [{ label, items, selected } = {} as ChipTypeaheadChildren] = children();
 	const themeCss = theme.classes(css);
 	const { value } = properties();
