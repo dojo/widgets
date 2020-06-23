@@ -161,6 +161,66 @@ describe('DateInput', () => {
 		sinon.assert.calledOnce(toggleOpen);
 	});
 
+	it('renders with a label as the only child', () => {
+		const h = harness(() => <DateInput name="dateInput">Label</DateInput>);
+
+		// Execute render-prop to show "trigger" content
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			() => {}
+		);
+		h.expect(
+			buttonTemplate.replace(
+				'@input',
+				<TextInput
+					key="input"
+					focus={() => false}
+					theme={{}}
+					type="text"
+					onBlur={noop}
+					onValue={noop}
+					initialValue={formatDate(today)}
+					helperText=""
+					onKeyDown={noop}
+				>
+					{{ label: 'Label', trailing: undefined }}
+				</TextInput>
+			),
+			() => triggerResult
+		);
+	});
+
+	it('renders with a named label child', () => {
+		const h = harness(() => <DateInput name="dateInput">{{ label: 'Label' }}</DateInput>);
+
+		// Execute render-prop to show "trigger" content
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			() => {}
+		);
+		h.expect(
+			buttonTemplate.replace(
+				'@input',
+				<TextInput
+					key="input"
+					focus={() => false}
+					theme={{}}
+					type="text"
+					onBlur={noop}
+					onValue={noop}
+					initialValue={formatDate(today)}
+					helperText=""
+					onKeyDown={noop}
+				>
+					{{ label: 'Label', trailing: undefined }}
+				</TextInput>
+			),
+			() => triggerResult
+		);
+	});
+
 	it('shows calendar when triggered via keyboard', () => {
 		const h = harness(() => <DateInput name="dateInput" />);
 

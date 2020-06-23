@@ -86,7 +86,7 @@ const factory = create({
 	icache: createICacheMiddleware<TimePickerICache>()
 })
 	.properties<TimePickerProperties>()
-	.children<TimePickerChildren | undefined>();
+	.children<TimePickerChildren | RenderResult | undefined>();
 
 export interface TimeParser {
 	regex: RegExp;
@@ -209,6 +209,15 @@ export function format24HourTime(dt: Date) {
 		2,
 		'0'
 	)}:${padStart(String(dt.getSeconds()), 2, '0')}`;
+}
+
+function isTimePickerChildren(children: any): children is TimePickerChildren {
+	// In order to not make this a breaking change, check for an edge case where an object
+	// with a label property that would have been used as a label might instead be treated as a render result
+	return (
+		children &&
+		(children.label || (children.hasOwnProperty && children.hasOwnProperty('label')))
+	);
 }
 
 export const TimePicker = factory(function TimePicker({
@@ -351,7 +360,8 @@ export const TimePicker = factory(function TimePicker({
 	};
 
 	const { name } = properties();
-	const [{ label } = {} as TimePickerChildren] = children();
+	const [labelChild] = children();
+	const label = isTimePickerChildren(labelChild) ? labelChild.label : labelChild;
 	const options = generateOptions();
 
 	return (

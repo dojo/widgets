@@ -6,11 +6,6 @@ Dojo's `ConstrainedInput` component creates a text input that follows certain pr
 
 - Handles validation state / messaging internally so the consumer does not have to
 - Easily validates against a set of predefined rules
-- Associates an accessible `<label>` with the input if a `label` child is added
-
-### Accessibility Features
-
-If a `label` child is not used, we recommend creating a separate `label` and pointing it at the input's `widgetId` property.
 
 ## Validation Rules
 

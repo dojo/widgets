@@ -2,14 +2,15 @@ import focus from '@dojo/framework/core/middleware/focus';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import HelperText from '../helper-text';
 import theme from '../middleware/theme';
+import { isRenderResult } from '../common/util';
 import * as css from '../theme/default/native-select.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
 import Icon from '../icon';
 import Label from '../label';
-import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export type MenuOption = { value: string; label?: string; disabled?: boolean };
 
@@ -38,6 +39,11 @@ export interface NativeSelectProperties {
 	onFocus?(): void;
 }
 
+export interface NativeSelectChildren {
+	/** The label to be displayed on the select */
+	label?: RenderResult;
+}
+
 interface NativeSelectICache {
 	initial: string;
 	value: string;
@@ -48,7 +54,7 @@ const icache = createICacheMiddleware<NativeSelectICache>();
 
 const factory = create({ icache, focus, theme, i18n })
 	.properties<NativeSelectProperties>()
-	.children<RenderResult | undefined>();
+	.children<NativeSelectChildren | RenderResult | undefined>();
 
 export const NativeSelect = factory(function NativeSelect({
 	properties,
@@ -70,7 +76,8 @@ export const NativeSelect = factory(function NativeSelect({
 		onBlur
 	} = properties();
 
-	const [label] = children();
+	const [labelChild] = children();
+	const label = isRenderResult(labelChild) ? labelChild : labelChild.label;
 	let { value } = properties();
 
 	if (value === undefined) {

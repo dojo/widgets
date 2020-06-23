@@ -1,12 +1,12 @@
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 import { create, tsx } from '@dojo/framework/core/vdom';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
-import { formatAriaProperties } from '../common/util';
+import { formatAriaProperties, isRenderResult } from '../common/util';
 import theme, { ThemeProperties } from '../middleware/theme';
 import * as css from '../theme/default/radio.m.css';
 import Label from '../label';
-import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export interface RadioProperties extends ThemeProperties, FocusProperties {
 	/** Custom aria attributes */
@@ -41,9 +41,14 @@ export interface RadioProperties extends ThemeProperties, FocusProperties {
 	widgetId?: string;
 }
 
+export interface RadioChildren {
+	/** The label for the radio */
+	label: RenderResult;
+}
+
 const factory = create({ focus, theme })
 	.properties<RadioProperties>()
-	.children<RenderResult | undefined>();
+	.children<RadioChildren | RenderResult | undefined>();
 
 export const Radio = factory(function Radio({
 	properties,
@@ -73,6 +78,8 @@ export const Radio = factory(function Radio({
 
 	const themeCss = theme.classes(css);
 	const idBase = widgetId || `radio-${id}`;
+	const [labelChildren] = children();
+	const label = isRenderResult(labelChildren) ? labelChildren : labelChildren.label;
 
 	return (
 		<div
@@ -133,7 +140,7 @@ export const Radio = factory(function Radio({
 					required={required}
 					secondary={true}
 				>
-					{children()}
+					{label}
 				</Label>
 			)}
 		</div>

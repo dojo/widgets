@@ -8,7 +8,6 @@ Dojo's `Typeahead` provides a form input with a filterable list of options. As t
 - Allows customization of option state and vdom
 - Keyboard accessible
 - Can be partially or fully controlled
-- Associates an accessible `<label>` with the input if a `label` child is added
 
 ### Keyboard Usage
 

@@ -119,6 +119,58 @@ describe('Native Select', () => {
 		h.expect(optionalPropertyTemplate);
 	});
 
+	it('takes a named label child', () => {
+		const h = harness(
+			() => (
+				<NativeSelect
+					onValue={() => {}}
+					options={options}
+					initialValue="cat"
+					disabled={true}
+					helperText="Pick a pet type"
+					required={true}
+					name="Pet select"
+					size={3}
+				>
+					{{ label: 'Pets' }}
+				</NativeSelect>
+			),
+			[compareForId, compareId]
+		);
+
+		const optionalPropertyTemplate = baseTemplate
+			.setProperty('@native-select', 'disabled', true)
+			.setProperty('@native-select', 'required', true)
+			.setProperty('@native-select', 'name', 'Pet select')
+			.setProperty('@native-select', 'size', 3)
+			.setProperty('@helperText', 'text', 'Pick a pet type')
+			.setProperty('@option-1', 'selected', true)
+			.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				css.disabled,
+				css.required,
+				undefined
+			])
+			.prepend('@root', () => [
+				<Label
+					assertion-key="label"
+					theme={{}}
+					classes={undefined}
+					disabled={true}
+					forId={'something'}
+					required={true}
+					active={true}
+					focused={false}
+				>
+					Pets
+				</Label>
+			])
+			.remove('@blank-option');
+
+		h.expect(optionalPropertyTemplate);
+	});
+
 	it('controlled value', () => {
 		const h = harness(
 			() => (

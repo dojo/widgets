@@ -188,6 +188,80 @@ describe('TimePicker', () => {
 		sinon.assert.calledOnce(toggleOpen);
 	});
 
+	it('renders with a named label child', () => {
+		const h = harness(() => (
+			<TimePicker name="timeInput">
+				{{
+					label: 'Label'
+				}}
+			</TimePicker>
+		));
+
+		// Execute render-prop to show "trigger" content
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			() => {}
+		);
+		h.expect(
+			buttonTemplate.replace(
+				'@input',
+				<TextInput
+					disabled={undefined}
+					key="input"
+					focus={() => false}
+					theme={{}}
+					onBlur={noop}
+					onValue={noop}
+					initialValue={''}
+					onValidate={noop}
+					required={undefined}
+					valid={undefined}
+					helperText=""
+					onKeyDown={noop}
+					type="text"
+				>
+					{{ label: 'Label', trailing: undefined }}
+				</TextInput>
+			),
+			() => triggerResult
+		);
+	});
+
+	it('renders with a single child', () => {
+		const h = harness(() => <TimePicker name="timeInput">Label</TimePicker>);
+
+		// Execute render-prop to show "trigger" content
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			() => {}
+		);
+		h.expect(
+			buttonTemplate.replace(
+				'@input',
+				<TextInput
+					disabled={undefined}
+					key="input"
+					focus={() => false}
+					theme={{}}
+					onBlur={noop}
+					onValue={noop}
+					initialValue={''}
+					onValidate={noop}
+					required={undefined}
+					valid={undefined}
+					helperText=""
+					onKeyDown={noop}
+					type="text"
+				>
+					{{ label: 'Label', trailing: undefined }}
+				</TextInput>
+			),
+			() => triggerResult
+		);
+	});
+
 	it('shows calendar when triggered via keyboard', () => {
 		const h = harness(() => <TimePicker name="timeInput" />);
 
