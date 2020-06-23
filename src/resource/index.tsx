@@ -8,13 +8,15 @@ import icache from '@dojo/framework/core/middleware/icache';
 const resource = createResourceMiddleware();
 
 export interface ResourceProperties {
+	/** The resource template for children of this widget */
 	template?: any;
+	/** The resource initOptions for children of this widget */
 	initOptions?: any;
 }
 
 const factory = create({ resource, icache }).properties<ResourceProperties>();
 
-export default factory(function Resource({
+export const Resource = factory(function Resource({
 	id,
 	properties,
 	children,
@@ -39,3 +41,5 @@ export default factory(function Resource({
 		return child;
 	});
 });
+
+export default Resource;

@@ -233,6 +233,7 @@ import FreeTextTypeahead from './widgets/typeahead/FreeText';
 import BasicTwoColumnLayout from './widgets/two-column-layout/Basic';
 import TrailingBiasTwoColumnLayout from './widgets/two-column-layout/TrailingBias';
 import CollapsingLayout from './widgets/two-column-layout/Collapsing';
+import BasicResource from './widgets/resource/Basic';
 import BasicResult from './widgets/result/Basic';
 import AlertResult from './widgets/result/Alert';
 import ErrorResult from './widgets/result/Error';
@@ -1313,6 +1314,14 @@ export const config = {
 					title: 'Controlled'
 				}
 			]
+		},
+		resource: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicResource
+				}
+			}
 		},
 		result: {
 			overview: {
