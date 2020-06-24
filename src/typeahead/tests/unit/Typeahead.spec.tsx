@@ -46,6 +46,7 @@ const onValueStub = sb.stub();
 
 const triggerAssertion = assertion(() => (
 	<WrappedTrigger
+		autocomplete={false}
 		onValue={noop}
 		onKeyDown={noop}
 		onBlur={noop}
