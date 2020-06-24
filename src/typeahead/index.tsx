@@ -288,6 +288,7 @@ export const Typeahead = factory(function Typeahead({
 
 						return (
 							<TextInput
+								autocomplete={false}
 								onValue={(value) => {
 									if (value !== icache.get('value')) {
 										openMenu();
