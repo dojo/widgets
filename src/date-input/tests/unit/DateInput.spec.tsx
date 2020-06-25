@@ -1,3 +1,5 @@
+import { RenderResult, WNode } from '@dojo/framework/core/interfaces';
+
 const { describe, it, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
@@ -170,24 +172,12 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(
-			buttonTemplate.replace(
-				'@input',
-				<TextInput
-					key="input"
-					focus={() => false}
-					theme={{}}
-					type="text"
-					onBlur={noop}
-					onValue={noop}
-					initialValue={formatDate(today)}
-					helperText=""
-					onKeyDown={noop}
-				>
-					{{ label: 'Label', trailing: undefined }}
-				</TextInput>
+		h.expect(buttonTemplate, () => triggerResult);
+		assert.equal(
+			h.trigger('@popup', (node) => () =>
+				(node.children as any)[0].trigger().children[0].children[0].label
 			),
-			() => triggerResult
+			'Label'
 		);
 	});
 
@@ -200,24 +190,39 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(
-			buttonTemplate.replace(
-				'@input',
-				<TextInput
-					key="input"
-					focus={() => false}
-					theme={{}}
-					type="text"
-					onBlur={noop}
-					onValue={noop}
-					initialValue={formatDate(today)}
-					helperText=""
-					onKeyDown={noop}
-				>
-					{{ label: 'Label', trailing: undefined }}
-				</TextInput>
+		h.expect(buttonTemplate, () => triggerResult);
+		assert.equal(
+			h.trigger('@popup', (node) => () =>
+				(node.children as any)[0].trigger().children[0].children[0].label
 			),
-			() => triggerResult
+			'Label'
+		);
+	});
+
+	it('label interface edge case', () => {
+		type WeirdNode = WNode & { label: RenderResult };
+
+		function makeWeirdNode(): WeirdNode {
+			const node = <div>The label</div>;
+			(node as WeirdNode).label = 'Not the label';
+
+			return node as WeirdNode;
+		}
+		const myWeirdNode: WeirdNode = makeWeirdNode();
+		const h = harness(() => <DateInput name="dateInput">{myWeirdNode}</DateInput>);
+
+		// Execute render-prop to show "trigger" content
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			() => {}
+		);
+		h.expect(buttonTemplate, () => triggerResult);
+		assert.equal(
+			h.trigger('@popup', (node) => () =>
+				(node.children as any)[0].trigger().children[0].children[0].label.children[0]
+			),
+			'The label'
 		);
 	});
 
