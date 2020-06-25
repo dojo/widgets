@@ -27,7 +27,3 @@ The `Typeahead` supports keyboard navigation for opening and closing the options
 - Home/Page Up: highlights the first option
 - End/Page Down: highlights the last option
 - Escape Key: closes the options menu without selecting an option
-
-### Accessibility Features
-
-All instances of this widget should make use of the `label` property or a separate `label` node associated with the select's `widgetId` property.

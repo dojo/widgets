@@ -31,8 +31,6 @@ The custom `Select` supports keyboard navigation for opening and closing the opt
 
 The simplest way to create an accessible select field that works across all browsers, devices, and assistive tech is to set `useNativeElement` to true. However, the custom element also sets appropriate ARIA attributes handles keyboard interactions.
 
-All instances of this widget should make use of the `label` property or a separate `label` node associated with the select's `widgetId` property.
-
 ### Internationalization Features
 
 Option text is handled through the `getOptionLabel` property. Localization is handled by the parent component and localized strings can be reactively passed in using this method.

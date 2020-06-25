@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Label from '../label/index';
-import { formatAriaProperties } from '../common/util';
+import { formatAriaProperties, isRenderResult } from '../common/util';
 import * as css from '../theme/default/text-area.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 import HelperText from '../helper-text/index';
@@ -77,6 +77,10 @@ export interface TextAreaProperties {
 	wrapText?: 'hard' | 'soft' | 'off';
 }
 
+export interface TextAreaChildren {
+	label?: RenderResult;
+}
+
 export interface TextAreaICache {
 	dirty: boolean;
 	value?: string;
@@ -90,7 +94,7 @@ const factory = create({
 	validity
 })
 	.properties<TextAreaProperties>()
-	.children<RenderResult | undefined>();
+	.children<TextAreaChildren | RenderResult | undefined>();
 export const TextArea = factory(function TextArea({
 	id,
 	middleware: { icache, theme, focus, validity },
@@ -188,7 +192,8 @@ export const TextArea = factory(function TextArea({
 
 	const computedHelperText = (valid === false && message) || helperText;
 	const inputFocused = focus.isFocused('input');
-	const [label] = children();
+	const [labelChild] = children();
+	const label = isRenderResult(labelChild) ? labelChild : labelChild.label;
 
 	return (
 		<div key="root" classes={[theme.variant(), themeCss.root]}>

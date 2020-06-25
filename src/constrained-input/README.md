@@ -20,4 +20,3 @@ A number of validation options exist for validating common username / password s
 | `contains.numbers`           | The input value must contain at least `numbers` number of numeric characters. |
 | `contains.specialCharacters` | The input value must contain at least `specialCharacters` number of special characters. |
 | `contains.atLeast`           | The input value must match `atLeast` number of the `uppercase`, `numbers`, and `specialCharacters` rules. |
-

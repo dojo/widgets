@@ -27,6 +27,7 @@ export interface CheckboxGroupChildren {
 		middleware: ReturnType<ReturnType<typeof checkboxGroup>['api']>,
 		options: CheckboxOptions
 	): RenderResult;
+	/** A label for the checkbox group */
 	label?: RenderResult;
 }
 

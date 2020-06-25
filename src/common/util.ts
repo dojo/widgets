@@ -1,3 +1,6 @@
+import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
+import { isVNode, isWNode } from '@dojo/framework/core/vdom';
+
 interface AriaPropertyObject {
 	[key: string]: string | null;
 }
@@ -23,4 +26,18 @@ export function formatAriaProperties(aria: AriaPropertyObject): AriaPropertyObje
 		return a;
 	}, {});
 	return formattedAria;
+}
+
+export function isRenderResult<T extends {}>(child: RenderResult | T): child is RenderResult {
+	let childIsRenderResult =
+		child == null ||
+		typeof child === 'string' ||
+		typeof child === 'boolean' ||
+		Array.isArray(child) ||
+		isWNode(child);
+	try {
+		childIsRenderResult = childIsRenderResult || isVNode(child as DNode);
+	} catch {}
+
+	return childIsRenderResult;
 }

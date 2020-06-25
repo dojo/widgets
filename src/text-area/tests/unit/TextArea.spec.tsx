@@ -217,6 +217,12 @@ registerSuite('Textarea', {
 			h.expect(() => expected(true));
 		},
 
+		'named label'() {
+			const h = harness(() => <TextArea>{{ label: 'foo' }}</TextArea>);
+
+			h.expect(() => expected(true));
+		},
+
 		'state classes'() {
 			let properties: States = {
 				valid: { valid: false },

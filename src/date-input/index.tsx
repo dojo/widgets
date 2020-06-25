@@ -5,7 +5,7 @@ import { focus } from '@dojo/framework/core/middleware/focus';
 import { FocusProperties } from '@dojo/framework/core/mixins/Focus';
 
 import { parseDate, formatDateISO, formatDate } from './date-utils';
-import { Keys } from '../common/util';
+import { isRenderResult, Keys } from '../common/util';
 import theme, { ThemeProperties } from '../middleware/theme';
 import Calendar from '../calendar';
 import TextInput, { Addon } from '../text-input';
@@ -15,6 +15,7 @@ import * as textInputCss from '../theme/default/text-input.m.css';
 import * as css from '../theme/default/date-input.m.css';
 
 import bundle from './nls/DateInput';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export interface DateInputProperties extends ThemeProperties, FocusProperties {
 	/** The initial value */
@@ -31,6 +32,11 @@ export interface DateInputProperties extends ThemeProperties, FocusProperties {
 	onValue?(date: string): void;
 	/** Callback fired when input validation changes */
 	onValidate?: (valid: boolean | undefined, message: string) => void;
+}
+
+export interface DateInputChildren {
+	/** The label for the wrapped text input */
+	label?: RenderResult;
 }
 
 interface DateInputICache {
@@ -53,9 +59,15 @@ interface DateInputICache {
 }
 
 const icache = createICacheMiddleware<DateInputICache>();
-const factory = create({ theme, icache, i18n, focus }).properties<DateInputProperties>();
+const factory = create({ theme, icache, i18n, focus })
+	.properties<DateInputProperties>()
+	.children<DateInputChildren | RenderResult | undefined>();
 
-export default factory(function({ properties, middleware: { theme, icache, i18n, focus } }) {
+export default factory(function({
+	properties,
+	children,
+	middleware: { theme, icache, i18n, focus }
+}) {
 	const { initialValue, name, onValue, onValidate, value: controlledValue } = properties();
 	const { messages } = i18n.localize(bundle);
 	const classes = theme.classes(css);
@@ -93,6 +105,8 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 	const shouldValidate = icache.getOrSet('shouldValidate', true);
 	const shouldFocus = focus.shouldFocus();
 	const focusNode = icache.getOrSet('focusNode', 'input');
+	const [labelChild] = children();
+	const label = isRenderResult(labelChild) ? labelChild : labelChild.label;
 
 	if (shouldValidate) {
 		const testValue = icache.get('nextValue') || inputValue;
@@ -183,6 +197,7 @@ export default factory(function({ properties, middleware: { theme, icache, i18n,
 									}}
 								>
 									{{
+										label,
 										trailing: (
 											<Addon>
 												<button

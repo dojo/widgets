@@ -138,6 +138,19 @@ registerSuite('Radio', {
 			h.expect(expected({ label: true }));
 		},
 
+		'named child label'() {
+			const h = harness(
+				() => (
+					<Radio checked={false} onValue={noop}>
+						{{ label: 'foo' }}
+					</Radio>
+				),
+				[compareId, compareForId]
+			);
+
+			h.expect(expected({ label: true }));
+		},
+
 		'state classes'() {
 			let valid = false;
 			let disabled = true;
