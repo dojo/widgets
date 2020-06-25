@@ -20,6 +20,7 @@ import {
 } from '../../../common/tests/support/test-helpers';
 import { Keys } from '../../../common/util';
 import focus from '@dojo/framework/core/middleware/focus';
+import { RenderResult, WNode } from '@dojo/framework/core/interfaces';
 
 const { describe, it, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
@@ -203,28 +204,12 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(
-			buttonTemplate.replace(
-				'@input',
-				<TextInput
-					disabled={undefined}
-					key="input"
-					focus={() => false}
-					theme={{}}
-					onBlur={noop}
-					onValue={noop}
-					initialValue={''}
-					onValidate={noop}
-					required={undefined}
-					valid={undefined}
-					helperText=""
-					onKeyDown={noop}
-					type="text"
-				>
-					{{ label: 'Label', trailing: undefined }}
-				</TextInput>
+		h.expect(buttonTemplate, () => triggerResult);
+		assert.equal(
+			h.trigger('@popup', (node) => () =>
+				(node.children as any)[0].trigger().children[0].children[0].label
 			),
-			() => triggerResult
+			'Label'
 		);
 	});
 
@@ -237,28 +222,12 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(
-			buttonTemplate.replace(
-				'@input',
-				<TextInput
-					disabled={undefined}
-					key="input"
-					focus={() => false}
-					theme={{}}
-					onBlur={noop}
-					onValue={noop}
-					initialValue={''}
-					onValidate={noop}
-					required={undefined}
-					valid={undefined}
-					helperText=""
-					onKeyDown={noop}
-					type="text"
-				>
-					{{ label: 'Label', trailing: undefined }}
-				</TextInput>
+		h.expect(buttonTemplate, () => triggerResult);
+		assert.equal(
+			h.trigger('@popup', (node) => () =>
+				(node.children as any)[0].trigger().children[0].children[0].label
 			),
-			() => triggerResult
+			'Label'
 		);
 	});
 
@@ -280,6 +249,33 @@ describe('TimePicker', () => {
 
 		// If `toggleOpen` is called, the popup content (i.e., the calendar) is shown
 		sinon.assert.calledOnce(toggleOpen);
+	});
+
+	it('label interface edge case', () => {
+		type WeirdNode = WNode & { label: RenderResult };
+
+		function makeWeirdNode(): WeirdNode {
+			const node = <div>Not the label</div>;
+			(node as WeirdNode).label = undefined;
+
+			return node as WeirdNode;
+		}
+		const myWeirdNode: WeirdNode = makeWeirdNode();
+		const h = harness(() => <TimePicker name="timeInput">{myWeirdNode}</TimePicker>);
+
+		// Execute render-prop to show "trigger" content
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			() => {}
+		);
+		h.expect(buttonTemplate, () => triggerResult);
+		assert.equal(
+			h.trigger('@popup', (node) => () =>
+				(node.children as any)[0].trigger().children[0].children[0].label
+			),
+			undefined
+		);
 	});
 
 	it('focus popup content on trigger', () => {

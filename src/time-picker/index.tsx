@@ -214,10 +214,7 @@ export function format24HourTime(dt: Date) {
 function isTimePickerChildren(children: any): children is TimePickerChildren {
 	// In order to not make this a breaking change, check for an edge case where an object
 	// with a label property that would have been used as a label might instead be treated as a render result
-	return (
-		children &&
-		(children.label || (children.hasOwnProperty && children.hasOwnProperty('label')))
-	);
+	return children && children.hasOwnProperty && children.hasOwnProperty('label');
 }
 
 export const TimePicker = factory(function TimePicker({
