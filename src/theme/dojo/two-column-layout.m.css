@@ -15,7 +15,7 @@
 
 .thumb {
 	position: absolute;
-	width: calc(var(--grid-base) * 1.25);
+	width: calc(var(--grid-base) * 1.25 + 1px);
 	height: calc(var(--grid-base) * 6);
 	background-color: var(--color-border);
 	border-radius: var(--border-radius);
@@ -23,5 +23,5 @@
 }
 
 .thumb:hover {
-	background-color: var(--color-highlight);
+	background-color: var(--color-border-strong);
 }

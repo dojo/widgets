@@ -19,13 +19,13 @@
 
 .thumb {
 	position: absolute;
-	width: calc(var(--mdc-theme-grid-base) * 1.25);
+	width: calc(var(--mdc-theme-grid-base) * 1.25 + 1px);
 	height: calc(var(--mdc-theme-grid-base) * 6);
-	background-color: var(--mdc-border-color);
+	background-color: var(--mdc-solid-border-color);
 	border-radius: var(--mdc-theme-border-radius);
 	cursor: col-resize;
 }
 
 .thumb:hover {
-	background-color: var(--mdc-border-color-hover);
+	background-color: var(--mdc-solid-border-color-hover);
 }

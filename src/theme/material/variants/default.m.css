@@ -58,7 +58,9 @@
 
 	/* borders */
 	--mdc-border-color: rgba(0, 0, 0, 0.38);
+	--mdc-solid-border-color: #9e9e9e;
 	--mdc-border-color-hover: rgba(0, 0, 0, 0.25);
+	--mdc-solid-border-color-hover: #bfbfbf;
 	--mdc-border-width: 1px;
 
 	/* avatar sizes */
