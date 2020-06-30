@@ -11,22 +11,19 @@
 }
 /* Styles applied to the dividing line between columns if resizing is enabled */
 .divider {
-	width: 1px;
+	width: 11px;
 	background-color: var(--component-color);
+	border-left: 5px solid var(--component-background);
+	border-right: 5px solid var(--component-background);
 	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
-/* Styles applied the handle used to resize columns */
-.thumb {
-	position: absolute;
-	width: 10px;
-	height: 6px;
-	background-color: var(--component-color);
-	border-radius: var(--border-radius);
 	cursor: col-resize;
+	transition: all var(--short-animation-duration) var(--short-animation-easing);
 }
-.thumb:hover {
-	background-color: var(--selected-background);
+
+.divider:hover {
+	border-left: 5px solid var(--component-color);
+	border-right: 5px solid var(--component-color);
 }

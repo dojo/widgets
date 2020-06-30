@@ -5,23 +5,19 @@
 	width: calc(var(--grid-base) * 40);
 }
 .divider {
-	width: 1px;
+	width: var(--divider-width);
 	background-color: var(--color-border);
+	border-left: calc(var(--grid-base) * 0.5) solid var(--color-background);
+	border-right: calc(var(--grid-base) * 0.5) solid var(--color-background);
 	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
-
-.thumb {
-	position: absolute;
-	width: calc(var(--grid-base) * 1.25 + 1px);
-	height: calc(var(--grid-base) * 6);
-	background-color: var(--color-border);
-	border-radius: var(--border-radius);
 	cursor: col-resize;
+	transition: all var(--transition-duration) var(--transition-easing);
 }
 
-.thumb:hover {
-	background-color: var(--color-border-strong);
+.divider:hover {
+	border-left: none;
+	border-right: none;
 }

@@ -162,14 +162,12 @@ describe('TwoColumnLayout', () => {
 
 		r.expect(
 			baseAssertion.insertAfter(WrappedLeading, () => (
-				<div classes={css.divider}>
-					<div classes={css.thumb} key="thumb" />
-				</div>
+				<div classes={css.divider} key="divider" />
 			))
 		);
 	});
 
-	it('adds a resize class and fixed width styles when thumb is dragged', () => {
+	it('adds a resize class and fixed width styles when divider is dragged', () => {
 		isDragging = true;
 		xDelta = 100;
 		const r = render(() => (
@@ -183,11 +181,7 @@ describe('TwoColumnLayout', () => {
 
 		r.expect(
 			baseAssertion
-				.insertAfter(WrappedLeading, () => (
-					<div classes={css.divider}>
-						<div classes={css.thumb} key="thumb" />
-					</div>
-				))
+				.insertAfter(WrappedLeading, () => <div classes={css.divider} key="divider" />)
 				.setProperty(WrappedLeading, 'styles', { flexBasis: '100px' })
 				.setProperty(WrappedRoot, 'classes', [
 					undefined,

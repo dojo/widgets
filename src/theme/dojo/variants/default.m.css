@@ -54,7 +54,7 @@
 	--border-width-emphasized: 2px;
 	--border-radius: 4px;
 
-	/* Transitions */
+	/* transitions */
 	--transition-duration: 0.25s;
 	--transition-easing: ease;
 
@@ -70,6 +70,9 @@
 	--avatar-size-small: 24px;
 	--avatar-size-medium: 40px;
 	--avatar-size-large: 56px;
+
+	/* Two column layout */
+	--divider-width: 9px;
 
 	--tab-width: calc(var(--grid-base) * 16);
 }

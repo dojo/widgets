@@ -45,10 +45,11 @@ export const TwoColumnLayout = factory(function({
 	const size = resizeMiddleware.get('leading');
 	let width = resize && icache.get('width');
 	const shouldCollapse = currentBreakpoint === 'SMALL';
-	const thumbDrag = drag.get('thumb');
+	const thumbDrag = drag.get('divider');
 
 	if (resize && thumbDrag.isDragging && size) {
-		width = icache.set('width', thumbDrag.delta.x + size.width);
+		const currentWidth = typeof width === 'number' ? width : size.width;
+		width = icache.set('width', thumbDrag.delta.x + currentWidth);
 	}
 	const classes = theme.classes(css);
 	const { leading, trailing } = children()[0];
@@ -75,11 +76,7 @@ export const TwoColumnLayout = factory(function({
 			>
 				{leading}
 			</div>
-			{resize && !shouldCollapse && (
-				<div classes={classes.divider}>
-					<div classes={classes.thumb} key="thumb" />
-				</div>
-			)}
+			{resize && !shouldCollapse && <div classes={classes.divider} key="divider" />}
 			<div
 				key="trailing"
 				classes={[

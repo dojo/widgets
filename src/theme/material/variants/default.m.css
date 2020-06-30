@@ -68,6 +68,13 @@
 	--mdc-avatar-size-medium: 40px;
 	--mdc-avatar-size-large: 56px;
 
+	/* transitions */
+	--mdc-transition-duration: 0.25s;
+	--mdc-transition-easing: ease;
+
+	/* Two column layout */
+	--mdc-divider-width: 9px;
+
 	/* Extras */
 	--mdc-theme-background-active: #f1f1f1;
 	--mdc-theme-background-selected: #e1e1e1;
