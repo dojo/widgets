@@ -336,9 +336,7 @@ export interface AddonProperties {
 
 const addonFactory = create({
 	theme
-})
-	.properties<AddonProperties>()
-	.children();
+}).properties<AddonProperties>();
 
 export const Addon = addonFactory(function Addon({ middleware: { theme }, properties, children }) {
 	const themeCss = theme.classes(css);

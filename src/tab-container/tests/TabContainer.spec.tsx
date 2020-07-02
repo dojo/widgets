@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { tsx } from '@dojo/framework/core/vdom';
+import { tsx, v, w } from '@dojo/framework/core/vdom';
 
 import { Keys } from '../../common/util';
 import Icon from '../../icon';
@@ -130,6 +130,57 @@ registerSuite('TabContainer', {
 				]);
 
 			h.expect(orientationTemplate);
+		},
+
+		'renders with two children'() {
+			const tabs = [{ name: 'tab0' }, { name: 'tab1' }];
+
+			const h = harness(() =>
+				w(
+					TabContainer,
+					{
+						tabs: tabs
+					},
+					[v('div', {}, ['tab0']), v('div', {}, ['tab1'])]
+				)
+			);
+
+			const twoChildTemplate = baseTemplate
+				.setChildren('@buttons', () => [
+					<div {...tabButtonProperties}>
+						<span key="tabButtonContent" classes={css.tabButtonContent}>
+							tab0
+							<span classes={[css.indicator, css.indicatorActive]}>
+								<span classes={css.indicatorContent} />
+							</span>
+						</span>
+					</div>,
+					<div
+						{...tabButtonProperties}
+						classes={[css.tabButton, null, null, null]}
+						aria-selected="false"
+						aria-controls="test-tab-1"
+						tabIndex={-1}
+						key="1-tabbutton"
+					>
+						<span key="tabButtonContent" classes={css.tabButtonContent}>
+							tab1
+							<span classes={[css.indicator, false]}>
+								<span classes={css.indicatorContent} />
+							</span>
+						</span>
+					</div>
+				])
+				.setChildren('@tabs', () => [
+					<div classes={css.tab} hidden={false}>
+						<div>tab0</div>
+					</div>,
+					<div classes={undefined} hidden={true}>
+						<div>tab1</div>
+					</div>
+				]);
+
+			h.expect(twoChildTemplate);
 		},
 
 		'Clicking tab should change the active tab'() {

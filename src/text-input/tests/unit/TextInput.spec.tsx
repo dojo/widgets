@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { tsx } from '@dojo/framework/core/vdom';
+import { tsx, w } from '@dojo/framework/core/vdom';
 import focus from '@dojo/framework/core/middleware/focus';
 import validity from '@dojo/framework/core/middleware/validity';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
@@ -747,6 +747,15 @@ registerSuite('TextInput', {
 		});
 
 		const h = harness(() => <Addon filled>foo</Addon>);
+		h.expect(addonTemplate);
+	},
+
+	'addon with multiple children'() {
+		const addonTemplate = assertionTemplate(() => {
+			return <span classes={[css.addonRoot, null]}>foo</span>;
+		});
+
+		const h = harness(() => w(Addon, {}, ['foo', <div>bar</div>]));
 		h.expect(addonTemplate);
 	}
 });

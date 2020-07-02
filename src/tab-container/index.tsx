@@ -41,9 +41,7 @@ const factory = create({
 	i18n,
 	icache: createICacheMiddleware<TabContainerICache>(),
 	theme
-})
-	.properties<TabContainerProperties>()
-	.children();
+}).properties<TabContainerProperties>();
 
 export const TabContainer = factory(function TabContainer({
 	children,

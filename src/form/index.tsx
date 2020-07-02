@@ -139,7 +139,7 @@ export const FormGroup = formGroupFactory(function FormRow({
 	);
 });
 
-const formFieldFactory = create({ theme }).children();
+const formFieldFactory = create({ theme });
 
 export const FormField = formFieldFactory(function FormField({ children, middleware: { theme } }) {
 	const themedCss = theme.classes(css);
