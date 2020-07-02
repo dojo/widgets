@@ -730,32 +730,38 @@ registerSuite('TextInput', {
 			const h = harness(() => <TextInput labelHidden={true}>{{ label: 'foo' }}</TextInput>);
 
 			h.expect(() => expected({ label: true, labelHidden: true }));
+		},
+
+		addon() {
+			const addonTemplate = assertionTemplate(() => {
+				return <span classes={[css.addonRoot, null]}>foo</span>;
+			});
+
+			const h = harness(() => <Addon>foo</Addon>);
+			h.expect(addonTemplate);
+		},
+
+		'addon filled'() {
+			const addonTemplate = assertionTemplate(() => {
+				return <span classes={[css.addonRoot, css.addonFilled]}>foo</span>;
+			});
+
+			const h = harness(() => <Addon filled>foo</Addon>);
+			h.expect(addonTemplate);
+		},
+
+		'addon with multiple children'() {
+			const addonTemplate = assertionTemplate(() => {
+				return (
+					<span classes={[css.addonRoot, null]}>
+						foo
+						<div>bar</div>
+					</span>
+				);
+			});
+
+			const h = harness(() => w(Addon, {}, ['foo', <div>bar</div>]));
+			h.expect(addonTemplate);
 		}
-	},
-	addon() {
-		const addonTemplate = assertionTemplate(() => {
-			return <span classes={[css.addonRoot, null]}>foo</span>;
-		});
-
-		const h = harness(() => <Addon>foo</Addon>);
-		h.expect(addonTemplate);
-	},
-
-	'addon filled'() {
-		const addonTemplate = assertionTemplate(() => {
-			return <span classes={[css.addonRoot, css.addonFilled]}>foo</span>;
-		});
-
-		const h = harness(() => <Addon filled>foo</Addon>);
-		h.expect(addonTemplate);
-	},
-
-	'addon with multiple children'() {
-		const addonTemplate = assertionTemplate(() => {
-			return <span classes={[css.addonRoot, null]}>foo</span>;
-		});
-
-		const h = harness(() => w(Addon, {}, ['foo', <div>bar</div>]));
-		h.expect(addonTemplate);
 	}
 });
