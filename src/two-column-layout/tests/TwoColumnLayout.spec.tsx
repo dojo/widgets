@@ -205,6 +205,20 @@ describe('TwoColumnLayout', () => {
 					fixedCss.resize
 				])
 		);
+
+		isDragging = false;
+
+		r.expect(
+			baseAssertion
+				.insertAfter(WrappedLeading, () => <div classes={css.divider} key="divider" />)
+				.setProperty(WrappedLeading, 'styles', { flexBasis: '0px' })
+				.setProperty(WrappedRoot, 'classes', [
+					undefined,
+					fixedCss.root,
+					css.root,
+					fixedCss.resize
+				])
+		);
 	});
 
 	describe('collapsed', () => {

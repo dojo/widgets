@@ -50,7 +50,16 @@ export const TwoColumnLayout = factory(function({
 	if (resize && thumbDrag.isDragging && size) {
 		const currentWidth = typeof width === 'number' ? width : size.width;
 		width = icache.set('width', thumbDrag.delta.x + currentWidth);
+	} else if (
+		resize &&
+		!thumbDrag.isDragging &&
+		typeof width === 'number' &&
+		size &&
+		size.width !== width
+	) {
+		width = icache.set('width', size.width);
 	}
+
 	const classes = theme.classes(css);
 	const { leading, trailing } = children()[0];
 	return (
