@@ -3,7 +3,7 @@ const { describe, it, beforeEach } = intern.getInterface('bdd');
 import { assert } from 'chai';
 import { stub } from 'sinon';
 
-import { tsx } from '@dojo/framework/core/vdom';
+import { tsx, w } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import harness from '@dojo/framework/testing/harness/harness';
 
@@ -605,6 +605,19 @@ describe('FormField', () => {
 			assertionTemplate(() => (
 				<div key="root" classes={[undefined, css.fieldRoot]}>
 					foo
+				</div>
+			))
+		);
+	});
+
+	it('renders with multiple children', () => {
+		const h = harness(() => w(FormField, {}, [<div>foo</div>, <div>bar</div>]));
+
+		h.expect(
+			assertionTemplate(() => (
+				<div key="root" classes={[undefined, css.fieldRoot]}>
+					<div>foo</div>
+					<div>bar</div>
 				</div>
 			))
 		);
