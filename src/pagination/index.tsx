@@ -14,7 +14,7 @@ import global from '@dojo/framework/shim/global';
 import Icon from '../icon';
 import Select from '../select';
 
-import bundle from './Pagination.nls';
+import bundle from './nls/Pagination';
 import * as css from '../theme/default/pagination.m.css';
 import { ListOption } from '../list';
 

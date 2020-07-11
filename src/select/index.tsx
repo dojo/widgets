@@ -23,7 +23,7 @@ import * as listCss from '../theme/default/list.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
 import * as css from '../theme/default/select.m.css';
-import bundle from './select.nls';
+import bundle from './nls/Select';
 import LoadingIndicator from '../loading-indicator';
 
 export interface SelectProperties {

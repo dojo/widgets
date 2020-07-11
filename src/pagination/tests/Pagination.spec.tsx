@@ -20,7 +20,7 @@ import Select from '../../select';
 
 import Pagination from '..';
 import * as css from '../../theme/default/pagination.m.css';
-import bundle from '../Pagination.nls';
+import bundle from '../nls/Pagination';
 
 const { messages } = bundle;
 

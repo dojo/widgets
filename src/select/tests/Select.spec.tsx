@@ -22,7 +22,7 @@ import List from '../../list';
 import TriggerPopup from '../../trigger-popup';
 import * as css from '../../theme/default/select.m.css';
 import Select from '../index';
-import bundle from '../select.nls';
+import bundle from '../nls/Select';
 
 const options = [{ value: 'dog' }, { value: 'cat' }, { value: 'fish' }];
 const { messages } = bundle;

@@ -1,3 +1,7 @@
+const locales = {
+	'zh-CN': () => import('./zh-CN/DateInput')
+};
+
 const messages = {
 	invalidProps: 'Min date cannot be greater than max date',
 	invalidDate: 'Invalid date format',
@@ -5,4 +9,4 @@ const messages = {
 	tooLate: 'Date must be before Max date'
 };
 
-export default { messages };
+export default { locales, messages };
