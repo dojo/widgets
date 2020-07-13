@@ -6,7 +6,7 @@
 }
 .divider {
 	width: var(--divider-width);
-	background-color: var(--color-border);
+	background-color: var(--color-border-strong);
 	border-left: calc(var(--grid-base) * 0.5) solid var(--color-background);
 	border-right: calc(var(--grid-base) * 0.5) solid var(--color-background);
 	position: relative;
@@ -14,10 +14,12 @@
 	align-items: center;
 	justify-content: center;
 	cursor: col-resize;
-	transition: all var(--transition-duration) var(--transition-easing);
+	transition: all var(--transition-duration) var(--transition-easing) var(--transition-delay);
 }
 
-.divider:hover {
-	border-left: none;
-	border-right: none;
+.divider:hover,
+.divider:focus,
+.divider:active {
+	border-left: calc(var(--grid-base) * 0.5) solid var(--color-border);
+	border-right: calc(var(--grid-base) * 0.5) solid var(--color-border);
 }

@@ -18,10 +18,13 @@
 	align-items: center;
 	justify-content: center;
 	cursor: col-resize;
-	transition: all var(--mdc-transition-duration) var(--mdc-transition-easing);
+	transition: all var(--mdc-transition-duration) var(--mdc-transition-easing)
+		var(--mdc-transition-delay);
 }
 
-.divider:hover {
-	border-left: none;
-	border-right: none;
+.divider:hover,
+.divider:focus,
+.divider:active {
+	border-left: calc(var(--mdc-theme-grid-base) * 0.5) solid var(--mdc-solid-border-color-hover);
+	border-right: calc(var(--mdc-theme-grid-base) * 0.5) solid var(--mdc-solid-border-color-hover);
 }

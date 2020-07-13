@@ -57,6 +57,7 @@
 	/* transitions */
 	--transition-duration: 0.25s;
 	--transition-easing: ease;
+	--transition-delay: 0.5s;
 
 	/* Z-index levels */
 	--zindex-base: 0;
