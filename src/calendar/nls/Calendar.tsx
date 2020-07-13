@@ -1,5 +1,6 @@
 const locales = {
-	'zh-CN': () => import('./zh-CN/Calendar')
+	'zh-CN': () => import('./zh-CN/Calendar'),
+	'zh-TW': () => import('./zh-TW/Calendar')
 };
 
 const messages = {

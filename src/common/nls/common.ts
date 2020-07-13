@@ -1,5 +1,6 @@
 const locales = {
-	'zh-CN': () => import('./zh-CN/common')
+	'zh-CN': () => import('./zh-CN/common'),
+	'zh-TW': () => import('./zh-TW/common')
 };
 
 const messages = {

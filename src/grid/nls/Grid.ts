@@ -1,5 +1,6 @@
 const locales = {
-	'zh-CN': () => import('./zh-CN/Grid')
+	'zh-CN': () => import('./zh-CN/Grid'),
+	'zh-TW': () => import('./zh-TW/Grid')
 };
 
 const messages = {

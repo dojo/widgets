@@ -5,7 +5,7 @@
 	},
 	"build-app": {
 		"locale": "en",
-		"supportedLocales": ["zh-CN"]
+		"supportedLocales": ["zh-CN", "zh-TW"]
 	},
 	"build-widget": {
 		"prefix": "dojo",
