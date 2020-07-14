@@ -155,9 +155,9 @@ export const RangeSlider = factory(function RangeSlider({
 	const getInputProperties = (isSlider1: boolean) => ({
 		...formatAriaProperties(aria),
 		'aria-describedby': isSlider1 ? minLabelId : maxLabelId,
-		'aria-invalid': valid === false ? 'true' : null,
+		'aria-invalid': (valid === false ? 'true' : undefined) as 'true' | undefined,
 		'aria-labelledby': `${widgetId}-label`,
-		'aria-readonly': readOnly === true ? 'true' : null,
+		'aria-readonly': (readOnly === true ? 'true' : undefined) as 'true' | undefined,
 		classes: [themeCss.input, fixedCss.nativeInput],
 		disabled,
 		max: `${maxRestraint}`,

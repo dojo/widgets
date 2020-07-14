@@ -32,7 +32,7 @@ describe('TitlePane', () => {
 					]}
 				>
 					<div
-						aria-level={headingLevel ? `${headingLevel}` : null}
+						aria-level={headingLevel ? `${headingLevel}` : undefined}
 						classes={[
 							themeCss.title,
 							closeable ? themeCss.closeable : null,
@@ -43,7 +43,7 @@ describe('TitlePane', () => {
 					>
 						<button
 							aria-controls="test-content"
-							aria-expanded={open === false ? 'false' : `${isOpen}`}
+							aria-expanded={open === false ? 'false' : isOpen ? 'true' : 'false'}
 							disabled={!closeable}
 							classes={[fixedCss.titleButtonFixed, themeCss.titleButton]}
 							focus={false}
@@ -58,7 +58,7 @@ describe('TitlePane', () => {
 						</button>
 					</div>
 					<div
-						aria-hidden={isOpen ? null : 'true'}
+						aria-hidden={isOpen ? undefined : 'true'}
 						aria-labelledby="test-title"
 						classes={[themeCss.content, false, fixedCss.contentFixed]}
 						id="test-content"

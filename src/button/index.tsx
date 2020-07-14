@@ -80,7 +80,7 @@ export const Button = factory(function Button({
 			id={idBase}
 			focus={focus.shouldFocus()}
 			name={name}
-			type={type}
+			type={type as any}
 			value={value}
 			onblur={() => onBlur && onBlur()}
 			onclick={(event: MouseEvent) => {
@@ -93,7 +93,7 @@ export const Button = factory(function Button({
 			onpointerdown={() => onDown && onDown()}
 			onpointerup={() => onUp && onUp()}
 			{...formatAriaProperties(aria)}
-			aria-pressed={typeof pressed === 'boolean' ? pressed.toString() : null}
+			aria-pressed={typeof pressed === 'boolean' ? (pressed ? 'true' : 'false') : undefined}
 		>
 			<span classes={themeCss.label}>{children()}</span>
 		</button>

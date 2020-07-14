@@ -181,7 +181,7 @@ export const TabContainer = factory(function TabContainer({
 	];
 
 	let alignClass;
-	let orientation = 'horizontal';
+	let orientation: 'horizontal' | 'vertical' = 'horizontal';
 
 	switch (alignButtons) {
 		case 'right':

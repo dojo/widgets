@@ -17,8 +17,8 @@ describe('ListBoxItem', () => {
 			classes={[undefined, css.root, false, false, false]}
 			onclick={noop}
 			role="option"
-			aria-selected={false}
-			aria-disabled={false}
+			aria-selected="false"
+			aria-disabled="false"
 			id="test"
 		>
 			test

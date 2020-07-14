@@ -44,7 +44,7 @@ const buttonTemplate = assertionTemplate(() => (
 		aria-controls="anything"
 		id="something"
 		aria-haspopup="listbox"
-		aria-expanded={false}
+		aria-expanded="false"
 		key="trigger"
 		type="button"
 		disabled={undefined}

@@ -17,7 +17,7 @@ describe('MenuItem', () => {
 			classes={[undefined, css.root, false, false]}
 			onclick={noop}
 			role="menuitem"
-			aria-disabled={false}
+			aria-disabled="false"
 			id="test"
 		>
 			test

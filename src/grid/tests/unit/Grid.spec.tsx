@@ -64,7 +64,7 @@ describe('Grid', () => {
 					key: 'root',
 					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
-					'aria-rowcount': null
+					'aria-rowcount': undefined
 				},
 				[
 					v(
@@ -263,7 +263,7 @@ describe('Grid', () => {
 					key: 'root',
 					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
-					'aria-rowcount': null
+					'aria-rowcount': undefined
 				},
 				[
 					v(
@@ -349,7 +349,7 @@ describe('Grid', () => {
 					key: 'root',
 					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
-					'aria-rowcount': null
+					'aria-rowcount': undefined
 				},
 				[
 					v(
@@ -433,7 +433,7 @@ describe('Grid', () => {
 					key: 'root',
 					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
-					'aria-rowcount': null
+					'aria-rowcount': undefined
 				},
 				[
 					v(
@@ -514,7 +514,7 @@ describe('Grid', () => {
 					key: 'root',
 					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
-					'aria-rowcount': null
+					'aria-rowcount': undefined
 				},
 				[
 					v(
@@ -616,7 +616,7 @@ describe('Grid', () => {
 					key: 'root',
 					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
-					'aria-rowcount': null
+					'aria-rowcount': undefined
 				},
 				[
 					v(
@@ -742,7 +742,7 @@ describe('Grid', () => {
 					key: 'root',
 					classes: [undefined, css.root, fixedCss.rootFixed],
 					role: 'table',
-					'aria-rowcount': null
+					'aria-rowcount': undefined
 				},
 				[
 					v(

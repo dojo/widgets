@@ -117,7 +117,7 @@ const baseTemplate = assertionTemplate(() =>
 									'span',
 									{
 										key: 'more',
-										'aria-hidden': true,
+										'aria-hidden': 'true',
 										classes: [css.more, fixedCss.moreFixed]
 									},
 									['...']
@@ -218,7 +218,7 @@ describe('PaginatedFooter', () => {
 						'span',
 						{
 							key: 'less',
-							'aria-hidden': true,
+							'aria-hidden': 'true',
 							classes: [css.more, fixedCss.moreFixed]
 						},
 						['...']
@@ -263,7 +263,7 @@ describe('PaginatedFooter', () => {
 						'span',
 						{
 							key: 'more',
-							'aria-hidden': true,
+							'aria-hidden': 'true',
 							classes: [css.more, fixedCss.moreFixed]
 						},
 						['...']
@@ -336,7 +336,7 @@ describe('PaginatedFooter', () => {
 						'span',
 						{
 							key: 'less',
-							'aria-hidden': true,
+							'aria-hidden': 'true',
 							classes: [css.more, fixedCss.moreFixed]
 						},
 						['...']

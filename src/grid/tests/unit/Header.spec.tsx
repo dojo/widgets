@@ -69,7 +69,7 @@ describe('Header', () => {
 						classes: [css.cell, fixedCss.cellFixed],
 						styles: {},
 						role: 'columnheader',
-						'aria-sort': null
+						'aria-sort': undefined
 					},
 					[v('div', {}, ['Title'])]
 				),
@@ -79,7 +79,7 @@ describe('Header', () => {
 						classes: [css.cell, fixedCss.cellFixed],
 						styles: {},
 						role: 'columnheader',
-						'aria-sort': null
+						'aria-sort': undefined
 					},
 					[v('div', {}, ['First Name'])]
 				)
@@ -107,7 +107,7 @@ describe('Header', () => {
 						classes: [css.cell, fixedCss.cellFixed],
 						styles: {},
 						role: 'columnheader',
-						'aria-sort': null
+						'aria-sort': undefined
 					},
 					[v('div', {}, ['Title'])]
 				),
@@ -117,7 +117,7 @@ describe('Header', () => {
 						classes: [css.cell, fixedCss.cellFixed],
 						styles: {},
 						role: 'columnheader',
-						'aria-sort': null
+						'aria-sort': undefined
 					},
 					[
 						v(
@@ -194,7 +194,7 @@ describe('Header', () => {
 						classes: [css.cell, fixedCss.cellFixed],
 						styles: {},
 						role: 'columnheader',
-						'aria-sort': null
+						'aria-sort': undefined
 					},
 					[v('div', {}, ['Title'])]
 				),
@@ -281,7 +281,7 @@ describe('Header', () => {
 						classes: [css.cell, fixedCss.cellFixed],
 						styles: {},
 						role: 'columnheader',
-						'aria-sort': null
+						'aria-sort': undefined
 					},
 					[v('div', {}, ['Title'])]
 				),
@@ -373,7 +373,7 @@ describe('Header', () => {
 						classes: [css.cell, fixedCss.cellFixed],
 						styles: {},
 						role: 'columnheader',
-						'aria-sort': null
+						'aria-sort': undefined
 					},
 					[v('div', {}, ['Title'])]
 				),
@@ -383,7 +383,7 @@ describe('Header', () => {
 						classes: [css.cell, fixedCss.cellFixed],
 						styles: {},
 						role: 'columnheader',
-						'aria-sort': null
+						'aria-sort': undefined
 					},
 					[
 						v(
@@ -552,7 +552,7 @@ describe('Header', () => {
 							classes: [css.cell, fixedCss.cellFixed],
 							styles: {},
 							role: 'columnheader',
-							'aria-sort': null
+							'aria-sort': undefined
 						},
 						[v('div', {}, ['Title'])]
 					),
@@ -640,7 +640,7 @@ describe('Header', () => {
 							classes: [css.cell, fixedCss.cellFixed],
 							styles: {},
 							role: 'columnheader',
-							'aria-sort': null
+							'aria-sort': undefined
 						},
 						[v('div', {}, ['Title'])]
 					),
@@ -728,7 +728,7 @@ describe('Header', () => {
 							classes: [css.cell, fixedCss.cellFixed],
 							styles: {},
 							role: 'columnheader',
-							'aria-sort': null
+							'aria-sort': undefined
 						},
 						[v('div', {}, ['Title'])]
 					),
@@ -738,7 +738,7 @@ describe('Header', () => {
 							classes: [css.cell, fixedCss.cellFixed],
 							styles: {},
 							role: 'columnheader',
-							'aria-sort': null
+							'aria-sort': undefined
 						},
 						[
 							v(
@@ -815,7 +815,7 @@ describe('Header', () => {
 								flex: '0 1 100px'
 							},
 							role: 'columnheader',
-							'aria-sort': null
+							'aria-sort': undefined
 						},
 						[
 							v('div', {}, ['Title']),
@@ -830,7 +830,7 @@ describe('Header', () => {
 								flex: '0 1 100px'
 							},
 							role: 'columnheader',
-							'aria-sort': null
+							'aria-sort': undefined
 						},
 						[
 							v('div', {}, ['First Name']),
