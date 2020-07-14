@@ -27,9 +27,9 @@ describe('RangeSlider', () => {
 				>
 					<input
 						aria-describedby="min-label-test"
-						aria-invalid={null}
+						aria-invalid={undefined}
 						aria-labelledby="range-slider-test-label"
-						aria-readonly={null}
+						aria-readonly={undefined}
 						classes={[themeCss.input, fixedCss.nativeInput]}
 						disabled={undefined}
 						key="slider1"
@@ -54,8 +54,8 @@ describe('RangeSlider', () => {
 					<input
 						aria-labelledby="range-slider-test-label"
 						aria-describedby="max-label-test"
-						aria-invalid={null}
-						aria-readonly={null}
+						aria-invalid={undefined}
+						aria-readonly={undefined}
 						classes={[themeCss.input, fixedCss.nativeInput]}
 						disabled={undefined}
 						key="slider2"

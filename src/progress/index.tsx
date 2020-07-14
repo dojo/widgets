@@ -65,7 +65,7 @@ export const Progress = factory(function Progress({
 				aria-valuemin={`${min}`}
 				aria-valuemax={`${max}`}
 				aria-valuenow={`${value}`}
-				aria-valuetext={output}
+				aria-valuetext={`${output}`}
 				id={widgetId}
 			>
 				{renderProgress(percent)}

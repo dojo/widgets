@@ -61,8 +61,8 @@ const reverseOrientationTemplate = assertionTemplate(() => (
 
 const tabButtonProperties = {
 	'aria-controls': 'test-tab-0',
-	'aria-disabled': 'false',
-	'aria-selected': 'true',
+	'aria-disabled': 'false' as 'false',
+	'aria-selected': 'true' as 'true',
 	classes: [css.tabButton, css.activeTabButton, null, null],
 	focus: noop,
 	id: '',

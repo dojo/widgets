@@ -267,7 +267,7 @@ export const TextInput = factory(function TextInput({
 					{leading}
 					<input
 						{...formatAriaProperties(aria)}
-						aria-invalid={valid === false ? 'true' : null}
+						aria-invalid={valid === false ? 'true' : undefined}
 						autocomplete={formatAutocomplete(autocomplete)}
 						classes={themeCss.input}
 						disabled={disabled}
@@ -282,7 +282,7 @@ export const TextInput = factory(function TextInput({
 						pattern={pattern}
 						placeholder={placeholder}
 						readOnly={readOnly}
-						aria-readonly={readOnly ? 'true' : null}
+						aria-readonly={readOnly ? 'true' : undefined}
 						required={required}
 						step={step}
 						type={type}

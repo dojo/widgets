@@ -91,7 +91,7 @@ export default factory(function Switch({ children, properties, id, middleware: {
 				<div
 					key="offlabel"
 					classes={themedCss.offLabel}
-					aria-hidden={value ? 'true' : null}
+					aria-hidden={value ? 'true' : undefined}
 				>
 					{offLabel}
 				</div>
@@ -107,15 +107,15 @@ export default factory(function Switch({ children, properties, id, middleware: {
 							checked={value}
 							disabled={disabled}
 							focus={focus.shouldFocus()}
-							aria-invalid={valid === false ? 'true' : null}
+							aria-invalid={valid === false ? 'true' : undefined}
 							name={name}
 							readonly={readOnly}
-							aria-readonly={readOnly === true ? 'true' : null}
+							aria-readonly={readOnly === true ? 'true' : undefined}
 							required={required}
 							type="checkbox"
 							value={`${value}`}
 							role="switch"
-							aria-checked={value}
+							aria-checked={value ? 'true' : 'false'}
 							onblur={() => onBlur && onBlur()}
 							onchange={(event: Event) => {
 								event.stopPropagation();
@@ -130,7 +130,11 @@ export default factory(function Switch({ children, properties, id, middleware: {
 				</div>
 			</div>
 			{onLabel && (
-				<div key="onLabel" classes={themedCss.onLabel} aria-hidden={value ? null : 'true'}>
+				<div
+					key="onLabel"
+					classes={themedCss.onLabel}
+					aria-hidden={value ? undefined : 'true'}
+				>
 					{onLabel}
 				</div>
 			)}

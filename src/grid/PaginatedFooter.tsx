@@ -55,7 +55,7 @@ export default class PaginatedFooter extends I18nMixin(ThemedMixin(WidgetBase))<
 						'span',
 						{
 							key: 'more',
-							'aria-hidden': true,
+							'aria-hidden': 'true',
 							classes: [this.theme(css.more), fixedCss.moreFixed]
 						},
 						['...']
@@ -69,7 +69,7 @@ export default class PaginatedFooter extends I18nMixin(ThemedMixin(WidgetBase))<
 					'span',
 					{
 						key: 'less',
-						'aria-hidden': true,
+						'aria-hidden': 'true',
 						classes: [this.theme(css.more), fixedCss.moreFixed]
 					},
 					['...']
@@ -87,7 +87,7 @@ export default class PaginatedFooter extends I18nMixin(ThemedMixin(WidgetBase))<
 					'span',
 					{
 						key: 'less',
-						'aria-hidden': true,
+						'aria-hidden': 'true',
 						classes: [this.theme(css.more), fixedCss.moreFixed]
 					},
 					['...']
@@ -99,7 +99,7 @@ export default class PaginatedFooter extends I18nMixin(ThemedMixin(WidgetBase))<
 					'span',
 					{
 						key: 'more',
-						'aria-hidden': true,
+						'aria-hidden': 'true',
 						classes: [this.theme(css.more), fixedCss.moreFixed]
 					},
 					['...']

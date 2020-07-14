@@ -159,12 +159,12 @@ export const Slider = factory(function Slider({
 				disabled={disabled}
 				id={widgetId}
 				focus={focus.shouldFocus}
-				aria-invalid={valid === false ? 'true' : null}
+				aria-invalid={valid === false ? 'true' : undefined}
 				max={`${max}`}
 				min={`${min}`}
 				name={name}
 				readOnly={readOnly}
-				aria-readonly={readOnly ? 'true' : null}
+				aria-readonly={readOnly ? 'true' : undefined}
 				required={required}
 				step={`${step}`}
 				styles={vertical ? { width: verticalHeight } : {}}

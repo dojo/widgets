@@ -186,7 +186,11 @@ export default class Header extends I18nMixin(ThemedMixin(WidgetBase))<HeaderPro
 				return v(
 					'div',
 					{
-						'aria-sort': isSorted ? (isSortedAsc ? 'ascending' : 'descending') : null,
+						'aria-sort': isSorted
+							? isSortedAsc
+								? 'ascending'
+								: 'descending'
+							: undefined,
 						classes: [this.theme(css.cell), fixedCss.cellFixed],
 						role: 'columnheader',
 						styles: columnWidths

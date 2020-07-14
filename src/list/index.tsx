@@ -64,7 +64,7 @@ export const MenuItem = menuItemFactory(function MenuItem({
 				select();
 			}}
 			role="menuitem"
-			aria-disabled={disabled}
+			aria-disabled={disabled ? 'true' : 'false'}
 		>
 			{children()}
 		</div>
@@ -163,8 +163,8 @@ export const ListItem = listItemFactory(function ListItem({
 				select();
 			}}
 			role="option"
-			aria-disabled={disabled}
-			aria-selected={selected}
+			aria-disabled={disabled ? 'true' : 'false'}
+			aria-selected={selected ? 'true' : 'false'}
 			draggable={draggable}
 			ondragenter={(event: DragEvent) => event.preventDefault()}
 			ondragstart={onDragStart}

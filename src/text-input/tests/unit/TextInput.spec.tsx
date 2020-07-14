@@ -172,14 +172,14 @@ const input = () => (
 			classes={css.input}
 			id=""
 			disabled={undefined}
-			aria-invalid={null}
+			aria-invalid={undefined}
 			autocomplete={undefined}
 			maxlength={null}
 			minlength={null}
 			name={undefined}
 			placeholder={undefined}
 			readOnly={undefined}
-			aria-readonly={null}
+			aria-readonly={undefined}
 			required={undefined}
 			type="text"
 			value={undefined}

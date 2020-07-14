@@ -235,18 +235,18 @@ export const TextArea = factory(function TextArea({
 						key="input"
 						{...formatAriaProperties(aria)}
 						classes={themeCss.input}
-						cols={`${columns}`}
+						cols={columns}
 						disabled={disabled}
 						focus={focus.shouldFocus}
-						aria-invalid={valid === false ? 'true' : null}
+						aria-invalid={valid === false ? 'true' : undefined}
 						maxlength={maxLength ? `${maxLength}` : null}
 						minlength={minLength ? `${minLength}` : null}
 						name={name}
 						placeholder={placeholder}
 						readOnly={readOnly}
-						aria-readonly={readOnly ? 'true' : null}
+						aria-readonly={readOnly ? 'true' : undefined}
 						required={required}
-						rows={`${rows}`}
+						rows={rows}
 						value={value}
 						wrap={wrapText}
 						onblur={() => {
