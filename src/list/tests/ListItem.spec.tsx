@@ -48,7 +48,7 @@ describe('ListBoxItem', () => {
 		));
 		const selectedTemplate = template
 			.setProperty('@root', 'classes', [undefined, css.root, css.selected, false, false])
-			.setProperty('@root', 'aria-selected', true);
+			.setProperty('@root', 'aria-selected', 'true');
 		h.expect(selectedTemplate);
 	});
 
@@ -60,7 +60,7 @@ describe('ListBoxItem', () => {
 		));
 		const disabledTemplate = template
 			.setProperty('@root', 'classes', [undefined, css.root, false, false, css.disabled])
-			.setProperty('@root', 'aria-disabled', true);
+			.setProperty('@root', 'aria-disabled', 'true');
 		h.expect(disabledTemplate);
 	});
 
