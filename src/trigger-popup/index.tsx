@@ -1,7 +1,7 @@
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import Popup, { BasePopupProperties } from '../popup';
+import Popup, { PopupPosition, BasePopupProperties } from '../popup';
 import * as fixedCss from './trigger-popup.m.css';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
@@ -10,6 +10,8 @@ export interface TriggerPopupProperties extends BasePopupProperties {
 	matchWidth?: boolean;
 	/** Callback when the menu is opened  */
 	onOpen?(): void;
+	/** Position of popup that is triggered  */
+	position?: PopupPosition;
 }
 
 export interface TriggerPopupChildren {
@@ -61,9 +63,10 @@ export const TriggerPopup = factory(function TriggerPopup({
 			<Popup
 				key="popup"
 				{...otherProperties}
-				x={triggerPosition.left}
 				yTop={triggerBottom}
 				yBottom={triggerTop}
+				leftStart={triggerPosition.left}
+				rightStart={triggerPosition.right}
 				onClose={close}
 				open={icache.get('open')}
 			>

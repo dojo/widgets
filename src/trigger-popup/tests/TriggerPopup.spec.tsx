@@ -12,7 +12,15 @@ import { stub } from 'sinon';
 const baseTemplate = assertionTemplate(() => (
 	<virtual>
 		<span key="trigger" classes={fixedCss.trigger} />
-		<Popup key="popup" x={0} yTop={0} yBottom={0} onClose={() => {}} open={undefined}>
+		<Popup
+			key="popup"
+			yTop={0}
+			yBottom={0}
+			leftStart={0}
+			rightStart={0}
+			onClose={() => {}}
+			open={undefined}
+		>
 			<div key="trigger-wrapper" styles={{ width: '0px' }}>
 				hello world
 			</div>
@@ -100,7 +108,7 @@ describe('TriggerPopup', () => {
 			{ middleware: [[node, mockNode]] }
 		);
 		const contentTemplate = baseTemplate
-			.setProperty('@popup', 'x', 50)
+			.setProperty('@popup', 'leftStart', 50)
 			.setProperty('@popup', 'yTop', 100)
 			.setProperty('@popup', 'yBottom', 50)
 			.setProperty('@trigger-wrapper', 'styles', { width: '150px' });

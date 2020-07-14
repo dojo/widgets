@@ -30,11 +30,22 @@ describe('Popup', () => {
 			value: 1000,
 			configurable: true
 		});
+		Object.defineProperty(document.documentElement, 'clientWidth', {
+			value: 900,
+			configurable: true
+		});
 	});
 
 	it('renders nothing if not open', () => {
 		const h = harness(() => (
-			<Popup x={0} yTop={0} yBottom={0} onClose={() => {}} open={false}>
+			<Popup
+				yTop={0}
+				yBottom={0}
+				leftStart={0}
+				rightStart={0}
+				onClose={() => {}}
+				open={false}
+			>
 				hello world
 			</Popup>
 		));
@@ -44,7 +55,7 @@ describe('Popup', () => {
 
 	it('initially renders with opacity 0 while height is calculated', () => {
 		const h = harness(() => (
-			<Popup x={0} yTop={0} yBottom={0} onClose={() => {}} open={true}>
+			<Popup yTop={0} yBottom={0} leftStart={0} rightStart={0} onClose={() => {}} open={true}>
 				hello world
 			</Popup>
 		));
@@ -55,7 +66,7 @@ describe('Popup', () => {
 	it('calls onClose when closed', () => {
 		const onClose = stub();
 		const h = harness(() => (
-			<Popup x={0} yTop={0} yBottom={0} open={true} onClose={onClose}>
+			<Popup yTop={0} yBottom={0} leftStart={0} rightStart={0} open={true} onClose={onClose}>
 				hello world
 			</Popup>
 		));
@@ -80,7 +91,14 @@ describe('Popup', () => {
 
 		const h = harness(
 			() => (
-				<Popup x={50} yTop={100} yBottom={0} open={true} onClose={() => {}}>
+				<Popup
+					yTop={100}
+					yBottom={0}
+					leftStart={50}
+					rightStart={0}
+					open={true}
+					onClose={() => {}}
+				>
 					hello world
 				</Popup>
 			),
@@ -103,6 +121,199 @@ describe('Popup', () => {
 
 		h.expect(contentTemplate);
 	});
+
+	it('renders with opacity 1 and matched size / position with dimensions when left', () => {
+		const mockNode = createNodeMock();
+
+		const wrapper = {
+			getBoundingClientRect() {
+				return {
+					width: 100,
+					height: 100
+				};
+			}
+		};
+
+		mockNode('wrapper', wrapper);
+
+		const h = harness(
+			() => (
+				<Popup
+					yTop={200}
+					yBottom={100}
+					leftStart={130}
+					rightStart={0}
+					open={true}
+					position="left"
+					onClose={() => {}}
+				>
+					hello world
+				</Popup>
+			),
+			{ middleware: [[node, mockNode], [resize, createMockResize()]] }
+		);
+		const contentTemplate = baseTemplate.setChildren(':root', () => [
+			<div
+				key="underlay"
+				classes={[undefined, fixedCss.underlay, false]}
+				onclick={() => {}}
+			/>,
+			<div
+				key="wrapper"
+				classes={[undefined, fixedCss.root]}
+				styles={{ left: '30px', opacity: '1', top: '100px' }}
+			>
+				hello world
+			</div>
+		]);
+
+		h.expect(contentTemplate);
+	});
+
+	it('renders with opacity 1 and matched size / position with dimensions when right', () => {
+		const mockNode = createNodeMock();
+
+		const wrapper = {
+			getBoundingClientRect() {
+				return {
+					width: 100,
+					height: 100
+				};
+			}
+		};
+
+		mockNode('wrapper', wrapper);
+
+		const h = harness(
+			() => (
+				<Popup
+					yTop={200}
+					yBottom={100}
+					leftStart={130}
+					rightStart={160}
+					open={true}
+					position="right"
+					onClose={() => {}}
+				>
+					hello world
+				</Popup>
+			),
+			{ middleware: [[node, mockNode], [resize, createMockResize()]] }
+		);
+		const contentTemplate = baseTemplate.setChildren(':root', () => [
+			<div
+				key="underlay"
+				classes={[undefined, fixedCss.underlay, false]}
+				onclick={() => {}}
+			/>,
+			<div
+				key="wrapper"
+				classes={[undefined, fixedCss.root]}
+				styles={{ left: '160px', opacity: '1', top: '100px' }}
+			>
+				hello world
+			</div>
+		]);
+
+		h.expect(contentTemplate);
+	});
+
+	it('renders with opacity 1 and matched size / position with dimensions when it does not fit left', () => {
+		const mockNode = createNodeMock();
+
+		const wrapper = {
+			getBoundingClientRect() {
+				return {
+					width: 100,
+					height: 100
+				};
+			}
+		};
+
+		mockNode('wrapper', wrapper);
+
+		const h = harness(
+			() => (
+				<Popup
+					yTop={200}
+					yBottom={100}
+					leftStart={50}
+					rightStart={160}
+					open={true}
+					position="left"
+					onClose={() => {}}
+				>
+					hello world
+				</Popup>
+			),
+			{ middleware: [[node, mockNode], [resize, createMockResize()]] }
+		);
+		const contentTemplate = baseTemplate.setChildren(':root', () => [
+			<div
+				key="underlay"
+				classes={[undefined, fixedCss.underlay, false]}
+				onclick={() => {}}
+			/>,
+			<div
+				key="wrapper"
+				classes={[undefined, fixedCss.root]}
+				styles={{ left: '160px', opacity: '1', top: '100px' }}
+			>
+				hello world
+			</div>
+		]);
+
+		h.expect(contentTemplate);
+	});
+
+	it('renders with opacity 1 and matched size / position with dimensions when it does not fit right', () => {
+		const mockNode = createNodeMock();
+
+		const wrapper = {
+			getBoundingClientRect() {
+				return {
+					width: 100,
+					height: 100
+				};
+			}
+		};
+
+		mockNode('wrapper', wrapper);
+
+		const h = harness(
+			() => (
+				<Popup
+					yTop={200}
+					yBottom={100}
+					leftStart={130}
+					rightStart={950}
+					open={true}
+					position="right"
+					onClose={() => {}}
+				>
+					hello world
+				</Popup>
+			),
+			{ middleware: [[node, mockNode], [resize, createMockResize()]] }
+		);
+		const contentTemplate = baseTemplate.setChildren(':root', () => [
+			<div
+				key="underlay"
+				classes={[undefined, fixedCss.underlay, false]}
+				onclick={() => {}}
+			/>,
+			<div
+				key="wrapper"
+				classes={[undefined, fixedCss.root]}
+				styles={{ left: '30px', opacity: '1', top: '100px' }}
+			>
+				hello world
+			</div>
+		]);
+
+		h.expect(contentTemplate);
+	});
+
 	it('renders with opacity 1 and matched size / position with dimensions when it does not fit below', () => {
 		const mockNode = createNodeMock();
 
@@ -119,7 +330,14 @@ describe('Popup', () => {
 
 		const h = harness(
 			() => (
-				<Popup x={50} yTop={901} yBottom={300} open={true} onClose={() => {}}>
+				<Popup
+					yTop={901}
+					yBottom={300}
+					leftStart={50}
+					rightStart={0}
+					open={true}
+					onClose={() => {}}
+				>
 					hello world
 				</Popup>
 			),
@@ -159,7 +377,14 @@ describe('Popup', () => {
 
 		const h = harness(
 			() => (
-				<Popup x={50} yTop={300} yBottom={50} open={true} onClose={() => {}}>
+				<Popup
+					yTop={300}
+					yBottom={50}
+					leftStart={50}
+					rightStart={0}
+					open={true}
+					onClose={() => {}}
+				>
 					hello world
 				</Popup>
 			),
@@ -185,7 +410,15 @@ describe('Popup', () => {
 
 	it('Renders with an underlay', () => {
 		const h = harness(() => (
-			<Popup x={0} yTop={0} yBottom={0} onClose={() => {}} underlayVisible={true} open={true}>
+			<Popup
+				yTop={0}
+				yBottom={0}
+				leftStart={0}
+				rightStart={0}
+				onClose={() => {}}
+				underlayVisible={true}
+				open={true}
+			>
 				hello world
 			</Popup>
 		));
