@@ -1,5 +1,5 @@
 const locales = {
-	'zh-CN': () => import('./zh-CN/Pagination'),
+	zh: () => import('./zh-CN/Pagination'),
 	'zh-TW': () => import('./zh-TW/Pagination')
 };
 

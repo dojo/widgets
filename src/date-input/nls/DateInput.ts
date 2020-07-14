@@ -1,5 +1,5 @@
 const locales = {
-	'zh-CN': () => import('./zh-CN/DateInput'),
+	zh: () => import('./zh-CN/DateInput'),
 	'zh-TW': () => import('./zh-TW/DateInput')
 };
 

@@ -1,5 +1,5 @@
 const locales = {
-	'zh-CN': () => import('./zh-CN/TimePicker'),
+	zh: () => import('./zh-CN/TimePicker'),
 	'zh-TW': () => import('./zh-TW/TimePicker')
 };
 
