@@ -1,6 +1,32 @@
+/* Root styles for the entire layout */
 .root {
+	height: 100%;
 }
+/* Styles applied to both columns */
 .column {
 }
+/* Styles applied to the smaller of the two columns */
 .small {
+	width: 320px;
+}
+/* Styles applied to the dividing line between columns if resizing is enabled */
+.divider {
+	width: 11px;
+	background-color: var(--component-color);
+	border-left: 5px solid var(--component-background);
+	border-right: 5px solid var(--component-background);
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: col-resize;
+	transition: all var(--medium-animation-duration) var(--short-animation-easing)
+		var(--short-animation-duration);
+}
+
+.divider:hover,
+.divider:focus,
+.divider:active {
+	border-left: 5px solid var(--component-color-hover);
+	border-right: 5px solid var(--component-color-hover);
 }

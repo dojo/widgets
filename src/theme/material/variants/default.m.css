@@ -58,13 +58,23 @@
 
 	/* borders */
 	--mdc-border-color: rgba(0, 0, 0, 0.38);
+	--mdc-solid-border-color: #9e9e9e;
 	--mdc-border-color-hover: rgba(0, 0, 0, 0.25);
+	--mdc-solid-border-color-hover: #bfbfbf;
 	--mdc-border-width: 1px;
 
 	/* avatar sizes */
 	--mdc-avatar-size-small: 24px;
 	--mdc-avatar-size-medium: 40px;
 	--mdc-avatar-size-large: 56px;
+
+	/* transitions */
+	--mdc-transition-duration: 0.25s;
+	--mdc-transition-easing: ease;
+	--mdc-medium-transition-duration: 0.5s;
+
+	/* Two column layout */
+	--mdc-divider-width: 9px;
 
 	/* Extras */
 	--mdc-theme-background-active: #f1f1f1;

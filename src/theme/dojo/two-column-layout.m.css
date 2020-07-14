@@ -1,3 +1,26 @@
+.root {
+	height: 100%;
+}
 .small {
 	width: calc(var(--grid-base) * 40);
+}
+.divider {
+	width: var(--divider-width);
+	background-color: var(--color-border-strong);
+	border-left: calc(var(--grid-base) * 0.5) solid var(--color-background);
+	border-right: calc(var(--grid-base) * 0.5) solid var(--color-background);
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: col-resize;
+	transition: all var(--medium-transition-duration) var(--transition-easing)
+		var(--transition-duration);
+}
+
+.divider:hover,
+.divider:focus,
+.divider:active {
+	border-left: calc(var(--grid-base) * 0.5) solid var(--color-border);
+	border-right: calc(var(--grid-base) * 0.5) solid var(--color-border);
 }

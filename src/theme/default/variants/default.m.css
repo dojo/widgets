@@ -4,6 +4,7 @@
 	--disabled-color: #bbb;
 	--component-background: #fff;
 	--component-color: #424242;
+	--component-color-hover: #828282;
 	--underlay-background: rgba(66, 66, 66, 0.3);
 
 	--error-color: red;
@@ -11,6 +12,9 @@
 
 	--short-animation-duration: 0.2s;
 	--short-animation-easing: ease;
+	--medium-animation-duration: 0.5s;
+
+	--border-radius: 4px;
 
 	/* Z-index levels */
 	--zindex-base: 0;

@@ -1,5 +1,6 @@
 import dojoTheme from '@dojo/widgets/theme/dojo';
 import materialTheme from '@dojo/widgets/theme/material';
+import defaultTheme from '@dojo/widgets/theme/default';
 import BasicAccordionPane from './widgets/accordion/Basic';
 import BasicAvatar from './widgets/avatar/Basic';
 import ImageAvatar from './widgets/avatar/Image';
@@ -233,6 +234,7 @@ import FreeTextTypeahead from './widgets/typeahead/FreeText';
 import BasicTwoColumnLayout from './widgets/two-column-layout/Basic';
 import TrailingBiasTwoColumnLayout from './widgets/two-column-layout/TrailingBias';
 import CollapsingLayout from './widgets/two-column-layout/Collapsing';
+import ResizableTwoColumnLayout from './widgets/two-column-layout/Resize';
 import BasicResult from './widgets/result/Basic';
 import AlertResult from './widgets/result/Alert';
 import ErrorResult from './widgets/result/Error';
@@ -272,7 +274,7 @@ export const config = {
 		{ label: 'material', theme: materialTheme },
 		{ label: 'dojo-dark', theme: dojoDarkTheme },
 		{ label: 'material-dark', theme: materialDarkTheme },
-		{ label: 'default', theme: {} }
+		{ label: 'default', theme: defaultTheme }
 	],
 	tests,
 	readmePath: (widget: string) => `src/${widget}/README.md`,
@@ -1783,6 +1785,11 @@ export const config = {
 					filename: 'Collapsing',
 					module: CollapsingLayout,
 					title: 'Collapsing columns'
+				},
+				{
+					filename: 'Resize',
+					module: ResizableTwoColumnLayout,
+					title: 'Resizable columns'
 				}
 			],
 			overview: {

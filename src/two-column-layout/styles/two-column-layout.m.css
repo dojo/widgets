@@ -10,3 +10,17 @@
 .biased {
 	flex-grow: 1;
 }
+
+.resize .even:first-child,
+.resize .small:first-child,
+.resize .biased:first-child {
+	flex-basis: 0;
+	flex-grow: 0;
+}
+
+.resize .even:last-child,
+.resize .small:last-child,
+.resize .biased:last-child {
+	flex-basis: 0;
+	flex-grow: 1;
+}
