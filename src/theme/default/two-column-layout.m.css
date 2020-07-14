@@ -20,8 +20,8 @@
 	align-items: center;
 	justify-content: center;
 	cursor: col-resize;
-	transition: all var(--short-animation-duration) var(--short-animation-easing)
-		var(--animation-delay);
+	transition: all var(--medium-animation-duration) var(--short-animation-easing)
+		var(--short-animation-duration);
 }
 
 .divider:hover,

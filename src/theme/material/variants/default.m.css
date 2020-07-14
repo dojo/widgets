@@ -71,7 +71,7 @@
 	/* transitions */
 	--mdc-transition-duration: 0.25s;
 	--mdc-transition-easing: ease;
-	--mdc-transition-delay: 0.5s;
+	--mdc-medium-transition-duration: 0.5s;
 
 	/* Two column layout */
 	--mdc-divider-width: 9px;

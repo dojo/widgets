@@ -14,7 +14,8 @@
 	align-items: center;
 	justify-content: center;
 	cursor: col-resize;
-	transition: all var(--transition-duration) var(--transition-easing) var(--transition-delay);
+	transition: all var(--medium-transition-duration) var(--transition-easing)
+		var(--transition-duration);
 }
 
 .divider:hover,

@@ -18,8 +18,8 @@
 	align-items: center;
 	justify-content: center;
 	cursor: col-resize;
-	transition: all var(--mdc-transition-duration) var(--mdc-transition-easing)
-		var(--mdc-transition-delay);
+	transition: all var(--mdc-medium-transition-duration) var(--mdc-transition-easing)
+		var(--mdc-transition-duration);
 }
 
 .divider:hover,
