@@ -3,6 +3,10 @@
 	"build-theme": {
 		"themes": ["dojo", "material"]
 	},
+	"build-app": {
+		"locale": "en",
+		"supportedLocales": ["zh", "zh-CN", "zh-TW"]
+	},
 	"build-widget": {
 		"prefix": "dojo",
 		"widgets": [

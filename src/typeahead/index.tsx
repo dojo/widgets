@@ -15,7 +15,7 @@ import * as css from '../theme/default/typeahead.m.css';
 import TriggerPopup from '../trigger-popup';
 import { createResourceMiddleware, ResourceMeta } from '@dojo/framework/core/middleware/resources';
 import TextInput from '../text-input';
-import bundle from '../select/select.nls';
+import bundle from '../select/nls/Select';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import HelperText from '../helper-text';
 import * as listCss from '../theme/default/list.m.css';

@@ -1,3 +1,8 @@
+const locales = {
+	zh: () => import('./zh-CN/TimePicker'),
+	'zh-TW': () => import('./zh-TW/TimePicker')
+};
+
 const messages = {
 	invalidProps: 'Min time cannot be greater than max time',
 	invalidTime: 'Invalid time format',
@@ -5,4 +10,4 @@ const messages = {
 	tooLate: 'Time must be before Max time'
 };
 
-export default { messages };
+export default { locales, messages };
