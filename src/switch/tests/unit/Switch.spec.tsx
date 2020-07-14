@@ -134,7 +134,7 @@ registerSuite('Switch', {
 					.setProperty('~input', 'aria-describedby', 'foo')
 					.setProperty('~input', 'name', 'bar')
 					.setProperty('@offlabel', 'aria-hidden', 'true')
-					.setProperty('@onLabel', 'aria-hidden', null)
+					.setProperty('@onLabel', 'aria-hidden', undefined)
 			);
 		},
 

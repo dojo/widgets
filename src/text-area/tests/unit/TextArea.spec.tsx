@@ -197,14 +197,14 @@ registerSuite('Textarea', {
 
 			h.expect(() =>
 				expected(false, {
-					cols: '15',
+					cols: 15,
 					'aria-describedby': 'foo',
 					id: 'foo',
 					maxlength: '50',
 					minlength: '10',
 					name: 'bar',
 					placeholder: 'baz',
-					rows: '42',
+					rows: 42,
 					value: 'qux',
 					wrap: 'soft'
 				})
@@ -269,8 +269,8 @@ registerSuite('Textarea', {
 						null,
 						null
 					])
-					.setProperty('@input', 'aria-invalid', null)
-					.setProperty('@input', 'aria-readonly', null)
+					.setProperty('@input', 'aria-invalid', undefined)
+					.setProperty('@input', 'aria-readonly', undefined)
 					.setProperty('@input', 'disabled', false)
 					.setProperty('@input', 'readOnly', false)
 					.setProperty('@input', 'required', false)
@@ -317,14 +317,14 @@ registerSuite('Textarea', {
 
 			h.expect(() =>
 				expected(false, {
-					cols: '15',
+					cols: 15,
 					'aria-describedby': 'foo',
 					id: 'foo',
 					maxlength: '50',
 					minlength: '10',
 					name: 'bar',
 					placeholder: 'baz',
-					rows: '42',
+					rows: 42,
 					value: 'qux',
 					wrap: 'soft'
 				})
@@ -333,14 +333,14 @@ registerSuite('Textarea', {
 			h.trigger('@input', 'oninput', { ...stubEvent, target: { value: 'newvalue' } });
 			h.expect(() =>
 				expected(false, {
-					cols: '15',
+					cols: 15,
 					'aria-describedby': 'foo',
 					id: 'foo',
 					maxlength: '50',
 					minlength: '10',
 					name: 'bar',
 					placeholder: 'baz',
-					rows: '42',
+					rows: 42,
 					value: 'newvalue',
 					wrap: 'soft'
 				})
@@ -365,14 +365,14 @@ registerSuite('Textarea', {
 
 			const assertion = () =>
 				expected(false, {
-					cols: '15',
+					cols: 15,
 					'aria-describedby': 'foo',
 					id: 'foo',
 					maxlength: '50',
 					minlength: '10',
 					name: 'bar',
 					placeholder: 'baz',
-					rows: '42',
+					rows: 42,
 					value: 'qux',
 					wrap: 'soft'
 				});
