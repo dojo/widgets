@@ -187,9 +187,7 @@ const expected = function(
 			<DatePicker
 				key="date-picker"
 				labelId=""
-				labels={DEFAULT_LABELS}
 				month={5}
-				monthNames={DEFAULT_MONTHS}
 				renderMonthLabel={customMonthLabel ? noop : undefined}
 				theme={undefined}
 				classes={undefined}
@@ -311,9 +309,7 @@ const baseTemplate = assertionTemplate(() => {
 			<DatePicker
 				key="date-picker"
 				labelId=""
-				labels={DEFAULT_LABELS}
 				month={5}
-				monthNames={DEFAULT_MONTHS}
 				renderMonthLabel={undefined}
 				theme={undefined}
 				classes={undefined}

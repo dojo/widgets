@@ -22,9 +22,7 @@ import {
 const harness = createHarness([compareTheme]);
 const testDate = new Date('June 3 2017');
 const requiredProps = {
-	labels: DEFAULT_LABELS,
 	month: testDate.getMonth(),
-	monthNames: DEFAULT_MONTHS,
 	year: testDate.getFullYear()
 };
 let customProps: any = {};

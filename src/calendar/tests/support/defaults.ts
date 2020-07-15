@@ -1,13 +1,12 @@
-import calendarBundle from '../../nls/Calendar';
-import commonBundle from '../../../common/nls/common';
+import bundle from '../../nls/Calendar';
 
 export const DEFAULT_LABELS = {
-	chooseMonth: calendarBundle.messages.chooseMonth,
-	chooseYear: calendarBundle.messages.chooseYear,
-	previousMonth: calendarBundle.messages.previousMonth,
-	nextMonth: calendarBundle.messages.nextMonth,
-	previousYears: calendarBundle.messages.previousYears,
-	nextYears: calendarBundle.messages.nextYears
+	chooseMonth: bundle.messages.chooseMonth,
+	chooseYear: bundle.messages.chooseYear,
+	previousMonth: bundle.messages.previousMonth,
+	nextMonth: bundle.messages.nextMonth,
+	previousYears: bundle.messages.previousYears,
+	nextYears: bundle.messages.nextYears
 };
 
 export const DEFAULT_WEEKDAYS = [
@@ -20,8 +19,8 @@ export const DEFAULT_WEEKDAYS = [
 	'saturday'
 ].map((weekday) => {
 	return {
-		short: (<any>commonBundle.messages)[weekday.slice(0, 3) + 'Short'],
-		long: (<any>commonBundle.messages)[weekday]
+		short: (<any>bundle.messages)[weekday.slice(0, 3) + 'Short'],
+		long: (<any>bundle.messages)[weekday]
 	};
 });
 
@@ -40,7 +39,7 @@ export const DEFAULT_MONTHS = [
 	'december'
 ].map((month) => {
 	return {
-		short: (<any>commonBundle.messages)[month.slice(0, 3) + 'Short'],
-		long: (<any>commonBundle.messages)[month]
+		short: (<any>bundle.messages)[month.slice(0, 3) + 'Short'],
+		long: (<any>bundle.messages)[month]
 	};
 });
