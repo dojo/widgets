@@ -38,14 +38,7 @@ describe('Popup', () => {
 
 	it('renders nothing if not open', () => {
 		const h = harness(() => (
-			<Popup
-				yTop={0}
-				yBottom={0}
-				leftStart={0}
-				rightStart={0}
-				onClose={() => {}}
-				open={false}
-			>
+			<Popup yTop={0} yBottom={0} xLeft={0} xRight={0} onClose={() => {}} open={false}>
 				hello world
 			</Popup>
 		));
@@ -55,7 +48,7 @@ describe('Popup', () => {
 
 	it('initially renders with opacity 0 while height is calculated', () => {
 		const h = harness(() => (
-			<Popup yTop={0} yBottom={0} leftStart={0} rightStart={0} onClose={() => {}} open={true}>
+			<Popup yTop={0} yBottom={0} xLeft={0} xRight={0} onClose={() => {}} open={true}>
 				hello world
 			</Popup>
 		));
@@ -66,7 +59,7 @@ describe('Popup', () => {
 	it('calls onClose when closed', () => {
 		const onClose = stub();
 		const h = harness(() => (
-			<Popup yTop={0} yBottom={0} leftStart={0} rightStart={0} open={true} onClose={onClose}>
+			<Popup yTop={0} yBottom={0} xLeft={0} xRight={0} open={true} onClose={onClose}>
 				hello world
 			</Popup>
 		));
@@ -91,14 +84,7 @@ describe('Popup', () => {
 
 		const h = harness(
 			() => (
-				<Popup
-					yTop={100}
-					yBottom={0}
-					leftStart={50}
-					rightStart={0}
-					open={true}
-					onClose={() => {}}
-				>
+				<Popup yTop={100} yBottom={0} xLeft={50} xRight={0} open={true} onClose={() => {}}>
 					hello world
 				</Popup>
 			),
@@ -141,8 +127,8 @@ describe('Popup', () => {
 				<Popup
 					yTop={200}
 					yBottom={100}
-					leftStart={130}
-					rightStart={0}
+					xLeft={130}
+					xRight={0}
 					open={true}
 					position="left"
 					onClose={() => {}}
@@ -189,8 +175,8 @@ describe('Popup', () => {
 				<Popup
 					yTop={200}
 					yBottom={100}
-					leftStart={130}
-					rightStart={160}
+					xLeft={130}
+					xRight={160}
 					open={true}
 					position="right"
 					onClose={() => {}}
@@ -237,8 +223,8 @@ describe('Popup', () => {
 				<Popup
 					yTop={200}
 					yBottom={100}
-					leftStart={50}
-					rightStart={160}
+					xLeft={50}
+					xRight={160}
 					open={true}
 					position="left"
 					onClose={() => {}}
@@ -285,8 +271,8 @@ describe('Popup', () => {
 				<Popup
 					yTop={200}
 					yBottom={100}
-					leftStart={130}
-					rightStart={950}
+					xLeft={130}
+					xRight={950}
 					open={true}
 					position="right"
 					onClose={() => {}}
@@ -333,8 +319,8 @@ describe('Popup', () => {
 				<Popup
 					yTop={901}
 					yBottom={300}
-					leftStart={50}
-					rightStart={0}
+					xLeft={50}
+					xRight={0}
 					open={true}
 					onClose={() => {}}
 				>
@@ -377,14 +363,7 @@ describe('Popup', () => {
 
 		const h = harness(
 			() => (
-				<Popup
-					yTop={300}
-					yBottom={50}
-					leftStart={50}
-					rightStart={0}
-					open={true}
-					onClose={() => {}}
-				>
+				<Popup yTop={300} yBottom={50} xLeft={50} xRight={0} open={true} onClose={() => {}}>
 					hello world
 				</Popup>
 			),
@@ -413,8 +392,8 @@ describe('Popup', () => {
 			<Popup
 				yTop={0}
 				yBottom={0}
-				leftStart={0}
-				rightStart={0}
+				xLeft={0}
+				xRight={0}
 				onClose={() => {}}
 				underlayVisible={true}
 				open={true}

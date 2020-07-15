@@ -23,10 +23,10 @@ export interface PopupProperties extends BasePopupProperties {
 	yBottom: number;
 	/** The Y position on the page where the popup should start if rendering "below" */
 	yTop: number;
-	/** The position on the page where the popup should start if rendering "right" */
-	rightStart: number;
-	/** The position on the page where the popup should end if rendering "left" */
-	leftStart: number;
+	/** The right boundary of the popup position */
+	xRight: number;
+	/** The left boundary for the popup position */
+	xLeft: number;
 	/** Whether the popup is currently open */
 	open?: boolean;
 }
@@ -45,8 +45,8 @@ export const Popup = factory(function({
 		position = 'below',
 		yBottom,
 		yTop,
-		rightStart,
-		leftStart,
+		xRight,
+		xLeft,
 		onClose,
 		open
 	} = properties();
@@ -62,11 +62,11 @@ export const Popup = factory(function({
 		below: yTop + wrapperDimensions.size.height <= bottomOfVisibleScreen,
 		above: yBottom - wrapperDimensions.size.height >= topOfVisibleScreen,
 		left:
-			leftStart - wrapperDimensions.size.width >= 0 &&
+			xLeft - wrapperDimensions.size.width >= 0 &&
 			yTop + wrapperDimensions.size.height / 2 <= bottomOfVisibleScreen &&
 			yBottom - wrapperDimensions.size.height / 2 >= topOfVisibleScreen,
 		right:
-			rightStart + wrapperDimensions.size.width <= widthOfScreen &&
+			xRight + wrapperDimensions.size.width <= widthOfScreen &&
 			yTop + wrapperDimensions.size.height / 2 <= bottomOfVisibleScreen &&
 			yBottom - wrapperDimensions.size.height / 2 >= topOfVisibleScreen
 	};
@@ -77,7 +77,7 @@ export const Popup = factory(function({
 
 	if (wrapperDimensions.size.height) {
 		wrapperStyles = {
-			left: `${leftStart}px`,
+			left: `${xLeft}px`,
 			opacity: '1'
 		};
 
@@ -104,15 +104,15 @@ export const Popup = factory(function({
 
 		if (position === 'left') {
 			if (willFit.left) {
-				wrapperStyles.left = `${leftStart - wrapperDimensions.size.width}px`;
+				wrapperStyles.left = `${xLeft - wrapperDimensions.size.width}px`;
 			} else {
-				wrapperStyles.left = `${rightStart}px`;
+				wrapperStyles.left = `${xRight}px`;
 			}
 		} else if (position === 'right') {
 			if (willFit.right) {
-				wrapperStyles.left = `${rightStart}px`;
+				wrapperStyles.left = `${xRight}px`;
 			} else {
-				wrapperStyles.left = `${leftStart - wrapperDimensions.size.width}px`;
+				wrapperStyles.left = `${xLeft - wrapperDimensions.size.width}px`;
 			}
 		}
 	}

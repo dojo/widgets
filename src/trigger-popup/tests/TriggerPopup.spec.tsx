@@ -16,8 +16,8 @@ const baseTemplate = assertionTemplate(() => (
 			key="popup"
 			yTop={0}
 			yBottom={0}
-			leftStart={0}
-			rightStart={0}
+			xLeft={0}
+			xRight={0}
 			onClose={() => {}}
 			open={undefined}
 		>
@@ -108,7 +108,7 @@ describe('TriggerPopup', () => {
 			{ middleware: [[node, mockNode]] }
 		);
 		const contentTemplate = baseTemplate
-			.setProperty('@popup', 'leftStart', 50)
+			.setProperty('@popup', 'xLeft', 50)
 			.setProperty('@popup', 'yTop', 100)
 			.setProperty('@popup', 'yBottom', 50)
 			.setProperty('@trigger-wrapper', 'styles', { width: '150px' });

@@ -65,8 +65,8 @@ export const TriggerPopup = factory(function TriggerPopup({
 				{...otherProperties}
 				yTop={triggerBottom}
 				yBottom={triggerTop}
-				leftStart={triggerPosition.left}
-				rightStart={triggerPosition.right}
+				xLeft={triggerPosition.left}
+				xRight={triggerPosition.right}
 				onClose={close}
 				open={icache.get('open')}
 			>
