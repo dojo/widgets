@@ -116,7 +116,7 @@ const expectedMonthPopup = function(open: boolean) {
 		<div
 			id=""
 			key="month-grid"
-			aria-hidden={!open ? 'true' : 'false'}
+			aria-hidden={open ? 'false' : 'true'}
 			aria-labelledby=""
 			classes={[css.monthGrid, !open ? baseCss.visuallyHidden : null]}
 			role="dialog"
@@ -139,7 +139,7 @@ const expectedYearPopup = function(
 	return (
 		<div
 			key="year-grid"
-			aria-hidden={!open ? 'true' : 'false'}
+			aria-hidden={open ? 'false' : 'true'}
 			aria-labelledby=""
 			classes={[css.yearGrid, !open ? baseCss.visuallyHidden : null]}
 			id=""

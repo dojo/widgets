@@ -536,7 +536,7 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 
 				<div
 					key="month-grid"
-					aria-hidden={!monthPopupOpen ? 'true' : 'false'}
+					aria-hidden={monthPopupOpen ? 'false' : 'true'}
 					aria-labelledby={`${id}_month_button`}
 					classes={[themeCss.monthGrid, !monthPopupOpen ? baseCss.visuallyHidden : null]}
 					id={`${id}_month_dialog`}
@@ -550,7 +550,7 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 
 				<div
 					key="year-grid"
-					aria-hidden={!yearPopupOpen ? 'true' : 'false'}
+					aria-hidden={yearPopupOpen ? 'false' : 'true'}
 					aria-labelledby={`${id}_year_button`}
 					classes={[themeCss.yearGrid, !yearPopupOpen ? baseCss.visuallyHidden : null]}
 					id={`${id}_year_dialog`}
