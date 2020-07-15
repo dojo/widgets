@@ -80,7 +80,7 @@ export const Button = factory(function Button({
 			id={idBase}
 			focus={focus.shouldFocus()}
 			name={name}
-			type={type as any}
+			type={type}
 			value={value}
 			onblur={() => onBlur && onBlur()}
 			onclick={(event: MouseEvent) => {
