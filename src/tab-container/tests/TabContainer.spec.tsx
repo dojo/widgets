@@ -1,3 +1,5 @@
+import { AriaAttributes } from '@dojo/framework/core/interfaces';
+
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
@@ -61,8 +63,8 @@ const reverseOrientationTemplate = assertionTemplate(() => (
 
 const tabButtonProperties = {
 	'aria-controls': 'test-tab-0',
-	'aria-disabled': 'false' as 'false',
-	'aria-selected': 'true' as 'true',
+	'aria-disabled': 'false' as AriaAttributes['aria-disabled'],
+	'aria-selected': 'true' as AriaAttributes['aria-selected'],
 	classes: [css.tabButton, css.activeTabButton, null, null],
 	focus: noop,
 	id: '',
