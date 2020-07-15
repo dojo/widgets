@@ -61,14 +61,8 @@ export const Popup = factory(function({
 	const willFit = {
 		below: yTop + wrapperDimensions.size.height <= bottomOfVisibleScreen,
 		above: yBottom - wrapperDimensions.size.height >= topOfVisibleScreen,
-		left:
-			xLeft - wrapperDimensions.size.width >= 0 &&
-			yTop + wrapperDimensions.size.height / 2 <= bottomOfVisibleScreen &&
-			yBottom - wrapperDimensions.size.height / 2 >= topOfVisibleScreen,
-		right:
-			xRight + wrapperDimensions.size.width <= widthOfScreen &&
-			yTop + wrapperDimensions.size.height / 2 <= bottomOfVisibleScreen &&
-			yBottom - wrapperDimensions.size.height / 2 >= topOfVisibleScreen
+		left: xLeft - wrapperDimensions.size.width >= 0,
+		right: xRight + wrapperDimensions.size.width <= widthOfScreen
 	};
 
 	let wrapperStyles: Partial<CSSStyleDeclaration> = {
@@ -97,9 +91,13 @@ export const Popup = factory(function({
 
 		if (position === 'left' || position === 'right') {
 			const triggerHeight = yTop - yBottom;
-			wrapperStyles.top = `${yBottom +
-				triggerHeight / 2 -
-				wrapperDimensions.size.height / 2}px`;
+			if (yBottom - wrapperDimensions.size.height / 2 >= topOfVisibleScreen) {
+				wrapperStyles.top = `${yBottom +
+					triggerHeight / 2 -
+					wrapperDimensions.size.height / 2}px`;
+			} else {
+				wrapperStyles.top = `${topOfVisibleScreen}px`;
+			}
 		}
 
 		if (position === 'left') {
