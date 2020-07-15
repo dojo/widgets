@@ -8,6 +8,7 @@ import Icon from '../icon';
 import bundle from './nls/TabContainer';
 import { formatAriaProperties, Keys } from '../common/util';
 import * as css from '../theme/default/tab-container.m.css';
+import { AriaAttributes } from '@dojo/framework/core/interfaces';
 
 export interface TabItem {
 	closeable?: boolean;
@@ -181,7 +182,7 @@ export const TabContainer = factory(function TabContainer({
 	];
 
 	let alignClass;
-	let orientation: 'horizontal' | 'vertical' = 'horizontal';
+	let orientation: AriaAttributes['aria-orientation'] = 'horizontal';
 
 	switch (alignButtons) {
 		case 'right':
