@@ -1,10 +1,9 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
-import commonBundle from '../common/nls/common';
 import { formatAriaProperties, Keys } from '../common/util';
 import { monthInMin, monthInMax, isOutOfDateRange, toDate } from './date-utils';
 import Icon from '../icon/index';
-import calendarBundle from './nls/Calendar';
+import bundle from './nls/Calendar';
 import * as css from '../theme/default/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
@@ -13,8 +12,6 @@ import theme from '../middleware/theme';
 import icache, { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import focus from '@dojo/framework/core/middleware/focus';
 import i18n from '@dojo/framework/core/middleware/i18n';
-
-export type CalendarMessages = typeof calendarBundle.messages;
 
 export enum FirstDayOfWeek {
 	sunday = 0,
@@ -29,16 +26,10 @@ export enum FirstDayOfWeek {
 export interface CalendarProperties {
 	/** Custom aria attributes */
 	aria?: { [key: string]: string | null };
-	/** Customize or internationalize accessible text for the Calendar widget */
-	labels?: CalendarMessages;
 	/** Set the latest date the calendar will display (it will show the whole month but not allow later selections) */
 	maxDate?: Date;
 	/** Set the earliest date the calendar will display (it will show the whole month but not allow previous selections) */
 	minDate?: Date;
-	/** Customize or internationalize full month names and abbreviations */
-	monthNames?: { short: string; long: string }[];
-	/** Customize or internationalize weekday names and abbreviations */
-	weekdayNames?: { short: string; long: string }[];
 	/** Configure the first day of the calendar week, defaults to 0 (sunday) */
 	firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 	/** The initial value */
@@ -86,7 +77,7 @@ interface ShortLong<T> {
 	long: keyof T;
 }
 
-const DEFAULT_MONTHS: ShortLong<typeof commonBundle.messages>[] = [
+const DEFAULT_MONTHS: ShortLong<typeof bundle.messages>[] = [
 	{ short: 'janShort', long: 'january' },
 	{ short: 'febShort', long: 'february' },
 	{ short: 'marShort', long: 'march' },
@@ -101,7 +92,7 @@ const DEFAULT_MONTHS: ShortLong<typeof commonBundle.messages>[] = [
 	{ short: 'decShort', long: 'december' }
 ];
 
-const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
+const DEFAULT_WEEKDAYS: ShortLong<typeof bundle.messages>[] = [
 	{ short: 'sunShort', long: 'sunday' },
 	{ short: 'monShort', long: 'monday' },
 	{ short: 'tueShort', long: 'tuesday' },
@@ -153,16 +144,12 @@ enum Controls {
 interface DatePickerProperties {
 	/** Id to reference label containing current month and year */
 	labelId?: string;
-	/** Customize or internationalize accessible helper text */
-	labels: typeof calendarBundle.messages;
 	/** Maximum date to be picked */
 	maxDate?: Date;
 	/** Minimum date to be picked */
 	minDate?: Date;
 	/** Currently displayed month (zero-based) */
 	month: number;
-	/** Array of full and abbreviated month names */
-	monthNames: { short: string; long: string }[];
 	/** Handles when a user action occurs that triggers a change in the month or year popup state */
 	onPopupChange?(open: boolean): void;
 	/** Handles when a month should change (month is zero-based) */
@@ -235,14 +222,20 @@ export const CalendarCell = create({ theme }).properties<CalendarCellProperties>
 	}
 );
 
-export const DatePicker = create({ theme, focus, icache }).properties<DatePickerProperties>()(
-	function DatePicker({ middleware: { theme, focus, icache }, properties, id }) {
+export const DatePicker = create({ theme, focus, icache, i18n }).properties<DatePickerProperties>()(
+	function DatePicker({ middleware: { theme, focus, icache, i18n }, properties, id }) {
 		const themeCss = theme.classes(css);
-		const { labelId = `${id}_label`, labels, month, year } = properties();
+		const { messages } = i18n.localize(bundle);
+		const { labelId = `${id}_label`, month, year } = properties();
 		const keyWithFocus = icache.get<string>('keyWithFocus');
 		const monthPopupOpen = icache.getOrSet('monthPopupOpen', false);
 		const yearPopupOpen = icache.getOrSet('yearPopupOpen', false);
 		const yearPage = icache.getOrSet('yearPage', 0);
+
+		const monthNames = DEFAULT_MONTHS.map((month) => ({
+			short: messages[month.short],
+			long: messages[month.long]
+		}));
 
 		function closeMonthPopup(event?: MouseEvent) {
 			if (event) {
@@ -386,7 +379,7 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 		}
 
 		function renderControlsTrigger(type: Controls) {
-			const { month, monthNames, year } = properties();
+			const { month, year } = properties();
 
 			const content = type === Controls.month ? monthNames[month].long : `${year}`;
 			const open = type === Controls.month ? monthPopupOpen : yearPopupOpen;
@@ -415,14 +408,14 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 		}
 
 		function renderMonthLabel(month: number, year: number) {
-			const { monthNames, renderMonthLabel } = properties();
+			const { renderMonthLabel } = properties();
 			return renderMonthLabel
 				? renderMonthLabel(month, year)
 				: `${monthNames[month].long} ${year}`;
 		}
 
 		function renderMonthRadios() {
-			const { year, month, monthNames } = properties();
+			const { year, month } = properties();
 			return monthNames.map(({ short, long }, i) => {
 				const key = getMonthInputKey(i);
 				return (
@@ -457,9 +450,9 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 		}
 
 		function renderPagingButtonContent(type: Paging) {
-			const { labels, classes } = properties();
+			const { classes } = properties();
 			const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
-			const labelText = type === Paging.next ? labels.nextYears : labels.previousYears;
+			const labelText = type === Paging.next ? messages.nextYears : messages.previousYears;
 
 			return [
 				<Icon
@@ -537,7 +530,7 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 					role="dialog"
 				>
 					<fieldset classes={themeCss.monthFields} onkeydown={onPopupKeyDown}>
-						<legend classes={baseCss.visuallyHidden}>{labels.chooseMonth}</legend>
+						<legend classes={baseCss.visuallyHidden}>{messages.chooseMonth}</legend>
 						{renderMonthRadios()}
 					</fieldset>
 				</div>
@@ -551,7 +544,7 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 					role="dialog"
 				>
 					<fieldset classes={themeCss.yearFields} onkeydown={onPopupKeyDown}>
-						<legend classes={[baseCss.visuallyHidden]}>{labels.chooseYear}</legend>
+						<legend classes={[baseCss.visuallyHidden]}>{messages.chooseYear}</legend>
 						{...renderYearRadios()}
 					</fieldset>
 				</div>
@@ -596,17 +589,14 @@ export const Calendar = factory(function Calendar({
 	children
 }) {
 	const themeCss = theme.classes(css);
-	const { messages: commonMessages } = i18n.localize(commonBundle);
+	const { messages } = i18n.localize(bundle);
 
-	const {
-		labels = i18n.localize(calendarBundle).messages,
-		aria = {},
-		minDate,
-		maxDate,
-		initialValue,
-		weekdayNames = getWeekdays(commonMessages),
-		firstDayOfWeek = 0
-	} = properties();
+	const { aria = {}, minDate, maxDate, initialValue, firstDayOfWeek = 0 } = properties();
+
+	const weekdayNames = DEFAULT_WEEKDAYS.map((weekday) => ({
+		short: messages[weekday.short],
+		long: messages[weekday.long]
+	}));
 
 	let { value, month, year } = properties();
 	const { monthLabel, weekdayCell } = children()[0] || ({} as CalendarChildren);
@@ -696,13 +686,6 @@ export const Calendar = factory(function Calendar({
 		return lastDate.getDate();
 	}
 
-	function getMonths(commonMessages: typeof commonBundle.messages) {
-		return DEFAULT_MONTHS.map((month) => ({
-			short: commonMessages[month.short],
-			long: commonMessages[month.long]
-		}));
-	}
-
 	function getMonthYear() {
 		let { month, year, value } = properties();
 		const selectedDate = value || icache.getOrSet('value', new Date());
@@ -712,13 +695,6 @@ export const Calendar = factory(function Calendar({
 			month: typeof month === 'number' ? month : selectedDate.getMonth(),
 			year: typeof year === 'number' ? year : selectedDate.getFullYear()
 		};
-	}
-
-	function getWeekdays(commonMessages: typeof commonBundle.messages) {
-		return DEFAULT_WEEKDAYS.map((weekday) => ({
-			short: commonMessages[weekday.short],
-			long: commonMessages[weekday.long]
-		}));
 	}
 
 	function goToDate(day: number) {
@@ -932,17 +908,9 @@ export const Calendar = factory(function Calendar({
 		);
 	}
 
-	function renderDatePicker(
-		commonMessages: typeof commonBundle.messages,
-		labels: CalendarMessages
-	) {
-		const {
-			monthNames = getMonths(commonMessages),
-			theme,
-			classes,
-			minDate,
-			maxDate
-		} = properties();
+	function renderDatePicker() {
+		const { theme, classes, minDate, maxDate } = properties();
+
 		const { month, year } = getMonthYear();
 
 		return (
@@ -950,9 +918,7 @@ export const Calendar = factory(function Calendar({
 				key="date-picker"
 				classes={classes}
 				labelId={monthLabelId}
-				labels={labels}
 				month={month}
-				monthNames={monthNames}
 				renderMonthLabel={monthLabel}
 				theme={theme}
 				year={year}
@@ -971,10 +937,10 @@ export const Calendar = factory(function Calendar({
 		);
 	}
 
-	function renderPagingButtonContent(type: Paging, labels: CalendarMessages) {
+	function renderPagingButtonContent(type: Paging) {
 		const { classes } = properties();
 		const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
-		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
+		const labelText = type === Paging.next ? messages.nextMonth : messages.previousMonth;
 
 		return [
 			<Icon
@@ -1002,7 +968,7 @@ export const Calendar = factory(function Calendar({
 
 	return (
 		<div classes={[theme.variant(), themeCss.root]} {...formatAriaProperties(aria)}>
-			{renderDatePicker(commonMessages, labels)}
+			{renderDatePicker()}
 			<table
 				cellspacing="0"
 				cellpadding="0"
@@ -1023,7 +989,7 @@ export const Calendar = factory(function Calendar({
 					disabled={!monthInMin(year, month - 1, minDate)}
 					onclick={onMonthPageDown}
 				>
-					{renderPagingButtonContent(Paging.previous, labels)}
+					{renderPagingButtonContent(Paging.previous)}
 				</button>
 				<button
 					classes={themeCss.next}
@@ -1032,7 +998,7 @@ export const Calendar = factory(function Calendar({
 					disabled={!monthInMax(year, month + 1, maxDate)}
 					onclick={onMonthPageUp}
 				>
-					{renderPagingButtonContent(Paging.next, labels)}
+					{renderPagingButtonContent(Paging.next)}
 				</button>
 			</div>
 		</div>
