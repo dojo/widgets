@@ -91,13 +91,10 @@ export const Popup = factory(function({
 
 		if (position === 'left' || position === 'right') {
 			const triggerHeight = yTop - yBottom;
-			if (yBottom - wrapperDimensions.size.height / 2 >= topOfVisibleScreen) {
-				wrapperStyles.top = `${yBottom +
-					triggerHeight / 2 -
-					wrapperDimensions.size.height / 2}px`;
-			} else {
-				wrapperStyles.top = `${topOfVisibleScreen}px`;
-			}
+			wrapperStyles.top = `${Math.max(
+				yBottom + triggerHeight / 2 - wrapperDimensions.size.height / 2,
+				topOfVisibleScreen
+			)}px`;
 		}
 
 		if (position === 'left') {
