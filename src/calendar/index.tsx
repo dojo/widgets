@@ -1,10 +1,9 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
-import commonBundle from '../common/nls/common';
 import { formatAriaProperties, Keys } from '../common/util';
 import { monthInMin, monthInMax, isOutOfDateRange, toDate } from './date-utils';
 import Icon from '../icon/index';
-import calendarBundle from './nls/Calendar';
+import bundle from './nls/Calendar';
 import * as css from '../theme/default/calendar.m.css';
 import * as baseCss from '../common/styles/base.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
@@ -14,7 +13,7 @@ import icache, { createICacheMiddleware } from '@dojo/framework/core/middleware/
 import focus from '@dojo/framework/core/middleware/focus';
 import i18n from '@dojo/framework/core/middleware/i18n';
 
-export type CalendarMessages = typeof calendarBundle.messages;
+export type CalendarMessages = typeof bundle.messages;
 
 export enum FirstDayOfWeek {
 	sunday = 0,
@@ -86,7 +85,7 @@ interface ShortLong<T> {
 	long: keyof T;
 }
 
-const DEFAULT_MONTHS: ShortLong<typeof commonBundle.messages>[] = [
+const DEFAULT_MONTHS: ShortLong<typeof bundle.messages>[] = [
 	{ short: 'janShort', long: 'january' },
 	{ short: 'febShort', long: 'february' },
 	{ short: 'marShort', long: 'march' },
@@ -101,7 +100,7 @@ const DEFAULT_MONTHS: ShortLong<typeof commonBundle.messages>[] = [
 	{ short: 'decShort', long: 'december' }
 ];
 
-const DEFAULT_WEEKDAYS: ShortLong<typeof commonBundle.messages>[] = [
+const DEFAULT_WEEKDAYS: ShortLong<typeof bundle.messages>[] = [
 	{ short: 'sunShort', long: 'sunday' },
 	{ short: 'monShort', long: 'monday' },
 	{ short: 'tueShort', long: 'tuesday' },
@@ -154,7 +153,7 @@ interface DatePickerProperties {
 	/** Id to reference label containing current month and year */
 	labelId?: string;
 	/** Customize or internationalize accessible helper text */
-	labels: typeof calendarBundle.messages;
+	labels: typeof bundle.messages;
 	/** Maximum date to be picked */
 	maxDate?: Date;
 	/** Minimum date to be picked */
@@ -596,10 +595,10 @@ export const Calendar = factory(function Calendar({
 	children
 }) {
 	const themeCss = theme.classes(css);
-	const { messages: commonMessages } = i18n.localize(commonBundle);
+	const { messages: commonMessages } = i18n.localize(bundle);
 
 	const {
-		labels = i18n.localize(calendarBundle).messages,
+		labels = i18n.localize(bundle).messages,
 		aria = {},
 		minDate,
 		maxDate,
@@ -696,7 +695,7 @@ export const Calendar = factory(function Calendar({
 		return lastDate.getDate();
 	}
 
-	function getMonths(commonMessages: typeof commonBundle.messages) {
+	function getMonths(commonMessages: typeof bundle.messages) {
 		return DEFAULT_MONTHS.map((month) => ({
 			short: commonMessages[month.short],
 			long: commonMessages[month.long]
@@ -714,7 +713,7 @@ export const Calendar = factory(function Calendar({
 		};
 	}
 
-	function getWeekdays(commonMessages: typeof commonBundle.messages) {
+	function getWeekdays(commonMessages: typeof bundle.messages) {
 		return DEFAULT_WEEKDAYS.map((weekday) => ({
 			short: commonMessages[weekday.short],
 			long: commonMessages[weekday.long]
@@ -932,10 +931,7 @@ export const Calendar = factory(function Calendar({
 		);
 	}
 
-	function renderDatePicker(
-		commonMessages: typeof commonBundle.messages,
-		labels: CalendarMessages
-	) {
+	function renderDatePicker(commonMessages: typeof bundle.messages, labels: CalendarMessages) {
 		const {
 			monthNames = getMonths(commonMessages),
 			theme,

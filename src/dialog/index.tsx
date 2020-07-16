@@ -9,7 +9,7 @@ import theme from '../middleware/theme';
 import bodyScroll from '../middleware/bodyScroll';
 import * as css from '../theme/default/dialog.m.css';
 import * as fixedCss from './styles/dialog.m.css';
-import commonBundle from '../common/nls/common';
+import bundle from './nls/Dialog';
 import GlobalEvent from '../global-event';
 import inert from '@dojo/framework/core/middleware/inert';
 
@@ -79,7 +79,7 @@ export const Dialog = factory(function Dialog({
 	inert.set('dialog', open, true);
 
 	if (!closeText) {
-		const { messages } = i18n.localize(commonBundle);
+		const { messages } = i18n.localize(bundle);
 		closeText = `${messages.close} ${title || ''}`;
 	}
 

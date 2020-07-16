@@ -5,7 +5,7 @@ import theme from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Icon from '../icon';
 
-import commonBundle from '../common/nls/common';
+import bundle from './nls/TabContainer';
 import { formatAriaProperties, Keys } from '../common/util';
 import * as css from '../theme/default/tab-container.m.css';
 
@@ -60,7 +60,7 @@ export const TabContainer = factory(function TabContainer({
 	let { activeIndex } = properties();
 
 	const themeCss = theme.classes(css);
-	const { messages } = i18n.localize(commonBundle);
+	const { messages } = i18n.localize(bundle);
 
 	if (activeIndex === undefined) {
 		activeIndex = icache.getOrSet('activeIndex', initialActiveIndex);
