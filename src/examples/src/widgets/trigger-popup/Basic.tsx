@@ -8,7 +8,7 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<Example>
-			<div>
+			<div styles={{ paddingTop: '100px' }}>
 				<TriggerPopup position="below">
 					{{
 						trigger: (onToggleOpen) => (
@@ -31,6 +31,32 @@ export default factory(function Basic() {
 								styles={{ background: 'green', height: '100px', fontSize: '32px' }}
 							>
 								Hello Above!
+							</div>
+						)
+					}}
+				</TriggerPopup>
+				<TriggerPopup position="left">
+					{{
+						trigger: (onToggleOpen) => (
+							<Button onClick={onToggleOpen}>Popup Left</Button>
+						),
+						content: () => (
+							<div
+								styles={{ background: 'green', height: '100px', fontSize: '32px' }}
+							>
+								Hello Left!
+							</div>
+						)
+					}}
+				</TriggerPopup>
+				<TriggerPopup position="right">
+					{{
+						trigger: (onToggleOpen) => (
+							<Button onClick={onToggleOpen}>Popup Right</Button>
+						),
+						content: () => (
+							<div styles={{ background: 'red', height: '100px', fontSize: '32px' }}>
+								Hello Right!
 							</div>
 						)
 					}}

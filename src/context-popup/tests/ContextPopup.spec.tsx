@@ -13,9 +13,10 @@ const baseTemplate = assertionTemplate(() => (
 		<div classes={css.trigger} key="trigger" oncontextmenu={() => {}} />
 		<Popup
 			key="popup"
-			x={0}
 			yTop={0}
 			yBottom={1100}
+			xLeft={0}
+			xRight={0}
 			onClose={() => {}}
 			position="below"
 			open={undefined}
@@ -102,7 +103,8 @@ describe('ContextPopup', () => {
 		assert.isTrue(event.preventDefault.calledOnce);
 		h.expect(
 			baseTemplate
-				.setProperty('@popup', 'x', 98)
+				.setProperty('@popup', 'xLeft', 98)
+				.setProperty('@popup', 'xRight', 98)
 				.setProperty('@popup', 'yTop', 96)
 				.setProperty('@popup', 'open', true)
 				.setChildren('@popup', () => [<div>hello world</div>])
@@ -111,7 +113,8 @@ describe('ContextPopup', () => {
 		assert.isTrue(onClose.calledOnce);
 		h.expect(
 			baseTemplate
-				.setProperty('@popup', 'x', 98)
+				.setProperty('@popup', 'xLeft', 98)
+				.setProperty('@popup', 'xRight', 98)
 				.setProperty('@popup', 'yTop', 96)
 				.setProperty('@popup', 'open', false)
 				.setChildren('@popup', () => [<div>hello world</div>])

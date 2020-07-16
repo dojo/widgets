@@ -19,6 +19,8 @@ export interface ContextPopupChildren {
 interface ContextIcache {
 	x: number;
 	y: number;
+	left: number;
+	right: number;
 	open: boolean;
 }
 
@@ -65,9 +67,10 @@ export const ContextPopup = factory(function({
 			</div>
 			<Popup
 				key="popup"
-				x={x}
 				yTop={y}
 				yBottom={document.documentElement.scrollTop + document.documentElement.clientHeight}
+				xLeft={x}
+				xRight={x}
 				onClose={close}
 				position="below"
 				open={icache.get('open')}
