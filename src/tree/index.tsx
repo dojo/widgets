@@ -93,7 +93,7 @@ export default factory(function({
 		}
 	);
 
-	const { getOrRead, createOptions } = resource;
+	const { getOrRead, createOptions, isLoading } = resource;
 	const {
 		checkable = false,
 		selectable = false,
@@ -107,29 +107,35 @@ export default factory(function({
 	const defaultRenderer = (n: TreeNodeOption) => n.value;
 	const [itemRenderer] = children();
 
-	const rootNodes = createLinkedNodes(flat(getOrRead(template, options())));
+	const rootNodes = flat(getOrRead(template, options()));
 	const activeNode = icache.get('activeNode');
 	const selectedNode = icache.get('selectedNode');
 	const expandedNodes = icache.getOrSet('expandedNodes', []);
 	const checkedNodes = icache.getOrSet('checkedNodes', []);
 	const shouldFocus = focus.shouldFocus();
 
+	const isCurrentlyLoading = isLoading(template, options());
+
 	// build visible list of nodes for rendering
 	const nodes: LinkedTreeNode[] = [];
-	const queue: LinkedTreeNode[] = [...rootNodes];
+	let queue: LinkedTreeNode[] = [];
 	let activeIndex: number | undefined = undefined;
 
-	let current = queue.shift();
-	while (current) {
-		if (current.children.length > 0 && expandedNodes.includes(current.id)) {
-			queue.unshift(...current.children);
-		}
-		if (activeNode && current.id === activeNode) {
-			activeIndex = nodes.length;
-		}
+	if (!isCurrentlyLoading) {
+		queue = [...createLinkedNodes(rootNodes)];
 
-		nodes.push(current);
-		current = queue.shift();
+		let current = queue.shift();
+		while (current) {
+			if (current.children.length > 0 && expandedNodes.includes(current.id)) {
+				queue.unshift(...current.children);
+			}
+			if (activeNode && current.id === activeNode) {
+				activeIndex = nodes.length;
+			}
+
+			nodes.push(current);
+			current = queue.shift();
+		}
 	}
 
 	function activateNode(id: string) {
