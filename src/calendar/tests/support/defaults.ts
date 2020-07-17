@@ -1,14 +1,5 @@
 import bundle from '../../nls/Calendar';
 
-export const DEFAULT_LABELS = {
-	chooseMonth: bundle.messages.chooseMonth,
-	chooseYear: bundle.messages.chooseYear,
-	previousMonth: bundle.messages.previousMonth,
-	nextMonth: bundle.messages.nextMonth,
-	previousYears: bundle.messages.previousYears,
-	nextYears: bundle.messages.nextYears
-};
-
 export const DEFAULT_WEEKDAYS = [
 	'sunday',
 	'monday',

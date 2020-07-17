@@ -13,7 +13,14 @@ import icache, { createICacheMiddleware } from '@dojo/framework/core/middleware/
 import focus from '@dojo/framework/core/middleware/focus';
 import i18n from '@dojo/framework/core/middleware/i18n';
 
-export type CalendarMessages = typeof bundle.messages;
+export type CalendarMessages = {
+	chooseMonth: string;
+	chooseYear: string;
+	previousMonth: string;
+	nextMonth: string;
+	previousYears: string;
+	nextYears: string;
+};
 
 export enum FirstDayOfWeek {
 	sunday = 0,
@@ -153,7 +160,7 @@ interface DatePickerProperties {
 	/** Id to reference label containing current month and year */
 	labelId?: string;
 	/** Customize or internationalize accessible helper text */
-	labels: typeof bundle.messages;
+	labels: CalendarMessages;
 	/** Maximum date to be picked */
 	maxDate?: Date;
 	/** Minimum date to be picked */
