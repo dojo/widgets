@@ -121,7 +121,10 @@ export default factory(function({
 	let queue: LinkedTreeNode[] = [];
 	let activeIndex: number | undefined = undefined;
 
+	console.log('initializing tree');
+
 	if (!isCurrentlyLoading) {
+		console.log('nodes after load', rootNodes);
 		queue = [...createLinkedNodes(rootNodes)];
 
 		let current = queue.shift();
@@ -144,12 +147,14 @@ export default factory(function({
 
 	function selectNode(id: string) {
 		icache.set('selectedNode', id);
+		options({ query: { id } });
 		onSelect && onSelect(id);
 	}
 
 	function expandNode(id: string) {
 		expandedNodes.push(id);
 		icache.set('expandedNodes', expandedNodes);
+		options({ query: { id } });
 		onExpand && onExpand(id, true);
 	}
 

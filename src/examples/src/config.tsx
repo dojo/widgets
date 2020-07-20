@@ -248,6 +248,7 @@ import BasicTree from './widgets/tree/Basic';
 import CheckableTree from './widgets/tree/Checkable';
 import CustomRendererTree from './widgets/tree/CustomRenderer';
 import ControlledTree from './widgets/tree/Controlled';
+import RemoteSource from './widgets/tree/RemoteSource';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -1803,6 +1804,11 @@ export const config = {
 					filename: 'Controlled',
 					module: ControlledTree,
 					title: 'Controlled Usage'
+				},
+				{
+					filename: 'RemoteSource',
+					module: RemoteSource,
+					title: 'Remote Source'
 				}
 			],
 			overview: {

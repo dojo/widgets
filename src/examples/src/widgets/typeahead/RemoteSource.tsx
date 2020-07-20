@@ -18,6 +18,9 @@ const template = createResourceTemplate<User>({
 	find: defaultFind,
 	read: async (request, { put }) => {
 		const { offset, size, query } = request;
+		console.log('size', size);
+		console.log('offset', offset);
+		console.log('query', query);
 		let url = `https://mixolydian-appendix.glitch.me/user?`;
 
 		const pageNumber = offset / size + 1;

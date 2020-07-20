@@ -6,67 +6,104 @@ import {
 } from '@dojo/framework/core/middleware/resources';
 import Example from '../../Example';
 import Tree, { TreeNodeOption } from '@dojo/widgets/tree';
+import icache from '@dojo/framework/core/middleware/icache';
 
 const resource = createResourceMiddleware();
-const factory = create({ resource });
-const nodes: TreeNodeOption[] = [
-	{
-		id: 'parent-1',
-		value: 'parent 1'
-	},
-	{
-		id: 'parent-1-0',
-		value: 'parent 1-0',
-		parent: 'parent-1'
-	},
-	{
-		id: 'leaf-1-0-1',
-		value: 'leaf',
-		parent: 'parent-1-0'
-	},
-	{
-		id: 'leaf-1-0-2',
-		value: 'leaf',
-		parent: 'parent-1-0'
-	},
-	{
-		id: 'parent-1-1',
-		value: 'parent 1-1',
-		parent: 'parent-1'
-	},
-	{
-		id: 'leaf-1-1-1',
-		value: 'leaf',
-		parent: 'parent-1-1'
-	}
-];
+const factory = create({ icache, resource });
 
-const template = createResourceTemplate<TreeNodeOption>({
-	find: defaultFind,
-	read: async (request, { put }) => {
-		const asyncNodes: Promise<TreeNodeOption[]> = new Promise((resolve) => {
-			setTimeout(() => {
-				resolve(nodes);
-			}, 5000);
-		});
+enum Category {
+	repo = 'repo',
+	contributer = 'contributer'
+}
 
-		const nodeData: TreeNodeOption[] = await asyncNodes;
+export default factory(function Remote({ id, middleware: { icache, resource } }) {
+	const template = createResourceTemplate<TreeNodeOption>({
+		find: defaultFind,
+		read: async (request, { put }) => {
+			const { query } = request;
+			if (!icache.get('data')) {
+				icache.set('data', []);
+			}
 
-		put(
-			{
-				data: nodeData,
-				total: 13
-			},
-			request
-		);
-	}
-});
+			if (query.id) {
+				const selectedNode = icache.get('data').find((value: any) => value.id === query.id);
+				const hasQueredChildren = !!icache
+					.get('data')
+					.find((value: any) => value.parent === query.id);
+				console.log('hasQueredChildren', hasQueredChildren);
+				console.log('selectedNode', selectedNode);
 
-export default factory(function Basic({ id, middleware: { resource } }) {
-	const onCheck = (node: string, checked: boolean) => {};
+				if (selectedNode && selectedNode.category === Category.repo && !hasQueredChildren) {
+					// Fetch second tree level
+					const response = await fetch(selectedNode.remoteSource, {
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
+					const data = await response.json();
+
+					icache.set('data', [
+						...icache.get('data'),
+						...data.map((value: any) => {
+							return {
+								id: value.id,
+								value: value.login,
+								category: Category.contributer,
+								parent: query.id
+							};
+						})
+					]);
+				}
+			}
+
+			if (icache.get('data').length === 0) {
+				console.log('gets here');
+				const initialUrl = 'https://api.github.com/orgs/dojo/repos';
+
+				const response = await fetch(initialUrl, {
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				});
+
+				const data = await response.json();
+				console.log('returned data', data);
+				icache.set(
+					'data',
+					data.map((value: any) => {
+						console.log('value', value);
+						return {
+							id: value.id,
+							remoteSource: value.contributors_url,
+							value: value.full_name,
+							category: Category.repo
+						};
+					})
+				);
+			}
+			const nodes = icache.get('data').map((node: any) => {
+				return {
+					id: node.id,
+					value: node.value,
+					parent: node.parent
+				};
+			});
+
+			console.log('nodes', nodes);
+			console.log('data', icache.get('data'));
+
+			put(
+				{
+					data: nodes,
+					total: nodes.length
+				},
+				request
+			);
+		}
+	});
 	return (
 		<Example>
-			<Tree selectable={true} resource={resource({ template })} onCheck={onCheck} />
+			<Tree checkable={true} resource={resource({ template })} />
 		</Example>
 	);
 });
