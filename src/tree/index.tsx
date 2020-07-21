@@ -21,6 +21,7 @@ export interface TreeNodeOption {
 	id: string;
 	parent?: string;
 	value: string;
+	hasChildren?: string;
 }
 
 export interface TreeProperties {
@@ -107,24 +108,27 @@ export default factory(function({
 	const defaultRenderer = (n: TreeNodeOption) => n.value;
 	const [itemRenderer] = children();
 
-	const rootNodes = flat(getOrRead(template, options()));
 	const activeNode = icache.get('activeNode');
 	const selectedNode = icache.get('selectedNode');
 	const expandedNodes = icache.getOrSet('expandedNodes', []);
 	const checkedNodes = icache.getOrSet('checkedNodes', []);
 	const shouldFocus = focus.shouldFocus();
+	const rootNodes = flat(
+		getOrRead(template, options({ query: { id: expandedNodes.slice(-1)[0] } }))
+	);
 
-	const isCurrentlyLoading = isLoading(template, options());
+	const isCurrentlyLoading = isLoading(
+		template,
+		options({ query: { id: expandedNodes.slice(-1)[0] } })
+	);
+	console.log('rootNodes', rootNodes);
 
 	// build visible list of nodes for rendering
 	const nodes: LinkedTreeNode[] = [];
 	let queue: LinkedTreeNode[] = [];
 	let activeIndex: number | undefined = undefined;
 
-	console.log('initializing tree');
-
 	if (!isCurrentlyLoading) {
-		console.log('nodes after load', rootNodes);
 		queue = [...createLinkedNodes(rootNodes)];
 
 		let current = queue.shift();
@@ -147,14 +151,13 @@ export default factory(function({
 
 	function selectNode(id: string) {
 		icache.set('selectedNode', id);
-		options({ query: { id } });
 		onSelect && onSelect(id);
 	}
 
 	function expandNode(id: string) {
 		expandedNodes.push(id);
 		icache.set('expandedNodes', expandedNodes);
-		options({ query: { id } });
+		// options({ query: { id } });
 		onExpand && onExpand(id, true);
 	}
 
