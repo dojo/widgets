@@ -161,9 +161,9 @@ describe('TwoColumnLayout', () => {
 		));
 
 		r.expect(
-			baseAssertion.insertAfter(WrappedLeading, () => (
+			baseAssertion.insertAfter(WrappedLeading, () => [
 				<div classes={css.divider} key="divider" />
-			))
+			])
 		);
 	});
 
@@ -181,7 +181,7 @@ describe('TwoColumnLayout', () => {
 
 		r.expect(
 			baseAssertion
-				.insertAfter(WrappedLeading, () => <div classes={css.divider} key="divider" />)
+				.insertAfter(WrappedLeading, () => [<div classes={css.divider} key="divider" />])
 				.setProperty(WrappedLeading, 'styles', { flexBasis: '100px' })
 				.setProperty(WrappedRoot, 'classes', [
 					undefined,
@@ -196,7 +196,7 @@ describe('TwoColumnLayout', () => {
 
 		r.expect(
 			baseAssertion
-				.insertAfter(WrappedLeading, () => <div classes={css.divider} key="divider" />)
+				.insertAfter(WrappedLeading, () => [<div classes={css.divider} key="divider" />])
 				.setProperty(WrappedLeading, 'styles', { flexBasis: '300px' })
 				.setProperty(WrappedRoot, 'classes', [
 					undefined,
@@ -210,7 +210,7 @@ describe('TwoColumnLayout', () => {
 
 		r.expect(
 			baseAssertion
-				.insertAfter(WrappedLeading, () => <div classes={css.divider} key="divider" />)
+				.insertAfter(WrappedLeading, () => [<div classes={css.divider} key="divider" />])
 				.setProperty(WrappedLeading, 'styles', { flexBasis: '0px' })
 				.setProperty(WrappedRoot, 'classes', [
 					undefined,
