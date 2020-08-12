@@ -25,7 +25,9 @@ const template = createResourceTemplate<RemoteNodeTreeOption>({
 	read: async (request, { put, get }) => {
 		let { data: nodes } = get();
 
-		const { query } = request;
+		const { query, size } = request;
+
+		console.log('size', size);
 
 		if (query.id) {
 			const selectedNode = nodes.find((value: any) => value.id === query.id);
@@ -83,7 +85,10 @@ const template = createResourceTemplate<RemoteNodeTreeOption>({
 				data: nodes,
 				total: nodes.length
 			},
-			request
+			{
+				...request,
+				size: nodes.length
+			}
 		);
 	}
 });

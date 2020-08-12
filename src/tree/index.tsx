@@ -94,7 +94,7 @@ export default factory(function({
 		}
 	);
 
-	const { getOrRead, createOptions, isLoading } = resource;
+	const { getOrRead, createOptions, isLoading, meta } = resource;
 	const {
 		checkable = false,
 		selectable = false,
@@ -113,22 +113,29 @@ export default factory(function({
 	const expandedNodes = icache.getOrSet('expandedNodes', []);
 	const checkedNodes = icache.getOrSet('checkedNodes', []);
 	const shouldFocus = focus.shouldFocus();
-	const rootNodes = flat(
-		getOrRead(template, options({ query: { id: expandedNodes.slice(-1)[0] } }))
-	);
+	console.log('activeNode', activeNode);
+	console.log('expandedNode', expandedNodes.slice(-1)[0]);
+	const info = meta(template, options({ query: { id: expandedNodes.slice(-1)[0] } }), true);
 
 	const isCurrentlyLoading = isLoading(
 		template,
 		options({ query: { id: expandedNodes.slice(-1)[0] } })
 	);
-	console.log('rootNodes', rootNodes);
 
 	// build visible list of nodes for rendering
 	const nodes: LinkedTreeNode[] = [];
 	let queue: LinkedTreeNode[] = [];
 	let activeIndex: number | undefined = undefined;
 
-	if (!isCurrentlyLoading) {
+	if (!isCurrentlyLoading && info) {
+		console.log('info', info);
+		const rootNodes = flat(
+			getOrRead(
+				template,
+				options({ query: { id: expandedNodes.slice(-1)[0] }, size: info.total })
+			)
+		);
+		console.log('rootNodes', rootNodes);
 		queue = [...createLinkedNodes(rootNodes)];
 
 		let current = queue.shift();
