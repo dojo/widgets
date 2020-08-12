@@ -3,7 +3,8 @@ import {
 	Constructor,
 	MetaBase,
 	WidgetMetaConstructor,
-	MiddlewareResultFactory
+	MiddlewareResultFactory,
+	DefaultMiddlewareResult
 } from '@dojo/framework/core/interfaces';
 import { CustomComparator, harness } from '@dojo/framework/testing/harness/harness';
 import { SinonStub } from 'sinon';
@@ -82,10 +83,7 @@ export const compareLabelId = {
 
 interface HarnessOptions {
 	customComparator?: CustomComparator[];
-	middleware?: [
-		MiddlewareResultFactory<any, any, any, any>,
-		MiddlewareResultFactory<any, any, any, any>
-	][];
+	middleware?: [MiddlewareResultFactory<any, any, any, any>, () => DefaultMiddlewareResult][];
 }
 
 export const createHarness = (globalCompares: CustomComparator[]) => {
