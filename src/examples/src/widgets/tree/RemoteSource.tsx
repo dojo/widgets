@@ -10,84 +10,58 @@ import Tree, { TreeNodeOption } from '@dojo/widgets/tree';
 const resource = createResourceMiddleware();
 const factory = create({ resource });
 
-enum Category {
-	repo = 'repo',
-	contributer = 'contributer'
-}
-
-interface RemoteNodeTreeOption extends TreeNodeOption {
-	remoteSource: string;
-	category: Category;
-}
-
-const template = createResourceTemplate<RemoteNodeTreeOption>({
+const template = createResourceTemplate<TreeNodeOption>({
 	find: defaultFind,
 	read: async (request, { put, get }) => {
-		let { data: nodes } = get();
+		const { query } = request;
+		let data: TreeNodeOption[] = [];
 
-		const { query, size } = request;
-
-		console.log('size', size);
-
-		if (query.id) {
-			const selectedNode = nodes.find((value: any) => value.id === query.id);
-			const hasQueredChildren = !!nodes.find((value: any) => value.parent === query.id);
-
-			if (selectedNode && selectedNode.category === Category.repo && !hasQueredChildren) {
-				// Fetch second tree level
-				const response = await fetch(selectedNode.remoteSource, {
-					headers: {
-						'Content-Type': 'application/json'
-					}
-				});
-				const data = await response.json();
-
-				nodes = [
-					...data.map((value: any) => {
-						return {
-							id: value.id,
-							value: value.login,
-							category: Category.contributer,
-							parent: query.id
-						};
-					}),
-					...nodes
-				];
-			}
+		console.log('query', query);
+		if (query.parent !== 'root') {
+			const response = await fetch(`https://www.dnd5eapi.co/api/races/${query.parent}`, {
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			const parsedData = await response.json();
+			data = parsedData.traits.map((value: { url: string; name: string }) => {
+				return {
+					id: `${query.parent}-${value.name}`,
+					value: value.name,
+					hasChildren: false,
+					parent: query.parent
+				};
+			});
 		}
 
-		if (nodes.length === 0) {
-			const initialUrl = 'https://api.github.com/orgs/dojo/repos';
-
+		if (query.parent === 'root') {
+			const initialUrl = 'https://www.dnd5eapi.co/api/races';
 			const response = await fetch(initialUrl, {
 				headers: {
 					'Content-Type': 'application/json'
 				}
 			});
 
-			const data = await response.json();
-			nodes = data.map((node: any) => {
+			const parsedData = await response.json();
+			console.log('spells', parsedData);
+			data = parsedData.results.map((value: { index: string; name: string; url: string }) => {
 				return {
-					id: node.id,
-					value: node.full_name,
+					id: value.index,
+					value: value.name,
 					hasChildren: true,
-					remoteSource: node.contributors_url,
-					category: Category.repo
+					parent: 'root'
 				};
 			});
 		}
 
-		console.log('UPDATED NODES', nodes);
-		console.log('NODES LENGTH', nodes.length);
-
 		put(
 			{
-				data: nodes,
-				total: nodes.length
+				data,
+				total: 30
 			},
 			{
 				...request,
-				size: nodes.length
+				size: 30
 			}
 		);
 	}

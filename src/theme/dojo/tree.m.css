@@ -12,7 +12,7 @@
 }
 
 .spacer {
-	width: calc(var(--grid-base) * 2);
+	width: calc(var(--grid-base) * 6);
 }
 
 .content {
@@ -20,7 +20,6 @@
 	box-sizing: content-box;
 	display: flex;
 	padding: 0 4px;
-	width: 100%;
 }
 
 .disabled {

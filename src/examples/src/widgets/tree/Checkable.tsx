@@ -10,33 +10,40 @@ const resource = createResourceMiddleware();
 const factory = create({ resource });
 const nodes: TreeNodeOption[] = [
 	{
-		id: 'parent-1',
-		value: 'parent 1'
+		id: 'c9ae529a',
+		value: 'parent 1',
+		parent: 'root',
+		hasChildren: true
 	},
 	{
-		id: 'parent-1-0',
+		id: 'cde74420',
 		value: 'parent 1-0',
-		parent: 'parent-1'
+		parent: 'c9ae529a',
+		hasChildren: true
 	},
 	{
-		id: 'leaf-1-0-0',
-		value: 'leaf',
-		parent: 'parent-1-0'
-	},
-	{
-		id: 'leaf-1-0-1',
-		value: 'leaf',
-		parent: 'parent-1-0'
-	},
-	{
-		id: 'parent-1-1',
+		id: 'e2065522',
 		value: 'parent 1-1',
-		parent: 'parent-1'
+		parent: 'c9ae529a',
+		hasChildren: true
 	},
 	{
-		id: 'leaf-1-1-0',
-		value: 'leaf',
-		parent: 'parent-1-1'
+		id: 'de48r11ea',
+		value: 'child-1',
+		parent: 'cde74420',
+		hasChildren: false
+	},
+	{
+		id: 'd8fada34',
+		value: 'child-2',
+		parent: 'cde74420',
+		hasChildren: false
+	},
+	{
+		id: 'e73a11b4',
+		value: 'child-3',
+		parent: 'e2065522',
+		hasChildren: false
 	}
 ];
 const template = createMemoryResourceTemplate<TreeNodeOption>();

@@ -6,7 +6,7 @@ import theme from '@dojo/framework/core/middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
 import { fill, flat } from '@dojo/framework/shim/array';
 
-import { Keys } from '../common/util';
+// import { Keys } from '../common/util';
 import Icon from '../icon';
 import Checkbox from '../checkbox';
 import { ListItem } from '../list';
@@ -19,9 +19,9 @@ import * as css from '../theme/default/tree.m.css';
 
 export interface TreeNodeOption {
 	id: string;
-	parent?: string;
+	parent: string;
 	value: string;
-	hasChildren?: string;
+	hasChildren: boolean;
 }
 
 export interface TreeProperties {
@@ -102,7 +102,7 @@ export default factory(function({
 		onCheck,
 		onExpand,
 		disabledNodes,
-		resource: { template, options = createOptions(id) }
+		resource: { template }
 	} = properties();
 	const classes = theme.classes(css);
 	const defaultRenderer = (n: TreeNodeOption) => n.value;
@@ -113,32 +113,7 @@ export default factory(function({
 	const expandedNodes = icache.getOrSet('expandedNodes', []);
 	const checkedNodes = icache.getOrSet('checkedNodes', []);
 	const shouldFocus = focus.shouldFocus();
-	const info = meta(template, options(), true);
-
-	const isCurrentlyLoading = isLoading(template, options({}));
-
-	// build visible list of nodes for rendering
-	const nodes: LinkedTreeNode[] = [];
-	let queue: LinkedTreeNode[] = [];
-	let activeIndex: number | undefined = undefined;
-
-	if (!isCurrentlyLoading && info) {
-		const rootNodes = flat(getOrRead(template, options({ size: info.total })));
-		queue = [...createLinkedNodes(rootNodes)];
-
-		let current = queue.shift();
-		while (current) {
-			if (current.children.length > 0 && expandedNodes.includes(current.id)) {
-				queue.unshift(...current.children);
-			}
-			if (activeNode && current.id === activeNode) {
-				activeIndex = nodes.length;
-			}
-
-			nodes.push(current);
-			current = queue.shift();
-		}
-	}
+	// let activeIndex: number | undefined = undefined;
 
 	function activateNode(id: string) {
 		icache.set('activeNode', id);
@@ -161,142 +136,149 @@ export default factory(function({
 		onExpand && onExpand(id, false);
 	}
 
-	function onKeyDown(event: KeyboardEvent) {
-		event.stopPropagation();
+	// function nextNode(node: TreeNodeOption) {
+	// 	if (node.hasChildren) {
+	// 		const options = createOptions(nodeId || id);
+	// 		const info = meta(template, options({ query: {parent: nodeId }}), true);
 
-		switch (event.which) {
-			// select
-			case Keys.Enter:
-			case Keys.Space:
-				event.preventDefault();
-				if (activeNode && selectedNode !== activeNode) {
-					selectNode(activeNode);
-				}
-				break;
+	// 		if (info === undefined) {
+	// 			return <h1>Loading</h1>
+	// 		}
 
-			// next
-			case Keys.Down:
-				event.preventDefault();
-				if (activeIndex !== undefined && activeIndex < nodes.length - 1) {
-					activateNode(nodes[activeIndex + 1].id);
-				}
-				break;
+	// 		const results = getOrRead(template, options({query: {parent: nodeId}, size: info.total}));
+	// 	}
 
-			// previous
-			case Keys.Up:
-				event.preventDefault();
-				if (activeIndex !== undefined && activeIndex > 0) {
-					activateNode(nodes[activeIndex - 1].id);
-				}
-				break;
+	// 	return nodes[activeIndex + 1].id
+	// }
 
-			// expand
-			case Keys.Right:
-				event.preventDefault();
-				if (activeNode && !expandedNodes.includes(activeNode)) {
-					expandNode(activeNode);
-				}
-				break;
+	// async function onKeyDown(event: KeyboardEvent) {
+	// 	event.stopPropagation();
 
-			// collapse
-			case Keys.Left:
-				event.preventDefault();
-				if (activeNode && expandedNodes.includes(activeNode)) {
-					collapseNode(activeNode);
-				}
-				break;
+	// 	switch (event.which) {
+	// 		// select
+	// 		case Keys.Enter:
+	// 		case Keys.Space:
+	// 			event.preventDefault();
+	// 			if (activeNode && selectedNode !== activeNode) {
+	// 				selectNode(activeNode);
+	// 			}
+	// 			break;
+
+	// 		// next
+	// 		case Keys.Down:
+	// 			event.preventDefault();
+	// 			if (activeIndex !== undefined && activeIndex < nodes.length - 1) {
+	// 				activateNode(nodes[activeIndex + 1].id);
+	// 			}
+	// 			break;
+
+	// 		// previous
+	// 		case Keys.Up:
+	// 			event.preventDefault();
+	// 			if (activeIndex !== undefined && activeIndex > 0) {
+	// 				activateNode(nodes[activeIndex - 1].id);
+	// 			}
+	// 			break;
+
+	// 		// expand
+	// 		case Keys.Right:
+	// 			event.preventDefault();
+	// 			if (activeNode && !expandedNodes.includes(activeNode)) {
+	// 				expandNode(activeNode);
+	// 			}
+	// 			break;
+
+	// 		// collapse
+	// 		case Keys.Left:
+	// 			event.preventDefault();
+	// 			if (activeNode && expandedNodes.includes(activeNode)) {
+	// 				collapseNode(activeNode);
+	// 			}
+	// 			break;
+	// 	}
+	// }
+
+	function createNodeTreeLevel(nodeId: string = 'root', depth: number = 0) {
+		const options = createOptions(nodeId);
+		const info = meta(template, options({ query: { parent: nodeId } }), true);
+
+		if (info === undefined) {
+			return <h1>Loading</h1>;
 		}
-	}
 
-	return (
-		<ol
-			classes={[classes.root, theme.variant()]}
-			focus={() => shouldFocus}
-			onkeydown={onKeyDown}
-			tabIndex={0}
-		>
-			{nodes.map((node) => (
-				<TreeNode
-					depth={node.depth}
-					activeNode={activeNode}
-					checkable={checkable}
-					selectable={selectable}
-					checkedNodes={checkedNodes}
-					selectedNode={selectedNode}
-					disabledNodes={disabledNodes || []}
-					expandedNodes={expandedNodes}
-					node={node}
-					onActive={activateNode}
-					onSelect={selectNode}
-					onCheck={(n, checked) => {
-						if (checked) {
-							checkedNodes.push(n);
-						} else {
-							checkedNodes.splice(checkedNodes.indexOf(n), 1);
-						}
-						icache.set('checkedNodes', checkedNodes);
-						onCheck && onCheck(n, checked);
-					}}
-					onExpand={(n, expanded) => {
-						if (expanded) {
-							expandNode(n);
-						} else {
-							collapseNode(n);
-						}
-					}}
-				>
-					{itemRenderer || defaultRenderer}
-				</TreeNode>
-			))}
-		</ol>
-	);
+		const results = getOrRead(
+			template,
+			options({ query: { parent: nodeId }, size: info.total })
+		);
+
+		const loading = isLoading(template, options());
+		if (loading) {
+			return <h1>Loading</h1>;
+		}
+
+		const nodes = flat(results);
+
+		return (
+			<ol
+				classes={[classes.root, theme.variant()]}
+				focus={() => shouldFocus}
+				// onkeydown={onKeyDown}
+				tabIndex={0}
+			>
+				{nodes.map((node) => {
+					const isExpanded = expandedNodes.indexOf(node.id) !== -1;
+					console.log('isExpanded', isExpanded);
+					console.log('expandedNodes', expandedNodes);
+					console.log('node', node);
+					return (
+						<li
+							classes={[
+								classes.node,
+								node.hasChildren && classes.leaf,
+								selectable && classes.selectable,
+								node.id === selectedNode && classes.selected
+							]}
+						>
+							<TreeNode
+								depth={depth}
+								activeNode={activeNode}
+								checkable={checkable}
+								selectable={selectable}
+								checkedNodes={checkedNodes}
+								selectedNode={selectedNode}
+								disabledNodes={disabledNodes || []}
+								expandedNodes={expandedNodes}
+								node={node}
+								onActive={activateNode}
+								onSelect={selectNode}
+								onCheck={(n, checked) => {
+									if (checked) {
+										checkedNodes.push(n);
+									} else {
+										checkedNodes.splice(checkedNodes.indexOf(n), 1);
+									}
+									icache.set('checkedNodes', checkedNodes);
+									onCheck && onCheck(n, checked);
+								}}
+								onExpand={(n, expanded) => {
+									if (expanded) {
+										expandNode(n);
+									} else {
+										collapseNode(n);
+									}
+								}}
+							>
+								{itemRenderer || defaultRenderer}
+							</TreeNode>
+							{isExpanded && createNodeTreeLevel(node.id, depth + 1)}
+						</li>
+					);
+				})}
+			</ol>
+		);
+	}
+	return createNodeTreeLevel();
 });
-
-function createLinkedNodes(nodes: TreeNodeOption[]): LinkedTreeNode[] {
-	// create a map of all nodes
-	const nodeMap = new Map<string, LinkedTreeNode>();
-	for (let node of nodes) {
-		nodeMap.set(node.id, {
-			id: node.id,
-			node,
-			depth: 0,
-			children: []
-		});
-	}
-
-	// organize into a tree such that only root nodes are top-level
-	const rootNodes: LinkedTreeNode[] = [];
-	for (let current of nodeMap.values()) {
-		if (current.node.parent) {
-			const parent = nodeMap.get(current.node.parent);
-			if (parent) {
-				parent.children.push(current);
-			} else {
-				// a parent that doesn't exist?
-				// this node will not be included in the tree
-			}
-		} else {
-			rootNodes.push(current);
-		}
-	}
-
-	// track node depth
-	const queue = [...rootNodes];
-	let current = queue.shift();
-	while (current) {
-		if (current.node.parent) {
-			const parent = nodeMap.get(current.node.parent);
-			if (parent) {
-				current.depth = parent.depth + 1;
-			}
-		}
-
-		queue.unshift(...current.children);
-		current = queue.shift();
-	}
-
-	return rootNodes;
-}
 
 /*******************
  * TreeNode
@@ -311,7 +293,7 @@ interface TreeNodeProperties {
 	checkedNodes: string[];
 	disabledNodes: string[];
 	expandedNodes: string[];
-	node: LinkedTreeNode;
+	node: TreeNodeOption;
 	onActive(node: string): void;
 	onSelect(node: string): void;
 	onCheck(node: string, checked: boolean): void;
@@ -349,60 +331,51 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 	const expanded = expandedNodes.includes(node.id);
 	const checked = checkedNodes.includes(node.id);
 	const isDisabled = disabledNodes && disabledNodes.includes(node.id);
-	const isLeaf = !node.children || node.children.length === 0;
+	const isExpandable = node.hasChildren;
 	const spacers = new Array(depth);
 	fill(spacers, <div classes={classes.spacer} />);
 
 	return (
-		<li
-			classes={[
-				classes.node,
-				isLeaf && classes.leaf,
-				selectable && classes.selectable,
-				isSelected && classes.selected
-			]}
+		<ListItem
+			active={isActive}
+			selected={isSelected}
+			onRequestActive={() => {
+				onActive(node.id);
+			}}
+			onSelect={() => {
+				isExpandable && onExpand(node.id, !expanded);
+				selectable && onSelect(node.id);
+			}}
+			disabled={isDisabled}
+			widgetId={node.id}
 		>
-			<ListItem
-				active={isActive}
-				selected={isSelected}
-				onRequestActive={() => {
-					onActive(node.id);
-				}}
-				onSelect={() => {
-					onExpand(node.id, !expanded);
-					selectable && onSelect(node.id);
-				}}
-				disabled={isDisabled}
-				widgetId={node.id}
-			>
-				<div classes={classes.contentWrapper}>
-					{...spacers}
-					<div classes={classes.content}>
-						{!isLeaf && (
-							<div classes={classes.expander}>
-								<Icon type={expanded ? 'downIcon' : 'rightIcon'} />
-							</div>
-						)}
-						{checkable && (
-							<div
-								onpointerdown={(event: Event) => {
-									// don't allow the check's activity to effect our expand/collapse
-									event.stopPropagation();
+			<div classes={classes.contentWrapper}>
+				{...spacers}
+				<div classes={classes.content}>
+					{isExpandable && (
+						<div classes={classes.expander}>
+							<Icon type={expanded ? 'downIcon' : 'rightIcon'} />
+						</div>
+					)}
+					{checkable && (
+						<div
+							onpointerdown={(event: Event) => {
+								// don't allow the check's activity to effect our expand/collapse
+								event.stopPropagation();
+							}}
+						>
+							<Checkbox
+								checked={checked}
+								onValue={(value) => {
+									onCheck(node.id, value);
 								}}
-							>
-								<Checkbox
-									checked={checked}
-									onValue={(value) => {
-										onCheck(node.id, value);
-									}}
-									disabled={isDisabled}
-								/>
-							</div>
-						)}
-						<div classes={classes.title}>{itemRenderer(node.node)}</div>
-					</div>
+								disabled={isDisabled}
+							/>
+						</div>
+					)}
+					<div classes={classes.title}>{itemRenderer(node)}</div>
 				</div>
-			</ListItem>
-		</li>
+			</div>
+		</ListItem>
 	);
 });

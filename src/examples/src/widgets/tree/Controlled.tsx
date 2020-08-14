@@ -16,33 +16,34 @@ const icache = createICacheMiddleware<ControlledCache>();
 const factory = create({ icache, resource });
 const nodes: TreeNodeOption[] = [
 	{
-		id: 'parent-1',
-		value: 'parent 1'
+		id: '851c1eea',
+		value: 'parent 1',
+		parent: 'root'
 	},
 	{
-		id: 'parent-1-0',
+		id: '8ef88e80',
 		value: 'parent 1-0',
-		parent: 'parent-1'
+		parent: '851c1eea'
 	},
 	{
-		id: 'leaf-1-0-1',
-		value: 'leaf',
-		parent: 'parent-1-0'
+		id: 'a4ed7462',
+		value: 'child 1',
+		parent: '8ef88e80'
 	},
 	{
-		id: 'leaf-1-0-2',
-		value: 'leaf',
-		parent: 'parent-1-0'
+		id: 'b055cda4',
+		value: 'child 2',
+		parent: '8ef88e80'
 	},
 	{
-		id: 'parent-1-1',
+		id: 'becc2f0e',
 		value: 'parent 1-1',
-		parent: 'parent-1'
+		parent: '851c1eea'
 	},
 	{
-		id: 'leaf-1-1-1',
-		value: 'leaf',
-		parent: 'parent-1-1'
+		id: 'c35ca04e',
+		value: 'child 3',
+		parent: 'becc2f0e'
 	}
 ];
 const template = createMemoryResourceTemplate<TreeNodeOption>();
@@ -64,7 +65,7 @@ export default factory(function Advanced({ id, middleware: { icache, resource } 
 				<li>
 					<button
 						onclick={() => {
-							icache.set('expanded', expanded ? undefined : ['parent-1']);
+							icache.set('expanded', expanded ? undefined : ['851c1eea']);
 						}}
 					>
 						Toggle Expand
@@ -73,7 +74,7 @@ export default factory(function Advanced({ id, middleware: { icache, resource } 
 				<li>
 					<button
 						onclick={() => {
-							icache.set('checked', checked ? undefined : ['parent-1']);
+							icache.set('checked', checked ? undefined : ['851c1eea']);
 						}}
 					>
 						Toggle Checked
