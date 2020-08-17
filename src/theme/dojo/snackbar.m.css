@@ -10,7 +10,7 @@
 	pointer-events: none;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	margin: var(--spacing-regular);
-	z-index: var(--zindex-alert);
+	z-index: var(--zindex-body-popup);
 	font-family: var(--font-family);
 }
 

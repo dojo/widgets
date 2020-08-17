@@ -8,14 +8,14 @@
 
 .underlayVisible {
 	background: var(--color-box-shadow-strong);
-	z-index: var(--zindex-dialog);
+	z-index: var(--zindex-partial-overlay);
 }
 
 .pane {
 	background: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
 	box-shadow: var(--box-shadow-dimensions-large) var(--color-box-shadow-strong);
-	z-index: calc(var(--zindex-dialog) + 1);
+	z-index: calc(var(--zindex-partial-overlay) + 1);
 }
 
 .content {

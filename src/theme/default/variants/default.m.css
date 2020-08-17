@@ -17,11 +17,10 @@
 	--border-radius: 4px;
 
 	/* Z-index levels */
-	--zindex-base: 0;
-	--zindex-tooltip: 100;
-	--zindex-dropdown: 200;
-	--zindex-fixed: 300;
-	--zindex-dialog: 400;
-	--zindex-alert: 500;
+	--zindex-fixed: 100;
+	--zindex-partial-overlay: 200;
+	--zindex-full-overlay: 300;
+	--zindex-body-popup: 400;
+
 	--slider-height: 13px;
 }

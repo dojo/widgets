@@ -49,8 +49,10 @@
 		0 3px 14px 2px rgba(0, 0, 0, 0.12);
 
 	/* z-indexes */
-	--zindex-tooltip: 100;
-	--zindex-dialog: 400;
+	--zindex-fixed: 100;
+	--zindex-partial-overlay: 200;
+	--zindex-full-overlay: 300;
+	--zindex-body-popup: 400;
 
 	/* font details */
 	--mdc-theme-font-family: Roboto, sans-serif;

@@ -3,6 +3,7 @@ import SlidePane from '@dojo/widgets/slide-pane';
 import icache from '@dojo/framework/core/middleware/icache';
 import { DEMO_TEXT } from './common';
 import Example from '../../Example';
+import TimePicker from '@dojo/widgets/time-picker';
 
 const factory = create({ icache });
 
@@ -17,6 +18,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 				}}
 			>
 				{DEMO_TEXT}
+				<TimePicker />
 			</SlidePane>
 			<button onclick={() => icache.set('open', !icache.get('open'))}>Toggle</button>
 		</Example>

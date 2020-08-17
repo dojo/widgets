@@ -13,8 +13,12 @@ import { stub } from 'sinon';
 
 const baseTemplate = assertionTemplate(() => (
 	<body>
-		<div key="underlay" classes={[undefined, fixedCss.underlay, false]} onclick={() => {}} />
-		<div key="wrapper" classes={[undefined, fixedCss.root]} styles={{ opacity: '0' }}>
+		<div
+			key="underlay"
+			classes={[undefined, fixedCss.underlay, css.underlay, false]}
+			onclick={() => {}}
+		/>
+		<div key="wrapper" classes={[undefined, fixedCss.root, css.root]} styles={{ opacity: '0' }}>
 			hello world
 		</div>
 	</body>
@@ -93,12 +97,12 @@ describe('Popup', () => {
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
 			<div
 				key="underlay"
-				classes={[undefined, fixedCss.underlay, false]}
+				classes={[undefined, fixedCss.underlay, css.underlay, false]}
 				onclick={() => {}}
 			/>,
 			<div
 				key="wrapper"
-				classes={[undefined, fixedCss.root]}
+				classes={[undefined, fixedCss.root, css.root]}
 				styles={{ left: '50px', opacity: '1', top: '100px' }}
 			>
 				hello world
@@ -141,12 +145,12 @@ describe('Popup', () => {
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
 			<div
 				key="underlay"
-				classes={[undefined, fixedCss.underlay, false]}
+				classes={[undefined, fixedCss.underlay, css.underlay, false]}
 				onclick={() => {}}
 			/>,
 			<div
 				key="wrapper"
-				classes={[undefined, fixedCss.root]}
+				classes={[undefined, fixedCss.root, css.root]}
 				styles={{ left: '30px', opacity: '1', top: '100px' }}
 			>
 				hello world
@@ -189,12 +193,12 @@ describe('Popup', () => {
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
 			<div
 				key="underlay"
-				classes={[undefined, fixedCss.underlay, false]}
+				classes={[undefined, fixedCss.underlay, css.underlay, false]}
 				onclick={() => {}}
 			/>,
 			<div
 				key="wrapper"
-				classes={[undefined, fixedCss.root]}
+				classes={[undefined, fixedCss.root, css.root]}
 				styles={{ left: '160px', opacity: '1', top: '100px' }}
 			>
 				hello world
@@ -237,12 +241,12 @@ describe('Popup', () => {
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
 			<div
 				key="underlay"
-				classes={[undefined, fixedCss.underlay, false]}
+				classes={[undefined, fixedCss.underlay, css.underlay, false]}
 				onclick={() => {}}
 			/>,
 			<div
 				key="wrapper"
-				classes={[undefined, fixedCss.root]}
+				classes={[undefined, fixedCss.root, css.root]}
 				styles={{ left: '160px', opacity: '1', top: '100px' }}
 			>
 				hello world
@@ -285,12 +289,12 @@ describe('Popup', () => {
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
 			<div
 				key="underlay"
-				classes={[undefined, fixedCss.underlay, false]}
+				classes={[undefined, fixedCss.underlay, css.underlay, false]}
 				onclick={() => {}}
 			/>,
 			<div
 				key="wrapper"
-				classes={[undefined, fixedCss.root]}
+				classes={[undefined, fixedCss.root, css.root]}
 				styles={{ left: '30px', opacity: '1', top: '100px' }}
 			>
 				hello world
@@ -332,12 +336,12 @@ describe('Popup', () => {
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
 			<div
 				key="underlay"
-				classes={[undefined, fixedCss.underlay, false]}
+				classes={[undefined, fixedCss.underlay, css.underlay, false]}
 				onclick={() => {}}
 			/>,
 			<div
 				key="wrapper"
-				classes={[undefined, fixedCss.root]}
+				classes={[undefined, fixedCss.root, css.root]}
 				styles={{ left: '50px', opacity: '1', top: '200px' }}
 			>
 				hello world
@@ -372,12 +376,12 @@ describe('Popup', () => {
 		const contentTemplate = baseTemplate.setChildren(':root', () => [
 			<div
 				key="underlay"
-				classes={[undefined, fixedCss.underlay, false]}
+				classes={[undefined, fixedCss.underlay, css.underlay, false]}
 				onclick={() => {}}
 			/>,
 			<div
 				key="wrapper"
-				classes={[undefined, fixedCss.root]}
+				classes={[undefined, fixedCss.root, css.root]}
 				styles={{ left: '50px', opacity: '1', top: '300px' }}
 			>
 				hello world
@@ -406,6 +410,7 @@ describe('Popup', () => {
 			baseTemplate.setProperty('@underlay', 'classes', [
 				undefined,
 				fixedCss.underlay,
+				css.underlay,
 				css.underlayVisible
 			])
 		);
