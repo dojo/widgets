@@ -48,13 +48,6 @@ interface TreeCache {
 	checkedNodes: string[];
 }
 
-export interface LinkedTreeNode {
-	id: string;
-	node: TreeNodeOption;
-	depth: number;
-	children: LinkedTreeNode[];
-}
-
 const resource = createResourceMiddleware<TreeNodeOption>();
 const icache = createICacheMiddleware<TreeCache>();
 const factory = create({ theme, icache, diffProperty, focus, resource })
@@ -209,7 +202,7 @@ export default factory(function({
 		}
 	}
 
-	function createNodeTreeLevel(nodeId: string = 'root', depth: number = 0) {
+	function mapNodeTree(nodeId: string = 'root', depth: number = 0) {
 		const options = createOptions(nodeId);
 		const info = meta(template, options({ query: { parent: nodeId } }), true);
 
@@ -278,14 +271,14 @@ export default factory(function({
 							>
 								{itemRenderer || defaultRenderer}
 							</TreeNode>
-							{isExpanded && createNodeTreeLevel(node.id, depth + 1)}
+							{isExpanded && mapNodeTree(node.id, depth + 1)}
 						</li>
 					);
 				})}
 			</ol>
 		);
 	}
-	return createNodeTreeLevel();
+	return mapNodeTree();
 });
 
 /*******************
