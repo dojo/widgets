@@ -6,12 +6,13 @@ import theme from '@dojo/framework/core/middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
 import { fill, flat } from '@dojo/framework/shim/array';
 
-// import { Keys } from '../common/util';
+import { Keys } from '../common/util';
 import Icon from '../icon';
 import Checkbox from '../checkbox';
 import { ListItem } from '../list';
 
 import * as css from '../theme/default/tree.m.css';
+import LoadingIndicator from '../loading-indicator';
 
 /*******************
  * Tree
@@ -113,7 +114,6 @@ export default factory(function({
 	const expandedNodes = icache.getOrSet('expandedNodes', []);
 	const checkedNodes = icache.getOrSet('checkedNodes', []);
 	const shouldFocus = focus.shouldFocus();
-	// let activeIndex: number | undefined = undefined;
 
 	function activateNode(id: string) {
 		icache.set('activeNode', id);
@@ -136,74 +136,85 @@ export default factory(function({
 		onExpand && onExpand(id, false);
 	}
 
-	// function nextNode(node: TreeNodeOption) {
-	// 	if (node.hasChildren) {
-	// 		const options = createOptions(nodeId || id);
-	// 		const info = meta(template, options({ query: {parent: nodeId }}), true);
+	function createNodeFlatMap(nodeId: string = 'root'): TreeNodeOption[] {
+		let nodes: TreeNodeOption[] = [];
+		const options = createOptions(nodeId);
+		const info = meta(template, options({ query: { parent: nodeId } }), true);
 
-	// 		if (info === undefined) {
-	// 			return <h1>Loading</h1>
-	// 		}
+		if (info === undefined) {
+			return [];
+		}
 
-	// 		const results = getOrRead(template, options({query: {parent: nodeId}, size: info.total}));
-	// 	}
+		const results = getOrRead(
+			template,
+			options({ query: { parent: nodeId }, size: info.total })
+		);
+		const queriedNodes = flat(results);
 
-	// 	return nodes[activeIndex + 1].id
-	// }
+		queriedNodes.forEach((node) => {
+			nodes.push(node);
+			if (expandedNodes.indexOf(node.id) !== -1) {
+				nodes = [...nodes, ...createNodeFlatMap(node.id)];
+			}
+		});
+		return nodes;
+	}
 
-	// async function onKeyDown(event: KeyboardEvent) {
-	// 	event.stopPropagation();
+	function onKeyDown(event: KeyboardEvent) {
+		event.stopPropagation();
+		const nodes = createNodeFlatMap();
+		const activeIndex = nodes.findIndex((node) => node.id === activeNode);
 
-	// 	switch (event.which) {
-	// 		// select
-	// 		case Keys.Enter:
-	// 		case Keys.Space:
-	// 			event.preventDefault();
-	// 			if (activeNode && selectedNode !== activeNode) {
-	// 				selectNode(activeNode);
-	// 			}
-	// 			break;
+		switch (event.which) {
+			// select
+			case Keys.Enter:
+			case Keys.Space:
+				event.preventDefault();
+				if (activeNode && selectedNode !== activeNode) {
+					selectNode(activeNode);
+				}
+				break;
 
-	// 		// next
-	// 		case Keys.Down:
-	// 			event.preventDefault();
-	// 			if (activeIndex !== undefined && activeIndex < nodes.length - 1) {
-	// 				activateNode(nodes[activeIndex + 1].id);
-	// 			}
-	// 			break;
+			// next
+			case Keys.Down:
+				event.preventDefault();
+				activateNode(nodes[(activeIndex + 1) % nodes.length].id);
+				break;
 
-	// 		// previous
-	// 		case Keys.Up:
-	// 			event.preventDefault();
-	// 			if (activeIndex !== undefined && activeIndex > 0) {
-	// 				activateNode(nodes[activeIndex - 1].id);
-	// 			}
-	// 			break;
+			// previous
+			case Keys.Up:
+				event.preventDefault();
+				if (activeIndex - 1 < 0) {
+					activateNode(nodes[nodes.length - 1].id);
+				} else {
+					activateNode(nodes[activeIndex - 1].id);
+				}
+				break;
 
-	// 		// expand
-	// 		case Keys.Right:
-	// 			event.preventDefault();
-	// 			if (activeNode && !expandedNodes.includes(activeNode)) {
-	// 				expandNode(activeNode);
-	// 			}
-	// 			break;
+			// expand
+			case Keys.Right:
+				event.preventDefault();
+				if (activeNode && !expandedNodes.includes(activeNode)) {
+					expandNode(activeNode);
+				}
+				break;
 
-	// 		// collapse
-	// 		case Keys.Left:
-	// 			event.preventDefault();
-	// 			if (activeNode && expandedNodes.includes(activeNode)) {
-	// 				collapseNode(activeNode);
-	// 			}
-	// 			break;
-	// 	}
-	// }
+			// collapse
+			case Keys.Left:
+				event.preventDefault();
+				if (activeNode && expandedNodes.includes(activeNode)) {
+					collapseNode(activeNode);
+				}
+				break;
+		}
+	}
 
 	function createNodeTreeLevel(nodeId: string = 'root', depth: number = 0) {
 		const options = createOptions(nodeId);
 		const info = meta(template, options({ query: { parent: nodeId } }), true);
 
 		if (info === undefined) {
-			return <h1>Loading</h1>;
+			return <LoadingIndicator />;
 		}
 
 		const results = getOrRead(
@@ -213,7 +224,7 @@ export default factory(function({
 
 		const loading = isLoading(template, options());
 		if (loading) {
-			return <h1>Loading</h1>;
+			return <LoadingIndicator />;
 		}
 
 		const nodes = flat(results);
@@ -222,14 +233,11 @@ export default factory(function({
 			<ol
 				classes={[classes.root, theme.variant()]}
 				focus={() => shouldFocus}
-				// onkeydown={onKeyDown}
+				onkeydown={onKeyDown}
 				tabIndex={0}
 			>
 				{nodes.map((node) => {
 					const isExpanded = expandedNodes.indexOf(node.id) !== -1;
-					console.log('isExpanded', isExpanded);
-					console.log('expandedNodes', expandedNodes);
-					console.log('node', node);
 					return (
 						<li
 							classes={[
