@@ -58,12 +58,6 @@
 	--transition-duration: 0.25s;
 	--transition-easing: ease;
 
-	/* Z-index levels */
-	--zindex-fixed: 100;
-	--zindex-partial-overlay: 200;
-	--zindex-full-overlay: 300;
-	--zindex-body-popup: 400;
-
 	/* Avatar */
 	--avatar-size-small: 24px;
 	--avatar-size-medium: 40px;

@@ -9,7 +9,6 @@
 	padding: calc(var(--mdc-theme-grid-base) / 2) var(--mdc-theme-grid-base);
 	font-size: var(--mdc-theme-font-size-small);
 	line-height: calc(var(--mdc-tooltip-font-size) * 1.6);
-	z-index: var(--zindex-body-popup);
 	white-space: nowrap;
 }
 

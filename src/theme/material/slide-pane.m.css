@@ -1,6 +1,5 @@
 .pane {
 	composes: mdc-drawer mdc-drawer--modal from '@material/drawer/dist/mdc.drawer.css';
-	z-index: 400;
 }
 
 .root .pane {
@@ -46,5 +45,4 @@
 
 .underlayVisible {
 	background: var(--mdc-theme-elevation-1);
-	z-index: var(--zindex-partial-overlay);
 }

@@ -1,5 +1,7 @@
 .root {
 	position: absolute;
+	/* zindex-body-popup + 1*/
+	z-index: 401;
 }
 
 .underlay {
@@ -8,4 +10,6 @@
 	left: 0;
 	bottom: 0;
 	right: 0;
+	/* zindex-body-popup */
+	z-index: 400;
 }

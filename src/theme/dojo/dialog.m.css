@@ -17,7 +17,6 @@
 	left: 50%;
 	max-height: 100%;
 	max-width: 100%;
-	position: fixed;
 	top: 50%;
 	transform: translate(-50%, -50%);
 	width: calc(80 * var(--grid-base));

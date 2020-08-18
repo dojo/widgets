@@ -5,7 +5,8 @@
 
 .contentFixed {
 	position: absolute;
-	z-index: 100;
+	/* zindex-body-popup */
+	z-index: 400;
 }
 
 .bottomFixed .contentFixed {

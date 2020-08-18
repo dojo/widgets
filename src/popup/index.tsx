@@ -124,14 +124,13 @@ export const Popup = factory(function({
 					classes={[
 						theme.variant(),
 						fixedCss.underlay,
-						classes.underlay,
 						underlayVisible && classes.underlayVisible
 					]}
 					onclick={onClose}
 				/>
 				<div
 					key="wrapper"
-					classes={[theme.variant(), fixedCss.root, classes.root]}
+					classes={[theme.variant(), fixedCss.root]}
 					styles={wrapperStyles}
 				>
 					{children()}

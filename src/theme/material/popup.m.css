@@ -2,11 +2,3 @@
 .underlayVisible {
 	background: rgba(0, 0, 0, 0.25);
 }
-
-.root {
-	z-index: calc(var(--zindex-body-popup) + 1);
-}
-
-.underlay {
-	z-index: var(--zindex-body-popup);
-}
