@@ -7,16 +7,12 @@ import {
 import Example from '../../Example';
 import Tree, { TreeNodeOption } from '@dojo/widgets/tree';
 
-const resource = createResourceMiddleware();
-const factory = create({ resource });
-
 const template = createResourceTemplate<TreeNodeOption>({
 	find: defaultFind,
 	read: async (request, { put, get }) => {
 		const { query } = request;
 		let data: TreeNodeOption[] = [];
 
-		console.log('query', query);
 		if (query.parent !== 'root') {
 			const response = await fetch(`https://www.dnd5eapi.co/api/races/${query.parent}`, {
 				headers: {
@@ -43,7 +39,6 @@ const template = createResourceTemplate<TreeNodeOption>({
 			});
 
 			const parsedData = await response.json();
-			console.log('spells', parsedData);
 			data = parsedData.results.map((value: { index: string; name: string; url: string }) => {
 				return {
 					id: value.index,
@@ -67,6 +62,9 @@ const template = createResourceTemplate<TreeNodeOption>({
 	}
 });
 
+const resource = createResourceMiddleware();
+const factory = create({ resource });
+
 export default factory(function Remote({ id, middleware: { resource } }) {
 	return (
 		<Example>
@@ -74,7 +72,12 @@ export default factory(function Remote({ id, middleware: { resource } }) {
 				checkable={true}
 				resource={resource({
 					template,
-					transform: { id: 'id', value: 'value', parent: 'parent' }
+					transform: {
+						id: 'id',
+						value: 'value',
+						parent: 'parent',
+						hasChildren: 'hasChildren'
+					}
 				})}
 			/>
 		</Example>
