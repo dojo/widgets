@@ -21,12 +21,10 @@
 	top: 50%;
 	transform: translate(-50%, -50%);
 	width: calc(80 * var(--grid-base));
-	z-index: calc(var(--zindex-full-overlay) + 1);
 }
 
 .underlayVisible {
 	background-color: var(--color-box-shadow-strong);
-	z-index: var(--zindex-full-overlay);
 }
 
 .title {
