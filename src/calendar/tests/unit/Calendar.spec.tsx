@@ -4,7 +4,8 @@ const { assert } = intern.getPlugin('chai');
 import { tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../../../common/util';
 
-import { DEFAULT_LABELS, DEFAULT_MONTHS, DEFAULT_WEEKDAYS } from '../support/defaults';
+import bundle from '../../nls/Calendar';
+import { DEFAULT_MONTHS, DEFAULT_WEEKDAYS } from '../support/defaults';
 import Calendar, { CalendarProperties, CalendarCell, DatePicker } from '../../index';
 import Icon from '../../../icon/index';
 import * as css from '../../../theme/default/calendar.m.css';
@@ -187,7 +188,7 @@ const expected = function(
 			<DatePicker
 				key="date-picker"
 				labelId=""
-				labels={DEFAULT_LABELS}
+				labels={bundle.messages}
 				month={5}
 				monthNames={DEFAULT_MONTHS}
 				renderMonthLabel={customMonthLabel ? noop : undefined}
@@ -311,7 +312,7 @@ const baseTemplate = assertionTemplate(() => {
 			<DatePicker
 				key="date-picker"
 				labelId=""
-				labels={DEFAULT_LABELS}
+				labels={bundle.messages}
 				month={5}
 				monthNames={DEFAULT_MONTHS}
 				renderMonthLabel={undefined}
@@ -461,7 +462,7 @@ registerSuite('Calendar', {
 		'Renders with custom properties'() {
 			let properties: any = {
 				aria: { describedBy: 'foo' },
-				labels: DEFAULT_LABELS,
+				labels: bundle.messages,
 				monthNames: DEFAULT_MONTHS,
 				initialValue: new Date('June 1 2017'),
 				weekdayNames: DEFAULT_WEEKDAYS
