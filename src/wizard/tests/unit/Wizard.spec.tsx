@@ -128,9 +128,7 @@ describe('Wizard', () => {
 
 	it('renders', () => {
 		const r = mockedRenderer(() => (
-			<Wizard
-				steps={[{ status: 'complete' }, { status: 'inProgress' }, { status: 'pending' }]}
-			>
+			<Wizard activeStep={1}>
 				<div>Step 1</div>
 				<div>Step 2</div>
 				<div>Step 3</div>
@@ -142,10 +140,7 @@ describe('Wizard', () => {
 
 	it('renders vertically', () => {
 		const r = mockedRenderer(() => (
-			<Wizard
-				direction="vertical"
-				steps={[{ status: 'complete' }, { status: 'inProgress' }, { status: 'pending' }]}
-			>
+			<Wizard direction="vertical" activeStep={1}>
 				<div>Step 1</div>
 				<div>Step 2</div>
 				<div>Step 3</div>
@@ -160,37 +155,11 @@ describe('Wizard', () => {
 				false
 			])
 		);
-	});
-
-	it('forces rendering vertically at smaller widths', () => {
-		width = 400;
-		const r = mockedRenderer(() => (
-			<Wizard
-				steps={[{ status: 'complete' }, { status: 'inProgress' }, { status: 'pending' }]}
-			>
-				<div>Step 1</div>
-				<div>Step 2</div>
-				<div>Step 3</div>
-			</Wizard>
-		));
-
-		r.expect(
-			baseAssertion.setProperty(WrappedRoot, 'classes', [
-				undefined,
-				css.root,
-				css.vertical,
-				false
-			])
-		);
-		width = 10000;
 	});
 
 	it('renders with "clickable" set to true', () => {
 		const r = mockedRenderer(() => (
-			<Wizard
-				clickable
-				steps={[{ status: 'complete' }, { status: 'inProgress' }, { status: 'pending' }]}
-			>
+			<Wizard clickable activeStep={1}>
 				<div>Step 1</div>
 				<div>Step 2</div>
 				<div>Step 3</div>
@@ -209,9 +178,9 @@ describe('Wizard', () => {
 
 	it('renders with an error', () => {
 		const r = mockedRenderer(() => (
-			<Wizard steps={[{ status: 'complete' }, { status: 'error' }, { status: 'pending' }]}>
+			<Wizard activeStep={1}>
 				<div>Step 1</div>
-				<div>Step 2</div>
+				<Step status="error" />
 				<div>Step 3</div>
 			</Wizard>
 		));
@@ -220,28 +189,35 @@ describe('Wizard', () => {
 			baseAssertion
 				.setProperty(WrappedStep1, 'classes', [css.step, css.complete, false, false])
 				.setProperty(WrappedStep2, 'classes', [css.step, false, false, css.error])
+				.setChildren(WrappedStep2, () => [
+					<div classes={css.tail} />,
+					<div classes={css.stepIcon}>
+						<WrappedAvatar
+							theme={{
+								'@dojo/widgets/avatar': {
+									avatarColor: avatarCss.avatarColor,
+									avatarColorSecondary: avatarCss.avatarColorSecondary,
+									avatarOutline: avatarCss.avatarOutline,
+									circle: avatarCss.circle,
+									large: avatarCss.large,
+									medium: avatarCss.medium,
+									root: css.avatarRoot,
+									rounded: avatarCss.rounded,
+									small: avatarCss.small,
+									square: avatarCss.square
+								}
+							}}
+							outline={false}
+						>
+							2
+						</WrappedAvatar>
+					</div>,
+					<Step status="error" />
+				])
 				.setProperty(WrappedAvatar, 'outline', true)
 				.setChildren(WrappedAvatar, () => [<Icon type="closeIcon" />])
 				.setProperty(WrappedStep3, 'classes', [css.step, false, css.pending, false])
 		);
-	});
-
-	it('renders with a custom value', () => {
-		const r = mockedRenderer(() => (
-			<Wizard
-				steps={[
-					{ status: 'complete' },
-					{ value: 'A', status: 'inProgress' },
-					{ status: 'pending' }
-				]}
-			>
-				<div>Step 1</div>
-				<div>Step 2</div>
-				<div>Step 3</div>
-			</Wizard>
-		));
-
-		r.expect(baseAssertion.setChildren(WrappedAvatar, () => ['A']));
 	});
 
 	it('triggers the callback when clicked', () => {
@@ -252,7 +228,7 @@ describe('Wizard', () => {
 				onStep={(step) => {
 					requestIndex = step;
 				}}
-				steps={[{ status: 'complete' }, { status: 'inProgress' }, { status: 'pending' }]}
+				activeStep={1}
 			>
 				<div>Step 1</div>
 				<div>Step 2</div>

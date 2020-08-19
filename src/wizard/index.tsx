@@ -1,39 +1,38 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { RenderResult } from '@dojo/framework/core/interfaces';
+import { RenderResult, WNode } from '@dojo/framework/core/interfaces';
 import theme from '../middleware/theme';
 import Icon from '../icon';
 import * as css from '../theme/default/wizard.m.css';
 import * as avatarCss from '../theme/default/avatar.m.css';
 import Avatar from '../avatar';
-import dimensions from '@dojo/framework/core/middleware/dimensions';
-import resize from '@dojo/framework/core/middleware/resize';
 
-export interface StepItem {
-	value?: string;
-	status?: StepStatus;
-}
 export interface WizardProperties {
-	/** Specify step statuses and optional labels for step avatars */
-	steps: StepItem[];
 	/** A callback that will be notified when a step is clicked if this is clickable */
 	onStep?(step: number): void;
 	/** Direction for steps. Defaults to horizontal */
 	direction?: 'horizontal' | 'vertical';
 	/** Indicates whether steps should respond to clicks. Defaults to false */
 	clickable?: boolean;
+	/** The active step can be controlled to automatically set step status. Will be overridden by statuses provided to each step. If this property is not used, individual statuses should be passed to steps */
+	activeStep?: number;
 }
 
 export type StepStatus = 'pending' | 'inProgress' | 'complete' | 'error';
 
+export interface StepProperties {
+	status?: StepStatus;
+}
 export interface StepChildren {
 	title?: RenderResult;
 	subTitle?: RenderResult;
 	description?: RenderResult;
 }
 
-const stepFactory = create({ theme }).children<StepChildren | undefined>();
+const stepFactory = create({ theme })
+	.properties<StepProperties>()
+	.children<StepChildren | undefined>();
 
-export const Step = stepFactory(({ properties, children, middleware: { theme } }) => {
+export const Step = stepFactory(({ children, middleware: { theme } }) => {
 	const [
 		{ title, subTitle, description } = {
 			description: undefined,
@@ -60,24 +59,32 @@ export const Step = stepFactory(({ properties, children, middleware: { theme } }
 	);
 });
 
-const factory = create({ theme, dimensions, resize }).properties<WizardProperties>();
+const factory = create({ theme })
+	.children<WNode[]>()
+	.properties<WizardProperties>();
 
-export default factory(function Wizard({
-	properties,
-	children,
-	middleware: { theme, dimensions, resize }
-}) {
+export default factory(function Wizard({ properties, children, middleware: { theme } }) {
 	const classes = theme.classes(css);
-	const { direction = 'horizontal', onStep, steps, clickable = false } = properties();
-	resize.get('root');
-	const width = dimensions.get('root').size.width;
+	const { activeStep, direction = 'horizontal', onStep, clickable = false } = properties();
 
 	const stepNodes = children();
-	const forceVertical = width < 200 * stepNodes.length;
 
 	const stepWrappers = stepNodes.map((step, index) => {
 		let content;
-		switch (steps[index].status) {
+		let defaultStatus: StepStatus | undefined;
+
+		if (activeStep === undefined) {
+			defaultStatus = undefined;
+		} else if (activeStep > index) {
+			defaultStatus = 'complete';
+		} else if (activeStep < index) {
+			defaultStatus = 'pending';
+		} else {
+			defaultStatus = 'inProgress';
+		}
+
+		const { status = defaultStatus } = step.properties;
+		switch (status) {
 			case 'complete':
 				content = <Icon type="checkIcon" />;
 				break;
@@ -85,23 +92,26 @@ export default factory(function Wizard({
 				content = <Icon type="closeIcon" />;
 				break;
 			default:
-				content = steps[index].value || String(index + 1);
+				content = String(index + 1);
 		}
-		return [
-			<div classes={classes.stepIcon}>
-				<Avatar
-					theme={theme.compose(
-						avatarCss,
-						css,
-						'avatar'
-					)}
-					outline={Boolean(steps[index].status !== 'inProgress')}
-				>
-					{content}
-				</Avatar>
-			</div>,
-			step
-		];
+		return {
+			content: [
+				<div classes={classes.stepIcon}>
+					<Avatar
+						theme={theme.compose(
+							avatarCss,
+							css,
+							'avatar'
+						)}
+						outline={Boolean(status !== 'inProgress')}
+					>
+						{content}
+					</Avatar>
+				</div>,
+				step
+			],
+			status
+		};
 	});
 
 	return (
@@ -110,20 +120,18 @@ export default factory(function Wizard({
 			classes={[
 				theme.variant(),
 				classes.root,
-				!forceVertical && direction === 'horizontal'
-					? classes.horizontal
-					: classes.vertical,
+				direction === 'horizontal' ? classes.horizontal : classes.vertical,
 				clickable && classes.clickable
 			]}
 		>
-			{stepWrappers.map((step, index) => (
+			{stepWrappers.map(({ content, status }, index) => (
 				<div
 					key={`step${index + 1}`}
 					classes={[
 						classes.step,
-						steps[index].status === 'complete' && classes.complete,
-						steps[index].status === 'pending' && classes.pending,
-						steps[index].status === 'error' && classes.error
+						status === 'complete' && classes.complete,
+						status === 'pending' && classes.pending,
+						status === 'error' && classes.error
 					]}
 					onclick={() => {
 						if (clickable && onStep) {
@@ -132,7 +140,7 @@ export default factory(function Wizard({
 					}}
 				>
 					<div classes={classes.tail} />
-					{step}
+					{content}
 				</div>
 			))}
 		</div>

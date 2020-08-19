@@ -7,15 +7,15 @@ const factory = create().properties();
 export default factory(function Error() {
 	return (
 		<Example>
-			<Wizard steps={[{ status: 'complete' }, { status: 'error' }, { status: 'pending' }]}>
-				<Step />
-				<Step>
+			<Wizard>
+				<Step status="complete" />
+				<Step status="error">
 					{{
 						title: 'Title',
 						subTitle: 'SubTitle'
 					}}
 				</Step>
-				<Step>
+				<Step status="pending">
 					{{
 						title: 'Title',
 						subTitle: 'SubTitle',

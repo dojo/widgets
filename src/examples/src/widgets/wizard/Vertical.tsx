@@ -1,20 +1,15 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Example from '../../Example';
-import Wizard, { Step, StepItem } from '@dojo/widgets/wizard';
+import Wizard, { Step, StepStatus } from '@dojo/widgets/wizard';
 import { icache } from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache }).properties();
 
 export default factory(function Vertical({ middleware: { icache } }) {
-	let steps = icache.getOrSet<StepItem[]>('steps', [
-		{ status: 'complete' },
-		{ status: 'inProgress' },
-		{ status: 'pending' }
-	]);
+	let steps = icache.getOrSet<StepStatus[]>('steps', ['complete', 'inProgress', 'pending']);
 	return (
 		<Example>
 			<Wizard
-				steps={steps}
 				onStep={(stepIndex) => {
 					icache.set(
 						'steps',
@@ -31,20 +26,20 @@ export default factory(function Vertical({ middleware: { icache } }) {
 				}}
 				direction="vertical"
 			>
-				<Step>
+				<Step status={steps[0]}>
 					{{
 						title: 'Title',
 						subTitle: 'SubTitle'
 					}}
 				</Step>
-				<Step>
+				<Step status={steps[1]}>
 					{{
 						title: 'Title',
 						subTitle: 'SubTitle',
 						description: 'This is a description'
 					}}
 				</Step>
-				<Step>
+				<Step status={steps[2]}>
 					{{
 						title: 'Title',
 						subTitle: 'SubTitle',
