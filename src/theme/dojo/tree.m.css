@@ -22,10 +22,6 @@
 	padding: 0 4px;
 }
 
-.disabled {
-	color: var(--color-text-faded);
-}
-
 .leaf .content {
 	margin-left: 15px;
 }
@@ -36,17 +32,6 @@
 	flex-grow: 1;
 }
 
-.icon {
-	align-items: center;
-	display: flex;
-	margin-right: 5px;
-}
-
 .expander {
 	margin-right: 5px;
-}
-
-.children {
-	padding-left: 0px;
-	width: 100%;
 }

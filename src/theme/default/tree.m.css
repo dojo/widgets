@@ -1,44 +1,38 @@
+/* The root class of the Tree */
 .root {
 }
 
+/* Nodes of the tree */
 .node {
 }
 
 .contentWrapper {
 }
 
+/* Contains the content of the Tree */
 .content {
 }
 
+/* Contain spacing for the tree */
 .spacer {
 }
 
+/* Added to nodes that have children */
 .leaf {
 }
 
-.disabled {
-}
-
+/* Added to nodes that are selectable */
 .selectable {
 }
 
+/* Added to nodes that are selected */
 .selected {
 }
 
+/* Added to nodes are expandable */
 .expander {
 }
 
+/* Added to content of the node */
 .title {
-}
-
-.icon {
-}
-
-.childrenWrapper {
-}
-
-.children {
-}
-
-.child {
 }
