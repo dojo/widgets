@@ -11,12 +11,15 @@ import { stubEvent } from '../../../common/tests/support/test-helpers';
 import Tree, { TreeNode, TreeNodeOption } from '../../index';
 import * as css from '../../../theme/default/tree.m.css';
 
-import { simpleTree, simpleTreeLinked } from './TreeData.mock';
+import { simpleTree } from './TreeData.mock';
 
 const noop = () => {};
 const WrappedRoot = wrap('ol');
+const WrappedListItem1 = wrap('li');
+const WrappedListItem2 = wrap('li');
 const WrappedNode1 = wrap(TreeNode);
 const WrappedNode2 = wrap(TreeNode);
+const WrappedNode3 = wrap(TreeNode);
 
 const defaultNodeProps = {
 	depth: 0,
@@ -42,23 +45,24 @@ const baseAssertion = assertion(() => (
 ));
 
 const simpleTreeAssertion = baseAssertion.replaceChildren(WrappedRoot, () => [
-	<WrappedNode1 {...defaultNodeProps} node={simpleTreeLinked[0]}>
-		{noop as any}
-	</WrappedNode1>,
-	<WrappedNode2 {...defaultNodeProps} node={simpleTreeLinked[2]}>
-		{noop as any}
-	</WrappedNode2>
+	<WrappedListItem1 classes={[css.node, css.leaf, false, false]}>
+		<WrappedNode1 {...defaultNodeProps} node={simpleTree[0]}>
+			{noop as any}
+		</WrappedNode1>
+	</WrappedListItem1>,
+	<WrappedListItem2 classes={[css.node, false, false, false]}>
+		<WrappedNode2 {...defaultNodeProps} node={simpleTree[2]}>
+			{noop as any}
+		</WrappedNode2>
+	</WrappedListItem2>
 ]);
 
 describe('Tree', () => {
 	let template = createMemoryResourceTemplate<TreeNodeOption>();
-	const defaultProps = {
+
+	const emptyDataProps = {
 		resource: {
-			template: {
-				template,
-				id: 'test',
-				initOptions: { data: simpleTree, id: 'test' }
-			}
+			template: { template, id: 'test', initOptions: { data: [], id: 'test' } }
 		}
 	};
 
@@ -67,25 +71,40 @@ describe('Tree', () => {
 	});
 
 	it('renders with no data', () => {
-		const r = renderer(() => (
-			<Tree
-				resource={{
-					template: { template, id: 'test', initOptions: { data: [], id: 'test' } }
-				}}
-			/>
-		));
+		const r = renderer(() => <Tree {...emptyDataProps} />);
 
 		r.expect(baseAssertion);
 	});
 
 	it('renders data', () => {
-		const r = renderer(() => <Tree {...defaultProps} />);
+		const r = renderer(() => (
+			<Tree
+				resource={{
+					template: {
+						template,
+						id: 'test',
+						initOptions: { data: simpleTree, id: 'test' }
+					}
+				}}
+			/>
+		));
 		r.expect(simpleTreeAssertion);
 	});
 
 	it('renders disabled nodes', () => {
 		const disabledNodes = [simpleTree[0].id];
-		const r = renderer(() => <Tree {...defaultProps} disabledNodes={disabledNodes} />);
+		const r = renderer(() => (
+			<Tree
+				resource={{
+					template: {
+						template,
+						id: 'test',
+						initOptions: { data: simpleTree, id: 'test' }
+					}
+				}}
+				disabledNodes={disabledNodes}
+			/>
+		));
 
 		r.expect(
 			simpleTreeAssertion
@@ -95,7 +114,17 @@ describe('Tree', () => {
 	});
 
 	it('can navigate active node with keyboard', () => {
-		const r = renderer(() => <Tree {...defaultProps} />);
+		const r = renderer(() => (
+			<Tree
+				resource={{
+					template: {
+						template,
+						id: 'test',
+						initOptions: { data: simpleTree, id: 'test' }
+					}
+				}}
+			/>
+		));
 		r.expect(simpleTreeAssertion);
 
 		r.property(WrappedNode1, 'onActive', simpleTree[0].id);
@@ -123,8 +152,7 @@ describe('Tree', () => {
 	});
 
 	describe('ExpandedNodes', () => {
-		const expandedNodes = [simpleTreeLinked[0].id];
-		const WrappedNode3 = wrap(TreeNode);
+		const expandedNodes = [simpleTree[0].id];
 		const expandedAssertion = simpleTreeAssertion
 			.setProperty(WrappedNode1, 'expandedNodes', expandedNodes)
 			.setProperty(WrappedNode2, 'expandedNodes', expandedNodes)
@@ -132,14 +160,23 @@ describe('Tree', () => {
 				WrappedNode1,
 				() =>
 					(
-						<WrappedNode3
-							{...defaultNodeProps}
-							expandedNodes={expandedNodes}
-							depth={1}
-							node={simpleTreeLinked[1]}
+						<ol
+							classes={[css.root, null]}
+							focus={() => false}
+							onkeydown={noop}
+							tabIndex={0}
 						>
-							{noop as any}
-						</WrappedNode3>
+							<li classes={[css.node, false, false, false]}>
+								<WrappedNode3
+									{...defaultNodeProps}
+									expandedNodes={expandedNodes}
+									depth={1}
+									node={simpleTree[1]}
+								>
+									{noop as any}
+								</WrappedNode3>
+							</li>
+						</ol>
 					) as any
 			);
 
@@ -149,8 +186,18 @@ describe('Tree', () => {
 				...defaultNodeProps,
 				expandedNodes
 			};
-			const r = renderer(() => <Tree {...defaultProps} expandedNodes={expandedNodes} />);
-
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					expandedNodes={expandedNodes}
+				/>
+			));
 			r.expect(
 				simpleTreeAssertion
 					.setProperty(WrappedNode1, 'expandedNodes', expandedNodes)
@@ -159,17 +206,38 @@ describe('Tree', () => {
 						WrappedNode1,
 						() =>
 							(
-								<TreeNode {...nodeProps} depth={1} node={simpleTreeLinked[1]}>
-									{noop as any}
-								</TreeNode>
+								<ol
+									classes={[css.root, null]}
+									focus={() => false}
+									onkeydown={noop}
+									tabIndex={0}
+								>
+									<li classes={[css.node, false, false, false]}>
+										<TreeNode {...nodeProps} depth={1} node={simpleTree[1]}>
+											{noop as any}
+										</TreeNode>
+									</li>
+								</ol>
 							) as any
 					)
+					.setProperty(WrappedListItem1, 'classes', [css.node, css.leaf, false, false])
 			);
 		});
 
 		it('raises events on expand/collapse', () => {
 			const onExpand = sinon.stub();
-			const r = renderer(() => <Tree {...defaultProps} onExpand={onExpand} />);
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					onExpand={onExpand}
+				/>
+			));
 			r.expect(simpleTreeAssertion);
 
 			// simulate expand event
@@ -190,7 +258,18 @@ describe('Tree', () => {
 
 		it('raises events on expand/collapse on keyboard navigation', () => {
 			const onExpand = sinon.stub();
-			const r = renderer(() => <Tree {...defaultProps} onExpand={onExpand} />);
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					onExpand={onExpand}
+				/>
+			));
 			r.expect(simpleTreeAssertion);
 
 			const nodeId = simpleTree[0].id;
@@ -206,9 +285,9 @@ describe('Tree', () => {
 			r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Right });
 			r.expect(
 				expandedAssertion
-					.setProperty(WrappedNode3, 'activeNode', nodeId)
 					.setProperty(WrappedNode1, 'activeNode', nodeId)
 					.setProperty(WrappedNode2, 'activeNode', nodeId)
+					.setProperty(WrappedNode3, 'activeNode', nodeId)
 			);
 			assert(onExpand.calledWith(nodeId, true));
 
@@ -227,7 +306,18 @@ describe('Tree', () => {
 			.setProperty(WrappedNode2, 'checkable', true);
 
 		it('renders with checkable nodes', () => {
-			const r = renderer(() => <Tree {...defaultProps} checkable={true} />);
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					checkable={true}
+				/>
+			));
 
 			r.expect(checkableAssertion);
 		});
@@ -235,7 +325,17 @@ describe('Tree', () => {
 		it('renders with checked nodes', () => {
 			const checkedNodes = [simpleTree[0].id];
 			const r = renderer(() => (
-				<Tree {...defaultProps} checkable={true} checkedNodes={checkedNodes} />
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					checkable={true}
+					checkedNodes={checkedNodes}
+				/>
 			));
 
 			r.expect(
@@ -247,7 +347,19 @@ describe('Tree', () => {
 
 		it('raises events on check/uncheck', () => {
 			const onCheck = sinon.stub();
-			const r = renderer(() => <Tree {...defaultProps} checkable={true} onCheck={onCheck} />);
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					checkable={true}
+					onCheck={onCheck}
+				/>
+			));
 			r.expect(checkableAssertion);
 
 			// simulate check event
@@ -274,10 +386,23 @@ describe('Tree', () => {
 	describe('SelectedNode', () => {
 		const selectableAssertion = simpleTreeAssertion
 			.setProperty(WrappedNode1, 'selectable', true)
-			.setProperty(WrappedNode2, 'selectable', true);
+			.setProperty(WrappedNode2, 'selectable', true)
+			.setProperty(WrappedListItem1, 'classes', [css.node, css.leaf, css.selectable, false])
+			.setProperty(WrappedListItem2, 'classes', [css.node, false, css.selectable, false]);
 
 		it('renders with selectable nodes', () => {
-			const r = renderer(() => <Tree {...defaultProps} selectable={true} />);
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					selectable={true}
+				/>
+			));
 
 			r.expect(selectableAssertion);
 		});
@@ -285,11 +410,27 @@ describe('Tree', () => {
 		it('renders with selected node', () => {
 			const selectedNode = simpleTree[0].id;
 			const r = renderer(() => (
-				<Tree {...defaultProps} selectable={true} selectedNode={selectedNode} />
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					selectable={true}
+					selectedNode={selectedNode}
+				/>
 			));
 
 			r.expect(
 				selectableAssertion
+					.setProperty(WrappedListItem1, 'classes', [
+						css.node,
+						css.leaf,
+						css.selectable,
+						css.selected
+					])
 					.setProperty(WrappedNode1, 'selectedNode', selectedNode)
 					.setProperty(WrappedNode2, 'selectedNode', selectedNode)
 			);
@@ -298,7 +439,17 @@ describe('Tree', () => {
 		it('raises events on select', () => {
 			const onSelect = sinon.stub();
 			const r = renderer(() => (
-				<Tree {...defaultProps} selectable={true} onSelect={onSelect} />
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					selectable={true}
+					onSelect={onSelect}
+				/>
 			));
 
 			r.expect(selectableAssertion);
@@ -309,13 +460,30 @@ describe('Tree', () => {
 
 			r.expect(
 				selectableAssertion
+					.setProperty(WrappedListItem1, 'classes', [
+						css.node,
+						css.leaf,
+						css.selectable,
+						css.selected
+					])
 					.setProperty(WrappedNode1, 'selectedNode', selectedNode)
 					.setProperty(WrappedNode2, 'selectedNode', selectedNode)
 			);
 		});
 
 		it('can select the active node with keyboard', () => {
-			const r = renderer(() => <Tree {...defaultProps} selectable={true} />);
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					selectable={true}
+				/>
+			));
 			r.expect(selectableAssertion);
 
 			// activate our node
@@ -331,6 +499,12 @@ describe('Tree', () => {
 			r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Enter });
 			r.expect(
 				selectableAssertion
+					.setProperty(WrappedListItem1, 'classes', [
+						css.node,
+						css.leaf,
+						css.selectable,
+						css.selected
+					])
 					.setProperty(WrappedNode1, 'selectedNode', nodeId)
 					.setProperty(WrappedNode2, 'selectedNode', nodeId)
 					.setProperty(WrappedNode1, 'activeNode', nodeId)

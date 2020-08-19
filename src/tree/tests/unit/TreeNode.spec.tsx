@@ -1,327 +1,287 @@
-// const { describe, it, beforeEach } = intern.getInterface('bdd');
-// const { assert } = intern.getPlugin('chai');
-// import * as sinon from 'sinon';
+const { describe, it, beforeEach } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
+import * as sinon from 'sinon';
 
-// import { tsx } from '@dojo/framework/core/vdom';
-// import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
+import { tsx } from '@dojo/framework/core/vdom';
+import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
 
-// import Checkbox from '../../../checkbox';
-// import Icon from '../../../icon';
-// import { ListItem } from '../../../list';
-// import { TreeNode, TreeNodeOption } from '../../index';
-// import * as css from '../../../theme/default/tree.m.css';
+import Checkbox from '../../../checkbox';
+import Icon from '../../../icon';
+import { ListItem } from '../../../list';
+import { TreeNode, TreeNodeOption } from '../../index';
+import * as css from '../../../theme/default/tree.m.css';
+import { simpleTree } from './TreeData.mock';
 
-// import { simpleTreeLinked } from './TreeData.mock';
+const noop = () => {};
+const node = simpleTree[0];
 
-// const noop = () => {};
-// const node = simpleTreeLinked[0];
+const defaultProps = {
+	depth: 0,
+	activeNode: undefined,
+	checkable: false,
+	selectable: false,
+	checkedNodes: [],
+	selectedNode: undefined,
+	disabledNodes: [],
+	expandedNodes: [],
+	onActive: noop,
+	onSelect: noop,
+	onCheck: noop,
+	onExpand: noop,
+	node
+};
+const defaultRenderer = (n: TreeNodeOption) => n.value;
 
-// const defaultProps = {
-// 	depth: 0,
-// 	activeNode: undefined,
-// 	checkable: false,
-// 	selectable: false,
-// 	checkedNodes: [],
-// 	selectedNode: undefined,
-// 	disabledNodes: [],
-// 	expandedNodes: [],
-// 	onActive: noop,
-// 	onSelect: noop,
-// 	onCheck: noop,
-// 	onExpand: noop,
-// 	node
-// };
-// const defaultRenderer = (n: TreeNodeOption) => n.value;
+const WrappedRoot = wrap(ListItem);
+const WrappedContentWrapper = wrap('div');
+const WrappedContent = wrap('div');
+const WrappedTitle = wrap('div');
+const WrappedExpander = wrap('div');
+const WrappedExpanderIcon = wrap(Icon);
+const baseAssertion = assertion(() => (
+	<WrappedRoot
+		active={false}
+		selected={false}
+		onRequestActive={noop}
+		onSelect={noop}
+		disabled={false}
+		widgetId={node.id}
+	>
+		<WrappedContentWrapper classes={css.contentWrapper}>
+			<WrappedContent classes={css.content}>
+				<WrappedExpander classes={css.expander}>
+					<WrappedExpanderIcon type="rightIcon" />
+				</WrappedExpander>
+				<WrappedTitle classes={css.title}>{node.value}</WrappedTitle>
+			</WrappedContent>
+		</WrappedContentWrapper>
+	</WrappedRoot>
+));
 
-// const WrappedRoot = wrap('li');
-// const WrappedItem = wrap(ListItem);
-// const WrappedContentWrapper = wrap('div');
-// const WrappedContent = wrap('div');
-// const WrappedTitle = wrap('div');
-// const WrappedExpander = wrap('div');
-// const WrappedExpanderIcon = wrap(Icon);
-// const baseAssertion = assertion(() => (
-// 	<WrappedRoot classes={[css.node, false, false, false]}>
-// 		<WrappedItem
-// 			active={false}
-// 			selected={false}
-// 			onRequestActive={noop}
-// 			onSelect={noop}
-// 			disabled={false}
-// 			widgetId={node.id}
-// 		>
-// 			<WrappedContentWrapper classes={css.contentWrapper}>
-// 				<WrappedContent classes={css.content}>
-// 					<WrappedExpander classes={css.expander}>
-// 						<WrappedExpanderIcon type="rightIcon" />
-// 					</WrappedExpander>
-// 					<WrappedTitle classes={css.title}>{node.node.value}</WrappedTitle>
-// 				</WrappedContent>
-// 			</WrappedContentWrapper>
-// 		</WrappedItem>
-// 	</WrappedRoot>
-// ));
+function getSpacers(count: number) {
+	const spacers = new Array(count);
+	spacers.fill(<div classes={css.spacer} />);
+	return spacers;
+}
 
-// function getSpacers(count: number) {
-// 	const spacers = new Array(count);
-// 	spacers.fill(<div classes={css.spacer} />);
-// 	return spacers;
-// }
+describe('TreeNode', () => {
+	it('renders', () => {
+		const r = renderer(() => <TreeNode {...defaultProps}>{defaultRenderer}</TreeNode>);
+		r.expect(baseAssertion);
+	});
 
-// describe('TreeNode', () => {
-// 	it('renders', () => {
-// 		const r = renderer(() => <TreeNode {...defaultProps}>{defaultRenderer}</TreeNode>);
-// 		r.expect(baseAssertion);
-// 	});
+	it('renders correct depth', () => {
+		const depth = 6;
+		const r = renderer(() => (
+			<TreeNode {...defaultProps} depth={depth}>
+				{defaultRenderer}
+			</TreeNode>
+		));
+		r.expect(baseAssertion.insertBefore(WrappedContent, () => getSpacers(depth)));
+	});
 
-// 	it('renders correct depth', () => {
-// 		const depth = 6;
-// 		const r = renderer(() => (
-// 			<TreeNode {...defaultProps} depth={depth}>
-// 				{defaultRenderer}
-// 			</TreeNode>
-// 		));
-// 		r.expect(baseAssertion.insertBefore(WrappedContent, () => getSpacers(depth)));
-// 	});
+	it('renders disabled', () => {
+		const r = renderer(() => (
+			<TreeNode {...defaultProps} disabledNodes={[node.id]}>
+				{defaultRenderer}
+			</TreeNode>
+		));
+		r.expect(baseAssertion.setProperty(WrappedRoot, 'disabled', true));
+	});
 
-// 	it('renders disabled', () => {
-// 		const r = renderer(() => (
-// 			<TreeNode {...defaultProps} disabledNodes={[node.id]}>
-// 				{defaultRenderer}
-// 			</TreeNode>
-// 		));
-// 		r.expect(baseAssertion.setProperty(WrappedItem, 'disabled', true));
-// 	});
+	describe('Active', () => {
+		it('renders active', () => {
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} activeNode={node.id}>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(baseAssertion.setProperty(WrappedRoot, 'active', true));
+		});
 
-// 	it('renders leaf', () => {
-// 		const leafAssertion = baseAssertion
-// 			.setProperty(WrappedRoot, 'classes', [css.node, css.leaf, false, false])
-// 			.remove(WrappedExpander);
+		it('raises onActive event', () => {
+			const onActive = sinon.stub();
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} onActive={onActive}>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(baseAssertion);
 
-// 		const r = renderer(() => (
-// 			<TreeNode {...defaultProps} node={{ ...node, children: [] }}>
-// 				{defaultRenderer}
-// 			</TreeNode>
-// 		));
-// 		r.expect(leafAssertion);
-// 	});
+			// simulate child event
+			r.property(WrappedRoot, 'onRequestActive');
+			r.expect(baseAssertion);
 
-// 	describe('Active', () => {
-// 		it('renders active', () => {
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} activeNode={node.id}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(baseAssertion.setProperty(WrappedItem, 'active', true));
-// 		});
+			assert(onActive.calledWith(node.id));
+		});
+	});
 
-// 		it('raises onActive event', () => {
-// 			const onActive = sinon.stub();
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} onActive={onActive}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(baseAssertion);
+	describe('Checkable', () => {
+		const onPointerDown = sinon.stub();
+		const onCheck = sinon.stub();
+		const WrappedCheckbox = wrap(Checkbox);
+		const checkboxAssertion = baseAssertion.insertBefore(WrappedTitle, () => (
+			<div onpointerdown={onPointerDown}>
+				<WrappedCheckbox checked={false} onValue={noop} disabled={false} />
+			</div>
+		));
 
-// 			// simulate child event
-// 			r.property(WrappedItem, 'onRequestActive');
-// 			r.expect(baseAssertion);
+		beforeEach(() => {
+			onPointerDown.resetHistory();
+			onCheck.resetHistory();
+		});
 
-// 			assert(onActive.calledWith(node.id));
-// 		});
-// 	});
+		it('renders with checkbox', () => {
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} checkable={true}>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(checkboxAssertion);
+		});
 
-// 	describe('Checkable', () => {
-// 		const onPointerDown = sinon.stub();
-// 		const onCheck = sinon.stub();
-// 		const WrappedCheckbox = wrap(Checkbox);
-// 		const checkboxAssertion = baseAssertion.insertBefore(WrappedTitle, () => (
-// 			<div onpointerdown={onPointerDown}>
-// 				<WrappedCheckbox checked={false} onValue={noop} disabled={false} />
-// 			</div>
-// 		));
+		it('renders checked', () => {
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} checkable={true} checkedNodes={[node.id]}>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(checkboxAssertion.setProperty(WrappedCheckbox, 'checked', true));
+		});
 
-// 		beforeEach(() => {
-// 			onPointerDown.resetHistory();
-// 			onCheck.resetHistory();
-// 		});
+		it('renders with disabled checkbox', () => {
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} checkable={true} disabledNodes={[node.id]}>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(
+				checkboxAssertion
+					.setProperty(WrappedRoot, 'disabled', true)
+					.setProperty(WrappedCheckbox, 'disabled', true)
+			);
+		});
 
-// 		it('renders with checkbox', () => {
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} checkable={true}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(checkboxAssertion);
-// 		});
+		it('raises onCheck event', () => {
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} onCheck={onCheck} checkable={true}>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(checkboxAssertion);
 
-// 		it('renders checked', () => {
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} checkable={true} checkedNodes={[node.id]}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(checkboxAssertion.setProperty(WrappedCheckbox, 'checked', true));
-// 		});
+			// simulate "check" event
+			r.property(WrappedCheckbox, 'onValue', true);
+			r.expect(checkboxAssertion);
 
-// 		it('renders with disabled checkbox', () => {
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} checkable={true} disabledNodes={[node.id]}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(
-// 				checkboxAssertion
-// 					.setProperty(WrappedItem, 'disabled', true)
-// 					.setProperty(WrappedCheckbox, 'disabled', true)
-// 			);
-// 		});
+			assert(onCheck.calledWith(node.id, true));
 
-// 		it('raises onCheck event', () => {
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} onCheck={onCheck} checkable={true}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(checkboxAssertion);
+			// simulate "uncheck" event
+			onCheck.resetHistory();
+			r.property(WrappedCheckbox, 'onValue', false);
+			r.expect(checkboxAssertion);
 
-// 			// simulate "check" event
-// 			r.property(WrappedCheckbox, 'onValue', true);
-// 			r.expect(checkboxAssertion);
+			assert(onCheck.calledWith(node.id, false));
+		});
+	});
 
-// 			assert(onCheck.calledWith(node.id, true));
+	describe('Selectable', () => {
+		it('renders selected', () => {
+			const selectedAssertion = baseAssertion.setProperty(WrappedRoot, 'selected', true);
 
-// 			// simulate "uncheck" event
-// 			onCheck.resetHistory();
-// 			r.property(WrappedCheckbox, 'onValue', false);
-// 			r.expect(checkboxAssertion);
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} selectable={true} selectedNode={node.id}>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(selectedAssertion);
+		});
 
-// 			assert(onCheck.calledWith(node.id, false));
-// 		});
-// 	});
+		it('raises onSelect event', () => {
+			const onSelect = sinon.stub();
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} selectable={true} onSelect={onSelect} node={node}>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(baseAssertion);
 
-// 	describe('Selectable', () => {
-// 		const selectableAssertion = baseAssertion.setProperty(WrappedRoot, 'classes', [
-// 			css.node,
-// 			false,
-// 			css.selectable,
-// 			false
-// 		]);
+			// simulate expanded event
+			r.property(WrappedRoot, 'onSelect');
+			r.expect(baseAssertion);
 
-// 		it('renders selectable', () => {
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} selectable={true}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(selectableAssertion);
-// 		});
+			assert(onSelect.calledWith(node.id));
+		});
 
-// 		it('renders selected', () => {
-// 			const selectedAssertion = baseAssertion
-// 				.setProperty(WrappedRoot, 'classes', [
-// 					css.node,
-// 					false,
-// 					css.selectable,
-// 					css.selected
-// 				])
-// 				.setProperty(WrappedItem, 'selected', true);
+		it('does not raise onSelect when not selectable', () => {
+			const onSelect = sinon.stub();
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} onSelect={onSelect} node={node}>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(baseAssertion);
 
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} selectable={true} selectedNode={node.id}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(selectedAssertion);
-// 		});
+			// simulate expanded event
+			r.property(WrappedRoot, 'onSelect');
+			r.expect(baseAssertion);
 
-// 		it('raises onSelect event', () => {
-// 			const onSelect = sinon.stub();
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} selectable={true} onSelect={onSelect} node={node}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(selectableAssertion);
+			assert(onSelect.notCalled);
+		});
+	});
 
-// 			// simulate expanded event
-// 			r.property(WrappedItem, 'onSelect');
-// 			r.expect(selectableAssertion);
+	describe('Expansion', () => {
+		const expandedAssertion = baseAssertion.setProperty(
+			WrappedExpanderIcon,
+			'type',
+			'downIcon'
+		);
 
-// 			assert(onSelect.calledWith(node.id));
-// 		});
+		it('renders expanded', () => {
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} expandedNodes={[node.id]} node={node}>
+					{defaultRenderer}
+				</TreeNode>
+			));
 
-// 		it('does not raise onSelect when not selectable', () => {
-// 			const onSelect = sinon.stub();
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} onSelect={onSelect} node={node}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(baseAssertion);
+			r.expect(expandedAssertion);
+		});
 
-// 			// simulate expanded event
-// 			r.property(WrappedItem, 'onSelect');
-// 			r.expect(baseAssertion);
+		it('raises expanded event', () => {
+			const onExpand = sinon.stub();
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} onExpand={onExpand} node={node}>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(baseAssertion);
 
-// 			assert(onSelect.notCalled);
-// 		});
-// 	});
+			// simulate expanded event
+			r.property(WrappedRoot, 'onSelect');
+			r.expect(baseAssertion);
 
-// 	describe('Expansion', () => {
-// 		const expandedAssertion = baseAssertion.setProperty(
-// 			WrappedExpanderIcon,
-// 			'type',
-// 			'downIcon'
-// 		);
+			assert(onExpand.calledWith(node.id, true));
+		});
 
-// 		it('renders expanded', () => {
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} expandedNodes={[node.id]} node={node}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
+		it('raises collapsed event', () => {
+			const onExpand = sinon.stub();
+			const r = renderer(() => (
+				<TreeNode
+					{...defaultProps}
+					expandedNodes={[node.id]}
+					onExpand={onExpand}
+					node={node}
+				>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(expandedAssertion);
 
-// 			r.expect(expandedAssertion);
-// 		});
+			// simulate collapsed event
+			r.property(WrappedRoot, 'onSelect');
+			r.expect(expandedAssertion);
 
-// 		it('raises expanded event', () => {
-// 			const onExpand = sinon.stub();
-// 			const r = renderer(() => (
-// 				<TreeNode {...defaultProps} onExpand={onExpand} node={node}>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(baseAssertion);
-
-// 			// simulate expanded event
-// 			r.property(WrappedItem, 'onSelect');
-// 			r.expect(baseAssertion);
-
-// 			assert(onExpand.calledWith(node.id, true));
-// 		});
-
-// 		it('raises collapsed event', () => {
-// 			const onExpand = sinon.stub();
-// 			const r = renderer(() => (
-// 				<TreeNode
-// 					{...defaultProps}
-// 					expandedNodes={[node.id]}
-// 					onExpand={onExpand}
-// 					node={node}
-// 				>
-// 					{defaultRenderer}
-// 				</TreeNode>
-// 			));
-// 			r.expect(expandedAssertion);
-
-// 			// simulate collapsed event
-// 			r.property(WrappedItem, 'onSelect');
-// 			r.expect(expandedAssertion);
-
-// 			assert(onExpand.calledWith(node.id, false));
-// 		});
-// 	});
-// });
+			assert(onExpand.calledWith(node.id, false));
+		});
+	});
+});
