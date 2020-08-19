@@ -14,10 +14,6 @@ import { ListItem } from '../list';
 import * as css from '../theme/default/tree.m.css';
 import LoadingIndicator from '../loading-indicator';
 
-/*******************
- * Tree
- *******************/
-
 export interface TreeNodeOption {
 	id: string;
 	parent: string;
@@ -280,10 +276,6 @@ export default factory(function({
 	}
 	return mapNodeTree();
 });
-
-/*******************
- * TreeNode
- *******************/
 
 interface TreeNodeProperties {
 	checkable: boolean;
