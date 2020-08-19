@@ -120,11 +120,15 @@ describe('TreeNode', () => {
 		const onPointerDown = sinon.stub();
 		const onCheck = sinon.stub();
 		const WrappedCheckbox = wrap(Checkbox);
-		const checkboxAssertion = baseAssertion.insertBefore(WrappedTitle, () => (
-			<div onpointerdown={onPointerDown}>
-				<WrappedCheckbox checked={false} onValue={noop} disabled={false} />
-			</div>
-		));
+		const checkboxAssertion = baseAssertion.insertBefore(
+			WrappedTitle,
+			() =>
+				(
+					<div onpointerdown={onPointerDown}>
+						<WrappedCheckbox checked={false} onValue={noop} disabled={false} />
+					</div>
+				) as any
+		);
 
 		beforeEach(() => {
 			onPointerDown.resetHistory();
