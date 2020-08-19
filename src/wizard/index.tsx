@@ -95,21 +95,23 @@ export default factory(function Wizard({ properties, children, middleware: { the
 				content = String(index + 1);
 		}
 		return {
-			content: [
-				<div classes={classes.stepIcon}>
-					<Avatar
-						theme={theme.compose(
-							avatarCss,
-							css,
-							'avatar'
-						)}
-						outline={Boolean(status !== 'inProgress')}
-					>
-						{content}
-					</Avatar>
-				</div>,
-				step
-			],
+			content: (
+				<virtual>
+					<div classes={classes.stepIcon}>
+						<Avatar
+							theme={theme.compose(
+								avatarCss,
+								css,
+								'avatar'
+							)}
+							outline={Boolean(status !== 'inProgress')}
+						>
+							{content}
+						</Avatar>
+					</div>
+					{step}
+				</virtual>
+			),
 			status
 		};
 	});

@@ -37,53 +37,57 @@ describe('Wizard', () => {
 				onclick={noop}
 			>
 				<div classes={css.tail} />
-				<div classes={css.stepIcon}>
-					<Avatar
-						theme={{
-							'@dojo/widgets/avatar': {
-								avatarColor: avatarCss.avatarColor,
-								avatarColorSecondary: avatarCss.avatarColorSecondary,
-								avatarOutline: avatarCss.avatarOutline,
-								circle: avatarCss.circle,
-								large: avatarCss.large,
-								medium: avatarCss.medium,
-								root: css.avatarRoot,
-								rounded: avatarCss.rounded,
-								small: avatarCss.small,
-								square: avatarCss.square
-							}
-						}}
-						outline={true}
-					>
-						<Icon type="checkIcon" />
-					</Avatar>
-				</div>
-				<div>Step 1</div>
+				<virtual>
+					<div classes={css.stepIcon}>
+						<Avatar
+							theme={{
+								'@dojo/widgets/avatar': {
+									avatarColor: avatarCss.avatarColor,
+									avatarColorSecondary: avatarCss.avatarColorSecondary,
+									avatarOutline: avatarCss.avatarOutline,
+									circle: avatarCss.circle,
+									large: avatarCss.large,
+									medium: avatarCss.medium,
+									root: css.avatarRoot,
+									rounded: avatarCss.rounded,
+									small: avatarCss.small,
+									square: avatarCss.square
+								}
+							}}
+							outline={true}
+						>
+							<Icon type="checkIcon" />
+						</Avatar>
+					</div>
+					<div>Step 1</div>
+				</virtual>
 			</WrappedStep1>
 			<WrappedStep2 key="step2" classes={[css.step, false, false, false]} onclick={noop}>
 				<div classes={css.tail} />
-				<div classes={css.stepIcon}>
-					<WrappedAvatar
-						theme={{
-							'@dojo/widgets/avatar': {
-								avatarColor: avatarCss.avatarColor,
-								avatarColorSecondary: avatarCss.avatarColorSecondary,
-								avatarOutline: avatarCss.avatarOutline,
-								circle: avatarCss.circle,
-								large: avatarCss.large,
-								medium: avatarCss.medium,
-								root: css.avatarRoot,
-								rounded: avatarCss.rounded,
-								small: avatarCss.small,
-								square: avatarCss.square
-							}
-						}}
-						outline={false}
-					>
-						2
-					</WrappedAvatar>
-				</div>
-				<div>Step 2</div>
+				<virtual>
+					<div classes={css.stepIcon}>
+						<WrappedAvatar
+							theme={{
+								'@dojo/widgets/avatar': {
+									avatarColor: avatarCss.avatarColor,
+									avatarColorSecondary: avatarCss.avatarColorSecondary,
+									avatarOutline: avatarCss.avatarOutline,
+									circle: avatarCss.circle,
+									large: avatarCss.large,
+									medium: avatarCss.medium,
+									root: css.avatarRoot,
+									rounded: avatarCss.rounded,
+									small: avatarCss.small,
+									square: avatarCss.square
+								}
+							}}
+							outline={false}
+						>
+							2
+						</WrappedAvatar>
+					</div>
+					<div>Step 2</div>
+				</virtual>
 			</WrappedStep2>
 			<WrappedStep3
 				key="step3"
@@ -91,28 +95,30 @@ describe('Wizard', () => {
 				onclick={noop}
 			>
 				<div classes={css.tail} />
-				<div classes={css.stepIcon}>
-					<Avatar
-						theme={{
-							'@dojo/widgets/avatar': {
-								avatarColor: avatarCss.avatarColor,
-								avatarColorSecondary: avatarCss.avatarColorSecondary,
-								avatarOutline: avatarCss.avatarOutline,
-								circle: avatarCss.circle,
-								large: avatarCss.large,
-								medium: avatarCss.medium,
-								root: css.avatarRoot,
-								rounded: avatarCss.rounded,
-								small: avatarCss.small,
-								square: avatarCss.square
-							}
-						}}
-						outline={true}
-					>
-						3
-					</Avatar>
-				</div>
-				<div>Step 3</div>
+				<virtual>
+					<div classes={css.stepIcon}>
+						<Avatar
+							theme={{
+								'@dojo/widgets/avatar': {
+									avatarColor: avatarCss.avatarColor,
+									avatarColorSecondary: avatarCss.avatarColorSecondary,
+									avatarOutline: avatarCss.avatarOutline,
+									circle: avatarCss.circle,
+									large: avatarCss.large,
+									medium: avatarCss.medium,
+									root: css.avatarRoot,
+									rounded: avatarCss.rounded,
+									small: avatarCss.small,
+									square: avatarCss.square
+								}
+							}}
+							outline={true}
+						>
+							3
+						</Avatar>
+					</div>
+					<div>Step 3</div>
+				</virtual>
 			</WrappedStep3>
 		</WrappedRoot>
 	));
@@ -191,28 +197,30 @@ describe('Wizard', () => {
 				.setProperty(WrappedStep2, 'classes', [css.step, false, false, css.error])
 				.setChildren(WrappedStep2, () => [
 					<div classes={css.tail} />,
-					<div classes={css.stepIcon}>
-						<WrappedAvatar
-							theme={{
-								'@dojo/widgets/avatar': {
-									avatarColor: avatarCss.avatarColor,
-									avatarColorSecondary: avatarCss.avatarColorSecondary,
-									avatarOutline: avatarCss.avatarOutline,
-									circle: avatarCss.circle,
-									large: avatarCss.large,
-									medium: avatarCss.medium,
-									root: css.avatarRoot,
-									rounded: avatarCss.rounded,
-									small: avatarCss.small,
-									square: avatarCss.square
-								}
-							}}
-							outline={false}
-						>
-							2
-						</WrappedAvatar>
-					</div>,
-					<Step status="error" />
+					<virtual>
+						<div classes={css.stepIcon}>
+							<WrappedAvatar
+								theme={{
+									'@dojo/widgets/avatar': {
+										avatarColor: avatarCss.avatarColor,
+										avatarColorSecondary: avatarCss.avatarColorSecondary,
+										avatarOutline: avatarCss.avatarOutline,
+										circle: avatarCss.circle,
+										large: avatarCss.large,
+										medium: avatarCss.medium,
+										root: css.avatarRoot,
+										rounded: avatarCss.rounded,
+										small: avatarCss.small,
+										square: avatarCss.square
+									}
+								}}
+								outline={false}
+							>
+								2
+							</WrappedAvatar>
+						</div>
+						<Step status="error" />
+					</virtual>
 				])
 				.setProperty(WrappedAvatar, 'outline', true)
 				.setChildren(WrappedAvatar, () => [<Icon type="closeIcon" />])
