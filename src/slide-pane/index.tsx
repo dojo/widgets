@@ -2,7 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '../middleware/theme';
 import i18n from '@dojo/framework/core/middleware/i18n';
-import commonBundle from '../common/nls/common';
+import bundle from './nls/SlidePane';
 import * as fixedCss from './styles/slide-pane.m.css';
 import * as css from '../theme/default/slide-pane.m.css';
 import { uuid } from '@dojo/framework/core/util';
@@ -126,7 +126,7 @@ export const SlidePane = factory(function SlidePane({
 	const fixedContentClasses = [fixedAlignCss[`${align}Fixed`]];
 
 	if (!closeText) {
-		const { messages } = i18n.localize(commonBundle);
+		const { messages } = i18n.localize(bundle);
 		closeText = `${messages.close} ${title}`;
 	}
 
