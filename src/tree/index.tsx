@@ -32,9 +32,9 @@ export interface TreeProperties {
 	expandedNodes?: string[];
 	selectedNode?: string;
 	disabledNodes?: string[];
-	onSelect?(node: string): void;
-	onCheck?(node: string, checked: boolean): void;
-	onExpand?(node: string, expanded: boolean): void;
+	onSelect?(id: string): void;
+	onCheck?(id: string, checked: boolean): void;
+	onExpand?(id: string, expanded: boolean): void;
 }
 
 export interface TreeChildren {
