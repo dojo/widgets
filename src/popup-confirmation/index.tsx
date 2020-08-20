@@ -13,10 +13,10 @@ import bundle from './nls/PopupConfirmation';
 
 export interface PopupConfirmationProperties extends BasePopupProperties {
 	/* Callback when the dialog has been confirmed; dialog will be closed */
-	onConfirm?(): void;
+	onConfirm(): void;
 
 	/* Callback when the dialog has been canceled; dialog will be closed */
-	onCancel?(): void;
+	onCancel(): void;
 
 	/* Custom text for cancel button; defaults to "No" */
 	cancelText?: string;
@@ -75,7 +75,7 @@ export default factory(function PopupConfirmation({
 											onCancel && onCancel();
 										}}
 									>
-										{cancelText || messages.no}
+										{messages.no || cancelText}
 									</Button>
 									<Button
 										key="confirm-button"
@@ -90,7 +90,7 @@ export default factory(function PopupConfirmation({
 											onConfirm && onConfirm();
 										}}
 									>
-										{confirmText || messages.yes}
+										{messages.yes || confirmText}
 									</Button>
 								</div>
 							</div>
