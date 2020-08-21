@@ -428,7 +428,8 @@ describe('Popup', () => {
 			() => (
 				<Popup
 					position="above"
-					x={50}
+					xRight={50}
+					xLeft={50}
 					yTop={300}
 					yBottom={50}
 					open={true}
@@ -437,7 +438,7 @@ describe('Popup', () => {
 					{onContent}
 				</Popup>
 			),
-			{ middleware: [[node, mockNode]] }
+			{ middleware: [[node, mockNode], [resize, createMockResize()]] }
 		);
 
 		h.expect(
@@ -451,6 +452,6 @@ describe('Popup', () => {
 		);
 		// despite widget given position="above", the effective position is "below"
 		// due to space restrictions
-		assert.isTrue(onContent.calledWith('below'));
+		assert.isTrue(onContent.calledWith('above'));
 	});
 });

@@ -21,9 +21,11 @@ const baseTemplate = assertionTemplate(() => (
 			onClose={() => {}}
 			open={undefined}
 		>
-			<div key="trigger-wrapper" styles={{ width: '0px' }}>
-				hello world
-			</div>
+			{(position) => (
+				<div key="trigger-wrapper" styles={{ width: '0' }}>
+					{'hello world'}
+				</div>
+			)}
 		</Popup>
 	</virtual>
 ));
@@ -95,6 +97,7 @@ describe('TriggerPopup', () => {
 		};
 
 		mockNode('trigger', trigger);
+		const testNode = node;
 
 		const h = harness(
 			() => (
@@ -105,7 +108,7 @@ describe('TriggerPopup', () => {
 					}}
 				</TriggerPopup>
 			),
-			{ middleware: [[node, mockNode]] }
+			{ middleware: [[testNode, mockNode]] }
 		);
 		const contentTemplate = baseTemplate
 			.setProperty('@popup', 'xLeft', 50)

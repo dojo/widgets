@@ -44,15 +44,7 @@ export const Popup = factory(function({
 	children,
 	middleware: { dimensions, theme, bodyScroll, resize }
 }) {
-	const {
-		underlayVisible = false,
-		yBottom,
-		yTop,
-		xRight,
-		xLeft,
-		onClose,
-		open
-	} = properties();
+	const { underlayVisible = false, yBottom, yTop, xRight, xLeft, onClose, open } = properties();
 	let { position = 'below' as PopupPosition } = properties();
 
 	resize.get('wrapper');
@@ -79,11 +71,18 @@ export const Popup = factory(function({
 			opacity: '1'
 		};
 
-		// change position if insufficient space
-		if (position === 'below' && !willFit.below && willFit.above) {
-			position = 'above';
-		} else if (!willFit.above && willFit.below) {
-			position = 'below';
+		if (position === 'below') {
+			if (willFit.below) {
+				wrapperStyles.top = `${yTop}px`;
+			} else {
+				wrapperStyles.top = `${yBottom - wrapperDimensions.size.height}px`;
+			}
+		} else if (position === 'above') {
+			if (willFit.above) {
+				wrapperStyles.top = `${yBottom - wrapperDimensions.size.height}px`;
+			} else {
+				wrapperStyles.top = `${yTop}px`;
+			}
 		}
 
 		if (position === 'left' || position === 'right') {
@@ -107,10 +106,7 @@ export const Popup = factory(function({
 				wrapperStyles.left = `${xLeft - wrapperDimensions.size.width}px`;
 			}
 		}
-		wrapperStyles.top =
-			position === 'above' ? `${yBottom - wrapperDimensions.size.height}px` : `${yTop}px`;
 	}
-
 	const classes = theme.classes(css);
 	const [content] = children();
 	const contentResult = typeof content === 'function' ? content(position) : content;

@@ -1,7 +1,7 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
-import { tsx } from '@dojo/framework/core/vdom';
+import { tsx, create } from '@dojo/framework/core/vdom';
 import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
 
 import Button from '../../button';
@@ -11,6 +11,7 @@ import PopupConfirmation from '../';
 import bundle from '../nls/PopupConfirmation';
 import * as buttonCss from '../../theme/default/button.m.css';
 import * as css from '../../theme/default/popup-confirmation.m.css';
+import i18n from '@dojo/framework/core/middleware/i18n';
 
 const { ' _key': key, ...buttonTheme } = buttonCss as any;
 const { messages } = bundle;
@@ -62,7 +63,7 @@ describe('PopupConfirmation', () => {
 
 	it('Renders', () => {
 		const r = renderer(() => (
-			<PopupConfirmation>
+			<PopupConfirmation onConfirm={noop} onCancel={noop}>
 				{{
 					trigger: () => <button>Delete</button>,
 					content: 'Sure?'
@@ -79,14 +80,30 @@ describe('PopupConfirmation', () => {
 	});
 
 	it('Renders content with custom control labels', () => {
-		const r = renderer(() => (
-			<PopupConfirmation cancelText="No Go" confirmText="Go Go">
-				{{
-					trigger: () => <button>Delete</button>,
-					content: 'Sure?'
-				}}
-			</PopupConfirmation>
-		));
+		const middlewareFactory = create();
+		const mocki18n = middlewareFactory(() => {
+			return {
+				localize: () => {
+					return { messages: {} };
+				}
+			};
+		});
+		const r = renderer(
+			() => (
+				<PopupConfirmation
+					onConfirm={noop}
+					onCancel={noop}
+					cancelText="No Go"
+					confirmText="Go Go"
+				>
+					{{
+						trigger: () => <button>Delete</button>,
+						content: 'Sure?'
+					}}
+				</PopupConfirmation>
+			),
+			{ middleware: [[i18n, mocki18n]] }
+		);
 
 		r.child(TriggerPopupWrap, {
 			trigger: [noop],
