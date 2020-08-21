@@ -16,12 +16,5 @@
 
 	--border-radius: 4px;
 
-	/* Z-index levels */
-	--zindex-base: 0;
-	--zindex-tooltip: 100;
-	--zindex-dropdown: 200;
-	--zindex-fixed: 300;
-	--zindex-dialog: 400;
-	--zindex-alert: 500;
 	--slider-height: 13px;
 }

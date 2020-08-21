@@ -2,6 +2,7 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '@dojo/framework/core/middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/snackbar.m.css';
+import * as fixedCss from './styles/snackbar.m.css';
 
 export interface SnackbarProperties {
 	/** If the snackbar is displayed */
@@ -36,6 +37,7 @@ export const Snackbar = factory(function Snackbar({ middleware: { theme }, prope
 			classes={[
 				theme.variant(),
 				themeCss.root,
+				fixedCss.root,
 				open ? themeCss.open : null,
 				type ? themeCss[type] : null,
 				leading ? themeCss.leading : null,

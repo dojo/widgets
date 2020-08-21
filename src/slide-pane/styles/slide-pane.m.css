@@ -4,6 +4,8 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
+	/* zindex-partial-overlay */
+	z-index: 200;
 }
 
 .paneFixed {
@@ -11,6 +13,8 @@
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
+	/* zindex-partial-overlay + 1*/
+	z-index: 201;
 }
 
 .contentFixed {

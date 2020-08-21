@@ -12,7 +12,6 @@
 .main {
 	composes: mdc-dialog__container, mdc-dialog__surface from '@material/dialog/dist/mdc.dialog.css';
 	outline: 0;
-	z-index: calc(var(--zindex-dialog) + 1);
 }
 
 .root .main {
@@ -65,7 +64,6 @@
 
 .underlayVisible {
 	composes: mdc-dialog__scrim from '@material/dialog/dist/mdc.dialog.css';
-	z-index: var(--zindex-dialog);
 }
 
 .actions {

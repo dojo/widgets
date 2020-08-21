@@ -151,7 +151,7 @@ export const Dialog = factory(function Dialog({
 							aria-modal={modal ? 'true' : 'false'}
 							aria-describedby={role === 'alertdialog' ? contentId : undefined}
 							{...formatAriaProperties(aria)}
-							classes={themeCss.main}
+							classes={[themeCss.main, fixedCss.main]}
 							enterAnimation={themeCss.enter}
 							exitAnimation={themeCss.exit}
 							key="main"

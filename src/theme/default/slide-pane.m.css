@@ -12,7 +12,6 @@
 /* Added when a visible underlay is used */
 .underlayVisible {
 	background: var(--underlay-background);
-	z-index: var(--zindex-dialog);
 }
 
 /* Contains the children of the SlidePane */
@@ -22,7 +21,6 @@
 /* Contains the pane */
 .pane {
 	background-color: var(--component-background);
-	z-index: calc(var(--zindex-dialog) + 1);
 }
 
 /* Added to the title */

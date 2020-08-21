@@ -1,0 +1,5 @@
+.root {
+	position: fixed;
+	/* zindex-body-popup */
+	z-index: 400;
+}
