@@ -59,14 +59,6 @@
 	--transition-easing: ease;
 	--medium-transition-duration: 0.5s;
 
-	/* Z-index levels */
-	--zindex-base: 0;
-	--zindex-tooltip: 100;
-	--zindex-dropdown: 200;
-	--zindex-fixed: 300;
-	--zindex-dialog: 400;
-	--zindex-alert: 500;
-
 	/* Avatar */
 	--avatar-size-small: 24px;
 	--avatar-size-medium: 40px;

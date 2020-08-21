@@ -4,7 +4,8 @@ const { assert } = intern.getPlugin('chai');
 import { tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../../../common/util';
 
-import { DEFAULT_LABELS, DEFAULT_MONTHS } from '../support/defaults';
+import bundle from '../../nls/Calendar';
+import { DEFAULT_MONTHS } from '../support/defaults';
 import { DatePicker } from '../../index';
 import Icon from '../../../icon/index';
 import * as css from '../../../theme/default/calendar.m.css';
@@ -22,7 +23,7 @@ import {
 const harness = createHarness([compareTheme]);
 const testDate = new Date('June 3 2017');
 const requiredProps = {
-	labels: DEFAULT_LABELS,
+	labels: bundle.messages,
 	month: testDate.getMonth(),
 	monthNames: DEFAULT_MONTHS,
 	year: testDate.getFullYear()
@@ -121,7 +122,7 @@ const expectedMonthPopup = function(open: boolean) {
 			role="dialog"
 		>
 			<fieldset classes={css.monthFields} onkeydown={noop}>
-				<legend classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.chooseMonth}</legend>
+				<legend classes={baseCss.visuallyHidden}>{bundle.messages.chooseMonth}</legend>
 				{...monthRadios(open)}
 			</fieldset>
 		</div>
@@ -145,7 +146,7 @@ const expectedYearPopup = function(
 			role="dialog"
 		>
 			<fieldset classes={css.yearFields} onkeydown={noop}>
-				<legend classes={[baseCss.visuallyHidden]}>{DEFAULT_LABELS.chooseYear}</legend>
+				<legend classes={[baseCss.visuallyHidden]}>{bundle.messages.chooseYear}</legend>
 				{...yearRadios(open, yearStart, yearEnd, undefined, minYear, maxYear)}
 			</fieldset>
 		</div>
@@ -163,7 +164,7 @@ const expectedControls = function(open: boolean) {
 				onclick={noop}
 			>
 				<Icon type="leftIcon" theme={{}} classes={undefined} />
-				<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.previousYears}</span>
+				<span classes={baseCss.visuallyHidden}>{bundle.messages.previousYears}</span>
 			</button>
 			<button
 				classes={css.next}
@@ -173,7 +174,7 @@ const expectedControls = function(open: boolean) {
 				onclick={noop}
 			>
 				<Icon type="rightIcon" theme={{}} classes={undefined} />
-				<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.nextYears}</span>
+				<span classes={baseCss.visuallyHidden}>{bundle.messages.nextYears}</span>
 			</button>
 		</div>
 	);
@@ -380,7 +381,7 @@ registerSuite('Calendar DatePicker', {
 					>
 						<fieldset classes={css.monthFields} onkeydown={noop}>
 							<legend classes={baseCss.visuallyHidden}>
-								{DEFAULT_LABELS.chooseMonth}
+								{bundle.messages.chooseMonth}
 							</legend>
 							{...DEFAULT_MONTHS.map((monthName, i) => (
 								<label
@@ -422,7 +423,7 @@ registerSuite('Calendar DatePicker', {
 					>
 						<fieldset classes={css.yearFields} onkeydown={noop}>
 							<legend classes={[baseCss.visuallyHidden]}>
-								{DEFAULT_LABELS.chooseYear}
+								{bundle.messages.chooseYear}
 							</legend>
 							{...yearRadios(false, 1980, 2000, 1997)}
 						</fieldset>
@@ -437,7 +438,7 @@ registerSuite('Calendar DatePicker', {
 						>
 							<Icon type="leftIcon" theme={{}} classes={undefined} />
 							<span classes={baseCss.visuallyHidden}>
-								{DEFAULT_LABELS.previousYears}
+								{bundle.messages.previousYears}
 							</span>
 						</button>
 						<button
@@ -448,7 +449,9 @@ registerSuite('Calendar DatePicker', {
 							onclick={noop}
 						>
 							<Icon type="rightIcon" theme={{}} classes={undefined} />
-							<span classes={baseCss.visuallyHidden}>{DEFAULT_LABELS.nextYears}</span>
+							<span classes={baseCss.visuallyHidden}>
+								{bundle.messages.nextYears}
+							</span>
 						</button>
 					</div>
 				</div>

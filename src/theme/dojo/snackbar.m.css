@@ -1,6 +1,5 @@
 .root {
 	display: none;
-	position: fixed;
 	right: 0;
 	bottom: 0;
 	left: 0;
@@ -10,7 +9,6 @@
 	pointer-events: none;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	margin: var(--spacing-regular);
-	z-index: var(--zindex-alert);
 	font-family: var(--font-family);
 }
 
