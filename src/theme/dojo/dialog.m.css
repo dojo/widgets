@@ -17,17 +17,13 @@
 	left: 50%;
 	max-height: 100%;
 	max-width: 100%;
-	position: fixed;
 	top: 50%;
 	transform: translate(-50%, -50%);
 	width: calc(80 * var(--grid-base));
-	z-index: var(--zindex-dialog);
-	z-index: calc(var(--zindex-dialog) + 1);
 }
 
 .underlayVisible {
 	background-color: var(--color-box-shadow-strong);
-	z-index: var(--zindex-dialog);
 }
 
 .title {

@@ -162,11 +162,10 @@ Widgets adhere to a basic convention for using specific ranges of z-index values
 The range definitions are as follows:
 
 - **0 - 100**: Any specific component layering, e.g. a caption over an image.
-- **100 - 200**: Tooltips and other small, local, interactive overlays.
-- **200 - 300**: Dropdowns. Common examples include menus and select boxes.
-- **300 - 400**: Fixed position elements. Fixed headers and footers are clear examples of fixed page elements, but it could also include a drag-and-drop element in a drag state.
-- **400 - 500**: Dialogs and other full-page overlays. Slide panes are another good example of a common UI pattern in this range. It includes any widget that is intended to cover all page content, or that often is used with an underlay.
-- **500 +***: Alerts and special cases. Toast notifications could potentially be in this range, or any component important enough to interrupt all other interaction.
+- **100 - 200**: Fixed position elements. Fixed headers and footers are clear examples of fixed page elements, but it could also include a drag-and-drop element in a drag state.
+- **200 - 300**: Partial-page overlays such as Slide panes.
+- **300 - 400**: Full-page overlays such as Dialogs.
+- **400 - 500**: Body level popups, tooltips and alerts.
 
 
 ## How to customize a widget

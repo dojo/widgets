@@ -5,12 +5,16 @@ import harness from '@dojo/framework/testing/harness/harness';
 import { tsx } from '@dojo/framework/core/vdom';
 import Snackbar from '../../index';
 import * as css from '../../../theme/default/snackbar.m.css';
+import * as fixedCss from '../../styles/snackbar.m.css';
 import Button from '../../../button/index';
 
 describe('Snackbar', () => {
 	const template = assertationTemplate(() => {
 		return (
-			<div key="root" classes={[undefined, css.root, css.open, null, null, null]}>
+			<div
+				key="root"
+				classes={[undefined, css.root, fixedCss.root, css.open, null, null, null]}
+			>
 				<div key="content" classes={css.content}>
 					<div
 						key="label"
@@ -75,6 +79,7 @@ describe('Snackbar', () => {
 		const openTemplate = template.setProperty('@root', 'classes', [
 			undefined,
 			css.root,
+			fixedCss.root,
 			null,
 			null,
 			null,
@@ -94,6 +99,7 @@ describe('Snackbar', () => {
 		const successTemplate = template.setProperty('@root', 'classes', [
 			undefined,
 			css.root,
+			fixedCss.root,
 			css.open,
 			css.success,
 			null,
@@ -113,6 +119,7 @@ describe('Snackbar', () => {
 		const successTemplate = template.setProperty('@root', 'classes', [
 			undefined,
 			css.root,
+			fixedCss.root,
 			css.open,
 			null,
 			css.leading,
@@ -132,6 +139,7 @@ describe('Snackbar', () => {
 		const successTemplate = template.setProperty('@root', 'classes', [
 			undefined,
 			css.root,
+			fixedCss.root,
 			css.open,
 			null,
 			null,
@@ -151,6 +159,7 @@ describe('Snackbar', () => {
 		const errorTemplate = template.setProperty('@root', 'classes', [
 			undefined,
 			css.root,
+			fixedCss.root,
 			css.open,
 			css.error,
 			null,

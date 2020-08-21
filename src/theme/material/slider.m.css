@@ -85,7 +85,7 @@
 .root:hover .outputTooltip {
 	opacity: 1;
 	pointer-events: auto;
-	z-index: var(--zindex-tooltip);
+	z-index: 1;
 }
 
 .output {
