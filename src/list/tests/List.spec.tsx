@@ -238,7 +238,7 @@ describe('List', () => {
 		sb.restore();
 	});
 
-	it('should render list with no data', () => {
+	it('should not render with no data', () => {
 		const r = renderer(() => (
 			<List
 				resource={{
@@ -247,7 +247,7 @@ describe('List', () => {
 				onValue={onValueStub}
 			/>
 		));
-		r.expect(baseAssertion);
+		r.expect(assertion(() => undefined));
 	});
 
 	it('should render with list item placeholders', async () => {

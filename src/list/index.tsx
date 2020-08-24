@@ -571,7 +571,7 @@ export const List = factory(function List({
 	const total = metaInfo.total;
 	const totalContentHeight = total * itemHeight;
 
-	return (
+	return total ? (
 		<div
 			key="root"
 			classes={[theme.variant(), themedCss.root, fixedCss.root]}
@@ -614,6 +614,8 @@ export const List = factory(function List({
 				</div>
 			</div>
 		</div>
+	) : (
+		undefined
 	);
 });
 
