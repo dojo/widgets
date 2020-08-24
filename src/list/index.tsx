@@ -239,7 +239,8 @@ export const List = factory(function List({
 		onValue,
 		widgetId,
 		theme: themeProp,
-		resource: { template, options = createOptions(id) }
+		resource: { template, options = createOptions(id) },
+		classes
 	} = properties();
 	const [itemRenderer] = children();
 
@@ -358,7 +359,8 @@ export const List = factory(function List({
 			onRequestActive: () => {
 				setActiveIndex(index);
 			},
-			disabled: true
+			disabled: true,
+			classes
 		};
 		return menu ? (
 			<MenuItem
@@ -405,7 +407,8 @@ export const List = factory(function List({
 			onRequestActive: () => {
 				setActiveIndex(index);
 			},
-			disabled: itemDisabled
+			disabled: itemDisabled,
+			classes
 		};
 
 		let item: RenderResult;
@@ -571,51 +574,51 @@ export const List = factory(function List({
 	const total = metaInfo.total;
 	const totalContentHeight = total * itemHeight;
 
-	return total ? (
-		<div
-			key="root"
-			classes={[theme.variant(), themedCss.root, fixedCss.root]}
-			tabIndex={focusable ? 0 : -1}
-			onkeydown={(e) => {
-				onKeyDown(e, total);
-			}}
-			focus={() => shouldFocus}
-			onfocus={onFocus}
-			onpointerdown={focusable ? undefined : (event) => event.preventDefault()}
-			onblur={onBlur}
-			scrollTop={scrollTop}
-			onscroll={(e) => {
-				const newScrollTop = (e.target as HTMLElement).scrollTop;
-				if (scrollTop !== newScrollTop) {
-					icache.set('scrollTop', newScrollTop);
-				}
-			}}
-			styles={rootStyles}
-			role={menu ? 'menu' : 'listbox'}
-			aria-orientation="vertical"
-			aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
-			id={idBase}
-		>
+	return (
+		!!total && (
 			<div
-				classes={fixedCss.wrapper}
-				styles={{
-					height: `${totalContentHeight}px`
+				key="root"
+				classes={[theme.variant(), themedCss.root, fixedCss.root]}
+				tabIndex={focusable ? 0 : -1}
+				onkeydown={(e) => {
+					onKeyDown(e, total);
 				}}
-				key="wrapper"
+				focus={() => shouldFocus}
+				onfocus={onFocus}
+				onpointerdown={focusable ? undefined : (event) => event.preventDefault()}
+				onblur={onBlur}
+				scrollTop={scrollTop}
+				onscroll={(e) => {
+					const newScrollTop = (e.target as HTMLElement).scrollTop;
+					if (scrollTop !== newScrollTop) {
+						icache.set('scrollTop', newScrollTop);
+					}
+				}}
+				styles={rootStyles}
+				role={menu ? 'menu' : 'listbox'}
+				aria-orientation="vertical"
+				aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
+				id={idBase}
 			>
 				<div
-					classes={fixedCss.transformer}
+					classes={fixedCss.wrapper}
 					styles={{
-						transform: `translateY(${offsetY}px)`
+						height: `${totalContentHeight}px`
 					}}
-					key="transformer"
+					key="wrapper"
 				>
-					{items}
+					<div
+						classes={fixedCss.transformer}
+						styles={{
+							transform: `translateY(${offsetY}px)`
+						}}
+						key="transformer"
+					>
+						{items}
+					</div>
 				</div>
 			</div>
-		</div>
-	) : (
-		undefined
+		)
 	);
 });
 
