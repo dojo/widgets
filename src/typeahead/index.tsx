@@ -108,7 +108,8 @@ export const Typeahead = factory(function Typeahead({
 		strict = true,
 		value: controlledValue,
 		itemDisabled,
-		resource: { template, options = createOptions(id) }
+		resource: { template, options = createOptions(id) },
+		classes
 	} = properties();
 	const themedCss = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
@@ -364,6 +365,7 @@ export const Typeahead = factory(function Typeahead({
 									activeIndex={icache.get('activeIndex')}
 									resource={resource({ template, options })}
 									disabled={itemDisabled}
+									classes={classes}
 									onValue={(value) => {
 										focus.focus();
 										closeMenu();
