@@ -103,6 +103,7 @@ const listWithListItemsAssertion = baseAssertion
 	})
 	.replaceChildren(WrappedItemContainer, () => [
 		<ListItem
+			classes={undefined}
 			active={true}
 			disabled={false}
 			key={'item-0'}
@@ -123,6 +124,7 @@ const listWithListItemsAssertion = baseAssertion
 			dog
 		</ListItem>,
 		<ListItem
+			classes={undefined}
 			active={false}
 			disabled={false}
 			key={'item-1'}
@@ -143,6 +145,7 @@ const listWithListItemsAssertion = baseAssertion
 			Cat
 		</ListItem>,
 		<ListItem
+			classes={undefined}
 			active={false}
 			disabled={true}
 			key={'item-2'}
@@ -171,6 +174,7 @@ const listWithMenuItemsAssertion = baseAssertion
 	.setProperty(WrappedRoot, 'role', 'menu')
 	.replaceChildren(WrappedItemContainer, () => [
 		<MenuItem
+			classes={undefined}
 			active={true}
 			disabled={false}
 			key={'item-0'}
@@ -189,6 +193,7 @@ const listWithMenuItemsAssertion = baseAssertion
 			dog
 		</MenuItem>,
 		<MenuItem
+			classes={undefined}
 			active={false}
 			disabled={false}
 			key={'item-1'}
@@ -207,6 +212,7 @@ const listWithMenuItemsAssertion = baseAssertion
 			Cat
 		</MenuItem>,
 		<MenuItem
+			classes={undefined}
 			active={false}
 			disabled={true}
 			key={'item-2'}
@@ -238,7 +244,7 @@ describe('List', () => {
 		sb.restore();
 	});
 
-	it('should render list with no data', () => {
+	it('should not render with no data', () => {
 		const r = renderer(() => (
 			<List
 				resource={{
@@ -247,7 +253,7 @@ describe('List', () => {
 				onValue={onValueStub}
 			/>
 		));
-		r.expect(baseAssertion);
+		r.expect(assertion(() => undefined));
 	});
 
 	it('should render with list item placeholders', async () => {
@@ -298,6 +304,7 @@ describe('List', () => {
 			.setProperty(WrappedItemContainer, 'styles', { transform: 'translateY(180px)' });
 		const placeHolderAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
 			<ListItem
+				classes={undefined}
 				active={false}
 				disabled={true}
 				key={'item-4'}
@@ -318,6 +325,7 @@ describe('List', () => {
 				<LoadingIndicator />
 			</ListItem>,
 			<ListItem
+				classes={undefined}
 				active={false}
 				disabled={true}
 				key={'item-5'}
@@ -343,6 +351,7 @@ describe('List', () => {
 		await pageTwoPromise;
 		const lastPageItemsAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
 			<ListItem
+				classes={undefined}
 				active={false}
 				disabled={false}
 				key={'item-4'}
@@ -363,6 +372,7 @@ describe('List', () => {
 				Cat
 			</ListItem>,
 			<ListItem
+				classes={undefined}
 				active={true}
 				disabled={true}
 				key={'item-5'}
@@ -456,6 +466,7 @@ describe('List', () => {
 			.setProperty(WrappedItemContainer, 'styles', { transform: 'translateY(180px)' });
 		const placeHolderAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
 			<MenuItem
+				classes={undefined}
 				active={false}
 				disabled={true}
 				key={'item-4'}
@@ -474,6 +485,7 @@ describe('List', () => {
 				<LoadingIndicator />
 			</MenuItem>,
 			<MenuItem
+				classes={undefined}
 				active={false}
 				disabled={true}
 				key={'item-5'}
@@ -497,6 +509,7 @@ describe('List', () => {
 		await pageTwoPromise;
 		const lastPageItemsAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
 			<MenuItem
+				classes={undefined}
 				active={false}
 				disabled={false}
 				key={'item-4'}
@@ -515,6 +528,7 @@ describe('List', () => {
 				Cat
 			</MenuItem>,
 			<MenuItem
+				classes={undefined}
 				active={true}
 				disabled={true}
 				key={'item-5'}
@@ -540,6 +554,7 @@ describe('List', () => {
 		function createListItems(activeIndex = 0, selected?: number) {
 			return new Array(6).fill(undefined).map((_, index) => (
 				<ListItem
+					classes={undefined}
 					active={index === activeIndex}
 					disabled={testData[index].value === 'fish'}
 					key={`item-${index}`}
@@ -866,6 +881,7 @@ describe('List', () => {
 			})
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
+					classes={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -886,6 +902,7 @@ describe('List', () => {
 					Bob
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -906,6 +923,7 @@ describe('List', () => {
 					Adam
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-2'}
@@ -926,6 +944,7 @@ describe('List', () => {
 					Ant
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-3'}
@@ -946,6 +965,7 @@ describe('List', () => {
 					Anthony
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-4'}
@@ -987,6 +1007,7 @@ describe('List', () => {
 				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-1')
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1007,6 +1028,7 @@ describe('List', () => {
 						Bob
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={true}
 						disabled={false}
 						key={'item-1'}
@@ -1027,6 +1049,7 @@ describe('List', () => {
 						Adam
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1047,6 +1070,7 @@ describe('List', () => {
 						Ant
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-3'}
@@ -1067,6 +1091,7 @@ describe('List', () => {
 						Anthony
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-4'}
@@ -1098,6 +1123,7 @@ describe('List', () => {
 				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-3')
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1118,6 +1144,7 @@ describe('List', () => {
 						Bob
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-1'}
@@ -1138,6 +1165,7 @@ describe('List', () => {
 						Adam
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1158,6 +1186,7 @@ describe('List', () => {
 						Ant
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={true}
 						disabled={false}
 						key={'item-3'}
@@ -1178,6 +1207,7 @@ describe('List', () => {
 						Anthony
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-4'}
@@ -1206,6 +1236,7 @@ describe('List', () => {
 				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-4')
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1226,6 +1257,7 @@ describe('List', () => {
 						Bob
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-1'}
@@ -1246,6 +1278,7 @@ describe('List', () => {
 						Adam
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1266,6 +1299,7 @@ describe('List', () => {
 						Ant
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-3'}
@@ -1286,6 +1320,7 @@ describe('List', () => {
 						Anthony
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={true}
 						disabled={false}
 						key={'item-4'}
@@ -1314,6 +1349,7 @@ describe('List', () => {
 				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-1')
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1334,6 +1370,7 @@ describe('List', () => {
 						Bob
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={true}
 						disabled={false}
 						key={'item-1'}
@@ -1354,6 +1391,7 @@ describe('List', () => {
 						Adam
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1374,6 +1412,7 @@ describe('List', () => {
 						Ant
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-3'}
@@ -1394,6 +1433,7 @@ describe('List', () => {
 						Anthony
 					</ListItem>,
 					<ListItem
+						classes={undefined}
 						active={false}
 						disabled={false}
 						key={'item-4'}
@@ -1453,6 +1493,7 @@ describe('List', () => {
 			})
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
+					classes={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -1473,6 +1514,7 @@ describe('List', () => {
 					Bob
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -1493,6 +1535,7 @@ describe('List', () => {
 					Adam
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-2'}
@@ -1513,6 +1556,7 @@ describe('List', () => {
 					Ant
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-3'}
@@ -1533,6 +1577,7 @@ describe('List', () => {
 					Anthony
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-4'}
@@ -1569,6 +1614,7 @@ describe('List', () => {
 			})
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
+					classes={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -1579,6 +1625,7 @@ describe('List', () => {
 					dog
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -1589,6 +1636,7 @@ describe('List', () => {
 					Cat
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -1605,7 +1653,11 @@ describe('List', () => {
 				onValue={onValueStub}
 			>
 				{(item, itemProps) => {
-					return <ListItem {...itemProps}>{item.label || item.value}</ListItem>;
+					return (
+						<ListItem classes={undefined} {...itemProps}>
+							{item.label || item.value}
+						</ListItem>
+					);
 				}}
 			</List>
 		));
@@ -1626,6 +1678,7 @@ describe('List', () => {
 			})
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
+					classes={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -1646,6 +1699,7 @@ describe('List', () => {
 					dog
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -1666,6 +1720,7 @@ describe('List', () => {
 					Cat
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -1706,6 +1761,7 @@ describe('List', () => {
 			})
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
+					classes={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -1726,6 +1782,7 @@ describe('List', () => {
 					dog
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -1746,6 +1803,7 @@ describe('List', () => {
 					Cat
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -1774,6 +1832,7 @@ describe('List', () => {
 			})
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
+					classes={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -1794,6 +1853,7 @@ describe('List', () => {
 					dog
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -1814,6 +1874,7 @@ describe('List', () => {
 					Cat
 				</ListItem>,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -1867,6 +1928,7 @@ describe('List', () => {
 			})
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
+					classes={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -1888,6 +1950,7 @@ describe('List', () => {
 				</ListItem>,
 				<hr classes={css.divider} />,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -1909,6 +1972,7 @@ describe('List', () => {
 				</ListItem>,
 				<hr classes={css.divider} />,
 				<ListItem
+					classes={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
