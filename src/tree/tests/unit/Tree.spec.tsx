@@ -296,6 +296,40 @@ describe('Tree', () => {
 			r.expect(activeAssertion);
 			assert(onExpand.calledWith(nodeId, false));
 		});
+
+		it('raises event on initial expand', () => {
+			const initialExpand = sinon.stub();
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					initialExpanded={initialExpand}
+				/>
+			));
+			r.expect(simpleTreeAssertion);
+
+			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, true);
+			r.expect(expandedAssertion);
+			assert(initialExpand.calledWith(simpleTree[0].id));
+
+			initialExpand.resetHistory();
+			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, false);
+			r.expect(
+				simpleTreeAssertion
+					.setProperty(WrappedNode1, 'expandedNodes', [])
+					.setProperty(WrappedNode2, 'expandedNodes', [])
+			);
+
+			initialExpand.resetHistory();
+			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, true);
+			r.expect(expandedAssertion);
+			assert.isTrue(initialExpand.notCalled);
+		});
 	});
 
 	describe('CheckedNodes', () => {
