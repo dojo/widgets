@@ -11,13 +11,13 @@ export default factory(function Basic() {
 	return (
 		<Example>
 			<div classes={css.root}>
-				<PopupConfirmation>
+				<PopupConfirmation onConfirm={() => {}} onCancel={() => {}}>
 					{{
 						content: 'Are you sure you want to delete this?',
 						trigger: (open) => <Button onClick={open}>Trigger Below</Button>
 					}}
 				</PopupConfirmation>
-				<PopupConfirmation position="above">
+				<PopupConfirmation onConfirm={() => {}} onCancel={() => {}} position="above">
 					{{
 						content: 'Are you sure you want to delete this?',
 						trigger: (open) => <Button onClick={open}>Trigger Above</Button>

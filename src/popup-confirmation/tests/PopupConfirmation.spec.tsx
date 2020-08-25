@@ -1,7 +1,7 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
-import { tsx, create } from '@dojo/framework/core/vdom';
+import { tsx } from '@dojo/framework/core/vdom';
 import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
 
 import Button from '../../button';
@@ -11,7 +11,6 @@ import PopupConfirmation from '../';
 import bundle from '../nls/PopupConfirmation';
 import * as buttonCss from '../../theme/default/button.m.css';
 import * as css from '../../theme/default/popup-confirmation.m.css';
-import i18n from '@dojo/framework/core/middleware/i18n';
 
 const { ' _key': key, ...buttonTheme } = buttonCss as any;
 const { messages } = bundle;
