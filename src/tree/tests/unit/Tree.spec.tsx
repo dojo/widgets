@@ -379,6 +379,42 @@ describe('Tree', () => {
 			);
 			assert(onCheck.calledWith(simpleTree[0].id, false));
 		});
+
+		it('raises initial checked event', () => {
+			const initialChecked = sinon.stub();
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					checkable={true}
+					initialChecked={initialChecked}
+				/>
+			));
+			r.expect(checkableAssertion);
+
+			// simulate check event
+			r.property(WrappedNode1, 'onCheck', simpleTree[0].id, true);
+			r.expect(
+				checkableAssertion
+					.setProperty(WrappedNode1, 'checkedNodes', [simpleTree[0].id])
+					.setProperty(WrappedNode2, 'checkedNodes', [simpleTree[0].id])
+			);
+			assert(initialChecked.calledWith(simpleTree[0].id));
+			// simulate second check event
+			initialChecked.resetHistory();
+			r.property(WrappedNode1, 'onCheck', simpleTree[1].id, true);
+			r.expect(
+				checkableAssertion
+					.setProperty(WrappedNode1, 'checkedNodes', [simpleTree[0].id, simpleTree[1].id])
+					.setProperty(WrappedNode2, 'checkedNodes', [simpleTree[0].id, simpleTree[1].id])
+			);
+			assert.isTrue(initialChecked.notCalled);
+		});
 	});
 
 	describe('SelectedNode', () => {
