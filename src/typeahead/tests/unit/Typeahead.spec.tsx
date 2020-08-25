@@ -86,6 +86,7 @@ const expandedTriggerAssertion = triggerAssertion.setProperty(WrappedTrigger, 'a
 const contentAssertion = assertion(() => (
 	<div key="menu-wrapper" classes={css.menuWrapper}>
 		<WrappedList
+			classes={undefined}
 			activeIndex={0}
 			disabled={undefined}
 			focusable={false}
