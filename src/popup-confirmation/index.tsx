@@ -17,12 +17,6 @@ export interface PopupConfirmationProperties extends BasePopupProperties {
 
 	/* Callback when the dialog has been canceled; dialog will be closed */
 	onCancel(): void;
-
-	/* Custom text for cancel button; defaults to "No" */
-	cancelText?: string;
-
-	/* Custom text for confirm button; default to "Yes" */
-	confirmText?: string;
 }
 
 export interface PopupConfirmationChildren {
@@ -42,7 +36,7 @@ export default factory(function PopupConfirmation({
 	properties,
 	children
 }) {
-	const { cancelText, confirmText, onCancel, onConfirm, ...otherProperties } = properties();
+	const { onCancel, onConfirm, ...otherProperties } = properties();
 	const [{ content, trigger }] = children();
 	const classes = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
@@ -75,7 +69,7 @@ export default factory(function PopupConfirmation({
 											onCancel && onCancel();
 										}}
 									>
-										{messages.no || cancelText}
+										{messages.no}
 									</Button>
 									<Button
 										key="confirm-button"
@@ -90,7 +84,7 @@ export default factory(function PopupConfirmation({
 											onConfirm && onConfirm();
 										}}
 									>
-										{messages.yes || confirmText}
+										{messages.yes}
 									</Button>
 								</div>
 							</div>
