@@ -11,10 +11,6 @@
 	display: flex;
 }
 
-.spacer {
-	width: calc(var(--grid-base) * 6);
-}
-
 .content {
 	align-items: center;
 	box-sizing: content-box;

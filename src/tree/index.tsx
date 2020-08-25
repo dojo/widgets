@@ -4,7 +4,7 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import theme from '@dojo/framework/core/middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
-import { fill, flat } from '@dojo/framework/shim/array';
+import { flat } from '@dojo/framework/shim/array';
 
 import { Keys } from '../common/util';
 import Icon from '../icon';
@@ -24,6 +24,8 @@ export interface TreeNodeOption {
 export interface TreeProperties {
 	checkable?: boolean;
 	selectable?: boolean;
+	initialExpanded?: string[];
+	initialChecked?: string[];
 	checkedNodes?: string[];
 	expandedNodes?: string[];
 	selectedNode?: string;
@@ -198,7 +200,7 @@ export default factory(function({
 		}
 	}
 
-	function mapNodeTree(nodeId: string = 'root', depth: number = 0) {
+	function mapNodeTree(nodeId: string = 'root') {
 		const options = createOptions(nodeId);
 		const info = meta(template, options({ query: { parent: nodeId } }), true);
 
@@ -220,7 +222,7 @@ export default factory(function({
 
 		return (
 			<ol
-				classes={[classes.root, theme.variant()]}
+				classes={[nodeId === 'root' ? classes.root : null, theme.variant()]}
 				focus={() => shouldFocus}
 				onkeydown={onKeyDown}
 				tabIndex={0}
@@ -237,7 +239,6 @@ export default factory(function({
 							]}
 						>
 							<TreeNode
-								depth={depth}
 								activeNode={activeNode}
 								checkable={checkable}
 								selectable={selectable}
@@ -267,7 +268,7 @@ export default factory(function({
 							>
 								{itemRenderer || defaultRenderer}
 							</TreeNode>
-							{isExpanded && mapNodeTree(node.id, depth + 1)}
+							{isExpanded && mapNodeTree(node.id)}
 						</li>
 					);
 				})}
@@ -279,7 +280,6 @@ export default factory(function({
 
 interface TreeNodeProperties {
 	checkable: boolean;
-	depth: number;
 	selectable: boolean;
 	activeNode?: string;
 	selectedNode?: string;
@@ -305,7 +305,6 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 	const {
 		node,
 		checkable,
-		depth,
 		selectable,
 		activeNode,
 		selectedNode,
@@ -325,8 +324,6 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 	const checked = checkedNodes.includes(node.id);
 	const isDisabled = disabledNodes && disabledNodes.includes(node.id);
 	const isExpandable = node.hasChildren;
-	const spacers = new Array(depth);
-	fill(spacers, <div classes={classes.spacer} />);
 
 	return (
 		<ListItem
@@ -343,7 +340,6 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 			widgetId={node.id}
 		>
 			<div classes={classes.contentWrapper}>
-				{...spacers}
 				<div classes={classes.content}>
 					{isExpandable && (
 						<div classes={classes.expander}>
