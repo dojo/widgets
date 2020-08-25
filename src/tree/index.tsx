@@ -24,12 +24,12 @@ export interface TreeNodeOption {
 export interface TreeProperties {
 	checkable?: boolean;
 	selectable?: boolean;
-	initialExpanded?: string[];
-	initialChecked?: string[];
 	checkedNodes?: string[];
 	expandedNodes?: string[];
 	selectedNode?: string;
 	disabledNodes?: string[];
+	initialExpanded?(id: string): void;
+	initialChecked?(id: string): void;
 	onSelect?(id: string): void;
 	onCheck?(id: string, checked: boolean): void;
 	onExpand?(id: string, expanded: boolean): void;
@@ -44,6 +44,8 @@ interface TreeCache {
 	selectedNode?: string;
 	expandedNodes: string[];
 	checkedNodes: string[];
+	hasBeenExpanded: boolean;
+	hasBeenChecked: boolean;
 }
 
 const resource = createResourceMiddleware<TreeNodeOption>();
@@ -93,6 +95,8 @@ export default factory(function({
 		onSelect,
 		onCheck,
 		onExpand,
+		initialChecked,
+		initialExpanded,
 		disabledNodes,
 		resource: { template }
 	} = properties();
@@ -104,6 +108,8 @@ export default factory(function({
 	const selectedNode = icache.get('selectedNode');
 	const expandedNodes = icache.getOrSet('expandedNodes', []);
 	const checkedNodes = icache.getOrSet('checkedNodes', []);
+	const hasBeenExpanded = icache.getOrSet('hasBeenExpanded', false);
+	const hasBeenChecked = icache.getOrSet('hasBeenChecked', false);
 	const shouldFocus = focus.shouldFocus();
 
 	function activateNode(id: string) {
@@ -117,6 +123,8 @@ export default factory(function({
 
 	function expandNode(id: string) {
 		expandedNodes.push(id);
+		hasBeenExpanded === false && initialExpanded && initialExpanded(id);
+		icache.set('hasBeenExpanded', true);
 		icache.set('expandedNodes', expandedNodes);
 		onExpand && onExpand(id, true);
 	}
@@ -254,6 +262,12 @@ export default factory(function({
 										checkedNodes.push(n);
 									} else {
 										checkedNodes.splice(checkedNodes.indexOf(n), 1);
+									}
+									if (checked) {
+										hasBeenChecked === false &&
+											initialChecked &&
+											initialChecked(n);
+										icache.set('hasBeenChecked', true);
 									}
 									icache.set('checkedNodes', checkedNodes);
 									onCheck && onCheck(n, checked);

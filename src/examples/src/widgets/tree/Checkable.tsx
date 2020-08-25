@@ -52,6 +52,12 @@ export default factory(function Checkable({ id, middleware: { resource } }) {
 	return (
 		<Example>
 			<Tree
+				initialExpanded={(id) => {
+					console.log('initial expanded', id);
+				}}
+				initialChecked={(id) => {
+					console.log('initial checked', id);
+				}}
 				checkable={true}
 				resource={resource({ template, initOptions: { id, data: nodes } })}
 			/>

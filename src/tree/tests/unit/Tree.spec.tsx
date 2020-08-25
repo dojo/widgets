@@ -22,7 +22,6 @@ const WrappedNode2 = wrap(TreeNode);
 const WrappedNode3 = wrap(TreeNode);
 
 const defaultNodeProps = {
-	depth: 0,
 	activeNode: undefined,
 	checkable: false,
 	selectable: false,
@@ -161,7 +160,7 @@ describe('Tree', () => {
 				() =>
 					(
 						<ol
-							classes={[css.root, null]}
+							classes={[null, null]}
 							focus={() => false}
 							onkeydown={noop}
 							tabIndex={0}
@@ -170,7 +169,6 @@ describe('Tree', () => {
 								<WrappedNode3
 									{...defaultNodeProps}
 									expandedNodes={expandedNodes}
-									depth={1}
 									node={simpleTree[1]}
 								>
 									{noop as any}
@@ -207,13 +205,13 @@ describe('Tree', () => {
 						() =>
 							(
 								<ol
-									classes={[css.root, null]}
+									classes={[null, null]}
 									focus={() => false}
 									onkeydown={noop}
 									tabIndex={0}
 								>
 									<li classes={[css.node, false, false, false]}>
-										<TreeNode {...nodeProps} depth={1} node={simpleTree[1]}>
+										<TreeNode {...nodeProps} node={simpleTree[1]}>
 											{noop as any}
 										</TreeNode>
 									</li>

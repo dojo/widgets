@@ -16,7 +16,6 @@ const noop = () => {};
 const node = simpleTree[0];
 
 const defaultProps = {
-	depth: 0,
 	activeNode: undefined,
 	checkable: false,
 	selectable: false,
@@ -58,26 +57,10 @@ const baseAssertion = assertion(() => (
 	</WrappedRoot>
 ));
 
-function getSpacers(count: number) {
-	const spacers = new Array(count);
-	spacers.fill(<div classes={css.spacer} />);
-	return spacers;
-}
-
 describe('TreeNode', () => {
 	it('renders', () => {
 		const r = renderer(() => <TreeNode {...defaultProps}>{defaultRenderer}</TreeNode>);
 		r.expect(baseAssertion);
-	});
-
-	it('renders correct depth', () => {
-		const depth = 6;
-		const r = renderer(() => (
-			<TreeNode {...defaultProps} depth={depth}>
-				{defaultRenderer}
-			</TreeNode>
-		));
-		r.expect(baseAssertion.insertBefore(WrappedContent, () => getSpacers(depth)));
 	});
 
 	it('renders disabled', () => {
