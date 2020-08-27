@@ -60,6 +60,9 @@ import AnimatedDialog from './widgets/dialog/AnimatedDialog';
 import FocusTrappedDialog from './widgets/dialog/FocusTrappedDialog';
 import ActionsDialog from './widgets/dialog/ActionsDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
+import BasicFileUploader from './widgets/file-uploader/Basic';
+import DisabledFileUploader from './widgets/file-uploader/Disabled';
+import MultipleFileUploader from './widgets/file-uploader/Multiple';
 import Advanced from './widgets/grid/Advanced';
 import BasicFab from './widgets/floating-action-button/Basic';
 import ExtendedFab from './widgets/floating-action-button/Extended';
@@ -730,6 +733,27 @@ export const config = {
 					module: BasicEmailInput
 				}
 			}
+		},
+		'file-uploader': {
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicFileUploader
+				}
+			},
+			examples: [
+				{
+					title: 'Disabled FileUploader',
+					filename: 'Disabled',
+					module: DisabledFileUploader
+				},
+				{
+					title: 'Multiple FileUploader',
+					filename: 'Multiple',
+					module: MultipleFileUploader
+				}
+			]
 		},
 		'floating-action-button': {
 			overview: {

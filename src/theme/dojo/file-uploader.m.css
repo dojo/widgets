@@ -1,0 +1,29 @@
+.disabled {
+	cursor: no-drop;
+}
+
+.button {
+	/* TODO: button overrides this */
+	margin-right: var(--grid-base);
+}
+
+.fileItem {
+	display: flex;
+	flex-direction: row;
+	line-height: var(--line-height-base);
+}
+
+.fileItem:hover {
+	background-color: var(--color-background-faded);
+}
+
+.fileItemName {
+	flex-grow: 1;
+}
+
+.closeButton {
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	padding-top: 2px;
+}

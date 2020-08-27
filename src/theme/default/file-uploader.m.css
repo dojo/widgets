@@ -1,0 +1,32 @@
+/* The root class for FileUploader */
+.root {
+}
+
+/* Applied to the root node if the widget is disabled */
+.disabled {
+	cursor: no-drop;
+}
+
+/* The button to press to add files */
+.button {
+	margin-right: 8px;
+}
+
+/* Container for each item representing an added file */
+.fileItem {
+	display: flex;
+	flex-direction: row;
+}
+
+/* The name of each added file (child of .fileItem) */
+.fileItemName {
+	flex-grow: 1;
+}
+
+/* Close icon button rendered for each file (child of .fileItem) */
+.closeButton {
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	padding-top: 2px;
+}
