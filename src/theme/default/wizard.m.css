@@ -1,0 +1,142 @@
+/* The root class of the wizard */
+.root {
+	display: flex;
+	width: 100%;
+}
+/* Class added to the root when the wizard is rendered vertically */
+.vertical {
+	flex-direction: column;
+}
+
+/* Class added to the root when the wizard is rendered horizontally */
+.horizontal {
+}
+
+.horizontal .step {
+	margin-right: 16px;
+	white-space: nowrap;
+}
+
+/* The class added to the tail element that renders between elements when vertical */
+.tail {
+}
+.horizontal .tail,
+.vertical .tail {
+	display: none;
+}
+
+/* The class added to the root of each step */
+.step {
+	position: relative;
+	display: inline-block;
+	flex: 1;
+	overflow: hidden;
+	vertical-align: top;
+}
+
+/* Class added to the root when the component has click interactions enabled */
+.clickable {
+}
+
+.clickable .step {
+	cursor: pointer;
+}
+
+.vertical .step {
+	display: block;
+	flex: 1 0 auto;
+	overflow: visible;
+}
+
+/* Class added to the wrapper around a step icon or avatar */
+.stepIcon {
+}
+.vertical .stepIcon {
+	float: left;
+	margin: 0 calc(var(--mdc-theme-grid-base) * 2) 0 0;
+}
+
+/* Class added to the content within each step */
+.stepContent {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.vertical .stepContent {
+	display: block;
+	min-height: 48px;
+	overflow: hidden;
+}
+
+/* Class added to the step description text */
+.stepDescription {
+}
+.vertical .stepDescription {
+	padding-bottom: 12px;
+}
+
+/* Class added to the title text of a step */
+.stepTitle {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	padding-right: 16px;
+	line-height: 32px;
+}
+
+/* Class added to the title element of a step if there is no description text */
+.noDescription {
+}
+.vertical .noDescription {
+	padding-bottom: 23px;
+}
+
+.stepTitle::after {
+	position: absolute;
+	top: 16px;
+	left: 100%;
+	display: block;
+	width: 9999px;
+	height: 1px;
+	content: '';
+}
+
+.vertical .stepTitle::after,
+.step:last-child .stepTitle::after {
+	display: none;
+}
+
+/* Class added to the subtitle text of a step */
+.stepSubTitle {
+	display: inline;
+	margin-left: 8px;
+}
+
+.stepDescription {
+	white-space: normal;
+}
+
+.stepIcon {
+	display: inline-block;
+	vertical-align: top;
+	margin-right: 8px;
+}
+
+/* Composed class added to the root of the step avatar */
+.avatarRoot {
+	composes: root from './avatar.m.css';
+}
+
+/* Class added to a step's title if no title text is provided */
+.noTitle {
+}
+
+/* Class added to the root of a step if it's in the "pending" state */
+.pending {
+}
+/* Class added to the root of a step if it's in the "complete" state */
+.complete {
+}
+/* Class added to the root of a step if it's in the "error" state */
+.error {
+}

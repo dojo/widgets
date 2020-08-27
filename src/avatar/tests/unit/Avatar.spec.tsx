@@ -13,7 +13,7 @@ describe('Avatar', () => {
 			role={undefined}
 			aria-label={undefined}
 			styles={{}}
-			classes={[undefined, css.root, css.avatarColor, css.medium, css.circle]}
+			classes={[undefined, css.root, css.avatarColor, undefined, css.medium, css.circle]}
 		>
 			D
 		</div>
@@ -24,13 +24,28 @@ describe('Avatar', () => {
 		h.expect(template);
 	});
 
-	it('reners secondary colors', () => {
+	it('renders secondary colors', () => {
 		const h = harness(() => <Avatar secondary>D</Avatar>);
 		h.expect(
 			template.setProperty('@root', 'classes', [
 				undefined,
 				css.root,
 				css.avatarColorSecondary,
+				undefined,
+				css.medium,
+				css.circle
+			])
+		);
+	});
+
+	it('renders an outlined version', () => {
+		const h = harness(() => <Avatar outline>D</Avatar>);
+		h.expect(
+			template.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				css.avatarColor,
+				css.avatarOutline,
 				css.medium,
 				css.circle
 			])
@@ -45,6 +60,7 @@ describe('Avatar', () => {
 					undefined,
 					css.root,
 					css.avatarColor,
+					undefined,
 					css.medium,
 					css.circle
 				])
@@ -58,6 +74,7 @@ describe('Avatar', () => {
 					undefined,
 					css.root,
 					css.avatarColor,
+					undefined,
 					css.medium,
 					css.square
 				])
@@ -71,6 +88,7 @@ describe('Avatar', () => {
 					undefined,
 					css.root,
 					css.avatarColor,
+					undefined,
 					css.medium,
 					css.rounded
 				])
@@ -86,6 +104,7 @@ describe('Avatar', () => {
 					undefined,
 					css.root,
 					css.avatarColor,
+					undefined,
 					css.small,
 					css.circle
 				])
@@ -99,6 +118,7 @@ describe('Avatar', () => {
 					undefined,
 					css.root,
 					css.avatarColor,
+					undefined,
 					css.medium,
 					css.circle
 				])
@@ -112,6 +132,7 @@ describe('Avatar', () => {
 					undefined,
 					css.root,
 					css.avatarColor,
+					undefined,
 					css.large,
 					css.circle
 				])

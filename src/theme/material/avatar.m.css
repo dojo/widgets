@@ -22,6 +22,21 @@
 	background-color: var(--mdc-theme-secondary);
 }
 
+.avatarOutline {
+	background-color: var(--mdc-theme-background);
+	border: 1px solid;
+}
+
+.avatarOutline.avatarColor {
+	color: var(--mdc-theme-primary);
+	border-color: var(--mdc-theme-primary);
+}
+
+.avatarOutline.avatarColorSecondary {
+	color: var(--mdc-theme-secondary);
+	border-color: var(--mdc-theme-secondary);
+}
+
 .small {
 	width: var(--mdc-avatar-size-small);
 	height: var(--mdc-avatar-size-small);
