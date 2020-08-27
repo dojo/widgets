@@ -28,6 +28,7 @@ export interface TreeProperties {
 	expandedNodes?: string[];
 	selectedNode?: string;
 	disabledNodes?: string[];
+	parentSelection?: boolean;
 	initialExpanded?(id: string): void;
 	initialChecked?(id: string): void;
 	onSelect?(id: string): void;
@@ -98,7 +99,8 @@ export default factory(function({
 		initialChecked,
 		initialExpanded,
 		disabledNodes,
-		resource: { template }
+		resource: { template },
+		parentSelection = false
 	} = properties();
 	const classes = theme.classes(css);
 	const defaultRenderer = (n: TreeNodeOption) => n.value;
@@ -119,6 +121,20 @@ export default factory(function({
 	function selectNode(id: string) {
 		icache.set('selectedNode', id);
 		onSelect && onSelect(id);
+	}
+
+	function checkNode(n: string, checked: boolean) {
+		if (checked) {
+			checkedNodes.push(n);
+		} else {
+			checkedNodes.splice(checkedNodes.indexOf(n), 1);
+		}
+		if (checked) {
+			hasBeenChecked === false && initialChecked && initialChecked(n);
+			icache.set('hasBeenChecked', true);
+		}
+		icache.set('checkedNodes', checkedNodes);
+		onCheck && onCheck(n, checked);
 	}
 
 	function expandNode(id: string) {
@@ -258,24 +274,11 @@ export default factory(function({
 								selectedNode={selectedNode}
 								disabledNodes={disabledNodes || []}
 								expandedNodes={expandedNodes}
+								parentSelection={parentSelection}
 								node={node}
 								onActive={activateNode}
 								onSelect={selectNode}
-								onCheck={(n, checked) => {
-									if (checked) {
-										checkedNodes.push(n);
-									} else {
-										checkedNodes.splice(checkedNodes.indexOf(n), 1);
-									}
-									if (checked) {
-										hasBeenChecked === false &&
-											initialChecked &&
-											initialChecked(n);
-										icache.set('hasBeenChecked', true);
-									}
-									icache.set('checkedNodes', checkedNodes);
-									onCheck && onCheck(n, checked);
-								}}
+								onCheck={checkNode}
 								onExpand={(n, expanded) => {
 									if (expanded) {
 										expandNode(n);
@@ -304,6 +307,7 @@ interface TreeNodeProperties {
 	checkedNodes: string[];
 	disabledNodes: string[];
 	expandedNodes: string[];
+	parentSelection?: boolean;
 	node: TreeNodeOption;
 	onActive(node: string): void;
 	onSelect(node: string): void;
@@ -332,7 +336,8 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 		onActive,
 		onSelect,
 		onCheck,
-		onExpand
+		onExpand,
+		parentSelection
 	} = properties();
 	const [itemRenderer] = children();
 	const classes = theme.classes(css);
@@ -352,7 +357,10 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 			}}
 			onSelect={() => {
 				isExpandable && onExpand(node.id, !expanded);
-				selectable && onSelect(node.id);
+				if (parentSelection || !isExpandable) {
+					selectable && onSelect(node.id);
+					checkable && onCheck(node.id, !checked);
+				}
 			}}
 			disabled={isDisabled}
 			widgetId={node.id}
@@ -364,7 +372,7 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 							<Icon type={expanded ? 'downIcon' : 'rightIcon'} />
 						</div>
 					)}
-					{checkable && (
+					{checkable && (parentSelection || !isExpandable) && (
 						<div
 							onpointerdown={(event: Event) => {
 								// don't allow the check's activity to effect our expand/collapse

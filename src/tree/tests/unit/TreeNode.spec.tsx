@@ -23,6 +23,7 @@ const defaultProps = {
 	selectedNode: undefined,
 	disabledNodes: [],
 	expandedNodes: [],
+	parentSelection: true,
 	onActive: noop,
 	onSelect: noop,
 	onCheck: noop,
@@ -200,6 +201,40 @@ describe('TreeNode', () => {
 			assert(onSelect.calledWith(node.id));
 		});
 
+		it('raises onCheck event when selected', () => {
+			const onCheck = sinon.stub();
+			const onPointerDown = sinon.stub();
+			const WrappedCheckbox = wrap(Checkbox);
+			const checkboxAssertion = baseAssertion.insertBefore(
+				WrappedTitle,
+				() =>
+					(
+						<div onpointerdown={onPointerDown}>
+							<WrappedCheckbox checked={false} onValue={noop} disabled={false} />
+						</div>
+					) as any
+			);
+
+			const r = renderer(() => (
+				<TreeNode
+					{...defaultProps}
+					selectable={true}
+					checkable={true}
+					onCheck={onCheck}
+					node={node}
+				>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(checkboxAssertion);
+
+			// simulate expanded event
+			r.property(WrappedRoot, 'onSelect');
+			r.expect(checkboxAssertion);
+
+			assert(onCheck.calledWith(node.id, true));
+		});
+
 		it('does not raise onSelect when not selectable', () => {
 			const onSelect = sinon.stub();
 			const r = renderer(() => (
@@ -269,6 +304,48 @@ describe('TreeNode', () => {
 			r.expect(expandedAssertion);
 
 			assert(onExpand.calledWith(node.id, false));
+		});
+	});
+
+	describe('ParentSelection', () => {
+		it('should make uncheckable', () => {
+			const onCheck = sinon.stub();
+			const r = renderer(() => (
+				<TreeNode
+					{...defaultProps}
+					parentSelection={false}
+					checkable={true}
+					onCheck={onCheck}
+				>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(baseAssertion);
+			r.property(WrappedRoot, 'onSelect');
+
+			r.expect(baseAssertion);
+
+			assert.isTrue(onCheck.notCalled);
+		});
+
+		it('should make unselectable', () => {
+			const onSelect = sinon.stub();
+			const r = renderer(() => (
+				<TreeNode
+					{...defaultProps}
+					parentSelection={false}
+					checkable={true}
+					onSelect={onSelect}
+				>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(baseAssertion);
+			r.property(WrappedRoot, 'onSelect');
+
+			r.expect(baseAssertion);
+
+			assert.isTrue(onSelect.notCalled);
 		});
 	});
 });

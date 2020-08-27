@@ -29,6 +29,7 @@ const defaultNodeProps = {
 	selectedNode: undefined,
 	disabledNodes: [],
 	expandedNodes: [],
+	parentSelection: false,
 	onActive: noop,
 	onSelect: noop,
 	onCheck: noop,
@@ -36,7 +37,7 @@ const defaultNodeProps = {
 };
 const baseAssertion = assertion(() => (
 	<WrappedRoot
-		classes={[css.root, undefined]}
+		classes={[css.root, css.nodeParent, undefined]}
 		focus={noop as any}
 		onkeydown={noop}
 		tabIndex={0}
@@ -160,7 +161,7 @@ describe('Tree', () => {
 				() =>
 					(
 						<ol
-							classes={[null, null]}
+							classes={[null, css.nodeParent, null]}
 							focus={() => false}
 							onkeydown={noop}
 							tabIndex={0}
@@ -205,7 +206,7 @@ describe('Tree', () => {
 						() =>
 							(
 								<ol
-									classes={[null, null]}
+									classes={[null, css.nodeParent, null]}
 									focus={() => false}
 									onkeydown={noop}
 									tabIndex={0}
