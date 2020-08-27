@@ -230,7 +230,11 @@ export default factory(function({
 
 		return (
 			<ol
-				classes={[nodeId === 'root' ? classes.root : null, theme.variant()]}
+				classes={[
+					nodeId === 'root' ? classes.root : null,
+					classes.nodeParent,
+					theme.variant()
+				]}
 				focus={() => shouldFocus}
 				onkeydown={onKeyDown}
 				tabIndex={0}
