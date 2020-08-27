@@ -43,7 +43,7 @@ export default factory(function PopupConfirmation({
 
 	return (
 		<div classes={[classes.root, theme.variant()]}>
-			<TriggerPopup key="trigger-popup" {...otherProperties}>
+			<TriggerPopup classes={classes} theme={theme} key="trigger-popup" {...otherProperties}>
 				{{
 					trigger,
 					content: (close, position) => (
