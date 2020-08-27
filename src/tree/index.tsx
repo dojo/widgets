@@ -209,7 +209,11 @@ export default factory(function({
 			// expand
 			case Keys.Right:
 				event.preventDefault();
-				if (activeNode && !expandedNodes.includes(activeNode)) {
+				if (
+					activeNode &&
+					!expandedNodes.includes(activeNode) &&
+					nodes[activeIndex].hasChildren
+				) {
 					expandNode(activeNode);
 				}
 				break;
