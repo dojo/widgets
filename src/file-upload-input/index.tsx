@@ -2,6 +2,7 @@ import { DojoEvent, RenderResult } from '@dojo/framework/core/interfaces';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { create, node, tsx } from '@dojo/framework/core/vdom';
 import { Button } from '../button';
+import dnd from '../middleware/dnd';
 import theme from '../middleware/theme';
 import bundle from './nls/FileUploadInput';
 
@@ -36,13 +37,13 @@ export interface FileUploadInputProperties {
 	required?: boolean;
 }
 
-const factory = create({ i18n, node, theme })
+const factory = create({ dnd, i18n, node, theme })
 	.properties<FileUploadInputProperties>()
 	.children<FileUploadInputChildren | undefined>();
 
 export const FileUploadInput = factory(function FileUploadInput({
 	children,
-	middleware: { i18n, node, theme },
+	middleware: { dnd, i18n, node, theme },
 	properties
 }) {
 	const {
@@ -58,6 +59,18 @@ export const FileUploadInput = factory(function FileUploadInput({
 	const { buttonLabel = messages.chooseFiles, dndLabel = messages.orDropFilesHere } =
 		children()[0] || {};
 	const themeCss = theme.classes(css);
+	let isDndActive = false;
+
+	if (allowDnd) {
+		const rootDnd = dnd.get('root');
+		const overlayDnd = dnd.get('overlay');
+		isDndActive = rootDnd.isDragging || overlayDnd.isDragging;
+
+		if (overlayDnd.isDropped && overlayDnd.files && overlayDnd.files.length) {
+			onValue && onValue(overlayDnd.files);
+			dnd.reset('overlay');
+		}
+	}
 
 	function onActivate() {
 		const inputNode = node.get('nativeInput');
@@ -75,7 +88,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 	}
 
 	return (
-		<div classes={[themeCss.root, disabled && themeCss.disabled]}>
+		<div key="root" classes={[themeCss.root, disabled && themeCss.disabled]}>
 			<input
 				key="nativeInput"
 				accept={accept}
@@ -93,6 +106,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 			</Button>
 
 			{allowDnd && <span classes={[themeCss.dndLabel]}>{dndLabel}</span>}
+			{isDndActive && <div key="overlay" classes={[themeCss.dndOverlay]} />}
 		</div>
 	);
 });

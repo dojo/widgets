@@ -7,17 +7,6 @@
 .disabled {
 }
 
-.dndOverlay {
-	background-color: var(--selected-background);
-	border: 2px outset var(--selected-background);
-	height: 100%;
-	left: 0;
-	opacity: 0.3;
-	position: absolute;
-	top: 0;
-	width: 100%;
-}
-
 /* Container for each item representing an added file */
 .fileItem {
 	display: flex;

@@ -7,11 +7,12 @@ import {
 	FileUploadInputProperties
 } from '../file-upload-input';
 import { Icon } from '../icon';
-import dnd from '../middleware/dnd';
+// import dnd from '../middleware/dnd';
 import theme from '../middleware/theme';
 import bundle from './nls/FileUploader';
 
 import * as css from '../theme/default/file-uploader.m.css';
+import * as fileUploadInputCss from '../theme/default/file-upload-input.m.css';
 
 export interface FileUploaderIcache {
 	files: File[];
@@ -37,20 +38,21 @@ export interface FileItemRendererProps {
 
 function renderFiles(props: FileItemRendererProps) {
 	const {
-		customValidator,
+		// customValidator,
 		files,
-		maxSize,
+		// maxSize,
 		messages: { messages },
 		remove,
 		themeCss
 	} = props;
 
 	return files.map(function(file) {
+		/*
 		const isValid = customValidator
 			? customValidator(file)
 			: maxSize
 			? file.size <= maxSize
-			: true;
+			: true;*/
 
 		return (
 			<div classes={[themeCss.fileItem]} key={file.name}>
@@ -67,14 +69,19 @@ function renderFiles(props: FileItemRendererProps) {
 		);
 	});
 }
-
-const factory = create({ dnd, i18n, icache: createICacheMiddleware<FileUploaderIcache>(), theme })
+/*
+function stopEvent (event: Event) {
+	event.preventDefault();
+	event.stopPropagation();
+}
+*/
+const factory = create({ i18n, icache: createICacheMiddleware<FileUploaderIcache>(), theme })
 	.properties<FileUploaderProperties>()
 	.children<FileUploadInputChildren | undefined>();
 
 export const FileUploader = factory(function FileUploader({
 	children,
-	middleware: { dnd, i18n, icache, theme },
+	middleware: { i18n, icache, theme },
 	properties
 }) {
 	const {
@@ -91,6 +98,7 @@ export const FileUploader = factory(function FileUploader({
 	const files = icache.getOrSet('files', []);
 	const isDndActive = icache.getOrSet('isDndActive', false);
 	const themeCss = theme.classes(css);
+	const fileUploadInputThemeCss = theme.classes(fileUploadInputCss);
 
 	function onValue(newFiles: File[]) {
 		if (multiple) {
@@ -107,27 +115,23 @@ export const FileUploader = factory(function FileUploader({
 			icache.set('files', files);
 		}
 	}
-
+	/*
 	dnd.onDragEnter('root', function(event) {
-		event.preventDefault();
-		event.stopPropagation();
+		stopEvent(event);
 		icache.set('isDndActive', true);
 	});
 
 	dnd.onDragLeave('overlay', function(event) {
-		event.preventDefault();
-		event.stopPropagation();
+		stopEvent(event);
 		icache.set('isDndActive', false);
 	});
 
 	dnd.onDragOver('overlay', function(event) {
-		event.preventDefault();
-		event.stopPropagation();
+		stopEvent(event);
 	});
 
 	dnd.onDrop('overlay', function(event) {
-		event.preventDefault();
-		event.stopPropagation();
+		stopEvent(event);
 		icache.set('isDndActive', false);
 
 		if (event.dataTransfer && event.dataTransfer.files.length) {
@@ -139,10 +143,10 @@ export const FileUploader = factory(function FileUploader({
 			}
 		}
 	});
-
+*/
 	return (
 		<div key="root" classes={[themeCss.root, disabled && themeCss.disabled]}>
-			{isDndActive && <div key="overlay" classes={[themeCss.dndOverlay]} />}
+			{isDndActive && <div key="overlay" classes={[fileUploadInputThemeCss.dndOverlay]} />}
 
 			<FileUploadInput
 				accept={accept}
