@@ -1,9 +1,21 @@
 /* The root class for FileUploader */
 .root {
+	position: relative;
 }
 
 /* Applied to the root node if the widget is disabled */
 .disabled {
+}
+
+.dndOverlay {
+	background-color: var(--selected-background);
+	border: 2px outset var(--selected-background);
+	height: 100%;
+	left: 0;
+	opacity: 0.3;
+	position: absolute;
+	top: 0;
+	width: 100%;
 }
 
 /* Container for each item representing an added file */

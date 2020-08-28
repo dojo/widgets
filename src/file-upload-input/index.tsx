@@ -16,16 +16,22 @@ export interface FileUploadInputChildren {
 export interface FileUploadInputProperties {
 	/** The `accept` attribute of the input */
 	accept?: string | string[];
+
 	/** If `true` file drag-n-drop is allowed. Default is `true` */
 	allowDnd?: boolean;
+
 	/** The `disabled` attribute of the input */
 	disabled?: boolean;
+
 	/** The `multiple` attribute of the input */
 	multiple?: boolean;
+
 	/** The `name` attribute of the input */
 	name?: string;
+
 	/** Callback called when the user selects files */
 	onValue?(value: File[]): void;
+
 	/** The `required` attribute of the input */
 	required?: boolean;
 }
