@@ -1,4 +1,4 @@
-import { DojoEvent } from '@dojo/framework/core/interfaces';
+import { DojoEvent, RenderResult } from '@dojo/framework/core/interfaces';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { create, node, tsx } from '@dojo/framework/core/vdom';
 import { Button } from '../button';
@@ -9,8 +9,8 @@ import * as css from '../theme/default/file-upload-input.m.css';
 import * as baseCss from '../theme/default/base.m.css';
 
 export interface FileUploaderChildren {
-	buttonLabel?: string;
-	dndLabel?: string;
+	buttonLabel?: RenderResult;
+	dndLabel?: RenderResult;
 }
 
 export interface FileUploaderProperties {

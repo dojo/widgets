@@ -62,6 +62,7 @@ import ActionsDialog from './widgets/dialog/ActionsDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
 import BasicFileUploadInput from './widgets/file-upload-input/Basic';
 import DisabledFileUploadInput from './widgets/file-upload-input/Disabled';
+import LabelledFileUploadInput from './widgets/file-upload-input/Labels';
 import MultipleFileUploadInput from './widgets/file-upload-input/Multiple';
 // import BasicFileUploader from './widgets/file-uploader/Basic';
 // import DisabledFileUploader from './widgets/file-uploader/Disabled';
@@ -755,6 +756,11 @@ export const config = {
 					title: 'Multiple FileUploadInput',
 					filename: 'Multiple',
 					module: MultipleFileUploadInput
+				},
+				{
+					title: 'FileUploadInput with custom labels',
+					filename: 'Labels',
+					module: LabelledFileUploadInput
 				}
 			]
 		} /*
