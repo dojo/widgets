@@ -11,14 +11,11 @@ const template = createResourceTemplate<TreeNodeOption>({
 	find: defaultFind,
 	read: async (request, { put, get }) => {
 		const { query } = request;
-		const response = await fetch(
-			`https://comfortable-opalescent-parrot.glitch.me/${query.parent}`,
-			{
-				headers: {
-					'Content-Type': 'application/json'
-				}
+		const response = await fetch(`https://foamy-picayune-lamprey.glitch.me/${query.parent}`, {
+			headers: {
+				'Content-Type': 'application/json'
 			}
-		);
+		});
 
 		const { data, total } = await response.json();
 
