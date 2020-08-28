@@ -36,27 +36,28 @@ export default factory(function PopupConfirmation({
 	properties,
 	children
 }) {
-	const { onCancel, onConfirm, ...otherProperties } = properties();
+	const { onCancel, onConfirm, classes, ...otherProperties } = properties();
 	const [{ content, trigger }] = children();
-	const classes = theme.classes(css);
+	const themedCss = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
 
 	return (
-		<div classes={[classes.root, theme.variant()]}>
-			<TriggerPopup classes={classes} theme={theme} key="trigger-popup" {...otherProperties}>
+		<div classes={[themedCss.root, theme.variant()]}>
+			<TriggerPopup classes={classes} key="trigger-popup" {...otherProperties}>
 				{{
 					trigger,
 					content: (close, position) => (
 						<div
 							classes={[
-								classes.popupContainer,
-								position === 'above' ? classes.above : classes.below
+								themedCss.popupContainer,
+								position === 'above' ? themedCss.above : themedCss.below
 							]}
 						>
-							<div classes={classes.popup}>
-								<div classes={classes.popupContent}>{content}</div>
-								<div classes={classes.popupControls}>
+							<div classes={themedCss.popup}>
+								<div classes={themedCss.popupContent}>{content}</div>
+								<div classes={themedCss.popupControls}>
 									<Button
+										classes={classes}
 										key="cancel-button"
 										type="button"
 										theme={theme.compose(
