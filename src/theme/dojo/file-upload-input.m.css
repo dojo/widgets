@@ -1,0 +1,12 @@
+.root {
+	background-color: var(--background-color);
+}
+
+.disabled {
+	cursor: no-drop;
+}
+
+.dndLabel {
+	color: var(--color-text-primary);
+	margin-left: var(--grid-base);
+}

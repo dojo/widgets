@@ -1,0 +1,15 @@
+.root {
+}
+
+.disabled {
+	cursor: no-drop;
+}
+
+.dndLabel {
+	color: var(--mdc-text-color);
+	margin-left: var(--mdc-theme-grid-base);
+}
+
+.disabled .dndLabel {
+	color: var(--mdc-disabled-text-color);
+}

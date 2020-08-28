@@ -1,0 +1,13 @@
+/* The root class for FileUploader */
+.root {
+}
+
+/* Applied to the root node if the widget is disabled */
+.disabled {
+	cursor: no-drop;
+}
+
+/* The text label in the DnD area if DnD is allowed */
+.dndLabel {
+	margin-left: 8px;
+}

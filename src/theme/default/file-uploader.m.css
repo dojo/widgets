@@ -1,17 +1,3 @@
-/* The root class for FileUploader */
-.root {
-}
-
-/* Applied to the root node if the widget is disabled */
-.disabled {
-	cursor: no-drop;
-}
-
-/* The button to press to add files */
-.button {
-	margin-right: 8px;
-}
-
 /* Container for each item representing an added file */
 .fileItem {
 	display: flex;
