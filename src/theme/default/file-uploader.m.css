@@ -1,3 +1,11 @@
+/* The root class for FileUploader */
+.root {
+}
+
+/* Applied to the root node if the widget is disabled */
+.disabled {
+}
+
 /* Container for each item representing an added file */
 .fileItem {
 	display: flex;

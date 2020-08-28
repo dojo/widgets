@@ -64,9 +64,9 @@ import BasicFileUploadInput from './widgets/file-upload-input/Basic';
 import DisabledFileUploadInput from './widgets/file-upload-input/Disabled';
 import LabelledFileUploadInput from './widgets/file-upload-input/Labels';
 import MultipleFileUploadInput from './widgets/file-upload-input/Multiple';
-// import BasicFileUploader from './widgets/file-uploader/Basic';
-// import DisabledFileUploader from './widgets/file-uploader/Disabled';
-// import MultipleFileUploader from './widgets/file-uploader/Multiple';
+import BasicFileUploader from './widgets/file-uploader/Basic';
+import DisabledFileUploader from './widgets/file-uploader/Disabled';
+import MultipleFileUploader from './widgets/file-uploader/Multiple';
 import Advanced from './widgets/grid/Advanced';
 import BasicFab from './widgets/floating-action-button/Basic';
 import ExtendedFab from './widgets/floating-action-button/Extended';
@@ -763,7 +763,7 @@ export const config = {
 					module: LabelledFileUploadInput
 				}
 			]
-		} /*
+		},
 		'file-uploader': {
 			filename: 'index',
 			overview: {
@@ -784,7 +784,7 @@ export const config = {
 					module: MultipleFileUploader
 				}
 			]
-		},*/,
+		},
 		'floating-action-button': {
 			overview: {
 				example: {

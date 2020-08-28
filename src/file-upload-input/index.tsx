@@ -8,12 +8,12 @@ import bundle from './nls/FileUploadInput';
 import * as css from '../theme/default/file-upload-input.m.css';
 import * as baseCss from '../theme/default/base.m.css';
 
-export interface FileUploaderChildren {
+export interface FileUploadInputChildren {
 	buttonLabel?: RenderResult;
 	dndLabel?: RenderResult;
 }
 
-export interface FileUploaderProperties {
+export interface FileUploadInputProperties {
 	/** The `accept` attribute of the input */
 	accept?: string | string[];
 	/** If `true` file drag-n-drop is allowed. Default is `true` */
@@ -31,10 +31,10 @@ export interface FileUploaderProperties {
 }
 
 const factory = create({ i18n, node, theme })
-	.properties<FileUploaderProperties>()
-	.children<FileUploaderChildren | undefined>();
+	.properties<FileUploadInputProperties>()
+	.children<FileUploadInputChildren | undefined>();
 
-export const FileUploadInput = factory(function FileUploader({
+export const FileUploadInput = factory(function FileUploadInput({
 	children,
 	middleware: { i18n, node, theme },
 	properties

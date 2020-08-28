@@ -9,7 +9,6 @@ Dojo's `FileUploader` provides an interface for managing file uploads using `<in
 - Add files with drag and drop
 - View added files
 - Validation
-- Custom file item renderer can be provided
 
 ### Keyboard features
 
