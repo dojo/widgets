@@ -36,14 +36,25 @@ export default factory(function PopupConfirmation({
 	properties,
 	children
 }) {
-	const { onCancel, onConfirm, classes, ...otherProperties } = properties();
+	const {
+		onCancel,
+		onConfirm,
+		classes,
+		theme: inheritedTheme,
+		...otherProperties
+	} = properties();
 	const [{ content, trigger }] = children();
 	const themedCss = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
 
 	return (
 		<div classes={[themedCss.root, theme.variant()]}>
-			<TriggerPopup classes={classes} key="trigger-popup" {...otherProperties}>
+			<TriggerPopup
+				classes={classes}
+				theme={inheritedTheme}
+				key="trigger-popup"
+				{...otherProperties}
+			>
 				{{
 					trigger,
 					content: (close, position) => (
