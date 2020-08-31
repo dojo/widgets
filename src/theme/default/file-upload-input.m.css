@@ -1,6 +1,11 @@
 /* The root class for FileUploadInput */
 .root {
-	position: relative;
+	border: 2px solid transparent;
+}
+
+/* Applied to the root node if a DnD operation is in progress */
+.dndActive {
+	border-color: hsl(210, 29%, 60%);
 }
 
 /* Applied to the root node if the widget is disabled */
@@ -10,8 +15,7 @@
 
 .dndOverlay {
 	background-color: var(--selected-background);
-	border: 2px outset var(--selected-background);
-	opacity: 0.3;
+	opacity: 0.25;
 }
 
 /* The text label in the DnD area if DnD is allowed */

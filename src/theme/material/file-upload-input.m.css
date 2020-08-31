@@ -1,8 +1,19 @@
 .root {
+	background-color: var(--mdc-theme-background);
+	border: 2px solid transparent;
+}
+
+.dndActive {
+	border-color: var(--mdc-solid-border-color-hover);
 }
 
 .disabled {
 	cursor: no-drop;
+}
+
+.dndOverlay {
+	background-color: var(--mdc-theme-on-surface);
+	opacity: 0.55;
 }
 
 .dndLabel {

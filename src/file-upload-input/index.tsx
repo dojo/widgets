@@ -89,7 +89,15 @@ export const FileUploadInput = factory(function FileUploadInput({
 	}
 
 	return (
-		<div key="root" classes={[fixedCss.root, themeCss.root, disabled && themeCss.disabled]}>
+		<div
+			key="root"
+			classes={[
+				fixedCss.root,
+				themeCss.root,
+				isDndActive && themeCss.dndActive,
+				disabled && themeCss.disabled
+			]}
+		>
 			<input
 				key="nativeInput"
 				accept={accept}

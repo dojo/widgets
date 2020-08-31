@@ -1,9 +1,20 @@
 .root {
-	background-color: var(--background-color);
+	background-color: var(--color-background);
+	border: 2px solid transparent;
+}
+
+.dndActive {
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
 }
 
 .disabled {
 	cursor: no-drop;
+}
+
+.dndOverlay {
+	background-color: var(--color-background-faded);
+	opacity: 0.55;
 }
 
 .dndLabel {
