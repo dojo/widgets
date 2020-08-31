@@ -11,12 +11,7 @@
 .dndOverlay {
 	background-color: var(--selected-background);
 	border: 2px outset var(--selected-background);
-	height: 100%;
-	left: 0;
 	opacity: 0.3;
-	position: absolute;
-	top: 0;
-	width: 100%;
 }
 
 /* The text label in the DnD area if DnD is allowed */

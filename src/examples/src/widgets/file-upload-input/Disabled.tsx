@@ -4,7 +4,7 @@ import Example from '../../Example';
 
 const factory = create();
 
-export default factory(function Basic() {
+export default factory(function Disabled() {
 	return (
 		<Example>
 			<FileUploadInput disabled />

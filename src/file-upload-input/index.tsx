@@ -8,6 +8,7 @@ import bundle from './nls/FileUploadInput';
 
 import * as css from '../theme/default/file-upload-input.m.css';
 import * as baseCss from '../theme/default/base.m.css';
+import * as fixedCss from './styles/file-upload-input.m.css';
 
 export interface FileUploadInputChildren {
 	buttonLabel?: RenderResult;
@@ -72,7 +73,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 		}
 	}
 
-	function onActivate() {
+	function onClickButton() {
 		const inputNode = node.get('nativeInput');
 		if (inputNode) {
 			inputNode.click();
@@ -88,7 +89,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 	}
 
 	return (
-		<div key="root" classes={[themeCss.root, disabled && themeCss.disabled]}>
+		<div key="root" classes={[fixedCss.root, themeCss.root, disabled && themeCss.disabled]}>
 			<input
 				key="nativeInput"
 				accept={accept}
@@ -101,12 +102,18 @@ export const FileUploadInput = factory(function FileUploadInput({
 				required={required}
 				type="file"
 			/>
-			<Button disabled={disabled} onClick={onActivate}>
+			<Button disabled={disabled} onClick={onClickButton}>
 				{buttonLabel}
 			</Button>
 
 			{allowDnd && <span classes={[themeCss.dndLabel]}>{dndLabel}</span>}
-			{isDndActive && <div key="overlay" classes={[themeCss.dndOverlay]} />}
+
+			{/* This node MUST always be rendered. If it is conditionally rendered it will receive incorrect
+				information from the dnd middleware. */}
+			<div
+				key="overlay"
+				classes={[fixedCss.dndOverlay, themeCss.dndOverlay, !isDndActive && baseCss.hidden]}
+			/>
 		</div>
 	);
 });
