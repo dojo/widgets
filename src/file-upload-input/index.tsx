@@ -1,6 +1,7 @@
 import { DojoEvent, RenderResult } from '@dojo/framework/core/interfaces';
 import i18n from '@dojo/framework/core/middleware/i18n';
-import { create, node, tsx } from '@dojo/framework/core/vdom';
+import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import { create, tsx } from '@dojo/framework/core/vdom';
 import { Button } from '../button';
 import fileDrop from '../middleware/fileDrop';
 import theme from '../middleware/theme';
@@ -38,13 +39,18 @@ export interface FileUploadInputProperties {
 	required?: boolean;
 }
 
-const factory = create({ fileDrop, i18n, node, theme })
+interface FileUploadInputIcache {
+	shouldClick?: boolean;
+}
+const icache = createICacheMiddleware<FileUploadInputIcache>();
+
+const factory = create({ fileDrop, i18n, icache, theme })
 	.properties<FileUploadInputProperties>()
 	.children<FileUploadInputChildren | undefined>();
 
 export const FileUploadInput = factory(function FileUploadInput({
 	children,
-	middleware: { fileDrop, i18n, node, theme },
+	middleware: { fileDrop, i18n, icache, theme },
 	properties
 }) {
 	const {
@@ -64,19 +70,19 @@ export const FileUploadInput = factory(function FileUploadInput({
 
 	if (allowDnd) {
 		const dndInfo = fileDrop.get('root', 'overlay');
-		isDndActive = dndInfo.isDragging;
+		if (dndInfo) {
+			isDndActive = dndInfo.isDragging;
 
-		if (dndInfo.isDropped && dndInfo.files && dndInfo.files.length) {
-			onValue && onValue(dndInfo.files);
-			fileDrop.reset('root', 'overlay');
+			if (dndInfo.isDropped && dndInfo.files && dndInfo.files.length) {
+				onValue && onValue(dndInfo.files);
+			}
+		} else {
+			// TODO: should not happen... log warning?
 		}
 	}
 
 	function onClickButton() {
-		const inputNode = node.get('nativeInput');
-		if (inputNode) {
-			inputNode.click();
-		}
+		icache.set('shouldClick', true);
 	}
 
 	function onChange(event: DojoEvent<HTMLInputElement>) {
@@ -103,6 +109,11 @@ export const FileUploadInput = factory(function FileUploadInput({
 				accept={accept}
 				aria="hidden"
 				classes={[baseCss.hidden]}
+				click={function() {
+					const shouldClick = Boolean(icache.getOrSet('shouldClick', false));
+					shouldClick && icache.set('shouldClick', false, false);
+					return shouldClick;
+				}}
 				disabled={disabled}
 				multiple={multiple}
 				name={name}
