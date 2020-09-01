@@ -21,7 +21,7 @@
 .popup {
 }
 
-/* Addded to a disabled button */
+/* Added to a disabled button */
 .disabled,
 .disabled:hover {
 	cursor: default;
