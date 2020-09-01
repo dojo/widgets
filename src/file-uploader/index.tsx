@@ -7,12 +7,13 @@ import {
 	FileUploadInputProperties
 } from '../file-upload-input';
 import { Icon } from '../icon';
-// import dnd from '../middleware/dnd';
 import theme from '../middleware/theme';
 import bundle from './nls/FileUploader';
 
 import * as css from '../theme/default/file-uploader.m.css';
+import * as baseCss from '../theme/default/base.m.css';
 import * as fileUploadInputCss from '../theme/default/file-upload-input.m.css';
+import * as fileUploadInputFixedCss from '../file-upload-input/styles/file-upload-input.m.css';
 
 export interface FileUploaderIcache {
 	files: File[];
@@ -69,12 +70,7 @@ function renderFiles(props: FileItemRendererProps) {
 		);
 	});
 }
-/*
-function stopEvent (event: Event) {
-	event.preventDefault();
-	event.stopPropagation();
-}
-*/
+
 const factory = create({ i18n, icache: createICacheMiddleware<FileUploaderIcache>(), theme })
 	.properties<FileUploaderProperties>()
 	.children<FileUploadInputChildren | undefined>();
@@ -96,7 +92,7 @@ export const FileUploader = factory(function FileUploader({
 	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const files = icache.getOrSet('files', []);
-	const isDndActive = icache.getOrSet('isDndActive', false);
+	let isDndActive = false;
 	const themeCss = theme.classes(css);
 	const fileUploadInputThemeCss = theme.classes(fileUploadInputCss);
 
@@ -115,42 +111,21 @@ export const FileUploader = factory(function FileUploader({
 			icache.set('files', files);
 		}
 	}
-	/*
-	dnd.onDragEnter('root', function(event) {
-		stopEvent(event);
-		icache.set('isDndActive', true);
-	});
 
-	dnd.onDragLeave('overlay', function(event) {
-		stopEvent(event);
-		icache.set('isDndActive', false);
-	});
-
-	dnd.onDragOver('overlay', function(event) {
-		stopEvent(event);
-	});
-
-	dnd.onDrop('overlay', function(event) {
-		stopEvent(event);
-		icache.set('isDndActive', false);
-
-		if (event.dataTransfer && event.dataTransfer.files.length) {
-			const newFiles = Array.from(event.dataTransfer.files);
-			if (multiple) {
-				icache.set('files', [...files, ...newFiles]);
-			} else {
-				icache.set('files', newFiles.slice(0, 1));
-			}
-		}
-	});
-*/
 	return (
-		<div key="root" classes={[themeCss.root, disabled && themeCss.disabled]}>
-			{isDndActive && <div key="overlay" classes={[fileUploadInputThemeCss.dndOverlay]} />}
-
+		<div
+			key="root"
+			classes={[
+				theme.variant(),
+				fileUploadInputFixedCss.root,
+				themeCss.root,
+				isDndActive && themeCss.dndActive,
+				disabled && themeCss.disabled
+			]}
+		>
 			<FileUploadInput
 				accept={accept}
-				allowDnd={allowDnd}
+				allowDnd={false}
 				disabled={disabled}
 				multiple={multiple}
 				name={name}
@@ -171,6 +146,17 @@ export const FileUploader = factory(function FileUploader({
 						themeCss
 					})}
 				</div>
+			)}
+
+			{allowDnd && (
+				<div
+					key="overlay"
+					classes={[
+						fileUploadInputFixedCss.dndOverlay,
+						fileUploadInputThemeCss.dndOverlay,
+						!isDndActive && baseCss.hidden
+					]}
+				/>
 			)}
 		</div>
 	);

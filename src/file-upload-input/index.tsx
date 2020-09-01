@@ -2,7 +2,7 @@ import { DojoEvent, RenderResult } from '@dojo/framework/core/interfaces';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { create, node, tsx } from '@dojo/framework/core/vdom';
 import { Button } from '../button';
-import dnd from '../middleware/dnd';
+import fileDrop from '../middleware/fileDrop';
 import theme from '../middleware/theme';
 import bundle from './nls/FileUploadInput';
 
@@ -38,13 +38,13 @@ export interface FileUploadInputProperties {
 	required?: boolean;
 }
 
-const factory = create({ dnd, i18n, node, theme })
+const factory = create({ fileDrop, i18n, node, theme })
 	.properties<FileUploadInputProperties>()
 	.children<FileUploadInputChildren | undefined>();
 
 export const FileUploadInput = factory(function FileUploadInput({
 	children,
-	middleware: { dnd, i18n, node, theme },
+	middleware: { fileDrop, i18n, node, theme },
 	properties
 }) {
 	const {
@@ -63,13 +63,12 @@ export const FileUploadInput = factory(function FileUploadInput({
 	let isDndActive = false;
 
 	if (allowDnd) {
-		const rootDnd = dnd.get('root');
-		const overlayDnd = dnd.get('overlay');
-		isDndActive = rootDnd.isDragging || overlayDnd.isDragging;
+		const dndInfo = fileDrop.get('root', 'overlay');
+		isDndActive = dndInfo.isDragging;
 
-		if (overlayDnd.isDropped && overlayDnd.files && overlayDnd.files.length) {
-			onValue && onValue(overlayDnd.files);
-			dnd.reset('overlay');
+		if (dndInfo.isDropped && dndInfo.files && dndInfo.files.length) {
+			onValue && onValue(dndInfo.files);
+			fileDrop.reset('root', 'overlay');
 		}
 	}
 
@@ -92,6 +91,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 		<div
 			key="root"
 			classes={[
+				theme.variant(),
 				fixedCss.root,
 				themeCss.root,
 				isDndActive && themeCss.dndActive,
@@ -114,14 +114,17 @@ export const FileUploadInput = factory(function FileUploadInput({
 				{buttonLabel}
 			</Button>
 
-			{allowDnd && <span classes={[themeCss.dndLabel]}>{dndLabel}</span>}
-
-			{/* This node MUST always be rendered. If it is conditionally rendered it will receive incorrect
-				information from the dnd middleware. */}
-			<div
-				key="overlay"
-				classes={[fixedCss.dndOverlay, themeCss.dndOverlay, !isDndActive && baseCss.hidden]}
-			/>
+			{allowDnd && [
+				<span classes={[themeCss.dndLabel]}>{dndLabel}</span>,
+				<div
+					key="overlay"
+					classes={[
+						fixedCss.dndOverlay,
+						themeCss.dndOverlay,
+						!isDndActive && baseCss.hidden
+					]}
+				/>
+			]}
 		</div>
 	);
 });
