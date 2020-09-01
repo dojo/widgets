@@ -10,7 +10,7 @@ import * as fixedCss from '../trigger-popup.m.css';
 import { stub, match } from 'sinon';
 
 const baseTemplate = assertionTemplate(() => (
-	<virtual>
+	<virtual classes={[fixedCss.root]}>
 		<span key="trigger" classes={fixedCss.trigger} />
 		<Popup
 			key="popup"

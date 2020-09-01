@@ -23,7 +23,7 @@ describe('PopupConfirmation', () => {
 	const ConfirmButtonWrap = wrap(Button);
 	const baseAssertion = assertion(() => (
 		<div classes={[css.root, undefined]}>
-			<TriggerPopupWrap key="trigger-popup">
+			<TriggerPopupWrap classes={undefined} theme={undefined} key="trigger-popup">
 				{{
 					trigger: () => <button>Delete</button>,
 					content: () => (
@@ -33,6 +33,7 @@ describe('PopupConfirmation', () => {
 								<div classes={css.popupControls}>
 									<CancelButtonWrap
 										key="cancel-button"
+										classes={undefined}
 										type="button"
 										theme={{
 											'@dojo/widgets/button': buttonTheme
