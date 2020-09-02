@@ -26,11 +26,11 @@ export interface TreeProperties {
 	selectable?: boolean;
 	checkedNodes?: string[];
 	expandedNodes?: string[];
+	initialChecked?: string[];
+	initialExpanded?: string[];
 	selectedNode?: string;
 	disabledNodes?: string[];
 	parentSelection?: boolean;
-	initialExpanded?(id: string): void;
-	initialChecked?(id: string): void;
 	onSelect?(id: string): void;
 	onCheck?(id: string, checked: boolean): void;
 	onExpand?(id: string, expanded: boolean): void;
@@ -43,10 +43,10 @@ export interface TreeChildren {
 interface TreeCache {
 	activeNode?: string;
 	selectedNode?: string;
-	expandedNodes: string[];
+	controlledExpandedNodes: string[];
+	controlledCheckedNodes: string[];
 	checkedNodes: string[];
-	hasBeenExpanded: boolean;
-	hasBeenChecked: boolean;
+	expandedNodes: string[];
 }
 
 const resource = createResourceMiddleware<TreeNodeOption>();
@@ -75,7 +75,7 @@ export default factory(function({
 		properties,
 		({ expandedNodes: current }, { expandedNodes: next }) => {
 			if ((current || next) && current !== next) {
-				icache.set('expandedNodes', next || []);
+				icache.set('controlledExpandedNodes', next || []);
 			}
 		}
 	);
@@ -84,7 +84,25 @@ export default factory(function({
 		properties,
 		({ checkedNodes: current }, { checkedNodes: next }) => {
 			if ((current || next) && current !== next) {
+				icache.set('controlledCheckedNodes', next || []);
+			}
+		}
+	);
+	diffProperty(
+		'initialChecked',
+		properties,
+		({ initialChecked: current }, { initialChecked: next }) => {
+			if ((current || next) && current !== next) {
 				icache.set('checkedNodes', next || []);
+			}
+		}
+	);
+	diffProperty(
+		'initialExpanded',
+		properties,
+		({ initialExpanded: current }, { initialExpanded: next }) => {
+			if ((current || next) && current !== next) {
+				icache.set('expandedNodes', next || []);
 			}
 		}
 	);
@@ -96,8 +114,6 @@ export default factory(function({
 		onSelect,
 		onCheck,
 		onExpand,
-		initialChecked,
-		initialExpanded,
 		disabledNodes,
 		resource: { template },
 		parentSelection = false
@@ -108,10 +124,10 @@ export default factory(function({
 
 	const activeNode = icache.get('activeNode');
 	const selectedNode = icache.get('selectedNode');
+	const controlledExpandedNodes = icache.get('controlledExpandedNodes');
+	const controlledCheckedNodes = icache.get('controlledCheckedNodes');
 	const expandedNodes = icache.getOrSet('expandedNodes', []);
 	const checkedNodes = icache.getOrSet('checkedNodes', []);
-	const hasBeenExpanded = icache.getOrSet('hasBeenExpanded', false);
-	const hasBeenChecked = icache.getOrSet('hasBeenChecked', false);
 	const shouldFocus = focus.shouldFocus();
 
 	function activateNode(id: string) {
@@ -123,31 +139,32 @@ export default factory(function({
 		onSelect && onSelect(id);
 	}
 
-	function checkNode(n: string, checked: boolean) {
-		if (checked) {
-			checkedNodes.push(n);
-		} else {
-			checkedNodes.splice(checkedNodes.indexOf(n), 1);
+	function checkNode(id: string, checked: boolean) {
+		if (!controlledCheckedNodes) {
+			if (checked) {
+				icache.set('checkedNodes', (currentChecked) => [...currentChecked, id]);
+			} else {
+				icache.set('checkedNodes', (currentChecked) =>
+					currentChecked ? currentChecked.filter((n) => n !== id) : []
+				);
+			}
 		}
-		if (checked) {
-			hasBeenChecked === false && initialChecked && initialChecked(n);
-			icache.set('hasBeenChecked', true);
-		}
-		icache.set('checkedNodes', checkedNodes);
-		onCheck && onCheck(n, checked);
+		onCheck && onCheck(id, checked);
 	}
 
 	function expandNode(id: string) {
-		expandedNodes.push(id);
-		hasBeenExpanded === false && initialExpanded && initialExpanded(id);
-		icache.set('hasBeenExpanded', true);
-		icache.set('expandedNodes', expandedNodes);
+		if (!controlledExpandedNodes) {
+			icache.set('expandedNodes', (currentExpanded) => [...currentExpanded, id]);
+		}
 		onExpand && onExpand(id, true);
 	}
 
 	function collapseNode(id: string) {
-		expandedNodes.splice(expandedNodes.indexOf(id), 1);
-		icache.set('expandedNodes', expandedNodes);
+		if (!controlledExpandedNodes) {
+			icache.set('expandedNodes', (currentExpanded) =>
+				currentExpanded ? currentExpanded.filter((n) => n !== id) : []
+			);
+		}
 		onExpand && onExpand(id, false);
 	}
 
@@ -168,8 +185,14 @@ export default factory(function({
 
 		queriedNodes.forEach((node) => {
 			nodes.push(node);
-			if (expandedNodes.indexOf(node.id) !== -1) {
-				nodes = [...nodes, ...createNodeFlatMap(node.id)];
+			if (!controlledExpandedNodes) {
+				if (expandedNodes.indexOf(node.id) !== -1) {
+					nodes = [...nodes, ...createNodeFlatMap(node.id)];
+				}
+			} else {
+				if (controlledExpandedNodes.indexOf(node.id) !== -1) {
+					nodes = [...nodes, ...createNodeFlatMap(node.id)];
+				}
 			}
 		});
 		return nodes;
@@ -260,7 +283,9 @@ export default factory(function({
 				tabIndex={0}
 			>
 				{nodes.map((node) => {
-					const isExpanded = expandedNodes.indexOf(node.id) !== -1;
+					const isExpanded = controlledExpandedNodes
+						? controlledExpandedNodes.indexOf(node.id) !== -1
+						: expandedNodes.indexOf(node.id) !== -1;
 					return (
 						<li
 							classes={[
@@ -274,10 +299,10 @@ export default factory(function({
 								activeNode={activeNode}
 								checkable={checkable}
 								selectable={selectable}
-								checkedNodes={checkedNodes}
+								checkedNodes={controlledCheckedNodes || checkedNodes}
 								selectedNode={selectedNode}
 								disabledNodes={disabledNodes || []}
-								expandedNodes={expandedNodes}
+								expandedNodes={controlledExpandedNodes || expandedNodes}
 								parentSelection={parentSelection}
 								node={node}
 								onActive={activateNode}

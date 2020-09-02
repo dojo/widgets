@@ -3,8 +3,8 @@ import {
 	createMemoryResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
-import Tree, { TreeNodeOption } from '@dojo/widgets/tree';
 import Example from '../../Example';
+import Tree, { TreeNodeOption } from '@dojo/widgets/tree';
 
 const resource = createResourceMiddleware();
 const factory = create({ resource });
@@ -48,12 +48,15 @@ const nodes: TreeNodeOption[] = [
 ];
 const template = createMemoryResourceTemplate<TreeNodeOption>();
 
-export default factory(function Checkable({ id, middleware: { resource } }) {
+export default factory(function Basic({ id, middleware: { resource } }) {
 	return (
 		<Example>
 			<Tree
+				selectable={true}
 				checkable={true}
 				resource={resource({ template, initOptions: { id, data: nodes } })}
+				initialChecked={['de48r11ea']}
+				initialExpanded={['c9ae529a']}
 			/>
 		</Example>
 	);

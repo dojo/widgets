@@ -223,6 +223,50 @@ describe('Tree', () => {
 			);
 		});
 
+		it('renders with nodes initially expanded', () => {
+			const expandedNodes = [simpleTree[0].id];
+			const nodeProps = {
+				...defaultNodeProps,
+				expandedNodes
+			};
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					initialExpanded={expandedNodes}
+				/>
+			));
+			r.expect(
+				simpleTreeAssertion
+					.setProperty(WrappedNode1, 'expandedNodes', expandedNodes)
+					.setProperty(WrappedNode2, 'expandedNodes', expandedNodes)
+					.insertAfter(
+						WrappedNode1,
+						() =>
+							(
+								<ol
+									classes={[null, css.nodeParent, null]}
+									focus={() => false}
+									onkeydown={noop}
+									tabIndex={0}
+								>
+									<li classes={[css.node, false, false, false]}>
+										<TreeNode {...nodeProps} node={simpleTree[1]}>
+											{noop as any}
+										</TreeNode>
+									</li>
+								</ol>
+							) as any
+					)
+					.setProperty(WrappedListItem1, 'classes', [css.node, css.leaf, false, false])
+			);
+		});
+
 		it('raises events on expand/collapse', () => {
 			const onExpand = sinon.stub();
 			const r = renderer(() => (
@@ -297,40 +341,6 @@ describe('Tree', () => {
 			r.expect(activeAssertion);
 			assert(onExpand.calledWith(nodeId, false));
 		});
-
-		it('raises event on initial expand', () => {
-			const initialExpand = sinon.stub();
-			const r = renderer(() => (
-				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
-						}
-					}}
-					initialExpanded={initialExpand}
-				/>
-			));
-			r.expect(simpleTreeAssertion);
-
-			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, true);
-			r.expect(expandedAssertion);
-			assert(initialExpand.calledWith(simpleTree[0].id));
-
-			initialExpand.resetHistory();
-			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, false);
-			r.expect(
-				simpleTreeAssertion
-					.setProperty(WrappedNode1, 'expandedNodes', [])
-					.setProperty(WrappedNode2, 'expandedNodes', [])
-			);
-
-			initialExpand.resetHistory();
-			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, true);
-			r.expect(expandedAssertion);
-			assert.isTrue(initialExpand.notCalled);
-		});
 	});
 
 	describe('CheckedNodes', () => {
@@ -378,6 +388,29 @@ describe('Tree', () => {
 			);
 		});
 
+		it('renders with nodes initially checked', () => {
+			const checkedNodes = [simpleTree[0].id];
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' }
+						}
+					}}
+					checkable={true}
+					initialChecked={checkedNodes}
+				/>
+			));
+
+			r.expect(
+				checkableAssertion
+					.setProperty(WrappedNode1, 'checkedNodes', checkedNodes)
+					.setProperty(WrappedNode2, 'checkedNodes', checkedNodes)
+			);
+		});
+
 		it('raises events on check/uncheck', () => {
 			const onCheck = sinon.stub();
 			const r = renderer(() => (
@@ -413,42 +446,6 @@ describe('Tree', () => {
 					.setProperty(WrappedNode2, 'checkedNodes', [])
 			);
 			assert(onCheck.calledWith(simpleTree[0].id, false));
-		});
-
-		it('raises initial checked event', () => {
-			const initialChecked = sinon.stub();
-			const r = renderer(() => (
-				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
-						}
-					}}
-					checkable={true}
-					initialChecked={initialChecked}
-				/>
-			));
-			r.expect(checkableAssertion);
-
-			// simulate check event
-			r.property(WrappedNode1, 'onCheck', simpleTree[0].id, true);
-			r.expect(
-				checkableAssertion
-					.setProperty(WrappedNode1, 'checkedNodes', [simpleTree[0].id])
-					.setProperty(WrappedNode2, 'checkedNodes', [simpleTree[0].id])
-			);
-			assert(initialChecked.calledWith(simpleTree[0].id));
-			// simulate second check event
-			initialChecked.resetHistory();
-			r.property(WrappedNode1, 'onCheck', simpleTree[1].id, true);
-			r.expect(
-				checkableAssertion
-					.setProperty(WrappedNode1, 'checkedNodes', [simpleTree[0].id, simpleTree[1].id])
-					.setProperty(WrappedNode2, 'checkedNodes', [simpleTree[0].id, simpleTree[1].id])
-			);
-			assert.isTrue(initialChecked.notCalled);
 		});
 	});
 

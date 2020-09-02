@@ -55,14 +55,23 @@ const nodes: TreeNodeOption[] = [
 const template = createMemoryResourceTemplate<TreeNodeOption>();
 
 export default factory(function Advanced({ id, middleware: { icache, resource } }) {
-	const expanded = icache.get('expanded');
-	const checked = icache.get('checked');
+	const expanded = icache.getOrSet('expanded', []);
+	const checked = icache.getOrSet('checked', []);
 
 	return (
 		<Example>
 			<Tree
 				checkable={true}
 				selectable={true}
+				onExpand={(id, expand) => {
+					if (expand) {
+						icache.set('expanded', (currentExpanded) => [...currentExpanded, id]);
+					} else {
+						icache.set('expanded', (currentExpanded) =>
+							currentExpanded ? currentExpanded.filter((n) => n !== id) : []
+						);
+					}
+				}}
 				expandedNodes={expanded}
 				checkedNodes={checked}
 				resource={resource({ template, initOptions: { id, data: nodes } })}
@@ -71,7 +80,10 @@ export default factory(function Advanced({ id, middleware: { icache, resource } 
 				<li>
 					<button
 						onclick={() => {
-							icache.set('expanded', expanded ? undefined : ['c9ae529a']);
+							icache.set(
+								'expanded',
+								expanded && expanded.length !== 0 ? [] : ['c9ae529a']
+							);
 						}}
 					>
 						Toggle Expand
@@ -80,7 +92,10 @@ export default factory(function Advanced({ id, middleware: { icache, resource } 
 				<li>
 					<button
 						onclick={() => {
-							icache.set('checked', checked ? undefined : ['c9ae529a']);
+							icache.set(
+								'checked',
+								checked && checked.length !== 0 ? [] : ['de48r11ea']
+							);
 						}}
 					>
 						Toggle Checked

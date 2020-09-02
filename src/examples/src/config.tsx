@@ -249,6 +249,7 @@ import CheckableTree from './widgets/tree/Checkable';
 import CustomRendererTree from './widgets/tree/CustomRenderer';
 import ControlledTree from './widgets/tree/Controlled';
 import RemoteSource from './widgets/tree/RemoteSource';
+import InitialStateTree from './widgets/tree/InitialState';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -1809,6 +1810,11 @@ export const config = {
 					filename: 'RemoteSource',
 					module: RemoteSource,
 					title: 'Remote Source'
+				},
+				{
+					filename: 'InitialState',
+					module: InitialStateTree,
+					title: 'Tree with initial state'
 				}
 			],
 			overview: {
