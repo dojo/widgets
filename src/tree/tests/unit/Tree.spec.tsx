@@ -4,7 +4,11 @@ import * as sinon from 'sinon';
 
 import { tsx } from '@dojo/framework/core/vdom';
 import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
-import { createMemoryResourceTemplate } from '@dojo/framework/core/middleware/resources';
+import {
+	createMemoryResourceTemplate,
+	createResourceTemplate,
+	defaultFind
+} from '@dojo/framework/core/middleware/resources';
 
 import { Keys } from '../../../common/util';
 import { stubEvent } from '../../../common/tests/support/test-helpers';
@@ -12,6 +16,7 @@ import Tree, { TreeNode, TreeNodeOption } from '../../index';
 import * as css from '../../../theme/default/tree.m.css';
 
 import { simpleTree } from './TreeData.mock';
+import LoadingIndicator from '../../../loading-indicator';
 
 const noop = () => {};
 const WrappedRoot = wrap('ol');
@@ -83,7 +88,7 @@ describe('Tree', () => {
 					template: {
 						template,
 						id: 'test',
-						initOptions: { data: simpleTree, id: 'test' }
+						initOptions: { data: simpleTree, id: 'test' } as any
 					}
 				}}
 			/>
@@ -99,7 +104,7 @@ describe('Tree', () => {
 					template: {
 						template,
 						id: 'test',
-						initOptions: { data: simpleTree, id: 'test' }
+						initOptions: { data: simpleTree, id: 'test' } as any
 					}
 				}}
 				disabledNodes={disabledNodes}
@@ -120,7 +125,7 @@ describe('Tree', () => {
 					template: {
 						template,
 						id: 'test',
-						initOptions: { data: simpleTree, id: 'test' }
+						initOptions: { data: simpleTree, id: 'test' } as any
 					}
 				}}
 			/>
@@ -191,7 +196,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					expandedNodes={expandedNodes}
@@ -235,7 +240,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					initialExpanded={expandedNodes}
@@ -275,7 +280,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					onExpand={onExpand}
@@ -307,7 +312,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					onExpand={onExpand}
@@ -355,7 +360,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					checkable={true}
@@ -373,7 +378,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					checkable={true}
@@ -396,7 +401,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					checkable={true}
@@ -419,7 +424,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					checkable={true}
@@ -463,7 +468,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					selectable={true}
@@ -481,7 +486,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					selectable={true}
@@ -510,7 +515,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					selectable={true}
@@ -544,7 +549,7 @@ describe('Tree', () => {
 						template: {
 							template,
 							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' }
+							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
 					selectable={true}
@@ -576,6 +581,37 @@ describe('Tree', () => {
 					.setProperty(WrappedNode1, 'activeNode', nodeId)
 					.setProperty(WrappedNode2, 'activeNode', nodeId)
 			);
+		});
+	});
+
+	describe('Loading tree state', () => {
+		const loadingAssertion = assertion(() => <LoadingIndicator />);
+		it('should load the tree when there is no meta info', () => {
+			let resolvePromise = (value: any) => {};
+			const dataPromise: Promise<TreeNodeOption[]> = new Promise((res) => {
+				resolvePromise = res;
+			});
+			const loadingTemplate = createResourceTemplate<TreeNodeOption>({
+				find: defaultFind,
+				read: async (request, { put, get }) => {
+					const data = await dataPromise;
+					put({ data, total: simpleTree.length }, request);
+				}
+			});
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template: loadingTemplate,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' } as any
+						}
+					}}
+				/>
+			));
+
+			r.expect(loadingAssertion);
+			resolvePromise(simpleTree);
 		});
 	});
 });
