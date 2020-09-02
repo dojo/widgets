@@ -244,6 +244,8 @@ import CustomIconResult from './widgets/result/CustomIcon';
 import BasicWizard from './widgets/wizard/Basic';
 import VerticalWizard from './widgets/wizard/Vertical';
 import ErrorWizard from './widgets/wizard/Error';
+import PopupConfirmation from './widgets/popup-confirmation/Basic';
+import PopupConfirmationUnderlay from './widgets/popup-confirmation/Underlay';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -1207,6 +1209,25 @@ export const config = {
 					module: BasicProgress
 				}
 			}
+		},
+		'popup-confirmation': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: PopupConfirmation,
+					sandbox: true,
+					size: 'medium'
+				}
+			},
+			examples: [
+				{
+					filename: 'Underlay',
+					module: PopupConfirmationUnderlay,
+					title: 'Visible Underlay',
+					sandbox: true,
+					size: 'medium'
+				}
+			]
 		},
 		radio: {
 			overview: {

@@ -31,25 +31,21 @@ export interface PopupProperties extends BasePopupProperties {
 	open?: boolean;
 }
 
+export interface PopupChildren {
+	(position: PopupPosition): RenderResult;
+}
+
 const factory = create({ dimensions, theme, bodyScroll, resize })
 	.properties<PopupProperties>()
-	.children<RenderResult | undefined>();
+	.children<PopupChildren | RenderResult>();
 
 export const Popup = factory(function({
 	properties,
 	children,
 	middleware: { dimensions, theme, bodyScroll, resize }
 }) {
-	const {
-		underlayVisible = false,
-		position = 'below',
-		yBottom,
-		yTop,
-		xRight,
-		xLeft,
-		onClose,
-		open
-	} = properties();
+	const { underlayVisible = false, yBottom, yTop, xRight, xLeft, onClose, open } = properties();
+	let { position = 'below' as PopupPosition } = properties();
 
 	resize.get('wrapper');
 	const wrapperDimensions = dimensions.get('wrapper');
@@ -111,8 +107,9 @@ export const Popup = factory(function({
 			}
 		}
 	}
-
 	const classes = theme.classes(css);
+	const [content] = children();
+	const contentResult = typeof content === 'function' ? content(position) : content;
 
 	bodyScroll(!open);
 
@@ -133,7 +130,7 @@ export const Popup = factory(function({
 					classes={[theme.variant(), fixedCss.root]}
 					styles={wrapperStyles}
 				>
-					{children()}
+					{contentResult}
 				</div>
 			</body>
 		)

@@ -1,0 +1,64 @@
+.popupContainer {
+	position: relative;
+	min-width: 300px;
+	z-index: var(--zindex-dialog);
+}
+
+.above {
+	left: 50%;
+	bottom: calc(9px + var(--spacing-regular));
+	transform: translateX(-50%);
+}
+
+.below {
+	left: 50%;
+	top: calc(9px + var(--spacing-regular));
+	transform: translateX(-50%);
+}
+
+.popup {
+	background-color: var(--color-background);
+	box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.15), 0 6px 16px 0 rgba(0, 0, 0, 0.1),
+		0 9px 28px 8px rgba(0, 0, 0, 0.07);
+	color: var(--color-text-primary);
+	padding: 15px;
+}
+
+.popup::before {
+	background-color: var(--color-background);
+	border: calc(9px / 2) solid var(--color-background);
+	content: '';
+	display: block;
+	height: 9px;
+	position: absolute;
+	transform: rotate(45deg);
+	width: 9px;
+}
+
+.below .popup::before {
+	box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.08);
+	left: calc(50% - calc(9px / 2));
+	top: calc(9px / -2);
+}
+
+.above .popup::before {
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.08);
+	left: calc(50% - calc(9px / 2));
+	bottom: calc(9px / -2);
+}
+
+.popupControls {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: var(--spacing-large);
+}
+
+.cancelRoot,
+.confirmRoot {
+	composes: root from './button.m.css';
+	min-width: 80px;
+}
+
+.cancelRoot {
+	margin-right: var(--spacing-regular);
+}
