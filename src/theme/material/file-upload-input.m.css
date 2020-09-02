@@ -1,6 +1,6 @@
 .root {
 	background-color: var(--mdc-theme-background);
-	border: 2px solid transparent;
+	border: 2px dashed transparent;
 }
 
 .dndActive {

@@ -1,0 +1,44 @@
+.root {
+	background-color: var(--mdc-theme-background);
+	border: 2px dashed transparent;
+}
+
+.dndActive {
+	border-color: var(--mdc-solid-border-color-hover);
+}
+
+.disabled {
+	cursor: no-drop;
+}
+
+.fileInputRoot {
+	display: inline-block;
+}
+
+.fileItem {
+	color: var(--mdc-text-color);
+	display: flex;
+	flex-direction: column;
+	padding: calc(var(--mdc-theme-grid-base) / 2);
+}
+
+.fileInfo {
+	display: flex;
+	flex-direction: row;
+}
+
+.fileItemName {
+	flex-grow: 1;
+}
+
+.closeButton {
+	border: none;
+	background: transparent;
+	color: var(--mdc-text-color);
+	cursor: pointer;
+	padding-top: 2px;
+}
+
+.validationMessage {
+	color: var(--mdc-theme-error);
+}

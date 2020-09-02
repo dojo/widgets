@@ -1,10 +1,11 @@
 /* The root class for FileUploader */
 .root {
-	position: relative;
+	border: 2px dashed transparent;
 }
 
 /* Applied to the root node if a DnD operation is in progress */
 .dndActive {
+	border-color: hsl(210, 29%, 60%);
 }
 
 /* Applied to the root node if the widget is disabled */

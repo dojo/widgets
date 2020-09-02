@@ -1,6 +1,6 @@
 .root {
 	background-color: var(--color-background);
-	border: 2px solid transparent;
+	border: 2px dashed transparent;
 }
 
 .dndActive {
