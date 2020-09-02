@@ -34,6 +34,14 @@ export const fileDrop = factory(function fileDrop({ middleware: { destroy, icach
 	let hasDropBeenRead = false;
 
 	return {
+		/**
+		 * Get information for file DnD
+		 * @param targetKey key of the node that will be the DnD target
+		 * @param overlayKey key of a node that will be the active DnD overlay.
+		 * If `overlayKey` is provided the node it refers to must be rendered at the time `fileDrop.get` is called.
+		 * Event listeners will immediately be registered for it if it exists. If it does not exist then all event
+		 * listeners will be registered on targetNode and overlay functionality will not work correctly.
+		 */
 		get(
 			targetKey: string | number,
 			overlayKey?: string | number
