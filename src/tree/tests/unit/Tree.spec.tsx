@@ -553,7 +553,7 @@ describe('Tree', () => {
 			r.expect(selectableAssertion);
 
 			// activate our node
-			const nodeId = simpleTree[0].id;
+			const nodeId = simpleTree[2].id;
 			r.property(WrappedNode1, 'onActive', nodeId);
 			r.expect(
 				selectableAssertion
@@ -565,9 +565,9 @@ describe('Tree', () => {
 			r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Enter });
 			r.expect(
 				selectableAssertion
-					.setProperty(WrappedListItem1, 'classes', [
+					.setProperty(WrappedListItem2, 'classes', [
 						css.node,
-						css.leaf,
+						false,
 						css.selectable,
 						css.selected
 					])
