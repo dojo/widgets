@@ -355,6 +355,39 @@ describe('Tree', () => {
 			r.expect(activeAssertion);
 			assert(onExpand.calledWith(nodeId, false));
 		});
+
+		it('raises events on expand/collapse on keyboard navigation with controlled nodes', () => {
+			const onExpand = sinon.stub();
+			const r = renderer(() => (
+				<Tree
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: simpleTree, id: 'test' } as any
+						}
+					}}
+					onExpand={onExpand}
+					expandedNodes={['parent-1']}
+				/>
+			));
+			const nodeId = simpleTree[0].id;
+
+			const activeExpandedAssertion = expandedAssertion
+				.setProperty(WrappedNode1, 'activeNode', nodeId)
+				.setProperty(WrappedNode2, 'activeNode', nodeId)
+				.setProperty(WrappedNode3, 'activeNode', nodeId);
+
+			r.expect(expandedAssertion);
+
+			r.property(WrappedNode1, 'onActive', nodeId);
+			r.expect(activeExpandedAssertion);
+
+			r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Left });
+
+			r.expect(activeExpandedAssertion);
+			assert(onExpand.calledWith(nodeId, false));
+		});
 	});
 
 	describe('CheckedNodes', () => {
