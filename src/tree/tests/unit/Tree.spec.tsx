@@ -125,11 +125,12 @@ describe('Tree', () => {
 					template: {
 						template,
 						id: 'test',
-						initOptions: { data: simpleTree, id: 'test' } as any
+						initOptions: { data: [...simpleTree], id: 'test' } as any
 					}
 				}}
 			/>
 		));
+
 		r.expect(simpleTreeAssertion);
 
 		r.property(WrappedNode1, 'onActive', simpleTree[0].id);
@@ -153,6 +154,14 @@ describe('Tree', () => {
 			simpleTreeAssertion
 				.setProperty(WrappedNode1, 'activeNode', simpleTree[0].id)
 				.setProperty(WrappedNode2, 'activeNode', simpleTree[0].id)
+		);
+
+		// back down to node 2
+		r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Up });
+		r.expect(
+			simpleTreeAssertion
+				.setProperty(WrappedNode1, 'activeNode', simpleTree[2].id)
+				.setProperty(WrappedNode2, 'activeNode', simpleTree[2].id)
 		);
 	});
 
