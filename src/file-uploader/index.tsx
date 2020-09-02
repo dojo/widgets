@@ -149,17 +149,15 @@ export const FileUploader = factory(function FileUploader({
 	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const { messages: fileUploadInputMessages } = i18n.localize(fileUploadInputBundle);
-	const files = icache.getOrSet('files', []);
 	const { dndLabel = fileUploadInputMessages.orDropFilesHere } = children()[0] || {};
 	const themeCss = theme.classes(css);
 	const fileUploadInputThemeCss = theme.classes(fileUploadInputCss);
+	let files = icache.getOrSet('files', []);
 
 	function onValue(newFiles: File[]) {
 		if (multiple) {
-			console.log('set multiple', newFiles);
 			icache.set('files', [...files, ...newFiles]);
 		} else {
-			console.log('set single', newFiles);
 			icache.set('files', newFiles.slice(0, 1));
 		}
 	}
@@ -179,8 +177,8 @@ export const FileUploader = factory(function FileUploader({
 			isDndActive = dndInfo.isDragging;
 
 			if (dndInfo.isDropped && dndInfo.files && dndInfo.files.length) {
-				// TODO: why does this not cause a rerender??
 				onValue(dndInfo.files);
+				files = icache.get('files')!;
 			}
 		} else {
 			// TODO: should not happen... log warning?
