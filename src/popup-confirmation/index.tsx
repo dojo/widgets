@@ -84,6 +84,7 @@ export default factory(function PopupConfirmation({
 										{messages.no}
 									</Button>
 									<Button
+										classes={classes}
 										key="confirm-button"
 										type="button"
 										theme={theme.compose(

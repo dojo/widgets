@@ -44,6 +44,7 @@ describe('PopupConfirmation', () => {
 									</CancelButtonWrap>
 									<ConfirmButtonWrap
 										key="confirm-button"
+										classes={undefined}
 										type="button"
 										theme={{
 											'@dojo/widgets/button': buttonTheme
