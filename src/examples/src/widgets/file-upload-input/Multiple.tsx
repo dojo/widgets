@@ -16,15 +16,26 @@ export default factory(function Multiple({ middleware: { icache } }) {
 		<Example>
 			<FileUploadInput onValue={onValue} multiple />
 			{selectedFiles.length > 0 && (
-				<ul>
-					{selectedFiles.map(function(file) {
-						return (
-							<li key={file.name}>
-								{file.name}: {file.size}
-							</li>
-						);
-					})}
-				</ul>
+				<table>
+					<thead>
+						<th>Name</th>
+						<th>Modified</th>
+						<th>Type</th>
+						<th>Bytes</th>
+					</thead>
+					<tbody>
+						{selectedFiles.map(function(file) {
+							return (
+								<tr key={file.name}>
+									<td>{file.name}</td>
+									<td>{new Date(file.lastModified).toLocaleString()}</td>
+									<td>{file.type}</td>
+									<td>{String(file.size)}</td>
+								</tr>
+							);
+						})}
+					</tbody>
+				</table>
 			)}
 		</Example>
 	);
