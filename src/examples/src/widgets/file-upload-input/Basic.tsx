@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
+import icache from '@dojo/framework/core/middleware/icache';
 import { FileUploadInput } from '@dojo/widgets/file-upload-input';
 import Example from '../../Example';
-import icache from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache });
 

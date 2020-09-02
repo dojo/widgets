@@ -209,6 +209,11 @@ export const FileUploader = factory(function FileUploader({
 				name={name}
 				onValue={onValue}
 				required={required}
+				theme={theme.compose(
+					fileUploadInputCss,
+					css,
+					'input'
+				)}
 			>
 				{children()[0]}
 			</FileUploadInput>

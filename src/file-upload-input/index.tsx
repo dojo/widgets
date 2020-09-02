@@ -9,6 +9,7 @@ import bundle from './nls/FileUploadInput';
 
 import * as css from '../theme/default/file-upload-input.m.css';
 import * as baseCss from '../theme/default/base.m.css';
+import * as buttonCss from '../theme/default/button.m.css';
 import * as fixedCss from './styles/file-upload-input.m.css';
 
 export interface FileUploadInputChildren {
@@ -121,7 +122,15 @@ export const FileUploadInput = factory(function FileUploadInput({
 				required={required}
 				type="file"
 			/>
-			<Button disabled={disabled} onClick={onClickButton}>
+			<Button
+				disabled={disabled}
+				onClick={onClickButton}
+				theme={theme.compose(
+					buttonCss,
+					css,
+					'button'
+				)}
+			>
 				{buttonLabel}
 			</Button>
 
