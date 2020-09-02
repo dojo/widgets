@@ -202,14 +202,16 @@ export default factory(function({
 		event.stopPropagation();
 		const nodes = createNodeFlatMap();
 		const activeIndex = nodes.findIndex((node) => node.id === activeNode);
+		const activeExpandedNodes = controlledExpandedNodes || expandedNodes;
 
 		switch (event.which) {
 			// select
 			case Keys.Enter:
 			case Keys.Space:
 				event.preventDefault();
-				if (activeNode && selectedNode !== activeNode) {
-					selectNode(activeNode);
+				if (activeNode && selectedNode !== activeNode && !nodes[activeIndex].hasChildren) {
+					selectable && selectNode(activeNode);
+					checkable && checkNode(activeNode, !checkedNodes.includes(activeNode));
 				}
 				break;
 
@@ -234,7 +236,7 @@ export default factory(function({
 				event.preventDefault();
 				if (
 					activeNode &&
-					!expandedNodes.includes(activeNode) &&
+					!activeExpandedNodes.includes(activeNode) &&
 					nodes[activeIndex].hasChildren
 				) {
 					expandNode(activeNode);
@@ -244,7 +246,7 @@ export default factory(function({
 			// collapse
 			case Keys.Left:
 				event.preventDefault();
-				if (activeNode && expandedNodes.includes(activeNode)) {
+				if (activeNode && activeExpandedNodes.includes(activeNode)) {
 					collapseNode(activeNode);
 				}
 				break;
