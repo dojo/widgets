@@ -1,20 +1,36 @@
+.root {
+	background-color: var(--color-background);
+	border: 2px solid transparent;
+}
+
+.dndActive {
+	border-color: var(--color-highlight);
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+}
+
 .disabled {
 	cursor: no-drop;
 }
 
-.button {
-	/* TODO: button overrides this */
-	margin-right: var(--grid-base);
+.fileInputRoot {
+	display: inline-block;
 }
 
 .fileItem {
+	color: var(--color-text-primary);
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	line-height: var(--line-height-base);
+	padding: calc(var(--spacing-regular) / 2);
 }
 
 .fileItem:hover {
 	background-color: var(--color-background-faded);
+}
+
+.fileInfo {
+	display: flex;
+	flex-direction: row;
 }
 
 .fileItemName {
@@ -24,6 +40,11 @@
 .closeButton {
 	border: none;
 	background: transparent;
+	color: var(--color-text-primary);
 	cursor: pointer;
 	padding-top: 2px;
+}
+
+.validationMessage {
+	color: var(--color-error);
 }

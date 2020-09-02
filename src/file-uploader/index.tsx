@@ -7,28 +7,69 @@ import {
 	FileUploadInputProperties
 } from '../file-upload-input';
 import { Icon } from '../icon';
+import fileDrop from '../middleware/fileDrop';
 import theme from '../middleware/theme';
 import bundle from './nls/FileUploader';
+import fileUploadInputBundle from '../file-upload-input/nls/FileUploadInput';
 
 import * as css from '../theme/default/file-uploader.m.css';
 import * as baseCss from '../theme/default/base.m.css';
 import * as fileUploadInputCss from '../theme/default/file-upload-input.m.css';
 import * as fileUploadInputFixedCss from '../file-upload-input/styles/file-upload-input.m.css';
 
-export interface FileUploaderIcache {
-	files: File[];
-	isDndActive: boolean;
+interface ValidationInfo {
+	message?: string;
+	valid?: boolean;
 }
 
 export interface FileUploaderProperties extends FileUploadInputProperties {
 	/** Custom validator used to validate each file */
-	customValidator?: (file: File) => { valid?: boolean; message?: string } | void;
+	customValidator?: (file: File) => ValidationInfo | void;
 
 	/** The maximum size in bytes of a file */
 	maxSize?: number;
 }
 
-export interface FileItemRendererProps {
+interface ValidationProps {
+	accept?: string | string[];
+	file: File;
+	maxSize?: number;
+	messages: typeof bundle;
+}
+
+function validateFile(props: ValidationProps): ValidationInfo {
+	const {
+		accept,
+		file,
+		maxSize,
+		messages: { messages }
+	} = props;
+	let valid = true;
+	let message = '';
+
+	if (maxSize) {
+		if (file.size > maxSize) {
+			valid = false;
+			message = messages.invalidFileSize;
+		}
+	}
+
+	if (accept) {
+		const acceptTypes = Array.isArray(accept) ? accept : [accept];
+		if (!acceptTypes.includes(file.type)) {
+			valid = false;
+			message = messages.invalidFileType;
+		}
+	}
+
+	return {
+		message,
+		valid
+	};
+}
+
+interface FileItemRendererProps {
+	accept?: string | string[];
 	customValidator: FileUploaderProperties['customValidator'];
 	files: File[];
 	maxSize?: number;
@@ -39,45 +80,61 @@ export interface FileItemRendererProps {
 
 function renderFiles(props: FileItemRendererProps) {
 	const {
-		// customValidator,
+		accept,
+		customValidator,
 		files,
-		// maxSize,
+		maxSize,
 		messages: { messages },
 		remove,
 		themeCss
 	} = props;
 
 	return files.map(function(file) {
-		/*
-		const isValid = customValidator
-			? customValidator(file)
-			: maxSize
-			? file.size <= maxSize
-			: true;*/
+		let validationInfo: ValidationInfo | void = validateFile({
+			accept,
+			file,
+			maxSize,
+			messages: { messages }
+		});
+
+		if (validationInfo && validationInfo.valid && customValidator) {
+			validationInfo = customValidator(file);
+		}
+		const isValid = validationInfo ? validationInfo.valid : true;
 
 		return (
-			<div classes={[themeCss.fileItem]} key={file.name}>
-				<div classes={[themeCss.fileItemName]}>{file.name}</div>
-				<button
-					classes={[themeCss.closeButton]}
-					onclick={function() {
-						remove(file);
-					}}
-				>
-					<Icon type="closeIcon" altText={messages.remove} />
-				</button>
+			<div classes={[themeCss.fileItem, !isValid && themeCss.invalid]} key={file.name}>
+				<div classes={[themeCss.fileInfo]}>
+					<div classes={[themeCss.fileItemName]}>{file.name}</div>
+					<button
+						classes={[themeCss.closeButton]}
+						onclick={function() {
+							remove(file);
+						}}
+					>
+						<Icon type="closeIcon" altText={messages.remove} />
+					</button>
+				</div>
+				{validationInfo && validationInfo.message && (
+					<div classes={[themeCss.validationMessage]}>{validationInfo.message}</div>
+				)}
 			</div>
 		);
 	});
 }
 
-const factory = create({ i18n, icache: createICacheMiddleware<FileUploaderIcache>(), theme })
+export interface FileUploaderIcache {
+	files: File[];
+}
+const icache = createICacheMiddleware<FileUploaderIcache>();
+
+const factory = create({ fileDrop, i18n, icache, theme })
 	.properties<FileUploaderProperties>()
 	.children<FileUploadInputChildren | undefined>();
 
 export const FileUploader = factory(function FileUploader({
 	children,
-	middleware: { i18n, icache, theme },
+	middleware: { fileDrop, i18n, icache, theme },
 	properties
 }) {
 	const {
@@ -91,16 +148,19 @@ export const FileUploader = factory(function FileUploader({
 		required = false
 	} = properties();
 	const { messages } = i18n.localize(bundle);
+	const { messages: fileUploadInputMessages } = i18n.localize(fileUploadInputBundle);
 	const files = icache.getOrSet('files', []);
-	let isDndActive = false;
+	const { dndLabel = fileUploadInputMessages.orDropFilesHere } = children()[0] || {};
 	const themeCss = theme.classes(css);
 	const fileUploadInputThemeCss = theme.classes(fileUploadInputCss);
 
 	function onValue(newFiles: File[]) {
 		if (multiple) {
+			console.log('set multiple', newFiles);
 			icache.set('files', [...files, ...newFiles]);
 		} else {
-			icache.set('files', newFiles);
+			console.log('set single', newFiles);
+			icache.set('files', newFiles.slice(0, 1));
 		}
 	}
 
@@ -109,6 +169,21 @@ export const FileUploader = factory(function FileUploader({
 		if (fileIndex !== -1) {
 			files.splice(fileIndex, 1);
 			icache.set('files', files);
+		}
+	}
+
+	let isDndActive = false;
+	if (allowDnd) {
+		const dndInfo = fileDrop.get('root', 'overlay');
+		if (dndInfo) {
+			isDndActive = dndInfo.isDragging;
+
+			if (dndInfo.isDropped && dndInfo.files && dndInfo.files.length) {
+				// TODO: why does this not cause a rerender??
+				onValue(dndInfo.files);
+			}
+		} else {
+			// TODO: should not happen... log warning?
 		}
 	}
 
@@ -126,6 +201,11 @@ export const FileUploader = factory(function FileUploader({
 			<FileUploadInput
 				accept={accept}
 				allowDnd={false}
+				classes={{
+					'@dojo/widgets/file-upload-input': {
+						root: [themeCss.fileInputRoot]
+					}
+				}}
 				disabled={disabled}
 				multiple={multiple}
 				name={name}
@@ -135,9 +215,12 @@ export const FileUploader = factory(function FileUploader({
 				{children()[0]}
 			</FileUploadInput>
 
+			{allowDnd && <span classes={[fileUploadInputThemeCss.dndLabel]}>{dndLabel}</span>}
+
 			{files.length && (
 				<div key="fileList">
 					{renderFiles({
+						accept,
 						customValidator,
 						files,
 						maxSize,

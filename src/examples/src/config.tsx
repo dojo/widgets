@@ -67,6 +67,7 @@ import MultipleFileUploadInput from './widgets/file-upload-input/Multiple';
 import BasicFileUploader from './widgets/file-uploader/Basic';
 import DisabledFileUploader from './widgets/file-uploader/Disabled';
 import MultipleFileUploader from './widgets/file-uploader/Multiple';
+import ValidatedFileUploader from './widgets/file-uploader/Validated';
 import Advanced from './widgets/grid/Advanced';
 import BasicFab from './widgets/floating-action-button/Basic';
 import ExtendedFab from './widgets/floating-action-button/Extended';
@@ -783,6 +784,11 @@ export const config = {
 					title: 'Multiple FileUploader',
 					filename: 'Multiple',
 					module: MultipleFileUploader
+				},
+				{
+					title: 'Validated FileUploader',
+					filename: 'Validated',
+					module: ValidatedFileUploader
 				}
 			]
 		},

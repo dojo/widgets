@@ -3,25 +3,49 @@
 	position: relative;
 }
 
+/* Applied to the root node if a DnD operation is in progress */
+.dndActive {
+}
+
 /* Applied to the root node if the widget is disabled */
 .disabled {
+}
+
+/* Applied to the root node of the FileUploadInput widget */
+.fileInputRoot {
+	display: inline-block;
 }
 
 /* Container for each item representing an added file */
 .fileItem {
 	display: flex;
+	flex-direction: column;
+}
+
+/* Applied to a file item if it is invalid */
+.invalid {
+}
+
+/* The file information node within a file item node */
+.fileInfo {
+	display: flex;
 	flex-direction: row;
 }
 
-/* The name of each added file (child of .fileItem) */
+/* The name of each added file */
 .fileItemName {
 	flex-grow: 1;
 }
 
-/* Close icon button rendered for each file (child of .fileItem) */
+/* Close icon button rendered for each file */
 .closeButton {
 	border: none;
 	background: transparent;
 	cursor: pointer;
 	padding-top: 2px;
+}
+
+/* Applied to the node containing the validation message */
+.validationMessage {
+	color: var(--error-color);
 }
