@@ -25,7 +25,7 @@ const factory = create({
 	.properties<AccordionPaneProperties>()
 	.children<RenderResult>();
 
-export const Accordion = factory(function LoadingIndicator({
+export const Accordion = factory(function Accordion({
 	middleware: { icache, theme },
 	properties,
 	children

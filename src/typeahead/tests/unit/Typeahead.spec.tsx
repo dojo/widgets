@@ -208,7 +208,7 @@ describe('Typeahead', () => {
 		));
 		r.child(WrappedPopup, {
 			trigger: [() => {}],
-			content: [() => {}]
+			content: [() => {}, 'below']
 		});
 		r.expect(baseAssertion);
 		// open the drop down
@@ -268,7 +268,7 @@ describe('Typeahead', () => {
 		));
 		r.child(WrappedPopup, {
 			trigger: [() => {}],
-			content: [() => {}]
+			content: [() => {}, 'below']
 		});
 		r.expect(baseAssertion);
 		// open the drop down

@@ -410,4 +410,48 @@ describe('Popup', () => {
 			])
 		);
 	});
+
+	it('Passes effective position to content', () => {
+		const mockNode = createNodeMock();
+		const wrapper = {
+			getBoundingClientRect() {
+				return {
+					width: 100,
+					height: 100
+				};
+			}
+		};
+		mockNode('wrapper', wrapper);
+
+		const onContent = stub().returns(<div>hello world</div>);
+		const h = harness(
+			() => (
+				<Popup
+					position="above"
+					xRight={50}
+					xLeft={50}
+					yTop={300}
+					yBottom={50}
+					open={true}
+					onClose={() => {}}
+				>
+					{onContent}
+				</Popup>
+			),
+			{ middleware: [[node, mockNode], [resize, createMockResize()]] }
+		);
+
+		h.expect(
+			baseTemplate
+				.setProperty('@wrapper', 'styles', {
+					left: '50px',
+					opacity: '1',
+					top: '300px'
+				})
+				.setChildren('@wrapper', [<div>hello world</div>])
+		);
+		// despite widget given position="above", the effective position is "below"
+		// due to space restrictions
+		assert.isTrue(onContent.calledWith('above'));
+	});
 });

@@ -250,6 +250,8 @@ import CustomRendererTree from './widgets/tree/CustomRenderer';
 import ControlledTree from './widgets/tree/Controlled';
 import RemoteSource from './widgets/tree/RemoteSource';
 import InitialStateTree from './widgets/tree/InitialState';
+import PopupConfirmation from './widgets/popup-confirmation/Basic';
+import PopupConfirmationUnderlay from './widgets/popup-confirmation/Underlay';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -1213,6 +1215,25 @@ export const config = {
 					module: BasicProgress
 				}
 			}
+		},
+		'popup-confirmation': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: PopupConfirmation,
+					sandbox: true,
+					size: 'medium'
+				}
+			},
+			examples: [
+				{
+					filename: 'Underlay',
+					module: PopupConfirmationUnderlay,
+					title: 'Visible Underlay',
+					sandbox: true,
+					size: 'medium'
+				}
+			]
 		},
 		radio: {
 			overview: {

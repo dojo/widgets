@@ -1,0 +1,27 @@
+/* Applied to the root container */
+.root {
+}
+
+/* Applied to popup wrapper */
+.popupContainer {
+}
+
+/* Applied to popup itself */
+.popup {
+}
+
+/* Applied to .popupContainer when positioned above */
+.above {
+}
+
+/* Applied to .popupContainer when positioned above */
+.below {
+}
+
+/* Applied to container wrapping supplied content */
+.popupContent {
+}
+
+/* Applied to container wrapping confirm/deny controls */
+.popupControls {
+}

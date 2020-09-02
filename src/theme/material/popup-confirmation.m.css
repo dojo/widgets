@@ -1,0 +1,39 @@
+.popupContainer {
+	composes: mdc-dialog from '@material/dialog/dist/mdc.dialog.css';
+	display: block;
+	position: relative;
+	min-width: 300px;
+}
+
+.above {
+	left: 50%;
+	bottom: var(--mdc-grid-base);
+	transform: translateX(-50%);
+}
+
+.below {
+	left: 50%;
+	top: var(--mdc-grid-base);
+	transform: translateX(-50%);
+}
+
+.popup {
+	composes: mdc-dialog__surface from '@material/dialog/dist/mdc.dialog.css';
+	padding: calc(var(--mdc-theme-grid-base) * 2);
+}
+
+.popupControls {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: calc(var(--mdc-grid-base) * 2);
+}
+
+.cancelRoot,
+.confirmRoot {
+	composes: root from './button.m.css';
+	min-width: 80px;
+}
+
+.cancelRoot {
+	margin-right: var(--mdc-grid-base);
+}

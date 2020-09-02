@@ -3,6 +3,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import Popup, { PopupPosition, BasePopupProperties } from '../popup';
 import * as fixedCss from './trigger-popup.m.css';
+import theme from '../middleware/theme';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
 export interface TriggerPopupProperties extends BasePopupProperties {
@@ -16,7 +17,7 @@ export interface TriggerPopupProperties extends BasePopupProperties {
 
 export interface TriggerPopupChildren {
 	trigger: (toggleOpen: () => void) => RenderResult;
-	content: (close: () => void) => RenderResult;
+	content: (close: () => void, position: PopupPosition) => RenderResult;
 }
 
 interface TriggerPopupICache {
@@ -25,20 +26,22 @@ interface TriggerPopupICache {
 
 const icache = createICacheMiddleware<TriggerPopupICache>();
 
-const factory = create({ dimensions, icache })
+const factory = create({ dimensions, icache, theme })
 	.properties<TriggerPopupProperties>()
 	.children<TriggerPopupChildren>();
 
 export const TriggerPopup = factory(function TriggerPopup({
 	properties,
 	children,
-	middleware: { dimensions, icache }
+	middleware: { dimensions, icache, theme }
 }) {
-	const { matchWidth = true, onOpen, ...otherProperties } = properties();
+	const { matchWidth = true, onOpen, classes, ...otherProperties } = properties();
 
 	const { position: triggerPosition, size: triggerSize } = dimensions.get('trigger');
 	const triggerTop = triggerPosition.top + document.documentElement.scrollTop;
 	const triggerBottom = triggerTop + triggerSize.height;
+
+	const themedCss = theme.classes(fixedCss);
 
 	const wrapperStyles = {
 		width: matchWidth ? `${triggerSize.width}px` : 'auto'
@@ -52,7 +55,7 @@ export const TriggerPopup = factory(function TriggerPopup({
 	};
 
 	return (
-		<virtual>
+		<virtual classes={[themedCss.root]}>
 			<span key="trigger" classes={fixedCss.trigger}>
 				{trigger(() => {
 					const { onOpen } = properties();
@@ -70,9 +73,11 @@ export const TriggerPopup = factory(function TriggerPopup({
 				onClose={close}
 				open={icache.get('open')}
 			>
-				<div key="trigger-wrapper" styles={wrapperStyles}>
-					{content(close)}
-				</div>
+				{(position) => (
+					<div key="trigger-wrapper" styles={wrapperStyles}>
+						{content(close, position)}
+					</div>
+				)}
 			</Popup>
 		</virtual>
 	);
