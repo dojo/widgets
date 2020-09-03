@@ -628,7 +628,7 @@ describe('Tree', () => {
 
 	describe('Loading tree state', () => {
 		const loadingAssertion = assertion(() => <LoadingIndicator />);
-		it('should load the tree when there is no meta info', () => {
+		it('should have loading indicator when there is not data', () => {
 			let resolvePromise = (value: any) => {};
 			const dataPromise: Promise<TreeNodeOption[]> = new Promise((res) => {
 				resolvePromise = res;

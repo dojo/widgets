@@ -257,7 +257,7 @@ export default factory(function({
 		const options = createOptions(nodeId);
 		const info = meta(template, options({ query: { parent: nodeId } }), true);
 
-		if (info === undefined) {
+		if (info === undefined || isLoading(template, options())) {
 			return <LoadingIndicator />;
 		}
 
@@ -265,11 +265,6 @@ export default factory(function({
 			template,
 			options({ query: { parent: nodeId }, size: info.total })
 		);
-
-		const loading = isLoading(template, options());
-		if (loading) {
-			return <LoadingIndicator />;
-		}
 
 		const nodes = flat(results);
 
