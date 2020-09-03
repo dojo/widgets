@@ -101,16 +101,17 @@ describe('TreeNode', () => {
 	});
 
 	describe('Checkable', () => {
-		const onPointerDown = sinon.stub();
+		const onPointerDown = sinon.spy();
 		const onCheck = sinon.stub();
 		const WrappedCheckbox = wrap(Checkbox);
+		const WrappedCheckboxContainer = wrap('div');
 		const checkboxAssertion = baseAssertion.insertBefore(
 			WrappedTitle,
 			() =>
 				(
-					<div onpointerdown={onPointerDown}>
+					<WrappedCheckboxContainer onpointerdown={onPointerDown}>
 						<WrappedCheckbox checked={false} onValue={noop} disabled={false} />
-					</div>
+					</WrappedCheckboxContainer>
 				) as any
 		);
 
@@ -135,6 +136,23 @@ describe('TreeNode', () => {
 				</TreeNode>
 			));
 			r.expect(checkboxAssertion.setProperty(WrappedCheckbox, 'checked', true));
+		});
+
+		it('stops event propagation on pointer down', () => {
+			const stopPropagationMock = sinon.stub();
+			const r = renderer(() => (
+				<TreeNode {...defaultProps} checkable={true}>
+					{defaultRenderer}
+				</TreeNode>
+			));
+			r.expect(checkboxAssertion);
+
+			r.property(WrappedCheckboxContainer, 'onpointerdown', {
+				stopPropagation: stopPropagationMock
+			});
+			r.expect(checkboxAssertion);
+
+			assert(stopPropagationMock.called);
 		});
 
 		it('renders with disabled checkbox', () => {
