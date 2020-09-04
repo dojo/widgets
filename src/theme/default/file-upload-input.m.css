@@ -13,12 +13,17 @@
 	cursor: no-drop;
 }
 
+/* The node containing the button and dnd label */
+.wrapper {
+}
+
+/* The text label in the DnD area */
+.dndLabel {
+	margin-left: 8px;
+}
+
+/* The overlay node that is displayed when DnD is active */
 .dndOverlay {
 	background-color: var(--selected-background);
 	opacity: 0.25;
-}
-
-/* The text label in the DnD area if DnD is allowed */
-.dndLabel {
-	margin-left: 8px;
 }

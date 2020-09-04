@@ -32,6 +32,7 @@ export const fileDrop = factory(function fileDrop({ middleware: { destroy, icach
 	});
 
 	let hasDropBeenRead = false;
+	let isOverlayVolatile = false;
 
 	return {
 		/**
@@ -47,7 +48,7 @@ export const fileDrop = factory(function fileDrop({ middleware: { destroy, icach
 			overlayKey?: string | number
 		): Readonly<DndResults> | undefined {
 			const targetNode = node.get(targetKey);
-			const overlayNode = overlayKey && node.get(overlayKey);
+			let overlayNode = overlayKey && node.get(overlayKey);
 
 			if (!targetNode) {
 				return;
@@ -69,6 +70,9 @@ export const fileDrop = factory(function fileDrop({ middleware: { destroy, icach
 
 				const results = icache.get(resultKey);
 				if (results && results.isDragging === true) {
+					if (isOverlayVolatile) {
+						overlayNode = undefined;
+					}
 					icache.set(resultKey, { ...results, isDragging: false });
 				}
 			}
@@ -82,6 +86,10 @@ export const fileDrop = factory(function fileDrop({ middleware: { destroy, icach
 
 			function onDrop(event: DragEvent) {
 				event.preventDefault();
+
+				if (isOverlayVolatile) {
+					overlayNode = undefined;
+				}
 
 				icache.set(resultKey, {
 					isDragging: false,
@@ -97,23 +105,67 @@ export const fileDrop = factory(function fileDrop({ middleware: { destroy, icach
 				icache.set(resultKey, createResults());
 
 				targetNode.addEventListener('dragenter', onDragEnter);
-				if (overlayNode) {
-					overlayNode.addEventListener('dragenter', preventDefault);
-				}
-				const receiverNode = overlayNode || targetNode;
-				receiverNode.addEventListener('dragover', preventDefault);
-				receiverNode.addEventListener('dragleave', onDragLeave);
-				receiverNode.addEventListener('drop', onDrop);
+				targetNode.addEventListener('drop', onDrop);
 
 				handles.push(function() {
 					targetNode.removeEventListener('dragenter', onDragEnter);
-					if (overlayNode) {
-						overlayNode.removeEventListener('dragenter', preventDefault);
-					}
-					receiverNode.removeEventListener('dragover', preventDefault);
-					receiverNode.removeEventListener('dragleave', onDragLeave);
-					receiverNode.removeEventListener('drop', onDrop);
+					targetNode.removeEventListener('dragover', preventDefault);
+					targetNode.removeEventListener('drop', onDrop);
 				});
+
+				if (overlayKey) {
+					if (overlayNode) {
+						overlayNode.addEventListener('dragleave', onDragLeave);
+
+						handles.push(function() {
+							if (overlayNode) {
+								overlayNode.removeEventListener('dragleave', onDragLeave);
+							}
+						});
+					} else {
+						let dragoverCount = 0;
+						targetNode.addEventListener('dragover', function temporaryDragOver(event) {
+							console.count('temp dragover');
+							event.preventDefault();
+
+							overlayNode = node.get(overlayKey);
+							if (overlayNode) {
+								isOverlayVolatile = true;
+								console.log('add listener to overlayNode');
+								targetNode.addEventListener('dragover', preventDefault);
+								targetNode.removeEventListener('dragover', temporaryDragOver);
+								overlayNode.addEventListener('dragleave', onDragLeave);
+
+								handles.push(function() {
+									if (overlayNode) {
+										overlayNode.removeEventListener('dragleave', onDragLeave);
+									}
+								});
+							} else {
+								dragoverCount += 1;
+								console.count('dragOver');
+							}
+
+							if (dragoverCount > 10) {
+								console.log('bail out, add listener to targetNode');
+								targetNode.addEventListener('dragover', preventDefault);
+								targetNode.removeEventListener('dragover', temporaryDragOver);
+								targetNode.addEventListener('dragleave', onDragLeave);
+
+								handles.push(function() {
+									targetNode.removeEventListener('dragleave', onDragLeave);
+								});
+							}
+						});
+					}
+				} else {
+					targetNode.addEventListener('dragover', preventDefault);
+					targetNode.addEventListener('dragleave', onDragLeave);
+
+					handles.push(function() {
+						targetNode.removeEventListener('dragleave', onDragLeave);
+					});
+				}
 
 				return emptyResults;
 			}

@@ -62,8 +62,9 @@ import ActionsDialog from './widgets/dialog/ActionsDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
 import BasicFileUploadInput from './widgets/file-upload-input/Basic';
 import DisabledFileUploadInput from './widgets/file-upload-input/Disabled';
-import LabelledFileUploadInput from './widgets/file-upload-input/Labels';
+import LabelledFileUploadInput from './widgets/file-upload-input/Labelled';
 import MultipleFileUploadInput from './widgets/file-upload-input/Multiple';
+import NoDropFileUploadInput from './widgets/file-upload-input/NoDrop';
 import BasicFileUploader from './widgets/file-uploader/Basic';
 import DisabledFileUploader from './widgets/file-uploader/Disabled';
 import MultipleFileUploader from './widgets/file-uploader/Multiple';
@@ -757,12 +758,19 @@ export const config = {
 				{
 					title: 'Multiple FileUploadInput',
 					filename: 'Multiple',
-					module: MultipleFileUploadInput
+					module: MultipleFileUploadInput,
+					description:
+						'Demonstrates using child `content` property to render information about the uploaded files that is available to the `onValue` callback.'
 				},
 				{
-					title: 'FileUploadInput with custom labels',
-					filename: 'Labels',
+					title: 'FileUploadInput with label',
+					filename: 'Labelled',
 					module: LabelledFileUploadInput
+				},
+				{
+					title: 'FileUploadInput with no DnD',
+					filename: 'NoDrop',
+					module: NoDropFileUploadInput
 				}
 			]
 		},

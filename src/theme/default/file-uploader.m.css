@@ -12,11 +12,6 @@
 .disabled {
 }
 
-/* Applied to the root node of the FileUploadInput widget */
-.fileInputRoot {
-	display: inline-block;
-}
-
 /* Container for each item representing an added file */
 .fileItem {
 	display: flex;

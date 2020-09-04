@@ -11,10 +11,6 @@
 	cursor: no-drop;
 }
 
-.fileInputRoot {
-	display: inline-block;
-}
-
 .fileItem {
 	color: var(--mdc-text-color);
 	display: flex;

@@ -4,23 +4,17 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import {
 	FileUploadInput,
 	FileUploadInputChildren,
-	FileUploadInputProperties
+	FileUploadInputProperties,
+	ValidationInfo
 } from '../file-upload-input';
 import { Icon } from '../icon';
 import fileDrop from '../middleware/fileDrop';
 import theme from '../middleware/theme';
 import bundle from './nls/FileUploader';
-import fileUploadInputBundle from '../file-upload-input/nls/FileUploadInput';
 
 import * as css from '../theme/default/file-uploader.m.css';
-import * as baseCss from '../theme/default/base.m.css';
 import * as fileUploadInputCss from '../theme/default/file-upload-input.m.css';
 import * as fileUploadInputFixedCss from '../file-upload-input/styles/file-upload-input.m.css';
-
-interface ValidationInfo {
-	message?: string;
-	valid?: boolean;
-}
 
 export interface FileUploaderProperties extends FileUploadInputProperties {
 	/** Custom validator used to validate each file */
@@ -130,11 +124,11 @@ const icache = createICacheMiddleware<FileUploaderIcache>();
 
 const factory = create({ fileDrop, i18n, icache, theme })
 	.properties<FileUploaderProperties>()
-	.children<FileUploadInputChildren | undefined>();
+	.children<Omit<FileUploadInputChildren, 'content'> | undefined>();
 
 export const FileUploader = factory(function FileUploader({
 	children,
-	middleware: { fileDrop, i18n, icache, theme },
+	middleware: { i18n, icache, theme },
 	properties
 }) {
 	const {
@@ -148,11 +142,9 @@ export const FileUploader = factory(function FileUploader({
 		required = false
 	} = properties();
 	const { messages } = i18n.localize(bundle);
-	const { messages: fileUploadInputMessages } = i18n.localize(fileUploadInputBundle);
-	const { dndLabel = fileUploadInputMessages.orDropFilesHere } = children()[0] || {};
 	const themeCss = theme.classes(css);
-	const fileUploadInputThemeCss = theme.classes(fileUploadInputCss);
 	let files = icache.getOrSet('files', []);
+	const inputChild = (children()[0] || {}) as FileUploadInputChildren;
 
 	function onValue(newFiles: File[]) {
 		if (multiple) {
@@ -170,19 +162,20 @@ export const FileUploader = factory(function FileUploader({
 		}
 	}
 
-	let isDndActive = false;
-	if (allowDnd) {
-		const dndInfo = fileDrop.get('root', 'overlay');
-		if (dndInfo) {
-			isDndActive = dndInfo.isDragging;
-
-			if (dndInfo.isDropped && dndInfo.files && dndInfo.files.length) {
-				onValue(dndInfo.files);
-				files = icache.get('files')!;
-			}
-		} else {
-			// TODO: should not happen... log warning?
-		}
+	if (files.length) {
+		inputChild.content = (
+			<div key="fileList">
+				{renderFiles({
+					accept,
+					customValidator,
+					files,
+					maxSize,
+					messages: { messages },
+					remove,
+					themeCss
+				})}
+			</div>
+		);
 	}
 
 	return (
@@ -192,18 +185,12 @@ export const FileUploader = factory(function FileUploader({
 				theme.variant(),
 				fileUploadInputFixedCss.root,
 				themeCss.root,
-				isDndActive && themeCss.dndActive,
 				disabled && themeCss.disabled
 			]}
 		>
 			<FileUploadInput
 				accept={accept}
-				allowDnd={false}
-				classes={{
-					'@dojo/widgets/file-upload-input': {
-						root: [themeCss.fileInputRoot]
-					}
-				}}
+				allowDnd={allowDnd}
 				disabled={disabled}
 				multiple={multiple}
 				name={name}
@@ -215,35 +202,8 @@ export const FileUploader = factory(function FileUploader({
 					'input'
 				)}
 			>
-				{children()[0]}
+				{inputChild}
 			</FileUploadInput>
-
-			{allowDnd && <span classes={[fileUploadInputThemeCss.dndLabel]}>{dndLabel}</span>}
-
-			{files.length && (
-				<div key="fileList">
-					{renderFiles({
-						accept,
-						customValidator,
-						files,
-						maxSize,
-						messages: { messages },
-						remove,
-						themeCss
-					})}
-				</div>
-			)}
-
-			{allowDnd && (
-				<div
-					key="overlay"
-					classes={[
-						fileUploadInputFixedCss.dndOverlay,
-						fileUploadInputThemeCss.dndOverlay,
-						!isDndActive && baseCss.hidden
-					]}
-				/>
-			)}
 		</div>
 	);
 });
