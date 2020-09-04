@@ -70,6 +70,43 @@ export const Rate = factory(function Radio({
 		options.push({ value: `${i}` });
 	}
 
+	function renderRadio(stringValue: string, checked: (checked?: boolean) => boolean) {
+		const numValue = parseFloat(stringValue);
+		// const { checked } = radioGroup(stringValue);
+		const visiblyChecked = hoveredValue
+			? numValue <= hoveredValue
+			: !!value && numValue <= value;
+
+		return (
+			<label
+				classes={[fixedCss.labelFixed, themeCss.icon, visiblyChecked && themeCss.checked]}
+				onmouseenter={() => {
+					icache.set('valueHovered', numValue);
+				}}
+				onmouseleave={() => {
+					icache.delete('valueHovered');
+				}}
+				title={stringValue}
+			>
+				<span classes={fixedCss.iconWrapperFixed}>
+					{icon || <Icon size="medium" type="starIcon" />}
+				</span>
+				<input
+					classes={baseCss.visuallyHidden}
+					type="radio"
+					checked={checked()}
+					name={name}
+					value={stringValue}
+					onchange={(event: Event) => {
+						event.stopPropagation();
+						const radio = event.target as HTMLInputElement;
+						checked(radio.checked);
+					}}
+				/>
+			</label>
+		);
+	}
+
 	return (
 		<div classes={[themeCss.root, theme.variant()]}>
 			<RadioGroup
@@ -87,57 +124,19 @@ export const Rate = factory(function Radio({
 					label,
 					radios: (name, radioGroup, options) => {
 						return options.map(({ value: stringValue }) => {
-							function renderRadio(stringValue: string) {
-								const numValue = parseFloat(stringValue);
-								const { checked } = radioGroup(stringValue);
-								const visiblyChecked = hoveredValue
-									? numValue <= hoveredValue
-									: !!value && numValue <= value;
-
-								return (
-									<label
-										classes={[
-											fixedCss.labelFixed,
-											themeCss.icon,
-											visiblyChecked && themeCss.checked
-										]}
-										onmouseenter={() => {
-											icache.set('valueHovered', numValue);
-										}}
-										onmouseleave={() => {
-											icache.delete('valueHovered');
-										}}
-										title={stringValue}
-									>
-										<span classes={fixedCss.iconWrapperFixed}>
-											{icon || <Icon size="medium" type="starIcon" />}
-										</span>
-										<input
-											classes={baseCss.visuallyHidden}
-											type="radio"
-											checked={checked()}
-											name={name}
-											value={stringValue}
-											onchange={(event: Event) => {
-												event.stopPropagation();
-												const radio = event.target as HTMLInputElement;
-												checked(radio.checked);
-											}}
-										/>
-									</label>
-								);
-							}
-
 							if (allowHalf) {
 								const halfValue = parseFloat(stringValue) - 0.5;
 								return (
 									<span classes={fixedCss.halfWrapperFixed}>
-										{renderRadio(`${halfValue}`)}
-										{renderRadio(stringValue)}
+										{renderRadio(
+											`${halfValue}`,
+											radioGroup(`${halfValue}`).checked
+										)}
+										{renderRadio(stringValue, radioGroup(stringValue).checked)}
 									</span>
 								);
 							} else {
-								return renderRadio(stringValue);
+								return renderRadio(stringValue, radioGroup(stringValue).checked);
 							}
 						});
 					}
