@@ -6,6 +6,9 @@ dialog but you have to call its `click` method.
 
 The overlay `<div>` provides a visual indicator that a drag operation is in progress.
 
+The widget accepts children so that widgets using FileUploadInput can render file information within the bounds of
+the FileUploadInput and when the overlay is displayed it will cover the children as well.
+
 # Drag and Drop
 
 https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
@@ -28,3 +31,8 @@ the cursor moves over children (even letters in text).
   - when this event fires the overlay is hidden
 - `drop`: listened for on the root since it bubbles from the overlay
   - get the files and update to indicate DnD is no longer active
+
+# Validation
+
+When the `accept` parameter is set on `<input type="file">` the dialog restricts which files can be selected. For
+Drag and Drop the validation has to be done by the widget, otherwise any file will be accepted.

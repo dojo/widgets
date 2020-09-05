@@ -20,7 +20,7 @@ export interface FileUploadInputChildren {
 
 export interface FileUploadInputProperties {
 	/** The `accept` attribute of the input */
-	accept?: string | string[];
+	accept?: string;
 
 	/** If `true` file drag-n-drop is allowed. Default is `true` */
 	allowDnd?: boolean;
@@ -48,6 +48,43 @@ export interface FileUploadInputProperties {
 
 	/** The id to be applied to the input */
 	widgetId?: string;
+}
+
+export function filterValidFiles(files: File[], accept: FileUploadInputProperties['accept']) {
+	if (!accept) {
+		return files;
+	}
+
+	const { extensions, types } = accept.split(',').reduce(
+		function(sum, acceptPattern) {
+			if (acceptPattern.startsWith('.')) {
+				sum.extensions.push(new RegExp(`\\${acceptPattern}$`, 'i'));
+			} else {
+				const wildcardIndex = acceptPattern.indexOf('/*');
+				if (wildcardIndex > 0) {
+					sum.types.push(
+						new RegExp(`^${acceptPattern.substr(0, wildcardIndex)}/.+`, 'i')
+					);
+				} else {
+					sum.types.push(new RegExp(acceptPattern, 'i'));
+				}
+			}
+
+			return sum;
+		},
+		{ extensions: [], types: [] } as { extensions: RegExp[]; types: RegExp[] }
+	);
+
+	const validFiles = files.filter(function(file) {
+		if (
+			extensions.some((extensionRegex) => extensionRegex.test(file.name)) ||
+			types.some((typeRegex) => typeRegex.test(file.type))
+		) {
+			return true;
+		}
+	});
+
+	return validFiles;
 }
 
 export interface ValidationInfo {
@@ -85,7 +122,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const themeCss = theme.classes(css);
-	const { content, label } = children()[0] || {};
+	const { content = null, label = null } = children()[0] || {};
 	let isDndActive = icache.getOrSet('isDndActive', false);
 
 	function onDragEnter(event: DragEvent) {
@@ -107,7 +144,11 @@ export const FileUploadInput = factory(function FileUploadInput({
 		icache.set('isDndActive', false);
 
 		if (onValue && event.dataTransfer && event.dataTransfer.files.length) {
-			onValue(Array.from(event.dataTransfer.files));
+			const fileArray = Array.from(event.dataTransfer.files);
+			const validFiles = filterValidFiles(fileArray, accept);
+			if (validFiles.length) {
+				onValue(validFiles);
+			}
 		}
 	}
 

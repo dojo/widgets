@@ -1,11 +1,5 @@
 /* The root class for FileUploader */
 .root {
-	border: 2px dashed transparent;
-}
-
-/* Applied to the root node if a DnD operation is in progress */
-.dndActive {
-	border-color: hsl(210, 29%, 60%);
 }
 
 /* Applied to the root node if the widget is disabled */
@@ -31,6 +25,12 @@
 /* The name of each added file */
 .fileItemName {
 	flex-grow: 1;
+}
+
+/* The size of each added file */
+.fileItemSize {
+	flex-basis: 8em;
+	text-align: right;
 }
 
 /* Close icon button rendered for each file */

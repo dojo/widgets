@@ -1,11 +1,5 @@
 .root {
 	background-color: var(--color-background);
-	border: 2px dashed transparent;
-}
-
-.dndActive {
-	border-color: var(--color-highlight);
-	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
 }
 
 .disabled {

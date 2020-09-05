@@ -5,7 +5,7 @@ import Example from '../../Example';
 const factory = create();
 
 export default factory(function Validated() {
-	const accept = ['image/jpeg', 'image/png'];
+	const accept = 'image/jpeg,image/png';
 	const maxSize = 50000;
 
 	return (

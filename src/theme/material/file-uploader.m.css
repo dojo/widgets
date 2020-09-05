@@ -1,10 +1,5 @@
 .root {
 	background-color: var(--mdc-theme-background);
-	border: 2px dashed transparent;
-}
-
-.dndActive {
-	border-color: var(--mdc-solid-border-color-hover);
 }
 
 .disabled {
