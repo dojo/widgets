@@ -11,3 +11,10 @@
 	color: gold;
 	fill: gold;
 }
+
+.focused {
+}
+
+.focused .focusedStar {
+	outline: 1px solid blue;
+}

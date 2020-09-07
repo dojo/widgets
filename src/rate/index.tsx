@@ -33,6 +33,8 @@ interface RateIcache {
 	value: number;
 	valueHovered: number;
 	initialValue: number;
+	valueFocused: string;
+	focused: boolean;
 }
 
 const factory = create({ focus, theme, icache: createICacheMiddleware<RateIcache>() })
@@ -70,9 +72,11 @@ export const Rate = factory(function Radio({
 		options.push({ value: `${i}` });
 	}
 
+	const valueFocused = icache.getOrSet('valueFocused', '');
+	const containsFocus = icache.getOrSet('focused', false);
+
 	function renderRadio(stringValue: string, checked: (checked?: boolean) => boolean) {
 		const numValue = parseFloat(stringValue);
-		// const { checked } = radioGroup(stringValue);
 		const visiblyChecked = hoveredValue
 			? numValue <= hoveredValue
 			: !!value && numValue <= value;
@@ -84,7 +88,7 @@ export const Rate = factory(function Radio({
 					icache.set('valueHovered', numValue);
 				}}
 				onmouseleave={() => {
-					icache.delete('valueHovered');
+					icache.set('valueHovered', 0);
 				}}
 				title={stringValue}
 			>
@@ -97,6 +101,13 @@ export const Rate = factory(function Radio({
 					checked={checked()}
 					name={name}
 					value={stringValue}
+					onfocus={() => {
+						icache.set('valueFocused', stringValue);
+						icache.set('focused', true);
+					}}
+					onblur={() => {
+						icache.set('focused', false);
+					}}
 					onchange={(event: Event) => {
 						event.stopPropagation();
 						const radio = event.target as HTMLInputElement;
@@ -108,7 +119,7 @@ export const Rate = factory(function Radio({
 	}
 
 	return (
-		<div classes={[themeCss.root, theme.variant()]}>
+		<div classes={[themeCss.root, theme.variant(), containsFocus && themeCss.focused]}>
 			<RadioGroup
 				key="radio-group"
 				name={name}
@@ -116,7 +127,7 @@ export const Rate = factory(function Radio({
 				onValue={(value: string) => {
 					const numberVal = parseFloat(value);
 					icache.set('value', numberVal);
-					icache.delete('valueHovered');
+					icache.set('valueHovered', 0);
 					onValue(numberVal);
 				}}
 			>
@@ -125,18 +136,30 @@ export const Rate = factory(function Radio({
 					radios: (name, radioGroup, options) => {
 						return options.map(({ value: stringValue }) => {
 							if (allowHalf) {
-								const halfValue = parseFloat(stringValue) - 0.5;
+								const halfValue = `${parseFloat(stringValue) - 0.5}`;
+								let focused = false;
+								if (valueFocused === halfValue || valueFocused === stringValue) {
+									focused = true;
+								}
 								return (
-									<span classes={fixedCss.halfWrapperFixed}>
-										{renderRadio(
-											`${halfValue}`,
-											radioGroup(`${halfValue}`).checked
-										)}
+									<span
+										classes={[
+											fixedCss.halfWrapperFixed,
+											focused && css.focusedStar
+										]}
+									>
+										{renderRadio(halfValue, radioGroup(halfValue).checked)}
 										{renderRadio(stringValue, radioGroup(stringValue).checked)}
 									</span>
 								);
 							} else {
-								return renderRadio(stringValue, radioGroup(stringValue).checked);
+								return (
+									<span
+										classes={[valueFocused === stringValue && css.focusedStar]}
+									>
+										{renderRadio(stringValue, radioGroup(stringValue).checked)}
+									</span>
+								);
 							}
 						});
 					}
