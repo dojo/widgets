@@ -35,6 +35,7 @@ import * as passwordInput from './password-input.m.css';
 import * as popup from './popup.m.css';
 import * as popupConfirmation from './popup-confirmation.m.css';
 import * as progress from './progress.m.css';
+import * as rate from './rate.m.css';
 import * as radio from './radio.m.css';
 import * as raisedButton from './raised-button.m.css';
 import * as rangeSlider from './range-slider.m.css';
@@ -99,6 +100,7 @@ export default {
 		'@dojo/widgets/radio': radio,
 		'@dojo/widgets/raised-button': raisedButton,
 		'@dojo/widgets/range-slider': rangeSlider,
+		'@dojo/widgets/rate': rate,
 		'@dojo/widgets/result': result,
 		'@dojo/widgets/select': select,
 		'@dojo/widgets/slide-pane': slidePane,

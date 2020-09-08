@@ -16,3 +16,7 @@
 	position: absolute;
 	right: 0;
 }
+
+.iconWrapperFixed {
+	display: inline-block;
+}

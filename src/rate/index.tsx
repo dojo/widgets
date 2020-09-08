@@ -11,8 +11,8 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export interface RateProperties {
 	/** Handler for when the value of the widget changes */
-	onValue(value: number): void;
-	/* Number of icons to show */
+	onValue?(value: number): void;
+	/* Number of icons to show, defaults to 5*/
 	max?: number;
 	/* Initial value for this widget */
 	initialValue?: number;
@@ -22,6 +22,8 @@ export interface RateProperties {
 	name?: string;
 	/* Flag to indicate if half stars should be used */
 	allowHalf?: boolean;
+	/* Flag to set the readonly state */
+	readOnly?: boolean;
 }
 
 export interface RateChildren {
@@ -48,7 +50,7 @@ export const Rate = factory(function Radio({
 	middleware: { focus, theme, icache }
 }) {
 	const idBase = `rate-${id}`;
-	const { onValue, max = 5, initialValue, allowHalf, name = idBase } = properties();
+	const { onValue, max = 5, initialValue, allowHalf, name = idBase, readOnly } = properties();
 	let { value } = properties();
 	const [{ label, icon } = { label: undefined, icon: undefined }] = children();
 
@@ -67,6 +69,8 @@ export const Rate = factory(function Radio({
 		value = icache.getOrSet('value', 0);
 	}
 
+	value = allowHalf ? Math.round(value * 2) / 2 : Math.round(value);
+
 	const options = [];
 	for (let i = 1; i <= max; i++) {
 		options.push({ value: `${i}` });
@@ -83,12 +87,17 @@ export const Rate = factory(function Radio({
 
 		return (
 			<label
-				classes={[fixedCss.labelFixed, themeCss.icon, visiblyChecked && themeCss.checked]}
+				classes={[
+					theme.variant(),
+					fixedCss.labelFixed,
+					themeCss.icon,
+					visiblyChecked && themeCss.checked
+				]}
 				onmouseenter={() => {
-					icache.set('valueHovered', numValue);
+					!readOnly && icache.set('valueHovered', numValue);
 				}}
 				onmouseleave={() => {
-					icache.set('valueHovered', 0);
+					!readOnly && icache.set('valueHovered', 0);
 				}}
 				title={stringValue}
 			>
@@ -108,6 +117,7 @@ export const Rate = factory(function Radio({
 					onblur={() => {
 						icache.set('focused', false);
 					}}
+					disabled={readOnly}
 					onchange={(event: Event) => {
 						event.stopPropagation();
 						const radio = event.target as HTMLInputElement;
@@ -125,10 +135,12 @@ export const Rate = factory(function Radio({
 				name={name}
 				options={options}
 				onValue={(value: string) => {
-					const numberVal = parseFloat(value);
-					icache.set('value', numberVal);
-					icache.set('valueHovered', 0);
-					onValue(numberVal);
+					if (!readOnly) {
+						const numberVal = parseFloat(value);
+						icache.set('value', numberVal);
+						icache.set('valueHovered', 0);
+						onValue && onValue(numberVal);
+					}
 				}}
 			>
 				{{
@@ -145,7 +157,7 @@ export const Rate = factory(function Radio({
 									<span
 										classes={[
 											fixedCss.halfWrapperFixed,
-											focused && css.focusedStar
+											focused && themeCss.focusedStar
 										]}
 									>
 										{renderRadio(halfValue, radioGroup(halfValue).checked)}
@@ -155,7 +167,9 @@ export const Rate = factory(function Radio({
 							} else {
 								return (
 									<span
-										classes={[valueFocused === stringValue && css.focusedStar]}
+										classes={[
+											valueFocused === stringValue && themeCss.focusedStar
+										]}
 									>
 										{renderRadio(stringValue, radioGroup(stringValue).checked)}
 									</span>

@@ -1,0 +1,20 @@
+.root {
+	display: inline-block;
+}
+
+.icon {
+	cursor: pointer;
+	transition: color cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+
+.checked {
+	color: var(--mdc-theme-gold);
+	fill: var(--mdc-theme-gold);
+}
+
+.focused {
+}
+
+.focused .focusedStar {
+	outline: var(--mdc-border-width) solid var(--mdc-theme-secondary);
+}
