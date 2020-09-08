@@ -396,4 +396,75 @@ describe('Rate', () => {
 
 		r.expect(visuallyCheckedAssertion);
 	});
+
+	it('renders read only', () => {
+		const r = renderer(() => (
+			<Rate name="test" max={2} initialValue={1} readOnly>
+				{{
+					label: 'test'
+				}}
+			</Rate>
+		));
+
+		const twoOptions = baseOptions.slice(0, 2);
+
+		r.child(WrappedRadioGroup as any, {
+			radios: ['test', createMockRadioGroupMiddleware('1'), twoOptions],
+			label: []
+		});
+		const initialValueAssertion = baseAssertion
+			.setProperty(WrappedRadioGroup, 'options', twoOptions)
+			.setChildren(WrappedRadioGroup, () => ({
+				label: 'test',
+				radios: () => [
+					<span classes={[false]}>
+						<label
+							classes={[null, fixedCss.labelFixed, css.icon, css.checked]}
+							onmouseenter={noop}
+							onmouseleave={noop}
+							title={'1'}
+						>
+							<span classes={fixedCss.iconWrapperFixed}>
+								<Icon size={'medium'} type={'starIcon'} />
+							</span>
+							<input
+								checked={true}
+								classes={baseCss.visuallyHidden}
+								disabled
+								name={'test'}
+								onblur={noop}
+								onchange={noop}
+								onfocus={noop}
+								type={'radio'}
+								value={'1'}
+							/>
+						</label>
+					</span>,
+					<span classes={[false]}>
+						<label
+							classes={[null, fixedCss.labelFixed, css.icon, false]}
+							onmouseenter={noop}
+							onmouseleave={noop}
+							title={'2'}
+						>
+							<span classes={fixedCss.iconWrapperFixed}>
+								<Icon size={'medium'} type={'starIcon'} />
+							</span>
+							<input
+								checked={false}
+								classes={baseCss.visuallyHidden}
+								disabled
+								name={'test'}
+								onblur={noop}
+								onchange={noop}
+								onfocus={noop}
+								type={'radio'}
+								value={'2'}
+							/>
+						</label>
+					</span>
+				]
+			}));
+		r.expect(initialValueAssertion);
+	});
 });
