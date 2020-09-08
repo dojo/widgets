@@ -177,15 +177,17 @@ export const FileUploader = factory(function FileUploader({
 	if (files.length) {
 		inputChild.content = (
 			<div key="fileList">
-				{renderFiles({
-					customValidator,
-					files,
-					maxSize,
-					messages: { messages },
-					remove,
-					showSize,
-					themeCss
-				})}
+				{function() {
+					return renderFiles({
+						customValidator,
+						files,
+						maxSize,
+						messages: { messages },
+						remove,
+						showSize,
+						themeCss
+					});
+				}}
 			</div>
 		);
 	}

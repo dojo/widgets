@@ -17,7 +17,9 @@ const { messages } = bundle;
 
 describe('FileUploadInput', function() {
 	const WrappedRoot = wrap('div');
+	const WrappedWrapper = wrap('div');
 	const WrappedLabel = wrap('span');
+
 	const baseRootProperties = {
 		key: 'root',
 		classes: [null, fixedCss.root, css.root, false, false],
@@ -29,7 +31,7 @@ describe('FileUploadInput', function() {
 	const baseAssertion = assertion(function() {
 		return (
 			<WrappedRoot {...baseRootProperties}>
-				<div classes={[css.wrapper]}>
+				<WrappedWrapper classes={[css.wrapper]}>
 					<input
 						key="nativeInput"
 						accept={undefined}
@@ -60,7 +62,7 @@ describe('FileUploadInput', function() {
 					</Button>
 
 					<WrappedLabel classes={[css.dndLabel]}>{messages.orDropFilesHere}</WrappedLabel>
-				</div>
+				</WrappedWrapper>
 			</WrappedRoot>
 		);
 	});
@@ -71,6 +73,22 @@ describe('FileUploadInput', function() {
 		});
 
 		r.expect(baseAssertion);
+	});
+
+	it('renders content', function() {
+		const content = <div>some content</div>;
+
+		const r = renderer(function() {
+			return (
+				<FileUploadInput>
+					{{
+						content
+					}}
+				</FileUploadInput>
+			);
+		});
+
+		r.expect(baseAssertion.insertAfter(WrappedWrapper, () => [content]));
 	});
 
 	it('renders label', function() {
@@ -129,5 +147,40 @@ describe('FileUploadInput', function() {
 				})
 				.remove(WrappedLabel)
 		);
+	});
+
+	it('handles dragenter, dragleave, and the overlay', function() {
+		const r = renderer(function() {
+			return <FileUploadInput />;
+		});
+		const WrappedOverlay = wrap('div');
+
+		r.expect(baseAssertion);
+		r.property(WrappedRoot, 'ondragenter', { preventDefault: noop });
+
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'classes', [
+					null,
+					fixedCss.root,
+					css.root,
+					css.dndActive,
+					false
+				])
+				.append(WrappedRoot, function() {
+					return [
+						<WrappedOverlay
+							key="overlay"
+							classes={[fixedCss.dndOverlay, css.dndOverlay, false]}
+							ondragleave={noop}
+						/>
+					];
+				})
+		);
+
+		// TODO: enable when testing bug is fixed
+		// https://github.com/dojo/framework/issues/839
+		// r.property(WrappedOverlay, 'ondragleave');
+		// r.expect(baseAssertion);
 	});
 });

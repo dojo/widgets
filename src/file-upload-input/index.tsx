@@ -14,7 +14,10 @@ import * as fixedCss from './styles/file-upload-input.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 
 export interface FileUploadInputChildren {
+	/** The label to be displayed above the input */
 	label?: RenderResult;
+
+	/** Content to be rendered within the widget area */
 	content?: RenderResult;
 }
 
@@ -43,7 +46,7 @@ export interface FileUploadInputProperties {
 	/** The `required` attribute of the input */
 	required?: boolean;
 
-	/** Represents if the input value is valid */
+	/** Represents if the selected files passed validation */
 	valid?: ValidationInfo | boolean;
 
 	/** The id to be applied to the input */
@@ -122,7 +125,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const themeCss = theme.classes(css);
-	const { content = null, label = null } = children()[0] || {};
+	const [{ content, label } = { content: undefined, label: undefined }] = children();
 	let isDndActive = icache.getOrSet('isDndActive', false);
 
 	function onDragEnter(event: DragEvent) {

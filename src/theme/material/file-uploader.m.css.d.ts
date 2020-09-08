@@ -1,5 +1,4 @@
 export const root: string;
-export const dndActive: string;
 export const disabled: string;
 export const fileItem: string;
 export const fileInfo: string;
