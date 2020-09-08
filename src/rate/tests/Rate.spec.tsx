@@ -646,6 +646,6 @@ describe('Rate', () => {
 		}));
 
 		r.expect(afterClickAssertion);
-		assert.isTrue(onValueStub.called);
+		assert.isTrue(onValueStub.calledWith(2));
 	});
 });
