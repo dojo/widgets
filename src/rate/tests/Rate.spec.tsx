@@ -1,6 +1,6 @@
 const { describe, it } = intern.getInterface('bdd');
-// const { assert } = intern.getPlugin('chai');
-// import * as sinon from 'sinon';
+const { assert } = intern.getPlugin('chai');
+import * as sinon from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
 
@@ -466,5 +466,186 @@ describe('Rate', () => {
 				]
 			}));
 		r.expect(initialValueAssertion);
+	});
+
+	it('updates selection when star clicked', () => {
+		const onValueStub = sinon.stub();
+		const threeOptions = baseOptions.slice(0, 3);
+
+		const r = renderer(() => (
+			<Rate name="test" max={3} onValue={onValueStub}>
+				{{
+					label: 'test'
+				}}
+			</Rate>
+		));
+
+		r.child(WrappedRadioGroup as any, {
+			radios: ['test', createMockRadioGroupMiddleware('9'), threeOptions],
+			label: []
+		});
+		const onValueAssertion = baseAssertion
+			.setProperty(WrappedRadioGroup, 'options', threeOptions)
+			.setChildren(WrappedRadioGroup, () => ({
+				label: 'test',
+				radios: () => [
+					<span classes={[false]}>
+						<label
+							classes={[null, fixedCss.labelFixed, css.icon, false]}
+							onmouseenter={noop}
+							onmouseleave={noop}
+							title={'1'}
+						>
+							<span classes={fixedCss.iconWrapperFixed}>
+								<Icon size={'medium'} type={'starIcon'} />
+							</span>
+							<input
+								checked={false}
+								classes={baseCss.visuallyHidden}
+								disabled={undefined}
+								name={'test'}
+								onblur={noop}
+								onchange={noop}
+								onfocus={noop}
+								type={'radio'}
+								value={'1'}
+							/>
+						</label>
+					</span>,
+					<span classes={[false]}>
+						<label
+							classes={[null, fixedCss.labelFixed, css.icon, false]}
+							onmouseenter={noop}
+							onmouseleave={noop}
+							title={'2'}
+						>
+							<span classes={fixedCss.iconWrapperFixed}>
+								<Icon size={'medium'} type={'starIcon'} />
+							</span>
+							<input
+								checked={false}
+								classes={baseCss.visuallyHidden}
+								disabled={undefined}
+								name={'test'}
+								onblur={noop}
+								onchange={noop}
+								onfocus={noop}
+								type={'radio'}
+								value={'2'}
+							/>
+						</label>
+					</span>,
+					<span classes={[false]}>
+						<label
+							classes={[null, fixedCss.labelFixed, css.icon, false]}
+							onmouseenter={noop}
+							onmouseleave={noop}
+							title={'3'}
+						>
+							<span classes={fixedCss.iconWrapperFixed}>
+								<Icon size={'medium'} type={'starIcon'} />
+							</span>
+							<input
+								checked={false}
+								classes={baseCss.visuallyHidden}
+								disabled={undefined}
+								name={'test'}
+								onblur={noop}
+								onchange={noop}
+								onfocus={noop}
+								type={'radio'}
+								value={'3'}
+							/>
+						</label>
+					</span>
+				]
+			}));
+
+		r.expect(onValueAssertion);
+
+		r.property(WrappedRadioGroup, 'onValue', '2');
+
+		r.child(WrappedRadioGroup as any, {
+			radios: ['test', createMockRadioGroupMiddleware('2'), threeOptions],
+			label: []
+		});
+
+		const afterClickAssertion = onValueAssertion.setChildren(WrappedRadioGroup, () => ({
+			label: 'test',
+			radios: () => [
+				<span classes={[false]}>
+					<label
+						classes={[null, fixedCss.labelFixed, css.icon, css.checked]}
+						onmouseenter={noop}
+						onmouseleave={noop}
+						title={'1'}
+					>
+						<span classes={fixedCss.iconWrapperFixed}>
+							<Icon size={'medium'} type={'starIcon'} />
+						</span>
+						<input
+							checked={false}
+							classes={baseCss.visuallyHidden}
+							disabled={undefined}
+							name={'test'}
+							onblur={noop}
+							onchange={noop}
+							onfocus={noop}
+							type={'radio'}
+							value={'1'}
+						/>
+					</label>
+				</span>,
+				<span classes={[false]}>
+					<label
+						classes={[null, fixedCss.labelFixed, css.icon, css.checked]}
+						onmouseenter={noop}
+						onmouseleave={noop}
+						title={'2'}
+					>
+						<span classes={fixedCss.iconWrapperFixed}>
+							<Icon size={'medium'} type={'starIcon'} />
+						</span>
+						<input
+							checked={true}
+							classes={baseCss.visuallyHidden}
+							disabled={undefined}
+							name={'test'}
+							onblur={noop}
+							onchange={noop}
+							onfocus={noop}
+							type={'radio'}
+							value={'2'}
+						/>
+					</label>
+				</span>,
+				<span classes={[false]}>
+					<label
+						classes={[null, fixedCss.labelFixed, css.icon, false]}
+						onmouseenter={noop}
+						onmouseleave={noop}
+						title={'3'}
+					>
+						<span classes={fixedCss.iconWrapperFixed}>
+							<Icon size={'medium'} type={'starIcon'} />
+						</span>
+						<input
+							checked={false}
+							classes={baseCss.visuallyHidden}
+							disabled={undefined}
+							name={'test'}
+							onblur={noop}
+							onchange={noop}
+							onfocus={noop}
+							type={'radio'}
+							value={'3'}
+						/>
+					</label>
+				</span>
+			]
+		}));
+
+		r.expect(afterClickAssertion);
+		assert.isTrue(onValueStub.called);
 	});
 });
