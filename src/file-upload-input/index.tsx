@@ -182,9 +182,9 @@ export const FileUploadInput = factory(function FileUploadInput({
 				isDndActive && themeCss.dndActive,
 				disabled && themeCss.disabled
 			]}
-			ondragenter={allowDnd && onDragEnter}
-			ondragover={allowDnd && onDragOver}
-			ondrop={allowDnd && onDrop}
+			ondragenter={allowDnd && disabled === false && onDragEnter}
+			ondragover={allowDnd && disabled === false && onDragOver}
+			ondrop={allowDnd && disabled === false && onDrop}
 		>
 			{label && (
 				<Label

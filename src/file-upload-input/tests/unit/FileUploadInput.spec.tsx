@@ -171,14 +171,14 @@ describe('FileUploadInput', function() {
 
 		r.expect(
 			baseAssertion
-				.setProperty(WrappedRoot, 'aria-disabled', true)
-				.setProperty(WrappedRoot, 'classes', [
-					null,
-					fixedCss.root,
-					css.root,
-					false,
-					css.disabled
-				])
+				.setProperties(WrappedRoot, {
+					...baseRootProperties,
+					'aria-disabled': true,
+					classes: [null, fixedCss.root, css.root, false, css.disabled],
+					ondragenter: false,
+					ondragover: false,
+					ondrop: false
+				})
 				.setProperty(WrappedInput, 'disabled', true)
 				.setProperty(WrappedButton, 'disabled', true)
 		);
