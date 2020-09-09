@@ -3,6 +3,7 @@ import i18n from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { Button } from '../button';
+import { formatAriaProperties } from '../common/util';
 import { Label } from '../label';
 import theme from '../middleware/theme';
 import bundle from './nls/FileUploadInput';
@@ -27,6 +28,9 @@ export interface FileUploadInputProperties {
 
 	/** If `true` file drag-n-drop is allowed. Default is `true` */
 	allowDnd?: boolean;
+
+	/** Custom aria attributes */
+	aria?: { [key: string]: string | null };
 
 	/** The `disabled` attribute of the input */
 	disabled?: boolean;
@@ -114,6 +118,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 	const {
 		accept,
 		allowDnd = true,
+		aria = {},
 		disabled = false,
 		labelHidden = false,
 		multiple = false,
@@ -160,6 +165,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 	}
 
 	function onChange(event: DojoEvent<HTMLInputElement>) {
+		console.log('onChange', event);
 		if (onValue && event.target.files && event.target.files.length) {
 			onValue(Array.from(event.target.files));
 		}
@@ -168,6 +174,8 @@ export const FileUploadInput = factory(function FileUploadInput({
 	return (
 		<div
 			key="root"
+			{...formatAriaProperties(aria)}
+			aria-disabled={disabled}
 			classes={[
 				theme.variant(),
 				fixedCss.root,
@@ -200,7 +208,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 				<input
 					key="nativeInput"
 					accept={accept}
-					aria="hidden"
+					aria-hidden={true}
 					classes={[baseCss.hidden]}
 					click={function() {
 						const shouldClick = Boolean(icache.getOrSet('shouldClick', false));

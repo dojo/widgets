@@ -3,7 +3,7 @@ import { assertion, renderer, wrap } from '@dojo/framework/testing/renderer';
 import { Button } from '../../../button';
 import { FileUploadInput } from '../../index';
 import { Label } from '../../../label';
-import { noop } from '../../../common/tests/support/test-helpers';
+import { noop, stubEvent } from '../../../common/tests/support/test-helpers';
 
 import bundle from '../../nls/FileUploadInput';
 import * as baseCss from '../../../theme/default/base.m.css';
@@ -13,15 +13,19 @@ import * as fixedCss from '../../styles/file-upload-input.m.css';
 import * as labelCss from '../../../theme/default/label.m.css';
 
 const { it, describe } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
 const { messages } = bundle;
 
 describe('FileUploadInput', function() {
 	const WrappedRoot = wrap('div');
 	const WrappedWrapper = wrap('div');
+	const WrappedInput = wrap('input');
+	const WrappedButton = wrap(Button);
 	const WrappedLabel = wrap('span');
 
 	const baseRootProperties = {
 		key: 'root',
+		'aria-disabled': false,
 		classes: [null, fixedCss.root, css.root, false, false],
 		ondragenter: noop,
 		ondragover: noop,
@@ -32,10 +36,10 @@ describe('FileUploadInput', function() {
 		return (
 			<WrappedRoot {...baseRootProperties}>
 				<WrappedWrapper classes={[css.wrapper]}>
-					<input
+					<WrappedInput
 						key="nativeInput"
 						accept={undefined}
-						aria="hidden"
+						aria-hidden={true}
 						classes={[baseCss.hidden]}
 						click={noop}
 						disabled={false}
@@ -45,7 +49,7 @@ describe('FileUploadInput', function() {
 						required={false}
 						type="file"
 					/>
-					<Button
+					<WrappedButton
 						disabled={false}
 						onClick={noop}
 						theme={{
@@ -59,7 +63,7 @@ describe('FileUploadInput', function() {
 						}}
 					>
 						{messages.chooseFiles}
-					</Button>
+					</WrappedButton>
 
 					<WrappedLabel classes={[css.dndLabel]}>{messages.orDropFilesHere}</WrappedLabel>
 				</WrappedWrapper>
@@ -149,6 +153,26 @@ describe('FileUploadInput', function() {
 		);
 	});
 
+	it('renders disabled', function() {
+		const r = renderer(function() {
+			return <FileUploadInput disabled={true} />;
+		});
+
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-disabled', true)
+				.setProperty(WrappedRoot, 'classes', [
+					null,
+					fixedCss.root,
+					css.root,
+					false,
+					css.disabled
+				])
+				.setProperty(WrappedInput, 'disabled', true)
+				.setProperty(WrappedButton, 'disabled', true)
+		);
+	});
+
 	it('handles dragenter, dragleave, and the overlay', function() {
 		const r = renderer(function() {
 			return <FileUploadInput />;
@@ -156,7 +180,7 @@ describe('FileUploadInput', function() {
 		const WrappedOverlay = wrap('div');
 
 		r.expect(baseAssertion);
-		r.property(WrappedRoot, 'ondragenter', { preventDefault: noop });
+		r.property(WrappedRoot, 'ondragenter', stubEvent);
 
 		r.expect(
 			baseAssertion
@@ -178,9 +202,88 @@ describe('FileUploadInput', function() {
 				})
 		);
 
-		// TODO: enable when testing bug is fixed
-		// https://github.com/dojo/framework/issues/839
-		// r.property(WrappedOverlay, 'ondragleave');
+		// TODO: enable when https://github.com/dojo/framework/pull/840 is merged
+		// r.property(WrappedOverlay, 'ondragleave', stubEvent);
 		// r.expect(baseAssertion);
+	});
+
+	it('handles file drop event', function() {
+		const testValues = [1, 2, 3];
+		let receivedFiles: number[] = [];
+
+		function onValue(value: any[]) {
+			receivedFiles = value;
+		}
+
+		const r = renderer(function() {
+			return <FileUploadInput onValue={onValue} />;
+		});
+
+		r.expect(baseAssertion);
+		r.property(WrappedRoot, 'ondrop', {
+			preventDefault: noop,
+			dataTransfer: {
+				files: testValues
+			}
+		});
+		r.expect(baseAssertion);
+
+		assert.sameOrderedMembers(receivedFiles, testValues);
+	});
+
+	it('validates files based on "accept"', function() {
+		const accept = 'image/jpeg,image/*,.gif';
+		const testFiles = [
+			{ name: 'file1.jpg', type: 'image/jpeg' }, // test direct match: image/jpeg
+			{ name: 'file2.png', type: 'image/png' }, // test wildcard match: image/*
+			{ name: 'file3.gif', type: 'bad/type' }, // test extension match: .gif
+			{ name: 'file4.doc', type: 'application/word' } // test match failure
+		];
+		const validFiles = testFiles.slice(0, 3);
+		let receivedFiles: Array<typeof testFiles[0]> = [];
+
+		function onValue(value: any[]) {
+			receivedFiles = value;
+		}
+
+		const r = renderer(function() {
+			return <FileUploadInput onValue={onValue} accept={accept} />;
+		});
+		const acceptAssertion = baseAssertion.setProperty(WrappedInput, 'accept', accept);
+
+		r.expect(acceptAssertion);
+		r.property(WrappedRoot, 'ondrop', {
+			preventDefault: noop,
+			dataTransfer: {
+				files: testFiles
+			}
+		});
+		r.expect(acceptAssertion);
+
+		assert.sameOrderedMembers(receivedFiles, validFiles);
+	});
+
+	it('calls onValue when files are selected from input', function() {
+		const testValues = [1, 2, 3];
+		let receivedFiles: number[] = [];
+
+		function onValue(value: any[]) {
+			receivedFiles = value;
+		}
+
+		const r = renderer(function() {
+			return <FileUploadInput onValue={onValue} />;
+		});
+
+		r.expect(baseAssertion);
+		r.property(WrappedInput, 'onchange', {
+			target: {
+				files: testValues
+			}
+		});
+		// TODO: the queued onchange is not triggering because it is for a node with a different id than expected
+		r.expect(baseAssertion);
+
+		assert.sameOrderedMembers(receivedFiles, testValues);
 	});
 });
