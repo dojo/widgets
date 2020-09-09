@@ -13,7 +13,7 @@ import * as css from '../../../theme/default/file-upload-input.m.css';
 import * as fixedCss from '../../styles/file-upload-input.m.css';
 import * as labelCss from '../../../theme/default/label.m.css';
 
-const { it, describe } = intern.getInterface('bdd');
+const { after, afterEach, it, describe } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 const { messages } = bundle;
 
@@ -32,6 +32,8 @@ describe('FileUploadInput', function() {
 		ondragover: noop,
 		ondrop: noop
 	};
+
+	const preventDefaultSpy = sinon.spy(stubEvent, 'preventDefault');
 
 	const baseAssertion = assertion(function() {
 		return (
@@ -70,6 +72,14 @@ describe('FileUploadInput', function() {
 				</WrappedWrapper>
 			</WrappedRoot>
 		);
+	});
+
+	after(function() {
+		preventDefaultSpy.restore();
+	});
+
+	afterEach(function() {
+		preventDefaultSpy.resetHistory();
 	});
 
 	it('renders', function() {
@@ -202,10 +212,13 @@ describe('FileUploadInput', function() {
 					];
 				})
 		);
+		assert(preventDefaultSpy.called, 'dragenter handler should call event.preventDefault()');
+		preventDefaultSpy.resetHistory();
 
 		// TODO: enable when https://github.com/dojo/framework/pull/840 is merged
 		// r.property(WrappedOverlay, 'ondragleave', stubEvent);
 		// r.expect(baseAssertion);
+		// assert(preventDefaultSpy.called, 'dragleave handler should call event.preventDefault()');
 	});
 
 	it('handles file drop event', function() {
@@ -218,13 +231,14 @@ describe('FileUploadInput', function() {
 
 		r.expect(baseAssertion);
 		r.property(WrappedRoot, 'ondrop', {
-			preventDefault: noop,
+			...stubEvent,
 			dataTransfer: {
 				files: testValues
 			}
 		});
 		r.expect(baseAssertion);
 
+		assert(preventDefaultSpy.called, 'drop handler should call event.preventDefault()');
 		assert.sameOrderedMembers(onValue.firstCall.args[0], testValues);
 	});
 
