@@ -153,21 +153,21 @@ describe('Rate', () => {
 
 	it('renders half stars', () => {
 		const r = renderer(() => (
-			<Rate name="test" max={1} initialValue={0.5} allowHalf>
+			<Rate name="test" max={2} initialValue={1.5} allowHalf>
 				{{
 					label: 'test'
 				}}
 			</Rate>
 		));
 
-		const oneOption = baseOptions.slice(0, 1);
+		const twoOptions = baseOptions.slice(0, 2);
 
 		r.child(WrappedRadioGroup as any, {
-			radios: ['test', createMockRadioGroupMiddleware('0.5'), oneOption],
+			radios: ['test', createMockRadioGroupMiddleware('1.5'), twoOptions],
 			label: []
 		});
 		const halfStarAssertion = baseAssertion
-			.setProperty(WrappedRadioGroup, 'options', oneOption)
+			.setProperty(WrappedRadioGroup, 'options', twoOptions)
 			.setChildren(WrappedRadioGroup, () => ({
 				label: 'test',
 				radios: () => [
@@ -182,7 +182,7 @@ describe('Rate', () => {
 								<Icon size={'medium'} type={'starIcon'} />
 							</span>
 							<input
-								checked={true}
+								checked={false}
 								classes={baseCss.visuallyHidden}
 								disabled={undefined}
 								name={'test'}
@@ -194,7 +194,7 @@ describe('Rate', () => {
 							/>
 						</label>
 						<label
-							classes={[null, fixedCss.labelFixed, css.icon, false]}
+							classes={[null, fixedCss.labelFixed, css.icon, css.checked]}
 							onmouseenter={noop}
 							onmouseleave={noop}
 							title={'1'}
@@ -212,6 +212,50 @@ describe('Rate', () => {
 								onfocus={noop}
 								type={'radio'}
 								value={'1'}
+							/>
+						</label>
+					</span>,
+					<span classes={[fixedCss.halfWrapperFixed, false]}>
+						<label
+							classes={[null, fixedCss.labelFixed, css.icon, css.checked]}
+							onmouseenter={noop}
+							onmouseleave={noop}
+							title={'1.5'}
+						>
+							<span classes={fixedCss.iconWrapperFixed}>
+								<Icon size={'medium'} type={'starIcon'} />
+							</span>
+							<input
+								checked={true}
+								classes={baseCss.visuallyHidden}
+								disabled={undefined}
+								name={'test'}
+								onblur={noop}
+								onchange={noop}
+								onfocus={noop}
+								type={'radio'}
+								value={'1.5'}
+							/>
+						</label>
+						<label
+							classes={[null, fixedCss.labelFixed, css.icon, false]}
+							onmouseenter={noop}
+							onmouseleave={noop}
+							title={'2'}
+						>
+							<span classes={fixedCss.iconWrapperFixed}>
+								<Icon size={'medium'} type={'starIcon'} />
+							</span>
+							<input
+								checked={false}
+								classes={baseCss.visuallyHidden}
+								disabled={undefined}
+								name={'test'}
+								onblur={noop}
+								onchange={noop}
+								onfocus={noop}
+								type={'radio'}
+								value={'2'}
 							/>
 						</label>
 					</span>
