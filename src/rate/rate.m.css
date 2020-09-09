@@ -1,0 +1,22 @@
+.halfWrapperFixed {
+	position: relative;
+	display: inline-block;
+}
+
+.halfWrapperFixed .labelFixed ~ .labelFixed {
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 50%;
+}
+
+.halfWrapperFixed .labelFixed ~ .labelFixed .iconWrapperFixed {
+	position: absolute;
+	right: 0;
+}
+
+.iconWrapperFixed {
+	display: inline-block;
+}

@@ -1,0 +1,25 @@
+/* root class wrapping the widget */
+.root {
+	display: inline-block;
+}
+
+/* class added to the label that wraps the icon */
+.icon {
+	cursor: pointer;
+	transition: color cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+
+/* the checked state class added to the label wrappign the icon when the star is visually checked */
+.checked {
+	color: gold;
+	fill: gold;
+}
+
+/* added to the widget root when it is focused */
+.focused {
+}
+
+/* added to the label that wraps the icon when it is focused */
+.focused .focusedStar {
+	outline: 1px solid blue;
+}

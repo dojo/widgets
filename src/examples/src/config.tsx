@@ -223,6 +223,11 @@ import BasicHeader from './widgets/header/Basic';
 import LeadingHeader from './widgets/header/Leading';
 import StickyHeader from './widgets/header/Sticky';
 import TrailingHeader from './widgets/header/Trailing';
+import BasicRate from './widgets/rate/Basic';
+import HalfRate from './widgets/rate/AllowHalf';
+import ControlledRate from './widgets/rate/Controlled';
+import CustomIconRate from './widgets/rate/CustomIcon';
+import ReadOnlyRate from './widgets/rate/ReadOnly';
 import BasicGlobalEvent from './widgets/global-event/Basic';
 import Pagination from './widgets/pagination/Basic';
 import PaginationPageSizeSelector from './widgets/pagination/PageSizeSelector';
@@ -1049,6 +1054,20 @@ export const config = {
 					filename: 'NoRules',
 					module: NoRules
 				}
+			]
+		},
+		rate: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicRate
+				}
+			},
+			examples: [
+				{ title: 'Half Ratings', module: HalfRate, filename: 'AllowHalf' },
+				{ title: 'Controlled Ratings', module: ControlledRate, filename: 'Controlled' },
+				{ title: 'Custom Icons', module: CustomIconRate, filename: 'CustomIcon' },
+				{ title: 'Read Only Mode', module: ReadOnlyRate, filename: 'ReadOnly' }
 			]
 		},
 		'trigger-popup': {
