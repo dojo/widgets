@@ -165,7 +165,6 @@ export const FileUploadInput = factory(function FileUploadInput({
 	}
 
 	function onChange(event: DojoEvent<HTMLInputElement>) {
-		console.log('onChange', event);
 		if (onValue && event.target.files && event.target.files.length) {
 			onValue(Array.from(event.target.files));
 		}

@@ -1,5 +1,6 @@
 import { tsx } from '@dojo/framework/core/vdom';
 import { assertion, renderer, wrap } from '@dojo/framework/testing/renderer';
+import * as sinon from 'sinon';
 import { Button } from '../../../button';
 import { FileUploadInput } from '../../index';
 import { Label } from '../../../label';
@@ -209,11 +210,7 @@ describe('FileUploadInput', function() {
 
 	it('handles file drop event', function() {
 		const testValues = [1, 2, 3];
-		let receivedFiles: number[] = [];
-
-		function onValue(value: any[]) {
-			receivedFiles = value;
-		}
+		const onValue = sinon.stub();
 
 		const r = renderer(function() {
 			return <FileUploadInput onValue={onValue} />;
@@ -228,7 +225,7 @@ describe('FileUploadInput', function() {
 		});
 		r.expect(baseAssertion);
 
-		assert.sameOrderedMembers(receivedFiles, testValues);
+		assert.sameOrderedMembers(onValue.firstCall.args[0], testValues);
 	});
 
 	it('validates files based on "accept"', function() {
@@ -240,11 +237,7 @@ describe('FileUploadInput', function() {
 			{ name: 'file4.doc', type: 'application/word' } // test match failure
 		];
 		const validFiles = testFiles.slice(0, 3);
-		let receivedFiles: Array<typeof testFiles[0]> = [];
-
-		function onValue(value: any[]) {
-			receivedFiles = value;
-		}
+		const onValue = sinon.stub();
 
 		const r = renderer(function() {
 			return <FileUploadInput onValue={onValue} accept={accept} />;
@@ -260,16 +253,12 @@ describe('FileUploadInput', function() {
 		});
 		r.expect(acceptAssertion);
 
-		assert.sameOrderedMembers(receivedFiles, validFiles);
+		assert.sameOrderedMembers(onValue.firstCall.args[0], validFiles);
 	});
 
 	it('calls onValue when files are selected from input', function() {
 		const testValues = [1, 2, 3];
-		let receivedFiles: number[] = [];
-
-		function onValue(value: any[]) {
-			receivedFiles = value;
-		}
+		const onValue = sinon.stub();
 
 		const r = renderer(function() {
 			return <FileUploadInput onValue={onValue} />;
@@ -281,9 +270,9 @@ describe('FileUploadInput', function() {
 				files: testValues
 			}
 		});
-		// TODO: the queued onchange is not triggering because it is for a node with a different id than expected
 		r.expect(baseAssertion);
 
-		assert.sameOrderedMembers(receivedFiles, testValues);
+		// TODO: enable when https://github.com/dojo/framework/pull/840 is merged
+		// assert.sameOrderedMembers(onValue.firstCall.args[0], testValues);
 	});
 });

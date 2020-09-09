@@ -16,6 +16,10 @@ import * as css from '../theme/default/file-uploader.m.css';
 import * as fileUploadInputCss from '../theme/default/file-upload-input.m.css';
 import * as fileUploadInputFixedCss from '../file-upload-input/styles/file-upload-input.m.css';
 
+export interface FileUploaderChildren {
+	label?: FileUploadInputChildren['label'];
+}
+
 export interface FileUploaderProperties extends FileUploadInputProperties {
 	/** Custom validator used to validate each file */
 	customValidator?: (file: File) => ValidationInfo | void;
@@ -135,7 +139,7 @@ const icache = createICacheMiddleware<FileUploaderIcache>();
 
 const factory = create({ fileDrop, i18n, icache, theme })
 	.properties<FileUploaderProperties>()
-	.children<Omit<FileUploadInputChildren, 'content'> | undefined>();
+	.children<FileUploaderChildren | undefined>();
 
 export const FileUploader = factory(function FileUploader({
 	children,
