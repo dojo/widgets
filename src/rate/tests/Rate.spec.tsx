@@ -34,16 +34,17 @@ const baseOptions = [
 
 describe('Rate', () => {
 	const WrappedRadioGroup = wrap(RadioGroup);
+	const WrappedRootNode = wrap('div');
 
 	const baseAssertion = assertion(() => (
-		<div classes={[css.root, undefined, false]}>
+		<WrappedRootNode classes={[css.root, undefined, false]}>
 			<WrappedRadioGroup key="radio-group" name={'test'} options={baseOptions} onValue={noop}>
 				{{
 					label: 'test',
 					radios: () => []
 				}}
 			</WrappedRadioGroup>
-		</div>
+		</WrappedRootNode>
 	));
 
 	it('Renders', () => {
@@ -524,7 +525,7 @@ describe('Rate', () => {
 		));
 
 		r.child(WrappedRadioGroup as any, {
-			radios: ['test', createMockRadioGroupMiddleware('9'), threeOptions],
+			radios: ['test', createMockRadioGroupMiddleware('0'), threeOptions],
 			label: []
 		});
 		const onValueAssertion = baseAssertion
@@ -690,5 +691,192 @@ describe('Rate', () => {
 
 		r.expect(afterClickAssertion);
 		assert.isTrue(onValueStub.calledWith(2));
+	});
+
+	it('shows focus', () => {
+		const twoOptions = baseOptions.slice(0, 2);
+
+		const r = renderer(() => (
+			<Rate name="test" max={2}>
+				{{
+					label: 'test'
+				}}
+			</Rate>
+		));
+
+		const WrappedInput = wrap('input');
+
+		r.child(WrappedRadioGroup as any, {
+			radios: ['test', createMockRadioGroupMiddleware('0'), twoOptions],
+			label: []
+		});
+		const beforeFocusAssertion = baseAssertion
+			.setProperty(WrappedRadioGroup, 'options', twoOptions)
+			.setChildren(WrappedRadioGroup, () => ({
+				label: 'test',
+				radios: () => [
+					<span classes={[false]}>
+						<label
+							classes={[null, fixedCss.labelFixed, css.icon, false]}
+							onmouseenter={noop}
+							onmouseleave={noop}
+							title={'1'}
+						>
+							<span classes={fixedCss.iconWrapperFixed}>
+								<Icon size={'medium'} type={'starIcon'} />
+							</span>
+							<input
+								checked={false}
+								classes={baseCss.visuallyHidden}
+								disabled={undefined}
+								name={'test'}
+								onblur={noop}
+								onchange={noop}
+								onfocus={noop}
+								type={'radio'}
+								value={'1'}
+							/>
+						</label>
+					</span>,
+					<span classes={[false]}>
+						<label
+							classes={[null, fixedCss.labelFixed, css.icon, false]}
+							onmouseenter={noop}
+							onmouseleave={noop}
+							title={'2'}
+						>
+							<span classes={fixedCss.iconWrapperFixed}>
+								<Icon size={'medium'} type={'starIcon'} />
+							</span>
+							<WrappedInput
+								checked={false}
+								classes={baseCss.visuallyHidden}
+								disabled={undefined}
+								name={'test'}
+								onblur={noop}
+								onchange={noop}
+								onfocus={noop}
+								type={'radio'}
+								value={'2'}
+							/>
+						</label>
+					</span>
+				]
+			}));
+
+		r.expect(beforeFocusAssertion);
+
+		r.property(WrappedInput, 'onfocus');
+
+		const afterFocusAssertion = beforeFocusAssertion
+			.setProperty(WrappedRootNode, 'classes', [css.root, undefined, css.focused])
+			.setChildren(WrappedRadioGroup, () => ({
+				label: 'test',
+				radios: () => [
+					<span classes={[false]}>
+						<label
+							classes={[null, fixedCss.labelFixed, css.icon, false]}
+							onmouseenter={noop}
+							onmouseleave={noop}
+							title={'1'}
+						>
+							<span classes={fixedCss.iconWrapperFixed}>
+								<Icon size={'medium'} type={'starIcon'} />
+							</span>
+							<input
+								checked={false}
+								classes={baseCss.visuallyHidden}
+								disabled={undefined}
+								name={'test'}
+								onblur={noop}
+								onchange={noop}
+								onfocus={noop}
+								type={'radio'}
+								value={'1'}
+							/>
+						</label>
+					</span>,
+					<span classes={[css.focusedStar]}>
+						<label
+							classes={[null, fixedCss.labelFixed, css.icon, false]}
+							onmouseenter={noop}
+							onmouseleave={noop}
+							title={'2'}
+						>
+							<span classes={fixedCss.iconWrapperFixed}>
+								<Icon size={'medium'} type={'starIcon'} />
+							</span>
+							<WrappedInput
+								checked={false}
+								classes={baseCss.visuallyHidden}
+								disabled={undefined}
+								name={'test'}
+								onblur={noop}
+								onchange={noop}
+								onfocus={noop}
+								type={'radio'}
+								value={'2'}
+							/>
+						</label>
+					</span>
+				]
+			}));
+
+		r.expect(afterFocusAssertion);
+		r.property(WrappedInput, 'onblur');
+
+		const afterBlurAssertion = beforeFocusAssertion.setChildren(WrappedRadioGroup, () => ({
+			label: 'test',
+			radios: () => [
+				<span classes={[false]}>
+					<label
+						classes={[null, fixedCss.labelFixed, css.icon, false]}
+						onmouseenter={noop}
+						onmouseleave={noop}
+						title={'1'}
+					>
+						<span classes={fixedCss.iconWrapperFixed}>
+							<Icon size={'medium'} type={'starIcon'} />
+						</span>
+						<input
+							checked={false}
+							classes={baseCss.visuallyHidden}
+							disabled={undefined}
+							name={'test'}
+							onblur={noop}
+							onchange={noop}
+							onfocus={noop}
+							type={'radio'}
+							value={'1'}
+						/>
+					</label>
+				</span>,
+				<span classes={[css.focusedStar]}>
+					<label
+						classes={[null, fixedCss.labelFixed, css.icon, false]}
+						onmouseenter={noop}
+						onmouseleave={noop}
+						title={'2'}
+					>
+						<span classes={fixedCss.iconWrapperFixed}>
+							<Icon size={'medium'} type={'starIcon'} />
+						</span>
+						<WrappedInput
+							checked={false}
+							classes={baseCss.visuallyHidden}
+							disabled={undefined}
+							name={'test'}
+							onblur={noop}
+							onchange={noop}
+							onfocus={noop}
+							type={'radio'}
+							value={'2'}
+						/>
+					</label>
+				</span>
+			]
+		}));
+
+		r.expect(afterBlurAssertion);
 	});
 });
