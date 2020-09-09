@@ -27,7 +27,10 @@ export interface RateProperties {
 }
 
 export interface RateChildren {
+	/* The label to be rendered form this rate widget */
 	label?: RenderResult;
+
+	/* The icon to be used, default is a star, this icon should be a font icon or an svg that accepts a `fill` to denote it's colour */
 	icon?: RenderResult;
 }
 

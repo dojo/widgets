@@ -12,8 +12,7 @@ import * as css from '../../theme/default/rate.m.css';
 import * as baseCss from '../../common/styles/base.m.css';
 
 import { Icon } from '../../icon';
-
-const noop = () => {};
+import { noop } from '../../common/tests/support/test-helpers';
 
 function createMockRadioGroupMiddleware(checkedValue: string) {
 	return (value?: string) => {
