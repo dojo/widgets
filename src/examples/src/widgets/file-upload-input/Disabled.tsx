@@ -5,9 +5,13 @@ import Example from '../../Example';
 const factory = create();
 
 export default factory(function Disabled() {
+	function onValue() {
+		// do something with files
+	}
+
 	return (
 		<Example>
-			<FileUploadInput disabled />
+			<FileUploadInput disabled onValue={onValue} />
 		</Example>
 	);
 });

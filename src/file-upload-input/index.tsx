@@ -45,7 +45,7 @@ export interface FileUploadInputProperties {
 	name?: string;
 
 	/** Callback called when the user selects files */
-	onValue?(value: File[]): void;
+	onValue(value: File[]): void;
 
 	/** The `required` attribute of the input */
 	required?: boolean;
@@ -130,7 +130,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const themeCss = theme.classes(css);
-	const [{ content, label } = { content: undefined, label: undefined }] = children();
+	const { content, label } = children()[0] || {};
 	let isDndActive = icache.getOrSet('isDndActive', false);
 
 	function onDragEnter(event: DragEvent) {
@@ -151,8 +151,10 @@ export const FileUploadInput = factory(function FileUploadInput({
 		event.preventDefault();
 		icache.set('isDndActive', false);
 
-		if (onValue && event.dataTransfer && event.dataTransfer.files.length) {
-			const fileArray = Array.from(event.dataTransfer.files);
+		if (event.dataTransfer && event.dataTransfer.files.length) {
+			const fileArray = multiple
+				? Array.from(event.dataTransfer.files)
+				: [event.dataTransfer.files[0]];
 			const validFiles = filterValidFiles(fileArray, accept);
 			if (validFiles.length) {
 				onValue(validFiles);
@@ -165,7 +167,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 	}
 
 	function onChange(event: DojoEvent<HTMLInputElement>) {
-		if (onValue && event.target.files && event.target.files.length) {
+		if (event.target.files && event.target.files.length) {
 			onValue(Array.from(event.target.files));
 		}
 	}
