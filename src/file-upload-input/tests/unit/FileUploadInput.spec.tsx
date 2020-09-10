@@ -84,7 +84,7 @@ describe('FileUploadInput', function() {
 
 	it('renders', function() {
 		const r = renderer(function() {
-			return <FileUploadInput />;
+			return <FileUploadInput onValue={noop} />;
 		});
 
 		r.expect(baseAssertion);
@@ -95,7 +95,7 @@ describe('FileUploadInput', function() {
 
 		const r = renderer(function() {
 			return (
-				<FileUploadInput>
+				<FileUploadInput onValue={noop}>
 					{{
 						content
 					}}
@@ -111,7 +111,7 @@ describe('FileUploadInput', function() {
 
 		const r = renderer(function() {
 			return (
-				<FileUploadInput>
+				<FileUploadInput onValue={noop}>
 					{{
 						label
 					}}
@@ -149,7 +149,7 @@ describe('FileUploadInput', function() {
 
 	it('renders allowDnd=false', function() {
 		const r = renderer(function() {
-			return <FileUploadInput allowDnd={false} />;
+			return <FileUploadInput allowDnd={false} onValue={noop} />;
 		});
 
 		r.expect(
@@ -166,7 +166,7 @@ describe('FileUploadInput', function() {
 
 	it('renders disabled', function() {
 		const r = renderer(function() {
-			return <FileUploadInput disabled={true} />;
+			return <FileUploadInput disabled={true} onValue={noop} />;
 		});
 
 		r.expect(
@@ -186,7 +186,7 @@ describe('FileUploadInput', function() {
 
 	it('handles dragenter, dragleave, and the overlay', function() {
 		const r = renderer(function() {
-			return <FileUploadInput />;
+			return <FileUploadInput onValue={noop} />;
 		});
 		const WrappedOverlay = wrap('div');
 
@@ -226,6 +226,28 @@ describe('FileUploadInput', function() {
 		const onValue = sinon.stub();
 
 		const r = renderer(function() {
+			return <FileUploadInput multiple onValue={onValue} />;
+		});
+
+		r.expect(baseAssertion.setProperty(WrappedInput, 'multiple', true));
+		r.property(WrappedRoot, 'ondrop', {
+			...stubEvent,
+			dataTransfer: {
+				files: testValues
+			}
+		});
+		r.expect(baseAssertion.setProperty(WrappedInput, 'multiple', true));
+
+		assert(preventDefaultSpy.called, 'drop handler should call event.preventDefault()');
+		assert.sameOrderedMembers(onValue.firstCall.args[0], testValues);
+	});
+
+	it('restricts file drop to one file if multiple is not true', function() {
+		const testValues = [1, 2, 3];
+		const expected = testValues.slice(0, 1);
+		const onValue = sinon.stub();
+
+		const r = renderer(function() {
 			return <FileUploadInput onValue={onValue} />;
 		});
 
@@ -238,25 +260,26 @@ describe('FileUploadInput', function() {
 		});
 		r.expect(baseAssertion);
 
-		assert(preventDefaultSpy.called, 'drop handler should call event.preventDefault()');
-		assert.sameOrderedMembers(onValue.firstCall.args[0], testValues);
+		assert.sameMembers(onValue.firstCall.args[0], expected);
 	});
 
 	it('validates files based on "accept"', function() {
-		const accept = 'image/jpeg,image/*,.gif';
+		const accept = 'application/pdf,image/*,.gif';
 		const testFiles = [
-			{ name: 'file1.jpg', type: 'image/jpeg' }, // test direct match: image/jpeg
+			{ name: 'file1.pdf', type: 'application/pdf' }, // test direct match: application/pdf
 			{ name: 'file2.png', type: 'image/png' }, // test wildcard match: image/*
 			{ name: 'file3.gif', type: 'bad/type' }, // test extension match: .gif
-			{ name: 'file4.doc', type: 'application/word' } // test match failure
+			{ name: 'file4.doc', type: 'application/msword' } // test match failure
 		];
 		const validFiles = testFiles.slice(0, 3);
 		const onValue = sinon.stub();
 
 		const r = renderer(function() {
-			return <FileUploadInput onValue={onValue} accept={accept} />;
+			return <FileUploadInput multiple onValue={onValue} accept={accept} />;
 		});
-		const acceptAssertion = baseAssertion.setProperty(WrappedInput, 'accept', accept);
+		const acceptAssertion = baseAssertion
+			.setProperty(WrappedInput, 'accept', accept)
+			.setProperty(WrappedInput, 'multiple', true);
 
 		r.expect(acceptAssertion);
 		r.property(WrappedRoot, 'ondrop', {
@@ -275,16 +298,16 @@ describe('FileUploadInput', function() {
 		const onValue = sinon.stub();
 
 		const r = renderer(function() {
-			return <FileUploadInput onValue={onValue} />;
+			return <FileUploadInput multiple onValue={onValue} />;
 		});
 
-		r.expect(baseAssertion);
+		r.expect(baseAssertion.setProperty(WrappedInput, 'multiple', true));
 		r.property(WrappedInput, 'onchange', {
 			target: {
 				files: testValues
 			}
 		});
-		r.expect(baseAssertion);
+		r.expect(baseAssertion.setProperty(WrappedInput, 'multiple', true));
 
 		// TODO: enable when https://github.com/dojo/framework/pull/840 is merged
 		// assert.sameOrderedMembers(onValue.firstCall.args[0], testValues);

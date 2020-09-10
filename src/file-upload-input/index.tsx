@@ -130,7 +130,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const themeCss = theme.classes(css);
-	const { content, label } = children()[0] || {};
+	const { content = undefined, label = undefined } = children()[0] || {};
 	let isDndActive = icache.getOrSet('isDndActive', false);
 
 	function onDragEnter(event: DragEvent) {
