@@ -5,6 +5,10 @@ import Example from '../../Example';
 const factory = create();
 
 export default factory(function CustomValidator() {
+	function onValue() {
+		// do something with files
+	}
+
 	function validateName(file: File) {
 		if (file.name === 'validfile.txt') {
 			return { valid: true };
@@ -18,7 +22,7 @@ export default factory(function CustomValidator() {
 
 	return (
 		<Example>
-			<FileUploader customValidator={validateName}>
+			<FileUploader customValidator={validateName} onValue={onValue}>
 				{{
 					label: 'Upload a file named "validfile.txt"'
 				}}

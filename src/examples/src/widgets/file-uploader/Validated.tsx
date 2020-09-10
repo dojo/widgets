@@ -8,9 +8,13 @@ export default factory(function Validated() {
 	const accept = 'image/jpeg,image/png';
 	const maxSize = 50000;
 
+	function onValue() {
+		// do something with files
+	}
+
 	return (
 		<Example>
-			<FileUploader multiple accept={accept} maxSize={maxSize} />
+			<FileUploader multiple accept={accept} maxSize={maxSize} onValue={onValue} />
 		</Example>
 	);
 });

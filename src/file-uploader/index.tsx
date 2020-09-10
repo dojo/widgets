@@ -8,7 +8,6 @@ import {
 	ValidationInfo
 } from '../file-upload-input';
 import { Icon } from '../icon';
-import fileDrop from '../middleware/fileDrop';
 import theme from '../middleware/theme';
 import bundle from './nls/FileUploader';
 
@@ -24,6 +23,9 @@ export interface FileUploaderProperties extends FileUploadInputProperties {
 	/** Custom validator used to validate each file */
 	customValidator?: (file: File) => ValidationInfo | void;
 
+	/** The files to render in the widget (controlled scenario) */
+	files?: File[];
+
 	/** The maximum size in bytes of a file */
 	maxSize?: number;
 
@@ -31,7 +33,10 @@ export interface FileUploaderProperties extends FileUploadInputProperties {
 	onValidate?: (valid: boolean | undefined, message: string) => void;
 
 	/** Show the file size in the file list. Default is `true` */
-	showSize?: boolean;
+	showFileSize?: boolean;
+
+	/** Represents if all files are valid (controlled scenario) */
+	valid?: { valid?: boolean; message?: string } | boolean;
 }
 
 const factorNames = ['', 'B', 'KB', 'MB', 'GB', 'TB', 'PB'];
@@ -75,69 +80,13 @@ function validateFile(props: ValidationProps): ValidationInfo {
 	};
 }
 
-type FileItemRendererProps = Pick<
-	FileUploaderProperties,
-	'customValidator' | 'maxSize' | 'showSize'
-> & {
-	files: File[];
-	messages: typeof bundle;
-	remove(file: File): void;
-	themeCss: typeof css;
-};
-
-function renderFiles(props: FileItemRendererProps) {
-	const {
-		customValidator,
-		files,
-		maxSize,
-		messages: { messages },
-		remove,
-		showSize = true,
-		themeCss
-	} = props;
-
-	return files.map(function(file) {
-		let validationInfo: ValidationInfo | void = validateFile({
-			file,
-			maxSize,
-			messages: { messages }
-		});
-
-		if (validationInfo && validationInfo.valid && customValidator) {
-			validationInfo = customValidator(file);
-		}
-		const isValid = validationInfo ? validationInfo.valid : true;
-
-		return (
-			<div classes={[themeCss.fileItem, !isValid && themeCss.invalid]} key={file.name}>
-				<div classes={[themeCss.fileInfo]}>
-					<div classes={[themeCss.fileItemName]}>{file.name}</div>
-					{showSize && (
-						<div classes={[themeCss.fileItemSize]}>{formatBytes(file.size)}</div>
-					)}
-					<button
-						classes={[themeCss.closeButton]}
-						onclick={function() {
-							remove(file);
-						}}
-					>
-						<Icon type="closeIcon" altText={messages.remove} />
-					</button>
-				</div>
-				{validationInfo && validationInfo.message && (
-					<div classes={[themeCss.validationMessage]}>{validationInfo.message}</div>
-				)}
-			</div>
-		);
-	});
-}
-
 export interface FileUploaderIcache {
 	files: File[];
+	previousInitialFiles?: File[];
 }
 const icache = createICacheMiddleware<FileUploaderIcache>();
 
-const factory = create({ fileDrop, i18n, icache, theme })
+const factory = create({ i18n, icache, theme })
 	.properties<FileUploaderProperties>()
 	.children<FileUploaderChildren | undefined>();
 
@@ -151,50 +100,89 @@ export const FileUploader = factory(function FileUploader({
 		allowDnd = true,
 		customValidator,
 		disabled = false,
+		files: initialFiles,
 		maxSize,
 		multiple = false,
 		name,
 		onValue,
 		required = false,
-		showSize = true
+		showFileSize = true
 	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const themeCss = theme.classes(css);
-	let files = icache.getOrSet('files', []);
 	const inputChild = (children()[0] || {}) as FileUploadInputChildren;
+	const previousInitialFiles = icache.get('previousInitialFiles');
+	let files =
+		initialFiles && initialFiles !== previousInitialFiles
+			? initialFiles
+			: icache.getOrSet('files', []);
+	icache.set('previousInitialFiles', initialFiles);
 
 	function onInputValue(newFiles: File[]) {
 		const newValue = multiple ? [...files, ...newFiles] : newFiles.slice(0, 1);
 		icache.set('files', newValue);
-		onValue && onValue(newValue);
+		onValue(newValue);
 	}
 
 	function remove(file: File) {
+		const files = icache.get('files');
+		/* istanbul ignore if */
+		if (!files) {
+			// type-safety check; should never happen
+			return;
+		}
+
 		const fileIndex = files.indexOf(file);
-		if (fileIndex !== -1) {
-			files.splice(fileIndex, 1);
-			icache.set('files', files);
-			onValue && onValue(files);
+		/* istanbul ignore if */
+		if (fileIndex === -1) {
+			// type-safety check; should never happen
+			return;
+		} else {
+			const updatedFiles = [...files];
+			updatedFiles.splice(fileIndex, 1);
+			icache.set('files', updatedFiles);
+			onValue(updatedFiles);
 		}
 	}
 
-	if (files.length) {
-		inputChild.content = (
-			<div key="fileList">
-				{function() {
-					return renderFiles({
-						customValidator,
-						files,
-						maxSize,
-						messages: { messages },
-						remove,
-						showSize,
-						themeCss
-					});
-				}}
-			</div>
-		);
+	function renderFiles() {
+		return files.map(function(file) {
+			let validationInfo: ValidationInfo | void = validateFile({
+				file,
+				maxSize,
+				messages: { messages }
+			});
+
+			if (validationInfo && validationInfo.valid && customValidator) {
+				validationInfo = customValidator(file);
+			}
+			const isValid = validationInfo ? validationInfo.valid : true;
+
+			return (
+				<div classes={[themeCss.fileItem, !isValid && themeCss.invalid]} key={file.name}>
+					<div classes={[themeCss.fileInfo]}>
+						<div classes={[themeCss.fileItemName]}>{file.name}</div>
+						{showFileSize && (
+							<div classes={[themeCss.fileItemSize]}>{formatBytes(file.size)}</div>
+						)}
+						<button
+							classes={[themeCss.closeButton]}
+							onclick={function() {
+								remove(file);
+							}}
+						>
+							<Icon type="closeIcon" altText={messages.remove} />
+						</button>
+					</div>
+					{validationInfo && validationInfo.message && (
+						<div classes={[themeCss.validationMessage]}>{validationInfo.message}</div>
+					)}
+				</div>
+			);
+		});
 	}
+
+	inputChild.content = files.length ? [<div key="fileList">{renderFiles()}</div>] : null;
 
 	return (
 		<div

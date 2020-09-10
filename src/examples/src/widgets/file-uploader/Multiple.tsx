@@ -5,9 +5,13 @@ import Example from '../../Example';
 const factory = create();
 
 export default factory(function Multiple() {
+	function onValue() {
+		// do something with files
+	}
+
 	return (
 		<Example>
-			<FileUploader multiple />
+			<FileUploader multiple onValue={onValue} />
 		</Example>
 	);
 });
