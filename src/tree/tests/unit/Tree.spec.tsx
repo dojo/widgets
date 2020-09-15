@@ -11,14 +11,13 @@ import {
 } from '@dojo/framework/core/middleware/resources';
 
 import { Keys } from '../../../common/util';
-import { stubEvent } from '../../../common/tests/support/test-helpers';
+import { stubEvent, noop } from '../../../common/tests/support/test-helpers';
 import Tree, { TreeNode, TreeNodeOption } from '../../index';
 import * as css from '../../../theme/default/tree.m.css';
 
 import { simpleTree } from './TreeData.mock';
 import LoadingIndicator from '../../../loading-indicator';
 
-const noop = () => {};
 const WrappedRoot = wrap('ol');
 const WrappedListItem1 = wrap('li');
 const WrappedListItem2 = wrap('li');
