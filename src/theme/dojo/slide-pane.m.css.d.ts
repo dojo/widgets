@@ -1,6 +1,7 @@
 export const root: string;
 export const underlayVisible: string;
 export const pane: string;
+export const open: string;
 export const content: string;
 export const title: string;
 export const close: string;
