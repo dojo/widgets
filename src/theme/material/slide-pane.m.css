@@ -46,3 +46,7 @@
 .underlayVisible {
 	background: var(--mdc-theme-elevation-1);
 }
+
+.root .open {
+	transform: translate(0, 0);
+}
