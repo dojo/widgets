@@ -24,7 +24,7 @@ export interface FileUploaderProperties extends FileUploadInputProperties {
 	customValidator?: (file: File) => ValidationInfo | void;
 
 	/** The files to render in the widget (controlled scenario) */
-	files?: File[];
+	files?: FileWithValidation[];
 
 	/** The maximum size in bytes of a file */
 	maxSize?: number;
@@ -34,10 +34,9 @@ export interface FileUploaderProperties extends FileUploadInputProperties {
 
 	/** Show the file size in the file list. Default is `true` */
 	showFileSize?: boolean;
-
-	/** Represents if all files are valid (controlled scenario) */
-	valid?: { valid?: boolean; message?: string } | boolean;
 }
+
+export type FileWithValidation = File & ValidationInfo;
 
 const factorNames = ['', 'B', 'KB', 'MB', 'GB', 'TB', 'PB'];
 function formatBytes(byteCount: number) {
@@ -52,40 +51,13 @@ function formatBytes(byteCount: number) {
 	return formattedValue;
 }
 
-interface ValidationProps {
-	file: File;
-	maxSize?: number;
-	messages: typeof bundle;
-}
-
-function validateFile(props: ValidationProps): ValidationInfo {
-	const {
-		file,
-		maxSize,
-		messages: { messages }
-	} = props;
-	let valid = true;
-	let message = '';
-
-	if (maxSize) {
-		if (file.size > maxSize) {
-			valid = false;
-			message = messages.invalidFileSize;
-		}
-	}
-
-	return {
-		message,
-		valid
-	};
-}
-
 export interface FileUploaderIcache {
-	files: File[];
 	previousInitialFiles?: File[];
+	previousValidationState?: boolean;
+	value: Array<File | FileWithValidation>;
 }
-const icache = createICacheMiddleware<FileUploaderIcache>();
 
+const icache = createICacheMiddleware<FileUploaderIcache>();
 const factory = create({ i18n, icache, theme })
 	.properties<FileUploaderProperties>()
 	.children<FileUploaderChildren | undefined>();
@@ -104,6 +76,7 @@ export const FileUploader = factory(function FileUploader({
 		maxSize,
 		multiple = false,
 		name,
+		onValidate,
 		onValue,
 		required = false,
 		showFileSize = true
@@ -115,51 +88,89 @@ export const FileUploader = factory(function FileUploader({
 	let files =
 		initialFiles && initialFiles !== previousInitialFiles
 			? initialFiles
-			: icache.getOrSet('files', []);
+			: icache.getOrSet('value', []);
 	icache.set('previousInitialFiles', initialFiles);
+
+	function validateFiles(files: File[]): FileWithValidation[] {
+		const previousValidationState = icache.get('previousValidationState');
+		let currentValidationState = true;
+
+		const validatedFiles = files.map(function(file) {
+			let message = '';
+			let valid = maxSize ? file.size <= maxSize : true;
+
+			if (valid) {
+				if (customValidator) {
+					const customValid = customValidator(file);
+					if (customValid) {
+						valid = customValid.valid !== false;
+						message = customValid.message || '';
+					}
+				}
+			} else {
+				message = messages.invalidFileSize;
+			}
+
+			currentValidationState = currentValidationState && valid;
+
+			return {
+				...file,
+				valid,
+				message
+			};
+		});
+
+		if (currentValidationState !== previousValidationState) {
+			onValidate && onValidate(currentValidationState, '');
+		}
+
+		return validatedFiles;
+	}
+
+	function updateFiles(newFiles: File[]) {
+		icache.set('value', validateFiles(newFiles));
+		onValue(newFiles);
+	}
 
 	function onInputValue(newFiles: File[]) {
 		const newValue = multiple ? [...files, ...newFiles] : newFiles.slice(0, 1);
-		icache.set('files', newValue);
-		onValue(newValue);
+		updateFiles(newValue);
 	}
 
 	function remove(file: File) {
-		const files = icache.get('files');
-		/* istanbul ignore if */
-		if (!files) {
-			// type-safety check; should never happen
-			return;
-		}
-
 		const fileIndex = files.indexOf(file);
-		/* istanbul ignore if */
+		/* istanbul ignore if (type-safety check; should never happen) */
 		if (fileIndex === -1) {
-			// type-safety check; should never happen
 			return;
 		} else {
 			const updatedFiles = [...files];
 			updatedFiles.splice(fileIndex, 1);
-			icache.set('files', updatedFiles);
-			onValue(updatedFiles);
+			updateFiles(updatedFiles);
 		}
 	}
 
-	function renderFiles() {
+	function renderFiles(files: Array<File | FileWithValidation>) {
 		return files.map(function(file) {
-			let validationInfo: ValidationInfo | void = validateFile({
-				file,
-				maxSize,
-				messages: { messages }
-			});
-
-			if (validationInfo && validationInfo.valid && customValidator) {
-				validationInfo = customValidator(file);
+			let validationInfo: ValidationInfo;
+			if ('valid' in file) {
+				validationInfo = {
+					valid: file.valid,
+					message: file.message
+				};
+			} else {
+				validationInfo = {
+					valid: true,
+					message: ''
+				};
 			}
-			const isValid = validationInfo ? validationInfo.valid : true;
+
+			const { message, valid } = validationInfo;
 
 			return (
-				<div classes={[themeCss.fileItem, !isValid && themeCss.invalid]} key={file.name}>
+				<div
+					classes={[themeCss.fileItem, valid === false && themeCss.invalid]}
+					key={file.name}
+				>
 					<div classes={[themeCss.fileInfo]}>
 						<div classes={[themeCss.fileItemName]}>{file.name}</div>
 						{showFileSize && (
@@ -174,15 +185,13 @@ export const FileUploader = factory(function FileUploader({
 							<Icon type="closeIcon" altText={messages.remove} />
 						</button>
 					</div>
-					{validationInfo && validationInfo.message && (
-						<div classes={[themeCss.validationMessage]}>{validationInfo.message}</div>
-					)}
+					{message && <div classes={[themeCss.validationMessage]}>{message}</div>}
 				</div>
 			);
 		});
 	}
 
-	inputChild.content = files.length ? [<div key="fileList">{renderFiles()}</div>] : null;
+	inputChild.content = files.length ? [<div key="fileList">{renderFiles(files)}</div>] : null;
 
 	return (
 		<div
