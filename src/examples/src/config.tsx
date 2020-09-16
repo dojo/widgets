@@ -277,6 +277,7 @@ import RemoteSource from './widgets/tree/RemoteSource';
 import InitialStateTree from './widgets/tree/InitialState';
 import PopupConfirmation from './widgets/popup-confirmation/Basic';
 import PopupConfirmationUnderlay from './widgets/popup-confirmation/Underlay';
+import BasicResourceGrid from './widgets/resource-grid/Basic';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -2078,6 +2079,14 @@ export const config = {
 					title: 'Custom step renderer'
 				}
 			]
+		},
+		'resource-grid': {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicResourceGrid
+				}
+			}
 		}
 	}
 };
