@@ -1,7 +1,7 @@
 import { DojoEvent, RenderResult } from '@dojo/framework/core/interfaces';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { create, tsx } from '@dojo/framework/core/vdom';
+import { create, node, tsx } from '@dojo/framework/core/vdom';
 import { Button } from '../button';
 import { formatAriaProperties } from '../common/util';
 import { Label } from '../label';
@@ -13,6 +13,11 @@ import * as baseCss from '../theme/default/base.m.css';
 import * as buttonCss from '../theme/default/button.m.css';
 import * as fixedCss from './styles/file-upload-input.m.css';
 import * as labelCss from '../theme/default/label.m.css';
+
+export interface ValidationInfo {
+	message?: string;
+	valid?: boolean;
+}
 
 export interface FileUploadInputChildren {
 	/** The label to be displayed above the input */
@@ -51,13 +56,19 @@ export interface FileUploadInputProperties {
 	required?: boolean;
 
 	/** Represents if the selected files passed validation */
-	valid?: ValidationInfo | boolean;
+	valid?: boolean | ValidationInfo;
 
 	/** The id to be applied to the input */
 	widgetId?: string;
 }
 
-export function filterValidFiles(files: File[], accept: FileUploadInputProperties['accept']) {
+/**
+ * Filter files based on file types specified by `accept`
+ * @param files
+ * @param accept file type specifiers (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Unique_file_type_specifiers)
+ * @returns the files that match a type in `accept`
+ */
+function filterValidFiles(files: File[], accept: FileUploadInputProperties['accept']) {
 	if (!accept) {
 		return files;
 	}
@@ -94,25 +105,19 @@ export function filterValidFiles(files: File[], accept: FileUploadInputPropertie
 	return validFiles;
 }
 
-export interface ValidationInfo {
-	message?: string;
-	valid?: boolean;
-}
-
 interface FileUploadInputIcache {
 	isDndActive?: boolean;
-	shouldClick?: boolean;
 }
 const icache = createICacheMiddleware<FileUploadInputIcache>();
 
-const factory = create({ i18n, icache, theme })
+const factory = create({ i18n, icache, node, theme })
 	.properties<FileUploadInputProperties>()
 	.children<FileUploadInputChildren | undefined>();
 
 export const FileUploadInput = factory(function FileUploadInput({
 	children,
 	id,
-	middleware: { i18n, icache, theme },
+	middleware: { i18n, icache, node, theme },
 	properties
 }) {
 	const {
@@ -163,7 +168,12 @@ export const FileUploadInput = factory(function FileUploadInput({
 	}
 
 	function onClickButton() {
-		icache.set('shouldClick', true);
+		// It is necessary to get a direct reference to the DOM node for this due to security restrictions some
+		// browsers (e.g. Firefox 80) place on `fileInputNode.click()`. The method will only be invoked if the code
+		// calling it can directly be traced to a user action. If the call is queued in a scheduler it will not be
+		// executed.
+		const nativeInputNode = node.get('nativeInput');
+		nativeInputNode && nativeInputNode.click();
 	}
 
 	function onChange(event: DojoEvent<HTMLInputElement>) {
@@ -211,11 +221,6 @@ export const FileUploadInput = factory(function FileUploadInput({
 					accept={accept}
 					aria-hidden={true}
 					classes={[baseCss.hidden]}
-					click={function() {
-						const shouldClick = Boolean(icache.getOrSet('shouldClick', false));
-						shouldClick && icache.set('shouldClick', false, false);
-						return shouldClick;
-					}}
 					disabled={disabled}
 					multiple={multiple}
 					name={name}

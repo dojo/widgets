@@ -44,7 +44,6 @@ describe('FileUploadInput', function() {
 						accept={undefined}
 						aria-hidden={true}
 						classes={[baseCss.hidden]}
-						click={noop}
 						disabled={false}
 						multiple={false}
 						name={undefined}
