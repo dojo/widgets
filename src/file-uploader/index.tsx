@@ -32,6 +32,9 @@ export interface FileUploaderProperties extends FileUploadInputProperties {
 	/** Callback fired when the input validation changes */
 	onValidate?: (valid: boolean | undefined, message: string) => void;
 
+	/** Callback called when the user selects files */
+	onValue(value: FileWithValidation[]): void;
+
 	/** Show the file size in the file list. Default is `true` */
 	showFileSize?: boolean;
 }
@@ -52,9 +55,9 @@ function formatBytes(byteCount: number) {
 }
 
 export interface FileUploaderIcache {
-	previousInitialFiles?: File[];
+	previousInitialFiles?: FileWithValidation[];
 	previousValidationState?: boolean;
-	value: Array<File | FileWithValidation>;
+	value: FileWithValidation[];
 }
 
 const icache = createICacheMiddleware<FileUploaderIcache>();
@@ -91,11 +94,12 @@ export const FileUploader = factory(function FileUploader({
 			: icache.getOrSet('value', []);
 	icache.set('previousInitialFiles', initialFiles);
 
-	function validateFiles(files: File[]): FileWithValidation[] {
+	function validateFiles(files: Array<File | FileWithValidation>): FileWithValidation[] {
 		const previousValidationState = icache.get('previousValidationState');
 		let currentValidationState = true;
 
 		const validatedFiles = files.map(function(file) {
+			const validatedFile: FileWithValidation = file;
 			let message = '';
 			let valid = maxSize ? file.size <= maxSize : true;
 
@@ -113,11 +117,10 @@ export const FileUploader = factory(function FileUploader({
 
 			currentValidationState = currentValidationState && valid;
 
-			return {
-				...file,
-				valid,
-				message
-			};
+			validatedFile.valid = valid;
+			validatedFile.message = message;
+
+			return validatedFile;
 		});
 
 		if (currentValidationState !== previousValidationState) {
@@ -127,9 +130,10 @@ export const FileUploader = factory(function FileUploader({
 		return validatedFiles;
 	}
 
-	function updateFiles(newFiles: File[]) {
-		icache.set('value', validateFiles(newFiles));
-		onValue(newFiles);
+	function updateFiles(newFiles: Array<File | FileWithValidation>) {
+		const validatedFiles = validateFiles(newFiles);
+		icache.set('value', validatedFiles);
+		onValue(validatedFiles);
 	}
 
 	function onInputValue(newFiles: File[]) {
@@ -149,7 +153,7 @@ export const FileUploader = factory(function FileUploader({
 		}
 	}
 
-	function renderFiles(files: Array<File | FileWithValidation>) {
+	function renderFiles(files: FileWithValidation[]) {
 		return files.map(function(file) {
 			let validationInfo: ValidationInfo;
 			if ('valid' in file) {
