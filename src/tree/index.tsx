@@ -31,7 +31,7 @@ export interface TreeProperties {
 	selectedNode?: string;
 	disabledNodes?: string[];
 	parentSelection?: boolean;
-	onSelect?(id: string): void;
+	onValue?(id: string): void;
 	onCheck?(id: string[]): void;
 	onExpand?(id: string[]): void;
 }
@@ -103,7 +103,7 @@ export default factory(function({
 	const {
 		checkable = false,
 		selectable = false,
-		onSelect,
+		onValue,
 		onCheck,
 		onExpand,
 		disabledNodes,
@@ -128,7 +128,7 @@ export default factory(function({
 
 	function selectNode(id: string) {
 		icache.set('selectedNode', id);
-		onSelect && onSelect(id);
+		onValue && onValue(id);
 	}
 
 	function checkNode(id: string, checked: boolean) {
@@ -296,7 +296,7 @@ export default factory(function({
 								parentSelection={parentSelection}
 								node={node}
 								onActive={activateNode}
-								onSelect={selectNode}
+								onValue={selectNode}
 								onCheck={checkNode}
 								onExpand={(n, expanded) => {
 									if (expanded) {
@@ -329,7 +329,7 @@ interface TreeNodeProperties {
 	parentSelection?: boolean;
 	node: TreeNodeOption;
 	onActive(node: string): void;
-	onSelect(node: string): void;
+	onValue(node: string): void;
 	onCheck(node: string, checked: boolean): void;
 	onExpand(node: string, expanded: boolean): void;
 }
@@ -353,7 +353,7 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 		disabledNodes,
 		expandedNodes,
 		onActive,
-		onSelect,
+		onValue,
 		onCheck,
 		onExpand,
 		parentSelection
@@ -377,7 +377,7 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 			onSelect={() => {
 				isExpandable && onExpand(node.id, !expanded);
 				if (parentSelection || !isExpandable) {
-					selectable && onSelect(node.id);
+					selectable && onValue(node.id);
 					checkable && onCheck(node.id, !checked);
 				}
 			}}

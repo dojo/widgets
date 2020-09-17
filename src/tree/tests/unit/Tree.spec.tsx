@@ -35,7 +35,7 @@ const defaultNodeProps = {
 	expandedNodes: [],
 	parentSelection: false,
 	onActive: noop,
-	onSelect: noop,
+	onValue: noop,
 	onCheck: noop,
 	onExpand: noop
 };
@@ -556,7 +556,7 @@ describe('Tree', () => {
 		});
 
 		it('raises events on select', () => {
-			const onSelect = sinon.stub();
+			const onValue = sinon.stub();
 			const r = renderer(() => (
 				<Tree
 					resource={{
@@ -567,7 +567,7 @@ describe('Tree', () => {
 						}
 					}}
 					selectable={true}
-					onSelect={onSelect}
+					onValue={onValue}
 				/>
 			));
 
@@ -575,7 +575,7 @@ describe('Tree', () => {
 
 			// simulate select event
 			const selectedNode = simpleTree[0].id;
-			r.property(WrappedNode1, 'onSelect', selectedNode);
+			r.property(WrappedNode1, 'onValue', selectedNode);
 
 			r.expect(
 				selectableAssertion

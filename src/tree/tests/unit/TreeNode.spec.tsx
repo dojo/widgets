@@ -25,7 +25,7 @@ const defaultProps = {
 	expandedNodes: [],
 	parentSelection: true,
 	onActive: noop,
-	onSelect: noop,
+	onValue: noop,
 	onCheck: noop,
 	onExpand: noop,
 	node
@@ -203,10 +203,10 @@ describe('TreeNode', () => {
 			r.expect(selectedAssertion);
 		});
 
-		it('raises onSelect event', () => {
-			const onSelect = sinon.stub();
+		it('raises onValue event', () => {
+			const onValue = sinon.stub();
 			const r = renderer(() => (
-				<TreeNode {...defaultProps} selectable={true} onSelect={onSelect} node={node}>
+				<TreeNode {...defaultProps} selectable={true} onValue={onValue} node={node}>
 					{defaultRenderer}
 				</TreeNode>
 			));
@@ -216,7 +216,7 @@ describe('TreeNode', () => {
 			r.property(WrappedRoot, 'onSelect');
 			r.expect(baseAssertion);
 
-			assert(onSelect.calledWith(node.id));
+			assert(onValue.calledWith(node.id));
 		});
 
 		it('raises onCheck event when selected', () => {
@@ -253,10 +253,10 @@ describe('TreeNode', () => {
 			assert(onCheck.calledWith(node.id, true));
 		});
 
-		it('does not raise onSelect when not selectable', () => {
-			const onSelect = sinon.stub();
+		it('does not raise onValue when not selectable', () => {
+			const onValue = sinon.stub();
 			const r = renderer(() => (
-				<TreeNode {...defaultProps} onSelect={onSelect} node={node}>
+				<TreeNode {...defaultProps} onValue={onValue} node={node}>
 					{defaultRenderer}
 				</TreeNode>
 			));
@@ -266,7 +266,7 @@ describe('TreeNode', () => {
 			r.property(WrappedRoot, 'onSelect');
 			r.expect(baseAssertion);
 
-			assert(onSelect.notCalled);
+			assert(onValue.notCalled);
 		});
 	});
 
@@ -347,13 +347,13 @@ describe('TreeNode', () => {
 		});
 
 		it('should make unselectable', () => {
-			const onSelect = sinon.stub();
+			const onValue = sinon.stub();
 			const r = renderer(() => (
 				<TreeNode
 					{...defaultProps}
 					parentSelection={false}
 					checkable={true}
-					onSelect={onSelect}
+					onValue={onValue}
 				>
 					{defaultRenderer}
 				</TreeNode>
@@ -363,7 +363,7 @@ describe('TreeNode', () => {
 
 			r.expect(baseAssertion);
 
-			assert.isTrue(onSelect.notCalled);
+			assert.isTrue(onValue.notCalled);
 		});
 	});
 });
