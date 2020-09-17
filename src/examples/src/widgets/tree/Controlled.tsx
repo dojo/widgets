@@ -63,17 +63,11 @@ export default factory(function Advanced({ id, middleware: { icache, resource } 
 			<Tree
 				checkable={true}
 				selectable={true}
-				onExpand={(id, expand) => {
-					if (expand) {
-						icache.set('expanded', (currentExpanded) => [...currentExpanded, id]);
-					} else {
-						icache.set('expanded', (currentExpanded) =>
-							currentExpanded ? currentExpanded.filter((n) => n !== id) : []
-						);
-					}
+				onExpand={(ids) => {
+					icache.set('expanded', (currentExpanded) => [...currentExpanded, ...ids]);
 				}}
-				expandedNodes={expanded}
-				checkedNodes={checked}
+				expanded={expanded}
+				checked={checked}
 				resource={resource({ template, initOptions: { id, data: nodes } })}
 			/>
 			<ul>
@@ -82,7 +76,7 @@ export default factory(function Advanced({ id, middleware: { icache, resource } 
 						onclick={() => {
 							icache.set(
 								'expanded',
-								expanded && expanded.length !== 0 ? [] : ['c9ae529a']
+								expanded && expanded.length !== 0 ? [] : ['c9ae529a', 'cde74420']
 							);
 						}}
 					>
