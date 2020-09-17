@@ -119,30 +119,32 @@ describe('FileUploadInput', function() {
 		});
 
 		r.expect(
-			baseAssertion.prepend(WrappedRoot, () => [
-				<Label
-					disabled={false}
-					forId={'file-upload-input-test'}
-					hidden={false}
-					required={false}
-					theme={{
-						'@dojo/widgets/label': {
-							active: labelCss.active,
-							disabled: labelCss.disabled,
-							focused: labelCss.focused,
-							invalid: labelCss.invalid,
-							readonly: labelCss.readonly,
-							required: labelCss.required,
-							root: labelCss.root,
-							secondary: labelCss.secondary,
-							valid: labelCss.valid
-						}
-					}}
-					valid={true}
-				>
-					{label}
-				</Label>
-			])
+			baseAssertion.prepend(WrappedRoot, function() {
+				return [
+					<Label
+						disabled={false}
+						forId="file-upload-input-test"
+						hidden={false}
+						required={false}
+						theme={{
+							'@dojo/widgets/label': {
+								active: labelCss.active,
+								disabled: labelCss.disabled,
+								focused: labelCss.focused,
+								invalid: labelCss.invalid,
+								readonly: labelCss.readonly,
+								required: labelCss.required,
+								root: labelCss.root,
+								secondary: labelCss.secondary,
+								valid: labelCss.valid
+							}
+						}}
+						valid={true}
+					>
+						{label}
+					</Label>
+				];
+			})
 		);
 	});
 

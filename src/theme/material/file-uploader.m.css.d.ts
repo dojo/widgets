@@ -5,3 +5,4 @@ export const fileInfo: string;
 export const fileItemName: string;
 export const closeButton: string;
 export const validationMessage: string;
+export const invalid: string;
