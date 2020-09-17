@@ -66,6 +66,7 @@ import LabelledFileUploadInput from './widgets/file-upload-input/Labelled';
 import MultipleFileUploadInput from './widgets/file-upload-input/Multiple';
 import NoDropFileUploadInput from './widgets/file-upload-input/NoDrop';
 import BasicFileUploader from './widgets/file-uploader/Basic';
+import ControlledFileUploader from './widgets/file-uploader/Controlled';
 import CustomValidatorFileUploader from './widgets/file-uploader/CustomValidator';
 import DisabledFileUploader from './widgets/file-uploader/Disabled';
 import MultipleFileUploader from './widgets/file-uploader/Multiple';
@@ -803,6 +804,11 @@ export const config = {
 					title: 'FileUploader with custom validator',
 					filename: 'CustomValidator',
 					module: CustomValidatorFileUploader
+				},
+				{
+					title: 'Controlled FileUploader',
+					filename: 'Controlled',
+					module: ControlledFileUploader
 				}
 			]
 		},

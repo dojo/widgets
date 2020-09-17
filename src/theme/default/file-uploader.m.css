@@ -43,5 +43,9 @@
 
 /* Applied to the node containing the validation message */
 .validationMessage {
+	color: var(--success-color);
+}
+
+.invalid .validationMessage {
 	color: var(--error-color);
 }

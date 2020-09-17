@@ -36,5 +36,9 @@
 }
 
 .validationMessage {
+	color: var(--color-success);
+}
+
+.invalid .validationMessage {
 	color: var(--color-error);
 }

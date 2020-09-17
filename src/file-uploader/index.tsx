@@ -1,3 +1,4 @@
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -16,7 +17,7 @@ import * as fileUploadInputCss from '../theme/default/file-upload-input.m.css';
 import * as fileUploadInputFixedCss from '../file-upload-input/styles/file-upload-input.m.css';
 
 export interface FileUploaderChildren {
-	label?: FileUploadInputChildren['label'];
+	label?: RenderResult;
 }
 
 export interface FileUploaderProperties extends FileUploadInputProperties {
@@ -26,10 +27,16 @@ export interface FileUploaderProperties extends FileUploadInputProperties {
 	/** The files to render in the widget (controlled scenario) */
 	files?: FileWithValidation[];
 
-	/** The maximum size in bytes of a file */
+	/**
+	 * The maximum size in bytes of a file. Files larger than this will be included in the file list but their
+	 * `valid` property will be `false` and their `message` property will be set to the validation message.
+	 */
 	maxSize?: number;
 
-	/** Callback fired when the input validation changes */
+	/**
+	 * Callback fired when the input validation changes. The `valid` parameter is an aggregate of the `valid` value
+	 * of all files. The `message` parameter is empty; each file has a `message` property.
+	 */
 	onValidate?: (valid: boolean | undefined, message: string) => void;
 
 	/** Callback called when the user selects files */
@@ -43,6 +50,10 @@ export type FileWithValidation = File & ValidationInfo;
 
 const factorNames = ['', 'B', 'KB', 'MB', 'GB', 'TB', 'PB'];
 function formatBytes(byteCount: number) {
+	if (isNaN(byteCount)) {
+		return '';
+	}
+
 	let formattedValue = '';
 	for (let i = 1; i < factorNames.length; i++) {
 		if (byteCount < Math.pow(1024, i) || i === factorNames.length - 1) {
@@ -55,7 +66,6 @@ function formatBytes(byteCount: number) {
 }
 
 export interface FileUploaderIcache {
-	previousInitialFiles?: FileWithValidation[];
 	previousValidationState?: boolean;
 	value: FileWithValidation[];
 }
@@ -87,12 +97,7 @@ export const FileUploader = factory(function FileUploader({
 	const { messages } = i18n.localize(bundle);
 	const themeCss = theme.classes(css);
 	const inputChild = (children()[0] || {}) as FileUploadInputChildren;
-	const previousInitialFiles = icache.get('previousInitialFiles');
-	let files =
-		initialFiles && initialFiles !== previousInitialFiles
-			? initialFiles
-			: icache.getOrSet('value', []);
-	icache.set('previousInitialFiles', initialFiles);
+	let files = initialFiles || icache.getOrSet('value', []);
 
 	function validateFiles(files: Array<File | FileWithValidation>): FileWithValidation[] {
 		const previousValidationState = icache.get('previousValidationState');
@@ -117,6 +122,9 @@ export const FileUploader = factory(function FileUploader({
 
 			currentValidationState = currentValidationState && valid;
 
+			// It is important to use the original File object - creating a new object and assigning file's
+			// properties to it won't work for File's special methods. Even setting the File instance as the
+			// prototype of another object will result in failure when attempting to invoke File methods.
 			validatedFile.valid = valid;
 			validatedFile.message = message;
 
@@ -132,7 +140,10 @@ export const FileUploader = factory(function FileUploader({
 
 	function updateFiles(newFiles: Array<File | FileWithValidation>) {
 		const validatedFiles = validateFiles(newFiles);
-		icache.set('value', validatedFiles);
+		// only update the cache if the widget is not controlled
+		if (!initialFiles) {
+			icache.set('value', validatedFiles);
+		}
 		onValue(validatedFiles);
 	}
 
@@ -141,7 +152,7 @@ export const FileUploader = factory(function FileUploader({
 		updateFiles(newValue);
 	}
 
-	function remove(file: File) {
+	function remove(file: FileWithValidation) {
 		const fileIndex = files.indexOf(file);
 		/* istanbul ignore if (type-safety check; should never happen) */
 		if (fileIndex === -1) {

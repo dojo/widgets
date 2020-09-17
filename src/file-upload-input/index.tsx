@@ -23,7 +23,9 @@ export interface FileUploadInputChildren {
 	/** The label to be displayed above the input */
 	label?: RenderResult;
 
-	/** Content to be rendered within the widget area */
+	/**
+	 * Content to be rendered within the widget area. This content will be obscured by the overlay during drag and drop.
+	 */
 	content?: RenderResult;
 }
 
@@ -63,9 +65,10 @@ export interface FileUploadInputProperties {
 }
 
 /**
- * Filter files based on file types specified by `accept`
+ * Filter files based on file types specified by `accept`. This is handled automatically by the OS file selection
+ * dialog, but must be done manually for files from drag and drop.
  * @param files
- * @param accept file type specifiers (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Unique_file_type_specifiers)
+ * @param accept file type specifiers (https://developer.mozilla.org/docs/Web/HTML/Element/input/file#Unique_file_type_specifiers)
  * @returns the files that match a type in `accept`
  */
 function filterValidFiles(files: File[], accept: FileUploadInputProperties['accept']) {
@@ -138,16 +141,27 @@ export const FileUploadInput = factory(function FileUploadInput({
 	const { content = undefined, label = undefined } = children()[0] || {};
 	let isDndActive = icache.getOrSet('isDndActive', false);
 
+	// DOM events are used directly because writing reactive middleware for this use-case ends up either very
+	// specific and not widely useful, or if attempts are made to provide a general-purpose API the logic becomes
+	// very convoluted (especially for dealing with the conditionally rendered overlay).
+	// dragenter is listened for on the root node and sets `isDndActive` to `true` at which point
+	// the overlay node is displayed
 	function onDragEnter(event: DragEvent) {
 		event.preventDefault();
 		icache.set('isDndActive', true);
 	}
 
+	// dragleave is listened for on the overlay since it fires spuriously on the root node
+	// as the cursor moves over children
 	function onDragLeave(event: DragEvent) {
 		event.preventDefault();
 		icache.set('isDndActive', false);
 	}
 
+	// As long as `event.stopPropagation` is not called drag events will bubble from the overlay
+	// to the root node and can be handled there.
+	// This event must be handled, but all that needs to be done is prevent the default action:
+	// the default action is to cancel the drag operation
 	function onDragOver(event: DragEvent) {
 		event.preventDefault();
 	}

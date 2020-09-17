@@ -19,3 +19,12 @@ you can build a custom file uploader widget based on `FileUploadInput`. You can 
 ### i18n features
 
 - Localized version of labels for the button and DnD can be provided in nls resources
+
+## Drag and Drop
+
+This widget uses the [HTML Drag and Drop API](https://developer.mozilla.org/docs/Web/API/HTML_Drag_and_Drop_API).
+
+The entire widget is enabled as a drag and drop target for files from the OS. In order to provide a visual indicator
+that the widget is ready to receive a drop, and to handle
+[DragEvents](https://developer.mozilla.org/docs/Web/API/DragEvent) more smoothly as soon as a file is dragged over the
+widget an overlay is displayed.

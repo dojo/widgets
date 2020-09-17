@@ -31,5 +31,9 @@
 }
 
 .validationMessage {
+	color: var(--mdc-secondary-text-color);
+}
+
+.invalid .validationMessage {
 	color: var(--mdc-theme-error);
 }
