@@ -45,8 +45,8 @@ interface TreeCache {
 	selectedNode?: string;
 	controlledExpandedNodes: string[];
 	controlledCheckedNodes: string[];
-	checkedNodes: string[];
-	expandedNodes: string[];
+	checked: string[];
+	expanded: string[];
 }
 
 const resource = createResourceMiddleware<TreeNodeOption>();
@@ -85,7 +85,7 @@ export default factory(function({
 		properties,
 		({ initialChecked: current }, { initialChecked: next }) => {
 			if ((current || next) && current !== next) {
-				icache.set('checkedNodes', next || []);
+				icache.set('checked', next || []);
 			}
 		}
 	);
@@ -94,7 +94,7 @@ export default factory(function({
 		properties,
 		({ initialExpanded: current }, { initialExpanded: next }) => {
 			if ((current || next) && current !== next) {
-				icache.set('expandedNodes', next || []);
+				icache.set('expanded', next || []);
 			}
 		}
 	);
@@ -118,8 +118,8 @@ export default factory(function({
 	const selectedNode = icache.get('selectedNode');
 	const controlledExpandedNodes = icache.get('controlledExpandedNodes');
 	const controlledCheckedNodes = icache.get('controlledCheckedNodes');
-	const expandedNodes = icache.getOrSet('expandedNodes', []);
-	const checkedNodes = icache.getOrSet('checkedNodes', []);
+	const expandedNodes = icache.getOrSet('expanded', []);
+	const checkedNodes = icache.getOrSet('checked', []);
 	const shouldFocus = focus.shouldFocus();
 
 	function activateNode(id: string) {
@@ -134,31 +134,31 @@ export default factory(function({
 	function checkNode(id: string, checked: boolean) {
 		if (!controlledCheckedNodes) {
 			if (checked) {
-				icache.set('checkedNodes', (currentChecked) => [...currentChecked, id]);
+				icache.set('checked', (currentChecked) => [...currentChecked, id]);
 			} else {
-				icache.set('checkedNodes', (currentChecked) =>
+				icache.set('checked', (currentChecked) =>
 					currentChecked ? currentChecked.filter((n) => n !== id) : []
 				);
 			}
 		}
-		onCheck && onCheck(icache.get('checkedNodes') || []);
+		onCheck && onCheck(icache.get('checked') || []);
 	}
 
 	function expandNode(id: string) {
 		if (!controlledExpandedNodes) {
-			icache.set('expandedNodes', (currentExpanded) => [...currentExpanded, id]);
+			icache.set('expanded', (currentExpanded) => [...currentExpanded, id]);
 		}
-		console.log('onExpand called with', icache.get('expandedNodes'));
-		onExpand && onExpand(icache.get('expandedNodes') || []);
+		console.log('onExpand called with', icache.get('expanded'));
+		onExpand && onExpand(icache.get('expanded') || []);
 	}
 
 	function collapseNode(id: string) {
 		if (!controlledExpandedNodes) {
-			icache.set('expandedNodes', (currentExpanded) =>
+			icache.set('expanded', (currentExpanded) =>
 				currentExpanded ? currentExpanded.filter((n) => n !== id) : []
 			);
 		}
-		onExpand && onExpand(icache.get('expandedNodes') || []);
+		onExpand && onExpand(icache.get('expanded') || []);
 	}
 
 	function createNodeFlatMap(nodeId: string = 'root'): TreeNodeOption[] {
