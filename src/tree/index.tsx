@@ -24,16 +24,16 @@ export interface TreeNodeOption {
 export interface TreeProperties {
 	checkable?: boolean;
 	selectable?: boolean;
-	checkedNodes?: string[];
-	expandedNodes?: string[];
+	checked?: string[];
+	expanded?: string[];
 	initialChecked?: string[];
 	initialExpanded?: string[];
 	selectedNode?: string;
 	disabledNodes?: string[];
 	parentSelection?: boolean;
 	onSelect?(id: string): void;
-	onCheck?(id: string, checked: boolean): void;
-	onExpand?(id: string, expanded: boolean): void;
+	onCheck?(id: string[], checked: boolean): void;
+	onExpand?(id: string[], expanded: boolean): void;
 }
 
 export interface TreeChildren {
@@ -70,24 +70,16 @@ export default factory(function({
 			}
 		}
 	);
-	diffProperty(
-		'expandedNodes',
-		properties,
-		({ expandedNodes: current }, { expandedNodes: next }) => {
-			if ((current || next) && current !== next) {
-				icache.set('controlledExpandedNodes', next || []);
-			}
+	diffProperty('expanded', properties, ({ expanded: current }, { expanded: next }) => {
+		if ((current || next) && current !== next) {
+			icache.set('controlledExpandedNodes', next || []);
 		}
-	);
-	diffProperty(
-		'checkedNodes',
-		properties,
-		({ checkedNodes: current }, { checkedNodes: next }) => {
-			if ((current || next) && current !== next) {
-				icache.set('controlledCheckedNodes', next || []);
-			}
+	});
+	diffProperty('checked', properties, ({ checked: current }, { checked: next }) => {
+		if ((current || next) && current !== next) {
+			icache.set('controlledCheckedNodes', next || []);
 		}
-	);
+	});
 	diffProperty(
 		'initialChecked',
 		properties,
@@ -149,14 +141,14 @@ export default factory(function({
 				);
 			}
 		}
-		onCheck && onCheck(id, checked);
+		onCheck && onCheck(icache.get('checkedNodes') || [], checked);
 	}
 
 	function expandNode(id: string) {
 		if (!controlledExpandedNodes) {
 			icache.set('expandedNodes', (currentExpanded) => [...currentExpanded, id]);
 		}
-		onExpand && onExpand(id, true);
+		onExpand && onExpand(icache.get('expandedNodes') || [], true);
 	}
 
 	function collapseNode(id: string) {
