@@ -32,8 +32,8 @@ export interface TreeProperties {
 	disabledNodes?: string[];
 	parentSelection?: boolean;
 	onSelect?(id: string): void;
-	onCheck?(id: string[], checked: boolean): void;
-	onExpand?(id: string[], expanded: boolean): void;
+	onCheck?(id: string[]): void;
+	onExpand?(id: string[]): void;
 }
 
 export interface TreeChildren {
@@ -141,14 +141,15 @@ export default factory(function({
 				);
 			}
 		}
-		onCheck && onCheck(icache.get('checkedNodes') || [], checked);
+		onCheck && onCheck(icache.get('checkedNodes') || []);
 	}
 
 	function expandNode(id: string) {
 		if (!controlledExpandedNodes) {
 			icache.set('expandedNodes', (currentExpanded) => [...currentExpanded, id]);
 		}
-		onExpand && onExpand(icache.get('expandedNodes') || [], true);
+		console.log('onExpand called with', icache.get('expandedNodes'));
+		onExpand && onExpand(icache.get('expandedNodes') || []);
 	}
 
 	function collapseNode(id: string) {
@@ -157,7 +158,7 @@ export default factory(function({
 				currentExpanded ? currentExpanded.filter((n) => n !== id) : []
 			);
 		}
-		onExpand && onExpand(id, false);
+		onExpand && onExpand(icache.get('expandedNodes') || []);
 	}
 
 	function createNodeFlatMap(nodeId: string = 'root'): TreeNodeOption[] {

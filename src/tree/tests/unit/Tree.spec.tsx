@@ -207,7 +207,7 @@ describe('Tree', () => {
 							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
-					expandedNodes={expandedNodes}
+					expanded={expandedNodes}
 				/>
 			));
 			r.expect(
@@ -281,7 +281,7 @@ describe('Tree', () => {
 		});
 
 		it('raises events on expand/collapse', () => {
-			const onExpand = sinon.stub();
+			const onExpand = sinon.spy();
 			const r = renderer(() => (
 				<Tree
 					resource={{
@@ -297,19 +297,26 @@ describe('Tree', () => {
 			r.expect(simpleTreeAssertion);
 
 			// simulate expand event
+			console.log('>');
 			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, true);
+			console.log('>>');
 			r.expect(expandedAssertion);
-			assert(onExpand.calledWith(simpleTree[0].id, true));
+			console.log('>>>', onExpand.firstCall.args);
+			assert(onExpand.calledWith([simpleTree[0].id]));
 
 			// simulate collapse event
 			onExpand.resetHistory();
+			console.log('>>>>');
 			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, false);
+			console.log('>>>>>');
 			r.expect(
 				simpleTreeAssertion
 					.setProperty(WrappedNode1, 'expandedNodes', [])
 					.setProperty(WrappedNode2, 'expandedNodes', [])
 			);
-			assert(onExpand.calledWith(simpleTree[0].id, false));
+			console.log('>>>>>>');
+			console.log('>>>', onExpand.firstCall.args);
+			assert(onExpand.calledWith([]));
 		});
 
 		it('raises events on expand/collapse on keyboard navigation', () => {
@@ -345,14 +352,14 @@ describe('Tree', () => {
 					.setProperty(WrappedNode2, 'activeNode', nodeId)
 					.setProperty(WrappedNode3, 'activeNode', nodeId)
 			);
-			assert(onExpand.calledWith(nodeId, true));
+			assert(onExpand.calledWith([nodeId]));
 
 			// we can now collapse it with "left" key
 			onExpand.resetHistory();
 			r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Left });
 
 			r.expect(activeAssertion);
-			assert(onExpand.calledWith(nodeId, false));
+			assert(onExpand.calledWith([]));
 		});
 
 		it('raises events on expand/collapse on keyboard navigation with controlled nodes', () => {
@@ -367,7 +374,7 @@ describe('Tree', () => {
 						}
 					}}
 					onExpand={onExpand}
-					expandedNodes={['parent-1']}
+					expanded={['parent-1']}
 				/>
 			));
 			const nodeId = simpleTree[0].id;
@@ -385,7 +392,7 @@ describe('Tree', () => {
 			r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Left });
 
 			r.expect(activeExpandedAssertion);
-			assert(onExpand.calledWith(nodeId, false));
+			assert(onExpand.calledWith([]));
 		});
 	});
 
@@ -423,7 +430,7 @@ describe('Tree', () => {
 						}
 					}}
 					checkable={true}
-					checkedNodes={checkedNodes}
+					checked={checkedNodes}
 				/>
 			));
 
@@ -481,7 +488,7 @@ describe('Tree', () => {
 					.setProperty(WrappedNode1, 'checkedNodes', [simpleTree[0].id])
 					.setProperty(WrappedNode2, 'checkedNodes', [simpleTree[0].id])
 			);
-			assert(onCheck.calledWith(simpleTree[0].id, true));
+			assert(onCheck.calledWith([simpleTree[0].id]));
 
 			// simulate uncheck event
 			onCheck.resetHistory();
@@ -491,7 +498,7 @@ describe('Tree', () => {
 					.setProperty(WrappedNode1, 'checkedNodes', [])
 					.setProperty(WrappedNode2, 'checkedNodes', [])
 			);
-			assert(onCheck.calledWith(simpleTree[0].id, false));
+			assert(onCheck.calledWith([]));
 		});
 	});
 
