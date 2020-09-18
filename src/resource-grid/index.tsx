@@ -10,8 +10,6 @@ import { createResourceMiddleware } from '@dojo/framework/core/middleware/resour
 import { RenderResult } from '@dojo/framework/core/interfaces';
 // import LoadingIndicator from '../../loading-indicator';
 
-export type ListOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
-
 export interface ColumnConfig {
 	id: string;
 	title: string | (() => RenderResult);
@@ -23,7 +21,7 @@ export interface ColumnConfig {
 }
 
 export interface GridProperties {
-	columnConfig: ColumnConfig[];
+	columns: ColumnConfig[];
 	/** The initial selected value */
 	initialValue?: string;
 	/** Controlled value property */
@@ -48,30 +46,28 @@ export interface GridProperties {
 	menu?: boolean;
 	/** The id to be applied to the root of this widget, if not passed, one will be generated for a11y reasons */
 	widgetId?: string;
-	/** Callback to determine if a list item is disabled. If not provided, ListOption.disabled will be used */
-	disabled?: (item: ListOption) => boolean;
 }
 
-export interface ItemRendererProperties {
-	active: boolean;
-	disabled: boolean;
-	label?: string;
-	selected: boolean;
-	value: string;
-}
+// export interface ItemRendererProperties {
+// 	active: boolean;
+// 	disabled: boolean;
+// 	label?: string;
+// 	selected: boolean;
+// 	value: string;
+// }
 
 interface GridICache {
-	activeIndex: number;
-	initial: string;
-	inputText: string;
-	itemHeight: number;
-	itemsInView: number;
-	menuHeight: number;
-	resetInputTextTimer: any;
-	value: string;
-	scrollTop: number;
-	previousActiveIndex: number;
-	requestedInputText: string;
+	// activeIndex: number;
+	// initial: string;
+	// inputText: string;
+	// itemHeight: number;
+	// itemsInView: number;
+	// menuHeight: number;
+	// resetInputTextTimer: any;
+	// value: string;
+	// scrollTop: number;
+	// previousActiveIndex: number;
+	// requestedInputText: string;
 }
 
 // const offscreenHeight = (dnode: RenderResult) => {
@@ -89,7 +85,7 @@ const factory = create({
 	icache: createICacheMiddleware<GridICache>(),
 	focus,
 	theme,
-	resource: createResourceMiddleware<ListOption>()
+	resource: createResourceMiddleware<any>()
 }).properties<GridProperties>();
 
 export const Grid = factory(function Grid({
@@ -111,7 +107,7 @@ export const Grid = factory(function Grid({
 		widgetId,
 		// theme: themeProp,
 		resource: { template, options = createOptions(id) },
-		columnConfig
+		columns
 		// classes
 	} = properties();
 
@@ -437,10 +433,26 @@ export const Grid = factory(function Grid({
 
 	// const items = renderItems(startNode, renderedItemsCount, startNode);
 	const metaInfo = meta(template, options(), true);
-	const results = getOrRead(template, options({ page: 1 }));
 
 	if (!metaInfo || metaInfo.total === undefined) {
 		return;
+	}
+
+	function renderRows() {
+		const results = getOrRead(template, options({ page: 1 }));
+
+		return (
+			results[0] &&
+			results[0].map((result) => {
+				return (
+					<tr>
+						{columns.map((config) => {
+							return <td>{`${result[config.id]}`}</td>;
+						})}
+					</tr>
+				);
+			})
+		);
 	}
 
 	// const total = metaInfo.total;
@@ -471,25 +483,12 @@ export const Grid = factory(function Grid({
 			<table>
 				<thead>
 					<tr>
-						{columnConfig.map((config) => {
+						{columns.map((config) => {
 							return <th>{config.title}</th>;
 						})}
 					</tr>
 				</thead>
-				<tbody>
-					{results[0] &&
-						results[0].map((result) => {
-							return (
-								<tr>
-									{columnConfig.map((config) => {
-										return (
-											<td>{`${result[config.id as keyof typeof result]}`}</td>
-										);
-									})}
-								</tr>
-							);
-						})}
-				</tbody>
+				<tbody>{renderRows()}</tbody>
 				<tfoot />
 			</table>
 			{/* <div
