@@ -16,6 +16,10 @@
 	box-shadow: var(--box-shadow-dimensions-large) var(--color-box-shadow-strong);
 }
 
+.pane.open {
+	transform: translate(0, 0);
+}
+
 .content {
 	padding: calc(2 * var(--grid-base));
 }
