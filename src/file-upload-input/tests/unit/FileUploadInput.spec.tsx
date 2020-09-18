@@ -13,7 +13,7 @@ import * as css from '../../../theme/default/file-upload-input.m.css';
 import * as fixedCss from '../../styles/file-upload-input.m.css';
 import * as labelCss from '../../../theme/default/label.m.css';
 
-const { after, afterEach, it, describe } = intern.getInterface('bdd');
+const { after, afterEach, describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 const { messages } = bundle;
 

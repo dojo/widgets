@@ -49,7 +49,7 @@ export interface FileUploaderProperties extends FileUploadInputProperties {
 export type FileWithValidation = File & ValidationInfo;
 
 const factorNames = ['', 'B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-function formatBytes(byteCount: number) {
+export function formatBytes(byteCount: number) {
 	if (isNaN(byteCount)) {
 		return '';
 	}
@@ -57,7 +57,13 @@ function formatBytes(byteCount: number) {
 	let formattedValue = '';
 	for (let i = 1; i < factorNames.length; i++) {
 		if (byteCount < Math.pow(1024, i) || i === factorNames.length - 1) {
-			formattedValue = `${(byteCount / Math.pow(1024, i - 1)).toFixed(2)} ${factorNames[i]}`;
+			formattedValue = `${(byteCount / Math.pow(1024, i - 1)).toFixed(i > 1 ? 2 : 0)} ${
+				factorNames[i]
+			}`;
+			// values below the next factor up but greater than 1023.99 will round up to 1024.00 - push them down
+			if (formattedValue.startsWith('1024.00') && i < factorNames.length - 1) {
+				formattedValue = `1023.99 ${factorNames[i]}`;
+			}
 			break;
 		}
 	}
