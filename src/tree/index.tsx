@@ -278,10 +278,13 @@ export default factory(function({
 								activeNode={activeNode}
 								checkable={checkable}
 								selectable={selectable}
-								checkedNodes={controlledCheckedNodes || checkedNodes}
+								selected={node.id === selectedNode}
+								checked={(controlledCheckedNodes || checkedNodes).includes(node.id)}
 								value={selectedNode}
-								disabledNodes={disabledNodes || []}
-								expandedNodes={controlledExpandedNodes || expandedNodes}
+								disabled={(disabledNodes || []).includes(node.id)}
+								expanded={(controlledExpandedNodes || expandedNodes).includes(
+									node.id
+								)}
 								parentSelection={parentSelection}
 								node={node}
 								onActive={activateNode}
@@ -309,12 +312,13 @@ export default factory(function({
 
 interface TreeNodeProperties {
 	checkable: boolean;
-	selectable: boolean;
+	checked?: boolean;
+	selectable?: boolean;
+	disabled?: boolean;
 	activeNode?: string;
 	value?: string;
-	checkedNodes: string[];
-	disabledNodes: string[];
-	expandedNodes: string[];
+	expanded: boolean;
+	selected: boolean;
 	parentSelection?: boolean;
 	node: TreeNodeOption;
 	onActive(node: string): void;
@@ -337,10 +341,10 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 		checkable,
 		selectable,
 		activeNode,
-		value,
-		checkedNodes,
-		disabledNodes,
-		expandedNodes,
+		checked,
+		disabled,
+		expanded,
+		selected,
 		onActive,
 		onValue,
 		onCheck,
@@ -350,16 +354,12 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 	const [itemRenderer] = children();
 	const classes = theme.classes(css);
 	const isActive = node.id === activeNode;
-	const isSelected = node.id === value;
-	const expanded = expandedNodes.includes(node.id);
-	const checked = checkedNodes.includes(node.id);
-	const isDisabled = disabledNodes && disabledNodes.includes(node.id);
 	const isExpandable = node.hasChildren;
 
 	return (
 		<ListItem
 			active={isActive}
-			selected={isSelected}
+			selected={selected}
 			onRequestActive={() => {
 				onActive(node.id);
 			}}
@@ -370,7 +370,7 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 					checkable && onCheck(node.id, !checked);
 				}
 			}}
-			disabled={isDisabled}
+			disabled={disabled}
 			widgetId={node.id}
 		>
 			<div classes={classes.contentWrapper}>
@@ -388,11 +388,11 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 							}}
 						>
 							<Checkbox
-								checked={checked}
+								checked={!!checked}
 								onValue={(value) => {
 									onCheck(node.id, value);
 								}}
-								disabled={isDisabled}
+								disabled={disabled}
 							/>
 						</div>
 					)}

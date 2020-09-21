@@ -29,10 +29,11 @@ const defaultNodeProps = {
 	activeNode: undefined,
 	checkable: false,
 	selectable: false,
-	checkedNodes: [],
+	checked: false,
+	disabled: false,
+	expanded: false,
+	selected: false,
 	value: undefined,
-	disabledNodes: [],
-	expandedNodes: [],
 	parentSelection: false,
 	onActive: noop,
 	onValue: noop,
@@ -112,8 +113,8 @@ describe('Tree', () => {
 
 		r.expect(
 			simpleTreeAssertion
-				.setProperty(WrappedNode1, 'disabledNodes', disabledNodes)
-				.setProperty(WrappedNode2, 'disabledNodes', disabledNodes)
+				.setProperty(WrappedNode1, 'disabled', true)
+				.setProperty(WrappedNode2, 'disabled', false)
 		);
 	});
 
@@ -165,10 +166,9 @@ describe('Tree', () => {
 	});
 
 	describe('ExpandedNodes', () => {
-		const expandedNodes = [simpleTree[0].id];
 		const expandedAssertion = simpleTreeAssertion
-			.setProperty(WrappedNode1, 'expandedNodes', expandedNodes)
-			.setProperty(WrappedNode2, 'expandedNodes', expandedNodes)
+			.setProperty(WrappedNode1, 'expanded', true)
+			.setProperty(WrappedNode2, 'expanded', false)
 			.insertAfter(
 				WrappedNode1,
 				() =>
@@ -182,7 +182,7 @@ describe('Tree', () => {
 							<li classes={[css.node, false, false, false]}>
 								<WrappedNode3
 									{...defaultNodeProps}
-									expandedNodes={expandedNodes}
+									expanded={false}
 									node={simpleTree[1]}
 								>
 									{noop as any}
@@ -196,7 +196,7 @@ describe('Tree', () => {
 			const expandedNodes = [simpleTree[0].id];
 			const nodeProps = {
 				...defaultNodeProps,
-				expandedNodes
+				expanded: false
 			};
 			const r = renderer(() => (
 				<Tree
@@ -212,8 +212,8 @@ describe('Tree', () => {
 			));
 			r.expect(
 				simpleTreeAssertion
-					.setProperty(WrappedNode1, 'expandedNodes', expandedNodes)
-					.setProperty(WrappedNode2, 'expandedNodes', expandedNodes)
+					.setProperty(WrappedNode1, 'expanded', true)
+					.setProperty(WrappedNode2, 'expanded', false)
 					.insertAfter(
 						WrappedNode1,
 						() =>
@@ -240,7 +240,7 @@ describe('Tree', () => {
 			const expandedNodes = [simpleTree[0].id];
 			const nodeProps = {
 				...defaultNodeProps,
-				expandedNodes
+				expanded: false
 			};
 			const r = renderer(() => (
 				<Tree
@@ -256,8 +256,8 @@ describe('Tree', () => {
 			));
 			r.expect(
 				simpleTreeAssertion
-					.setProperty(WrappedNode1, 'expandedNodes', expandedNodes)
-					.setProperty(WrappedNode2, 'expandedNodes', expandedNodes)
+					.setProperty(WrappedNode1, 'expanded', true)
+					.setProperty(WrappedNode2, 'expanded', false)
 					.insertAfter(
 						WrappedNode1,
 						() =>
@@ -297,25 +297,18 @@ describe('Tree', () => {
 			r.expect(simpleTreeAssertion);
 
 			// simulate expand event
-			console.log('>');
 			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, true);
-			console.log('>>');
 			r.expect(expandedAssertion);
-			console.log('>>>', onExpand.firstCall.args);
 			assert(onExpand.calledWith([simpleTree[0].id]));
 
 			// simulate collapse event
 			onExpand.resetHistory();
-			console.log('>>>>');
 			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, false);
-			console.log('>>>>>');
 			r.expect(
 				simpleTreeAssertion
-					.setProperty(WrappedNode1, 'expandedNodes', [])
-					.setProperty(WrappedNode2, 'expandedNodes', [])
+					.setProperty(WrappedNode1, 'expanded', false)
+					.setProperty(WrappedNode2, 'expanded', false)
 			);
-			console.log('>>>>>>');
-			console.log('>>>', onExpand.firstCall.args);
 			assert(onExpand.calledWith([]));
 		});
 
@@ -436,8 +429,8 @@ describe('Tree', () => {
 
 			r.expect(
 				checkableAssertion
-					.setProperty(WrappedNode1, 'checkedNodes', checkedNodes)
-					.setProperty(WrappedNode2, 'checkedNodes', checkedNodes)
+					.setProperty(WrappedNode1, 'checked', true)
+					.setProperty(WrappedNode2, 'checked', false)
 			);
 		});
 
@@ -459,8 +452,8 @@ describe('Tree', () => {
 
 			r.expect(
 				checkableAssertion
-					.setProperty(WrappedNode1, 'checkedNodes', checkedNodes)
-					.setProperty(WrappedNode2, 'checkedNodes', checkedNodes)
+					.setProperty(WrappedNode1, 'checked', true)
+					.setProperty(WrappedNode2, 'checked', false)
 			);
 		});
 
@@ -485,8 +478,8 @@ describe('Tree', () => {
 			r.property(WrappedNode1, 'onCheck', simpleTree[0].id, true);
 			r.expect(
 				checkableAssertion
-					.setProperty(WrappedNode1, 'checkedNodes', [simpleTree[0].id])
-					.setProperty(WrappedNode2, 'checkedNodes', [simpleTree[0].id])
+					.setProperty(WrappedNode1, 'checked', true)
+					.setProperty(WrappedNode2, 'checked', false)
 			);
 			assert(onCheck.calledWith([simpleTree[0].id]));
 
@@ -495,8 +488,8 @@ describe('Tree', () => {
 			r.property(WrappedNode1, 'onCheck', simpleTree[0].id, false);
 			r.expect(
 				checkableAssertion
-					.setProperty(WrappedNode1, 'checkedNodes', [])
-					.setProperty(WrappedNode2, 'checkedNodes', [])
+					.setProperty(WrappedNode1, 'checked', false)
+					.setProperty(WrappedNode2, 'checked', false)
 			);
 			assert(onCheck.calledWith([]));
 		});
@@ -552,6 +545,7 @@ describe('Tree', () => {
 					])
 					.setProperty(WrappedNode1, 'value', selectedNode)
 					.setProperty(WrappedNode2, 'value', selectedNode)
+					.setProperty(WrappedNode1, 'selected', true)
 			);
 		});
 
@@ -587,6 +581,7 @@ describe('Tree', () => {
 					])
 					.setProperty(WrappedNode1, 'value', selectedNode)
 					.setProperty(WrappedNode2, 'value', selectedNode)
+					.setProperty(WrappedNode1, 'selected', true)
 			);
 		});
 
@@ -626,6 +621,7 @@ describe('Tree', () => {
 					])
 					.setProperty(WrappedNode1, 'value', nodeId)
 					.setProperty(WrappedNode2, 'value', nodeId)
+					.setProperty(WrappedNode2, 'selected', true)
 					.setProperty(WrappedNode1, 'activeNode', nodeId)
 					.setProperty(WrappedNode2, 'activeNode', nodeId)
 			);

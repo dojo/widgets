@@ -19,10 +19,11 @@ const defaultProps = {
 	activeNode: undefined,
 	checkable: false,
 	selectable: false,
-	checkedNodes: [],
+	checked: false,
+	disabled: false,
+	expanded: false,
+	selected: false,
 	value: undefined,
-	disabledNodes: [],
-	expandedNodes: [],
 	parentSelection: true,
 	onActive: noop,
 	onValue: noop,
@@ -66,7 +67,7 @@ describe('TreeNode', () => {
 
 	it('renders disabled', () => {
 		const r = renderer(() => (
-			<TreeNode {...defaultProps} disabledNodes={[node.id]}>
+			<TreeNode {...defaultProps} disabled={true}>
 				{defaultRenderer}
 			</TreeNode>
 		));
@@ -131,7 +132,7 @@ describe('TreeNode', () => {
 
 		it('renders checked', () => {
 			const r = renderer(() => (
-				<TreeNode {...defaultProps} checkable={true} checkedNodes={[node.id]}>
+				<TreeNode {...defaultProps} checkable={true} checked={true}>
 					{defaultRenderer}
 				</TreeNode>
 			));
@@ -157,7 +158,7 @@ describe('TreeNode', () => {
 
 		it('renders with disabled checkbox', () => {
 			const r = renderer(() => (
-				<TreeNode {...defaultProps} checkable={true} disabledNodes={[node.id]}>
+				<TreeNode {...defaultProps} checkable={true} disabled={true}>
 					{defaultRenderer}
 				</TreeNode>
 			));
@@ -196,7 +197,7 @@ describe('TreeNode', () => {
 			const selectedAssertion = baseAssertion.setProperty(WrappedRoot, 'selected', true);
 
 			const r = renderer(() => (
-				<TreeNode {...defaultProps} selectable={true} value={node.id}>
+				<TreeNode {...defaultProps} selectable={true} selected={true} value={node.id}>
 					{defaultRenderer}
 				</TreeNode>
 			));
@@ -279,7 +280,7 @@ describe('TreeNode', () => {
 
 		it('renders expanded', () => {
 			const r = renderer(() => (
-				<TreeNode {...defaultProps} expandedNodes={[node.id]} node={node}>
+				<TreeNode {...defaultProps} expanded={true} node={node}>
 					{defaultRenderer}
 				</TreeNode>
 			));
@@ -306,12 +307,7 @@ describe('TreeNode', () => {
 		it('raises collapsed event', () => {
 			const onExpand = sinon.stub();
 			const r = renderer(() => (
-				<TreeNode
-					{...defaultProps}
-					expandedNodes={[node.id]}
-					onExpand={onExpand}
-					node={node}
-				>
+				<TreeNode {...defaultProps} expanded={true} onExpand={onExpand} node={node}>
 					{defaultRenderer}
 				</TreeNode>
 			));
