@@ -43,7 +43,7 @@ const defaultNodeProps = {
 const baseAssertion = assertion(() => (
 	<WrappedRoot
 		classes={[css.root, css.nodeParent, undefined]}
-		focus={noop as any}
+		focus={() => false}
 		onkeydown={noop}
 		tabIndex={0}
 	/>
