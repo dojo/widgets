@@ -538,7 +538,7 @@ describe('Tree', () => {
 						}
 					}}
 					selectable={true}
-					selectedNode={selectedNode}
+					selected={selectedNode}
 				/>
 			));
 

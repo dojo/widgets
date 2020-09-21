@@ -28,7 +28,7 @@ export interface TreeProperties {
 	expanded?: string[];
 	initialChecked?: string[];
 	initialExpanded?: string[];
-	selectedNode?: string;
+	selected?: string;
 	disabledNodes?: string[];
 	parentSelection?: boolean;
 	onValue?(id: string): void;
@@ -42,7 +42,7 @@ export interface TreeChildren {
 
 interface TreeCache {
 	activeNode?: string;
-	selectedNode?: string;
+	selected?: string;
 	controlledExpandedNodes: string[];
 	controlledCheckedNodes: string[];
 	checked: string[];
@@ -61,15 +61,11 @@ export default factory(function({
 	properties,
 	children
 }) {
-	diffProperty(
-		'selectedNode',
-		properties,
-		({ selectedNode: current }, { selectedNode: next }) => {
-			if ((current || next) && current !== next) {
-				icache.set('selectedNode', next);
-			}
+	diffProperty('selected', properties, ({ selected: current }, { selected: next }) => {
+		if ((current || next) && current !== next) {
+			icache.set('selected', next);
 		}
-	);
+	});
 	diffProperty('expanded', properties, ({ expanded: current }, { expanded: next }) => {
 		if ((current || next) && current !== next) {
 			icache.set('controlledExpandedNodes', next || []);
@@ -115,7 +111,7 @@ export default factory(function({
 	const [itemRenderer] = children();
 
 	const activeNode = icache.get('activeNode');
-	const selectedNode = icache.get('selectedNode');
+	const selectedNode = icache.get('selected');
 	const controlledExpandedNodes = icache.get('controlledExpandedNodes');
 	const controlledCheckedNodes = icache.get('controlledCheckedNodes');
 	const expandedNodes = icache.getOrSet('expanded', []);
@@ -127,7 +123,7 @@ export default factory(function({
 	}
 
 	function selectNode(id: string) {
-		icache.set('selectedNode', id);
+		icache.set('selected', id);
 		onValue && onValue(id);
 	}
 
