@@ -128,32 +128,25 @@ export default factory(function({
 	}
 
 	function checkNode(id: string, checked: boolean) {
-		if (!controlledCheckedNodes) {
-			if (checked) {
-				icache.set('checked', (currentChecked) => [...currentChecked, id]);
-			} else {
-				icache.set('checked', (currentChecked) =>
-					currentChecked ? currentChecked.filter((n) => n !== id) : []
-				);
-			}
+		if (checked) {
+			icache.set('checked', (currentChecked) => [...currentChecked, id]);
+		} else {
+			icache.set('checked', (currentChecked) =>
+				currentChecked ? currentChecked.filter((n) => n !== id) : []
+			);
 		}
 		onCheck && onCheck(icache.get('checked') || []);
 	}
 
 	function expandNode(id: string) {
-		if (!controlledExpandedNodes) {
-			icache.set('expanded', (currentExpanded) => [...currentExpanded, id]);
-		}
-		console.log('onExpand called with', icache.get('expanded'));
+		icache.set('expanded', (currentExpanded) => [...currentExpanded, id]);
 		onExpand && onExpand(icache.get('expanded') || []);
 	}
 
 	function collapseNode(id: string) {
-		if (!controlledExpandedNodes) {
-			icache.set('expanded', (currentExpanded) =>
-				currentExpanded ? currentExpanded.filter((n) => n !== id) : []
-			);
-		}
+		icache.set('expanded', (currentExpanded) =>
+			currentExpanded ? currentExpanded.filter((n) => n !== id) : []
+		);
 		onExpand && onExpand(icache.get('expanded') || []);
 	}
 
