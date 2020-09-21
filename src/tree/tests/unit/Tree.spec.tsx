@@ -30,7 +30,7 @@ const defaultNodeProps = {
 	checkable: false,
 	selectable: false,
 	checkedNodes: [],
-	selectedNode: undefined,
+	value: undefined,
 	disabledNodes: [],
 	expandedNodes: [],
 	parentSelection: false,
@@ -538,7 +538,7 @@ describe('Tree', () => {
 						}
 					}}
 					selectable={true}
-					selected={selectedNode}
+					value={selectedNode}
 				/>
 			));
 
@@ -550,8 +550,8 @@ describe('Tree', () => {
 						css.selectable,
 						css.selected
 					])
-					.setProperty(WrappedNode1, 'selectedNode', selectedNode)
-					.setProperty(WrappedNode2, 'selectedNode', selectedNode)
+					.setProperty(WrappedNode1, 'value', selectedNode)
+					.setProperty(WrappedNode2, 'value', selectedNode)
 			);
 		});
 
@@ -585,8 +585,8 @@ describe('Tree', () => {
 						css.selectable,
 						css.selected
 					])
-					.setProperty(WrappedNode1, 'selectedNode', selectedNode)
-					.setProperty(WrappedNode2, 'selectedNode', selectedNode)
+					.setProperty(WrappedNode1, 'value', selectedNode)
+					.setProperty(WrappedNode2, 'value', selectedNode)
 			);
 		});
 
@@ -624,8 +624,8 @@ describe('Tree', () => {
 						css.selectable,
 						css.selected
 					])
-					.setProperty(WrappedNode1, 'selectedNode', nodeId)
-					.setProperty(WrappedNode2, 'selectedNode', nodeId)
+					.setProperty(WrappedNode1, 'value', nodeId)
+					.setProperty(WrappedNode2, 'value', nodeId)
 					.setProperty(WrappedNode1, 'activeNode', nodeId)
 					.setProperty(WrappedNode2, 'activeNode', nodeId)
 			);

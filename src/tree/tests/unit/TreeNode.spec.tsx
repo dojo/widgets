@@ -20,7 +20,7 @@ const defaultProps = {
 	checkable: false,
 	selectable: false,
 	checkedNodes: [],
-	selectedNode: undefined,
+	value: undefined,
 	disabledNodes: [],
 	expandedNodes: [],
 	parentSelection: true,
@@ -196,7 +196,7 @@ describe('TreeNode', () => {
 			const selectedAssertion = baseAssertion.setProperty(WrappedRoot, 'selected', true);
 
 			const r = renderer(() => (
-				<TreeNode {...defaultProps} selectable={true} selectedNode={node.id}>
+				<TreeNode {...defaultProps} selectable={true} value={node.id}>
 					{defaultRenderer}
 				</TreeNode>
 			));
