@@ -1,6 +1,6 @@
 import { tsx } from '@dojo/framework/core/vdom';
 import { assertion, renderer, wrap } from '@dojo/framework/testing/renderer';
-import { noop } from '@dojo/widgets/common/tests/support/test-helpers';
+import { noop } from '../../../common/tests/support/test-helpers';
 import * as sinon from 'sinon';
 import FileUploader, { formatBytes } from '../../index';
 import FileUploadInput from '../../../file-upload-input';
@@ -163,7 +163,7 @@ describe('FileUploader', function() {
 			);
 		});
 
-		r.expect(baseAssertion.setChildren(WrappedFileUploadInput, () => [{ label, content: '' }]));
+		r.expect(baseAssertion.setChildren(WrappedFileUploadInput, () => ({ label, content: '' })));
 	});
 
 	it('renders files from property', function() {
@@ -173,7 +173,7 @@ describe('FileUploader', function() {
 		});
 		const content = getRenderedFiles(files);
 
-		r.expect(baseAssertion.setChildren(WrappedFileUploadInput, () => [{ content }]));
+		r.expect(baseAssertion.setChildren(WrappedFileUploadInput, () => ({ content })));
 	});
 
 	it('renders files from FileUploadInput', function() {
@@ -185,7 +185,7 @@ describe('FileUploader', function() {
 
 		r.expect(baseAssertion);
 		r.property(WrappedFileUploadInput, 'onValue', files as any);
-		r.expect(baseAssertion.setChildren(WrappedFileUploadInput, () => [{ content }]));
+		r.expect(baseAssertion.setChildren(WrappedFileUploadInput, () => ({ content })));
 	});
 
 	it('renders and validates multiple files from FileUploadInput', function() {
@@ -219,7 +219,7 @@ describe('FileUploader', function() {
 		r.property(WrappedFileUploadInput, 'onValue', files as any);
 
 		const content = getRenderedFiles(files);
-		r.expect(multipleAssertion.setChildren(WrappedFileUploadInput, () => [{ content }]));
+		r.expect(multipleAssertion.setChildren(WrappedFileUploadInput, () => ({ content })));
 	});
 
 	it('renders added files cumulatively when multiple=true', function() {
@@ -236,17 +236,17 @@ describe('FileUploader', function() {
 		const files = [{ name: 'file1', size: 100 }];
 		r.property(WrappedFileUploadInput, 'onValue', files as any);
 		r.expect(
-			multipleAssertion.setChildren(WrappedFileUploadInput, () => [
-				{ content: getRenderedFiles(files) }
-			])
+			multipleAssertion.setChildren(WrappedFileUploadInput, () => ({
+				content: getRenderedFiles(files as any)
+			}))
 		);
 
 		const moreFiles = [{ name: 'file2', size: 200 }];
 		r.property(WrappedFileUploadInput, 'onValue', moreFiles as any);
 		r.expect(
-			multipleAssertion.setChildren(WrappedFileUploadInput, () => [
-				{ content: getRenderedFiles([...files, ...moreFiles]) }
-			])
+			multipleAssertion.setChildren(WrappedFileUploadInput, () => ({
+				content: getRenderedFiles([...(files as any), ...moreFiles])
+			}))
 		);
 	});
 
@@ -259,16 +259,16 @@ describe('FileUploader', function() {
 		const files = [{ name: 'file1', size: 100 }, { name: 'file2', size: 200 }];
 		r.property(WrappedFileUploadInput, 'onValue', files as any);
 		r.expect(
-			baseAssertion.setChildren(WrappedFileUploadInput, () => [
-				{ content: getRenderedFiles([files[0]]) }
-			])
+			baseAssertion.setChildren(WrappedFileUploadInput, () => ({
+				content: getRenderedFiles([files[0] as any])
+			}))
 		);
 		const moreFiles = [{ name: 'file3', size: 300 }, { name: 'file4', size: 400 }];
 		r.property(WrappedFileUploadInput, 'onValue', moreFiles as any);
 		r.expect(
-			baseAssertion.setChildren(WrappedFileUploadInput, () => [
-				{ content: getRenderedFiles([moreFiles[0]]) }
-			])
+			baseAssertion.setChildren(WrappedFileUploadInput, () => ({
+				content: getRenderedFiles([moreFiles[0] as any])
+			}))
 		);
 	});
 
@@ -305,9 +305,9 @@ describe('FileUploader', function() {
 		});
 		r.property(WrappedFileUploadInput, 'onValue', files as any);
 		r.expect(
-			multipleAssertion.setChildren(WrappedFileUploadInput, () => [
-				{ content: getRenderedFiles(expectedFiles) }
-			])
+			multipleAssertion.setChildren(WrappedFileUploadInput, () => ({
+				content: getRenderedFiles(expectedFiles)
+			}))
 		);
 		assert.deepEqual(onValue.firstCall.args[0], expectedFiles);
 	});
@@ -319,7 +319,7 @@ describe('FileUploader', function() {
 		});
 		const content = getRenderedFiles(files);
 
-		r.expect(baseAssertion.setChildren(WrappedFileUploadInput, () => [{ content }]));
+		r.expect(baseAssertion.setChildren(WrappedFileUploadInput, () => ({ content })));
 		// TODO: the click event is not firing
 		// r.property(WrappedButton, 'onclick');
 		// r.expect(baseAssertion.setChildren(WrappedFileUploadInput, () => [{ content: getRenderedFiles(files.slice(1)) }]));
