@@ -63,9 +63,7 @@ export default factory(function Advanced({ id, middleware: { icache, resource } 
 			<Tree
 				checkable={true}
 				selectable={true}
-				onExpand={(ids) => {
-					icache.set('expanded', (currentExpanded) => [...currentExpanded, ...ids]);
-				}}
+				onExpand={(ids) => {}}
 				expanded={expanded}
 				checked={checked}
 				resource={resource({ template, initOptions: { id, data: nodes } })}

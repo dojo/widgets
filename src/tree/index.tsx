@@ -43,8 +43,6 @@ export interface TreeChildren {
 interface TreeCache {
 	activeNode?: string;
 	value?: string;
-	controlledExpandedNodes: string[];
-	controlledCheckedNodes: string[];
 	checked: string[];
 	expanded: string[];
 }
@@ -64,16 +62,6 @@ export default factory(function({
 	diffProperty('value', properties, ({ value: current }, { value: next }) => {
 		if ((current || next) && current !== next) {
 			icache.set('value', next);
-		}
-	});
-	diffProperty('expanded', properties, ({ expanded: current }, { expanded: next }) => {
-		if ((current || next) && current !== next) {
-			icache.set('controlledExpandedNodes', next || []);
-		}
-	});
-	diffProperty('checked', properties, ({ checked: current }, { checked: next }) => {
-		if ((current || next) && current !== next) {
-			icache.set('controlledCheckedNodes', next || []);
 		}
 	});
 	diffProperty(
@@ -99,6 +87,8 @@ export default factory(function({
 	const {
 		checkable = false,
 		selectable = false,
+		checked,
+		expanded,
 		onValue,
 		onCheck,
 		onExpand,
@@ -112,11 +102,18 @@ export default factory(function({
 
 	const activeNode = icache.get('activeNode');
 	const selectedNode = icache.get('value');
-	const controlledExpandedNodes = icache.get('controlledExpandedNodes');
-	const controlledCheckedNodes = icache.get('controlledCheckedNodes');
+	const shouldFocus = focus.shouldFocus();
+
+	if (checked) {
+		icache.set('checked', checked);
+	}
+
+	if (expanded) {
+		icache.set('expanded', expanded);
+	}
+
 	const expandedNodes = icache.getOrSet('expanded', []);
 	const checkedNodes = icache.getOrSet('checked', []);
-	const shouldFocus = focus.shouldFocus();
 
 	function activateNode(id: string) {
 		icache.set('activeNode', id);
@@ -167,14 +164,8 @@ export default factory(function({
 
 		queriedNodes.forEach((node) => {
 			nodes.push(node);
-			if (!controlledExpandedNodes) {
-				if (expandedNodes.indexOf(node.id) !== -1) {
-					nodes = [...nodes, ...createNodeFlatMap(node.id)];
-				}
-			} else {
-				if (controlledExpandedNodes.indexOf(node.id) !== -1) {
-					nodes = [...nodes, ...createNodeFlatMap(node.id)];
-				}
+			if (expandedNodes.indexOf(node.id) !== -1) {
+				nodes = [...nodes, ...createNodeFlatMap(node.id)];
 			}
 		});
 		return nodes;
@@ -184,7 +175,6 @@ export default factory(function({
 		event.stopPropagation();
 		const nodes = createNodeFlatMap();
 		const activeIndex = nodes.findIndex((node) => node.id === activeNode);
-		const activeExpandedNodes = controlledExpandedNodes || expandedNodes;
 
 		switch (event.which) {
 			// select
@@ -218,7 +208,7 @@ export default factory(function({
 				event.preventDefault();
 				if (
 					activeNode &&
-					!activeExpandedNodes.includes(activeNode) &&
+					!expandedNodes.includes(activeNode) &&
 					nodes[activeIndex].hasChildren
 				) {
 					expandNode(activeNode);
@@ -228,7 +218,7 @@ export default factory(function({
 			// collapse
 			case Keys.Left:
 				event.preventDefault();
-				if (activeNode && activeExpandedNodes.includes(activeNode)) {
+				if (activeNode && expandedNodes.includes(activeNode)) {
 					collapseNode(activeNode);
 				}
 				break;
@@ -262,9 +252,7 @@ export default factory(function({
 				tabIndex={0}
 			>
 				{nodes.map((node) => {
-					const isExpanded = controlledExpandedNodes
-						? controlledExpandedNodes.indexOf(node.id) !== -1
-						: expandedNodes.indexOf(node.id) !== -1;
+					const isExpanded = expandedNodes.indexOf(node.id) !== -1;
 					return (
 						<li
 							classes={[
@@ -279,12 +267,10 @@ export default factory(function({
 								checkable={checkable}
 								selectable={selectable}
 								selected={node.id === selectedNode}
-								checked={(controlledCheckedNodes || checkedNodes).includes(node.id)}
+								checked={checkedNodes.includes(node.id)}
 								value={selectedNode}
 								disabled={(disabledNodes || []).includes(node.id)}
-								expanded={(controlledExpandedNodes || expandedNodes).includes(
-									node.id
-								)}
+								expanded={expandedNodes.includes(node.id)}
 								parentSelection={parentSelection}
 								node={node}
 								onActive={activateNode}
