@@ -93,8 +93,8 @@ describe('Tree', () => {
 				}}
 			/>
 		));
-		r.property(WrappedRoot, 'focus');
 		r.expect(simpleTreeAssertion);
+		r.property(WrappedRoot, 'focus');
 	});
 
 	it('renders disabled nodes', () => {
