@@ -93,6 +93,7 @@ describe('Tree', () => {
 				}}
 			/>
 		));
+		r.property(WrappedRoot, 'focus');
 		r.expect(simpleTreeAssertion);
 	});
 
