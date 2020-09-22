@@ -152,13 +152,9 @@ export default factory(function({
 		const options = createOptions(nodeId);
 		const info = meta(template, options({ query: { parent: nodeId } }), true);
 
-		if (info === undefined) {
-			return [];
-		}
-
 		const results = getOrRead(
 			template,
-			options({ query: { parent: nodeId }, size: info.total })
+			options({ query: { parent: nodeId }, size: info && info.total })
 		);
 		const queriedNodes = flat(results);
 
