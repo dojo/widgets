@@ -41,12 +41,7 @@ const defaultNodeProps = {
 	onExpand: noop
 };
 const baseAssertion = assertion(() => (
-	<WrappedRoot
-		classes={[css.root, css.nodeParent, undefined]}
-		focus={() => false}
-		onkeydown={noop}
-		tabIndex={0}
-	/>
+	<WrappedRoot classes={[css.root, css.nodeParent, undefined]} onkeydown={noop} tabIndex={0} />
 ));
 
 const simpleTreeAssertion = baseAssertion.replaceChildren(WrappedRoot, () => [
@@ -94,7 +89,6 @@ describe('Tree', () => {
 			/>
 		));
 		r.expect(simpleTreeAssertion);
-		r.property(WrappedRoot, 'focus');
 	});
 
 	it('renders disabled nodes', () => {
@@ -174,12 +168,7 @@ describe('Tree', () => {
 				WrappedNode1,
 				() =>
 					(
-						<ol
-							classes={[null, css.nodeParent, null]}
-							focus={() => false}
-							onkeydown={noop}
-							tabIndex={0}
-						>
+						<ol classes={[null, css.nodeParent, null]} onkeydown={noop} tabIndex={0}>
 							<li classes={[css.node, false, false, false]}>
 								<WrappedNode3
 									{...defaultNodeProps}
@@ -221,7 +210,6 @@ describe('Tree', () => {
 							(
 								<ol
 									classes={[null, css.nodeParent, null]}
-									focus={() => false}
 									onkeydown={noop}
 									tabIndex={0}
 								>
@@ -265,7 +253,6 @@ describe('Tree', () => {
 							(
 								<ol
 									classes={[null, css.nodeParent, null]}
-									focus={() => false}
 									onkeydown={noop}
 									tabIndex={0}
 								>
