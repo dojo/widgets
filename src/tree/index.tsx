@@ -244,9 +244,10 @@ export default factory(function({
 				]}
 				onkeydown={onKeyDown}
 				tabIndex={0}
+				role={nodeId === 'root' ? 'tree' : 'group'}
 			>
 				{nodes.map((node) => {
-					const isExpanded = expandedNodes.indexOf(node.id) !== -1;
+					const isExpanded = expandedNodes.includes(node.id);
 					return (
 						<li
 							classes={[
@@ -255,6 +256,7 @@ export default factory(function({
 								selectable && classes.selectable,
 								node.id === selectedNode && classes.selected
 							]}
+							role={'treeitem'}
 						>
 							<TreeNode
 								activeNode={activeNode}
@@ -264,7 +266,7 @@ export default factory(function({
 								checked={checkedNodes.includes(node.id)}
 								value={selectedNode}
 								disabled={(disabledNodes || []).includes(node.id)}
-								expanded={expandedNodes.includes(node.id)}
+								expanded={isExpanded}
 								parentSelection={parentSelection}
 								node={node}
 								onActive={activateNode}

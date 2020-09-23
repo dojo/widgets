@@ -41,16 +41,21 @@ const defaultNodeProps = {
 	onExpand: noop
 };
 const baseAssertion = assertion(() => (
-	<WrappedRoot classes={[css.root, css.nodeParent, undefined]} onkeydown={noop} tabIndex={0} />
+	<WrappedRoot
+		role={'tree'}
+		classes={[css.root, css.nodeParent, undefined]}
+		onkeydown={noop}
+		tabIndex={0}
+	/>
 ));
 
 const simpleTreeAssertion = baseAssertion.replaceChildren(WrappedRoot, () => [
-	<WrappedListItem1 classes={[css.node, css.leaf, false, false]}>
+	<WrappedListItem1 role={'treeitem'} classes={[css.node, css.leaf, false, false]}>
 		<WrappedNode1 {...defaultNodeProps} node={simpleTree[0]}>
 			{noop as any}
 		</WrappedNode1>
 	</WrappedListItem1>,
-	<WrappedListItem2 classes={[css.node, false, false, false]}>
+	<WrappedListItem2 role={'treeitem'} classes={[css.node, false, false, false]}>
 		<WrappedNode2 {...defaultNodeProps} node={simpleTree[2]}>
 			{noop as any}
 		</WrappedNode2>
@@ -168,8 +173,13 @@ describe('Tree', () => {
 				WrappedNode1,
 				() =>
 					(
-						<ol classes={[null, css.nodeParent, null]} onkeydown={noop} tabIndex={0}>
-							<li classes={[css.node, false, false, false]}>
+						<ol
+							role={'group'}
+							classes={[null, css.nodeParent, null]}
+							onkeydown={noop}
+							tabIndex={0}
+						>
+							<li role={'treeitem'} classes={[css.node, false, false, false]}>
 								<WrappedNode3
 									{...defaultNodeProps}
 									expanded={false}
@@ -212,8 +222,9 @@ describe('Tree', () => {
 									classes={[null, css.nodeParent, null]}
 									onkeydown={noop}
 									tabIndex={0}
+									role={'group'}
 								>
-									<li classes={[css.node, false, false, false]}>
+									<li role={'treeitem'} classes={[css.node, false, false, false]}>
 										<TreeNode {...nodeProps} node={simpleTree[1]}>
 											{noop as any}
 										</TreeNode>
@@ -255,8 +266,9 @@ describe('Tree', () => {
 									classes={[null, css.nodeParent, null]}
 									onkeydown={noop}
 									tabIndex={0}
+									role={'group'}
 								>
-									<li classes={[css.node, false, false, false]}>
+									<li role={'treeitem'} classes={[css.node, false, false, false]}>
 										<TreeNode {...nodeProps} node={simpleTree[1]}>
 											{noop as any}
 										</TreeNode>
