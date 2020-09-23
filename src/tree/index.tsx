@@ -55,7 +55,7 @@ const factory = create({ theme, icache, diffProperty, focus, resource })
 
 export default factory(function({
 	id,
-	middleware: { theme, icache, diffProperty, focus, resource },
+	middleware: { theme, icache, diffProperty, resource },
 	properties,
 	children
 }) {
@@ -102,7 +102,6 @@ export default factory(function({
 
 	const activeNode = icache.get('activeNode');
 	const selectedNode = icache.get('value');
-	const shouldFocus = focus.shouldFocus();
 
 	if (checked) {
 		icache.set('checked', checked);
@@ -243,7 +242,6 @@ export default factory(function({
 					classes.nodeParent,
 					theme.variant()
 				]}
-				focus={() => shouldFocus}
 				onkeydown={onKeyDown}
 				tabIndex={0}
 			>
