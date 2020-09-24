@@ -97,7 +97,7 @@ describe('TreeNode', () => {
 			r.property(WrappedRoot, 'onRequestActive');
 			r.expect(baseAssertion);
 
-			assert(onActive.calledWith(node.id));
+			assert(onActive.calledWith());
 		});
 	});
 
@@ -181,14 +181,14 @@ describe('TreeNode', () => {
 			r.property(WrappedCheckbox, 'onValue', true);
 			r.expect(checkboxAssertion);
 
-			assert(onCheck.calledWith(node.id, true));
+			assert(onCheck.calledWith(true));
 
 			// simulate "uncheck" event
 			onCheck.resetHistory();
 			r.property(WrappedCheckbox, 'onValue', false);
 			r.expect(checkboxAssertion);
 
-			assert(onCheck.calledWith(node.id, false));
+			assert(onCheck.calledWith(false));
 		});
 	});
 
@@ -217,7 +217,7 @@ describe('TreeNode', () => {
 			r.property(WrappedRoot, 'onSelect');
 			r.expect(baseAssertion);
 
-			assert(onValue.calledWith(node.id));
+			assert(onValue.called);
 		});
 
 		it('raises onCheck event when selected', () => {
@@ -251,7 +251,7 @@ describe('TreeNode', () => {
 			r.property(WrappedRoot, 'onSelect');
 			r.expect(checkboxAssertion);
 
-			assert(onCheck.calledWith(node.id, true));
+			assert(onCheck.calledWith(true));
 		});
 
 		it('does not raise onValue when not selectable', () => {
@@ -301,7 +301,7 @@ describe('TreeNode', () => {
 			r.property(WrappedRoot, 'onSelect');
 			r.expect(baseAssertion);
 
-			assert(onExpand.calledWith(node.id, true));
+			assert(onExpand.calledWith(true));
 		});
 
 		it('raises collapsed event', () => {
@@ -317,7 +317,7 @@ describe('TreeNode', () => {
 			r.property(WrappedRoot, 'onSelect');
 			r.expect(expandedAssertion);
 
-			assert(onExpand.calledWith(node.id, false));
+			assert(onExpand.calledWith(false));
 		});
 	});
 

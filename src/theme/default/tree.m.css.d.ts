@@ -4,6 +4,7 @@ export const nodeParent: string;
 export const contentWrapper: string;
 export const content: string;
 export const leaf: string;
+export const left: string;
 export const selectable: string;
 export const selected: string;
 export const expander: string;

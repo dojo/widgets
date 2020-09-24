@@ -24,12 +24,12 @@ export interface TreeNodeOption {
 export interface TreeProperties {
 	checkable?: boolean;
 	selectable?: boolean;
-	checked?: string[];
-	expanded?: string[];
+	checkedIds?: string[];
+	expandedIds?: string[];
 	initialChecked?: string[];
 	initialExpanded?: string[];
 	value?: string;
-	disabledNodes?: string[];
+	disabledIds?: string[];
 	parentSelection?: boolean;
 	onValue?(id: string): void;
 	onCheck?(id: string[]): void;
@@ -43,8 +43,8 @@ export interface TreeChildren {
 interface TreeCache {
 	activeNode?: string;
 	value?: string;
-	checked: string[];
-	expanded: string[];
+	checkedIds: string[];
+	expandedIds: string[];
 }
 
 const resource = createResourceMiddleware<TreeNodeOption>();
@@ -69,7 +69,7 @@ export default factory(function({
 		properties,
 		({ initialChecked: current }, { initialChecked: next }) => {
 			if ((current || next) && current !== next) {
-				icache.set('checked', next || []);
+				icache.set('checkedIds', next || []);
 			}
 		}
 	);
@@ -78,7 +78,7 @@ export default factory(function({
 		properties,
 		({ initialExpanded: current }, { initialExpanded: next }) => {
 			if ((current || next) && current !== next) {
-				icache.set('expanded', next || []);
+				icache.set('expandedIds', next || []);
 			}
 		}
 	);
@@ -87,12 +87,12 @@ export default factory(function({
 	const {
 		checkable = false,
 		selectable = false,
-		checked,
-		expanded,
+		checkedIds,
+		expandedIds,
 		onValue,
 		onCheck,
 		onExpand,
-		disabledNodes,
+		disabledIds,
 		resource: { template },
 		parentSelection = false
 	} = properties();
@@ -103,16 +103,16 @@ export default factory(function({
 	const activeNode = icache.get('activeNode');
 	const selectedNode = icache.get('value');
 
-	if (checked) {
-		icache.set('checked', checked);
+	if (checkedIds) {
+		icache.set('checkedIds', checkedIds);
 	}
 
-	if (expanded) {
-		icache.set('expanded', expanded);
+	if (expandedIds) {
+		icache.set('expandedIds', expandedIds);
 	}
 
-	const expandedNodes = icache.getOrSet('expanded', []);
-	const checkedNodes = icache.getOrSet('checked', []);
+	const expandedNodes = icache.getOrSet('expandedIds', []);
+	const checkedNodes = icache.getOrSet('checkedIds', []);
 
 	function activateNode(id: string) {
 		icache.set('activeNode', id);
@@ -125,25 +125,25 @@ export default factory(function({
 
 	function checkNode(id: string, checked: boolean) {
 		if (checked) {
-			icache.set('checked', (currentChecked) => [...currentChecked, id]);
+			icache.set('checkedIds', (currentChecked) => [...currentChecked, id]);
 		} else {
-			icache.set('checked', (currentChecked) =>
+			icache.set('checkedIds', (currentChecked) =>
 				currentChecked ? currentChecked.filter((n) => n !== id) : []
 			);
 		}
-		onCheck && onCheck(icache.get('checked') || []);
+		onCheck && onCheck(icache.get('checkedIds') || []);
 	}
 
 	function expandNode(id: string) {
-		icache.set('expanded', (currentExpanded) => [...currentExpanded, id]);
-		onExpand && onExpand(icache.get('expanded') || []);
+		icache.set('expandedIds', (currentExpanded) => [...currentExpanded, id]);
+		onExpand && onExpand(icache.get('expandedIds') || []);
 	}
 
 	function collapseNode(id: string) {
-		icache.set('expanded', (currentExpanded) =>
+		icache.set('expandedIds', (currentExpanded) =>
 			currentExpanded ? currentExpanded.filter((n) => n !== id) : []
 		);
-		onExpand && onExpand(icache.get('expanded') || []);
+		onExpand && onExpand(icache.get('expandedIds') || []);
 	}
 
 	function createNodeFlatMap(nodeId: string = 'root'): TreeNodeOption[] {
@@ -265,18 +265,18 @@ export default factory(function({
 								selected={node.id === selectedNode}
 								checked={checkedNodes.includes(node.id)}
 								value={selectedNode}
-								disabled={(disabledNodes || []).includes(node.id)}
+								disabled={(disabledIds || []).includes(node.id)}
 								expanded={isExpanded}
 								parentSelection={parentSelection}
 								node={node}
-								onActive={activateNode}
-								onValue={selectNode}
-								onCheck={checkNode}
-								onExpand={(n, expanded) => {
+								onActive={() => activateNode(node.id)}
+								onValue={() => selectNode(node.id)}
+								onCheck={(checked: boolean) => checkNode(node.id, checked)}
+								onExpand={(expanded) => {
 									if (expanded) {
-										expandNode(n);
+										expandNode(node.id);
 									} else {
-										collapseNode(n);
+										collapseNode(node.id);
 									}
 								}}
 							>
@@ -303,10 +303,10 @@ interface TreeNodeProperties {
 	selected: boolean;
 	parentSelection?: boolean;
 	node: TreeNodeOption;
-	onActive(node: string): void;
-	onValue(node: string): void;
-	onCheck(node: string, checked: boolean): void;
-	onExpand(node: string, expanded: boolean): void;
+	onActive(): void;
+	onValue(): void;
+	onCheck(checked: boolean): void;
+	onExpand(expanded: boolean): void;
 }
 
 interface TreeNodeChildren {
@@ -343,13 +343,13 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 			active={isActive}
 			selected={selected}
 			onRequestActive={() => {
-				onActive(node.id);
+				onActive();
 			}}
 			onSelect={() => {
-				isExpandable && onExpand(node.id, !expanded);
+				isExpandable && onExpand(!expanded);
 				if (parentSelection || !isExpandable) {
-					selectable && onValue(node.id);
-					checkable && onCheck(node.id, !checked);
+					selectable && onValue();
+					checkable && onCheck(!checked);
 				}
 			}}
 			disabled={disabled}
@@ -372,7 +372,7 @@ export const TreeNode = treeNodeFactory(function({ middleware: { theme }, proper
 							<Checkbox
 								checked={!!checked}
 								onValue={(value) => {
-									onCheck(node.id, value);
+									onCheck(value);
 								}}
 								disabled={disabled}
 							/>

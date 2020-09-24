@@ -107,7 +107,7 @@ describe('Tree', () => {
 						initOptions: { data: simpleTree, id: 'test' } as any
 					}
 				}}
-				disabledNodes={disabledNodes}
+				disabledIds={disabledNodes}
 			/>
 		));
 
@@ -133,7 +133,7 @@ describe('Tree', () => {
 
 		r.expect(simpleTreeAssertion);
 
-		r.property(WrappedNode1, 'onActive', simpleTree[0].id);
+		r.property(WrappedNode1, 'onActive');
 		r.expect(
 			simpleTreeAssertion
 				.setProperty(WrappedNode1, 'activeNode', simpleTree[0].id)
@@ -207,7 +207,7 @@ describe('Tree', () => {
 							initOptions: { data: simpleTree, id: 'test' } as any
 						}
 					}}
-					expanded={expandedNodes}
+					expandedIds={expandedNodes}
 				/>
 			));
 			r.expect(
@@ -297,13 +297,13 @@ describe('Tree', () => {
 			r.expect(simpleTreeAssertion);
 
 			// simulate expand event
-			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, true);
+			r.property(WrappedNode1, 'onExpand', true);
 			r.expect(expandedAssertion);
 			assert(onExpand.calledWith([simpleTree[0].id]));
 
 			// simulate collapse event
 			onExpand.resetHistory();
-			r.property(WrappedNode1, 'onExpand', simpleTree[0].id, false);
+			r.property(WrappedNode1, 'onExpand', false);
 			r.expect(
 				simpleTreeAssertion
 					.setProperty(WrappedNode1, 'expanded', false)
@@ -334,7 +334,7 @@ describe('Tree', () => {
 				.setProperty(WrappedNode2, 'activeNode', nodeId);
 
 			// activate our node
-			r.property(WrappedNode1, 'onActive', nodeId);
+			r.property(WrappedNode1, 'onActive');
 			r.expect(activeAssertion);
 
 			// // with our node active, we can expand it via the "right" key
@@ -367,7 +367,7 @@ describe('Tree', () => {
 						}
 					}}
 					onExpand={onExpand}
-					expanded={['parent-1']}
+					expandedIds={['parent-1']}
 				/>
 			));
 			const nodeId = simpleTree[0].id;
@@ -379,7 +379,7 @@ describe('Tree', () => {
 
 			r.expect(expandedAssertion);
 
-			r.property(WrappedNode1, 'onActive', nodeId);
+			r.property(WrappedNode1, 'onActive');
 			r.expect(activeExpandedAssertion);
 
 			r.property(WrappedRoot, 'onkeydown', { ...stubEvent, which: Keys.Left });
@@ -423,7 +423,7 @@ describe('Tree', () => {
 						}
 					}}
 					checkable={true}
-					checked={checkedNodes}
+					checkedIds={checkedNodes}
 				/>
 			));
 
@@ -475,7 +475,7 @@ describe('Tree', () => {
 			r.expect(checkableAssertion);
 
 			// simulate check event
-			r.property(WrappedNode1, 'onCheck', simpleTree[0].id, true);
+			r.property(WrappedNode1, 'onCheck', true);
 			r.expect(
 				checkableAssertion
 					.setProperty(WrappedNode1, 'checked', true)
@@ -485,7 +485,7 @@ describe('Tree', () => {
 
 			// simulate uncheck event
 			onCheck.resetHistory();
-			r.property(WrappedNode1, 'onCheck', simpleTree[0].id, false);
+			r.property(WrappedNode1, 'onCheck', false);
 			r.expect(
 				checkableAssertion
 					.setProperty(WrappedNode1, 'checked', false)
@@ -569,7 +569,7 @@ describe('Tree', () => {
 
 			// simulate select event
 			const selectedNode = simpleTree[0].id;
-			r.property(WrappedNode1, 'onValue', selectedNode);
+			r.property(WrappedNode1, 'onValue');
 
 			r.expect(
 				selectableAssertion
@@ -602,7 +602,7 @@ describe('Tree', () => {
 
 			// activate our node
 			const nodeId = simpleTree[2].id;
-			r.property(WrappedNode1, 'onActive', nodeId);
+			r.property(WrappedNode2, 'onActive');
 			r.expect(
 				selectableAssertion
 					.setProperty(WrappedNode1, 'activeNode', nodeId)
