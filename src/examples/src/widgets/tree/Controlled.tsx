@@ -64,8 +64,8 @@ export default factory(function Advanced({ id, middleware: { icache, resource } 
 				checkable={true}
 				selectable={true}
 				onExpand={(ids) => {}}
-				expanded={expanded}
-				checked={checked}
+				expandedIds={expanded}
+				checkedIds={checked}
 				resource={resource({ template, initOptions: { id, data: nodes } })}
 			/>
 			<ul>
