@@ -249,6 +249,12 @@ import CustomIconResult from './widgets/result/CustomIcon';
 import BasicWizard from './widgets/wizard/Basic';
 import VerticalWizard from './widgets/wizard/Vertical';
 import ErrorWizard from './widgets/wizard/Error';
+import BasicTree from './widgets/tree/Basic';
+import CheckableTree from './widgets/tree/Checkable';
+import CustomRendererTree from './widgets/tree/CustomRenderer';
+import ControlledTree from './widgets/tree/Controlled';
+import RemoteSource from './widgets/tree/RemoteSource';
+import InitialStateTree from './widgets/tree/InitialState';
 import PopupConfirmation from './widgets/popup-confirmation/Basic';
 import PopupConfirmationUnderlay from './widgets/popup-confirmation/Underlay';
 
@@ -1820,6 +1826,41 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicTooltip
+				}
+			}
+		},
+		tree: {
+			examples: [
+				{
+					filename: 'Checkable',
+					module: CheckableTree,
+					title: 'Checkable Nodes'
+				},
+				{
+					filename: 'CustomRenderer',
+					module: CustomRendererTree,
+					title: 'Custom Renderer'
+				},
+				{
+					filename: 'Controlled',
+					module: ControlledTree,
+					title: 'Controlled Usage'
+				},
+				{
+					filename: 'RemoteSource',
+					module: RemoteSource,
+					title: 'Remote Source'
+				},
+				{
+					filename: 'InitialState',
+					module: InitialStateTree,
+					title: 'Tree with initial state'
+				}
+			],
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicTree
 				}
 			}
 		},

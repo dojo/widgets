@@ -1,0 +1,58 @@
+/* The root class of the Tree */
+.root {
+	padding-left: 0;
+}
+
+/* Nodes of the tree */
+.node {
+	list-style-type: none;
+	width: 100%;
+}
+
+/* Unordered list containing nodes */
+.nodeParent {
+}
+
+.nodeParent:focus {
+	outline: none;
+}
+
+.contentWrapper {
+	display: flex;
+}
+
+/* Contains the content of the Tree */
+.content {
+	align-items: center;
+	box-sizing: content-box;
+	display: flex;
+	padding: 0 4px;
+}
+
+/* Added to nodes that have children */
+.leaf {
+}
+
+.left .content {
+	margin-left: 15px;
+}
+
+/* Added to nodes that are selectable */
+.selectable {
+}
+
+/* Added to nodes that are selected */
+.selected {
+}
+
+/* Added to nodes are expandable */
+.expander {
+	margin-right: 5px;
+}
+
+/* Added to content of the node */
+.title {
+	align-items: center;
+	display: flex;
+	flex-grow: 1;
+}

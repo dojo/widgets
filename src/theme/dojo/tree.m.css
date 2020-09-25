@@ -1,0 +1,37 @@
+.root {
+	padding-left: 0;
+}
+
+.node {
+	list-style-type: none;
+	width: 100%;
+}
+
+.nodeParent:focus {
+	outline: none;
+}
+
+.contentWrapper {
+	display: flex;
+}
+
+.content {
+	align-items: center;
+	box-sizing: content-box;
+	display: flex;
+	padding: 0 4px;
+}
+
+.leaf .content {
+	margin-left: 15px;
+}
+
+.title {
+	align-items: center;
+	display: flex;
+	flex-grow: 1;
+}
+
+.expander {
+	margin-right: 5px;
+}
