@@ -1,5 +1,6 @@
 .root {
 	padding-left: 0;
+	background: var(--mdc-raised-surface-background);
 }
 
 .node {
