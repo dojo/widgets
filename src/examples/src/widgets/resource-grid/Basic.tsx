@@ -30,13 +30,15 @@ interface DataType {
 	lastName: string;
 }
 
-const data: DataType[] = [
-	{ id: '1', firstName: 'Bob', lastName: 'Hope' },
-	{ id: '2', firstName: 'Bobby', lastName: 'Hopes' },
-	{ id: '3', firstName: 'Robert', lastName: 'Hope' },
-	{ id: '4', firstName: 'Rob', lastName: 'Hopey' },
-	{ id: '5', firstName: 'Robby', lastName: 'Hoped' }
-];
+const total = 9999;
+let data: DataType[] = [];
+for (let i = 0; i < total; i++) {
+	data.push({
+		id: `${i}`,
+		firstName: `firstName-${i}`,
+		lastName: `lastName-${i}`
+	});
+}
 
 const template = createMemoryResourceTemplate<DataType>();
 
@@ -45,7 +47,12 @@ const factory = create({ resource });
 export default factory(function Basic({ id, middleware: { resource } }) {
 	return (
 		<Example>
-			<Grid resource={resource({ template, initOptions: { id, data } })} columns={columns} />
+			<div styles={{ height: '300px', overflow: 'hidden' }}>
+				<Grid
+					resource={resource({ template, initOptions: { id, data } })}
+					columns={columns}
+				/>
+			</div>
 		</Example>
 	);
 });

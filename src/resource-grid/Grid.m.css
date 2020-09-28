@@ -1,9 +1,59 @@
 .root {
+	width: 100%;
+	height: 100%;
 }
 
-.header {
+.table {
+	width: 100%;
+	border: 1px solid gray;
 }
-.footer {
+
+.head,
+.foot {
+	background-color: lightgray;
 }
+
 .body {
+	overflow-y: scroll;
+	display: block;
+}
+
+.row {
+	width: 100%;
+	display: flex;
+}
+
+.head {
+	border-bottom: 1px solid gray;
+	overflow-y: scroll;
+}
+
+.foot {
+	border-top: 1px solid gray;
+	padding: 4px;
+}
+
+.body .row {
+	border-bottom: 1px solid gray;
+}
+
+.td,
+.th {
+	border-right: 1px solid gray;
+	flex: 1 100%;
+	padding: 4px;
+}
+.td:last-child,
+.th:last-child {
+	border-right: none;
+}
+
+.wrapper {
+	overflow: hidden;
+	will-change: transform;
+	position: relative;
+}
+
+.transformer {
+	will-change: transform;
 }
