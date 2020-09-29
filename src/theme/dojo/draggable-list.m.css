@@ -1,0 +1,33 @@
+.root {
+	border-radius: var(--border-radius);
+	background-color: var(--color-background-faded);
+	border: var(--border-width) solid var(--color-border);
+	list-style: none;
+	padding: 0;
+	color: var(--color-text-primary);
+}
+
+.item {
+	background-color: var(--color-background);
+	border: var(--border-width) solid transparent;
+	border-bottom: var(--border-width) solid var(--color-border);
+	padding: calc(var(--grid-base) * 1.5) calc(var(--grid-base) * 2);
+}
+
+.item:last-child:not(.paddedItemBottom) {
+	border-bottom: none;
+}
+
+.activeItem {
+	border: var(--border-width) solid var(--color-border);
+	box-shadow: 0 0 calc(var(--grid-base) / 4) calc(var(--grid-base) / 4) var(--color-box-shadow);
+	cursor: ns-resize;
+}
+
+.paddedItemTop {
+	border-top: var(--border-width) solid var(--color-border);
+}
+
+.paddedItemBottom {
+	border-bottom: var(--border-width) solid var(--color-border);
+}

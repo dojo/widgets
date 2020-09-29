@@ -1,0 +1,16 @@
+.root {
+	composes: mdc-list from '@material/list/dist/mdc.list.css';
+	background-color: var(--mdc-theme-surface);
+	border: var(--mdc-border-width) solid var(--mdc-theme-on-surface);
+	color: var(--mdc-text-color);
+	padding: 0;
+}
+
+.item {
+	composes: mdc-list-item from '@material/list/dist/mdc.list.css';
+	background-color: var(--mdc-theme-surface);
+}
+
+.activeItem {
+	cursor: ns-resize;
+}

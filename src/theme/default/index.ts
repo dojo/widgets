@@ -58,6 +58,7 @@ import * as tooltip from './tooltip.m.css';
 import * as twoColumnLayout from './two-column-layout.m.css';
 import * as typeahead from './typeahead.m.css';
 import * as defaultVariant from './variants/default.m.css';
+import * as draggableList from './draggable-list.m.css';
 
 export default {
 	theme: {
@@ -89,6 +90,7 @@ export default {
 		'@dojo/widgets/label': label,
 		'@dojo/widgets/loading-indicator': loadingIndicator,
 		'@dojo/widgets/list': list,
+		'@dojo/widgets/draggable-list': draggableList,
 		'@dojo/widgets/menu-item': menuItem,
 		'@dojo/widgets/native-select': nativeSelect,
 		'@dojo/widgets/list-item': listItem,

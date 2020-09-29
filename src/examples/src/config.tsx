@@ -257,6 +257,8 @@ import RemoteSource from './widgets/tree/RemoteSource';
 import InitialStateTree from './widgets/tree/InitialState';
 import PopupConfirmation from './widgets/popup-confirmation/Basic';
 import PopupConfirmationUnderlay from './widgets/popup-confirmation/Underlay';
+import DraggableList from './widgets/draggable-list/Basic';
+import DraggableListLockAxis from './widgets/draggable-list/LockAxis';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -978,6 +980,24 @@ export const config = {
 					filename: 'Basic'
 				}
 			}
+		},
+		'draggable-list': {
+			filename: 'index',
+			overview: {
+				example: {
+					module: DraggableList,
+					filename: 'Basic'
+				}
+			},
+			examples: [
+				{
+					description:
+						'This example demonstrates locking the horizontal x-axis so that movement only occurs on the vertical y-axis.',
+					filename: 'LockAxis',
+					module: DraggableListLockAxis,
+					title: 'Lock Axis'
+				}
+			]
 		},
 		list: {
 			examples: [

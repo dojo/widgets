@@ -10,6 +10,7 @@ import * as chipTypeahead from './chip-typeahead.m.css';
 import * as chip from './chip.m.css';
 import * as dateInput from './date-input.m.css';
 import * as dialog from './dialog.m.css';
+import * as draggableList from './draggable-list.m.css';
 import * as floatingActionButton from './floating-action-button.m.css';
 import * as form from './form.m.css';
 import * as gridBody from './grid-body.m.css';
@@ -75,6 +76,7 @@ export default {
 		'@dojo/widgets/chip': chip,
 		'@dojo/widgets/date-input': dateInput,
 		'@dojo/widgets/dialog': dialog,
+		'@dojo/widgets/draggable-list': draggableList,
 		'@dojo/widgets/floating-action-button': floatingActionButton,
 		'@dojo/widgets/form': form,
 		'@dojo/widgets/grid-body': gridBody,
