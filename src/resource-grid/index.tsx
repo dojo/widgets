@@ -107,11 +107,10 @@ export const Grid = factory(function Grid({
 				</div>
 			);
 			itemHeight = offscreenHeight(offscreenRow);
-			icache.set('itemHeight', itemHeight);
+			icache.set('itemHeight', itemHeight, true);
 		}
 
 		icache.set('itemsInView', Math.floor(bodyHeight / itemHeight));
-		console.log('items in view: ', icache.get('itemsInView'));
 	}
 
 	const idBase = widgetId || `menu-${id}`;
@@ -137,7 +136,7 @@ export const Grid = factory(function Grid({
 
 	function renderRows(start: number, count: number) {
 		const renderedItems = [];
-		const metaInfo = meta(template, options(), true);
+		const metaInfo = meta(template, options({ size: count }), true);
 		if (metaInfo && metaInfo.total) {
 			const pages: number[] = [];
 			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
@@ -164,19 +163,18 @@ export const Grid = factory(function Grid({
 		return renderedItems;
 	}
 
-	const scrollTop = icache.getOrSet('scrollTop', 0);
 	const itemHeight = icache.getOrSet('itemHeight', 0);
+	const scrollTop = icache.getOrSet('scrollTop', 0);
 	const itemsInView = icache.getOrSet('itemsInView', 0);
 	const nodePadding = Math.min(itemsInView, 20);
-
 	const totalContentHeight = metaInfo.total * itemHeight;
 
 	const startNode = Math.max(0, Math.floor(scrollTop / itemHeight) - nodePadding);
 	const offsetY = startNode * itemHeight;
 	const renderedItemsCount = itemsInView + 2 * nodePadding;
-	options({ size: renderedItemsCount });
+	// options({ size: renderedItemsCount });
 
-	const items = renderRows(startNode, renderedItemsCount);
+	const items = Number.isInteger(startNode) ? renderRows(startNode, renderedItemsCount) : [];
 
 	return (
 		<div key="root" classes={[theme.variant(), fixedCss.root]} role="grid" id={idBase}>

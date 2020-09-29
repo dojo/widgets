@@ -47,7 +47,7 @@ const factory = create({ resource });
 export default factory(function Basic({ id, middleware: { resource } }) {
 	return (
 		<Example>
-			<div styles={{ height: '300px', overflow: 'hidden' }}>
+			<div styles={{ height: '600px', overflow: 'hidden' }}>
 				<Grid
 					resource={resource({ template, initOptions: { id, data } })}
 					columns={columns}

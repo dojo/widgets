@@ -21,6 +21,8 @@
 .row {
 	width: 100%;
 	display: flex;
+	box-sizing: border-box;
+	border-bottom: 1px solid gray;
 }
 
 .head {
@@ -33,8 +35,12 @@
 	padding: 4px;
 }
 
-.body .row {
-	border-bottom: 1px solid gray;
+.head .row {
+	border-bottom: none;
+}
+
+.body .row:last-child {
+	border-bottom: none;
 }
 
 .td,
@@ -42,7 +48,9 @@
 	border-right: 1px solid gray;
 	flex: 1 100%;
 	padding: 4px;
+	box-sizing: border-box;
 }
+
 .td:last-child,
 .th:last-child {
 	border-right: none;
