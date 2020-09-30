@@ -35,6 +35,10 @@
 	padding: 4px;
 }
 
+.sortable {
+	cursor: pointer;
+}
+
 .head .row {
 	border-bottom: none;
 }

@@ -1,11 +1,8 @@
-// import { RenderResult } from '@dojo/framework/core/interfaces';
-import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import resize from '@dojo/framework/core/middleware/resize';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import { create, renderer, tsx } from '@dojo/framework/core/vdom';
 import global from '@dojo/framework/shim/global';
-// import { Keys } from '../../common/util';
 import theme from '../middleware/theme';
 import * as fixedCss from './Grid.m.css';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
@@ -14,40 +11,21 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export interface ColumnConfig {
 	id: string;
-	title: string | (() => RenderResult);
+	title: string;
 	filterable?: boolean;
 	sortable?: boolean;
-	editable?: boolean;
 	resizable?: boolean;
-	renderer?: (props: any) => RenderResult;
 }
 
 export interface GridProperties {
 	columns: ColumnConfig[];
-	/** The initial selected value */
-	initialValue?: string;
-	/** Controlled value property */
-	value?: string;
-	/** Callback called when user selects a value */
-	onValue?(value: string): void;
-	/** Called to request that the menu be closed */
-	onRequestClose?(): void;
-	/** Optional callback, when passed, the widget will no longer control it's own active index / keyboard navigation */
-	onActiveIndexChange?(index: number): void;
-	/** Optional property to set the activeIndex when it is being controlled externally */
-	activeIndex?: number;
-	/** Determines if the widget can be focused or not. If the active index is controlled from elsewhere you may wish to stop the menu being focused and receiving keyboard events */
-	focusable?: boolean;
-	/** Callback called when menu root is focused */
-	onFocus?(): void;
-	/** Callback called when menu root is blurred */
-	onBlur?(): void;
-	/** Property to determine how many items to render. Not passing a number will render all results */
-	itemsInView?: number;
-	/** Property to determine if this list is being used as a menu, changes a11y and item type */
-	menu?: boolean;
 	/** The id to be applied to the root of this widget, if not passed, one will be generated for a11y reasons */
 	widgetId?: string;
+}
+
+export interface GridChildren {
+	rows?(columns: ColumnConfig[], item: any, index: number): RenderResult;
+	headings?(columns: ColumnConfig): RenderResult;
 }
 
 interface GridICache {
@@ -69,18 +47,19 @@ function offscreenHeight(dnode: RenderResult): number {
 
 const factory = create({
 	icache: createICacheMiddleware<GridICache>(),
-	focus,
 	theme,
 	resize,
 	dimensions,
 	resource: createResourceMiddleware<any>()
-}).properties<GridProperties>();
+})
+	.properties<GridProperties>()
+	.children<GridChildren | undefined>();
 
 export const Grid = factory(function Grid({
 	children,
 	properties,
 	id,
-	middleware: { icache, focus, theme, resource, resize, dimensions }
+	middleware: { icache, theme, resource, resize, dimensions }
 }) {
 	const { getOrRead, createOptions, /* find,*/ meta /*, isLoading */ } = resource;
 	const {
@@ -88,6 +67,8 @@ export const Grid = factory(function Grid({
 		resource: { template, options = createOptions(id) },
 		columns
 	} = properties();
+
+	const [rowRenderer = defaultRowRenderer] = children();
 
 	let bodyHeight = 0;
 	const rootDimensions = resize.get('root');
@@ -120,18 +101,18 @@ export const Grid = factory(function Grid({
 		return;
 	}
 
-	function renderRow(item: any, index: number) {
-		return (
-			<div classes={fixedCss.row} key={`row-${index}`}>
-				{columns.map((config) => {
-					return <span role="cell" classes={fixedCss.td}>{`${item[config.id]}`}</span>;
-				})}
-			</div>
-		);
-	}
-
 	function renderPlaceholderRow(index: number) {
 		return <div classes={fixedCss.row}>{`placeholder ${index}`}</div>;
+	}
+
+	function defaultRowRenderer(columns: ColumnConfig[], item: any, index: number) {
+		return <Row columns={columns} item={item} index={index} />;
+	}
+
+	function defaultHeaderRowRenderer(columns: ColumnConfig[]) {
+		return columns.map((config) => {
+			return <HeaderCell />;
+		});
 	}
 
 	function renderRows(start: number, count: number) {
@@ -154,7 +135,7 @@ export const Grid = factory(function Grid({
 				const indexWithinPage = index - (page - 1) * count;
 				const items = pageItems[pageIndex];
 				if (items && items[indexWithinPage]) {
-					renderedItems[i] = renderRow(items[indexWithinPage], index);
+					renderedItems[i] = rowRenderer(columns, items[indexWithinPage], index);
 				} else if (!items) {
 					renderedItems[i] = renderPlaceholderRow(index);
 				}
@@ -172,7 +153,6 @@ export const Grid = factory(function Grid({
 	const startNode = Math.max(0, Math.floor(scrollTop / itemHeight) - nodePadding);
 	const offsetY = startNode * itemHeight;
 	const renderedItemsCount = itemsInView + 2 * nodePadding;
-	// options({ size: renderedItemsCount });
 
 	const items = Number.isInteger(startNode) ? renderRows(startNode, renderedItemsCount) : [];
 
@@ -181,13 +161,7 @@ export const Grid = factory(function Grid({
 			<div role="table" classes={fixedCss.table}>
 				<div role="rowgroup" key="head" classes={fixedCss.head}>
 					<div role="row" classes={fixedCss.row}>
-						{columns.map((config) => {
-							return (
-								<span role="columnheader" classes={fixedCss.th}>
-									{config.title}
-								</span>
-							);
-						})}
+						{}
 					</div>
 				</div>
 				<div
@@ -230,3 +204,51 @@ export const Grid = factory(function Grid({
 });
 
 export default Grid;
+
+export interface RowProperties {
+	columns: ColumnConfig[];
+	item: any;
+	index: number;
+}
+
+const rowFactory = create()
+	.properties<RowProperties>()
+	.children<RenderResult | undefined>();
+
+export const Row = rowFactory(function Row({ children, properties, id }) {
+	const { columns, item, index } = properties();
+	const [...childCells] = children();
+	let cells: RenderResult[];
+	if (childCells && childCells.length > 0) {
+		cells = childCells;
+	} else {
+		cells = columns.map((config) => {
+			return <Cell>{`${item[config.id]}`}</Cell>;
+		});
+	}
+
+	return (
+		<div classes={fixedCss.row} key={`row-${index}`}>
+			{cells}
+		</div>
+	);
+});
+
+const cellFactory = create().properties();
+
+export const Cell = cellFactory(function Cell({ children, properties, id }) {
+	return (
+		<span role="cell" classes={fixedCss.td}>
+			{children()}
+		</span>
+	);
+});
+
+const headerCellFactory = create().properties();
+export const HeaderCell = headerCellFactory(function HeaderCell({ children, properties, id }) {
+	return (
+		<span role="columnheader" classes={[fixedCss.th, config.sortable && fixedCss.sortable]}>
+			{config.title} {config.sortable && ' ^'}
+		</span>
+	);
+});

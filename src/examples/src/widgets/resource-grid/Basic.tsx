@@ -1,6 +1,6 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 
-import Grid from '@dojo/widgets/resource-grid';
+import Grid, { Row, Cell } from '@dojo/widgets/resource-grid';
 import Example from '../../Example';
 import {
 	createMemoryResourceTemplate,
@@ -12,11 +12,13 @@ const resource = createResourceMiddleware();
 const columns = [
 	{
 		id: 'id',
-		title: 'ID'
+		title: 'ID',
+		sortable: true
 	},
 	{
 		id: 'firstName',
-		title: 'First Name'
+		title: 'First Name',
+		sortable: true
 	},
 	{
 		id: 'lastName',
@@ -41,7 +43,6 @@ for (let i = 0; i < total; i++) {
 }
 
 const template = createMemoryResourceTemplate<DataType>();
-
 const factory = create({ resource });
 
 export default factory(function Basic({ id, middleware: { resource } }) {
@@ -51,7 +52,13 @@ export default factory(function Basic({ id, middleware: { resource } }) {
 				<Grid
 					resource={resource({ template, initOptions: { id, data } })}
 					columns={columns}
-				/>
+				>
+					{(columns, cell) => [
+						<Cell {...cell.props('id')}>{cell.value('id')}</Cell>,
+						<Cell {...cell.props('firstName')}>{cell.value('firstName')}</Cell>,
+						<Cell {...cell.props('lastName')}>{cell.value('lastName')}</Cell>
+					]}
+				</Grid>
 			</div>
 		</Example>
 	);

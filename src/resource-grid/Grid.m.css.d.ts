@@ -4,6 +4,7 @@ export const head: string;
 export const foot: string;
 export const body: string;
 export const row: string;
+export const sortable: string;
 export const td: string;
 export const th: string;
 export const wrapper: string;
