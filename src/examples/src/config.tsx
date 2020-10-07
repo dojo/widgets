@@ -102,6 +102,7 @@ import ControlledList from './widgets/list/Controlled';
 import ItemRenderer from './widgets/list/ItemRenderer';
 import FetchedResource from './widgets/list/FetchedResource';
 import DisabledList from './widgets/list/Disabled';
+import DraggableList from './widgets/list/Draggable';
 import Menu from './widgets/list/Menu';
 import CustomTransformer from './widgets/list/CustomTransformer';
 import BasicChipTypeahead from './widgets/chip-typeahead/Basic';
@@ -1023,6 +1024,13 @@ export const config = {
 					filename: 'Disabled',
 					module: DisabledList,
 					title: 'Disabled'
+				},
+				{
+					description:
+						'This example shows how items within a list can be reordered via drag-and-drop.',
+					filename: 'Draggable',
+					module: DraggableList,
+					title: 'Draggable'
 				}
 			],
 			overview: {

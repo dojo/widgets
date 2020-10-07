@@ -24,6 +24,7 @@
 			"src/context-popup",
 			"src/date-input",
 			"src/dialog",
+			"src/draggable-list",
 			"src/email-input",
 			"src/floating-action-button",
 			"src/form",

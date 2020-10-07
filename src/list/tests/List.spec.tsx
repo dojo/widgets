@@ -116,10 +116,23 @@ const listWithListItemsAssertion = baseAssertion
 					disabled: listItemCss.disabled,
 					root: listItemCss.root,
 					s: css.items,
-					selected: listItemCss.selected
+					selected: listItemCss.selected,
+					collapsed: listItemCss.collapsed,
+					dragged: listItemCss.dragged,
+					movedUp: listItemCss.movedUp,
+					movedDown: listItemCss.movedDown
 				}
 			}}
 			widgetId={'menu-test-item-0'}
+			collapsed={false}
+			draggable={undefined}
+			dragged={false}
+			movedDown={false}
+			movedUp={false}
+			onDragEnd={noop}
+			onDragOver={noop}
+			onDragStart={noop}
+			onDrop={noop}
 		>
 			dog
 		</ListItem>,
@@ -137,10 +150,23 @@ const listWithListItemsAssertion = baseAssertion
 					disabled: listItemCss.disabled,
 					root: listItemCss.root,
 					s: css.items,
-					selected: listItemCss.selected
+					selected: listItemCss.selected,
+					collapsed: listItemCss.collapsed,
+					dragged: listItemCss.dragged,
+					movedUp: listItemCss.movedUp,
+					movedDown: listItemCss.movedDown
 				}
 			}}
 			widgetId={'menu-test-item-1'}
+			collapsed={false}
+			draggable={undefined}
+			dragged={false}
+			movedDown={false}
+			movedUp={false}
+			onDragEnd={noop}
+			onDragOver={noop}
+			onDragStart={noop}
+			onDrop={noop}
 		>
 			Cat
 		</ListItem>,
@@ -158,10 +184,23 @@ const listWithListItemsAssertion = baseAssertion
 					disabled: listItemCss.disabled,
 					root: listItemCss.root,
 					s: css.items,
-					selected: listItemCss.selected
+					selected: listItemCss.selected,
+					collapsed: listItemCss.collapsed,
+					dragged: listItemCss.dragged,
+					movedUp: listItemCss.movedUp,
+					movedDown: listItemCss.movedDown
 				}
 			}}
 			widgetId={'menu-test-item-2'}
+			collapsed={false}
+			draggable={undefined}
+			dragged={false}
+			movedDown={false}
+			movedUp={false}
+			onDragEnd={noop}
+			onDragOver={noop}
+			onDragStart={noop}
+			onDrop={noop}
 		>
 			fish
 		</ListItem>
@@ -317,10 +356,23 @@ describe('List', () => {
 						disabled: listItemCss.disabled,
 						root: listItemCss.root,
 						s: css.items,
-						selected: listItemCss.selected
+						selected: listItemCss.selected,
+						collapsed: listItemCss.collapsed,
+						dragged: listItemCss.dragged,
+						movedUp: listItemCss.movedUp,
+						movedDown: listItemCss.movedDown
 					}
 				}}
 				widgetId={'menu-test-item-4'}
+				collapsed={false}
+				draggable={undefined}
+				dragged={false}
+				movedDown={false}
+				movedUp={false}
+				onDragEnd={noop}
+				onDragOver={noop}
+				onDragStart={noop}
+				onDrop={noop}
 			>
 				<LoadingIndicator />
 			</ListItem>,
@@ -338,10 +390,23 @@ describe('List', () => {
 						disabled: listItemCss.disabled,
 						root: listItemCss.root,
 						s: css.items,
-						selected: listItemCss.selected
+						selected: listItemCss.selected,
+						collapsed: listItemCss.collapsed,
+						dragged: listItemCss.dragged,
+						movedUp: listItemCss.movedUp,
+						movedDown: listItemCss.movedDown
 					}
 				}}
 				widgetId={'menu-test-item-5'}
+				collapsed={false}
+				draggable={undefined}
+				dragged={false}
+				movedDown={false}
+				movedUp={false}
+				onDragEnd={noop}
+				onDragOver={noop}
+				onDragStart={noop}
+				onDrop={noop}
 			>
 				<LoadingIndicator />
 			</ListItem>
@@ -364,10 +429,23 @@ describe('List', () => {
 						disabled: listItemCss.disabled,
 						root: listItemCss.root,
 						s: css.items,
-						selected: listItemCss.selected
+						selected: listItemCss.selected,
+						collapsed: listItemCss.collapsed,
+						dragged: listItemCss.dragged,
+						movedUp: listItemCss.movedUp,
+						movedDown: listItemCss.movedDown
 					}
 				}}
 				widgetId={'menu-test-item-4'}
+				collapsed={false}
+				draggable={undefined}
+				dragged={false}
+				movedDown={false}
+				movedUp={false}
+				onDragEnd={noop}
+				onDragOver={noop}
+				onDragStart={noop}
+				onDrop={noop}
 			>
 				Cat
 			</ListItem>,
@@ -385,10 +463,23 @@ describe('List', () => {
 						disabled: listItemCss.disabled,
 						root: listItemCss.root,
 						s: css.items,
-						selected: listItemCss.selected
+						selected: listItemCss.selected,
+						collapsed: listItemCss.collapsed,
+						dragged: listItemCss.dragged,
+						movedUp: listItemCss.movedUp,
+						movedDown: listItemCss.movedDown
 					}
 				}}
 				widgetId={'menu-test-item-5'}
+				collapsed={false}
+				draggable={undefined}
+				dragged={false}
+				movedDown={false}
+				movedUp={false}
+				onDragEnd={noop}
+				onDragOver={noop}
+				onDragStart={noop}
+				onDrop={noop}
 			>
 				fish
 			</ListItem>
@@ -567,10 +658,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={`menu-test-item-${index}`}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					{testData[index].label || testData[index].value}
 				</ListItem>
@@ -894,10 +998,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-0'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Bob
 				</ListItem>,
@@ -915,10 +1032,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-1'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Adam
 				</ListItem>,
@@ -936,10 +1066,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-2'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Ant
 				</ListItem>,
@@ -957,10 +1100,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-3'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Anthony
 				</ListItem>,
@@ -978,10 +1134,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-4'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Bobby
 				</ListItem>
@@ -1020,10 +1189,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-0'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Bob
 					</ListItem>,
@@ -1041,10 +1223,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-1'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Adam
 					</ListItem>,
@@ -1062,10 +1257,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-2'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Ant
 					</ListItem>,
@@ -1083,10 +1291,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-3'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Anthony
 					</ListItem>,
@@ -1104,10 +1325,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-4'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Bobby
 					</ListItem>
@@ -1136,10 +1370,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-0'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Bob
 					</ListItem>,
@@ -1157,10 +1404,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-1'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Adam
 					</ListItem>,
@@ -1178,10 +1438,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-2'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Ant
 					</ListItem>,
@@ -1199,10 +1472,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-3'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Anthony
 					</ListItem>,
@@ -1220,10 +1506,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-4'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Bobby
 					</ListItem>
@@ -1249,10 +1548,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-0'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Bob
 					</ListItem>,
@@ -1270,10 +1582,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-1'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Adam
 					</ListItem>,
@@ -1291,10 +1616,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-2'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Ant
 					</ListItem>,
@@ -1312,10 +1650,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-3'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Anthony
 					</ListItem>,
@@ -1333,10 +1684,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-4'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Bobby
 					</ListItem>
@@ -1362,10 +1726,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-0'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Bob
 					</ListItem>,
@@ -1383,10 +1760,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-1'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Adam
 					</ListItem>,
@@ -1404,10 +1794,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-2'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Ant
 					</ListItem>,
@@ -1425,10 +1828,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-3'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Anthony
 					</ListItem>,
@@ -1446,10 +1862,23 @@ describe('List', () => {
 								disabled: listItemCss.disabled,
 								root: listItemCss.root,
 								s: css.items,
-								selected: listItemCss.selected
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
 							}
 						}}
 						widgetId={'menu-test-item-4'}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
 					>
 						Bobby
 					</ListItem>
@@ -1506,10 +1935,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-0'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Bob
 				</ListItem>,
@@ -1527,10 +1969,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-1'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Adam
 				</ListItem>,
@@ -1548,10 +2003,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-2'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Ant
 				</ListItem>,
@@ -1569,10 +2037,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-3'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Anthony
 				</ListItem>,
@@ -1590,10 +2071,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-4'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Bobby
 				</ListItem>
@@ -1691,10 +2185,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-0'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					dog
 				</ListItem>,
@@ -1712,10 +2219,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-1'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Cat
 				</ListItem>,
@@ -1733,10 +2253,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-2'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					fish
 				</ListItem>
@@ -1774,10 +2307,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-0'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					dog
 				</ListItem>,
@@ -1795,10 +2341,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-1'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Cat
 				</ListItem>,
@@ -1816,10 +2375,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-2'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					fish
 				</ListItem>
@@ -1845,10 +2417,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-0'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					dog
 				</ListItem>,
@@ -1866,10 +2451,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-1'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Cat
 				</ListItem>,
@@ -1887,10 +2485,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-2'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					fish
 				</ListItem>
@@ -1941,10 +2552,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-0'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					dog
 				</ListItem>,
@@ -1963,10 +2587,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-1'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					Cat
 				</ListItem>,
@@ -1985,10 +2622,23 @@ describe('List', () => {
 							disabled: listItemCss.disabled,
 							root: listItemCss.root,
 							s: css.items,
-							selected: listItemCss.selected
+							selected: listItemCss.selected,
+							collapsed: listItemCss.collapsed,
+							dragged: listItemCss.dragged,
+							movedUp: listItemCss.movedUp,
+							movedDown: listItemCss.movedDown
 						}
 					}}
 					widgetId={'menu-test-item-2'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
 				>
 					fish
 				</ListItem>

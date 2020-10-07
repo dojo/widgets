@@ -83,6 +83,24 @@ export interface ListItemProperties {
 	disabled?: boolean;
 	/** The id to apply to this widget top level for a11y */
 	widgetId: string;
+	/** Determines if this item can be reordered */
+	draggable?: boolean;
+	/** Determines if this item is actively being dragged */
+	dragged?: boolean;
+	/** Determines if this item is visually shifted down due to DnD */
+	movedUp?: boolean;
+	/** Determines if this item is visually shifted down due to DnD */
+	movedDown?: boolean;
+	/** Called when dragging begins */
+	onDragStart?: (event: DragEvent) => void;
+	/** Called when dragging ends */
+	onDragEnd?: (event: DragEvent) => void;
+	/** Called when over a dragged item */
+	onDragOver?: (event: DragEvent) => void;
+	/** Called when a holistic drag is complete */
+	onDrop?: (event: DragEvent) => void;
+	/** Determines if this item is visually collapsed during DnD */
+	collapsed?: boolean;
 }
 
 const listItemFactory = create({ theme }).properties<ListItemProperties>();
@@ -98,7 +116,16 @@ export const ListItem = listItemFactory(function ListItem({
 		onRequestActive,
 		selected = false,
 		disabled = false,
-		widgetId
+		widgetId,
+		draggable,
+		dragged,
+		onDragStart,
+		onDragEnd,
+		onDragOver,
+		onDrop,
+		movedUp,
+		movedDown,
+		collapsed
 	} = properties();
 
 	const classes = theme.classes(listItemCss);
@@ -123,7 +150,11 @@ export const ListItem = listItemFactory(function ListItem({
 				classes.root,
 				selected && classes.selected,
 				active && classes.active,
-				disabled && classes.disabled
+				disabled && classes.disabled,
+				movedUp && classes.movedUp,
+				movedDown && classes.movedDown,
+				collapsed && classes.collapsed,
+				dragged && classes.dragged
 			]}
 			onclick={() => {
 				requestActive();
@@ -132,6 +163,13 @@ export const ListItem = listItemFactory(function ListItem({
 			role="option"
 			aria-disabled={disabled}
 			aria-selected={selected}
+			draggable={draggable}
+			ondragenter={(event: DragEvent) => event.preventDefault()}
+			ondragstart={onDragStart}
+			ondragend={onDragEnd}
+			ondragover={onDragOver}
+			ondrop={onDrop}
+			styles={{ visibility: dragged ? 'hidden' : undefined }}
 		>
 			{children()}
 		</div>
@@ -141,6 +179,10 @@ export const ListItem = listItemFactory(function ListItem({
 export type ListOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
 
 export interface ListProperties {
+	/** Determines if this list can be reordered */
+	draggable?: boolean;
+	/** Called when a draggable is dropped */
+	onMove?: (from: number, to: number) => void;
 	/** The initial selected value */
 	initialValue?: string;
 	/** Controlled value property */
@@ -187,6 +229,8 @@ export interface ItemRendererProperties {
 
 interface ListICache {
 	activeIndex: number;
+	dragIndex?: number;
+	dragOverIndex?: number;
 	initial: string;
 	inputText: string;
 	itemHeight: number;
@@ -382,10 +426,76 @@ export const List = factory(function List({
 					css,
 					'item'
 				)}
+				dragged={icache.get('dragIndex') === index}
+				draggable={draggable}
+				onDragStart={(event) => onDragStart(event, index)}
+				onDragEnd={onDragEnd}
+				onDragOver={(event) => onDragOver(event, index)}
+				onDrop={(event) => onDrop(event, index)}
+				movedUp={
+					icache.get('dragOverIndex') === index &&
+					icache.get('dragIndex')! < icache.get('dragOverIndex')!
+				}
+				movedDown={
+					icache.get('dragOverIndex') === index &&
+					icache.get('dragIndex')! > icache.get('dragOverIndex')!
+				}
+				collapsed={
+					icache.get('dragIndex') === index && icache.get('dragOverIndex') !== undefined
+				}
 			>
 				<LoadingIndicator />
 			</ListItem>
 		);
+	}
+
+	function onDragStart(event: DragEvent, index: number) {
+		if (!draggable) {
+			return;
+		}
+		icache.set('dragIndex', index);
+		setActiveIndex(-1);
+		event.dataTransfer!.setData('text/plain', `${index}`);
+	}
+
+	function onDragOver(event: DragEvent, index: number) {
+		if (!draggable) {
+			return;
+		}
+		event.preventDefault();
+		event.dataTransfer!.dropEffect = 'move';
+		const dragIndex = icache.get('dragIndex')!;
+		let targetIndex: number | undefined = index;
+		if (event.offsetY < 10 && index === dragIndex + 1) {
+			targetIndex = undefined;
+		} else if (event.offsetY > itemHeight - 10 && index === dragIndex - 1) {
+			targetIndex = undefined;
+		}
+		if (icache.get('dragOverIndex') !== targetIndex) {
+			icache.set('dragOverIndex', targetIndex);
+		}
+	}
+
+	function onDragEnd(event: DragEvent) {
+		if (!draggable) {
+			return;
+		}
+		event.preventDefault();
+		icache.set('dragIndex', undefined);
+		icache.set('dragOverIndex', undefined);
+	}
+
+	function onDrop(event: DragEvent, index: number) {
+		if (!draggable) {
+			return;
+		}
+		event.preventDefault();
+		const from = event.dataTransfer && event.dataTransfer.getData('text/plain');
+		if (from === null) {
+			return;
+		}
+		setActiveIndex(index);
+		onMove && onMove(parseInt(from, 10), index);
 	}
 
 	function renderItem(data: ListOption, index: number) {
@@ -440,12 +550,30 @@ export const List = factory(function List({
 			) : (
 				<ListItem
 					{...itemProps}
-					selected={selected}
 					theme={theme.compose(
 						listItemCss,
 						css,
 						'item'
 					)}
+					selected={selected}
+					dragged={icache.get('dragIndex') === index}
+					draggable={draggable}
+					onDragStart={(event) => onDragStart(event, index)}
+					onDragEnd={onDragEnd}
+					onDragOver={(event) => onDragOver(event, index)}
+					onDrop={(event) => onDrop(event, index)}
+					movedUp={
+						icache.get('dragOverIndex') === index &&
+						icache.get('dragIndex')! < icache.get('dragOverIndex')!
+					}
+					movedDown={
+						icache.get('dragOverIndex') === index &&
+						icache.get('dragIndex')! > icache.get('dragOverIndex')!
+					}
+					collapsed={
+						icache.get('dragIndex') === index &&
+						icache.get('dragOverIndex') !== undefined
+					}
 				>
 					{children}
 				</ListItem>
@@ -455,7 +583,7 @@ export const List = factory(function List({
 		return divider ? [item, <hr classes={themedCss.divider} />] : item;
 	}
 
-	let { value: selectedValue } = properties();
+	let { value: selectedValue, draggable, onMove } = properties();
 
 	if (selectedValue === undefined) {
 		if (initialValue !== undefined && initialValue !== icache.get('initial')) {

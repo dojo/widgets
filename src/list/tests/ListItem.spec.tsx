@@ -14,12 +14,31 @@ describe('ListBoxItem', () => {
 		<div
 			key="root"
 			onpointermove={noop}
-			classes={[undefined, css.root, false, false, false]}
+			classes={[
+				undefined,
+				css.root,
+				false,
+				false,
+				false,
+				undefined,
+				undefined,
+				undefined,
+				undefined
+			]}
+			draggable={undefined}
 			onclick={noop}
 			role="option"
 			aria-selected={false}
 			aria-disabled={false}
 			id="test"
+			ondragend={undefined}
+			ondragenter={noop}
+			ondragover={undefined}
+			ondragstart={undefined}
+			ondrop={undefined}
+			styles={{
+				visibility: undefined
+			}}
 		>
 			test
 		</div>
@@ -47,7 +66,17 @@ describe('ListBoxItem', () => {
 			</ListItem>
 		));
 		const selectedTemplate = template
-			.setProperty('@root', 'classes', [undefined, css.root, css.selected, false, false])
+			.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				css.selected,
+				false,
+				false,
+				undefined,
+				undefined,
+				undefined,
+				undefined
+			])
 			.setProperty('@root', 'aria-selected', true);
 		h.expect(selectedTemplate);
 	});
@@ -59,7 +88,17 @@ describe('ListBoxItem', () => {
 			</ListItem>
 		));
 		const disabledTemplate = template
-			.setProperty('@root', 'classes', [undefined, css.root, false, false, css.disabled])
+			.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				false,
+				false,
+				css.disabled,
+				undefined,
+				undefined,
+				undefined,
+				undefined
+			])
 			.setProperty('@root', 'aria-disabled', true);
 		h.expect(disabledTemplate);
 	});
@@ -75,9 +114,95 @@ describe('ListBoxItem', () => {
 			css.root,
 			false,
 			css.active,
-			false
+			false,
+			undefined,
+			undefined,
+			undefined,
+			undefined
 		]);
 		h.expect(activeTemplate);
+	});
+
+	it('renders moved up', () => {
+		const h = harness(() => (
+			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop} movedUp>
+				test
+			</ListItem>
+		));
+		const selectedTemplate = template.setProperty('@root', 'classes', [
+			undefined,
+			css.root,
+			false,
+			false,
+			false,
+			css.movedUp,
+			undefined,
+			undefined,
+			undefined
+		]);
+		h.expect(selectedTemplate);
+	});
+
+	it('renders moved down', () => {
+		const h = harness(() => (
+			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop} movedDown>
+				test
+			</ListItem>
+		));
+		const selectedTemplate = template.setProperty('@root', 'classes', [
+			undefined,
+			css.root,
+			false,
+			false,
+			false,
+			undefined,
+			css.movedDown,
+			undefined,
+			undefined
+		]);
+		h.expect(selectedTemplate);
+	});
+
+	it('renders collapsed', () => {
+		const h = harness(() => (
+			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop} collapsed>
+				test
+			</ListItem>
+		));
+		const selectedTemplate = template.setProperty('@root', 'classes', [
+			undefined,
+			css.root,
+			false,
+			false,
+			false,
+			undefined,
+			undefined,
+			css.collapsed,
+			undefined
+		]);
+		h.expect(selectedTemplate);
+	});
+
+	it('renders dragged', () => {
+		const h = harness(() => (
+			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop} dragged>
+				test
+			</ListItem>
+		));
+		const selectedTemplate = template
+			.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				false,
+				false,
+				false,
+				undefined,
+				undefined,
+				undefined,
+				css.dragged
+			])
+			.setProperty('@root', 'styles', { visibility: 'hidden' });
+		h.expect(selectedTemplate);
 	});
 
 	it('requests active onpointermove', () => {
