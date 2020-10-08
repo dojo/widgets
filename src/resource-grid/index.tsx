@@ -7,6 +7,7 @@ import theme from '../middleware/theme';
 import * as fixedCss from './Grid.m.css';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import { RenderResult } from '@dojo/framework/core/interfaces';
+import { chown } from 'fs';
 // import LoadingIndicator from '../../loading-indicator';
 
 export interface ColumnConfig {
@@ -23,9 +24,13 @@ export interface GridProperties {
 	widgetId?: string;
 }
 
+export interface GridColumnChild {
+	heading?(): RenderResult;
+	cell?(): RenderResult;
+}
+
 export interface GridChildren {
-	rows?(columns: ColumnConfig[], item: any, index: number): RenderResult;
-	headings?(columns: ColumnConfig): RenderResult;
+	[key: string]: GridColumnChild;
 }
 
 interface GridICache {
@@ -101,20 +106,6 @@ export const Grid = factory(function Grid({
 		return;
 	}
 
-	function renderPlaceholderRow(index: number) {
-		return <div classes={fixedCss.row}>{`placeholder ${index}`}</div>;
-	}
-
-	function defaultRowRenderer(columns: ColumnConfig[], item: any, index: number) {
-		return <Row columns={columns} item={item} index={index} />;
-	}
-
-	function defaultHeaderRowRenderer(columns: ColumnConfig[]) {
-		return columns.map((config) => {
-			return <HeaderCell />;
-		});
-	}
-
 	function renderRows(start: number, count: number) {
 		const renderedItems = [];
 		const metaInfo = meta(template, options({ size: count }), true);
@@ -135,9 +126,11 @@ export const Grid = factory(function Grid({
 				const indexWithinPage = index - (page - 1) * count;
 				const items = pageItems[pageIndex];
 				if (items && items[indexWithinPage]) {
-					renderedItems[i] = rowRenderer(columns, items[indexWithinPage], index);
+					renderedItems[i] = (
+						<Row columns={columns} item={items[indexWithinPage]} index={index} />
+					);
 				} else if (!items) {
-					renderedItems[i] = renderPlaceholderRow(index);
+					renderedItems[i] = <div classes={fixedCss.row}>{`placeholder ${index}`}</div>;
 				}
 			}
 		}
@@ -161,7 +154,9 @@ export const Grid = factory(function Grid({
 			<div role="table" classes={fixedCss.table}>
 				<div role="rowgroup" key="head" classes={fixedCss.head}>
 					<div role="row" classes={fixedCss.row}>
-						{}
+						{columns.forEach((column) => (
+							<HeaderCell>{column.title}</HeaderCell>
+						))}
 					</div>
 				</div>
 				<div
@@ -245,10 +240,11 @@ export const Cell = cellFactory(function Cell({ children, properties, id }) {
 });
 
 const headerCellFactory = create().properties();
+
 export const HeaderCell = headerCellFactory(function HeaderCell({ children, properties, id }) {
 	return (
-		<span role="columnheader" classes={[fixedCss.th, config.sortable && fixedCss.sortable]}>
-			{config.title} {config.sortable && ' ^'}
+		<span role="columnheader" classes={fixedCss.th}>
+			{children()}
 		</span>
 	);
 });
