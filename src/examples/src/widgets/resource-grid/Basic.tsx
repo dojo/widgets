@@ -1,12 +1,12 @@
 import { tsx, create } from '@dojo/framework/core/vdom';
 
-import Grid, { Row, Cell } from '@dojo/widgets/resource-grid';
+import Grid from '@dojo/widgets/resource-grid';
 import Example from '../../Example';
 import {
 	createMemoryResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
-import { column } from '@dojo/widgets/grid/styles/header.m.css';
+import TextInput from '@dojo/widgets/text-input';
 
 const resource = createResourceMiddleware();
 
@@ -19,11 +19,12 @@ const columns = [
 	{
 		id: 'firstName',
 		title: 'First Name',
-		sortable: true
+		filterable: true
 	},
 	{
 		id: 'lastName',
-		title: 'Last Name'
+		title: 'Last Name',
+		filterable: true
 	}
 ];
 
@@ -61,8 +62,13 @@ export default factory(function Basic({ id, middleware: { resource } }) {
 							}
 						},
 						lastName: {
-							header: (column) => {
-								return `** ${column.title} **`;
+							header: ({ title, onFilter }) => {
+								return (
+									<virtual>
+										<TextInput onValue={onFilter} />
+										{`** ${title} **`}
+									</virtual>
+								);
 							}
 						}
 					}}

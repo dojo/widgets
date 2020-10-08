@@ -7,7 +7,7 @@ import theme from '../middleware/theme';
 import * as fixedCss from './Grid.m.css';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import { column } from '../grid/styles/header.m.css';
+import TextInput from '../text-input';
 
 export interface ColumnConfig {
 	id: string;
@@ -23,8 +23,10 @@ export interface GridProperties {
 	widgetId?: string;
 }
 
+export type HeaderRenderer = (column: HeaderCellProperties) => RenderResult;
+
 export interface GridColumnChild {
-	header?(column: ColumnConfig): RenderResult;
+	header?: HeaderRenderer;
 	cell?(item: any, rowIndex: number): RenderResult;
 }
 
@@ -153,7 +155,20 @@ export const Grid = factory(function Grid({
 	return (
 		<div key="root" classes={[theme.variant(), fixedCss.root]} role="grid" id={idBase}>
 			<div role="table" classes={fixedCss.table}>
-				<HeaderRow columns={columns}>{renderers}</HeaderRow>
+				<HeaderRow
+					columns={columns}
+					onFilter={(columnId, value) => {
+						const { query: existingQuery } = options();
+						options({
+							query: {
+								...existingQuery,
+								[columnId]: value
+							}
+						});
+					}}
+				>
+					{renderers}
+				</HeaderRow>
 				<div
 					scrollTop={scrollTop}
 					onscroll={(e) => {
@@ -229,11 +244,16 @@ const PlaceholderRow = placeholderRowFactory(function PlaceholderRow({ propertie
 	return <div classes={fixedCss.row}>{`placeholder ${rowIndex}`}</div>;
 });
 
+export interface HeaderRowProperties {
+	columns: ColumnConfig[];
+	onFilter(columnId: string, value: string): void;
+}
+
 const headerRowFactory = create()
-	.properties<{ columns: ColumnConfig[] }>()
+	.properties<HeaderRowProperties>()
 	.children<GridChildren>();
 const HeaderRow = headerRowFactory(function HeaderRow({ children, properties }) {
-	const { columns } = properties();
+	const { columns, onFilter } = properties();
 	const [renderers = {}] = children();
 
 	return (
@@ -241,21 +261,48 @@ const HeaderRow = headerRowFactory(function HeaderRow({ children, properties }) 
 			<div role="row" classes={fixedCss.row} key="head-row">
 				{columns.map((column) => {
 					const headerCellRenderer = renderers[column.id] && renderers[column.id].header;
-					const headerContent = headerCellRenderer
-						? headerCellRenderer(column)
-						: column.title;
-					return <HeaderCell>{headerContent}</HeaderCell>;
+					return (
+						<HeaderCell
+							{...column}
+							onFilter={(value) => {
+								onFilter(column.id, value);
+							}}
+						>
+							{headerCellRenderer}
+						</HeaderCell>
+					);
 				})}
 			</div>
 		</div>
 	);
 });
 
-const headerCellFactory = create();
-const HeaderCell = headerCellFactory(function HeaderCell({ children }) {
+export interface HeaderCellProperties extends ColumnConfig {
+	onFilter(value: string): void;
+}
+
+const headerCellFactory = create()
+	.properties<HeaderCellProperties>()
+	.children<HeaderRenderer | undefined>();
+const HeaderCell = headerCellFactory(function HeaderCell({ children, properties }) {
+	const { filterable, title, onFilter } = properties();
+	const [renderer] = children();
+	let content: RenderResult;
+
+	if (renderer) {
+		content = renderer(properties());
+	} else {
+		content = (
+			<virtual>
+				{title}
+				{filterable && <TextInput onValue={onFilter} />}
+			</virtual>
+		);
+	}
+
 	return (
 		<span role="columnheader" classes={fixedCss.th}>
-			{children()}
+			{content}
 		</span>
 	);
 });
