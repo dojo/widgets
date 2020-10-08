@@ -7,6 +7,7 @@ import theme from '../middleware/theme';
 import * as fixedCss from './Grid.m.css';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import { RenderResult } from '@dojo/framework/core/interfaces';
+import { column } from '../grid/styles/header.m.css';
 
 export interface ColumnConfig {
 	id: string;
@@ -124,23 +125,13 @@ export const Grid = factory(function Grid({
 				const indexWithinPage = rowIndex - (page - 1) * count;
 				const items = pageItems[pageIndex];
 				if (items && items[indexWithinPage]) {
-					const item = items[indexWithinPage];
 					renderedItems[i] = (
-						<div classes={fixedCss.row} key={`row-${rowIndex}`}>
-							{columns.map((column) => {
-								const cellRenderer =
-									renderers[column.id] && renderers[column.id].cell;
-								const content = cellRenderer
-									? cellRenderer(item, rowIndex)
-									: `${item[column.id]}`;
-								return <Cell>{content}</Cell>;
-							})}
-						</div>
+						<Row columns={columns} item={items[indexWithinPage]} rowIndex={rowIndex}>
+							{renderers}
+						</Row>
 					);
 				} else if (!items) {
-					renderedItems[i] = (
-						<div classes={fixedCss.row}>{`placeholder ${rowIndex}`}</div>
-					);
+					renderedItems[i] = <PlaceholderRow rowIndex={rowIndex} />;
 				}
 			}
 		}
@@ -162,18 +153,7 @@ export const Grid = factory(function Grid({
 	return (
 		<div key="root" classes={[theme.variant(), fixedCss.root]} role="grid" id={idBase}>
 			<div role="table" classes={fixedCss.table}>
-				<div role="rowgroup" key="head" classes={fixedCss.head}>
-					<div role="row" classes={fixedCss.row} key="head-row">
-						{columns.map((column) => {
-							const headerCellRenderer =
-								renderers[column.id] && renderers[column.id].header;
-							const headerContent = headerCellRenderer
-								? headerCellRenderer(column)
-								: column.title;
-							return <HeaderCell>{headerContent}</HeaderCell>;
-						})}
-					</div>
-				</div>
+				<HeaderRow columns={columns}>{renderers}</HeaderRow>
 				<div
 					scrollTop={scrollTop}
 					onscroll={(e) => {
@@ -215,12 +195,59 @@ export const Grid = factory(function Grid({
 
 export default Grid;
 
+const rowFactory = create()
+	.properties<{ columns: ColumnConfig[]; item: any; rowIndex: number }>()
+	.children<GridChildren>();
+const Row = rowFactory(function Row({ children, properties }) {
+	const { columns, item, rowIndex } = properties();
+	const [renderers = {}] = children();
+
+	return (
+		<div classes={fixedCss.row} key={`row-${rowIndex}`}>
+			{columns.map((column) => {
+				const cellRenderer = renderers[column.id] && renderers[column.id].cell;
+				const content = cellRenderer ? cellRenderer(item, rowIndex) : `${item[column.id]}`;
+				return <Cell>{content}</Cell>;
+			})}
+		</div>
+	);
+});
+
 const cellFactory = create();
 const Cell = cellFactory(function Cell({ children }) {
 	return (
 		<span role="cell" classes={fixedCss.td}>
 			{children()}
 		</span>
+	);
+});
+
+const placeholderRowFactory = create().properties<{ rowIndex: number }>();
+const PlaceholderRow = placeholderRowFactory(function PlaceholderRow({ properties }) {
+	const { rowIndex } = properties();
+
+	return <div classes={fixedCss.row}>{`placeholder ${rowIndex}`}</div>;
+});
+
+const headerRowFactory = create()
+	.properties<{ columns: ColumnConfig[] }>()
+	.children<GridChildren>();
+const HeaderRow = headerRowFactory(function HeaderRow({ children, properties }) {
+	const { columns } = properties();
+	const [renderers = {}] = children();
+
+	return (
+		<div role="rowgroup" key="head" classes={fixedCss.head}>
+			<div role="row" classes={fixedCss.row} key="head-row">
+				{columns.map((column) => {
+					const headerCellRenderer = renderers[column.id] && renderers[column.id].header;
+					const headerContent = headerCellRenderer
+						? headerCellRenderer(column)
+						: column.title;
+					return <HeaderCell>{headerContent}</HeaderCell>;
+				})}
+			</div>
+		</div>
 	);
 });
 
