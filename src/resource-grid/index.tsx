@@ -7,8 +7,6 @@ import theme from '../middleware/theme';
 import * as fixedCss from './Grid.m.css';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import { chown } from 'fs';
-// import LoadingIndicator from '../../loading-indicator';
 
 export interface ColumnConfig {
 	id: string;
@@ -25,8 +23,8 @@ export interface GridProperties {
 }
 
 export interface GridColumnChild {
-	heading?(): RenderResult;
-	cell?(): RenderResult;
+	header?(column: ColumnConfig): RenderResult;
+	cell?(item: any, rowIndex: number): RenderResult;
 }
 
 export interface GridChildren {
@@ -73,7 +71,7 @@ export const Grid = factory(function Grid({
 		columns
 	} = properties();
 
-	const [rowRenderer = defaultRowRenderer] = children();
+	const [renderers = {}] = children();
 
 	let bodyHeight = 0;
 	const rootDimensions = resize.get('root');
@@ -120,17 +118,29 @@ export const Grid = factory(function Grid({
 			}
 			const pageItems = getOrRead(template, options({ page: pages }));
 			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
-				const index = i + startNode;
-				const page = Math.floor(index / count) + 1;
+				const rowIndex = i + startNode;
+				const page = Math.floor(rowIndex / count) + 1;
 				const pageIndex = pages.indexOf(page);
-				const indexWithinPage = index - (page - 1) * count;
+				const indexWithinPage = rowIndex - (page - 1) * count;
 				const items = pageItems[pageIndex];
 				if (items && items[indexWithinPage]) {
+					const item = items[indexWithinPage];
 					renderedItems[i] = (
-						<Row columns={columns} item={items[indexWithinPage]} index={index} />
+						<div classes={fixedCss.row} key={`row-${rowIndex}`}>
+							{columns.map((column) => {
+								const cellRenderer =
+									renderers[column.id] && renderers[column.id].cell;
+								const content = cellRenderer
+									? cellRenderer(item, rowIndex)
+									: `${item[column.id]}`;
+								return <Cell>{content}</Cell>;
+							})}
+						</div>
 					);
 				} else if (!items) {
-					renderedItems[i] = <div classes={fixedCss.row}>{`placeholder ${index}`}</div>;
+					renderedItems[i] = (
+						<div classes={fixedCss.row}>{`placeholder ${rowIndex}`}</div>
+					);
 				}
 			}
 		}
@@ -153,10 +163,15 @@ export const Grid = factory(function Grid({
 		<div key="root" classes={[theme.variant(), fixedCss.root]} role="grid" id={idBase}>
 			<div role="table" classes={fixedCss.table}>
 				<div role="rowgroup" key="head" classes={fixedCss.head}>
-					<div role="row" classes={fixedCss.row}>
-						{columns.forEach((column) => (
-							<HeaderCell>{column.title}</HeaderCell>
-						))}
+					<div role="row" classes={fixedCss.row} key="head-row">
+						{columns.map((column) => {
+							const headerCellRenderer =
+								renderers[column.id] && renderers[column.id].header;
+							const headerContent = headerCellRenderer
+								? headerCellRenderer(column)
+								: column.title;
+							return <HeaderCell>{headerContent}</HeaderCell>;
+						})}
 					</div>
 				</div>
 				<div
@@ -200,38 +215,8 @@ export const Grid = factory(function Grid({
 
 export default Grid;
 
-export interface RowProperties {
-	columns: ColumnConfig[];
-	item: any;
-	index: number;
-}
-
-const rowFactory = create()
-	.properties<RowProperties>()
-	.children<RenderResult | undefined>();
-
-export const Row = rowFactory(function Row({ children, properties, id }) {
-	const { columns, item, index } = properties();
-	const [...childCells] = children();
-	let cells: RenderResult[];
-	if (childCells && childCells.length > 0) {
-		cells = childCells;
-	} else {
-		cells = columns.map((config) => {
-			return <Cell>{`${item[config.id]}`}</Cell>;
-		});
-	}
-
-	return (
-		<div classes={fixedCss.row} key={`row-${index}`}>
-			{cells}
-		</div>
-	);
-});
-
-const cellFactory = create().properties();
-
-export const Cell = cellFactory(function Cell({ children, properties, id }) {
+const cellFactory = create();
+const Cell = cellFactory(function Cell({ children }) {
 	return (
 		<span role="cell" classes={fixedCss.td}>
 			{children()}
@@ -239,9 +224,8 @@ export const Cell = cellFactory(function Cell({ children, properties, id }) {
 	);
 });
 
-const headerCellFactory = create().properties();
-
-export const HeaderCell = headerCellFactory(function HeaderCell({ children, properties, id }) {
+const headerCellFactory = create();
+const HeaderCell = headerCellFactory(function HeaderCell({ children }) {
 	return (
 		<span role="columnheader" classes={fixedCss.th}>
 			{children()}
