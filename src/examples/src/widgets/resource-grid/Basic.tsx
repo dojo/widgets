@@ -58,7 +58,7 @@ export default factory(function Basic({ id, middleware: { resource } }) {
 					{{
 						firstName: {
 							cell: (item: DataType, rowIndex) => {
-								return `name is ${item.lastName}`;
+								return `name is ${item.firstName}`;
 							}
 						},
 						lastName: {
