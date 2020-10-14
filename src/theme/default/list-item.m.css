@@ -34,13 +34,13 @@
 }
 
 /* Added to an item shifted up due to DnD */
-.movedUp {
-	padding-bottom: 58px !important;
+.root.movedUp {
+	padding-bottom: 58px;
 }
 
 /* Added to an item shifted down due to DnD */
-.movedDown {
-	padding-top: 58px !important;
+.root.movedDown {
+	padding-top: 58px;
 }
 
 /* Added to an item currently being dragged */
