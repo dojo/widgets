@@ -454,17 +454,16 @@ export const List = factory(function List({
 			return;
 		}
 		icache.set('dragIndex', index);
-		setActiveIndex(-1);
 		event.dataTransfer!.setData('text/plain', `${index}`);
 	}
 
 	function onDragOver(event: DragEvent, index: number) {
-		if (!draggable) {
+		const dragIndex = icache.get('dragIndex')!;
+		if (!draggable || dragIndex === undefined) {
 			return;
 		}
 		event.preventDefault();
 		event.dataTransfer!.dropEffect = 'move';
-		const dragIndex = icache.get('dragIndex')!;
 		let targetIndex: number | undefined = index;
 		if (event.offsetY < 10 && index === dragIndex + 1) {
 			targetIndex = undefined;
@@ -520,7 +519,6 @@ export const List = factory(function List({
 			disabled: itemDisabled,
 			classes
 		};
-
 		let item: RenderResult;
 
 		if (itemRenderer) {
