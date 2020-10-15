@@ -8,6 +8,7 @@ import * as fixedCss from './Grid.m.css';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import TextInput from '../text-input';
+import { column } from '../grid/styles/header.m.css';
 
 export interface ColumnConfig {
 	id: string;
@@ -24,14 +25,17 @@ export interface GridProperties {
 }
 
 export type HeaderRenderer = (column: HeaderCellProperties) => RenderResult;
-
-export interface GridColumnChild {
-	header?: HeaderRenderer;
-	cell?(item: any, rowIndex: number): RenderResult;
-}
+export type CellRenderer = (item: any, rowIndex: number) => RenderResult;
+export type FooterRenderer = (total: string) => RenderResult;
 
 export interface GridChildren {
-	[key: string]: GridColumnChild;
+	cell?: {
+		[key: string]: CellRenderer;
+	};
+	footer?: FooterRenderer;
+	header?: {
+		[key: string]: HeaderRenderer;
+	};
 }
 
 interface GridICache {
@@ -74,7 +78,7 @@ export const Grid = factory(function Grid({
 		columns
 	} = properties();
 
-	const [renderers = {}] = children();
+	const [{ cell: cellRenderers = {}, header: headerRenderers = {} } = {}] = children();
 
 	let bodyHeight = 0;
 	const rootDimensions = resize.get('root');
@@ -129,7 +133,7 @@ export const Grid = factory(function Grid({
 				if (items && items[indexWithinPage]) {
 					renderedItems[i] = (
 						<Row columns={columns} item={items[indexWithinPage]} rowIndex={rowIndex}>
-							{renderers}
+							{cellRenderers}
 						</Row>
 					);
 				} else if (!items) {
@@ -166,8 +170,17 @@ export const Grid = factory(function Grid({
 							}
 						});
 					}}
+					onSort={(columnId) => {
+						const { query: existingQuery } = options();
+						options({
+							query: {
+								...existingQuery,
+								sort: columnId
+							}
+						});
+					}}
 				>
-					{renderers}
+					{headerRenderers}
 				</HeaderRow>
 				<div
 					scrollTop={scrollTop}
@@ -212,27 +225,47 @@ export default Grid;
 
 const rowFactory = create()
 	.properties<{ columns: ColumnConfig[]; item: any; rowIndex: number }>()
-	.children<GridChildren>();
+	.children<GridChildren['cell']>();
 const Row = rowFactory(function Row({ children, properties }) {
 	const { columns, item, rowIndex } = properties();
-	const [renderers = {}] = children();
+	const [cellRenderers = {}] = children();
 
 	return (
 		<div classes={fixedCss.row} key={`row-${rowIndex}`}>
 			{columns.map((column) => {
-				const cellRenderer = renderers[column.id] && renderers[column.id].cell;
-				const content = cellRenderer ? cellRenderer(item, rowIndex) : `${item[column.id]}`;
-				return <Cell>{content}</Cell>;
+				const cellRenderer = cellRenderers[column.id];
+				return (
+					<Cell {...column} item={item} rowIndex={rowIndex}>
+						{cellRenderer}
+					</Cell>
+				);
 			})}
 		</div>
 	);
 });
 
-const cellFactory = create();
-const Cell = cellFactory(function Cell({ children }) {
+export interface CellProperties extends ColumnConfig {
+	item: any;
+	rowIndex: number;
+}
+
+const cellFactory = create()
+	.properties<CellProperties>()
+	.children<CellRenderer | undefined>();
+const Cell = cellFactory(function Cell({ children, properties }) {
+	const { item, rowIndex, id } = properties();
+	const [renderer] = children();
+	let content: RenderResult;
+
+	if (renderer) {
+		content = renderer(item, rowIndex);
+	} else {
+		content = item[id];
+	}
+
 	return (
 		<span role="cell" classes={fixedCss.td}>
-			{children()}
+			{content}
 		</span>
 	);
 });
@@ -247,25 +280,29 @@ const PlaceholderRow = placeholderRowFactory(function PlaceholderRow({ propertie
 export interface HeaderRowProperties {
 	columns: ColumnConfig[];
 	onFilter(columnId: string, value: string): void;
+	onSort(columnId: string): void;
 }
 
 const headerRowFactory = create()
 	.properties<HeaderRowProperties>()
-	.children<GridChildren>();
+	.children<GridChildren['header']>();
 const HeaderRow = headerRowFactory(function HeaderRow({ children, properties }) {
-	const { columns, onFilter } = properties();
-	const [renderers = {}] = children();
+	const { columns, onFilter, onSort } = properties();
+	const [headerRenderers = {}] = children();
 
 	return (
 		<div role="rowgroup" key="head" classes={fixedCss.head}>
 			<div role="row" classes={fixedCss.row} key="head-row">
 				{columns.map((column) => {
-					const headerCellRenderer = renderers[column.id] && renderers[column.id].header;
+					const headerCellRenderer = headerRenderers[column.id];
 					return (
 						<HeaderCell
 							{...column}
 							onFilter={(value) => {
 								onFilter(column.id, value);
+							}}
+							onSort={() => {
+								onSort(column.id);
 							}}
 						>
 							{headerCellRenderer}
@@ -279,13 +316,14 @@ const HeaderRow = headerRowFactory(function HeaderRow({ children, properties }) 
 
 export interface HeaderCellProperties extends ColumnConfig {
 	onFilter(value: string): void;
+	onSort(): void;
 }
 
 const headerCellFactory = create()
 	.properties<HeaderCellProperties>()
 	.children<HeaderRenderer | undefined>();
 const HeaderCell = headerCellFactory(function HeaderCell({ children, properties }) {
-	const { filterable, title, onFilter } = properties();
+	const { filterable, title, onFilter, sortable, onSort } = properties();
 	const [renderer] = children();
 	let content: RenderResult;
 
@@ -296,6 +334,18 @@ const HeaderCell = headerCellFactory(function HeaderCell({ children, properties 
 			<virtual>
 				{title}
 				{filterable && <TextInput onValue={onFilter} />}
+				{sortable && (
+					<button
+						type="button"
+						onclick={(e) => {
+							e.stopPropagation();
+							e.preventDefault();
+							onSort();
+						}}
+					>
+						Sort
+					</button>
+				)}
 			</virtual>
 		);
 	}
