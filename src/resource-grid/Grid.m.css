@@ -18,7 +18,8 @@
 	display: block;
 }
 
-.row {
+.row,
+.headerRow {
 	width: 100%;
 	display: flex;
 	box-sizing: border-box;
@@ -39,7 +40,7 @@
 	cursor: pointer;
 }
 
-.head .row {
+.headerRow {
 	border-bottom: none;
 }
 
@@ -47,16 +48,22 @@
 	border-bottom: none;
 }
 
-.td,
-.th {
+.cell {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.cell,
+.headerCell {
 	border-right: 1px solid gray;
 	flex: 1 100%;
 	padding: 4px;
 	box-sizing: border-box;
 }
 
-.td:last-child,
-.th:last-child {
+.cell:last-child,
+.headerCell:last-child {
 	border-right: none;
 }
 

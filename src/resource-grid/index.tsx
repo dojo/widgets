@@ -80,6 +80,13 @@ export const Grid = factory(function Grid({
 
 	const [{ cell: cellRenderers = {}, header: headerRenderers = {} } = {}] = children();
 
+	const idBase = widgetId || `menu-${id}`;
+	const metaInfo = meta(template, options(), true);
+
+	if (!metaInfo || metaInfo.total === undefined) {
+		return;
+	}
+
 	let bodyHeight = 0;
 	const rootDimensions = resize.get('root');
 
@@ -87,28 +94,19 @@ export const Grid = factory(function Grid({
 		const { size: headSize } = dimensions.get('head');
 		const { size: footSize } = dimensions.get('foot');
 		bodyHeight = rootDimensions.height - headSize.height - footSize.height;
-
+		const [item] = getOrRead(template, { ...options(), size: 1 });
 		let itemHeight = icache.get('itemHeight');
 		if (!itemHeight) {
 			const offscreenRow = (
-				<div role="row" classes={fixedCss.row}>
-					{columns.map((config) => {
-						return <span role="cell" classes={fixedCss.td}>{`${config.id}`}</span>;
-					})}
-				</div>
+				<Row columns={columns} item={item} rowIndex={1}>
+					{cellRenderers}
+				</Row>
 			);
 			itemHeight = offscreenHeight(offscreenRow);
 			icache.set('itemHeight', itemHeight, true);
 		}
 
 		icache.set('itemsInView', Math.floor(bodyHeight / itemHeight));
-	}
-
-	const idBase = widgetId || `menu-${id}`;
-	const metaInfo = meta(template, options(), true);
-
-	if (!metaInfo || metaInfo.total === undefined) {
-		return;
 	}
 
 	function renderRows(start: number, count: number) {
@@ -159,29 +157,31 @@ export const Grid = factory(function Grid({
 	return (
 		<div key="root" classes={[theme.variant(), fixedCss.root]} role="grid" id={idBase}>
 			<div role="table" classes={fixedCss.table}>
-				<HeaderRow
-					columns={columns}
-					onFilter={(columnId, value) => {
-						const { query: existingQuery } = options();
-						options({
-							query: {
-								...existingQuery,
-								[columnId]: value
-							}
-						});
-					}}
-					onSort={(columnId) => {
-						const { query: existingQuery } = options();
-						options({
-							query: {
-								...existingQuery,
-								sort: columnId
-							}
-						});
-					}}
-				>
-					{headerRenderers}
-				</HeaderRow>
+				<div role="rowgroup" key="head" classes={fixedCss.head}>
+					<HeaderRow
+						columns={columns}
+						onFilter={(columnId, value) => {
+							const { query: existingQuery } = options();
+							options({
+								query: {
+									...existingQuery,
+									[columnId]: value
+								}
+							});
+						}}
+						onSort={(columnId) => {
+							const { query: existingQuery } = options();
+							options({
+								query: {
+									...existingQuery,
+									sort: columnId
+								}
+							});
+						}}
+					>
+						{headerRenderers}
+					</HeaderRow>
+				</div>
 				<div
 					scrollTop={scrollTop}
 					onscroll={(e) => {
@@ -264,9 +264,9 @@ const Cell = cellFactory(function Cell({ children, properties }) {
 	}
 
 	return (
-		<span role="cell" classes={fixedCss.td}>
+		<div role="cell" classes={fixedCss.cell}>
 			{content}
-		</span>
+		</div>
 	);
 });
 
@@ -291,25 +291,23 @@ const HeaderRow = headerRowFactory(function HeaderRow({ children, properties }) 
 	const [headerRenderers = {}] = children();
 
 	return (
-		<div role="rowgroup" key="head" classes={fixedCss.head}>
-			<div role="row" classes={fixedCss.row} key="head-row">
-				{columns.map((column) => {
-					const headerCellRenderer = headerRenderers[column.id];
-					return (
-						<HeaderCell
-							{...column}
-							onFilter={(value) => {
-								onFilter(column.id, value);
-							}}
-							onSort={() => {
-								onSort(column.id);
-							}}
-						>
-							{headerCellRenderer}
-						</HeaderCell>
-					);
-				})}
-			</div>
+		<div role="row" classes={fixedCss.headerRow} key="head-row">
+			{columns.map((column) => {
+				const headerCellRenderer = headerRenderers[column.id];
+				return (
+					<HeaderCell
+						{...column}
+						onFilter={(value) => {
+							onFilter(column.id, value);
+						}}
+						onSort={() => {
+							onSort(column.id);
+						}}
+					>
+						{headerCellRenderer}
+					</HeaderCell>
+				);
+			})}
 		</div>
 	);
 });
@@ -351,8 +349,8 @@ const HeaderCell = headerCellFactory(function HeaderCell({ children, properties 
 	}
 
 	return (
-		<span role="columnheader" classes={fixedCss.th}>
+		<div role="columnheader" classes={fixedCss.headerCell}>
 			{content}
-		</span>
+		</div>
 	);
 });
