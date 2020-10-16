@@ -174,7 +174,7 @@ export const Grid = factory(function Grid({
 							options({
 								query: {
 									...existingQuery,
-									sort: columnId
+									__sort__: columnId
 								}
 							});
 						}}
@@ -301,7 +301,7 @@ const HeaderRow = headerRowFactory(function HeaderRow({ children, properties }) 
 							onFilter(column.id, value);
 						}}
 						onSort={() => {
-							onSort(column.id);
+							onSort(column.id, 'string', true);
 						}}
 					>
 						{headerCellRenderer}

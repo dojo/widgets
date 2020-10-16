@@ -10,6 +10,7 @@ import {
 } from '@dojo/framework/core/middleware/resources';
 import TextInput from '@dojo/widgets/text-input';
 import cities, { City } from './cities';
+import List from '@dojo/widgets/list';
 
 const resource = createResourceMiddleware();
 
@@ -22,7 +23,7 @@ const columns = [
 	{ id: 'rank', title: 'rank', sortable: true }
 ];
 
-const gridTemplate = createResourceTemplateWithInit<City, { data: City[] }>({
+const gridTemplate = createResourceTemplateWithInit<any, { data: City[] }>({
 	init: ({ data }, { put }) => {
 		put({ data, total: data.length }, { offset: 0, size: 30, query: {} });
 	},
@@ -30,8 +31,8 @@ const gridTemplate = createResourceTemplateWithInit<City, { data: City[] }>({
 	read: async (request, { put, get }) => {
 		const { data } = get();
 		const { offset, size } = request;
-		const { sort, ...queryFields } = request.query as {
-			sort: keyof City;
+		const { __sort__: sort, ...queryFields } = request.query as {
+			__sort__: keyof City;
 			[key: string]: string;
 		};
 
@@ -55,46 +56,83 @@ const gridTemplate = createResourceTemplateWithInit<City, { data: City[] }>({
 const factory = create({ resource });
 
 export default factory(function Basic({ id, middleware: { resource } }) {
+	const { createOptions } = resource;
+	const options = createOptions('foo');
+
 	return (
 		<Example>
-			<div styles={{ height: '600px', overflow: 'hidden' }}>
-				<Grid
+			<div>
+				<h3>City</h3>
+				<TextInput
+					onValue={(value) => {
+						const { query } = options();
+						options({
+							query: {
+								...query,
+								city: value
+							}
+						});
+					}}
+				/>
+				<h3>States</h3>
+				<List
+					itemsInView={5}
+					onValue={(value) => {
+						const { query } = options();
+						options({
+							query: {
+								...query,
+								state: value
+							}
+						});
+					}}
 					resource={resource({
 						template: gridTemplate,
+						transform: { value: 'state' },
 						initOptions: { id, data: cities }
 					})}
-					columns={columns}
-				>
-					{{
-						header: {
-							state: ({ title, onFilter, onSort }) => {
-								return (
-									<virtual>
-										<TextInput onValue={onFilter} />
-										{`** ${title} **`}
-										<button onclick={onSort}>^</button>
-									</virtual>
-								);
-							}
-						},
-						cell: {
-							map: (item: City, rowIndex) => {
-								return (
-									<a
-										styles={{ color: 'blue' }}
-										href={`https://www.google.co.uk/maps/place/${
-											item.latitude
-										},${item.longitude}`}
-										target="_blank"
-									>
-										click
-									</a>
-								);
-							}
-						},
-						footer: (total) => `custom footer total is ${total}`
-					}}
-				</Grid>
+				/>
+				<h3>Grid</h3>
+				<div styles={{ height: '600px', overflow: 'hidden' }}>
+					<Grid
+						resource={resource({
+							template: gridTemplate,
+							options,
+							initOptions: { id, data: cities }
+						})}
+						columns={columns}
+					>
+						{{
+							header: {
+								state: ({ title, onFilter, onSort }) => {
+									return (
+										<virtual>
+											<TextInput onValue={onFilter} />
+											{`** ${title} **`}
+											<button onclick={onSort}>^</button>
+										</virtual>
+									);
+								}
+							},
+							cell: {
+								map: (item: City, rowIndex) => {
+									return (
+										<a
+											styles={{ color: 'blue' }}
+											href={`https://www.google.co.uk/maps/place/${
+												item.latitude
+											},${item.longitude}`}
+											target="_blank"
+										>
+											click
+										</a>
+									);
+								}
+							},
+							footer: (total) => `custom footer total is ${total}`
+						}}
+					</Grid>
+				</div>
 			</div>
 		</Example>
 	);
