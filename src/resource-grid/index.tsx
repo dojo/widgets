@@ -301,7 +301,7 @@ const HeaderRow = headerRowFactory(function HeaderRow({ children, properties }) 
 							onFilter(column.id, value);
 						}}
 						onSort={() => {
-							onSort(column.id, 'string', true);
+							onSort(column.id);
 						}}
 					>
 						{headerCellRenderer}
