@@ -33,6 +33,10 @@
 	padding: 0;
 }
 
+/* Applied to a draggable item */
+.draggable {
+}
+
 /* Added to an item shifted up due to DnD */
 .root.movedUp {
 	padding-bottom: 58px;
@@ -45,4 +49,8 @@
 
 /* Added to an item currently being dragged */
 .dragged {
+}
+
+/* Added to a draggable item's handle icon */
+.dragIcon {
 }

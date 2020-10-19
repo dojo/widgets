@@ -12,6 +12,8 @@ import * as fixedCss from './list.m.css';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import LoadingIndicator from '../loading-indicator';
 import { throttle } from '@dojo/framework/core/util';
+import drag from '@dojo/framework/core/middleware/drag';
+import Icon from '../icon';
 
 export interface MenuItemProperties {
 	/** Callback used when the item is clicked */
@@ -154,7 +156,8 @@ export const ListItem = listItemFactory(function ListItem({
 				movedUp && classes.movedUp,
 				movedDown && classes.movedDown,
 				collapsed && classes.collapsed,
-				dragged && classes.dragged
+				dragged && classes.dragged,
+				draggable && classes.draggable
 			]}
 			onclick={() => {
 				requestActive();
@@ -172,6 +175,12 @@ export const ListItem = listItemFactory(function ListItem({
 			styles={{ visibility: dragged ? 'hidden' : undefined }}
 		>
 			{children()}
+			{draggable && (
+				<Icon
+					type="barsIcon"
+					classes={{ '@dojo/widgets/icon': { icon: [classes.dragIcon] } }}
+				/>
+			)}
 		</div>
 	);
 });

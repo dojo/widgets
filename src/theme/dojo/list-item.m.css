@@ -43,3 +43,10 @@
 	padding-bottom: 0;
 	padding-top: 0;
 }
+
+.dragIcon {
+	cursor: move;
+	opacity: 0.5;
+	position: absolute;
+	right: var(--grid-base);
+}

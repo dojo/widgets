@@ -45,3 +45,10 @@
 .root:after {
 	display: none !important;
 }
+
+.dragIcon {
+	cursor: move;
+	opacity: 0.5;
+	position: absolute;
+	right: 16px;
+}
