@@ -8,7 +8,6 @@ import * as fixedCss from './Grid.m.css';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import TextInput from '../text-input';
-import { column } from '../grid/styles/header.m.css';
 
 export interface ColumnConfig {
 	id: string;
