@@ -13,7 +13,7 @@ export interface ColumnConfig {
 	id: string;
 	title: string;
 	filterable?: boolean;
-	sortable?: boolean;
+	sortable?: 'string' | 'number';
 	resizable?: boolean;
 }
 
@@ -173,7 +173,11 @@ export const Grid = factory(function Grid({
 							options({
 								query: {
 									...existingQuery,
-									__sort__: columnId
+									__sort__: {
+										id: columnId,
+										type: columns[columnId as any].sortable,
+										asc: true
+									}
 								}
 							});
 						}}
@@ -280,13 +284,14 @@ export interface HeaderRowProperties {
 	columns: ColumnConfig[];
 	onFilter(columnId: string, value: string): void;
 	onSort(columnId: string): void;
+	sort: { id: string; asc: boolean };
 }
 
 const headerRowFactory = create()
 	.properties<HeaderRowProperties>()
 	.children<GridChildren['header']>();
 const HeaderRow = headerRowFactory(function HeaderRow({ children, properties }) {
-	const { columns, onFilter, onSort } = properties();
+	const { columns, onFilter, onSort, sort } = properties();
 	const [headerRenderers = {}] = children();
 
 	return (
@@ -302,6 +307,7 @@ const HeaderRow = headerRowFactory(function HeaderRow({ children, properties }) 
 						onSort={() => {
 							onSort(column.id);
 						}}
+						sort={sort}
 					>
 						{headerCellRenderer}
 					</HeaderCell>
@@ -314,13 +320,14 @@ const HeaderRow = headerRowFactory(function HeaderRow({ children, properties }) 
 export interface HeaderCellProperties extends ColumnConfig {
 	onFilter(value: string): void;
 	onSort(): void;
+	sort: { id: string; asc: boolean };
 }
 
 const headerCellFactory = create()
 	.properties<HeaderCellProperties>()
 	.children<HeaderRenderer | undefined>();
 const HeaderCell = headerCellFactory(function HeaderCell({ children, properties }) {
-	const { filterable, title, onFilter, sortable, onSort } = properties();
+	const { filterable, title, onFilter, sortable, onSort, sort } = properties();
 	const [renderer] = children();
 	let content: RenderResult;
 
