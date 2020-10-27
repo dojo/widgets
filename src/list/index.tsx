@@ -12,7 +12,6 @@ import * as fixedCss from './list.m.css';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import LoadingIndicator from '../loading-indicator';
 import { throttle } from '@dojo/framework/core/util';
-import drag from '@dojo/framework/core/middleware/drag';
 import Icon from '../icon';
 
 export interface MenuItemProperties {
