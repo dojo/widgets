@@ -119,6 +119,8 @@ const listWithListItemsAssertion = baseAssertion
 					selected: listItemCss.selected,
 					collapsed: listItemCss.collapsed,
 					dragged: listItemCss.dragged,
+					dragIcon: listItemCss.dragIcon,
+					draggable: listItemCss.draggable,
 					movedUp: listItemCss.movedUp,
 					movedDown: listItemCss.movedDown
 				}
@@ -153,6 +155,8 @@ const listWithListItemsAssertion = baseAssertion
 					selected: listItemCss.selected,
 					collapsed: listItemCss.collapsed,
 					dragged: listItemCss.dragged,
+					dragIcon: listItemCss.dragIcon,
+					draggable: listItemCss.draggable,
 					movedUp: listItemCss.movedUp,
 					movedDown: listItemCss.movedDown
 				}
@@ -187,6 +191,8 @@ const listWithListItemsAssertion = baseAssertion
 					selected: listItemCss.selected,
 					collapsed: listItemCss.collapsed,
 					dragged: listItemCss.dragged,
+					dragIcon: listItemCss.dragIcon,
+					draggable: listItemCss.draggable,
 					movedUp: listItemCss.movedUp,
 					movedDown: listItemCss.movedDown
 				}
@@ -359,6 +365,8 @@ describe('List', () => {
 						selected: listItemCss.selected,
 						collapsed: listItemCss.collapsed,
 						dragged: listItemCss.dragged,
+						dragIcon: listItemCss.dragIcon,
+						draggable: listItemCss.draggable,
 						movedUp: listItemCss.movedUp,
 						movedDown: listItemCss.movedDown
 					}
@@ -393,6 +401,8 @@ describe('List', () => {
 						selected: listItemCss.selected,
 						collapsed: listItemCss.collapsed,
 						dragged: listItemCss.dragged,
+						dragIcon: listItemCss.dragIcon,
+						draggable: listItemCss.draggable,
 						movedUp: listItemCss.movedUp,
 						movedDown: listItemCss.movedDown
 					}
@@ -432,6 +442,8 @@ describe('List', () => {
 						selected: listItemCss.selected,
 						collapsed: listItemCss.collapsed,
 						dragged: listItemCss.dragged,
+						dragIcon: listItemCss.dragIcon,
+						draggable: listItemCss.draggable,
 						movedUp: listItemCss.movedUp,
 						movedDown: listItemCss.movedDown
 					}
@@ -466,6 +478,8 @@ describe('List', () => {
 						selected: listItemCss.selected,
 						collapsed: listItemCss.collapsed,
 						dragged: listItemCss.dragged,
+						dragIcon: listItemCss.dragIcon,
+						draggable: listItemCss.draggable,
 						movedUp: listItemCss.movedUp,
 						movedDown: listItemCss.movedDown
 					}
@@ -661,6 +675,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -1001,6 +1017,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -1035,6 +1053,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -1069,6 +1089,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -1103,6 +1125,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -1137,6 +1161,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -1192,6 +1218,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1226,6 +1254,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1260,6 +1290,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1294,6 +1326,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1328,6 +1362,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1373,6 +1409,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1407,6 +1445,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1441,6 +1481,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1475,6 +1517,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1509,6 +1553,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1551,6 +1597,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1585,6 +1633,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1619,6 +1669,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1653,6 +1705,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1687,6 +1741,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1729,6 +1785,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1763,6 +1821,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1797,6 +1857,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1831,6 +1893,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1865,6 +1929,8 @@ describe('List', () => {
 								selected: listItemCss.selected,
 								collapsed: listItemCss.collapsed,
 								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
 								movedUp: listItemCss.movedUp,
 								movedDown: listItemCss.movedDown
 							}
@@ -1938,6 +2004,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -1972,6 +2040,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2006,6 +2076,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2040,6 +2112,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2074,6 +2148,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2188,6 +2264,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2222,6 +2300,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2256,6 +2336,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2310,6 +2392,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2344,6 +2428,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2378,6 +2464,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2420,6 +2508,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2454,6 +2544,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2488,6 +2580,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2555,6 +2649,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2590,6 +2686,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
@@ -2625,6 +2723,8 @@ describe('List', () => {
 							selected: listItemCss.selected,
 							collapsed: listItemCss.collapsed,
 							dragged: listItemCss.dragged,
+							dragIcon: listItemCss.dragIcon,
+							draggable: listItemCss.draggable,
 							movedUp: listItemCss.movedUp,
 							movedDown: listItemCss.movedDown
 						}
