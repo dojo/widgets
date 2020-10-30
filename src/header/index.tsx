@@ -12,7 +12,7 @@ export type HeaderChildren = {
 	/** Renderer for leading elements like icons */
 	leading?: RenderResult;
 	/** Renderer for the header title */
-	title: RenderResult;
+	title?: RenderResult;
 	/** Renderer for header actions like links */
 	actions?: RenderResult;
 	/** Renderer for trailing elements like search inputs */
