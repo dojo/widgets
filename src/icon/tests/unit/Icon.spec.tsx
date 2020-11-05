@@ -1,87 +1,56 @@
-const { registerSuite } = intern.getInterface('object');
-
-import { v, w, tsx } from '@dojo/framework/core/vdom';
-
+const { describe, it } = intern.getInterface('bdd');
+import { tsx } from '@dojo/framework/core/vdom';
+import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
 import Icon from '../../index';
 import * as css from '../../../theme/default/icon.m.css';
-import * as baseCss from '../../../common/styles/base.m.css';
-import {
-	createHarness,
-	compareAria,
-	compareAriaControls
-} from '../../../common/tests/support/test-helpers';
-import { assertionTemplate } from '@dojo/framework/testing/harness/assertionTemplate';
 
-const harness = createHarness([compareAria, compareAriaControls]);
+describe('Icon', () => {
+	const WrappedINode = wrap('i');
 
-const expected = function(icon: keyof typeof css = 'downIcon', overrides = {}, altText?: string) {
-	const children = [
-		v('i', {
-			classes: [undefined, css.icon, css[icon], undefined],
-			'aria-hidden': 'true',
-			...overrides
-		})
-	];
+	const baseAssertion = assertion(() => (
+		<WrappedINode
+			classes={[undefined, css.root, css.icon, css.starIcon, undefined]}
+			role="img"
+			aria-hidden="true"
+			aria-label={undefined}
+		/>
+	));
 
-	if (altText) {
-		children.push(v('span', { classes: baseCss.visuallyHidden }, [altText]));
-	}
+	it('renders', () => {
+		const r = renderer(() => <Icon type="starIcon" />);
 
-	return v('virtual', children);
-};
+		r.expect(baseAssertion);
+	});
 
-registerSuite('Icon', {
-	tests: {
-		'renders with default properties'() {
-			const h = harness(() =>
-				w(Icon, {
-					type: 'downIcon'
-				})
-			);
-			h.expect(expected);
-		},
+	it('accepts a size', () => {
+		const r = renderer(() => <Icon type="starIcon" size="large" />);
 
-		'custom properties'() {
-			const h = harness(() =>
-				w(Icon, {
-					type: 'mailIcon',
-					aria: {
-						hidden: 'false'
-					}
-				})
-			);
-			h.expect(() => expected('mailIcon', { 'aria-hidden': 'false' }));
-		},
+		const sizeAssertion = baseAssertion.setProperty(WrappedINode, 'classes', [
+			undefined,
+			css.root,
+			css.icon,
+			css.starIcon,
+			css.large
+		]);
 
-		'alt text'() {
-			const altText = 'Secure something';
-			const h = harness(() =>
-				w(Icon, {
-					type: 'secureIcon',
-					altText
-				})
-			);
+		r.expect(sizeAssertion);
+	});
 
-			h.expect(() => expected('secureIcon', {}, altText));
-		},
-		'accepts a size'() {
-			const h = harness(() =>
-				w(Icon, {
-					type: 'secureIcon',
-					size: 'medium'
-				})
-			);
+	it('accepts alt text', () => {
+		const r = renderer(() => <Icon type="starIcon" altText="hello world" />);
 
-			const template = assertionTemplate(() => (
-				<virtual>
-					<i
-						aria-hidden="true"
-						classes={[undefined, css.icon, css.secureIcon, css.medium]}
-					/>
-				</virtual>
-			));
+		const altTextAssertion = baseAssertion
+			.setProperty(WrappedINode, 'aria-hidden', 'false')
+			.setProperty(WrappedINode, 'aria-label', 'hello world');
 
-			h.expect(template);
-		}
-	}
+		r.expect(altTextAssertion);
+	});
+
+	it('accepts aria properties', () => {
+		const r = renderer(() => <Icon type="starIcon" aria={{ foo: 'bar' }} />);
+
+		const ariaAssertion = baseAssertion.setProperty(WrappedINode, 'aria-foo', 'bar');
+
+		r.expect(ariaAssertion);
+	});
 });
