@@ -3,6 +3,11 @@
 	position: relative;
 }
 
+.root .title,
+.root .action {
+	color: var(--mdc-theme-text-primary-on-dark);
+}
+
 .sticky {
 	position: fixed;
 	top: 0;
@@ -35,11 +40,6 @@
 .action {
 	composes: mdc-top-app-bar__action-item from '@material/top-app-bar/dist/mdc.top-app-bar.css';
 	margin: 0 12px;
-}
-
-.root .action,
-.root .title {
-	color: var(--mdc-text-color);
 }
 
 .trailing {
