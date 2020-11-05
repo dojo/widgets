@@ -4,6 +4,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	height: 48px;
 }
 
 .root:hover {
@@ -17,4 +18,37 @@
 .active {
 	border: none;
 	background: var(--mdc-theme-on-surface);
+	height: 48px;
+	box-shadow: none;
+}
+
+.collapsed {
+	height: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	min-height: 0 !important;
+}
+
+.movedUp {
+	padding-bottom: 62px;
+	height: auto;
+	padding-top: 10px;
+}
+
+.movedDown {
+	padding-top: 62px;
+	height: auto;
+	padding-bottom: 10px;
+}
+
+.root:before,
+.root:after {
+	display: none !important;
+}
+
+.dragIcon {
+	cursor: move;
+	opacity: 0.5;
+	position: absolute;
+	right: 16px;
 }

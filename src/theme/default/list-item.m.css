@@ -4,8 +4,9 @@
 	padding: 10px;
 	border: 1px solid transparent;
 	box-sizing: border-box;
-	height: 45px;
+	min-height: 45px;
 	cursor: pointer;
+	position: relative;
 }
 
 /* Added to selected items */
@@ -22,4 +23,34 @@
 .disabled {
 	color: grey;
 	font-style: italic;
+}
+
+/* Added to an item that's collapsed dur to DnD */
+.collapsed {
+	border-width: 0;
+	height: 0;
+	min-height: 0;
+	padding: 0;
+}
+
+/* Applied to a draggable item */
+.draggable {
+}
+
+/* Added to an item shifted up due to DnD */
+.root.movedUp {
+	padding-bottom: 58px;
+}
+
+/* Added to an item shifted down due to DnD */
+.root.movedDown {
+	padding-top: 58px;
+}
+
+/* Added to an item currently being dragged */
+.dragged {
+}
+
+/* Added to a draggable item's handle icon */
+.dragIcon {
 }
