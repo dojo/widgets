@@ -6,17 +6,22 @@ import {
 	createMemoryResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
-import { ListOption } from '@dojo/widgets/list';
 
 const resource = createResourceMiddleware();
 const factory = create({ resource });
 
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createMemoryResourceTemplate<{ value: string; disabled?: boolean }>();
 
 export default factory(function Basic({ id, middleware: { resource } }) {
 	return (
 		<Example>
-			<ChipTypeahead resource={resource({ template, initOptions: { id, data: states } })}>
+			<ChipTypeahead
+				resource={resource({
+					template,
+					transform: { value: 'value', label: 'value' },
+					initOptions: { id, data: states }
+				})}
+			>
 				{{
 					label: 'Select All States That Apply'
 				}}

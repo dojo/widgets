@@ -11,12 +11,12 @@ const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
 
 const options = [
-	{ value: 'Save' },
-	{ value: 'copy', label: 'Copy' },
-	{ value: 'Paste', disabled: true },
-	{ value: 'Print' },
-	{ value: 'Export' },
-	{ value: 'Share' }
+	{ value: '1', label: 'Save' },
+	{ value: '2', label: 'Copy' },
+	{ value: '3', label: 'Paste', disabled: true },
+	{ value: '4', label: 'Print' },
+	{ value: '5', label: 'Export' },
+	{ value: '6', label: 'Share' }
 ];
 
 const template = createMemoryResourceTemplate<ListOption>();

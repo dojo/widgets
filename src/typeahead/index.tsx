@@ -26,7 +26,7 @@ import { flat } from '@dojo/framework/shim/array';
 
 export interface TypeaheadProperties {
 	/** Callback called when user selects a value */
-	onValue(value: string): void;
+	onValue(value: ListOption): void;
 	/** The initial selected value */
 	initialValue?: string;
 	/** Property to determine how many items to render. Defaults to 6 */
@@ -128,7 +128,7 @@ export const Typeahead = factory(function Typeahead({
 	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
 		icache.set('value', controlledValue);
 		icache.set('lastValue', controlledValue);
-		options({ query: { value: controlledValue } });
+		options({ query: { label: controlledValue } });
 	}
 
 	let valid = icache.get('valid');
@@ -146,11 +146,11 @@ export const Typeahead = factory(function Typeahead({
 		}
 	}
 
-	function callOnValue(value: string) {
+	function callOnValue(value: ListOption) {
 		const { onValidate, onValue, required } = properties();
 		const lastValue = icache.get('lastValue');
 
-		if (lastValue === value) {
+		if (lastValue === value.value) {
 			return;
 		}
 
@@ -159,7 +159,7 @@ export const Typeahead = factory(function Typeahead({
 			valid = false;
 		}
 
-		icache.set('lastValue', value);
+		icache.set('lastValue', value.value);
 		icache.set('valid', valid);
 		value && onValue && onValue(value);
 		onValidate && onValidate(valid);
@@ -216,14 +216,14 @@ export const Typeahead = factory(function Typeahead({
 				}
 			} else {
 				const value = icache.getOrSet('value', '');
-				callOnValue(value);
+				callOnValue({ value, label: value });
 			}
 			icache.set('selected', false);
 		} else if (activeItem) {
 			let disabled = itemDisabled ? itemDisabled(activeItem) : !!activeItem.disabled;
 			if (!disabled) {
 				value = icache.set('value', activeItem.value);
-				callOnValue(currentItems[activeIndex].value);
+				callOnValue(currentItems[activeIndex]);
 			}
 		}
 		icache.set('selected', false);
@@ -279,7 +279,7 @@ export const Typeahead = factory(function Typeahead({
 								find(template, {
 									options: options(),
 									start: 0,
-									query: { value },
+									query: { label: value },
 									type: 'exact'
 								}) || {
 									item: undefined
@@ -293,7 +293,7 @@ export const Typeahead = factory(function Typeahead({
 								onValue={(value) => {
 									if (value !== icache.get('value')) {
 										openMenu();
-										options({ query: { value } });
+										options({ query: { label: value } });
 										icache.set('value', value || '');
 									}
 								}}
@@ -311,7 +311,7 @@ export const Typeahead = factory(function Typeahead({
 
 									if (!strict) {
 										const value = icache.getOrSet('value', '');
-										callOnValue(value);
+										callOnValue({ value, label: value });
 									}
 
 									closeMenu();
@@ -369,7 +369,8 @@ export const Typeahead = factory(function Typeahead({
 									onValue={(value) => {
 										focus.focus();
 										closeMenu();
-										value !== icache.get('value') && icache.set('value', value);
+										value.value !== icache.get('value') &&
+											icache.set('value', value.value);
 										callOnValue(value);
 									}}
 									onRequestClose={closeMenu}

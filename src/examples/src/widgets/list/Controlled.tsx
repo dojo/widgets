@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { ListOption } from '@dojo/widgets/list';
+import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import states from './states';
 import Example from '../../Example';
@@ -10,7 +10,7 @@ import {
 
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createMemoryResourceTemplate<{ value: string; disabled?: boolean }>();
 
 export default factory(function Controlled({ id, middleware: { icache, resource } }) {
 	const activeIndex = icache.getOrSet('activeIndex', 0);
@@ -43,7 +43,7 @@ export default factory(function Controlled({ id, middleware: { icache, resource 
 						const activeIndex = icache.get<number>('activeIndex');
 						if (activeIndex) {
 							const item = states[activeIndex];
-							!item.disabled && icache.set('value', states[activeIndex].value);
+							!item.disabled && icache.set('value', states[activeIndex]);
 						}
 					}}
 				>
@@ -52,7 +52,11 @@ export default factory(function Controlled({ id, middleware: { icache, resource 
 				<List
 					focusable={false}
 					itemsInView={4}
-					resource={resource({ template, initOptions: { id, data: states } })}
+					resource={resource({
+						template,
+						transform: { value: 'value', label: 'value' },
+						initOptions: { id, data: states }
+					})}
 					onActiveIndexChange={(index: number) => {
 						icache.set('activeIndex', index);
 					}}
@@ -63,7 +67,7 @@ export default factory(function Controlled({ id, middleware: { icache, resource 
 					}}
 				/>
 			</div>
-			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Clicked on: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
 	);
 });

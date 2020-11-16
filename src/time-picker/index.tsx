@@ -453,11 +453,11 @@ export const TimePicker = factory(function TimePicker({
 										template,
 										initOptions: { id, data: options }
 									})}
-									onValue={(value: string) => {
+									onValue={(value) => {
 										if (controlledValue === undefined) {
-											icache.set('inputValue', value);
+											icache.set('inputValue', value.value);
 										} else {
-											icache.set('nextValue', value);
+											icache.set('nextValue', value.value);
 										}
 										icache.set('shouldValidate', true);
 										closeMenu();

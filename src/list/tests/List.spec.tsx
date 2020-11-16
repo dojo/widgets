@@ -17,17 +17,19 @@ import * as fixedCss from '../list.m.css';
 import * as listItemCss from '../../theme/default/list-item.m.css';
 import * as menuItemCss from '../../theme/default/menu-item.m.css';
 
-let template = createMemoryResourceTemplate<{ value: string }>();
+let template = createMemoryResourceTemplate<{ value: string; label: string; disabled?: boolean }>();
 const data = [
 	{
-		value: 'dog'
+		value: '1',
+		label: 'Dog'
 	},
 	{
-		value: 'cat',
+		value: '2',
 		label: 'Cat'
 	},
 	{
-		value: 'fish',
+		value: '3',
+		label: 'Fish',
 		disabled: true
 	}
 ];
@@ -282,7 +284,11 @@ describe('List', () => {
 		sb.stub(global.window.HTMLDivElement.prototype, 'getBoundingClientRect').callsFake(() => ({
 			height: 45
 		}));
-		template = createMemoryResourceTemplate<{ value: string }>();
+		template = createMemoryResourceTemplate<{
+			value: string;
+			label: string;
+			disabled?: boolean;
+		}>();
 	});
 
 	afterEach(() => {
@@ -317,7 +323,11 @@ describe('List', () => {
 			.setProperty(WrappedRoot, 'styles', {
 				maxHeight: '45px'
 			});
-		const template = createResourceTemplate<{ value: string }>({
+		const template = createResourceTemplate<{
+			value: string;
+			label: string;
+			disabled?: boolean;
+		}>({
 			read: (request, { put }) => {
 				if (request.offset === 0) {
 					return pageOnePromise.then((res) => {
@@ -538,7 +548,11 @@ describe('List', () => {
 			.setProperty(WrappedRoot, 'styles', {
 				maxHeight: '45px'
 			});
-		const template = createResourceTemplate<{ value: string }>({
+		const template = createResourceTemplate<{
+			value: string;
+			label: string;
+			disabled?: boolean;
+		}>({
 			read: (request, { put }) => {
 				if (request.offset === 0) {
 					return pageOnePromise.then((res) => {
@@ -701,14 +715,16 @@ describe('List', () => {
 			...data,
 			...[
 				{
-					value: 'panda'
+					value: '3',
+					label: 'Panda'
 				},
 				{
-					value: 'crow',
+					value: '2',
 					label: 'Crow'
 				},
 				{
-					value: 'fire-bellied toad'
+					value: '1',
+					label: 'Fire-Bellied Toad'
 				}
 			]
 		];

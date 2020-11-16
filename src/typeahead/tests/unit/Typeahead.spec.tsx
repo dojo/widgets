@@ -22,19 +22,25 @@ const { ' _key': listKey, ...listTheme } = listCss as any;
 
 const data = [
 	{
-		value: 'dog'
+		value: '1',
+		label: 'Dog'
 	},
 	{
-		value: 'cat',
+		value: '2',
 		label: 'Cat'
 	},
 	{
-		value: 'fish',
+		value: '3',
+		label: 'Fish',
 		disabled: true
 	}
 ];
 
-const template = createMemoryResourceTemplate<{ value: string }>();
+const template = createMemoryResourceTemplate<{
+	value: string;
+	label: string;
+	disabled?: boolean;
+}>();
 const WrappedRoot = wrap('div');
 const WrappedTrigger = wrap(TextInput);
 const WrappedPopup = wrap(TriggerPopup);
@@ -224,7 +230,7 @@ describe('Typeahead', () => {
 		// select second item from the drop down, `cat`
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
 		// simulate `cat` value being selected on the list
-		r.property(WrappedList, 'onValue', 'cat');
+		r.property(WrappedList, 'onValue', { value: 'cat', label: 'Cat' });
 		// call `onClose` on the popup to simulate the dropdown closing
 		r.property(WrappedPopup, 'onClose');
 		r.expect(
@@ -273,7 +279,7 @@ describe('Typeahead', () => {
 		r.expect(baseAssertion);
 		// open the drop down
 		r.property(WrappedTrigger, 'onValue', 'unknown');
-		r.property(WrappedList, 'onValue', 'unknown');
+		r.property(WrappedList, 'onValue', { value: 'unknown', label: 'unknown' });
 		// focus second item from the drop down, `cat`
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
 		r.expect(

@@ -184,7 +184,7 @@ export const ListItem = listItemFactory(function ListItem({
 	);
 });
 
-export type ListOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
+export type ListOption = { value: string; label: string; disabled?: boolean; divider?: boolean };
 
 export interface ListProperties {
 	/** Determines if this list can be reordered */
@@ -196,7 +196,7 @@ export interface ListProperties {
 	/** Controlled value property */
 	value?: string;
 	/** Callback called when user selects a value */
-	onValue(value: string): void;
+	onValue(value: ListOption): void;
 	/** Called to request that the menu be closed */
 	onRequestClose?(): void;
 	/** Optional callback, when passed, the widget will no longer control it's own active index / keyboard navigation */
@@ -246,6 +246,7 @@ interface ListICache {
 	menuHeight: number;
 	resetInputTextTimer: any;
 	value: string;
+	listOption: ListOption;
 	scrollTop: number;
 	previousActiveIndex: number;
 	requestedInputText: string;
@@ -304,8 +305,8 @@ export const List = factory(function List({
 		}
 	}
 
-	function setValue(value: string) {
-		icache.set('value', value);
+	function setValue(value: ListOption) {
+		icache.set('value', value.value);
 		onValue(value);
 	}
 
@@ -323,7 +324,7 @@ export const List = factory(function List({
 					const itemDisabled = disabled ? disabled(activeItem) : activeItem.disabled;
 
 					if (!itemDisabled) {
-						setValue(activeItem.value);
+						setValue(activeItem);
 					}
 				}
 				break;
@@ -518,7 +519,7 @@ export const List = factory(function List({
 			widgetId: `${idBase}-item-${index}`,
 			key: `item-${index}`,
 			onSelect: () => {
-				setValue(value);
+				setValue(data);
 			},
 			active,
 			onRequestActive: () => {
@@ -655,7 +656,7 @@ export const List = factory(function List({
 			options: options(),
 			start: computedActiveIndex + 1,
 			type: 'start' as const,
-			query: { value: inputText || requestedInputText }
+			query: { label: inputText || requestedInputText }
 		};
 		if (!isLoading(template, findOptions)) {
 			const foundItem = find(template, findOptions);

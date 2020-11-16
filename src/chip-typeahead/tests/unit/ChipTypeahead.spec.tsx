@@ -25,9 +25,9 @@ const { registerSuite } = intern.getInterface('object');
 const noop = stub();
 
 const animalOptions: ListOption[] = [
-	{ value: 'dog' },
-	{ value: 'cat', label: 'Cat' },
-	{ value: 'fish', disabled: true }
+	{ value: '1', label: 'Dog' },
+	{ value: '2', label: 'Cat' },
+	{ value: '3', label: 'Fish', disabled: true }
 ];
 
 const baseAssertion = assertionTemplate(() => (

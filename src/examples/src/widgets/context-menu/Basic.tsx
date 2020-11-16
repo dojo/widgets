@@ -25,10 +25,10 @@ export default factory(function Basic({ id, middleware: { icache, resource } }) 
 				resource={resource({ template, initOptions: { id, data: options } })}
 				onSelect={(value) => {
 					const selection = window.getSelection() || '';
-					if (value === 'print') {
+					if (value.value === 'print') {
 						icache.set('printedText', selection ? selection.toString() : '');
 					} else if (
-						value === 'delete' &&
+						value.value === 'delete' &&
 						selection &&
 						selection.anchorOffset !== selection.focusOffset
 					) {
