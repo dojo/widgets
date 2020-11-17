@@ -393,7 +393,8 @@ export const List = factory(function List({
 				const indexWithinPage = index - (page - 1) * count;
 				const items = pageItems[pageIndex];
 				if (items && items[indexWithinPage]) {
-					renderedItems[i] = renderItem(items[indexWithinPage], index);
+					const { value, label, disabled, divider } = items[indexWithinPage];
+					renderedItems[i] = renderItem({ value, label, disabled, divider }, index);
 				} else if (!items) {
 					renderedItems[i] = renderPlaceholder(index);
 				}
