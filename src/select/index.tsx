@@ -197,7 +197,6 @@ export const Select = factory(function Select({
 
 						let valueOption: ListOption | undefined;
 						if (value) {
-							console.log(value);
 							valueOption = (
 								find(template, {
 									options: options(),

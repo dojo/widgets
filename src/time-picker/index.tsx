@@ -342,11 +342,11 @@ export const TimePicker = factory(function TimePicker({
 		const end = parseTime(max, false) || new Date(1970, 0, 1, 23, 59, 59, 99);
 
 		while (dt.getDate() === 1 && dt <= end) {
-			const value = format24HourTime(dt);
+			const value = formatTime(dt);
 
 			options.push({
-				label: formatTime(dt),
-				value,
+				label: value,
+				value: value,
 				disabled: timeDisabled ? timeDisabled(dt) : false
 			});
 

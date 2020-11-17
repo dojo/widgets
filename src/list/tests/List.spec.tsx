@@ -138,7 +138,7 @@ const listWithListItemsAssertion = baseAssertion
 			onDragStart={noop}
 			onDrop={noop}
 		>
-			dog
+			Dog
 		</ListItem>,
 		<ListItem
 			classes={undefined}
@@ -210,7 +210,7 @@ const listWithListItemsAssertion = baseAssertion
 			onDragStart={noop}
 			onDrop={noop}
 		>
-			fish
+			Fish
 		</ListItem>
 	]);
 
@@ -237,7 +237,7 @@ const listWithMenuItemsAssertion = baseAssertion
 			}}
 			widgetId={'menu-test-item-0'}
 		>
-			dog
+			Dog
 		</MenuItem>,
 		<MenuItem
 			classes={undefined}
@@ -275,7 +275,7 @@ const listWithMenuItemsAssertion = baseAssertion
 			}}
 			widgetId={'menu-test-item-2'}
 		>
-			fish
+			Fish
 		</MenuItem>
 	]);
 
@@ -505,7 +505,7 @@ describe('List', () => {
 				onDragStart={noop}
 				onDrop={noop}
 			>
-				fish
+				Fish
 			</ListItem>
 		]);
 		r.expect(lastPageItemsAssertion);
@@ -663,7 +663,7 @@ describe('List', () => {
 				}}
 				widgetId={'menu-test-item-5'}
 			>
-				fish
+				Fish
 			</MenuItem>
 		]);
 		r.expect(lastPageItemsAssertion);
@@ -675,7 +675,7 @@ describe('List', () => {
 				<ListItem
 					classes={undefined}
 					active={index === activeIndex}
-					disabled={testData[index].value === 'fish'}
+					disabled={testData[index].value === '3'}
 					key={`item-${index}`}
 					onRequestActive={noop}
 					onSelect={noop}
@@ -715,15 +715,15 @@ describe('List', () => {
 			...data,
 			...[
 				{
-					value: '3',
+					value: '4',
 					label: 'Panda'
 				},
 				{
-					value: '2',
+					value: '5',
 					label: 'Crow'
 				},
 				{
-					value: '1',
+					value: '6',
 					label: 'Fire-Bellied Toad'
 				}
 			]
@@ -738,7 +738,7 @@ describe('List', () => {
 					}
 				}}
 				disabled={(item) => {
-					return item.value === 'fish';
+					return item.value === '3';
 				}}
 				onValue={onValueStub}
 				onRequestClose={onRequestCloseStub}
@@ -984,19 +984,24 @@ describe('List', () => {
 	it('should set active item based on keyboard input', async () => {
 		const testData = [
 			{
-				value: 'Bob'
+				value: '1',
+				label: 'Bob'
 			},
 			{
-				value: 'Adam'
+				value: '2',
+				label: 'Adam'
 			},
 			{
-				value: 'Ant'
+				value: '3',
+				label: 'Ant'
 			},
 			{
-				value: 'Anthony'
+				value: '4',
+				label: 'Anthony'
 			},
 			{
-				value: 'Bobby'
+				value: '5',
+				label: 'Bobby'
 			}
 		];
 		const r = renderer(() => (
@@ -2208,7 +2213,7 @@ describe('List', () => {
 					onSelect={noop}
 					widgetId={'menu-test-item-0'}
 				>
-					dog
+					Dog
 				</ListItem>,
 				<ListItem
 					classes={undefined}
@@ -2230,7 +2235,7 @@ describe('List', () => {
 					onSelect={noop}
 					widgetId={'menu-test-item-2'}
 				>
-					fish
+					Fish
 				</ListItem>
 			]);
 		const r = renderer(() => (
@@ -2255,7 +2260,7 @@ describe('List', () => {
 			<List
 				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
 				onValue={onValueStub}
-				initialValue="cat"
+				initialValue="2"
 			/>
 		));
 		const listAssertion = baseAssertion
@@ -2297,7 +2302,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					dog
+					Dog
 				</ListItem>,
 				<ListItem
 					classes={undefined}
@@ -2369,7 +2374,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					fish
+					Fish
 				</ListItem>
 			]);
 		r.expect(listAssertion);
@@ -2377,7 +2382,7 @@ describe('List', () => {
 
 	it('should render with value', () => {
 		const props = {
-			value: 'cat'
+			value: '2'
 		};
 		const r = renderer(() => (
 			<List
@@ -2425,7 +2430,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					dog
+					Dog
 				</ListItem>,
 				<ListItem
 					classes={undefined}
@@ -2497,11 +2502,11 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					fish
+					Fish
 				</ListItem>
 			]);
 		r.expect(listAssertion);
-		props.value = 'dog';
+		props.value = '1';
 		listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '135px'
@@ -2541,7 +2546,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					dog
+					Dog
 				</ListItem>,
 				<ListItem
 					classes={undefined}
@@ -2613,7 +2618,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					fish
+					Fish
 				</ListItem>
 			]);
 		r.expect(listAssertion);
@@ -2622,16 +2627,18 @@ describe('List', () => {
 	it('should render a divider based on the data', () => {
 		const testData = [
 			{
-				value: 'dog',
+				value: '1',
+				label: 'Dog',
 				divider: true
 			},
 			{
-				value: 'cat',
+				value: '2',
 				label: 'Cat',
 				divider: true
 			},
 			{
-				value: 'fish',
+				value: '3',
+				label: 'Fish',
 				disabled: true
 			}
 		];
@@ -2682,7 +2689,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					dog
+					Dog
 				</ListItem>,
 				<hr classes={css.divider} />,
 				<ListItem
@@ -2756,7 +2763,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					fish
+					Fish
 				</ListItem>
 			]);
 		r.expect(listAssertion);

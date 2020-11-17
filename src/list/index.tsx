@@ -246,7 +246,6 @@ interface ListICache {
 	menuHeight: number;
 	resetInputTextTimer: any;
 	value: string;
-	listOption: ListOption;
 	scrollTop: number;
 	previousActiveIndex: number;
 	requestedInputText: string;

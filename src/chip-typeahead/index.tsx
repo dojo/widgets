@@ -162,8 +162,10 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 			>
 				{{
 					label: selected
-						? selected(value, option && option.label)
-						: (option && option.label) || value
+						? selected(value, option ? option.label : value)
+						: option
+						? option.label
+						: value
 				}}
 			</Chip>
 		);

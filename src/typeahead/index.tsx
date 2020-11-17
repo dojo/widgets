@@ -129,7 +129,7 @@ export const Typeahead = factory(function Typeahead({
 	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
 		icache.set('value', controlledValue);
 		icache.set('lastValue', controlledValue);
-		options({ query: { label: controlledValue } });
+		options({ query: { value: controlledValue } });
 	}
 
 	let valid = icache.get('valid');
@@ -218,6 +218,8 @@ export const Typeahead = factory(function Typeahead({
 				}
 			} else {
 				const labelValue = icache.getOrSet('labelValue', '');
+				icache.set('value', labelValue);
+				value = labelValue;
 				callOnValue({ value: labelValue, label: labelValue });
 			}
 			icache.set('selected', false);
@@ -275,7 +277,7 @@ export const Typeahead = factory(function Typeahead({
 							}
 						}
 
-						let valueOption: any;
+						let valueOption: ListOption | undefined;
 						if (value) {
 							valueOption = (
 								find(template, {
@@ -287,13 +289,16 @@ export const Typeahead = factory(function Typeahead({
 									item: undefined
 								}
 							).item;
+							if (valueOption && icache.get('labelValue') !== valueOption.label) {
+								options({ query: { label: valueOption.label } });
+							}
 						}
 
 						return (
 							<TextInput
 								autocomplete={false}
 								onValue={(value) => {
-									if (value !== icache.get('value')) {
+									if (value !== icache.get('labelValue')) {
 										openMenu();
 										options({ query: { label: value } });
 										icache.set('labelValue', value || '');
@@ -313,8 +318,11 @@ export const Typeahead = factory(function Typeahead({
 									const { onBlur } = properties();
 
 									if (!strict) {
-										const value = icache.getOrSet('value', '');
-										callOnValue({ value, label: value });
+										const value = icache.getOrSet('labelValue', '');
+										icache.set('value', value);
+										callOnValue(
+											valueOption ? valueOption : { value, label: value }
+										);
 									}
 
 									closeMenu();
@@ -370,8 +378,9 @@ export const Typeahead = factory(function Typeahead({
 									onValue={(value) => {
 										focus.focus();
 										closeMenu();
-										value.value !== icache.get('value') &&
+										if (value.value !== icache.get('value')) {
 											icache.set('value', value.value);
+										}
 										callOnValue(value);
 									}}
 									onRequestClose={closeMenu}

@@ -87,7 +87,7 @@ const bottomAssertion = hasValueAssertion.insertAfter('@typeahead', () => [
 	<div classes={themeCss.values}>
 		<Chip
 			theme={{ '@dojo/widgets/chip': chipCss }}
-			key="value-cat"
+			key="value-2"
 			classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 			onClose={stub}
 		>
@@ -130,7 +130,7 @@ registerSuite('ChipTypeahead', {
 				<ChipTypeahead
 					resource={createTestResource(animalOptions)}
 					onValue={noop}
-					initialValue={['cat']}
+					initialValue={['2']}
 				>
 					{}
 				</ChipTypeahead>
@@ -143,7 +143,7 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
-						key="value-cat"
+						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
 					>
@@ -158,7 +158,7 @@ registerSuite('ChipTypeahead', {
 
 		'renders with controlled values'() {
 			const properties = {
-				value: ['cat']
+				value: ['2']
 			};
 
 			const h = harness(() => (
@@ -178,7 +178,7 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
-						key="value-cat"
+						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
 					>
@@ -190,7 +190,7 @@ registerSuite('ChipTypeahead', {
 
 			assert.isTrue(chips[0].children[0].label === 'Cat');
 
-			properties.value = ['dog'];
+			properties.value = ['1'];
 
 			h.expect(hasValueAssertion);
 
@@ -199,11 +199,11 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
-						key="value-dog"
+						key="value-1"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
 					>
-						{{ label: 'dog' }}
+						{{ label: 'Dog' }}
 					</Chip>
 				],
 				() => chips
@@ -215,10 +215,10 @@ registerSuite('ChipTypeahead', {
 				<ChipTypeahead
 					resource={createTestResource(animalOptions)}
 					onValue={noop}
-					initialValue={['cat']}
+					initialValue={['2']}
 				>
 					{{
-						selected: (value) => value.toUpperCase()
+						selected: (_, label) => label.toUpperCase()
 					}}
 				</ChipTypeahead>
 			));
@@ -230,7 +230,7 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
-						key="value-cat"
+						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
 					>
@@ -240,7 +240,7 @@ registerSuite('ChipTypeahead', {
 				() => chips
 			);
 
-			assert.isTrue(chips[0].children[0].label === 'CAT');
+			assert.strictEqual(chips[0].children[0].label, 'CAT');
 		},
 
 		'closing a chip removes the selection'() {
@@ -276,14 +276,14 @@ registerSuite('ChipTypeahead', {
 			const h = harness(() => (
 				<ChipTypeahead resource={createTestResource(animalOptions)} onValue={valueStub}>
 					{{
-						selected: (value) => value.toUpperCase()
+						selected: (value) => value && value.toUpperCase()
 					}}
 				</ChipTypeahead>
 			));
 
-			h.trigger('@typeahead', 'onValue', 'cat');
+			h.trigger('@typeahead', 'onValue', { value: '2', label: 'Cat' });
 
-			assert.isTrue(valueStub.calledWith(['cat']));
+			assert.isTrue(valueStub.calledWith([{ value: '2', label: 'Cat' }]));
 
 			h.expect(hasValueAssertion);
 
@@ -292,7 +292,7 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
-						key="value-cat"
+						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
 					>
@@ -317,7 +317,7 @@ registerSuite('ChipTypeahead', {
 
 		'the default item renderer shows selected items'() {
 			const h = harness(() => (
-				<ChipTypeahead resource={createTestResource(animalOptions)} initialValue={['cat']}>
+				<ChipTypeahead resource={createTestResource(animalOptions)} initialValue={['2']}>
 					{}
 				</ChipTypeahead>
 			));
@@ -339,7 +339,7 @@ registerSuite('ChipTypeahead', {
 				),
 				() =>
 					itemRenderer(
-						{ value: 'cat', label: 'Cat' },
+						{ value: '2', label: 'Cat' },
 						{ onSelect: stub(), onRequestActive: stub(), widgetId: '' }
 					)
 			);
@@ -352,12 +352,12 @@ registerSuite('ChipTypeahead', {
 						widgetId=""
 						selected={false}
 					>
-						<div classes={[themeCss.item, null]}>dog</div>
+						<div classes={[themeCss.item, null]}>Dog</div>
 					</ListItem>
 				),
 				() =>
 					itemRenderer(
-						{ value: 'dog' },
+						{ value: '1', label: 'Dog' },
 						{ onSelect: stub(), onRequestActive: stub(), widgetId: '' }
 					)
 			);
@@ -365,10 +365,10 @@ registerSuite('ChipTypeahead', {
 
 		'uses a custom item renderer'() {
 			const h = harness(() => (
-				<ChipTypeahead resource={createTestResource(animalOptions)} initialValue={['cat']}>
+				<ChipTypeahead resource={createTestResource(animalOptions)} initialValue={['2']}>
 					{{
 						items: (item: any) =>
-							`Item ${item.value}, selected = ${item.selected ? 'true' : 'false'}`
+							`Item ${item.label}, selected = ${item.selected ? 'true' : 'false'}`
 					}}
 				</ChipTypeahead>
 			));
@@ -377,14 +377,17 @@ registerSuite('ChipTypeahead', {
 				node.children[0].items
 			);
 
-			assert.isTrue(itemRenderer({ value: 'cat' }) === 'Item cat, selected = true');
+			assert.strictEqual(
+				itemRenderer({ value: '2', label: 'Cat' }),
+				'Item Cat, selected = true'
+			);
 		},
 
 		'can place chips on the bottom instead of inline'() {
 			const h = harness(() => (
 				<ChipTypeahead
 					resource={createTestResource(animalOptions)}
-					initialValue={['cat']}
+					initialValue={['2']}
 					placement="bottom"
 				>
 					{}
@@ -401,7 +404,7 @@ registerSuite('ChipTypeahead', {
 			const h = harness(() => (
 				<ChipTypeahead
 					resource={createTestResource(animalOptions)}
-					initialValue={['cat']}
+					initialValue={['2']}
 					disabled
 				>
 					{}
@@ -415,7 +418,7 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
-						key="value-cat"
+						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={undefined}
 					>
@@ -440,7 +443,7 @@ registerSuite('ChipTypeahead', {
 
 		'disables items that are selected'() {
 			const h = harness(() => (
-				<ChipTypeahead resource={createTestResource(animalOptions)} initialValue={['cat']}>
+				<ChipTypeahead resource={createTestResource(animalOptions)} initialValue={['2']}>
 					{}
 				</ChipTypeahead>
 			));
@@ -449,8 +452,8 @@ registerSuite('ChipTypeahead', {
 				node.properties.itemDisabled
 			);
 
-			assert.isTrue(disabled({ value: 'cat' }));
-			assert.isFalse(disabled({ value: 'dog' }));
+			assert.isTrue(disabled({ value: '2', label: 'Cat' }));
+			assert.isFalse(disabled({ value: '1', label: 'Dog' }));
 		},
 
 		'allows duplicate values if duplicates are allowed'() {
@@ -468,8 +471,8 @@ registerSuite('ChipTypeahead', {
 				node.properties.itemDisabled
 			);
 
-			assert.isFalse(disabled({ value: 'cat' }));
-			assert.isFalse(disabled({ value: 'dog' }));
+			assert.isFalse(disabled({ value: '2', label: 'Cat' }));
+			assert.isFalse(disabled({ value: '1', label: 'Dog' }));
 		},
 
 		'allows duplicate values if not strict'() {
@@ -488,8 +491,8 @@ registerSuite('ChipTypeahead', {
 				node.properties.itemDisabled
 			);
 
-			assert.isFalse(disabled({ value: 'cat' }));
-			assert.isFalse(disabled({ value: 'dog' }));
+			assert.isFalse(disabled({ value: '2', label: 'Cat' }));
+			assert.isFalse(disabled({ value: '1', label: 'Dog' }));
 		},
 
 		'allows free text values if strict is set to false'() {
