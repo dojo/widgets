@@ -230,7 +230,7 @@ export interface ListChildren {
 export interface ItemRendererProperties {
 	active: boolean;
 	disabled: boolean;
-	label?: string;
+	label: string;
 	selected: boolean;
 	value: string;
 }
@@ -621,6 +621,7 @@ export const List = factory(function List({
 					selected: false,
 					active: false,
 					value: 'offscreen',
+					label: 'offscreen',
 					disabled: false
 				},
 				offscreenItemProps

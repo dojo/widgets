@@ -217,8 +217,8 @@ export const Typeahead = factory(function Typeahead({
 					onValidate && onValidate(false);
 				}
 			} else {
-				const value = icache.getOrSet('value', '');
-				callOnValue({ value, label: value });
+				const labelValue = icache.getOrSet('labelValue', '');
+				callOnValue({ value: labelValue, label: labelValue });
 			}
 			icache.set('selected', false);
 		} else if (activeItem) {
@@ -276,20 +276,7 @@ export const Typeahead = factory(function Typeahead({
 						}
 
 						let valueOption: any;
-						if (labelValue) {
-							console.log('label', labelValue);
-							valueOption = (
-								find(template, {
-									options: options(),
-									start: 0,
-									query: { label: labelValue },
-									type: 'exact'
-								}) || {
-									item: undefined
-								}
-							).item;
-						} else if (value) {
-							console.log('value', value);
+						if (value) {
 							valueOption = (
 								find(template, {
 									options: options(),
@@ -301,7 +288,6 @@ export const Typeahead = factory(function Typeahead({
 								}
 							).item;
 						}
-						console.log('valueOption', valueOption);
 
 						return (
 							<TextInput
@@ -335,11 +321,7 @@ export const Typeahead = factory(function Typeahead({
 									onBlur && onBlur();
 								}}
 								name={name}
-								initialValue={
-									valueOption
-										? valueOption.label || valueOption.value
-										: labelValue
-								}
+								initialValue={valueOption ? valueOption.label : labelValue}
 								focus={() =>
 									icache.get('focusNode') === 'trigger' && focus.shouldFocus()
 								}

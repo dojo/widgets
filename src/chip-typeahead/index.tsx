@@ -268,7 +268,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 						return (
 							<ListItem {...props} selected={selected}>
 								<div classes={[themeCss.item, selected ? themeCss.selected : null]}>
-									{item.label || item.value}
+									{item.label}
 								</div>
 							</ListItem>
 						);
