@@ -153,7 +153,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 
 								options.splice(index, 1);
 								icache.set('value', options.map((option) => option.value));
-
+								icache.set('options', options);
 								onValue && onValue(options);
 
 								focus.focus();

@@ -31,7 +31,7 @@ export default factory(function Basic({ id, middleware: { icache, resource } }) 
 					label: 'Basic Select'
 				}}
 			</Select>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>
 		</Example>
 	);
 });

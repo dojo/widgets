@@ -34,7 +34,9 @@ export default factory(function RequiredSelect({ id, middleware: { icache, resou
 					label: 'Required Select'
 				}}
 			</Select>
-			<pre>{`Value: ${icache.getOrSet('value', '')}, Valid: ${icache.get('valid')}`}</pre>
+			<pre>{`Value: ${JSON.stringify(icache.getOrSet('value', ''))}, Valid: ${icache.get(
+				'valid'
+			)}`}</pre>
 		</Example>
 	);
 });

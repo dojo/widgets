@@ -19,6 +19,7 @@ const options = [
 const template = createMemoryResourceTemplate<ListOption>();
 
 export default factory(function Controlled({ id, middleware: { icache, resource } }) {
+	const currentValue = icache.get<ListOption>('value');
 	return (
 		<Example>
 			<Select
@@ -26,13 +27,13 @@ export default factory(function Controlled({ id, middleware: { icache, resource 
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-				value={icache.get('value')}
+				value={currentValue ? currentValue.value : '1'}
 			>
 				{{
 					label: 'Controlled Select'
 				}}
 			</Select>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>
 		</Example>
 	);
 });

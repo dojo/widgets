@@ -39,7 +39,7 @@ export default factory(function CustomRenderer({ id, middleware: { icache, resou
 					}
 				}}
 			</Select>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>
 		</Example>
 	);
 });

@@ -33,7 +33,7 @@ export default factory(function AdditionalText({ id, middleware: { icache, resou
 					label: 'Additional Text'
 				}}
 			</Select>
-			<pre>{`Value: ${icache.getOrSet('value', '')}`}</pre>
+			<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>
 		</Example>
 	);
 });

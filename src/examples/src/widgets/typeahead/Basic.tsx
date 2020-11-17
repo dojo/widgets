@@ -31,7 +31,7 @@ export default factory(function Basic({ id, middleware: { icache, resource } }) 
 					label: 'Basic Typeahead'
 				}}
 			</Typeahead>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>
 		</Example>
 	);
 });

@@ -71,7 +71,7 @@ export default factory(function Remote({ middleware: { icache, resource } }) {
 					label: 'Remote Source Typeahead'
 				}}
 			</Typeahead>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>
 		</Example>
 	);
 });

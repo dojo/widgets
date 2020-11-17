@@ -32,7 +32,7 @@ export default factory(function Validation({ id, middleware: { icache, resource 
 					label: 'Validation'
 				}}
 			</Typeahead>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>
 		</Example>
 	);
 });

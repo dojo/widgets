@@ -57,6 +57,7 @@ export interface TypeaheadProperties {
 
 export interface TypeaheadICache {
 	value: string;
+	labelValue: string;
 	lastValue: string | undefined;
 	activeIndex: number;
 	dirty: boolean;
@@ -133,6 +134,7 @@ export const Typeahead = factory(function Typeahead({
 
 	let valid = icache.get('valid');
 	let value = icache.get('value');
+	let labelValue = icache.get('labelValue');
 	const listId = `typeahead-list-${id}`;
 	const triggerId = `typeahead-trigger-${id}`;
 	const dirty = icache.get('dirty');
@@ -274,18 +276,32 @@ export const Typeahead = factory(function Typeahead({
 						}
 
 						let valueOption: any;
-						if (value) {
+						if (labelValue) {
+							console.log('label', labelValue);
 							valueOption = (
 								find(template, {
 									options: options(),
 									start: 0,
-									query: { label: value },
+									query: { label: labelValue },
+									type: 'exact'
+								}) || {
+									item: undefined
+								}
+							).item;
+						} else if (value) {
+							console.log('value', value);
+							valueOption = (
+								find(template, {
+									options: options(),
+									start: 0,
+									query: { value },
 									type: 'exact'
 								}) || {
 									item: undefined
 								}
 							).item;
 						}
+						console.log('valueOption', valueOption);
 
 						return (
 							<TextInput
@@ -294,7 +310,8 @@ export const Typeahead = factory(function Typeahead({
 									if (value !== icache.get('value')) {
 										openMenu();
 										options({ query: { label: value } });
-										icache.set('value', value || '');
+										icache.set('labelValue', value || '');
+										icache.delete('value');
 									}
 								}}
 								theme={theme.compose(
@@ -319,7 +336,9 @@ export const Typeahead = factory(function Typeahead({
 								}}
 								name={name}
 								initialValue={
-									valueOption ? valueOption.label || valueOption.value : value
+									valueOption
+										? valueOption.label || valueOption.value
+										: labelValue
 								}
 								focus={() =>
 									icache.get('focusNode') === 'trigger' && focus.shouldFocus()
