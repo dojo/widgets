@@ -178,7 +178,6 @@ export const Typeahead = factory(function Typeahead({
 		const activeIndex = icache.getOrSet('activeIndex', 0);
 		const metaInfo = meta(template, options()) || icache.get('meta');
 		const total = (metaInfo && metaInfo.total) || 0;
-
 		switch (event) {
 			case Keys.Escape:
 				onClose();
@@ -186,13 +185,13 @@ export const Typeahead = factory(function Typeahead({
 			case Keys.Down:
 				preventDefault();
 				if (!onOpen()) {
-					icache.set('activeIndex', (activeIndex + 1) % total);
+					icache.set('activeIndex', total ? (activeIndex + 1) % total : total);
 				}
 				break;
 			case Keys.Up:
 				preventDefault();
 				if (!onOpen()) {
-					icache.set('activeIndex', (activeIndex - 1 + total) % total);
+					icache.set('activeIndex', total ? (activeIndex - 1 + total) % total : total);
 				}
 				break;
 			case Keys.Enter:
@@ -203,7 +202,15 @@ export const Typeahead = factory(function Typeahead({
 		}
 	}
 
-	const activeIndex = icache.getOrSet('activeIndex', 0) % options().size;
+	const { page, size } = options();
+	const index = icache.getOrSet('activeIndex', 0);
+	const currentPage = Math.ceil((index + 1) / size);
+	const pageIndex = Array.isArray(page)
+		? page.indexOf(currentPage) !== -1
+			? page.indexOf(currentPage)
+			: 0
+		: 0;
+	const activeIndex = pageIndex * size + (index % size);
 	const currentItems = flat(getOrRead(template, options()));
 	const isCurrentlyLoading = isLoading(template, options());
 	const metaInfo = icache.set('meta', (current) => {
@@ -305,12 +312,10 @@ export const Typeahead = factory(function Typeahead({
 							<TextInput
 								autocomplete={false}
 								onValue={(value) => {
-									if (value !== icache.get('labelValue')) {
-										openMenu();
-										options({ query: { label: value } });
-										icache.set('labelValue', value || '');
-										icache.delete('value');
-									}
+									openMenu();
+									options({ query: { label: value } });
+									icache.set('labelValue', value || '');
+									icache.delete('value');
 								}}
 								theme={theme.compose(
 									inputCss,
