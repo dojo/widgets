@@ -349,17 +349,17 @@ describe('TimePicker', () => {
 
 		// Find the input; it should contain the new value
 		h.expect(baseTemplate(expected));
-		// const [input] = select(
-		// 	'@input',
-		// 	h.trigger('@popup', (node) => (node.children as any)[0].trigger)
-		// );
-		// assert(input.properties.initialValue, format24HourTime(expected));
+		const [input] = select(
+			'@input',
+			h.trigger('@popup', (node) => (node.children as any)[0].trigger)
+		);
+		assert(input.properties.initialValue, format24HourTime(expected));
 
-		// // If `onValue` is called, the input was accepted & validated
-		// sinon.assert.calledWith(onValue, format24HourTime(expected));
+		// If `onValue` is called, the input was accepted & validated
+		sinon.assert.calledWith(onValue, format24HourTime(expected));
 
-		// // The calendar popup should be closed after a selection
-		// sinon.assert.calledOnce(onClose);
+		// The calendar popup should be closed after a selection
+		sinon.assert.calledOnce(onClose);
 	});
 
 	it('allows time picker selection with 12 hour format', () => {

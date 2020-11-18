@@ -262,6 +262,8 @@ import PopupConfirmationUnderlay from './widgets/popup-confirmation/Underlay';
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
 
+import './data';
+
 `!has('docs')`;
 import * as testsContext from './tests';
 
@@ -1414,7 +1416,7 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicSelect,
-					sandbox: true,
+					sandbox: false,
 					size: 'medium'
 				}
 			},

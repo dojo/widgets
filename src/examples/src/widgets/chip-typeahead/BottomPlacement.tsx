@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
-import states from '../list/states';
+import { data, Data } from '../../data';
 import Example from '../../Example';
 import {
 	createMemoryResourceTemplate,
@@ -10,7 +10,7 @@ import {
 const resource = createResourceMiddleware();
 const factory = create({ resource });
 
-const template = createMemoryResourceTemplate<typeof states[0]>();
+const template = createMemoryResourceTemplate<Data>();
 
 export default factory(function Bottom({ id, middleware: { resource } }) {
 	return (
@@ -18,13 +18,13 @@ export default factory(function Bottom({ id, middleware: { resource } }) {
 			<ChipTypeahead
 				resource={resource({
 					template,
-					transform: { value: 'value', label: 'value' },
-					initOptions: { id, data: states }
+					transform: { value: 'id', label: 'summary' },
+					initOptions: { id, data }
 				})}
 				placement="bottom"
 			>
 				{{
-					label: 'Select Applicable States'
+					label: 'Select Products'
 				}}
 			</ChipTypeahead>
 		</Example>

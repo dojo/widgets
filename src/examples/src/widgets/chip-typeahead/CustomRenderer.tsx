@@ -10,9 +10,9 @@ import {
 const resource = createResourceMiddleware();
 const factory = create({ resource });
 const options = [
-	{ value: 'apples', label: 'Apples' },
-	{ value: 'tacos', label: 'Tacos' },
-	{ value: 'pizza', label: 'Pizza' }
+	{ value: '1', label: 'Apples' },
+	{ value: '2', label: 'Tacos' },
+	{ value: '3', label: 'Pizza' }
 ];
 
 const template = createMemoryResourceTemplate<ListOption>();

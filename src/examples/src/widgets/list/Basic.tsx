@@ -6,12 +6,12 @@ import {
 	createMemoryResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
+import { data, Data } from '../../data';
 
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
 
-const animals = [{ value: 'cat' }, { value: 'dog' }, { value: 'mouse' }, { value: 'rat' }];
-const template = createMemoryResourceTemplate<{ value: string }>();
+const template = createMemoryResourceTemplate<Data>();
 
 export default factory(function Basic({ id, middleware: { icache, resource } }) {
 	return (
@@ -19,8 +19,8 @@ export default factory(function Basic({ id, middleware: { icache, resource } }) 
 			<List
 				resource={resource({
 					template,
-					transform: { value: 'value', label: 'value' },
-					initOptions: { id, data: animals }
+					transform: { value: 'id', label: 'summary' },
+					initOptions: { id, data }
 				})}
 				onValue={(value) => {
 					icache.set('value', value);

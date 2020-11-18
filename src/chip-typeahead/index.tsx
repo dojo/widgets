@@ -116,12 +116,15 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 		icache.set('initialValue', initialValue);
 	}
 
-	const chips = icache.getOrSet('value', []).map((value, index) => {
+	const storedValues = icache.getOrSet('value', []);
+	const findOptions = createOptions(`${id}-find`);
+	findOptions({ size: options().size, page: options().page });
+	const chips = storedValues.map((value, index) => {
 		let option: any;
 		if (value) {
 			option = (
 				find(template, {
-					options: options(),
+					options: findOptions(),
 					start: 0,
 					query: { value },
 					type: 'exact'

@@ -377,13 +377,16 @@ export const List = factory(function List({
 		const renderedItems = [];
 		const metaInfo = meta(template, options(), true);
 		if (metaInfo && metaInfo.total) {
-			const pages: number[] = [];
+			let pages: number[] = [];
 			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
 				const index = i + startNode;
 				const page = Math.floor(index / count) + 1;
 				if (pages.indexOf(page) === -1) {
 					pages.push(page);
 				}
+			}
+			if (!pages.length) {
+				pages.push(1);
 			}
 			const pageItems = getOrRead(template, options({ page: pages }));
 			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
