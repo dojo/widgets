@@ -53,8 +53,7 @@ const factory = create({ theme, icache, diffProperty, focus, resource })
 	.properties<TreeProperties>()
 	.children<TreeChildren | undefined>();
 
-export default factory(function({
-	id,
+export default factory(function Tree({
 	middleware: { theme, icache, diffProperty, resource },
 	properties,
 	children
@@ -97,7 +96,9 @@ export default factory(function({
 		parentSelection = false
 	} = properties();
 	const classes = theme.classes(css);
-	const defaultRenderer = (n: TreeNodeOption) => n.value;
+	const defaultRenderer = (n: TreeNodeOption) => {
+		return n.value;
+	};
 	const [itemRenderer] = children();
 
 	const activeNode = icache.get('activeNode');
@@ -317,7 +318,11 @@ const treeNodeFactory = create({ theme })
 	.properties<TreeNodeProperties>()
 	.children<TreeNodeChildren>();
 
-export const TreeNode = treeNodeFactory(function({ middleware: { theme }, properties, children }) {
+export const TreeNode = treeNodeFactory(function TreeNode({
+	middleware: { theme },
+	properties,
+	children
+}) {
 	const {
 		node,
 		checkable,
