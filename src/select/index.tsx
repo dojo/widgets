@@ -28,7 +28,7 @@ import LoadingIndicator from '../loading-indicator';
 
 export interface SelectProperties {
 	/** Callback called when user selects a value */
-	onValue(value: string): void;
+	onValue(value: ListOption): void;
 	/** The initial selected value */
 	initialValue?: string;
 	/** Controlled value property */
@@ -269,10 +269,11 @@ export const Select = factory(function Select({
 									key="menu"
 									focus={() => focusNode === 'menu' && shouldFocus}
 									resource={resource({ template, options })}
-									onValue={(value: string) => {
+									onValue={(value) => {
 										focus.focus();
 										closeMenu();
-										value !== icache.get('value') && icache.set('value', value);
+										value.value !== icache.get('value') &&
+											icache.set('value', value.value);
 										onValue(value);
 									}}
 									onRequestClose={closeMenu}

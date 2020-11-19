@@ -26,7 +26,7 @@ import { flat } from '@dojo/framework/shim/array';
 
 export interface TypeaheadProperties {
 	/** Callback called when user selects a value */
-	onValue(value: string): void;
+	onValue(value: ListOption): void;
 	/** The initial selected value */
 	initialValue?: string;
 	/** Property to determine how many items to render. Defaults to 6 */
@@ -57,6 +57,7 @@ export interface TypeaheadProperties {
 
 export interface TypeaheadICache {
 	value: string;
+	labelValue: string;
 	lastValue: string | undefined;
 	activeIndex: number;
 	dirty: boolean;
@@ -123,16 +124,19 @@ export const Typeahead = factory(function Typeahead({
 	) {
 		icache.set('initial', initialValue);
 		icache.set('value', initialValue);
+		icache.delete('labelValue');
 	}
 
 	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
 		icache.set('value', controlledValue);
 		icache.set('lastValue', controlledValue);
+		icache.delete('labelValue');
 		options({ query: { value: controlledValue } });
 	}
 
 	let valid = icache.get('valid');
 	let value = icache.get('value');
+	let labelValue = icache.get('labelValue');
 	const listId = `typeahead-list-${id}`;
 	const triggerId = `typeahead-trigger-${id}`;
 	const dirty = icache.get('dirty');
@@ -146,11 +150,11 @@ export const Typeahead = factory(function Typeahead({
 		}
 	}
 
-	function callOnValue(value: string) {
+	function callOnValue(value: ListOption) {
 		const { onValidate, onValue, required } = properties();
 		const lastValue = icache.get('lastValue');
 
-		if (lastValue === value) {
+		if (lastValue === value.value) {
 			return;
 		}
 
@@ -159,7 +163,7 @@ export const Typeahead = factory(function Typeahead({
 			valid = false;
 		}
 
-		icache.set('lastValue', value);
+		icache.set('lastValue', value.value);
 		icache.set('valid', valid);
 		value && onValue && onValue(value);
 		onValidate && onValidate(valid);
@@ -174,7 +178,6 @@ export const Typeahead = factory(function Typeahead({
 		const activeIndex = icache.getOrSet('activeIndex', 0);
 		const metaInfo = meta(template, options()) || icache.get('meta');
 		const total = (metaInfo && metaInfo.total) || 0;
-
 		switch (event) {
 			case Keys.Escape:
 				onClose();
@@ -182,13 +185,13 @@ export const Typeahead = factory(function Typeahead({
 			case Keys.Down:
 				preventDefault();
 				if (!onOpen()) {
-					icache.set('activeIndex', (activeIndex + 1) % total);
+					icache.set('activeIndex', total ? (activeIndex + 1) % total : total);
 				}
 				break;
 			case Keys.Up:
 				preventDefault();
 				if (!onOpen()) {
-					icache.set('activeIndex', (activeIndex - 1 + total) % total);
+					icache.set('activeIndex', total ? (activeIndex - 1 + total) % total : total);
 				}
 				break;
 			case Keys.Enter:
@@ -199,7 +202,15 @@ export const Typeahead = factory(function Typeahead({
 		}
 	}
 
-	const activeIndex = icache.getOrSet('activeIndex', 0) % options().size;
+	const { page, size } = options();
+	const index = icache.getOrSet('activeIndex', 0);
+	const currentPage = Math.ceil((index + 1) / size);
+	const pageIndex = Array.isArray(page)
+		? page.indexOf(currentPage) !== -1
+			? page.indexOf(currentPage)
+			: 0
+		: 0;
+	const activeIndex = pageIndex * size + (index % size);
 	const currentItems = flat(getOrRead(template, options()));
 	const isCurrentlyLoading = isLoading(template, options());
 	const metaInfo = icache.set('meta', (current) => {
@@ -215,15 +226,18 @@ export const Typeahead = factory(function Typeahead({
 					onValidate && onValidate(false);
 				}
 			} else {
-				const value = icache.getOrSet('value', '');
-				callOnValue(value);
+				const labelValue = icache.getOrSet('labelValue', '');
+				icache.set('value', labelValue);
+				value = labelValue;
+				callOnValue({ value: labelValue, label: labelValue });
 			}
 			icache.set('selected', false);
 		} else if (activeItem) {
 			let disabled = itemDisabled ? itemDisabled(activeItem) : !!activeItem.disabled;
 			if (!disabled) {
+				const { value: itemValue, label, disabled, divider } = activeItem;
 				value = icache.set('value', activeItem.value);
-				callOnValue(currentItems[activeIndex].value);
+				callOnValue({ value: itemValue, label, disabled, divider });
 			}
 		}
 		icache.set('selected', false);
@@ -273,11 +287,15 @@ export const Typeahead = factory(function Typeahead({
 							}
 						}
 
-						let valueOption: any;
+						let valueOption: ListOption | undefined;
 						if (value) {
+							const findOptions = createOptions(`${id}-find`);
 							valueOption = (
 								find(template, {
-									options: options(),
+									options: findOptions({
+										page: options().page,
+										size: options().size
+									}),
 									start: 0,
 									query: { value },
 									type: 'exact'
@@ -285,17 +303,19 @@ export const Typeahead = factory(function Typeahead({
 									item: undefined
 								}
 							).item;
+							if (valueOption && icache.get('labelValue') !== valueOption.label) {
+								options({ query: { label: valueOption.label } });
+							}
 						}
 
 						return (
 							<TextInput
 								autocomplete={false}
 								onValue={(value) => {
-									if (value !== icache.get('value')) {
-										openMenu();
-										options({ query: { value } });
-										icache.set('value', value || '');
-									}
+									openMenu();
+									options({ query: { label: value } });
+									icache.set('labelValue', value || '');
+									icache.delete('value');
 								}}
 								theme={theme.compose(
 									inputCss,
@@ -310,17 +330,25 @@ export const Typeahead = factory(function Typeahead({
 									const { onBlur } = properties();
 
 									if (!strict) {
-										const value = icache.getOrSet('value', '');
-										callOnValue(value);
+										const value = icache.getOrSet('labelValue', '');
+										icache.set('value', value);
+										callOnValue(
+											valueOption
+												? {
+														value: valueOption.value,
+														label: valueOption.label,
+														divider: valueOption.divider,
+														disabled: valueOption.disabled
+												  }
+												: { value, label: value }
+										);
 									}
 
 									closeMenu();
 									onBlur && onBlur();
 								}}
 								name={name}
-								initialValue={
-									valueOption ? valueOption.label || valueOption.value : value
-								}
+								initialValue={valueOption ? valueOption.label : labelValue}
 								focus={() =>
 									icache.get('focusNode') === 'trigger' && focus.shouldFocus()
 								}
@@ -369,7 +397,9 @@ export const Typeahead = factory(function Typeahead({
 									onValue={(value) => {
 										focus.focus();
 										closeMenu();
-										value !== icache.get('value') && icache.set('value', value);
+										if (value.value !== icache.get('value')) {
+											icache.set('value', value.value);
+										}
 										callOnValue(value);
 									}}
 									onRequestClose={closeMenu}

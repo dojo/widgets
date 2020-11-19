@@ -24,7 +24,7 @@ export interface ChipTypeaheadProperties {
 	/** The initial selected value */
 	initialValue?: string[];
 	/** Callback called when user selects an option from the typeahead */
-	onValue?: (value: string[]) => void;
+	onValue?: (value: ListOption[]) => void;
 	/** Optional controlled value */
 	value?: string[];
 	/** Property to determine if the input is disabled */
@@ -52,11 +52,12 @@ export interface ChipTypeaheadChildren {
 		props: ListItemProperties & MenuItemProperties
 	) => RenderResult;
 	/** Custom renderer for selected items */
-	selected?: (value: string, label?: string) => RenderResult;
+	selected?: (value: string, label: string) => RenderResult;
 }
 
 export interface ChipTypeaheadIcache {
 	initialValue: string[];
+	options: ListOption[];
 	value: string[];
 	focused: boolean;
 }
@@ -115,12 +116,15 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 		icache.set('initialValue', initialValue);
 	}
 
-	const chips = icache.getOrSet('value', []).map((value, index) => {
+	const storedValues = icache.getOrSet('value', []);
+	const findOptions = createOptions(`${id}-find`);
+	findOptions({ size: options().size, page: options().page });
+	const chips = storedValues.map((value, index) => {
 		let option: any;
 		if (value) {
 			option = (
 				find(template, {
-					options: options(),
+					options: findOptions(),
 					start: 0,
 					query: { value },
 					type: 'exact'
@@ -148,12 +152,12 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 						? undefined
 						: () => {
 								const { onValue } = properties();
-								const values = [...icache.getOrSet('value', [])];
+								const options = [...icache.getOrSet('options', [])];
 
-								values.splice(index, 1);
-								icache.set('value', values);
-
-								onValue && onValue(values);
+								options.splice(index, 1);
+								icache.set('value', options.map((option) => option.value));
+								icache.set('options', options);
+								onValue && onValue(options);
 
 								focus.focus();
 						  }
@@ -161,8 +165,10 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 			>
 				{{
 					label: selected
-						? selected(value, option && option.label)
-						: (option && option.label) || value
+						? selected(value, option ? option.label : value)
+						: option
+						? option.label
+						: value
 				}}
 			</Chip>
 		);
@@ -217,9 +223,15 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 				onValue={(value) => {
 					const { onValue } = properties();
 
-					const values = [...icache.getOrSet('value', []), value];
+					const options = icache.set('options', (values = []) => {
+						return [...values, value];
+					});
+					const values = icache.set('value', (values = []) => {
+						return [...values, value.value];
+					});
 					icache.set('value', values);
-					onValue && onValue(values);
+					icache.set('options', options);
+					onValue && onValue(options);
 
 					focus.focus();
 				}}
@@ -261,7 +273,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 						return (
 							<ListItem {...props} selected={selected}>
 								<div classes={[themeCss.item, selected ? themeCss.selected : null]}>
-									{item.label || item.value}
+									{item.label}
 								</div>
 							</ListItem>
 						);

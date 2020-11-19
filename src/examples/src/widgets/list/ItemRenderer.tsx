@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { ListItem, ListOption } from '@dojo/widgets/list';
+import List, { ListItem } from '@dojo/widgets/list';
 import states from './states';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
@@ -10,13 +10,17 @@ import {
 
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createMemoryResourceTemplate<typeof states[0]>();
 
 export default factory(function ItemRenderer({ id, middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<List
-				resource={resource({ template, initOptions: { id, data: states } })}
+				resource={resource({
+					template,
+					transform: { value: 'value', label: 'value' },
+					initOptions: { id, data: states }
+				})}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
@@ -31,7 +35,7 @@ export default factory(function ItemRenderer({ id, middleware: { icache, resourc
 					);
 				}}
 			</List>
-			<p>{`Clicked On: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Clicked On: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
 	);
 });

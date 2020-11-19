@@ -184,7 +184,7 @@ export const ListItem = listItemFactory(function ListItem({
 	);
 });
 
-export type ListOption = { value: string; label?: string; disabled?: boolean; divider?: boolean };
+export type ListOption = { value: string; label: string; disabled?: boolean; divider?: boolean };
 
 export interface ListProperties {
 	/** Determines if this list can be reordered */
@@ -196,7 +196,7 @@ export interface ListProperties {
 	/** Controlled value property */
 	value?: string;
 	/** Callback called when user selects a value */
-	onValue(value: string): void;
+	onValue(value: ListOption): void;
 	/** Called to request that the menu be closed */
 	onRequestClose?(): void;
 	/** Optional callback, when passed, the widget will no longer control it's own active index / keyboard navigation */
@@ -230,7 +230,7 @@ export interface ListChildren {
 export interface ItemRendererProperties {
 	active: boolean;
 	disabled: boolean;
-	label?: string;
+	label: string;
 	selected: boolean;
 	value: string;
 }
@@ -304,8 +304,8 @@ export const List = factory(function List({
 		}
 	}
 
-	function setValue(value: string) {
-		icache.set('value', value);
+	function setValue(value: ListOption) {
+		icache.set('value', value.value);
 		onValue(value);
 	}
 
@@ -323,7 +323,7 @@ export const List = factory(function List({
 					const itemDisabled = disabled ? disabled(activeItem) : activeItem.disabled;
 
 					if (!itemDisabled) {
-						setValue(activeItem.value);
+						setValue(activeItem);
 					}
 				}
 				break;
@@ -377,13 +377,16 @@ export const List = factory(function List({
 		const renderedItems = [];
 		const metaInfo = meta(template, options(), true);
 		if (metaInfo && metaInfo.total) {
-			const pages: number[] = [];
+			let pages: number[] = [];
 			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
 				const index = i + startNode;
 				const page = Math.floor(index / count) + 1;
 				if (pages.indexOf(page) === -1) {
 					pages.push(page);
 				}
+			}
+			if (!pages.length) {
+				pages.push(1);
 			}
 			const pageItems = getOrRead(template, options({ page: pages }));
 			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
@@ -393,7 +396,8 @@ export const List = factory(function List({
 				const indexWithinPage = index - (page - 1) * count;
 				const items = pageItems[pageIndex];
 				if (items && items[indexWithinPage]) {
-					renderedItems[i] = renderItem(items[indexWithinPage], index);
+					const { value, label, disabled, divider } = items[indexWithinPage];
+					renderedItems[i] = renderItem({ value, label, disabled, divider }, index);
 				} else if (!items) {
 					renderedItems[i] = renderPlaceholder(index);
 				}
@@ -518,7 +522,7 @@ export const List = factory(function List({
 			widgetId: `${idBase}-item-${index}`,
 			key: `item-${index}`,
 			onSelect: () => {
-				setValue(value);
+				setValue(data);
 			},
 			active,
 			onRequestActive: () => {
@@ -620,6 +624,7 @@ export const List = factory(function List({
 					selected: false,
 					active: false,
 					value: 'offscreen',
+					label: 'offscreen',
 					disabled: false
 				},
 				offscreenItemProps
@@ -655,7 +660,7 @@ export const List = factory(function List({
 			options: options(),
 			start: computedActiveIndex + 1,
 			type: 'start' as const,
-			query: { value: inputText || requestedInputText }
+			query: { label: inputText || requestedInputText }
 		};
 		if (!isLoading(template, findOptions)) {
 			const foundItem = find(template, findOptions);

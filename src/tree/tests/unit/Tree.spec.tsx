@@ -93,6 +93,9 @@ describe('Tree', () => {
 				}}
 			/>
 		));
+		r.child(WrappedNode1, { value: 'node-1' });
+		r.child(WrappedNode2, { value: 'node-2' });
+
 		r.expect(simpleTreeAssertion);
 	});
 
@@ -197,7 +200,7 @@ describe('Tree', () => {
 									expanded={false}
 									node={simpleTree[1]}
 								>
-									{noop as any}
+									{() => ''}
 								</WrappedNode3>
 							</li>
 						</ol>
@@ -240,7 +243,7 @@ describe('Tree', () => {
 								>
 									<li role={'treeitem'} classes={[css.node, false, false, false]}>
 										<TreeNode {...nodeProps} node={simpleTree[1]}>
-											{noop as any}
+											{() => ''}
 										</TreeNode>
 									</li>
 								</ol>
@@ -286,7 +289,7 @@ describe('Tree', () => {
 								>
 									<li role={'treeitem'} classes={[css.node, false, false, false]}>
 										<TreeNode {...nodeProps} node={simpleTree[1]}>
-											{noop as any}
+											{() => ''}
 										</TreeNode>
 									</li>
 								</ol>
@@ -410,7 +413,8 @@ describe('Tree', () => {
 			r.child(WrappedNode1, { value: 'node-1' });
 			r.child(WrappedNode2, { value: 'node-2' });
 			r.expect(expandedAssertion);
-
+			r.child(WrappedNode1, {});
+			r.child(WrappedNode2, {});
 			r.property(WrappedNode1, 'onActive');
 			r.child(WrappedNode1, { value: 'node-1' });
 			r.child(WrappedNode2, { value: 'node-2' });

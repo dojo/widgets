@@ -344,7 +344,8 @@ describe('TimePicker', () => {
 		// Find the calendar widget and trigger a date selected
 		const [menu] = select('@menu', contentResult);
 		onValue.resetHistory();
-		menu.properties.onValue(format24HourTime(expected));
+		const formattedDate = format24HourTime(expected);
+		menu.properties.onValue({ value: formattedDate, label: formattedDate });
 
 		// Find the input; it should contain the new value
 		h.expect(baseTemplate(expected));
@@ -380,7 +381,8 @@ describe('TimePicker', () => {
 		// Find the calendar widget and trigger a date selected
 		const [menu] = select('@menu', contentResult);
 		onValue.resetHistory();
-		menu.properties.onValue(format24HourTime(expected));
+		const formattedDate = format24HourTime(expected);
+		menu.properties.onValue({ value: formattedDate, label: formattedDate });
 
 		// Find the input; it should contain the new value
 		h.expect(baseTemplate(expected));

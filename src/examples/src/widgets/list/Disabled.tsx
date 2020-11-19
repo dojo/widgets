@@ -21,8 +21,12 @@ export default factory(function Disabled({ id, middleware: { icache, resource } 
 	return (
 		<Example>
 			<List
-				resource={resource({ template, initOptions: { id, data: animals } })}
-				onValue={(value: string) => {
+				resource={resource({
+					template,
+					transform: { value: 'value', label: 'value' },
+					initOptions: { id, data: animals }
+				})}
+				onValue={(value) => {
 					icache.set('value', value);
 				}}
 				disabled={(item) => item.value === 'mouse'}

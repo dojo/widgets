@@ -11,7 +11,10 @@ import Example from '../../Example';
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
 
-const items = Array.from(Array(100).keys()).map((value) => ({ value: `${value}` }));
+const items = Array.from(Array(100).keys()).map((value, i) => ({
+	value: `${i}`,
+	label: `${value}`
+}));
 const template = createMemoryResourceTemplate<ListOption>();
 
 export default factory(function Draggable({ id, middleware: { icache, resource } }) {
@@ -30,11 +33,11 @@ export default factory(function Draggable({ id, middleware: { icache, resource }
 					icache.set('rawData', sortable);
 				}}
 				resource={data}
-				onValue={(value: string) => {
+				onValue={(value) => {
 					icache.set('value', value);
 				}}
 			/>
-			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Clicked on: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
 	);
 });

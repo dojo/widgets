@@ -11,9 +11,9 @@ import { ListOption } from '@dojo/widgets/list';
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
 const options = [
-	{ value: 'cat', label: 'Cat' },
-	{ value: 'dog', label: 'Dog' },
-	{ value: 'fish', label: 'Fish' }
+	{ value: '1', label: 'Cat' },
+	{ value: '2', label: 'Dog' },
+	{ value: '3', label: 'Fish' }
 ];
 
 const template = createMemoryResourceTemplate<ListOption>();
@@ -32,7 +32,7 @@ export default factory(function FreeText({ id, middleware: { icache, resource } 
 					label: 'Basic Typeahead'
 				}}
 			</Typeahead>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>
 		</Example>
 	);
 });

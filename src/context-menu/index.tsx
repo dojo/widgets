@@ -8,7 +8,7 @@ import { createResourceMiddleware } from '@dojo/framework/core/middleware/resour
 
 export interface ContextMenuProperties {
 	/* A callback that will be called with the value of whatever item is selected */
-	onSelect(value: string): void;
+	onSelect(value: ListOption): void;
 }
 
 const factory = create({ theme, resource: createResourceMiddleware<ListOption>() }).properties<

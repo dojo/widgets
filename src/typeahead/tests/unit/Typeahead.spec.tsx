@@ -22,19 +22,25 @@ const { ' _key': listKey, ...listTheme } = listCss as any;
 
 const data = [
 	{
-		value: 'dog'
+		value: '1',
+		label: 'Dog'
 	},
 	{
-		value: 'cat',
+		value: '2',
 		label: 'Cat'
 	},
 	{
-		value: 'fish',
+		value: '3',
+		label: 'Fish',
 		disabled: true
 	}
 ];
 
-const template = createMemoryResourceTemplate<{ value: string }>();
+const template = createMemoryResourceTemplate<{
+	value: string;
+	label: string;
+	disabled?: boolean;
+}>();
 const WrappedRoot = wrap('div');
 const WrappedTrigger = wrap(TextInput);
 const WrappedPopup = wrap(TriggerPopup);
@@ -153,7 +159,7 @@ describe('Typeahead', () => {
 			<Typeahead
 				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
 				onValue={onValueStub}
-				initialValue="cat"
+				initialValue="2"
 			/>
 		));
 		r.child(WrappedPopup, {
@@ -162,14 +168,14 @@ describe('Typeahead', () => {
 		r.expect(
 			baseAssertion.replaceChildren(WrappedPopup, () => ({
 				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'Cat'),
-				content: contentAssertion.setProperty(WrappedList, 'initialValue', 'cat')
+				content: contentAssertion.setProperty(WrappedList, 'initialValue', '2')
 			}))
 		);
 	});
 
 	it('Should render the typeahead with a controlled value', () => {
 		const properties: any = {
-			value: 'cat'
+			value: '2'
 		};
 		const r = renderer(() => (
 			<Typeahead
@@ -184,14 +190,14 @@ describe('Typeahead', () => {
 		r.expect(
 			baseAssertion.replaceChildren(WrappedPopup, () => ({
 				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'Cat'),
-				content: contentAssertion.setProperty(WrappedList, 'initialValue', 'cat')
+				content: contentAssertion.setProperty(WrappedList, 'initialValue', '2')
 			}))
 		);
-		properties.value = 'dog';
+		properties.value = '1';
 		r.expect(
 			baseAssertion.replaceChildren(WrappedPopup, () => ({
-				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'dog'),
-				content: contentAssertion.setProperty(WrappedList, 'initialValue', 'dog')
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'Dog'),
+				content: contentAssertion.setProperty(WrappedList, 'initialValue', '1')
 			}))
 		);
 	});
@@ -224,7 +230,7 @@ describe('Typeahead', () => {
 		// select second item from the drop down, `cat`
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
 		// simulate `cat` value being selected on the list
-		r.property(WrappedList, 'onValue', 'cat');
+		r.property(WrappedList, 'onValue', { value: 'cat', label: 'Cat' });
 		// call `onClose` on the popup to simulate the dropdown closing
 		r.property(WrappedPopup, 'onClose');
 		r.expect(
@@ -236,7 +242,7 @@ describe('Typeahead', () => {
 						.setProperty(WrappedTrigger, 'initialValue', 'Cat')
 						.setProperty(WrappedTrigger, 'valid', true),
 					content: contentAssertion
-						.setProperty(WrappedList, 'initialValue', 'cat')
+						.setProperty(WrappedList, 'initialValue', '2')
 						.setProperty(WrappedList, 'activeIndex', 1)
 				}))
 		);
@@ -250,7 +256,7 @@ describe('Typeahead', () => {
 					trigger: expandedTriggerAssertion
 						.setProperty(WrappedTrigger, 'valid', false)
 						.setProperty(WrappedTrigger, 'initialValue', ''),
-					content: contentAssertion.setProperty(WrappedList, 'initialValue', '')
+					content: contentAssertion.setProperty(WrappedList, 'initialValue', undefined)
 				}))
 		);
 	});
@@ -273,7 +279,7 @@ describe('Typeahead', () => {
 		r.expect(baseAssertion);
 		// open the drop down
 		r.property(WrappedTrigger, 'onValue', 'unknown');
-		r.property(WrappedList, 'onValue', 'unknown');
+		r.property(WrappedList, 'onValue', { value: 'unknown', label: 'unknown' });
 		// focus second item from the drop down, `cat`
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
 		r.expect(
@@ -399,7 +405,7 @@ describe('Typeahead', () => {
 			baseAssertion.replaceChildren(WrappedPopup, () => ({
 				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'Cat'),
 				content: contentAssertion
-					.setProperty(WrappedList, 'initialValue', 'cat')
+					.setProperty(WrappedList, 'initialValue', '2')
 					.setProperty(WrappedList, 'activeIndex', 1)
 			}))
 		);
@@ -433,7 +439,7 @@ describe('Typeahead', () => {
 			}))
 		);
 		assert.strictEqual(onValueStub.callCount, 1);
-		assert.deepEqual(onValueStub.firstCall.args, ['c']);
+		assert.deepEqual(onValueStub.firstCall.args, [{ value: 'c', label: 'c' }]);
 	});
 
 	it('Should not be able to select a disabled item', () => {
@@ -468,7 +474,7 @@ describe('Typeahead', () => {
 		const r = renderer(() => (
 			<Typeahead
 				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
-				itemDisabled={(item) => item.value === 'cat'}
+				itemDisabled={(item) => item.value === '2'}
 				onValue={onValueStub}
 			/>
 		));
@@ -515,9 +521,7 @@ describe('Typeahead', () => {
 		r.expect(
 			baseAssertion.replaceChildren(WrappedPopup, () => ({
 				trigger: triggerAssertion.setProperty(WrappedTrigger, 'initialValue', 'Unknown'),
-				content: contentAssertion
-					.setProperty(WrappedList, 'initialValue', 'Unknown')
-					.setProperty(WrappedList, 'activeIndex', 0)
+				content: contentAssertion.setProperty(WrappedList, 'activeIndex', 0)
 			}))
 		);
 		assert.strictEqual(onValueStub.callCount, 0);

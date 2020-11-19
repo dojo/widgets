@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { ListOption } from '@dojo/widgets/list';
+import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
-import states from './states';
+import { listOptions } from '../../data';
 import Example from '../../Example';
 import {
 	createMemoryResourceTemplate,
@@ -10,7 +10,7 @@ import {
 
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createMemoryResourceTemplate<{ value: string; disabled?: boolean }>();
 
 export default factory(function Controlled({ id, middleware: { icache, resource } }) {
 	const activeIndex = icache.getOrSet('activeIndex', 0);
@@ -23,7 +23,7 @@ export default factory(function Controlled({ id, middleware: { icache, resource 
 					onclick={() => {
 						icache.set(
 							'activeIndex',
-							(activeIndex - 1 + states.length) % states.length
+							(activeIndex - 1 + listOptions.length) % listOptions.length
 						);
 					}}
 				>
@@ -32,7 +32,7 @@ export default factory(function Controlled({ id, middleware: { icache, resource 
 				<button
 					type="button"
 					onclick={() => {
-						icache.set('activeIndex', (activeIndex + 1) % states.length);
+						icache.set('activeIndex', (activeIndex + 1) % listOptions.length);
 					}}
 				>
 					DOWN
@@ -42,8 +42,8 @@ export default factory(function Controlled({ id, middleware: { icache, resource 
 					onclick={() => {
 						const activeIndex = icache.get<number>('activeIndex');
 						if (activeIndex) {
-							const item = states[activeIndex];
-							!item.disabled && icache.set('value', states[activeIndex].value);
+							const item = listOptions[activeIndex];
+							!item.disabled && icache.set('value', listOptions[activeIndex]);
 						}
 					}}
 				>
@@ -52,7 +52,11 @@ export default factory(function Controlled({ id, middleware: { icache, resource 
 				<List
 					focusable={false}
 					itemsInView={4}
-					resource={resource({ template, initOptions: { id, data: states } })}
+					resource={resource({
+						template,
+						transform: { value: 'value', label: 'value' },
+						initOptions: { id, data: listOptions }
+					})}
 					onActiveIndexChange={(index: number) => {
 						icache.set('activeIndex', index);
 					}}
@@ -63,7 +67,7 @@ export default factory(function Controlled({ id, middleware: { icache, resource 
 					}}
 				/>
 			</div>
-			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Clicked on: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
 	);
 });

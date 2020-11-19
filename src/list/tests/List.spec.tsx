@@ -17,17 +17,19 @@ import * as fixedCss from '../list.m.css';
 import * as listItemCss from '../../theme/default/list-item.m.css';
 import * as menuItemCss from '../../theme/default/menu-item.m.css';
 
-let template = createMemoryResourceTemplate<{ value: string }>();
+let template = createMemoryResourceTemplate<{ value: string; label: string; disabled?: boolean }>();
 const data = [
 	{
-		value: 'dog'
+		value: '1',
+		label: 'Dog'
 	},
 	{
-		value: 'cat',
+		value: '2',
 		label: 'Cat'
 	},
 	{
-		value: 'fish',
+		value: '3',
+		label: 'Fish',
 		disabled: true
 	}
 ];
@@ -136,7 +138,7 @@ const listWithListItemsAssertion = baseAssertion
 			onDragStart={noop}
 			onDrop={noop}
 		>
-			dog
+			Dog
 		</ListItem>,
 		<ListItem
 			classes={undefined}
@@ -208,7 +210,7 @@ const listWithListItemsAssertion = baseAssertion
 			onDragStart={noop}
 			onDrop={noop}
 		>
-			fish
+			Fish
 		</ListItem>
 	]);
 
@@ -235,7 +237,7 @@ const listWithMenuItemsAssertion = baseAssertion
 			}}
 			widgetId={'menu-test-item-0'}
 		>
-			dog
+			Dog
 		</MenuItem>,
 		<MenuItem
 			classes={undefined}
@@ -273,7 +275,7 @@ const listWithMenuItemsAssertion = baseAssertion
 			}}
 			widgetId={'menu-test-item-2'}
 		>
-			fish
+			Fish
 		</MenuItem>
 	]);
 
@@ -282,7 +284,11 @@ describe('List', () => {
 		sb.stub(global.window.HTMLDivElement.prototype, 'getBoundingClientRect').callsFake(() => ({
 			height: 45
 		}));
-		template = createMemoryResourceTemplate<{ value: string }>();
+		template = createMemoryResourceTemplate<{
+			value: string;
+			label: string;
+			disabled?: boolean;
+		}>();
 	});
 
 	afterEach(() => {
@@ -317,7 +323,11 @@ describe('List', () => {
 			.setProperty(WrappedRoot, 'styles', {
 				maxHeight: '45px'
 			});
-		const template = createResourceTemplate<{ value: string }>({
+		const template = createResourceTemplate<{
+			value: string;
+			label: string;
+			disabled?: boolean;
+		}>({
 			read: (request, { put }) => {
 				if (request.offset === 0) {
 					return pageOnePromise.then((res) => {
@@ -495,7 +505,7 @@ describe('List', () => {
 				onDragStart={noop}
 				onDrop={noop}
 			>
-				fish
+				Fish
 			</ListItem>
 		]);
 		r.expect(lastPageItemsAssertion);
@@ -538,7 +548,11 @@ describe('List', () => {
 			.setProperty(WrappedRoot, 'styles', {
 				maxHeight: '45px'
 			});
-		const template = createResourceTemplate<{ value: string }>({
+		const template = createResourceTemplate<{
+			value: string;
+			label: string;
+			disabled?: boolean;
+		}>({
 			read: (request, { put }) => {
 				if (request.offset === 0) {
 					return pageOnePromise.then((res) => {
@@ -649,7 +663,7 @@ describe('List', () => {
 				}}
 				widgetId={'menu-test-item-5'}
 			>
-				fish
+				Fish
 			</MenuItem>
 		]);
 		r.expect(lastPageItemsAssertion);
@@ -661,7 +675,7 @@ describe('List', () => {
 				<ListItem
 					classes={undefined}
 					active={index === activeIndex}
-					disabled={testData[index].value === 'fish'}
+					disabled={testData[index].value === '3'}
 					key={`item-${index}`}
 					onRequestActive={noop}
 					onSelect={noop}
@@ -701,14 +715,16 @@ describe('List', () => {
 			...data,
 			...[
 				{
-					value: 'panda'
+					value: '4',
+					label: 'Panda'
 				},
 				{
-					value: 'crow',
+					value: '5',
 					label: 'Crow'
 				},
 				{
-					value: 'fire-bellied toad'
+					value: '6',
+					label: 'Fire-Bellied Toad'
 				}
 			]
 		];
@@ -722,7 +738,7 @@ describe('List', () => {
 					}
 				}}
 				disabled={(item) => {
-					return item.value === 'fish';
+					return item.value === '3';
 				}}
 				onValue={onValueStub}
 				onRequestClose={onRequestCloseStub}
@@ -968,19 +984,24 @@ describe('List', () => {
 	it('should set active item based on keyboard input', async () => {
 		const testData = [
 			{
-				value: 'Bob'
+				value: '1',
+				label: 'Bob'
 			},
 			{
-				value: 'Adam'
+				value: '2',
+				label: 'Adam'
 			},
 			{
-				value: 'Ant'
+				value: '3',
+				label: 'Ant'
 			},
 			{
-				value: 'Anthony'
+				value: '4',
+				label: 'Anthony'
 			},
 			{
-				value: 'Bobby'
+				value: '5',
+				label: 'Bobby'
 			}
 		];
 		const r = renderer(() => (
@@ -2192,7 +2213,7 @@ describe('List', () => {
 					onSelect={noop}
 					widgetId={'menu-test-item-0'}
 				>
-					dog
+					Dog
 				</ListItem>,
 				<ListItem
 					classes={undefined}
@@ -2214,7 +2235,7 @@ describe('List', () => {
 					onSelect={noop}
 					widgetId={'menu-test-item-2'}
 				>
-					fish
+					Fish
 				</ListItem>
 			]);
 		const r = renderer(() => (
@@ -2239,7 +2260,7 @@ describe('List', () => {
 			<List
 				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
 				onValue={onValueStub}
-				initialValue="cat"
+				initialValue="2"
 			/>
 		));
 		const listAssertion = baseAssertion
@@ -2281,7 +2302,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					dog
+					Dog
 				</ListItem>,
 				<ListItem
 					classes={undefined}
@@ -2353,7 +2374,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					fish
+					Fish
 				</ListItem>
 			]);
 		r.expect(listAssertion);
@@ -2361,7 +2382,7 @@ describe('List', () => {
 
 	it('should render with value', () => {
 		const props = {
-			value: 'cat'
+			value: '2'
 		};
 		const r = renderer(() => (
 			<List
@@ -2409,7 +2430,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					dog
+					Dog
 				</ListItem>,
 				<ListItem
 					classes={undefined}
@@ -2481,11 +2502,11 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					fish
+					Fish
 				</ListItem>
 			]);
 		r.expect(listAssertion);
-		props.value = 'dog';
+		props.value = '1';
 		listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '135px'
@@ -2525,7 +2546,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					dog
+					Dog
 				</ListItem>,
 				<ListItem
 					classes={undefined}
@@ -2597,7 +2618,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					fish
+					Fish
 				</ListItem>
 			]);
 		r.expect(listAssertion);
@@ -2606,16 +2627,18 @@ describe('List', () => {
 	it('should render a divider based on the data', () => {
 		const testData = [
 			{
-				value: 'dog',
+				value: '1',
+				label: 'Dog',
 				divider: true
 			},
 			{
-				value: 'cat',
+				value: '2',
 				label: 'Cat',
 				divider: true
 			},
 			{
-				value: 'fish',
+				value: '3',
+				label: 'Fish',
 				disabled: true
 			}
 		];
@@ -2666,7 +2689,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					dog
+					Dog
 				</ListItem>,
 				<hr classes={css.divider} />,
 				<ListItem
@@ -2740,7 +2763,7 @@ describe('List', () => {
 					onDragStart={noop}
 					onDrop={noop}
 				>
-					fish
+					Fish
 				</ListItem>
 			]);
 		r.expect(listAssertion);

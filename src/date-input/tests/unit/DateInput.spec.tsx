@@ -1,4 +1,4 @@
-import { RenderResult, WNode } from '@dojo/framework/core/interfaces';
+import { RenderResult, WNode, DefaultMiddlewareResult } from '@dojo/framework/core/interfaces';
 
 const { describe, it, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
@@ -32,7 +32,7 @@ function createFocusMock({
 	focused = false,
 	isFocused = false,
 	focus = () => {}
-} = {}) {
+} = {}): () => DefaultMiddlewareResult {
 	const factory = create();
 	return () =>
 		factory(() => ({

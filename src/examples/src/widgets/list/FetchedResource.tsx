@@ -9,6 +9,7 @@ import {
 } from '@dojo/framework/core/middleware/resources';
 
 interface User {
+	id: string;
 	firstName: string;
 	lastName: string;
 }
@@ -59,14 +60,14 @@ export default factory(function FetchedResource({ middleware: { icache, resource
 			<List
 				resource={resource({
 					template,
-					transform: { value: 'firstName', label: 'firstName' }
+					transform: { value: 'id', label: 'firstName' }
 				})}
-				onValue={(value: string) => {
+				onValue={(value) => {
 					icache.set('value', value);
 				}}
 				itemsInView={10}
 			/>
-			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Clicked on: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
 	);
 });

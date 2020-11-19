@@ -10,11 +10,11 @@ import {
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
 const options = [
-	{ value: 'Save' },
-	{ value: 'Delete', divider: true },
-	{ value: 'copy', label: 'Copy' },
-	{ value: 'Paste', disabled: true, divider: true },
-	{ value: 'Edit' }
+	{ value: '1', label: 'Save' },
+	{ value: '2', label: 'Delete', divider: true },
+	{ value: '3', label: 'Copy' },
+	{ value: '4', label: 'Paste', disabled: true, divider: true },
+	{ value: '5', label: 'Edit' }
 ];
 
 const template = createMemoryResourceTemplate<ListOption>();
@@ -28,7 +28,7 @@ export default factory(function Dividers({ id, middleware: { icache, resource } 
 					icache.set('value', value);
 				}}
 			/>
-			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Clicked on: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
 	);
 });

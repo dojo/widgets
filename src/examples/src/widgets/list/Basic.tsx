@@ -1,28 +1,32 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List, { ListOption } from '@dojo/widgets/list';
+import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
 import {
 	createMemoryResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
+import { data, Data } from '../../data';
 
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
 
-const animals = [{ value: 'cat' }, { value: 'dog' }, { value: 'mouse' }, { value: 'rat' }];
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createMemoryResourceTemplate<Data>();
 
 export default factory(function Basic({ id, middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<List
-				resource={resource({ template, initOptions: { id, data: animals } })}
-				onValue={(value: string) => {
+				resource={resource({
+					template,
+					transform: { value: 'id', label: 'summary' },
+					initOptions: { id, data }
+				})}
+				onValue={(value) => {
 					icache.set('value', value);
 				}}
 			/>
-			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Clicked on: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
 	);
 });

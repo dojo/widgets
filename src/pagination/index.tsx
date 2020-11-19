@@ -292,11 +292,14 @@ export default factory(function Pagination({
 								template: pageSizesTemplate,
 								initOptions: {
 									id,
-									data: pageSizes.map((ps) => ({ value: ps.toString() }))
+									data: pageSizes.map((ps) => ({
+										value: `${ps}`,
+										label: `${ps}`
+									}))
 								}
 							})}
 							onValue={(value) => {
-								onPageSize && onPageSize(parseInt(value, 10));
+								onPageSize && onPageSize(parseInt(value.value, 10));
 							}}
 						/>
 					</div>

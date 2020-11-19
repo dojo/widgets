@@ -316,7 +316,7 @@ describe('Pagination', () => {
 			);
 			h.expect(sizeSelectorAssertion);
 
-			h.trigger('@page-size-select', 'onValue', '10');
+			h.trigger('@page-size-select', 'onValue', { value: '10', label: '10' });
 			sinon.assert.calledWith(onPageSizeChange, 10);
 		});
 
@@ -342,7 +342,7 @@ describe('Pagination', () => {
 					.setProperty('@page-size-select', 'initialValue', undefined)
 			);
 
-			h.trigger('@page-size-select', 'onValue', '10');
+			h.trigger('@page-size-select', 'onValue', { value: '10', label: '10' });
 			sinon.assert.calledWith(onPageSizeChange, 10);
 		});
 	});

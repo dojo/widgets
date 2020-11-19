@@ -10,9 +10,9 @@ import {
 const resource = createResourceMiddleware();
 const factory = create({ resource });
 const options = [
-	{ value: 'apples', label: 'Apples' },
-	{ value: 'tacos', label: 'Tacos' },
-	{ value: 'pizza', label: 'Pizza' }
+	{ value: '1', label: 'Apples' },
+	{ value: '2', label: 'Tacos' },
+	{ value: '3', label: 'Pizza' }
 ];
 
 const template = createMemoryResourceTemplate<ListOption>();
@@ -30,11 +30,11 @@ export default factory(function CustomRenderer({ id, middleware: { resource } })
 					),
 					selected: (value) => {
 						switch (value) {
-							case 'apples':
+							case '1':
 								return '🍎';
-							case 'tacos':
+							case '2':
 								return '🌮';
-							case 'pizza':
+							case '3':
 								return '🍕';
 						}
 					}

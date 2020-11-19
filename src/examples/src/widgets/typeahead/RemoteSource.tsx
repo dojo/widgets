@@ -10,6 +10,7 @@ import {
 } from '@dojo/framework/core/middleware/resources';
 
 interface User {
+	id: string;
 	firstName: string;
 	lastName: string;
 }
@@ -61,7 +62,7 @@ export default factory(function Remote({ middleware: { icache, resource } }) {
 				helperText="Type to filter by last name"
 				resource={resource({
 					template,
-					transform: { value: 'firstName', label: 'firstName' }
+					transform: { value: 'id', label: 'firstName' }
 				})}
 				onValue={(value) => {
 					icache.set('value', value);
@@ -71,7 +72,7 @@ export default factory(function Remote({ middleware: { icache, resource } }) {
 					label: 'Remote Source Typeahead'
 				}}
 			</Typeahead>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			<pre>{JSON.stringify(icache.getOrSet('value', ''), null, 4)}</pre>
 		</Example>
 	);
 });

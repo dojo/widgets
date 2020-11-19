@@ -23,7 +23,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 			>
 				Basic Select
 			</NativeSelect>
-			<pre>{icache.getOrSet('value', '')}</pre>
+			<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>
 		</Example>
 	);
 });

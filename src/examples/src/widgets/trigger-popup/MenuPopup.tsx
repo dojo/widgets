@@ -11,9 +11,9 @@ import {
 const resource = createResourceMiddleware();
 const factory = create({ resource });
 const options = [
-	{ value: 'Save' },
-	{ value: 'copy', label: 'Copy' },
-	{ value: 'Paste', disabled: true }
+	{ value: '1', label: 'Save' },
+	{ value: '2', label: 'Copy' },
+	{ value: '3', label: 'Paste', disabled: true }
 ];
 const template = createMemoryResourceTemplate<ListOption>();
 

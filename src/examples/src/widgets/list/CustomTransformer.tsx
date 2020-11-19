@@ -32,11 +32,11 @@ export default factory(function CustomTransformer({ id, middleware: { icache, re
 					transform: { value: 'type', label: 'name' },
 					initOptions: { id, data: animals }
 				})}
-				onValue={(value: string) => {
+				onValue={(value) => {
 					icache.set('value', value);
 				}}
 			/>
-			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Clicked on: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
 	);
 });
