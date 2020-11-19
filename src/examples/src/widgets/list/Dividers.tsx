@@ -28,7 +28,7 @@ export default factory(function Dividers({ id, middleware: { icache, resource } 
 					icache.set('value', value);
 				}}
 			/>
-			<p>{`Clicked on: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Clicked on: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
 	);
 });

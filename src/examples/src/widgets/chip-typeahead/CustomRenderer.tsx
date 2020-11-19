@@ -30,11 +30,11 @@ export default factory(function CustomRenderer({ id, middleware: { resource } })
 					),
 					selected: (value) => {
 						switch (value) {
-							case 'apples':
+							case '1':
 								return '🍎';
-							case 'tacos':
+							case '2':
 								return '🌮';
-							case 'pizza':
+							case '3':
 								return '🍕';
 						}
 					}

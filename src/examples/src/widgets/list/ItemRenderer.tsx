@@ -35,7 +35,7 @@ export default factory(function ItemRenderer({ id, middleware: { icache, resourc
 					);
 				}}
 			</List>
-			<p>{`Clicked On: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Clicked On: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
 	);
 });

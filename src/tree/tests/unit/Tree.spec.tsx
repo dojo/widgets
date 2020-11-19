@@ -93,8 +93,8 @@ describe('Tree', () => {
 				}}
 			/>
 		));
-		r.child(WrappedNode1, {});
-		r.child(WrappedNode2, {});
+		r.child(WrappedNode1, { value: 'node-1' });
+		r.child(WrappedNode2, { value: 'node-2' });
 
 		r.expect(simpleTreeAssertion);
 	});

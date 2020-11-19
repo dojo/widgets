@@ -32,7 +32,7 @@ export default factory(function Menu({ id, middleware: { icache, resource } }) {
 				}}
 				itemsInView={8}
 			/>
-			<p>{`Selected: ${icache.getOrSet('value', '')}`}</p>
+			<p>{`Selected: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
 	);
 });
