@@ -77,7 +77,7 @@ export const TitlePane = factory(function TitlePane({
 			]}
 		>
 			<div
-				aria-level={headingLevel ? `${headingLevel}` : null}
+				aria-level={headingLevel ? `${headingLevel}` : undefined}
 				classes={[
 					themeCss.title,
 					closeable ? themeCss.closeable : null,
@@ -88,7 +88,7 @@ export const TitlePane = factory(function TitlePane({
 			>
 				<button
 					aria-controls={`${id}-content`}
-					aria-expanded={`${open}`}
+					aria-expanded={open ? 'true' : 'false'}
 					disabled={!closeable}
 					classes={[fixedCss.titleButtonFixed, themeCss.titleButton]}
 					focus={focus.isFocused('title-button')}
@@ -111,7 +111,7 @@ export const TitlePane = factory(function TitlePane({
 				</button>
 			</div>
 			<div
-				aria-hidden={open ? null : 'true'}
+				aria-hidden={open ? undefined : 'true'}
 				aria-labelledby={`${id}-title`}
 				classes={[
 					themeCss.content,

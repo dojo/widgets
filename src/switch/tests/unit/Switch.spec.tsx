@@ -54,7 +54,7 @@ const expected = ({
 			]}
 		>
 			{offLabel ? (
-				<div key="offlabel" classes={css.offLabel} aria-hidden={value ? null : 'true'}>
+				<div key="offlabel" classes={css.offLabel} aria-hidden={value ? undefined : 'true'}>
 					{['off']}
 				</div>
 			) : null}
@@ -69,15 +69,15 @@ const expected = ({
 							checked={value}
 							disabled={disabled}
 							focus={focused}
-							aria-invalid={valid === false ? 'true' : null}
+							aria-invalid={valid === false ? 'true' : undefined}
 							name={undefined}
 							readonly={readOnly}
-							aria-readonly={readOnly === true ? 'true' : null}
+							aria-readonly={readOnly === true ? 'true' : undefined}
 							required={required}
 							type="checkbox"
 							value={`${value}`}
 							role="switch"
-							aria-checked={value}
+							aria-checked={value ? 'true' : 'false'}
 							onblur={noop}
 							onchange={noop}
 							onfocus={noop}
@@ -88,7 +88,7 @@ const expected = ({
 				</div>
 			</div>
 			{onLabel ? (
-				<div key="onLabel" classes={css.onLabel} aria-hidden={value ? null : 'true'}>
+				<div key="onLabel" classes={css.onLabel} aria-hidden={value ? undefined : 'true'}>
 					{['on']}
 				</div>
 			) : null}
@@ -134,7 +134,7 @@ registerSuite('Switch', {
 					.setProperty('~input', 'aria-describedby', 'foo')
 					.setProperty('~input', 'name', 'bar')
 					.setProperty('@offlabel', 'aria-hidden', 'true')
-					.setProperty('@onLabel', 'aria-hidden', null)
+					.setProperty('@onLabel', 'aria-hidden', undefined)
 			);
 		},
 

@@ -5,7 +5,7 @@ import Label from '../label/index';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import focus from '@dojo/framework/core/middleware/focus';
 import theme from '@dojo/framework/core/middleware/theme';
-import { RenderResult } from '@dojo/framework/core/interfaces';
+import { RenderResult, AriaAttributes } from '@dojo/framework/core/interfaces';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { formatAriaProperties } from '../common/util';
@@ -155,9 +155,11 @@ export const RangeSlider = factory(function RangeSlider({
 	const getInputProperties = (isSlider1: boolean) => ({
 		...formatAriaProperties(aria),
 		'aria-describedby': isSlider1 ? minLabelId : maxLabelId,
-		'aria-invalid': valid === false ? 'true' : null,
+		'aria-invalid': (valid === false ? 'true' : undefined) as AriaAttributes['aria-invalid'],
 		'aria-labelledby': `${widgetId}-label`,
-		'aria-readonly': readOnly === true ? 'true' : null,
+		'aria-readonly': (readOnly === true
+			? 'true'
+			: undefined) as AriaAttributes['aria-readonly'],
 		classes: [themeCss.input, fixedCss.nativeInput],
 		disabled,
 		max: `${maxRestraint}`,

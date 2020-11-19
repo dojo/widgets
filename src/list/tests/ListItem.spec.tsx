@@ -29,8 +29,8 @@ describe('ListBoxItem', () => {
 			draggable={undefined}
 			onclick={noop}
 			role="option"
-			aria-selected={false}
-			aria-disabled={false}
+			aria-selected="false"
+			aria-disabled="false"
 			id="test"
 			ondragend={undefined}
 			ondragenter={noop}
@@ -79,7 +79,7 @@ describe('ListBoxItem', () => {
 				undefined,
 				undefined
 			])
-			.setProperty('@root', 'aria-selected', true);
+			.setProperty('@root', 'aria-selected', 'true');
 		h.expect(selectedTemplate);
 	});
 
@@ -102,7 +102,7 @@ describe('ListBoxItem', () => {
 				undefined,
 				undefined
 			])
-			.setProperty('@root', 'aria-disabled', true);
+			.setProperty('@root', 'aria-disabled', 'true');
 		h.expect(disabledTemplate);
 	});
 

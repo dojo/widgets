@@ -216,7 +216,9 @@ export const Select = factory(function Select({
 								focus={() => focusNode === 'trigger' && shouldFocus}
 								aria-controls={menuId}
 								aria-haspopup="listbox"
-								aria-expanded={icache.getOrSet('expanded', false)}
+								aria-expanded={
+									icache.getOrSet('expanded', false) ? 'true' : 'false'
+								}
 								key="trigger"
 								type="button"
 								id={triggerId}

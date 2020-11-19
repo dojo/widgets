@@ -59,10 +59,10 @@ const expected = ({
 					checked={checked}
 					disabled={disabled}
 					focus={focused}
-					aria-invalid={valid === false ? 'true' : null}
+					aria-invalid={valid === false ? 'true' : undefined}
 					name={undefined}
 					readonly={readOnly}
-					aria-readonly={readOnly === true ? 'true' : null}
+					aria-readonly={readOnly === true ? 'true' : undefined}
 					required={required}
 					type="radio"
 					value={undefined}

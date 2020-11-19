@@ -223,7 +223,7 @@ export const CalendarCell = create({ theme }).properties<CalendarCellProperties>
 				key="root"
 				focus={callFocus}
 				role="gridcell"
-				aria-selected={`${selected}`}
+				aria-selected={selected ? 'true' : 'false'}
 				tabIndex={focusable ? 0 : -1}
 				classes={[
 					themeCss.date,
@@ -403,7 +403,7 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 				<button
 					key={key}
 					aria-controls={`${id}_${type}_dialog`}
-					aria-expanded={`${open}`}
+					aria-expanded={open ? 'true' : 'false'}
 					aria-haspopup="true"
 					id={`${id}_${type}_button`}
 					classes={[
@@ -536,7 +536,7 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 
 				<div
 					key="month-grid"
-					aria-hidden={`${!monthPopupOpen}`}
+					aria-hidden={monthPopupOpen ? 'false' : 'true'}
 					aria-labelledby={`${id}_month_button`}
 					classes={[themeCss.monthGrid, !monthPopupOpen ? baseCss.visuallyHidden : null]}
 					id={`${id}_month_dialog`}
@@ -550,7 +550,7 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 
 				<div
 					key="year-grid"
-					aria-hidden={`${!yearPopupOpen}`}
+					aria-hidden={yearPopupOpen ? 'false' : 'true'}
 					aria-labelledby={`${id}_year_button`}
 					classes={[themeCss.yearGrid, !yearPopupOpen ? baseCss.visuallyHidden : null]}
 					id={`${id}_year_dialog`}

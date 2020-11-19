@@ -239,7 +239,7 @@ export default class Grid<S> extends I18nMixin(ThemedMixin(WidgetBase))<GridProp
 				key: 'root',
 				classes: [this.variant(), this.theme(css.root), fixedCss.rootFixed],
 				role: 'table',
-				'aria-rowcount': meta.total ? `${meta.total}` : null
+				'aria-rowcount': meta.total ? `${meta.total}` : undefined
 			},
 			[
 				v(

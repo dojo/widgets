@@ -17,7 +17,7 @@ describe('MenuItem', () => {
 			classes={[undefined, css.root, false, false]}
 			onclick={noop}
 			role="menuitem"
-			aria-disabled={false}
+			aria-disabled="false"
 			id="test"
 		>
 			test
@@ -47,7 +47,7 @@ describe('MenuItem', () => {
 		));
 		const disabledTemplate = template
 			.setProperty('@root', 'classes', [undefined, css.root, false, css.disabled])
-			.setProperty('@root', 'aria-disabled', true);
+			.setProperty('@root', 'aria-disabled', 'true');
 		h.expect(disabledTemplate);
 	});
 

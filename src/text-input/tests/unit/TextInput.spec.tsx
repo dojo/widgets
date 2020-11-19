@@ -102,7 +102,7 @@ const expected = function({
 					role="presentation"
 				>
 					<input
-						aria-invalid={valid === false ? 'true' : null}
+						aria-invalid={valid === false ? 'true' : undefined}
 						autocomplete={undefined}
 						classes={css.input}
 						disabled={disabled}
@@ -117,7 +117,7 @@ const expected = function({
 						pattern={undefined}
 						placeholder={undefined}
 						readOnly={readOnly}
-						aria-readonly={readOnly ? 'true' : null}
+						aria-readonly={readOnly ? 'true' : undefined}
 						required={required}
 						step={undefined}
 						type="text"
@@ -172,14 +172,14 @@ const input = () => (
 			classes={css.input}
 			id=""
 			disabled={undefined}
-			aria-invalid={null}
+			aria-invalid={undefined}
 			autocomplete={undefined}
 			maxlength={null}
 			minlength={null}
 			name={undefined}
 			placeholder={undefined}
 			readOnly={undefined}
-			aria-readonly={null}
+			aria-readonly={undefined}
 			required={undefined}
 			type="text"
 			value={undefined}
