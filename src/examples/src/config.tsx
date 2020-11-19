@@ -1416,7 +1416,7 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicSelect,
-					sandbox: false,
+					sandbox: true,
 					size: 'medium'
 				}
 			},
