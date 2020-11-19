@@ -96,9 +96,7 @@ export default factory(function Tree({
 		parentSelection = false
 	} = properties();
 	const classes = theme.classes(css);
-	const defaultRenderer = (n: TreeNodeOption) => {
-		return n.value;
-	};
+	const defaultRenderer = (n: TreeNodeOption) => n.value;
 	const [itemRenderer] = children();
 
 	const activeNode = icache.get('activeNode');
