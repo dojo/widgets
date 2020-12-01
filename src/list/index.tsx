@@ -375,12 +375,13 @@ export const List = factory(function List({
 
 	function renderItems(start: number, count: number, startNode: number) {
 		const renderedItems = [];
+		const { size: resourceRequestSize } = options();
 		const metaInfo = meta(template, options(), true);
 		if (metaInfo && metaInfo.total) {
 			let pages: number[] = [];
 			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
 				const index = i + startNode;
-				const page = Math.floor(index / count) + 1;
+				const page = Math.floor(index / resourceRequestSize) + 1;
 				if (pages.indexOf(page) === -1) {
 					pages.push(page);
 				}
@@ -391,9 +392,9 @@ export const List = factory(function List({
 			const pageItems = getOrRead(template, options({ page: pages }));
 			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
 				const index = i + startNode;
-				const page = Math.floor(index / count) + 1;
+				const page = Math.floor(index / resourceRequestSize) + 1;
 				const pageIndex = pages.indexOf(page);
-				const indexWithinPage = index - (page - 1) * count;
+				const indexWithinPage = index - (page - 1) * resourceRequestSize;
 				const items = pageItems[pageIndex];
 				if (items && items[indexWithinPage]) {
 					const { value, label, disabled, divider } = items[indexWithinPage];
@@ -640,7 +641,6 @@ export const List = factory(function List({
 		itemHeight && icache.set('menuHeight', itemsInView * itemHeight);
 	}
 
-	const nodePadding = Math.min(itemsInView, 20);
 	const menuHeight = icache.get('menuHeight');
 	const idBase = widgetId || `menu-${id}`;
 	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
@@ -648,9 +648,8 @@ export const List = factory(function List({
 	const themedCss = theme.classes(css);
 	const itemHeight = icache.getOrSet('itemHeight', 0);
 	let scrollTop = icache.getOrSet('scrollTop', 0);
-
+	const nodePadding = Math.min(itemsInView, 20);
 	const renderedItemsCount = itemsInView + 2 * nodePadding;
-	options({ size: renderedItemsCount });
 	let computedActiveIndex =
 		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 	const inputText = icache.get('inputText');
