@@ -1,6 +1,5 @@
 import dojoTheme from '@dojo/widgets/theme/dojo';
 import materialTheme from '@dojo/widgets/theme/material';
-import defaultTheme from '@dojo/widgets/theme/default';
 import BasicAccordionPane from './widgets/accordion/Basic';
 import BasicAvatar from './widgets/avatar/Basic';
 import ImageAvatar from './widgets/avatar/Image';
@@ -295,7 +294,7 @@ export const config = {
 		{ label: 'material', theme: materialTheme },
 		{ label: 'dojo-dark', theme: dojoDarkTheme },
 		{ label: 'material-dark', theme: materialDarkTheme },
-		{ label: 'default', theme: defaultTheme }
+		{ label: 'default', theme: { theme: {}, variants: {} } }
 	],
 	tests,
 	readmePath: (widget: string) => `src/${widget}/README.md`,
