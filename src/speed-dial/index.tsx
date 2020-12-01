@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
 import FloatingActionButton from '../floating-action-button';
+import * as fixedCss from './styles/speed-dial.m.css';
 import * as css from '../theme/default/speed-dial.m.css';
 import * as fabCss from '../theme/default/floating-action-button.m.css';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
@@ -116,6 +117,7 @@ export const SpeedDial = factory(function SpeedDial({
 			classes={[
 				theme.variant(),
 				classes.root,
+				fixedCss.root,
 				direction === 'left' && classes.left,
 				direction === 'right' && classes.right,
 				direction === 'down' && classes.down,
