@@ -3,7 +3,7 @@
 
 	/* variables taken from @material/theme/dist/mdc.theme.css */
 	--mdc-theme-primary: #6200ee;
-	--mdc-theme-dark-primary: #bb86fc;
+	--mdc-theme-primary-on-dark: #bb86fc;
 	--mdc-theme-secondary: #018786;
 	--mdc-theme-background: #fff;
 	--mdc-theme-surface: #fff;
