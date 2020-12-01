@@ -52,9 +52,9 @@ describe('Avatar', () => {
 		);
 	});
 
-	describe('variants', () => {
+	describe('types', () => {
 		it('renders circle', () => {
-			const h = harness(() => <Avatar variant="circle">D</Avatar>);
+			const h = harness(() => <Avatar type="circle">D</Avatar>);
 			h.expect(
 				template.setProperty('@root', 'classes', [
 					undefined,
@@ -68,7 +68,7 @@ describe('Avatar', () => {
 		});
 
 		it('renders square', () => {
-			const h = harness(() => <Avatar variant="square">D</Avatar>);
+			const h = harness(() => <Avatar type="square">D</Avatar>);
 			h.expect(
 				template.setProperty('@root', 'classes', [
 					undefined,
@@ -82,7 +82,7 @@ describe('Avatar', () => {
 		});
 
 		it('renders rounded', () => {
-			const h = harness(() => <Avatar variant="rounded">D</Avatar>);
+			const h = harness(() => <Avatar type="rounded">D</Avatar>);
 			h.expect(
 				template.setProperty('@root', 'classes', [
 					undefined,
