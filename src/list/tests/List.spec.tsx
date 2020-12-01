@@ -2,7 +2,7 @@ const { describe, it, afterEach, beforeEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import { sandbox } from 'sinon';
 import global from '@dojo/framework/shim/global';
-import { tsx } from '@dojo/framework/core/vdom';
+import { tsx, getRegistry, create } from '@dojo/framework/core/vdom';
 import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
 import {
 	createMemoryResourceTemplate,
@@ -16,6 +16,15 @@ import * as css from '../../theme/default/list.m.css';
 import * as fixedCss from '../list.m.css';
 import * as listItemCss from '../../theme/default/list-item.m.css';
 import * as menuItemCss from '../../theme/default/menu-item.m.css';
+import Registry from '@dojo/framework/core/Registry';
+import RegistryHandler from '@dojo/framework/core/RegistryHandler';
+
+const mockGetRegistry = create()(function() {
+	const registry = new Registry();
+	const handler = new RegistryHandler();
+	handler.base = registry;
+	return () => handler;
+});
 
 let template = createMemoryResourceTemplate<{ value: string; label: string; disabled?: boolean }>();
 const data = [
@@ -296,14 +305,17 @@ describe('List', () => {
 	});
 
 	it('should not render with no data', () => {
-		const r = renderer(() => (
-			<List
-				resource={{
-					template: { template, id: 'test', initOptions: { data: [], id: 'test' } }
-				}}
-				onValue={onValueStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: { template, id: 'test', initOptions: { data: [], id: 'test' } }
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		r.expect(assertion(() => undefined));
 	});
 
@@ -389,9 +401,10 @@ describe('List', () => {
 			find: () => {}
 		});
 
-		const r = renderer(() => (
-			<List resource={{ template: { template, id: 'test' } }} onValue={onValueStub} />
-		));
+		const r = renderer(
+			() => <List resource={{ template: { template, id: 'test' } }} onValue={onValueStub} />,
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		r.expect(assertion(() => null));
 		pageOneResolver!({ data: data.slice(0, 30), total: data.length });
 		await pageOnePromise;
@@ -496,23 +509,33 @@ describe('List', () => {
 	});
 
 	it('should render list with list items data', () => {
-		const r = renderer(() => (
-			<List
-				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
-				onValue={onValueStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		r.expect(listWithListItemsAssertion);
 	});
 
 	it('should render list with menu items data', () => {
-		const r = renderer(() => (
-			<List
-				menu
-				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
-				onValue={onValueStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					menu
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		r.expect(listWithMenuItemsAssertion);
 	});
 
@@ -581,9 +604,16 @@ describe('List', () => {
 			find: () => {}
 		});
 
-		const r = renderer(() => (
-			<List menu resource={{ template: { template, id: 'test' } }} onValue={onValueStub} />
-		));
+		const r = renderer(
+			() => (
+				<List
+					menu
+					resource={{ template: { template, id: 'test' } }}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		r.expect(assertion(() => null));
 		pageOneResolver!({ data: data.slice(0, 30), total: data.length });
 		await pageOnePromise;
@@ -712,22 +742,25 @@ describe('List', () => {
 				}
 			]
 		];
-		const r = renderer(() => (
-			<List
-				resource={{
-					template: {
-						template,
-						id: 'test',
-						initOptions: { data: testData, id: 'test' }
-					}
-				}}
-				disabled={(item) => {
-					return item.value === '3';
-				}}
-				onValue={onValueStub}
-				onRequestClose={onRequestCloseStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: testData, id: 'test' }
+						}
+					}}
+					disabled={(item) => {
+						return item.value === '3';
+					}}
+					onValue={onValueStub}
+					onRequestClose={onRequestCloseStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		r.expect(
 			baseAssertion
 				.setProperty(WrappedItemWrapper, 'styles', {
@@ -988,18 +1021,21 @@ describe('List', () => {
 				label: 'Bobby'
 			}
 		];
-		const r = renderer(() => (
-			<List
-				resource={{
-					template: {
-						template,
-						id: 'test',
-						initOptions: { data: testData, id: 'test' }
-					}
-				}}
-				onValue={onValueStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: testData, id: 'test' }
+						}
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		const listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '225px'
@@ -1975,18 +2011,21 @@ describe('List', () => {
 				value: 'Bobby'
 			}
 		];
-		const r = renderer(() => (
-			<List
-				resource={{
-					template: {
-						template,
-						id: 'test',
-						initOptions: { data: testData, id: 'test' }
-					}
-				}}
-				onValue={onValueStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: testData, id: 'test' }
+						}
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		const listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '225px'
@@ -2222,31 +2261,41 @@ describe('List', () => {
 					Fish
 				</ListItem>
 			]);
-		const r = renderer(() => (
-			<List
-				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
-				onValue={onValueStub}
-			>
-				{(item, itemProps) => {
-					return (
-						<ListItem classes={undefined} {...itemProps}>
-							{item.label || item.value}
-						</ListItem>
-					);
-				}}
-			</List>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+				>
+					{(item, itemProps) => {
+						return (
+							<ListItem classes={undefined} {...itemProps}>
+								{item.label || item.value}
+							</ListItem>
+						);
+					}}
+				</List>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		r.expect(listWithListItemsAssertion);
 	});
 
 	it('should render with initial value', () => {
-		const r = renderer(() => (
-			<List
-				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
-				onValue={onValueStub}
-				initialValue="2"
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+					initialValue="2"
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		const listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '135px'
@@ -2368,13 +2417,18 @@ describe('List', () => {
 		const props = {
 			value: '2'
 		};
-		const r = renderer(() => (
-			<List
-				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
-				onValue={onValueStub}
-				value={props.value}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+					value={props.value}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		let listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '135px'
@@ -2626,14 +2680,21 @@ describe('List', () => {
 				disabled: true
 			}
 		];
-		const r = renderer(() => (
-			<List
-				resource={{
-					template: { template, id: 'test', initOptions: { data: testData, id: 'test' } }
-				}}
-				onValue={onValueStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: testData, id: 'test' }
+						}
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		const listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '135px'
