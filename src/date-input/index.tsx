@@ -27,11 +27,15 @@ export interface DateInputProperties extends ThemeProperties, FocusProperties {
 	/** Set the earliest date the calendar will display (it will show the whole month but not allow previous selections) */
 	min?: string;
 	/** name used on the underlying form input's name attribute */
-	name: string;
+	name?: string;
 	/** Callback fired with new value in YYYY-MM-DD format */
 	onValue?(date: string): void;
 	/** Callback fired when input validation changes */
 	onValidate?: (valid: boolean | undefined, message: string) => void;
+	/** The disabled property of the input */
+	disabled?: boolean;
+	/** The readonly attribute of the input */
+	readOnly?: boolean;
 }
 
 export interface DateInputChildren {
@@ -68,7 +72,15 @@ export default factory(function({
 	children,
 	middleware: { theme, icache, i18n, focus }
 }) {
-	const { initialValue, name, onValue, onValidate, value: controlledValue } = properties();
+	const {
+		initialValue,
+		name,
+		onValue,
+		onValidate,
+		value: controlledValue,
+		disabled = false,
+		readOnly = false
+	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const classes = theme.classes(css);
 	const max = parseDate(properties().max);
@@ -159,15 +171,19 @@ export default factory(function({
 				{{
 					trigger: (toggleOpen) => {
 						function openCalendar() {
-							icache.set('focusNode', 'calendar');
-							focus.focus();
-							toggleOpen();
+							if (!disabled && !readOnly) {
+								icache.set('focusNode', 'calendar');
+								focus.focus();
+								toggleOpen();
+							}
 						}
 
 						return (
 							<div classes={classes.input}>
 								<TextInput
 									key="input"
+									disabled={disabled}
+									readOnly={readOnly}
 									focus={() => shouldFocus && focusNode === 'input'}
 									theme={theme.compose(
 										textInputCss,

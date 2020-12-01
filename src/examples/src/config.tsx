@@ -219,6 +219,8 @@ import BasicNativeSelect from './widgets/native-select/Basic';
 import ControlledNativeSelect from './widgets/native-select/ControlledNativeSelect';
 import BasicDateInput from './widgets/date-input/Basic';
 import ControlledDateInput from './widgets/date-input/Controlled';
+import DisabledDateInput from './widgets/date-input/Disabled';
+import ReadOnlyDateInput from './widgets/date-input/ReadOnly';
 import BasicLoadingIndicator from './widgets/loading-indicator/Basic';
 import BasicHeader from './widgets/header/Basic';
 import LeadingHeader from './widgets/header/Leading';
@@ -639,6 +641,20 @@ export const config = {
 					sandbox: true,
 					size: 'large',
 					title: 'Controlled date input'
+				},
+				{
+					filename: 'Disabled',
+					module: DisabledDateInput,
+					sandbox: true,
+					size: 'large',
+					title: 'Disabled date input'
+				},
+				{
+					filename: 'ReadOnly',
+					module: ReadOnlyDateInput,
+					sandbox: true,
+					size: 'large',
+					title: 'Read only date input'
 				}
 			]
 		},
