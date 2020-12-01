@@ -9,13 +9,13 @@ export default factory(function Basic() {
 	return (
 		<Example>
 			<div styles={{ maxWidth: '400px', display: 'flex', justifyContent: 'space-around' }}>
-				<Avatar variant="circle">
+				<Avatar type="circle">
 					<Icon type="secureIcon" />
 				</Avatar>
-				<Avatar variant="rounded">
+				<Avatar type="rounded">
 					<Icon type="secureIcon" />
 				</Avatar>
-				<Avatar variant="square">
+				<Avatar type="square">
 					<Icon type="secureIcon" />
 				</Avatar>
 			</div>

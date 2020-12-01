@@ -10,8 +10,8 @@ export default factory(function Basic() {
 		<Example>
 			<div styles={{ maxWidth: '400px', display: 'flex', justifyContent: 'space-around' }}>
 				<Avatar src={avatar} alt="Dojo" />
-				<Avatar variant="rounded" src={avatar} alt="Dojo" />
-				<Avatar variant="square" src={avatar} alt="Dojo" />
+				<Avatar type="rounded" src={avatar} alt="Dojo" />
+				<Avatar type="square" src={avatar} alt="Dojo" />
 			</div>
 		</Example>
 	);

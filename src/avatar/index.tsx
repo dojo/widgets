@@ -3,8 +3,8 @@ import theme from '../middleware/theme';
 import * as css from '../theme/default/avatar.m.css';
 
 export interface AvatarProperties {
-	/* defines the avatar variant, defaults to circle */
-	variant?: 'square' | 'rounded' | 'circle';
+	/* defines the avatar type, defaults to circle */
+	type?: 'square' | 'rounded' | 'circle';
 	/* determines if secondary color scheme should be used */
 	secondary?: boolean;
 	/* Determines if avatar should be rendered as an outline */
@@ -21,7 +21,7 @@ const factory = create({ theme }).properties<AvatarProperties>();
 
 export const Avatar = factory(function Avatar({ middleware: { theme }, properties, children }) {
 	const themeCss = theme.classes(css);
-	const { secondary, outline, src, alt, variant = 'circle', size = 'medium' } = properties();
+	const { secondary, outline, src, alt, type = 'circle', size = 'medium' } = properties();
 	return (
 		<div
 			key="root"
@@ -33,7 +33,7 @@ export const Avatar = factory(function Avatar({ middleware: { theme }, propertie
 				secondary ? themeCss.avatarColorSecondary : themeCss.avatarColor,
 				outline && themeCss.avatarOutline,
 				themeCss[size],
-				themeCss[variant]
+				themeCss[type]
 			]}
 			styles={
 				src

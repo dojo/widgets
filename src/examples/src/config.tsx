@@ -10,6 +10,7 @@ import AvatarIcon from './widgets/avatar/Icon';
 import AvatarSecondary from './widgets/avatar/Secondary';
 import AvatarOutlines from './widgets/avatar/Outline';
 import Exclusive from './widgets/accordion/Exclusive';
+import BasicActionButton from './widgets/action-button/Basic';
 import BasicBreadcrumbGroup from './widgets/breadcrumb-group/Basic';
 import CustomRendererBreadcrumbGroup from './widgets/breadcrumb-group/CustomRenderer';
 import BasicButton from './widgets/button/Basic';
@@ -317,6 +318,15 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicAccordionPane
+				}
+			}
+		},
+		'action-button': {
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicActionButton
 				}
 			}
 		},

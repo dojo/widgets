@@ -8,9 +8,9 @@ export default factory(function Basic() {
 	return (
 		<Example>
 			<div styles={{ maxWidth: '400px', display: 'flex', justifyContent: 'space-around' }}>
-				<Avatar variant="circle">A</Avatar>
-				<Avatar variant="rounded">A</Avatar>
-				<Avatar variant="square">A</Avatar>
+				<Avatar type="circle">A</Avatar>
+				<Avatar type="rounded">A</Avatar>
+				<Avatar type="square">A</Avatar>
 			</div>
 		</Example>
 	);

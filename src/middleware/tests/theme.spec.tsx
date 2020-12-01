@@ -699,4 +699,34 @@ describe('theme middleware', () => {
 			}
 		});
 	});
+
+	it('should not apply variant if set to inherit', () => {
+		properties.theme = {
+			theme: {
+				theme: {
+					'@dojo/widgets/Base': {
+						active: 'base_theme_active'
+					},
+					'@dojo/widgets/Variant': {
+						baseActive: 'variant_theme_active'
+					}
+				},
+				variants: {
+					default: {
+						root: 'default root variant'
+					}
+				}
+			},
+			variant: {
+				name: 'default',
+				value: {
+					root: 'default root variant'
+				}
+			}
+		};
+
+		assert.strictEqual(composesInstance.variant(), 'default root variant');
+		properties.variant = 'inherit';
+		assert.isUndefined(composesInstance.variant());
+	});
 });

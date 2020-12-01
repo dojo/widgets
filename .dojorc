@@ -11,6 +11,7 @@
 		"prefix": "dojo",
 		"widgets": [
 			"src/accordion",
+			"src/action-button",
 			"src/avatar",
 			"src/breadcrumb-group",
 			"src/button",
