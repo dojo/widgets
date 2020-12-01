@@ -5,7 +5,7 @@ import coreTheme, {
 import { ThemeWithVariant, ClassNames, Theme } from '@dojo/framework/core/interfaces';
 import { isThemeInjectorPayloadWithVariant } from '@dojo/framework/core/ThemeInjector';
 
-const factory = create({ coreTheme });
+const factory = create({ coreTheme }).properties<{ variant?: 'default' | 'inherit' }>();
 export const THEME_KEY = ' _key';
 
 function uppercaseFirstChar(value: string) {
@@ -23,6 +23,7 @@ function isThemeWithVariant(theme: any): theme is ThemeWithVariant {
 export interface ThemeProperties extends CoreThemeProperties {}
 
 export const theme = factory(function({ middleware: { coreTheme }, properties }) {
+	const { variant: coreVariant, get, set, classes } = coreTheme;
 	function getTheme() {
 		const { theme } = properties();
 		if (theme) {
@@ -141,7 +142,12 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 				[baseKey]: constructedTheme
 			};
 		},
-		...coreTheme
+		variant: () => {
+			return properties().variant === 'inherit' ? undefined : coreVariant();
+		},
+		get,
+		set,
+		classes
 	};
 });
 
