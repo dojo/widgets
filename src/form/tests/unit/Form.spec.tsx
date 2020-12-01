@@ -237,6 +237,134 @@ describe('Form', () => {
 		h.expect(baseAssertion);
 	});
 
+	it('renders with form api function', () => {
+		const h = harness(() => (
+			<Form
+				initialValue={{
+					firstName: 'Billy'
+				}}
+				value={undefined}
+				onSubmit={onSubmit}
+				onValue={onValue}
+				name="formName"
+			>
+				{(form) => {
+					const { field, value, disabled, reset, valid } = form<Fields>();
+					const firstName = field('firstName', true);
+					const middleName = field('middleName');
+					const lastName = field('lastName', true);
+					const email = field('email');
+
+					return [
+						<TextInput
+							key="firstName"
+							placeholder="Enter first name (must be Billy)"
+							pattern="Billy"
+							required={true}
+							initialValue={firstName.value()}
+							valid={firstName.valid()}
+							onValue={firstName.value}
+							onValidate={firstName.valid}
+							disabled={firstName.disabled()}
+						>
+							{{ label: 'First Name' }}
+						</TextInput>,
+						<TextInput
+							key="middleName"
+							placeholder="Enter a middle name"
+							required={middleName.required()}
+							initialValue={middleName.value()}
+							valid={middleName.valid()}
+							onValue={middleName.value}
+							onValidate={middleName.valid}
+							maxLength={5}
+							disabled={middleName.disabled()}
+						>
+							{{ label: 'Middle Name' }}
+						</TextInput>,
+						<TextInput
+							key="lastName"
+							placeholder="Enter a last name"
+							required={true}
+							initialValue={lastName.value()}
+							valid={lastName.valid()}
+							onValue={lastName.value}
+							onValidate={lastName.valid}
+							minLength={2}
+							disabled={lastName.disabled()}
+						>
+							{{ label: 'Last Name' }}
+						</TextInput>,
+						<TextInput
+							key="email"
+							placeholder="Enter an email address"
+							required={false}
+							initialValue={email.value()}
+							valid={email.valid()}
+							onValue={email.value}
+							onValidate={email.valid}
+							type="email"
+							pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+							disabled={email.disabled()}
+						>
+							{{ label: 'Email' }}
+						</TextInput>,
+						<Button
+							key="fill"
+							type="button"
+							disabled={disabled()}
+							onClick={() => {
+								value({
+									firstName: 'Billy',
+									middleName: '',
+									lastName: 'Bob'
+								});
+							}}
+						>
+							Fill
+						</Button>,
+						<Button
+							key="requireMiddleName"
+							type="button"
+							disabled={disabled()}
+							onClick={() => middleName.required(!middleName.required())}
+						>
+							{`Make middle name ${middleName.required() ? 'optional' : 'required'}`}
+						</Button>,
+						<Button
+							key="reset"
+							type="button"
+							disabled={disabled()}
+							onClick={() => reset()}
+						>
+							Reset
+						</Button>,
+						<Button
+							key="disableForm"
+							type="button"
+							onClick={() => disabled(!disabled())}
+						>
+							{`${disabled() ? 'Enable' : 'Disable'} Form`}
+						</Button>,
+						<Button
+							key="disableEmail"
+							type="button"
+							disabled={disabled()}
+							onClick={() => email.disabled(!email.disabled())}
+						>
+							{`${email.disabled() ? 'Enable' : 'Disable'} Email`}
+						</Button>,
+						<Button key="submit" type="submit" disabled={!valid() || disabled()}>
+							Submit
+						</Button>
+					];
+				}}
+			</Form>
+		));
+
+		h.expect(baseAssertion);
+	});
+
 	it('properly handles onValue and onValidate', () => {
 		const h = harness(form);
 
