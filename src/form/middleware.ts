@@ -8,7 +8,7 @@ interface Callbacks<S> {
 	onValue?: (values: Partial<S>) => void;
 }
 
-export interface FormMiddleware<S> {
+export interface FormMiddlewareApi<S> {
 	value: {
 		(): Partial<S>;
 		(values: S): S;
@@ -23,6 +23,10 @@ export interface FormMiddleware<S> {
 	valid(): boolean;
 	reset(): void;
 	field<K extends keyof S>(name: K, required?: boolean): Field<S, K>;
+}
+
+export interface FormMiddleware<S> extends FormMiddlewareApi<S> {
+	<S>(): FormMiddlewareApi<S>;
 }
 
 export interface Field<S, K extends keyof S> {
@@ -63,7 +67,7 @@ export const createFormMiddleware = <S extends FormValue = any>() => {
 	const factory = create({ icache });
 
 	const formMiddleware = factory(function Form({ middleware: { icache } }): FormMiddleware<S> {
-		return {
+		const api = {
 			value(values?: any): any {
 				const currentValues = icache.getOrSet('values', {});
 				if (values !== undefined) {
@@ -196,6 +200,18 @@ export const createFormMiddleware = <S extends FormValue = any>() => {
 				};
 			}
 		};
+		const apiFactory: any = () => {
+			return api;
+		};
+
+		apiFactory.value = api.value;
+		apiFactory.submit = api.submit;
+		apiFactory.onValue = api.onValue;
+		apiFactory.disabled = api.disabled;
+		apiFactory.valid = api.valid;
+		apiFactory.reset = api.reset;
+		apiFactory.field = api.field;
+		return apiFactory;
 	});
 	return formMiddleware;
 };
