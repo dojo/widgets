@@ -1,10 +1,10 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { create, renderer, tsx } from '@dojo/framework/core/vdom';
-import global from '@dojo/framework/shim/global';
+import { create, tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../common/util';
 import theme from '../middleware/theme';
+import offscreen from '../middleware/offscreen';
 import * as listItemCss from '../theme/default/list-item.m.css';
 import * as menuItemCss from '../theme/default/menu-item.m.css';
 import * as css from '../theme/default/list.m.css';
@@ -251,21 +251,11 @@ interface ListICache {
 	requestedInputText: string;
 }
 
-const offscreenHeight = (dnode: RenderResult) => {
-	const r = renderer(() => dnode);
-	const div = global.document.createElement('div');
-	div.style.position = 'absolute';
-	global.document.body.appendChild(div);
-	r.mount({ domNode: div, sync: true });
-	const dimensions = div.getBoundingClientRect();
-	global.document.body.removeChild(div);
-	return dimensions.height;
-};
-
 const factory = create({
 	icache: createICacheMiddleware<ListICache>(),
 	focus,
 	theme,
+	offscreen,
 	resource: createResourceMiddleware<ListOption>()
 })
 	.properties<ListProperties>()
@@ -275,7 +265,7 @@ export const List = factory(function List({
 	children,
 	properties,
 	id,
-	middleware: { icache, focus, theme, resource }
+	middleware: { icache, focus, theme, resource, offscreen }
 }) {
 	const { getOrRead, createOptions, find, meta, isLoading } = resource;
 	const {
@@ -636,7 +626,10 @@ export const List = factory(function List({
 			<ListItem {...offscreenItemProps}>offscreen</ListItem>
 		);
 
-		const itemHeight = icache.getOrSet('itemHeight', offscreenHeight(offscreenMenuItem));
+		const itemHeight = icache.getOrSet(
+			'itemHeight',
+			offscreen(() => offscreenMenuItem, (node) => node.getBoundingClientRect().height)
+		);
 
 		itemHeight && icache.set('menuHeight', itemsInView * itemHeight);
 	}
