@@ -1,10 +1,10 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { create, renderer, tsx, getRegistry } from '@dojo/framework/core/vdom';
-import global from '@dojo/framework/shim/global';
+import { create, tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../common/util';
 import theme from '../middleware/theme';
+import offscreen from '../middleware/offscreen';
 import * as listItemCss from '../theme/default/list-item.m.css';
 import * as menuItemCss from '../theme/default/menu-item.m.css';
 import * as css from '../theme/default/list.m.css';
@@ -13,7 +13,6 @@ import { createResourceMiddleware } from '@dojo/framework/core/middleware/resour
 import LoadingIndicator from '../loading-indicator';
 import { throttle } from '@dojo/framework/core/util';
 import Icon from '../icon';
-import Registry from '@dojo/framework/core/Registry';
 
 export interface MenuItemProperties {
 	/** Callback used when the item is clicked */
@@ -252,22 +251,11 @@ interface ListICache {
 	requestedInputText: string;
 }
 
-const offscreenHeight = (dnode: RenderResult, registry?: Registry) => {
-	const r = renderer(() => dnode);
-	const div = global.document.createElement('div');
-	div.style.position = 'absolute';
-	global.document.body.appendChild(div);
-	r.mount({ domNode: div, sync: true, registry });
-	const dimensions = div.getBoundingClientRect();
-	global.document.body.removeChild(div);
-	return dimensions.height;
-};
-
 const factory = create({
 	icache: createICacheMiddleware<ListICache>(),
 	focus,
 	theme,
-	getRegistry,
+	offscreen,
 	resource: createResourceMiddleware<ListOption>()
 })
 	.properties<ListProperties>()
@@ -277,7 +265,7 @@ export const List = factory(function List({
 	children,
 	properties,
 	id,
-	middleware: { icache, focus, theme, resource, getRegistry }
+	middleware: { icache, focus, theme, resource, offscreen }
 }) {
 	const { getOrRead, createOptions, find, meta, isLoading } = resource;
 	const {
@@ -638,14 +626,9 @@ export const List = factory(function List({
 			<ListItem {...offscreenItemProps}>offscreen</ListItem>
 		);
 
-		const handler = getRegistry();
-		let registry: Registry | undefined;
-		if (handler) {
-			registry = handler.base;
-		}
 		const itemHeight = icache.getOrSet(
 			'itemHeight',
-			offscreenHeight(offscreenMenuItem, registry)
+			offscreen(() => offscreenMenuItem, (node) => node.getBoundingClientRect().height)
 		);
 
 		itemHeight && icache.set('menuHeight', itemsInView * itemHeight);
