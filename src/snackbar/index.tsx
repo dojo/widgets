@@ -1,5 +1,5 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/snackbar.m.css';
 import * as fixedCss from './styles/snackbar.m.css';

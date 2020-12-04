@@ -1,7 +1,7 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import validity from '@dojo/framework/core/middleware/validity';
 import { create, diffProperty, invalidator, tsx } from '@dojo/framework/core/vdom';
 import { formatAriaProperties } from '../common/util';
@@ -166,7 +166,8 @@ export const TextInput = factory(function TextInput({
 		type = 'text',
 		initialValue,
 		valid: validValue = { valid: undefined, message: '' },
-		widgetId = `text-input-${id}`
+		widgetId = `text-input-${id}`,
+		variant
 	} = properties();
 
 	let { value } = properties();
@@ -244,6 +245,8 @@ export const TextInput = factory(function TextInput({
 				{label && (
 					<Label
 						theme={themeProp}
+						classes={classes}
+						variant={variant}
 						disabled={disabled}
 						valid={valid}
 						focused={inputFocused}
@@ -325,6 +328,7 @@ export const TextInput = factory(function TextInput({
 				valid={valid}
 				classes={classes}
 				theme={themeProp}
+				variant={variant}
 			/>
 		</div>
 	);

@@ -22,13 +22,37 @@ describe('RadioGroup', () => {
 			/>
 		));
 		const optionTemplate = template.setChildren('@root', () => [
-			<Radio name="test" value="cat" checked={false} onValue={noop}>
+			<Radio
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				cat
 			</Radio>,
-			<Radio name="test" value="fish" checked={false} onValue={noop}>
+			<Radio
+				name="test"
+				value="fish"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				fish
 			</Radio>,
-			<Radio name="test" value="dog" checked={false} onValue={noop}>
+			<Radio
+				name="test"
+				value="dog"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				dog
 			</Radio>
 		]);
@@ -45,7 +69,15 @@ describe('RadioGroup', () => {
 		));
 		const labelTemplate = template.setChildren('@root', () => [
 			<legend classes={css.legend}>test label</legend>,
-			<Radio name="test" value="cat" checked={false} onValue={noop}>
+			<Radio
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				cat
 			</Radio>
 		]);
@@ -62,13 +94,37 @@ describe('RadioGroup', () => {
 			/>
 		));
 		const optionTemplate = template.setChildren('@root', () => [
-			<Radio name="test" value="cat" checked={false} onValue={noop}>
+			<Radio
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				cat
 			</Radio>,
-			<Radio name="test" value="fish" checked={true} onValue={noop}>
+			<Radio
+				name="test"
+				value="fish"
+				checked={true}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				fish
 			</Radio>,
-			<Radio name="test" value="dog" checked={false} onValue={noop}>
+			<Radio
+				name="test"
+				value="dog"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				dog
 			</Radio>
 		]);
@@ -86,13 +142,37 @@ describe('RadioGroup', () => {
 			/>
 		));
 		const optionTemplate = template.setChildren('@root', () => [
-			<Radio name="test" value="cat" checked={false} onValue={noop}>
+			<Radio
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				cat
 			</Radio>,
-			<Radio name="test" value="fish" checked={true} onValue={noop}>
+			<Radio
+				name="test"
+				value="fish"
+				checked={true}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				fish
 			</Radio>,
-			<Radio name="test" value="dog" checked={false} onValue={noop}>
+			<Radio
+				name="test"
+				value="dog"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				dog
 			</Radio>
 		]);
@@ -109,7 +189,15 @@ describe('RadioGroup', () => {
 					radios: () => {
 						return [
 							<span>custom label</span>,
-							<Radio name="test" value="cat" checked={false} onValue={noop}>
+							<Radio
+								name="test"
+								value="cat"
+								checked={false}
+								onValue={noop}
+								theme={undefined}
+								variant={undefined}
+								classes={undefined}
+							>
 								cat
 							</Radio>,
 							<hr />
@@ -121,7 +209,15 @@ describe('RadioGroup', () => {
 		const customTemplate = template.setChildren('@root', () => [
 			<legend classes={css.legend}>custom render label</legend>,
 			<span>custom label</span>,
-			<Radio name="test" value="cat" checked={false} onValue={noop}>
+			<Radio
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				cat
 			</Radio>,
 			<hr />

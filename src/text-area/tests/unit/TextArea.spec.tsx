@@ -68,6 +68,7 @@ const expected = function(
 					<Label
 						theme={{}}
 						classes={undefined}
+						variant={undefined}
 						disabled={disabled}
 						hidden={undefined}
 						valid={valid}
@@ -112,10 +113,11 @@ const expected = function(
 				</div>
 			</div>
 			<HelperText
-				text={helperTextValue}
-				valid={valid}
+				variant={undefined}
 				classes={undefined}
 				theme={undefined}
+				text={helperTextValue}
+				valid={valid}
 			/>
 		</div>
 	);
@@ -127,11 +129,12 @@ const baseAssertion = assertionTemplate(() => (
 			{textarea()}
 		</div>
 		<HelperText
+			variant={undefined}
+			classes={undefined}
+			theme={undefined}
 			assertion-key="helperText"
 			text={undefined}
 			valid={true}
-			classes={undefined}
-			theme={undefined}
 		/>
 	</div>
 ));

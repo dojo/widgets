@@ -1,6 +1,6 @@
 import { dimensions } from '@dojo/framework/core/middleware/dimensions';
 import { resize } from '@dojo/framework/core/middleware/resize';
-import { theme } from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import { bodyScroll } from '../middleware/bodyScroll';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/popup.m.css';
@@ -39,7 +39,7 @@ const factory = create({ dimensions, theme, bodyScroll, resize })
 	.properties<PopupProperties>()
 	.children<PopupChildren | RenderResult>();
 
-export const Popup = factory(function({
+export const Popup = factory(function Popup({
 	properties,
 	children,
 	middleware: { dimensions, theme, bodyScroll, resize }

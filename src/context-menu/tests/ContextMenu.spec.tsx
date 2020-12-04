@@ -85,6 +85,8 @@ describe('ContextMenu', () => {
 					onBlur={() => {}}
 					onRequestClose={() => {}}
 					onValue={() => {}}
+					variant={undefined}
+					classes={undefined}
 				/>
 			),
 			() =>

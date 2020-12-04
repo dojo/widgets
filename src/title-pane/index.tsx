@@ -51,7 +51,9 @@ export const TitlePane = factory(function TitlePane({
 		onClose,
 		onOpen,
 		name,
-		theme: themeProp
+		theme: themeProp,
+		classes,
+		variant
 	} = properties();
 	let { open } = properties();
 
@@ -105,7 +107,12 @@ export const TitlePane = factory(function TitlePane({
 					type="button"
 				>
 					<span classes={themeCss.arrow}>
-						<Icon type={open ? 'downIcon' : 'rightIcon'} theme={themeProp} />
+						<Icon
+							type={open ? 'downIcon' : 'rightIcon'}
+							theme={themeProp}
+							classes={classes}
+							variant={variant}
+						/>
 					</span>
 					{name}
 				</button>

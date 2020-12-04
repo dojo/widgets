@@ -78,7 +78,12 @@ describe('Chip', () => {
 					onclick={noop}
 					onkeydown={noop}
 				>
-					<Icon type="closeIcon" classes={iconClasses} />
+					<Icon
+						type="closeIcon"
+						classes={iconClasses}
+						variant={undefined}
+						theme={undefined}
+					/>
 				</span>
 			])
 		);
@@ -126,7 +131,12 @@ describe('Chip', () => {
 						onclick={noop}
 						onkeydown={noop}
 					>
-						<Icon type="closeIcon" classes={iconClasses} />
+						<Icon
+							type="closeIcon"
+							classes={iconClasses}
+							variant={undefined}
+							theme={undefined}
+						/>
 					</span>
 				])
 				.prepend(':root', () => [
@@ -186,7 +196,12 @@ describe('Chip', () => {
 						onclick={noop}
 						onkeydown={noop}
 					>
-						<Icon type="closeIcon" classes={iconClasses} />
+						<Icon
+							type="closeIcon"
+							classes={iconClasses}
+							variant={undefined}
+							theme={undefined}
+						/>
 					</span>
 				])
 				.prepend(':root', () => [
@@ -254,7 +269,12 @@ describe('Chip', () => {
 						onclick={noop}
 						onkeydown={noop}
 					>
-						<Icon type="closeIcon" classes={iconClasses} />
+						<Icon
+							type="closeIcon"
+							classes={iconClasses}
+							variant={undefined}
+							theme={undefined}
+						/>
 					</span>
 				])
 				.prepend(':root', () => [

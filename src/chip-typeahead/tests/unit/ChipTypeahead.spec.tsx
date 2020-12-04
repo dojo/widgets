@@ -49,6 +49,7 @@ const baseAssertion = assertionTemplate(() => (
 			value=""
 			onFocus={stub}
 			onBlur={stub}
+			variant={undefined}
 			classes={{
 				'@dojo/widgets/text-input': {
 					inputWrapper: [themeCss.inputWrapper],
@@ -90,6 +91,7 @@ const bottomAssertion = hasValueAssertion.insertAfter('@typeahead', () => [
 			key="value-2"
 			classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 			onClose={stub}
+			variant={undefined}
 		>
 			{{ label: 'Cat' }}
 		</Chip>
@@ -108,6 +110,7 @@ const labeledAssertion = baseAssertion
 					root: [themeCss.label]
 				}
 			}}
+			variant={undefined}
 		>
 			Label
 		</Label>
@@ -146,6 +149,7 @@ registerSuite('ChipTypeahead', {
 						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
+						variant={undefined}
 					>
 						{{ label: 'Cat' }}
 					</Chip>
@@ -181,6 +185,7 @@ registerSuite('ChipTypeahead', {
 						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
+						variant={undefined}
 					>
 						{{ label: 'Cat' }}
 					</Chip>
@@ -202,6 +207,7 @@ registerSuite('ChipTypeahead', {
 						key="value-1"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
+						variant={undefined}
 					>
 						{{ label: 'Dog' }}
 					</Chip>
@@ -233,6 +239,7 @@ registerSuite('ChipTypeahead', {
 						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
+						variant={undefined}
 					>
 						{{ label: 'Cat' }}
 					</Chip>
@@ -295,6 +302,7 @@ registerSuite('ChipTypeahead', {
 						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
+						variant={undefined}
 					>
 						{{ label: 'Cat' }}
 					</Chip>
@@ -421,6 +429,7 @@ registerSuite('ChipTypeahead', {
 						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={undefined}
+						variant={undefined}
 					>
 						{{ label: 'Cat' }}
 					</Chip>

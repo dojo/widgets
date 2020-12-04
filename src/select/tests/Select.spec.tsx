@@ -31,10 +31,25 @@ const harness = createHarness([compareTheme, compareResource]);
 
 const baseTemplate = assertionTemplate(() => (
 	<div classes={[undefined, css.root, undefined, false, false, false, undefined]} key="root">
-		<TriggerPopup key="popup" onClose={() => {}} onOpen={() => {}} position={undefined}>
+		<TriggerPopup
+			variant={undefined}
+			classes={undefined}
+			theme={undefined}
+			key="popup"
+			onClose={() => {}}
+			onOpen={() => {}}
+			position={undefined}
+		>
 			{{ trigger: () => <button />, content: () => <div /> }}
 		</TriggerPopup>
-		<HelperText key="helperText" text={undefined} valid={undefined} />
+		<HelperText
+			variant={undefined}
+			classes={undefined}
+			theme={undefined}
+			key="helperText"
+			text={undefined}
+			valid={undefined}
+		/>
 	</div>
 ));
 
@@ -58,7 +73,7 @@ const buttonTemplate = assertionTemplate(() => (
 			<span classes={css.placeholder} />
 		</span>
 		<span classes={css.arrow}>
-			<Icon type="downIcon" theme={{}} classes={undefined} />
+			<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
 		</span>
 	</button>
 ));
@@ -82,6 +97,7 @@ const menuTemplate = assertionTemplate(() => (
 			itemsInView={6}
 			theme={{}}
 			classes={undefined}
+			variant={undefined}
 			widgetId={'test'}
 		/>
 	</div>
@@ -118,6 +134,7 @@ describe('Select', () => {
 				<Label
 					theme={{}}
 					classes={undefined}
+					variant={undefined}
 					disabled={undefined}
 					forId={'id'}
 					valid={undefined}
@@ -277,7 +294,7 @@ describe('Select', () => {
 			buttonTemplate.setProperty('@trigger', 'value', 'dog').setChildren('@trigger', () => [
 				<span classes={[css.value, undefined]}>Dog</span>,
 				<span classes={css.arrow}>
-					<Icon type="downIcon" theme={{}} classes={undefined} />
+					<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
 				</span>
 			]),
 			() => triggerRenderResult
@@ -307,7 +324,7 @@ describe('Select', () => {
 			buttonTemplate.setProperty('@trigger', 'value', 'dog').setChildren('@trigger', () => [
 				<span classes={[css.value, undefined]}>Dog</span>,
 				<span classes={css.arrow}>
-					<Icon type="downIcon" theme={{}} classes={undefined} />
+					<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
 				</span>
 			]),
 			() => triggerRenderResult

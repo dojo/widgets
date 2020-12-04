@@ -78,6 +78,7 @@ const triggerAssertion = assertion(() => (
 				root: [css.trigger]
 			}
 		}}
+		variant={undefined}
 	>
 		{{ label: undefined, leading: undefined }}
 	</WrappedTrigger>
@@ -93,6 +94,7 @@ const contentAssertion = assertion(() => (
 	<div key="menu-wrapper" classes={css.menuWrapper}>
 		<WrappedList
 			classes={undefined}
+			variant={undefined}
 			activeIndex={0}
 			disabled={undefined}
 			focusable={false}
@@ -126,13 +128,28 @@ const contentAssertion = assertion(() => (
 
 const baseAssertion = assertion(() => (
 	<WrappedRoot classes={[null, css.root, null, false, false]} key="root">
-		<WrappedPopup key="popup" onClose={noop} onOpen={noop} position={undefined}>
+		<WrappedPopup
+			variant={undefined}
+			classes={undefined}
+			theme={undefined}
+			key="popup"
+			onClose={noop}
+			onOpen={noop}
+			position={undefined}
+		>
 			{{
 				trigger: triggerAssertion,
 				content: contentAssertion
 			}}
 		</WrappedPopup>
-		<WrappedHelperText key="helperText" text={undefined} valid={undefined} />
+		<WrappedHelperText
+			variant={undefined}
+			classes={undefined}
+			theme={undefined}
+			key="helperText"
+			text={undefined}
+			valid={undefined}
+		/>
 	</WrappedRoot>
 ));
 

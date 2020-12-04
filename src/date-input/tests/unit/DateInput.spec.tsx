@@ -54,7 +54,7 @@ const baseTemplate = (date?: Date) =>
 					value={formatDateISO(date || today)}
 					aria-hidden="true"
 				/>
-				<TriggerPopup key="popup">
+				<TriggerPopup variant={undefined} classes={undefined} theme={undefined} key="popup">
 					{{
 						trigger: () => <button />,
 						content: () => <div />
@@ -77,6 +77,8 @@ const buttonTemplate = assertionTemplate(() => {
 				initialValue={formatDate(today)}
 				helperText=""
 				onKeyDown={noop}
+				variant={undefined}
+				classes={undefined}
 			>
 				{{ trailing: undefined }}
 			</TextInput>
@@ -94,6 +96,9 @@ const calendarTemplate = assertionTemplate(() => {
 				minDate={undefined}
 				onValue={noop}
 				initialValue={today}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
 			/>
 		</div>
 	);

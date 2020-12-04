@@ -3,7 +3,7 @@ import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../common/util';
-import theme from '../middleware/theme';
+import theme, { ThemeProperties } from '../middleware/theme';
 import offscreen from '../middleware/offscreen';
 import * as listItemCss from '../theme/default/list-item.m.css';
 import * as menuItemCss from '../theme/default/menu-item.m.css';
@@ -126,10 +126,12 @@ export const ListItem = listItemFactory(function ListItem({
 		onDrop,
 		movedUp,
 		movedDown,
-		collapsed
+		collapsed,
+		theme: themeProp,
+		variant
 	} = properties();
 
-	const classes = theme.classes(listItemCss);
+	const themedCss = theme.classes(listItemCss);
 
 	function select() {
 		!disabled && onSelect();
@@ -148,15 +150,15 @@ export const ListItem = listItemFactory(function ListItem({
 			}, 500)}
 			classes={[
 				theme.variant(),
-				classes.root,
-				selected && classes.selected,
-				active && classes.active,
-				disabled && classes.disabled,
-				movedUp && classes.movedUp,
-				movedDown && classes.movedDown,
-				collapsed && classes.collapsed,
-				dragged && classes.dragged,
-				draggable && classes.draggable
+				themedCss.root,
+				selected && themedCss.selected,
+				active && themedCss.active,
+				disabled && themedCss.disabled,
+				movedUp && themedCss.movedUp,
+				movedDown && themedCss.movedDown,
+				collapsed && themedCss.collapsed,
+				dragged && themedCss.dragged,
+				draggable && themedCss.draggable
 			]}
 			onclick={() => {
 				requestActive();
@@ -177,7 +179,9 @@ export const ListItem = listItemFactory(function ListItem({
 			{draggable && (
 				<Icon
 					type="barsIcon"
-					classes={{ '@dojo/widgets/icon': { icon: [classes.dragIcon] } }}
+					classes={{ '@dojo/widgets/icon': { icon: [themedCss.dragIcon] } }}
+					theme={themeProp}
+					variant={variant}
 				/>
 			)}
 		</div>
@@ -223,7 +227,7 @@ export interface ListChildren {
 	/** Custom renderer for item contents */
 	(
 		item: ItemRendererProperties,
-		properties: ListItemProperties & MenuItemProperties
+		properties: ListItemProperties & MenuItemProperties & ThemeProperties
 	): RenderResult;
 }
 
@@ -281,6 +285,7 @@ export const List = factory(function List({
 		onValue,
 		widgetId,
 		theme: themeProp,
+		variant,
 		resource: { template, options = createOptions(id) },
 		classes
 	} = properties();
@@ -407,7 +412,8 @@ export const List = factory(function List({
 				setActiveIndex(index);
 			},
 			disabled: true,
-			classes
+			classes,
+			variant
 		};
 		return menu ? (
 			<MenuItem
@@ -520,7 +526,8 @@ export const List = factory(function List({
 				setActiveIndex(index);
 			},
 			disabled: itemDisabled,
-			classes
+			classes,
+			variant
 		};
 		let item: RenderResult;
 
@@ -533,7 +540,7 @@ export const List = factory(function List({
 					active,
 					selected
 				},
-				itemProps
+				{ ...itemProps, theme: themeProp }
 			);
 		} else {
 			const children = label || value;

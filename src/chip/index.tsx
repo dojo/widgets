@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import * as css from '../theme/default/chip.m.css';
 import Icon from '../icon/index';
 import { Keys } from '../common/util';
@@ -30,7 +30,15 @@ const factory = create({ theme })
 	.children<ChipChildren>();
 
 export default factory(function Chip({ properties, children, middleware: { theme } }) {
-	const { onClose, onClick, disabled, checked } = properties();
+	const {
+		onClose,
+		onClick,
+		disabled,
+		checked,
+		theme: themeProp,
+		variant,
+		classes = {}
+	} = properties();
 	const themedCss = theme.classes(css);
 	const [{ icon, label, closeIcon }] = children();
 	const clickable = !disabled && onClick;
@@ -84,7 +92,15 @@ export default factory(function Chip({ properties, children, middleware: { theme
 					{closeIcon || (
 						<Icon
 							type="closeIcon"
-							classes={{ '@dojo/widgets/icon': { icon: [themedCss.icon] } }}
+							classes={{
+								...classes,
+								'@dojo/widgets/icon': {
+									...classes['@dojo/widgets/icon'],
+									icon: [themedCss.icon]
+								}
+							}}
+							theme={themeProp}
+							variant={variant}
 						/>
 					)}
 				</span>

@@ -115,6 +115,7 @@ const listWithListItemsAssertion = baseAssertion
 	.replaceChildren(WrappedItemContainer, () => [
 		<ListItem
 			classes={undefined}
+			variant={undefined}
 			active={true}
 			disabled={false}
 			key={'item-0'}
@@ -151,6 +152,7 @@ const listWithListItemsAssertion = baseAssertion
 		</ListItem>,
 		<ListItem
 			classes={undefined}
+			variant={undefined}
 			active={false}
 			disabled={false}
 			key={'item-1'}
@@ -187,6 +189,7 @@ const listWithListItemsAssertion = baseAssertion
 		</ListItem>,
 		<ListItem
 			classes={undefined}
+			variant={undefined}
 			active={false}
 			disabled={true}
 			key={'item-2'}
@@ -231,6 +234,7 @@ const listWithMenuItemsAssertion = baseAssertion
 	.replaceChildren(WrappedItemContainer, () => [
 		<MenuItem
 			classes={undefined}
+			variant={undefined}
 			active={true}
 			disabled={false}
 			key={'item-0'}
@@ -250,6 +254,7 @@ const listWithMenuItemsAssertion = baseAssertion
 		</MenuItem>,
 		<MenuItem
 			classes={undefined}
+			variant={undefined}
 			active={false}
 			disabled={false}
 			key={'item-1'}
@@ -269,6 +274,7 @@ const listWithMenuItemsAssertion = baseAssertion
 		</MenuItem>,
 		<MenuItem
 			classes={undefined}
+			variant={undefined}
 			active={false}
 			disabled={true}
 			key={'item-2'}
@@ -345,6 +351,7 @@ describe('List', () => {
 					children.push(
 						<ListItem
 							classes={undefined}
+							variant={undefined}
 							active={i === 0}
 							disabled={false}
 							key={`item-${i}`}
@@ -420,6 +427,7 @@ describe('List', () => {
 				children.push(
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={true}
 						key={`item-${i}`}
@@ -467,6 +475,7 @@ describe('List', () => {
 				children.push(
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={i === 59}
 						disabled={false}
 						key={`item-${i}`}
@@ -565,6 +574,7 @@ describe('List', () => {
 					children.push(
 						<MenuItem
 							classes={undefined}
+							variant={undefined}
 							active={i === 0}
 							disabled={false}
 							key={`item-${i}`}
@@ -629,6 +639,7 @@ describe('List', () => {
 				children.push(
 					<MenuItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={true}
 						key={`item-${i}`}
@@ -659,6 +670,7 @@ describe('List', () => {
 				children.push(
 					<MenuItem
 						classes={undefined}
+						variant={undefined}
 						active={59 === i}
 						disabled={false}
 						key={`item-${i}`}
@@ -688,6 +700,7 @@ describe('List', () => {
 			return new Array(6).fill(undefined).map((_, index) => (
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={index === activeIndex}
 					disabled={testData[index].value === '3'}
 					key={`item-${index}`}
@@ -1043,6 +1056,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -1079,6 +1093,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -1115,6 +1130,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-2'}
@@ -1151,6 +1167,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-3'}
@@ -1187,6 +1204,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-4'}
@@ -1244,6 +1262,7 @@ describe('List', () => {
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1280,6 +1299,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={true}
 						disabled={false}
 						key={'item-1'}
@@ -1316,6 +1336,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1352,6 +1373,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-3'}
@@ -1388,6 +1410,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-4'}
@@ -1435,6 +1458,7 @@ describe('List', () => {
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1471,6 +1495,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-1'}
@@ -1507,6 +1532,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1543,6 +1569,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={true}
 						disabled={false}
 						key={'item-3'}
@@ -1579,6 +1606,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-4'}
@@ -1623,6 +1651,7 @@ describe('List', () => {
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1659,6 +1688,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-1'}
@@ -1695,6 +1725,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1731,6 +1762,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-3'}
@@ -1767,6 +1799,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={true}
 						disabled={false}
 						key={'item-4'}
@@ -1811,6 +1844,7 @@ describe('List', () => {
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1847,6 +1881,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={true}
 						disabled={false}
 						key={'item-1'}
@@ -1883,6 +1918,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1919,6 +1955,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-3'}
@@ -1955,6 +1992,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-4'}
@@ -2033,6 +2071,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2069,6 +2108,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2105,6 +2145,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-2'}
@@ -2141,6 +2182,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-3'}
@@ -2177,6 +2219,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-4'}
@@ -2229,6 +2272,8 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
+					theme={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2240,6 +2285,8 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
+					theme={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2251,6 +2298,8 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
+					theme={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -2271,7 +2320,7 @@ describe('List', () => {
 				>
 					{(item, itemProps) => {
 						return (
-							<ListItem classes={undefined} {...itemProps}>
+							<ListItem classes={undefined} variant={undefined} {...itemProps}>
 								{item.label || item.value}
 							</ListItem>
 						);
@@ -2303,6 +2352,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2339,6 +2389,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2375,6 +2426,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -2436,6 +2488,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2472,6 +2525,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2508,6 +2562,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -2552,6 +2607,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2588,6 +2644,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2624,6 +2681,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -2702,6 +2760,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2739,6 +2798,7 @@ describe('List', () => {
 				<hr classes={css.divider} />,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2776,6 +2836,7 @@ describe('List', () => {
 				<hr classes={css.divider} />,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}

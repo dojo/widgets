@@ -64,6 +64,7 @@ export const NativeSelect = factory(function NativeSelect({
 }) {
 	const {
 		classes,
+		variant,
 		disabled,
 		helperText,
 		initialValue,
@@ -73,7 +74,8 @@ export const NativeSelect = factory(function NativeSelect({
 		name,
 		size,
 		onFocus,
-		onBlur
+		onBlur,
+		theme: themeProp
 	} = properties();
 
 	const [labelChild] = children();
@@ -117,6 +119,7 @@ export const NativeSelect = factory(function NativeSelect({
 						css,
 						'label'
 					)}
+					variant={variant}
 					focused={inputFocused}
 					classes={classes}
 					disabled={disabled}
@@ -172,11 +175,18 @@ export const NativeSelect = factory(function NativeSelect({
 							css,
 							'icon'
 						)}
+						variant={variant}
 						classes={classes}
 					/>
 				</span>
 			</div>
-			<HelperText key="helperText" text={helperText} />
+			<HelperText
+				key="helperText"
+				text={helperText}
+				variant={variant}
+				classes={classes}
+				theme={themeProp}
+			/>
 		</div>
 	);
 });

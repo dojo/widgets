@@ -1,5 +1,5 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import * as css from '../theme/default/breadcrumb-group.m.css';
@@ -84,7 +84,7 @@ export const BreadcrumbGroup = factory(function BreadcrumbGroup({
 	properties,
 	middleware: { theme }
 }) {
-	const { items, label } = properties();
+	const { items, label, classes, theme: themeProp, variant } = properties();
 	const themeCss = theme.classes(css);
 
 	const defaultRenderer: BreadcrumbGroupChildren = (items: BreadcrumbItem[]) => {
@@ -98,6 +98,9 @@ export const BreadcrumbGroup = factory(function BreadcrumbGroup({
 					current={index === lastIndex ? 'page' : undefined}
 					href={item.href}
 					title={item.title}
+					classes={classes}
+					theme={themeProp}
+					variant={variant}
 				>
 					{item.label}
 				</Breadcrumb>

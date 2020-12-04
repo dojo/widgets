@@ -97,6 +97,7 @@ const expected = ({
 					key="label"
 					theme={undefined}
 					classes={undefined}
+					variant={undefined}
 					disabled={disabled}
 					focused={false}
 					hidden={undefined}

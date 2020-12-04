@@ -2,6 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import focus from '@dojo/framework/core/middleware/focus';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import Popup from '../popup';
+import theme from '../middleware/theme';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
 import * as css from '../theme/default/context-popup.m.css';
@@ -26,18 +27,19 @@ interface ContextIcache {
 
 const icache = createICacheMiddleware<ContextIcache>();
 
-const factory = create({ icache, focus })
+const factory = create({ icache, focus, theme })
 	.properties<ContextPopupProperties>()
 	.children<ContextPopupChildren>();
 
 const CursorWidth = 2;
 const CursorHeight = 4;
 
-export const ContextPopup = factory(function({
+export const ContextPopup = factory(function ContextPopup({
 	properties,
 	children,
 	middleware: { icache, focus }
 }) {
+	const { variant, theme, classes } = properties();
 	const x = icache.getOrSet('x', 0);
 	const y = icache.getOrSet('y', 0);
 
@@ -67,6 +69,9 @@ export const ContextPopup = factory(function({
 			</div>
 			<Popup
 				key="popup"
+				theme={theme}
+				variant={variant}
+				classes={classes}
 				yTop={y}
 				yBottom={document.documentElement.scrollTop + document.documentElement.clientHeight}
 				xLeft={x}

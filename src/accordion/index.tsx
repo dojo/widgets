@@ -30,8 +30,8 @@ export const Accordion = factory(function Accordion({
 	properties,
 	children
 }) {
-	const classes = theme.classes(css);
-	const { exclusive, panes } = properties();
+	const themedCss = theme.classes(css);
+	const { exclusive, panes, variant, classes } = properties();
 
 	const openIndexes = icache.getOrSet('openIndexes', new Set());
 
@@ -52,7 +52,7 @@ export const Accordion = factory(function Accordion({
 	};
 
 	return (
-		<div classes={[theme.variant(), classes.root]}>
+		<div classes={[theme.variant(), themedCss.root]}>
 			{panes.map((paneName, index) => {
 				return (
 					<TitlePane
@@ -69,6 +69,8 @@ export const Accordion = factory(function Accordion({
 							css,
 							'pane'
 						)}
+						classes={classes}
+						variant={variant}
 						name={paneName}
 					>
 						{children()[index]}
