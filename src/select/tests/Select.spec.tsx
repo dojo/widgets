@@ -23,6 +23,7 @@ import TriggerPopup from '../../trigger-popup';
 import * as css from '../../theme/default/select.m.css';
 import Select from '../index';
 import bundle from '../nls/Select';
+import { createResourceTemplate, defaultFind } from '@dojo/framework/core/middleware/resources';
 
 const options = [{ value: 'dog' }, { value: 'cat' }, { value: 'fish' }];
 const { messages } = bundle;
@@ -267,32 +268,43 @@ describe('Select', () => {
 		assert.isTrue(onValueStub.calledOnceWith('cat'));
 	});
 
-	it('displays an optional label when available', () => {
+	it('displays an optional label when available', async () => {
 		const onValueStub = stub();
 		const toggleOpenStub = stub();
 
-		const options = [{ value: 'dog', label: 'Dog' }, { value: 'cat' }, { value: 'fish' }];
+		const data = [{ value: 'dog', label: 'Dog' }, { value: 'cat' }, { value: 'fish' }];
+
+		let res: any;
+		const testResource = {
+			template: {
+				id: 'test',
+				template: createResourceTemplate<any>({
+					find: defaultFind,
+					read: (req, { put }) => {
+						new Promise((r) => {
+							res = r;
+						}).then(() => {
+							put({ data, total: data.length }, req);
+						});
+					}
+				})
+			}
+		};
 
 		const h = harness(
-			() => (
-				<Select
-					onValue={onValueStub}
-					resource={createTestResource(options)}
-					initialValue="dog"
-				/>
-			),
+			() => <Select onValue={onValueStub} resource={testResource} initialValue="dog" />,
 			[compareAriaControls, compareId]
 		);
-
+		h.trigger('@popup', (node) => (node.children as any)[0].trigger, toggleOpenStub);
+		await res();
 		const triggerRenderResult = h.trigger(
 			'@popup',
 			(node) => (node.children as any)[0].trigger,
 			toggleOpenStub
 		);
-
 		h.expect(
 			buttonTemplate.setProperty('@trigger', 'value', 'dog').setChildren('@trigger', () => [
-				<span classes={[css.value, undefined]}>Dog</span>,
+				<span classes={[css.value, false]}>Dog</span>,
 				<span classes={css.arrow}>
 					<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
 				</span>

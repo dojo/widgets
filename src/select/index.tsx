@@ -109,7 +109,6 @@ export const Select = factory(function Select({
 		resource: { template, options = createOptions(id) }
 	} = properties();
 	const [{ items, label } = { items: undefined, label: undefined }] = children();
-
 	let { value } = properties();
 
 	if (value === undefined) {
@@ -207,7 +206,7 @@ export const Select = factory(function Select({
 								find(template, {
 									options: options(),
 									start: 0,
-									query: { value: `${value}` },
+									query: { value },
 									type: 'exact'
 								}) || {
 									item: undefined
