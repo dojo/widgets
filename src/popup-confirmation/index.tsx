@@ -41,6 +41,7 @@ export default factory(function PopupConfirmation({
 		onConfirm,
 		classes,
 		theme: inheritedTheme,
+		variant,
 		...otherProperties
 	} = properties();
 	const [{ content, trigger }] = children();
@@ -52,6 +53,7 @@ export default factory(function PopupConfirmation({
 			<TriggerPopup
 				classes={classes}
 				theme={inheritedTheme}
+				variant={variant}
 				key="trigger-popup"
 				{...otherProperties}
 			>
@@ -76,6 +78,7 @@ export default factory(function PopupConfirmation({
 											css,
 											'cancel'
 										)}
+										variant={variant}
 										onClick={() => {
 											close();
 											onCancel && onCancel();
@@ -92,6 +95,7 @@ export default factory(function PopupConfirmation({
 											css,
 											'confirm'
 										)}
+										variant={variant}
 										onClick={() => {
 											close();
 											onConfirm && onConfirm();

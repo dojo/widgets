@@ -47,11 +47,19 @@ const baseAssertion = assertion(() => (
 		onSelect={noop}
 		disabled={false}
 		widgetId={node.id}
+		theme={undefined}
+		classes={undefined}
+		variant={undefined}
 	>
 		<WrappedContentWrapper classes={css.contentWrapper}>
 			<WrappedContent classes={css.content}>
 				<WrappedExpander classes={css.expander}>
-					<WrappedExpanderIcon type="rightIcon" />
+					<WrappedExpanderIcon
+						type="rightIcon"
+						theme={undefined}
+						classes={undefined}
+						variant={undefined}
+					/>
 				</WrappedExpander>
 				<WrappedTitle classes={css.title}>{node.value}</WrappedTitle>
 			</WrappedContent>
@@ -111,7 +119,14 @@ describe('TreeNode', () => {
 			() =>
 				(
 					<WrappedCheckboxContainer onpointerdown={onPointerDown}>
-						<WrappedCheckbox checked={false} onValue={noop} disabled={false} />
+						<WrappedCheckbox
+							checked={false}
+							onValue={noop}
+							disabled={false}
+							variant={undefined}
+							theme={undefined}
+							classes={undefined}
+						/>
 					</WrappedCheckboxContainer>
 				) as any
 		);
@@ -229,7 +244,14 @@ describe('TreeNode', () => {
 				() =>
 					(
 						<div onpointerdown={onPointerDown}>
-							<WrappedCheckbox checked={false} onValue={noop} disabled={false} />
+							<WrappedCheckbox
+								checked={false}
+								onValue={noop}
+								disabled={false}
+								variant={undefined}
+								theme={undefined}
+								classes={undefined}
+							/>
 						</div>
 					) as any
 			);

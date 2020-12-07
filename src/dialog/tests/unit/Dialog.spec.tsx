@@ -55,7 +55,12 @@ describe('Dialog', () => {
 							<button classes={themeCss.close} onclick={() => {}} type="button">
 								{'close foo'}
 								<span classes={themeCss.closeIcon}>
-									<Icon type="closeIcon" />
+									<Icon
+										type="closeIcon"
+										theme={undefined}
+										variant={undefined}
+										classes={undefined}
+									/>
 								</span>
 							</button>
 						</div>
@@ -109,7 +114,12 @@ describe('Dialog', () => {
 					<button classes={themeCss.close} onclick={() => {}} type="button">
 						{'foo'}
 						<span classes={themeCss.closeIcon}>
-							<Icon type="closeIcon" />
+							<Icon
+								type="closeIcon"
+								theme={undefined}
+								variant={undefined}
+								classes={undefined}
+							/>
 						</span>
 					</button>
 				])

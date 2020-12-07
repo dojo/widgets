@@ -104,7 +104,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 	} = properties();
 	const [{ label, items, selected } = {} as ChipTypeaheadChildren] = children();
 	const themeCss = theme.classes(css);
-	const { value } = properties();
+	const { value, classes = {}, variant } = properties();
 	const focused = icache.getOrSet('focused', false);
 
 	if (value !== undefined && arraysDifferent(value || [], icache.get('value') || [])) {
@@ -143,10 +143,13 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 				)}
 				key={`value-${value}`}
 				classes={{
+					...classes,
 					'@dojo/widgets/chip': {
+						...classes['@dojo/widgets/chip'],
 						root: [themeCss.value]
 					}
 				}}
+				variant={variant}
 				onClose={
 					disabled
 						? undefined
@@ -202,6 +205,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 							root: [themeCss.label]
 						}
 					}}
+					variant={variant}
 				>
 					{label}
 				</Label>
@@ -213,6 +217,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 					css,
 					'input'
 				)}
+				variant={variant}
 				strict={strict}
 				itemsInView={itemsInView}
 				position={position}

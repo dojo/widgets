@@ -72,7 +72,17 @@ export const Dialog = factory(function Dialog({
 }) {
 	const themeCss = theme.classes(css);
 
-	let { open, aria = {}, underlay, role = 'dialog', closeable = true, closeText } = properties();
+	let {
+		open,
+		aria = {},
+		underlay,
+		role = 'dialog',
+		closeable = true,
+		closeText,
+		classes,
+		theme: themeProp,
+		variant
+	} = properties();
 	const [{ title, actions, content }] = children();
 	const modal = role === 'alertdialog' || (properties() as DialogPropertiesDialogRole).modal;
 
@@ -172,7 +182,12 @@ export const Dialog = factory(function Dialog({
 									>
 										{closeText}
 										<span classes={themeCss.closeIcon}>
-											<Icon type="closeIcon" />
+											<Icon
+												theme={themeProp}
+												classes={classes}
+												variant={variant}
+												type="closeIcon"
+											/>
 										</span>
 									</button>
 								)}

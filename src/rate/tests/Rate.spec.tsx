@@ -38,7 +38,15 @@ describe('Rate', () => {
 
 	const baseAssertion = assertion(() => (
 		<WrappedRootNode classes={[css.root, undefined, false]}>
-			<WrappedRadioGroup key="radio-group" name={'test'} options={baseOptions} onValue={noop}>
+			<WrappedRadioGroup
+				key="radio-group"
+				name={'test'}
+				options={baseOptions}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+			>
 				{{
 					label: 'test',
 					radios: () => []
@@ -109,7 +117,13 @@ describe('Rate', () => {
 							title={'1'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={true}
@@ -132,7 +146,13 @@ describe('Rate', () => {
 							title={'2'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -180,7 +200,13 @@ describe('Rate', () => {
 							title={'0.5'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -201,7 +227,13 @@ describe('Rate', () => {
 							title={'1'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -224,7 +256,13 @@ describe('Rate', () => {
 							title={'1.5'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={true}
@@ -245,7 +283,13 @@ describe('Rate', () => {
 							title={'2'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -296,7 +340,13 @@ describe('Rate', () => {
 							title={'1'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={true}
@@ -319,7 +369,13 @@ describe('Rate', () => {
 							title={'2'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -342,7 +398,13 @@ describe('Rate', () => {
 							title={'3'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -374,7 +436,13 @@ describe('Rate', () => {
 						title={'1'}
 					>
 						<span classes={fixedCss.iconWrapperFixed}>
-							<Icon size={'medium'} type={'starIcon'} />
+							<Icon
+								size={'medium'}
+								type={'starIcon'}
+								theme={undefined}
+								variant={undefined}
+								classes={undefined}
+							/>
 						</span>
 						<input
 							checked={true}
@@ -397,7 +465,13 @@ describe('Rate', () => {
 						title={'2'}
 					>
 						<span classes={fixedCss.iconWrapperFixed}>
-							<Icon size={'medium'} type={'starIcon'} />
+							<Icon
+								size={'medium'}
+								type={'starIcon'}
+								theme={undefined}
+								variant={undefined}
+								classes={undefined}
+							/>
 						</span>
 						<input
 							checked={false}
@@ -420,7 +494,13 @@ describe('Rate', () => {
 						title={'3'}
 					>
 						<span classes={fixedCss.iconWrapperFixed}>
-							<Icon size={'medium'} type={'starIcon'} />
+							<Icon
+								size={'medium'}
+								type={'starIcon'}
+								theme={undefined}
+								variant={undefined}
+								classes={undefined}
+							/>
 						</span>
 						<input
 							checked={false}
@@ -469,7 +549,13 @@ describe('Rate', () => {
 							title={'1'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={true}
@@ -492,7 +578,13 @@ describe('Rate', () => {
 							title={'2'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -541,7 +633,13 @@ describe('Rate', () => {
 							title={'1'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -564,7 +662,13 @@ describe('Rate', () => {
 							title={'2'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -587,7 +691,13 @@ describe('Rate', () => {
 							title={'3'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -625,7 +735,13 @@ describe('Rate', () => {
 						title={'1'}
 					>
 						<span classes={fixedCss.iconWrapperFixed}>
-							<Icon size={'medium'} type={'starIcon'} />
+							<Icon
+								size={'medium'}
+								type={'starIcon'}
+								theme={undefined}
+								variant={undefined}
+								classes={undefined}
+							/>
 						</span>
 						<input
 							checked={false}
@@ -648,7 +764,13 @@ describe('Rate', () => {
 						title={'2'}
 					>
 						<span classes={fixedCss.iconWrapperFixed}>
-							<Icon size={'medium'} type={'starIcon'} />
+							<Icon
+								size={'medium'}
+								type={'starIcon'}
+								theme={undefined}
+								variant={undefined}
+								classes={undefined}
+							/>
 						</span>
 						<input
 							checked={true}
@@ -671,7 +793,13 @@ describe('Rate', () => {
 						title={'3'}
 					>
 						<span classes={fixedCss.iconWrapperFixed}>
-							<Icon size={'medium'} type={'starIcon'} />
+							<Icon
+								size={'medium'}
+								type={'starIcon'}
+								theme={undefined}
+								variant={undefined}
+								classes={undefined}
+							/>
 						</span>
 						<input
 							checked={false}
@@ -723,7 +851,13 @@ describe('Rate', () => {
 							title={'1'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -746,7 +880,13 @@ describe('Rate', () => {
 							title={'2'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<WrappedInput
 								checked={false}
@@ -781,7 +921,13 @@ describe('Rate', () => {
 							title={'1'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<input
 								checked={false}
@@ -804,7 +950,13 @@ describe('Rate', () => {
 							title={'2'}
 						>
 							<span classes={fixedCss.iconWrapperFixed}>
-								<Icon size={'medium'} type={'starIcon'} />
+								<Icon
+									size={'medium'}
+									type={'starIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							<WrappedInput
 								checked={false}
@@ -836,7 +988,13 @@ describe('Rate', () => {
 						title={'1'}
 					>
 						<span classes={fixedCss.iconWrapperFixed}>
-							<Icon size={'medium'} type={'starIcon'} />
+							<Icon
+								size={'medium'}
+								type={'starIcon'}
+								theme={undefined}
+								variant={undefined}
+								classes={undefined}
+							/>
 						</span>
 						<input
 							checked={false}
@@ -859,7 +1017,13 @@ describe('Rate', () => {
 						title={'2'}
 					>
 						<span classes={fixedCss.iconWrapperFixed}>
-							<Icon size={'medium'} type={'starIcon'} />
+							<Icon
+								size={'medium'}
+								type={'starIcon'}
+								theme={undefined}
+								variant={undefined}
+								classes={undefined}
+							/>
 						</span>
 						<WrappedInput
 							checked={false}

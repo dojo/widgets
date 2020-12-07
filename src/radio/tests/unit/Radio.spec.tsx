@@ -81,6 +81,7 @@ const expected = ({
 				<Label
 					key="label"
 					classes={undefined}
+					variant={undefined}
 					theme={undefined}
 					disabled={disabled}
 					focused={false}

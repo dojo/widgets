@@ -55,8 +55,15 @@ describe('Wizard', () => {
 								}
 							}}
 							outline={true}
+							classes={undefined}
+							variant={undefined}
 						>
-							<Icon type="checkIcon" />
+							<Icon
+								type="checkIcon"
+								classes={undefined}
+								variant={undefined}
+								theme={undefined}
+							/>
 						</Avatar>
 					</div>
 					<div>Step 1</div>
@@ -81,6 +88,8 @@ describe('Wizard', () => {
 									square: avatarCss.square
 								}
 							}}
+							classes={undefined}
+							variant={undefined}
 							outline={false}
 						>
 							2
@@ -113,6 +122,8 @@ describe('Wizard', () => {
 								}
 							}}
 							outline={true}
+							classes={undefined}
+							variant={undefined}
 						>
 							3
 						</Avatar>
@@ -215,6 +226,8 @@ describe('Wizard', () => {
 									}
 								}}
 								outline={false}
+								classes={undefined}
+								variant={undefined}
 							>
 								2
 							</WrappedAvatar>
@@ -223,7 +236,14 @@ describe('Wizard', () => {
 					</virtual>
 				])
 				.setProperty(WrappedAvatar, 'outline', true)
-				.setChildren(WrappedAvatar, () => [<Icon type="closeIcon" />])
+				.setChildren(WrappedAvatar, () => [
+					<Icon
+						type="closeIcon"
+						classes={undefined}
+						variant={undefined}
+						theme={undefined}
+					/>
+				])
 				.setProperty(WrappedStep3, 'classes', [css.step, false, css.pending, false])
 		);
 	});

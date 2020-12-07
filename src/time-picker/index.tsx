@@ -223,7 +223,7 @@ export const TimePicker = factory(function TimePicker({
 	properties,
 	children
 }) {
-	const classes = theme.classes(css);
+	const themedCss = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
 
 	const formatTime = (time: Date) => {
@@ -356,20 +356,20 @@ export const TimePicker = factory(function TimePicker({
 		return options;
 	};
 
-	const { name } = properties();
+	const { name, theme: themeProp, classes, variant } = properties();
 	const [labelChild] = children();
 	const label = isTimePickerChildren(labelChild) ? labelChild.label : labelChild;
 	const options = generateOptions();
 
 	return (
-		<div classes={[theme.variant(), classes.root]}>
+		<div classes={[theme.variant(), themedCss.root]}>
 			<input
 				type="hidden"
 				name={name}
 				value={icache.getOrSet('value', '')}
 				aria-hidden="true"
 			/>
-			<TriggerPopup key="popup">
+			<TriggerPopup key="popup" theme={themeProp} classes={classes} variant={variant}>
 				{{
 					trigger: (toggleOpen) => {
 						function openMenu() {
@@ -381,7 +381,7 @@ export const TimePicker = factory(function TimePicker({
 						const { disabled, required } = properties();
 
 						return (
-							<div classes={classes.input}>
+							<div classes={themedCss.input}>
 								<TextInput
 									key="input"
 									disabled={disabled}
@@ -392,6 +392,8 @@ export const TimePicker = factory(function TimePicker({
 										css,
 										'input'
 									)}
+									classes={classes}
+									variant={variant}
 									initialValue={icache.get('inputValue')}
 									onBlur={() => icache.set('shouldValidate', true)}
 									onValue={(v) =>
@@ -417,7 +419,11 @@ export const TimePicker = factory(function TimePicker({
 									{{
 										label,
 										trailing: (
-											<Addon>
+											<Addon
+												theme={themeProp}
+												classes={classes}
+												variant={variant}
+											>
 												<button
 													disabled={disabled}
 													key="clockIcon"
@@ -425,7 +431,7 @@ export const TimePicker = factory(function TimePicker({
 														e.stopPropagation();
 														openMenu();
 													}}
-													classes={classes.toggleMenuButton}
+													classes={themedCss.toggleMenuButton}
 													type="button"
 												>
 													<Icon type="clockIcon" />
@@ -445,8 +451,11 @@ export const TimePicker = factory(function TimePicker({
 						}
 
 						return (
-							<div key="menu-wrapper" classes={classes.menuWrapper}>
+							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
 								<List
+									theme={themeProp}
+									classes={classes}
+									variant={variant}
 									key="menu"
 									focus={() => shouldFocus && focusNode === 'menu'}
 									resource={resource({

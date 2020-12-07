@@ -27,8 +27,16 @@ const baseTemplate = assertionTemplate(() => (
 			}}
 			onOver={noop}
 			onClick={noop}
+			variant={undefined}
+			classes={undefined}
 		>
-			<Icon size="large" theme={undefined} type="plusIcon" />
+			<Icon
+				size="large"
+				theme={undefined}
+				type="plusIcon"
+				variant={undefined}
+				classes={undefined}
+			/>
 		</FloatingActionButton>
 		<div key="actions" classes={[css.actions, undefined]} onpointerdown={noop}>
 			<div

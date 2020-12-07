@@ -12,6 +12,9 @@ const baseTemplate = assertionTemplate(() => (
 	<virtual>
 		<div classes={css.trigger} key="trigger" oncontextmenu={() => {}} />
 		<Popup
+			theme={undefined}
+			variant={undefined}
+			classes={undefined}
 			key="popup"
 			yTop={0}
 			yBottom={1100}

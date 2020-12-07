@@ -2,7 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { checkboxGroup } from './middleware';
 import { Checkbox } from '../checkbox/index';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import * as css from '../theme/default/checkbox-group.m.css';
 
 type CheckboxOptions = { value: string; label?: string }[];
@@ -40,7 +40,16 @@ export const CheckboxGroup = factory(function({
 	properties,
 	middleware: { checkboxGroup, theme }
 }) {
-	const { name, options, onValue, initialValue, value } = properties();
+	const {
+		name,
+		options,
+		onValue,
+		initialValue,
+		value,
+		classes,
+		theme: themeProp,
+		variant
+	} = properties();
 	const [{ checkboxes, label } = { checkboxes: undefined, label: undefined }] = children();
 
 	const checkbox = checkboxGroup(onValue, initialValue, value);
@@ -53,7 +62,15 @@ export const CheckboxGroup = factory(function({
 		return options.map(({ value, label }) => {
 			const { checked } = checkbox(value);
 			return (
-				<Checkbox name={name} value={value} checked={checked()} onValue={checked}>
+				<Checkbox
+					name={name}
+					value={value}
+					checked={checked()}
+					onValue={checked}
+					classes={classes}
+					theme={themeProp}
+					variant={variant}
+				>
 					{label || value}
 				</Checkbox>
 			);

@@ -110,7 +110,9 @@ export const Typeahead = factory(function Typeahead({
 		value: controlledValue,
 		itemDisabled,
 		resource: { template, options = createOptions(id) },
-		classes
+		classes,
+		theme: themeProp,
+		variant
 	} = properties();
 	const themedCss = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
@@ -264,6 +266,9 @@ export const Typeahead = factory(function Typeahead({
 					}
 				}}
 				position={position}
+				classes={classes}
+				theme={themeProp}
+				variant={variant}
 			>
 				{{
 					trigger: (toggleOpen) => {
@@ -365,6 +370,7 @@ export const Typeahead = factory(function Typeahead({
 										root: [themedCss.trigger]
 									}
 								}}
+								variant={variant}
 								onClick={openMenu}
 								onKeyDown={(event, preventDefault) => {
 									onKeyDown(event, preventDefault, openMenu, closeMenu);
@@ -384,7 +390,12 @@ export const Typeahead = factory(function Typeahead({
 						const { itemDisabled } = properties();
 
 						return metaInfo === undefined && isLoading(template, options()) ? (
-							<LoadingIndicator key="loading" />
+							<LoadingIndicator
+								key="loading"
+								theme={themeProp}
+								classes={classes}
+								variant={variant}
+							/>
 						) : (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
 								<List
@@ -411,6 +422,7 @@ export const Typeahead = factory(function Typeahead({
 										css,
 										'menu'
 									)}
+									variant={variant}
 									widgetId={listId}
 								>
 									{items}
@@ -424,6 +436,9 @@ export const Typeahead = factory(function Typeahead({
 				key="helperText"
 				text={valid === false ? messages.requiredMessage : helperText}
 				valid={valid}
+				classes={classes}
+				theme={themeProp}
+				variant={variant}
 			/>
 		</div>
 	);

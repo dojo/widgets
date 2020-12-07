@@ -94,6 +94,8 @@ export const Select = factory(function Select({
 	const { createOptions, isLoading, meta, find } = resource;
 	const {
 		classes,
+		variant,
+		theme: themeProp,
 		disabled,
 		helperText,
 		initialValue,
@@ -162,6 +164,7 @@ export const Select = factory(function Select({
 						'label'
 					)}
 					classes={classes}
+					variant={variant}
 					disabled={disabled}
 					forId={triggerId}
 					valid={valid}
@@ -184,6 +187,9 @@ export const Select = factory(function Select({
 					}
 				}}
 				position={position}
+				theme={themeProp}
+				classes={classes}
+				variant={variant}
 			>
 				{{
 					trigger: (toggleOpen) => {
@@ -252,6 +258,7 @@ export const Select = factory(function Select({
 											'icon'
 										)}
 										classes={classes}
+										variant={variant}
 									/>
 								</span>
 							</button>
@@ -264,7 +271,12 @@ export const Select = factory(function Select({
 						}
 
 						return metaInfo === undefined && isLoading(template, options()) ? (
-							<LoadingIndicator key="loading" />
+							<LoadingIndicator
+								key="loading"
+								theme={themeProp}
+								variant={variant}
+								classes={classes}
+							/>
 						) : (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
 								<List
@@ -288,6 +300,7 @@ export const Select = factory(function Select({
 										'menu'
 									)}
 									classes={classes}
+									variant={variant}
 									widgetId={menuId}
 								>
 									{items}
@@ -301,6 +314,9 @@ export const Select = factory(function Select({
 				key="helperText"
 				text={valid === false ? messages.requiredMessage : helperText}
 				valid={valid}
+				classes={classes}
+				variant={variant}
+				theme={themeProp}
 			/>
 		</div>
 	);

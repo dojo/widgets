@@ -51,12 +51,24 @@ const baseAssertion = assertion(() => (
 
 const simpleTreeAssertion = baseAssertion.replaceChildren(WrappedRoot, () => [
 	<WrappedListItem1 role={'treeitem'} classes={[css.node, css.leaf, false, false]}>
-		<WrappedNode1 {...defaultNodeProps} node={simpleTree[0]}>
+		<WrappedNode1
+			{...defaultNodeProps}
+			node={simpleTree[0]}
+			theme={undefined}
+			classes={undefined}
+			variant={undefined}
+		>
 			{() => 'node-1'}
 		</WrappedNode1>
 	</WrappedListItem1>,
 	<WrappedListItem2 role={'treeitem'} classes={[css.node, false, false, false]}>
-		<WrappedNode2 {...defaultNodeProps} node={simpleTree[2]}>
+		<WrappedNode2
+			{...defaultNodeProps}
+			node={simpleTree[2]}
+			theme={undefined}
+			classes={undefined}
+			variant={undefined}
+		>
 			{() => 'node-2'}
 		</WrappedNode2>
 	</WrappedListItem2>
@@ -199,6 +211,9 @@ describe('Tree', () => {
 									{...defaultNodeProps}
 									expanded={false}
 									node={simpleTree[1]}
+									theme={undefined}
+									classes={undefined}
+									variant={undefined}
 								>
 									{() => ''}
 								</WrappedNode3>
@@ -242,7 +257,13 @@ describe('Tree', () => {
 									role={'group'}
 								>
 									<li role={'treeitem'} classes={[css.node, false, false, false]}>
-										<TreeNode {...nodeProps} node={simpleTree[1]}>
+										<TreeNode
+											{...nodeProps}
+											node={simpleTree[1]}
+											theme={undefined}
+											classes={undefined}
+											variant={undefined}
+										>
 											{() => ''}
 										</TreeNode>
 									</li>
@@ -288,7 +309,13 @@ describe('Tree', () => {
 									role={'group'}
 								>
 									<li role={'treeitem'} classes={[css.node, false, false, false]}>
-										<TreeNode {...nodeProps} node={simpleTree[1]}>
+										<TreeNode
+											{...nodeProps}
+											node={simpleTree[1]}
+											theme={undefined}
+											classes={undefined}
+											variant={undefined}
+										>
 											{() => ''}
 										</TreeNode>
 									</li>
@@ -695,7 +722,9 @@ describe('Tree', () => {
 	});
 
 	describe('Loading tree state', () => {
-		const loadingAssertion = assertion(() => <LoadingIndicator />);
+		const loadingAssertion = assertion(() => (
+			<LoadingIndicator theme={undefined} classes={undefined} variant={undefined} />
+		));
 		it('should have loading indicator when there is not data', () => {
 			let resolvePromise = (value: any) => {};
 			const dataPromise: Promise<TreeNodeOption[]> = new Promise((res) => {

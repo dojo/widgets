@@ -20,6 +20,8 @@ describe('Accordion', () => {
 					theme={{}}
 					open={false}
 					name="foo title"
+					classes={undefined}
+					variant={undefined}
 				>
 					foo content
 				</TitlePane>
@@ -30,6 +32,8 @@ describe('Accordion', () => {
 					theme={{}}
 					open={false}
 					name="bar title"
+					classes={undefined}
+					variant={undefined}
 				>
 					bar content
 				</TitlePane>

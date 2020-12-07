@@ -1,7 +1,7 @@
 import focus from '@dojo/framework/core/middleware/focus';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Icon from '../icon';
 
@@ -56,7 +56,10 @@ export const TabContainer = factory(function TabContainer({
 		initialActiveIndex = 0,
 		tabs,
 		onActiveIndex,
-		onClose
+		onClose,
+		theme: themeProp,
+		classes,
+		variant
 	} = properties();
 	let { activeIndex } = properties();
 
@@ -153,7 +156,14 @@ export const TabContainer = factory(function TabContainer({
 								}
 							}}
 						>
-							<Icon type="closeIcon" altText={messages.close} size="small" />
+							<Icon
+								type="closeIcon"
+								altText={messages.close}
+								size="small"
+								theme={themeProp}
+								classes={classes}
+								variant={variant}
+							/>
 						</button>
 					) : null}
 					<span classes={[themeCss.indicator, active && themeCss.indicatorActive]}>

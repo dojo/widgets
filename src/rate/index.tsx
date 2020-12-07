@@ -50,10 +50,20 @@ export const Rate = factory(function Radio({
 	properties,
 	id,
 	children,
-	middleware: { focus, theme, icache }
+	middleware: { theme, icache }
 }) {
 	const idBase = `rate-${id}`;
-	const { onValue, max = 5, initialValue, allowHalf, name = idBase, readOnly } = properties();
+	const {
+		onValue,
+		max = 5,
+		initialValue,
+		allowHalf,
+		name = idBase,
+		readOnly,
+		theme: themeProp,
+		classes,
+		variant
+	} = properties();
 	let { value } = properties();
 	const [{ label, icon } = { label: undefined, icon: undefined }] = children();
 
@@ -105,7 +115,15 @@ export const Rate = factory(function Radio({
 				title={stringValue}
 			>
 				<span classes={fixedCss.iconWrapperFixed}>
-					{icon || <Icon size="medium" type="starIcon" />}
+					{icon || (
+						<Icon
+							size="medium"
+							type="starIcon"
+							theme={themeProp}
+							variant={variant}
+							classes={classes}
+						/>
+					)}
 				</span>
 				<input
 					classes={baseCss.visuallyHidden}
@@ -145,6 +163,9 @@ export const Rate = factory(function Radio({
 						onValue && onValue(numberVal);
 					}
 				}}
+				variant={variant}
+				theme={themeProp}
+				classes={classes}
 			>
 				{{
 					label,

@@ -19,11 +19,15 @@ const textTemplate = baseTemplate.setChildren('@root', [
 registerSuite('HelperText', {
 	tests: {
 		'without text'() {
-			const h = harness(() => <HelperText />);
+			const h = harness(() => (
+				<HelperText variant={undefined} classes={undefined} theme={undefined} />
+			));
 			h.expect(baseTemplate);
 		},
 		'with text'() {
-			const h = harness(() => <HelperText text="test" />);
+			const h = harness(() => (
+				<HelperText variant={undefined} classes={undefined} theme={undefined} text="test" />
+			));
 			h.expect(textTemplate);
 		},
 		valid() {
@@ -33,7 +37,15 @@ registerSuite('HelperText', {
 				css.valid,
 				null
 			]);
-			const h = harness(() => <HelperText text="test" valid={true} />);
+			const h = harness(() => (
+				<HelperText
+					variant={undefined}
+					classes={undefined}
+					theme={undefined}
+					text="test"
+					valid={true}
+				/>
+			));
 			h.expect(validTemplate);
 		},
 		invalid() {
@@ -43,7 +55,15 @@ registerSuite('HelperText', {
 				null,
 				css.invalid
 			]);
-			const h = harness(() => <HelperText text="test" valid={false} />);
+			const h = harness(() => (
+				<HelperText
+					variant={undefined}
+					classes={undefined}
+					theme={undefined}
+					text="test"
+					valid={false}
+				/>
+			));
 			h.expect(invalidTemplate);
 		}
 	}

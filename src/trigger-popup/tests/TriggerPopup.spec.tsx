@@ -20,6 +20,7 @@ const baseTemplate = assertionTemplate(() => (
 			xRight={0}
 			onClose={() => {}}
 			open={undefined}
+			classes={undefined}
 		>
 			{(position) => (
 				<div key="trigger-wrapper" styles={{ width: '0' }}>

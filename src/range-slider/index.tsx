@@ -4,7 +4,7 @@ import * as fixedCss from './styles/range-slider.m.css';
 import Label from '../label/index';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
 import focus from '@dojo/framework/core/middleware/focus';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import { RenderResult, AriaAttributes } from '@dojo/framework/core/interfaces';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
@@ -115,6 +115,7 @@ export const RangeSlider = factory(function RangeSlider({
 		step = 1,
 		theme: themeProp,
 		valid,
+		variant,
 		initialValue = {
 			max: maxRestraint,
 			min: minRestraint
@@ -234,6 +235,7 @@ export const RangeSlider = factory(function RangeSlider({
 			{label ? (
 				<Label
 					classes={classes}
+					variant={variant}
 					disabled={disabled}
 					focused={isFocused}
 					hidden={labelHidden}
