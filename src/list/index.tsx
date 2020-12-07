@@ -643,7 +643,7 @@ export const List = factory(function List({
 
 	const menuHeight = icache.get('menuHeight');
 	const idBase = widgetId || `menu-${id}`;
-	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
+	const rootStyles = menuHeight ? { height: `${menuHeight}px` } : {};
 	const shouldFocus = focus.shouldFocus();
 	const themedCss = theme.classes(css);
 	const itemHeight = icache.getOrSet('itemHeight', 0);
@@ -705,58 +705,52 @@ export const List = factory(function List({
 	const items = renderItems(startNode, renderedItemsCount, startNode);
 	const metaInfo = meta(template, options(), true);
 
-	if (!metaInfo || metaInfo.total === undefined) {
-		return;
-	}
-
-	const total = metaInfo.total;
+	const total = metaInfo && metaInfo.total ? metaInfo.total : 0;
 	const totalContentHeight = total * itemHeight;
 
 	return (
-		!!total && (
+		<div
+			key="root"
+			classes={[theme.variant(), themedCss.root, fixedCss.root]}
+			tabIndex={focusable ? 0 : -1}
+			onkeydown={(e) => {
+				onKeyDown(e, total);
+			}}
+			focus={() => shouldFocus}
+			onfocus={onFocus}
+			onpointerdown={focusable ? undefined : (event) => event.preventDefault()}
+			onblur={onBlur}
+			scrollTop={scrollTop}
+			onscroll={(e) => {
+				const newScrollTop = (e.target as HTMLElement).scrollTop;
+				if (scrollTop !== newScrollTop) {
+					icache.set('scrollTop', newScrollTop);
+				}
+			}}
+			styles={rootStyles}
+			role={menu ? 'menu' : 'listbox'}
+			aria-orientation="vertical"
+			aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
+			id={idBase}
+		>
 			<div
-				key="root"
-				classes={[theme.variant(), themedCss.root, fixedCss.root]}
-				tabIndex={focusable ? 0 : -1}
-				onkeydown={(e) => {
-					onKeyDown(e, total);
+				classes={fixedCss.wrapper}
+				styles={{
+					height: `${totalContentHeight}px`
 				}}
-				focus={() => shouldFocus}
-				onfocus={onFocus}
-				onpointerdown={focusable ? undefined : (event) => event.preventDefault()}
-				onblur={onBlur}
-				scrollTop={scrollTop}
-				onscroll={(e) => {
-					const newScrollTop = (e.target as HTMLElement).scrollTop;
-					if (scrollTop !== newScrollTop) {
-						icache.set('scrollTop', newScrollTop);
-					}
-				}}
-				styles={rootStyles}
-				role={menu ? 'menu' : 'listbox'}
-				aria-orientation="vertical"
-				aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
-				id={idBase}
+				key="wrapper"
 			>
 				<div
-					classes={fixedCss.wrapper}
+					classes={fixedCss.transformer}
 					styles={{
-						height: `${totalContentHeight}px`
+						transform: `translateY(${offsetY}px)`
 					}}
-					key="wrapper"
+					key="transformer"
 				>
-					<div
-						classes={fixedCss.transformer}
-						styles={{
-							transform: `translateY(${offsetY}px)`
-						}}
-						key="transformer"
-					>
-						{items}
-					</div>
+					{items}
 				</div>
 			</div>
-		)
+		</div>
 	);
 });
 

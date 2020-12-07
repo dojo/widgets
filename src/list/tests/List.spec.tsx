@@ -86,7 +86,7 @@ const baseAssertion = assertion(() => (
 		role={'listbox'}
 		scrollTop={0}
 		styles={{
-			maxHeight: '450px'
+			height: '450px'
 		}}
 		tabIndex={0}
 	>
@@ -310,21 +310,6 @@ describe('List', () => {
 		sb.restore();
 	});
 
-	it('should not render with no data', () => {
-		const r = renderer(
-			() => (
-				<List
-					resource={{
-						template: { template, id: 'test', initOptions: { data: [], id: 'test' } }
-					}}
-					onValue={onValueStub}
-				/>
-			),
-			{ middleware: [[getRegistry, mockGetRegistry]] }
-		);
-		r.expect(assertion(() => undefined));
-	});
-
 	it('should render with list item placeholders', async () => {
 		const data: any[] = [];
 		for (let i = 0; i < 60; i++) {
@@ -343,7 +328,7 @@ describe('List', () => {
 				height: '2700px'
 			})
 			.setProperty(WrappedRoot, 'styles', {
-				maxHeight: '450px'
+				height: '450px'
 			})
 			.replaceChildren(WrappedItemContainer, () => {
 				const children: any[] = [];
@@ -412,7 +397,7 @@ describe('List', () => {
 			() => <List resource={{ template: { template, id: 'test' } }} onValue={onValueStub} />,
 			{ middleware: [[getRegistry, mockGetRegistry]] }
 		);
-		r.expect(assertion(() => null));
+		r.expect(baseAssertion);
 		pageOneResolver!({ data: data.slice(0, 30), total: data.length });
 		await pageOnePromise;
 		r.expect(listAssertion);
@@ -566,7 +551,7 @@ describe('List', () => {
 				height: '2700px'
 			})
 			.setProperty(WrappedRoot, 'styles', {
-				maxHeight: '450px'
+				height: '450px'
 			})
 			.replaceChildren(WrappedItemContainer, () => {
 				const children: any[] = [];
@@ -624,7 +609,7 @@ describe('List', () => {
 			),
 			{ middleware: [[getRegistry, mockGetRegistry]] }
 		);
-		r.expect(assertion(() => null));
+		r.expect(baseAssertion.setProperty(WrappedRoot, 'role', 'menu'));
 		pageOneResolver!({ data: data.slice(0, 30), total: data.length });
 		await pageOnePromise;
 		r.expect(menuAssertion);
