@@ -130,7 +130,7 @@ export const Select = factory(function Select({
 	const { messages } = i18n.localize(bundle);
 	const expanded = icache.get('expanded');
 	const metaInfo = icache.set('meta', (current) => {
-		const newMeta = meta(template, options());
+		const newMeta = meta(template, options(), true);
 		return newMeta || current;
 	});
 
@@ -202,12 +202,12 @@ export const Select = factory(function Select({
 						}
 
 						let valueOption: ListOption | undefined;
-						if (value) {
+						if (value && metaInfo) {
 							valueOption = (
 								find(template, {
 									options: options(),
 									start: 0,
-									query: { value },
+									query: { value: `${value}` },
 									type: 'exact'
 								}) || {
 									item: undefined
