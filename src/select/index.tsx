@@ -109,7 +109,6 @@ export const Select = factory(function Select({
 		resource: { template, options = createOptions(id) }
 	} = properties();
 	const [{ items, label } = { items: undefined, label: undefined }] = children();
-
 	let { value } = properties();
 
 	if (value === undefined) {
@@ -130,7 +129,7 @@ export const Select = factory(function Select({
 	const { messages } = i18n.localize(bundle);
 	const expanded = icache.get('expanded');
 	const metaInfo = icache.set('meta', (current) => {
-		const newMeta = meta(template, options());
+		const newMeta = meta(template, options(), true);
 		return newMeta || current;
 	});
 
@@ -202,7 +201,7 @@ export const Select = factory(function Select({
 						}
 
 						let valueOption: ListOption | undefined;
-						if (value) {
+						if (value && metaInfo) {
 							valueOption = (
 								find(template, {
 									options: options(),
