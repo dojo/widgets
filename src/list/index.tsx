@@ -646,9 +646,11 @@ export const List = factory(function List({
 
 	const menuHeight = icache.get('menuHeight');
 	const idBase = widgetId || `menu-${id}`;
-	const rootStyles = menuHeight
-		? { [height === 'fixed' ? 'height' : 'maxHeight']: `${menuHeight}px` }
-		: {};
+	let rootStyles: Partial<CSSStyleDeclaration> = {};
+	if (menuHeight) {
+		rootStyles =
+			height === 'fixed' ? { height: `${menuHeight}px` } : { maxHeight: `${menuHeight}px` };
+	}
 	const shouldFocus = focus.shouldFocus();
 	const themedCss = theme.classes(css);
 	const itemHeight = icache.getOrSet('itemHeight', 0);
