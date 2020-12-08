@@ -221,7 +221,7 @@ export interface ListProperties {
 	widgetId?: string;
 	/** Callback to determine if a list item is disabled. If not provided, ListOption.disabled will be used */
 	disabled?: (item: ListOption) => boolean;
-	/** Specifies if the list should fix the area determined by the items in view */
+	/** Specifies if the list height should by fixed to the height of the items in view */
 	height?: 'auto' | 'fixed';
 }
 
