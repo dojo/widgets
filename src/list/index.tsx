@@ -221,6 +221,8 @@ export interface ListProperties {
 	widgetId?: string;
 	/** Callback to determine if a list item is disabled. If not provided, ListOption.disabled will be used */
 	disabled?: (item: ListOption) => boolean;
+	/** Specifies if the list should fix the area determined by the items in view */
+	height?: 'auto' | 'fixed';
 }
 
 export interface ListChildren {
@@ -287,7 +289,8 @@ export const List = factory(function List({
 		theme: themeProp,
 		variant,
 		resource: { template, options = createOptions(id) },
-		classes
+		classes,
+		height = 'fixed'
 	} = properties();
 	const [itemRenderer] = children();
 
@@ -643,7 +646,9 @@ export const List = factory(function List({
 
 	const menuHeight = icache.get('menuHeight');
 	const idBase = widgetId || `menu-${id}`;
-	const rootStyles = menuHeight ? { height: `${menuHeight}px` } : {};
+	const rootStyles = menuHeight
+		? { [height === 'fixed' ? 'height' : 'maxHeight']: `${menuHeight}px` }
+		: {};
 	const shouldFocus = focus.shouldFocus();
 	const themedCss = theme.classes(css);
 	const itemHeight = icache.getOrSet('itemHeight', 0);
