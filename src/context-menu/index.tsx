@@ -24,6 +24,7 @@ export const ContextMenu = factory(function({ properties, children, middleware: 
 				content: ({ close, shouldFocus }) => (
 					<List
 						key="menu"
+						height="auto"
 						focus={shouldFocus}
 						theme={theme.compose(
 							menuCss,

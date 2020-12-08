@@ -400,6 +400,7 @@ export const Typeahead = factory(function Typeahead({
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
 								<List
 									key="menu"
+									height="auto"
 									focusable={false}
 									activeIndex={icache.get('activeIndex')}
 									resource={resource({ template, options })}

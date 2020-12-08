@@ -93,6 +93,7 @@ const expandedTriggerAssertion = triggerAssertion.setProperty(WrappedTrigger, 'a
 const contentAssertion = assertion(() => (
 	<div key="menu-wrapper" classes={css.menuWrapper}>
 		<WrappedList
+			height="auto"
 			classes={undefined}
 			variant={undefined}
 			activeIndex={0}

@@ -453,6 +453,7 @@ export const TimePicker = factory(function TimePicker({
 						return (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
 								<List
+									height="auto"
 									theme={themeProp}
 									classes={classes}
 									variant={variant}
