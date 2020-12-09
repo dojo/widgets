@@ -280,6 +280,7 @@ export const Select = factory(function Select({
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
 								<List
 									key="menu"
+									height="auto"
 									focus={() => focusNode === 'menu' && shouldFocus}
 									resource={resource({ template, options })}
 									onValue={(value) => {

@@ -517,6 +517,26 @@ describe('List', () => {
 		r.expect(listWithListItemsAssertion);
 	});
 
+	it('should render list with auto height', () => {
+		const r = renderer(
+			() => (
+				<List
+					height="auto"
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		r.expect(
+			listWithListItemsAssertion.setProperty(WrappedRoot, 'styles', {
+				maxHeight: '450px'
+			})
+		);
+	});
+
 	it('should render list with menu items data', () => {
 		const r = renderer(
 			() => (
