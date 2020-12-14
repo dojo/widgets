@@ -24,25 +24,23 @@ describe('FileUploadInput', function() {
 	const WrappedButton = wrap(Button);
 	const WrappedLabel = wrap('span');
 
-	const baseRootProperties = {
-		key: 'root',
-		'aria-disabled': false,
-		classes: [null, fixedCss.root, css.root, false, false],
-		ondragenter: noop,
-		ondragover: noop,
-		ondrop: noop
-	};
-
 	const preventDefaultSpy = sinon.spy(stubEvent, 'preventDefault');
 
 	const baseAssertion = assertion(function() {
 		return (
-			<WrappedRoot {...baseRootProperties}>
+			<WrappedRoot
+				key="root"
+				aria-disabled="false"
+				classes={[null, fixedCss.root, css.root, false, false]}
+				ondragenter={noop}
+				ondragover={noop}
+				ondrop={noop}
+			>
 				<WrappedWrapper classes={[css.wrapper]}>
 					<WrappedInput
 						key="nativeInput"
 						accept={undefined}
-						aria-hidden={true}
+						aria-hidden="true"
 						classes={[baseCss.hidden]}
 						disabled={false}
 						multiple={false}
@@ -155,12 +153,9 @@ describe('FileUploadInput', function() {
 
 		r.expect(
 			baseAssertion
-				.setProperties(WrappedRoot, {
-					...baseRootProperties,
-					ondragenter: false,
-					ondragover: false,
-					ondrop: false
-				})
+				.setProperty(WrappedRoot, 'ondragenter', false)
+				.setProperty(WrappedRoot, 'ondragover', false)
+				.setProperty(WrappedRoot, 'ondrop', false)
 				.remove(WrappedLabel)
 		);
 	});
@@ -172,14 +167,17 @@ describe('FileUploadInput', function() {
 
 		r.expect(
 			baseAssertion
-				.setProperties(WrappedRoot, {
-					...baseRootProperties,
-					'aria-disabled': true,
-					classes: [null, fixedCss.root, css.root, false, css.disabled],
-					ondragenter: false,
-					ondragover: false,
-					ondrop: false
-				})
+				.setProperty(WrappedRoot, 'aria-disabled', 'true')
+				.setProperty(WrappedRoot, 'classes', [
+					null,
+					fixedCss.root,
+					css.root,
+					false,
+					css.disabled
+				])
+				.setProperty(WrappedRoot, 'ondragenter', false)
+				.setProperty(WrappedRoot, 'ondragover', false)
+				.setProperty(WrappedRoot, 'ondrop', false)
 				.setProperty(WrappedInput, 'disabled', true)
 				.setProperty(WrappedButton, 'disabled', true)
 		);

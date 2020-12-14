@@ -20,34 +20,30 @@ describe('FileUploader', function() {
 	const WrappedFileUploadInput = wrap(FileUploadInput);
 	const WrappedButton = wrap('button');
 
-	const baseRootProperties = {
-		key: 'root',
-		classes: [null, fileUploadInputFixedCss.root, css.root, false]
-	};
-	const baseInputProperties = {
-		accept: undefined,
-		allowDnd: true,
-		disabled: false,
-		multiple: false,
-		name: undefined,
-		onValue: noop,
-		required: false,
-		theme: {
-			'@dojo/widgets/file-upload-input': {
-				disabled: fileUploadInputCss.disabled,
-				dndActive: fileUploadInputCss.dndActive,
-				dndLabel: fileUploadInputCss.dndLabel,
-				dndOverlay: fileUploadInputCss.dndOverlay,
-				root: fileUploadInputCss.root,
-				wrapper: fileUploadInputCss.wrapper
-			}
+	const inputThemeProp = {
+		'@dojo/widgets/file-upload-input': {
+			disabled: fileUploadInputCss.disabled,
+			dndActive: fileUploadInputCss.dndActive,
+			dndLabel: fileUploadInputCss.dndLabel,
+			dndOverlay: fileUploadInputCss.dndOverlay,
+			root: fileUploadInputCss.root,
+			wrapper: fileUploadInputCss.wrapper
 		}
 	};
 
 	const baseAssertion = assertion(function() {
 		return (
-			<WrappedRoot {...baseRootProperties}>
-				<WrappedFileUploadInput {...baseInputProperties}>
+			<WrappedRoot key="root" classes={[null, fileUploadInputFixedCss.root, css.root, false]}>
+				<WrappedFileUploadInput
+					accept={undefined}
+					allowDnd={true}
+					disabled={false}
+					multiple={false}
+					name={undefined}
+					onValue={noop}
+					required={false}
+					theme={inputThemeProp}
+				>
 					{{
 						content: null
 					}}
@@ -124,30 +120,36 @@ describe('FileUploader', function() {
 	});
 
 	it('sets props on FileUploadInput', function() {
-		const passthruProps = {
-			accept: 'accept',
-			allowDnd: false,
-			disabled: true,
-			multiple: true,
-			name: 'name',
-			required: true
-		};
-		const expectedRootClasses = [...baseRootProperties.classes];
-		expectedRootClasses.splice(3, 1, css.disabled);
-
 		const r = renderer(function() {
-			return <FileUploader {...passthruProps} onValue={noop} />;
+			return (
+				<FileUploader
+					accept="accept"
+					allowDnd={false}
+					disabled={true}
+					multiple={true}
+					name="name"
+					required={true}
+					onValue={noop}
+				/>
+			);
 		});
 
-		r.expect(
-			baseAssertion
-				.setProperty(WrappedRoot, 'classes', expectedRootClasses)
-				.setProperties(WrappedFileUploadInput, {
-					...baseInputProperties,
-					...passthruProps,
-					onValue: noop
-				})
-		);
+		const setPropsAssertionTemplate = baseAssertion
+			.setProperty(WrappedRoot, 'classes', [
+				null,
+				fileUploadInputFixedCss.root,
+				css.root,
+				css.disabled
+			])
+			.setProperty(WrappedFileUploadInput, 'onValue', noop)
+			.setProperty(WrappedFileUploadInput, 'accept', 'accept')
+			.setProperty(WrappedFileUploadInput, 'allowDnd', false)
+			.setProperty(WrappedFileUploadInput, 'disabled', true)
+			.setProperty(WrappedFileUploadInput, 'multiple', true)
+			.setProperty(WrappedFileUploadInput, 'required', true)
+			.setProperty(WrappedFileUploadInput, 'name', 'name');
+
+		r.expect(setPropsAssertionTemplate);
 	});
 
 	it('renders label', function() {

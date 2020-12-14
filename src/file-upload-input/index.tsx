@@ -200,7 +200,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 		<div
 			key="root"
 			{...formatAriaProperties(aria)}
-			aria-disabled={disabled}
+			aria-disabled={disabled ? 'true' : 'false'}
 			classes={[
 				theme.variant(),
 				fixedCss.root,
@@ -233,7 +233,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 				<input
 					key="nativeInput"
 					accept={accept}
-					aria-hidden={true}
+					aria-hidden="true"
 					classes={[baseCss.hidden]}
 					disabled={disabled}
 					multiple={multiple}
