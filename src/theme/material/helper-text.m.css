@@ -8,9 +8,7 @@
 }
 
 .root .text {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	white-space: normal;
 	color: var(--mdc-disabled-text-color) !important;
 }
 
