@@ -58,7 +58,6 @@ export interface ChipTypeaheadChildren {
 export interface ChipTypeaheadIcache {
 	initialValue: string[];
 	options: ListOption[];
-	value: string[];
 	focused: boolean;
 }
 
@@ -71,13 +70,13 @@ const factory = create({
 	.properties<ChipTypeaheadProperties>()
 	.children<ChipTypeaheadChildren>();
 
-export function arraysDifferent(arr1: string[], arr2: string[]): boolean {
-	if (arr1.length !== arr2.length) {
+function valueChanged(values: string[] = [], options: ListOption[] = []): boolean {
+	if (values.length !== options.length) {
 		return true;
 	}
 
-	for (let i = 0; i < arr1.length; i++) {
-		if (arr1[i] !== arr2[i]) {
+	for (let i = 0; i < values.length; i++) {
+		if (!options[i] || options[i].value !== values[i]) {
 			return true;
 		}
 	}
@@ -93,6 +92,9 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 }) {
 	const { createOptions, find } = resource;
 	const {
+		value,
+		classes = {},
+		variant,
 		initialValue = [],
 		disabled,
 		itemsInView,
@@ -104,36 +106,51 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 	} = properties();
 	const [{ label, items, selected } = {} as ChipTypeaheadChildren] = children();
 	const themeCss = theme.classes(css);
-	const { value, classes = {}, variant } = properties();
 	const focused = icache.getOrSet('focused', false);
-
-	if (value !== undefined && arraysDifferent(value || [], icache.get('value') || [])) {
-		icache.set('value', value || []);
-	}
-
-	if (value === undefined && arraysDifferent(icache.getOrSet('initialValue', []), initialValue)) {
-		icache.set('value', initialValue);
-		icache.set('initialValue', initialValue);
-	}
-
-	const storedValues = icache.getOrSet('value', []);
-	const findOptions = createOptions(`${id}-find`);
-	findOptions({ size: options().size, page: options().page });
-	const chips = storedValues.map((value, index) => {
-		let option: any;
-		if (value) {
-			option = (
-				find(template, {
-					options: findOptions(),
+	const selectedOptions = icache.set('options', (current) => {
+		if (!current && initialValue && !value) {
+			const initialSelectedOptions = initialValue.map((valueId) => {
+				const findResult = find(template, {
+					options: options(),
 					start: 0,
-					query: { value },
-					type: 'exact'
-				}) || {
-					item: undefined
+					query: { value: valueId }
+				});
+				if (findResult) {
+					return findResult.item;
 				}
-			).item;
+				return {
+					value: '',
+					label: ''
+				};
+			});
+			if (valueChanged(initialValue, initialSelectedOptions)) {
+				return current || [];
+			}
+			return initialSelectedOptions;
+		} else if (value && valueChanged(value, current)) {
+			const controlledOptions = value.map((valueId) => {
+				const findResult = find(template, {
+					options: options(),
+					start: 0,
+					query: { value: valueId }
+				});
+				if (findResult) {
+					return findResult.item;
+				}
+				return {
+					value: '',
+					label: ''
+				};
+			});
+			if (valueChanged(value, controlledOptions)) {
+				return current || [];
+			}
+			return controlledOptions;
 		}
+		return current || [];
+	});
 
+	const chips = selectedOptions.map(({ value, label }, index) => {
 		return (
 			<Chip
 				theme={theme.compose(
@@ -156,29 +173,21 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 						: () => {
 								const { onValue } = properties();
 								const options = [...icache.getOrSet('options', [])];
-
 								options.splice(index, 1);
-								icache.set('value', options.map((option) => option.value));
 								icache.set('options', options);
 								onValue && onValue(options);
-
 								focus.focus();
 						  }
 				}
 			>
 				{{
-					label: selected
-						? selected(value, option ? option.label : value)
-						: option
-						? option.label
-						: value
+					label: selected ? selected(value, label) : label
 				}}
 			</Chip>
 		);
 	});
 
-	const values = icache.getOrSet('value', []);
-	const active = focused || values.length > 0;
+	const active = focused || selectedOptions.length > 0;
 
 	return (
 		<div
@@ -186,7 +195,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 			classes={[
 				theme.variant(),
 				themeCss.root,
-				values.length > 0 ? themeCss.hasValue : null,
+				selectedOptions.length > 0 ? themeCss.hasValue : null,
 				focused ? themeCss.focused : null,
 				label ? themeCss.hasLabel : null
 			]}
@@ -227,17 +236,10 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 				resource={resource({ template, options })}
 				onValue={(value) => {
 					const { onValue } = properties();
-
 					const options = icache.set('options', (values = []) => {
 						return [...values, value];
 					});
-					const values = icache.set('value', (values = []) => {
-						return [...values, value.value];
-					});
-					icache.set('value', values);
-					icache.set('options', options);
 					onValue && onValue(options);
-
 					focus.focus();
 				}}
 				value=""
@@ -252,15 +254,19 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 				}}
 				itemDisabled={(item) => {
 					const { duplicates = false, strict = true } = properties();
-
-					const selected = icache.getOrSet('value', []).indexOf(item.value) !== -1;
-
+					const selected =
+						icache
+							.getOrSet('options', [])
+							.findIndex((option) => option.value === item.value) !== -1;
 					return item.disabled || (!duplicates && strict && selected);
 				}}
 			>
 				{{
 					items: (item, props) => {
-						const selected = icache.getOrSet('value', []).indexOf(item.value) !== -1;
+						const selected =
+							icache
+								.getOrSet('options', [])
+								.findIndex((option) => option.value === item.value) !== -1;
 
 						if (items) {
 							return items(
