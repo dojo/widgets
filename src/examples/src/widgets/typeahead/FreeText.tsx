@@ -11,9 +11,10 @@ import { ListOption } from '@dojo/widgets/list';
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
 const options = [
-	{ value: '1', label: 'Cat' },
 	{ value: '2', label: 'Dog' },
-	{ value: '3', label: 'Fish' }
+	{ value: '3', label: 'Fish' },
+	{ value: '5', label: 'Catfish' },
+	{ value: '4', label: 'Cat' }
 ];
 
 const template = createMemoryResourceTemplate<ListOption>();

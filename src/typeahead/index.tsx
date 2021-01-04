@@ -23,6 +23,7 @@ import { Keys } from '../common/util';
 import LoadingIndicator from '../loading-indicator';
 import * as inputCss from '../theme/default/text-input.m.css';
 import { flat } from '@dojo/framework/shim/array';
+import { findIndex } from '@dojo/framework/shim/array';
 
 export interface TypeaheadProperties {
 	/** Callback called when user selects a value */
@@ -231,7 +232,15 @@ export const Typeahead = factory(function Typeahead({
 	}
 
 	const { page, size } = options();
-	const index = icache.getOrSet('activeIndex', strict ? 0 : -1);
+	const currentItems = flat(getOrRead(template, options()));
+	const index = icache.set('activeIndex', (currentIndex = strict ? 0 : -1) => {
+		if (currentItems && currentIndex === -1 && !strict && labelValue) {
+			return findIndex(currentItems, (item) => {
+				return Boolean(labelValue && item.label.toLowerCase() === labelValue.toLowerCase());
+			});
+		}
+		return currentIndex;
+	});
 	const currentPage = Math.ceil((index + 1) / size);
 	const pageIndex = Array.isArray(page)
 		? page.indexOf(currentPage) !== -1
@@ -239,7 +248,6 @@ export const Typeahead = factory(function Typeahead({
 			: 0
 		: 0;
 	const activeIndex = index === -1 ? -1 : pageIndex * size + (index % size);
-	const currentItems = flat(getOrRead(template, options()));
 	const isCurrentlyLoading = isLoading(template, options());
 	const metaInfo = icache.set('meta', (current) => {
 		const newMeta = meta(template, options());
