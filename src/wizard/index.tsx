@@ -64,8 +64,16 @@ const factory = create({ theme })
 	.properties<WizardProperties>();
 
 export default factory(function Wizard({ properties, children, middleware: { theme } }) {
-	const classes = theme.classes(css);
-	const { activeStep, direction = 'horizontal', onStep, clickable = false } = properties();
+	const themedCss = theme.classes(css);
+	const {
+		activeStep,
+		direction = 'horizontal',
+		onStep,
+		clickable = false,
+		classes,
+		variant,
+		theme: themeProp
+	} = properties();
 
 	const stepNodes = children();
 
@@ -86,10 +94,14 @@ export default factory(function Wizard({ properties, children, middleware: { the
 		const { status = defaultStatus } = step.properties;
 		switch (status) {
 			case 'complete':
-				content = <Icon type="checkIcon" />;
+				content = (
+					<Icon type="checkIcon" theme={themeProp} classes={classes} variant={variant} />
+				);
 				break;
 			case 'error':
-				content = <Icon type="closeIcon" />;
+				content = (
+					<Icon type="closeIcon" theme={themeProp} classes={classes} variant={variant} />
+				);
 				break;
 			default:
 				content = String(index + 1);
@@ -97,13 +109,15 @@ export default factory(function Wizard({ properties, children, middleware: { the
 		return {
 			content: (
 				<virtual>
-					<div classes={classes.stepIcon}>
+					<div classes={themedCss.stepIcon}>
 						<Avatar
 							theme={theme.compose(
 								avatarCss,
 								css,
 								'avatar'
 							)}
+							classes={classes}
+							variant={variant}
 							outline={Boolean(status !== 'inProgress')}
 						>
 							{content}
@@ -121,19 +135,19 @@ export default factory(function Wizard({ properties, children, middleware: { the
 			key="root"
 			classes={[
 				theme.variant(),
-				classes.root,
-				direction === 'horizontal' ? classes.horizontal : classes.vertical,
-				clickable && classes.clickable
+				themedCss.root,
+				direction === 'horizontal' ? themedCss.horizontal : themedCss.vertical,
+				clickable && themedCss.clickable
 			]}
 		>
 			{stepWrappers.map(({ content, status }, index) => (
 				<div
 					key={`step${index + 1}`}
 					classes={[
-						classes.step,
-						status === 'complete' && classes.complete,
-						status === 'pending' && classes.pending,
-						status === 'error' && classes.error
+						themedCss.step,
+						status === 'complete' && themedCss.complete,
+						status === 'pending' && themedCss.pending,
+						status === 'error' && themedCss.error
 					]}
 					onclick={() => {
 						if (clickable && onStep) {
@@ -141,7 +155,7 @@ export default factory(function Wizard({ properties, children, middleware: { the
 						}
 					}}
 				>
-					<div classes={classes.tail} />
+					<div classes={themedCss.tail} />
 					{content}
 				</div>
 			))}

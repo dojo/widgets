@@ -5,12 +5,16 @@
 	},
 	"build-app": {
 		"locale": "en",
-		"supportedLocales": ["zh", "zh-CN", "zh-TW"]
+		"supportedLocales": ["zh", "zh-CN", "zh-TW"],
+		"features": {
+			"tests": true
+		}
 	},
 	"build-widget": {
 		"prefix": "dojo",
 		"widgets": [
 			"src/accordion",
+			"src/action-button",
 			"src/avatar",
 			"src/breadcrumb-group",
 			"src/button",

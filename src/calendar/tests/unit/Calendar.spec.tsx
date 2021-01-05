@@ -46,6 +46,7 @@ const expectedDateCell = function(
 			selected={dateIndex === selectedIndex}
 			theme={undefined}
 			classes={undefined}
+			variant={undefined}
 			today={false}
 			onClick={outOfRange ? undefined : noop}
 			onFocusCalled={noop}
@@ -194,6 +195,7 @@ const expected = function(
 				renderMonthLabel={customMonthLabel ? noop : undefined}
 				theme={undefined}
 				classes={undefined}
+				variant={undefined}
 				year={2017}
 				minDate={undefined}
 				maxDate={undefined}
@@ -288,7 +290,7 @@ const expected = function(
 					type="button"
 					onclick={noop}
 				>
-					<Icon type="leftIcon" theme={{}} classes={undefined} />
+					<Icon type="leftIcon" theme={{}} classes={undefined} variant={undefined} />
 					<span classes={[baseCss.visuallyHidden]}>Previous Month</span>
 				</button>
 				<button
@@ -298,7 +300,7 @@ const expected = function(
 					type="button"
 					onclick={noop}
 				>
-					<Icon type="rightIcon" theme={{}} classes={undefined} />
+					<Icon type="rightIcon" theme={{}} classes={undefined} variant={undefined} />
 					<span classes={[baseCss.visuallyHidden]}>Next Month</span>
 				</button>
 			</div>
@@ -318,6 +320,7 @@ const baseTemplate = assertionTemplate(() => {
 				renderMonthLabel={undefined}
 				theme={undefined}
 				classes={undefined}
+				variant={undefined}
 				year={2017}
 				minDate={undefined}
 				maxDate={undefined}
@@ -409,7 +412,7 @@ const baseTemplate = assertionTemplate(() => {
 					type="button"
 					onclick={noop}
 				>
-					<Icon type="leftIcon" theme={{}} classes={undefined} />
+					<Icon type="leftIcon" theme={{}} classes={undefined} variant={undefined} />
 					<span classes={[baseCss.visuallyHidden]}>Previous Month</span>
 				</button>
 				<button
@@ -420,7 +423,7 @@ const baseTemplate = assertionTemplate(() => {
 					type="button"
 					onclick={noop}
 				>
-					<Icon type="rightIcon" theme={{}} classes={undefined} />
+					<Icon type="rightIcon" theme={{}} classes={undefined} variant={undefined} />
 					<span classes={[baseCss.visuallyHidden]}>Next Month</span>
 				</button>
 			</div>
@@ -1018,6 +1021,7 @@ registerSuite('Calendar with min-max', {
 					selected={false}
 					theme={undefined}
 					classes={undefined}
+					variant={undefined}
 					today={false}
 					onClick={noop}
 					onFocusCalled={noop}

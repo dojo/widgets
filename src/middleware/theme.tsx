@@ -5,7 +5,7 @@ import coreTheme, {
 import { ThemeWithVariant, ClassNames, Theme } from '@dojo/framework/core/interfaces';
 import { isThemeInjectorPayloadWithVariant } from '@dojo/framework/core/ThemeInjector';
 
-const factory = create({ coreTheme });
+const factory = create({ coreTheme }).properties<{ variant?: 'default' | 'inherit' }>();
 export const THEME_KEY = ' _key';
 
 function uppercaseFirstChar(value: string) {
@@ -23,6 +23,7 @@ function isThemeWithVariant(theme: any): theme is ThemeWithVariant {
 export interface ThemeProperties extends CoreThemeProperties {}
 
 export const theme = factory(function({ middleware: { coreTheme }, properties }) {
+	const { variant: coreVariant, get, set, classes } = coreTheme;
 	function getTheme() {
 		const { theme } = properties();
 		if (theme) {
@@ -69,16 +70,14 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 					(prefixCss, key) => {
 						if (key.indexOf(prefix) === 0 && key !== prefix) {
 							const classKey = lowercaseFirstChar(key.replace(prefix, ''));
-							if (
-								!variantTheme[key] &&
-								virtualTheme[key] &&
-								virtualTheme[key].trim()
-							) {
-								prefixCss[classKey] = `${baseTheme[classKey]} ${virtualTheme[
-									key
-								].trim()}`;
+							const variantClass =
+								typeof variantTheme[key] === 'string' && variantTheme[key].trim();
+							const virtualClass =
+								typeof virtualTheme[key] === 'string' && virtualTheme[key].trim();
+							if (!variantClass && virtualClass) {
+								prefixCss[classKey] = `${baseTheme[classKey]} ${virtualClass}`;
 							}
-							if (variantTheme[key]) {
+							if (variantClass) {
 								prefixCss[classKey] = variantTheme[key];
 							}
 						}
@@ -112,11 +111,14 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 					if (key === THEME_KEY) {
 						return theme;
 					}
-					const variantComposesClass = variantTheme[key] && variantTheme[key].trim();
-					if (variantTheme[key]) {
+					const variantComposesClass =
+						typeof variantTheme[key] === 'string' && variantTheme[key].trim();
+					const virtualClass =
+						typeof virtualTheme[key] === 'string' && virtualTheme[key].trim();
+					if (variantComposesClass) {
 						theme[key] = variantComposesClass;
-					} else if (virtualTheme[key] && virtualTheme[key].trim()) {
-						theme[key] = `${theme[key]} ${virtualTheme[key].trim()}`;
+					} else if (virtualClass) {
+						theme[key] = `${theme[key]} ${virtualClass}`;
 					}
 					return theme;
 				},
@@ -141,7 +143,12 @@ export const theme = factory(function({ middleware: { coreTheme }, properties })
 				[baseKey]: constructedTheme
 			};
 		},
-		...coreTheme
+		variant: () => {
+			return properties().variant === 'inherit' ? undefined : coreVariant();
+		},
+		get,
+		set,
+		classes
 	};
 });
 

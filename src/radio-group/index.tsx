@@ -1,5 +1,5 @@
 import * as css from '../theme/default/radio-group.m.css';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import { Radio } from '../radio/index';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -39,7 +39,16 @@ export const RadioGroup = factory(function({
 	properties,
 	middleware: { radioGroup, theme }
 }) {
-	const { name, options, onValue, value, initialValue } = properties();
+	const {
+		name,
+		options,
+		onValue,
+		value,
+		initialValue,
+		theme: themeCss,
+		classes,
+		variant
+	} = properties();
 	const [{ radios, label } = { radios: undefined, label: undefined }] = children();
 	const radio = radioGroup(onValue, initialValue || '', value);
 	const { root, legend } = theme.classes(css);
@@ -51,7 +60,15 @@ export const RadioGroup = factory(function({
 		return options.map(({ value, label }) => {
 			const { checked } = radio(value);
 			return (
-				<Radio checked={checked()} name={name} onValue={checked} value={value}>
+				<Radio
+					checked={checked()}
+					name={name}
+					onValue={checked}
+					value={value}
+					theme={themeCss}
+					classes={classes}
+					variant={variant}
+				>
 					{label || value}
 				</Radio>
 			);

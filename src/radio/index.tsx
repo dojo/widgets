@@ -73,6 +73,7 @@ export const Radio = factory(function Radio({
 		theme: themeProp,
 		valid,
 		value,
+		variant,
 		widgetId
 	} = properties();
 
@@ -139,6 +140,7 @@ export const Radio = factory(function Radio({
 					hidden={labelHidden}
 					required={required}
 					secondary={true}
+					variant={variant}
 				>
 					{label}
 				</Label>

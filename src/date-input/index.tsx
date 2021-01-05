@@ -79,10 +79,13 @@ export default factory(function({
 		onValidate,
 		value: controlledValue,
 		disabled = false,
-		readOnly = false
+		readOnly = false,
+		theme: themeProp,
+		variant,
+		classes
 	} = properties();
 	const { messages } = i18n.localize(bundle);
-	const classes = theme.classes(css);
+	const themedCss = theme.classes(css);
 	const max = parseDate(properties().max);
 	const min = parseDate(properties().min);
 
@@ -160,14 +163,14 @@ export default factory(function({
 	}
 
 	return (
-		<div classes={[theme.variant(), classes.root]}>
+		<div classes={[theme.variant(), themedCss.root]}>
 			<input
 				type="hidden"
 				name={name}
 				value={formatDateISO(icache.get('value'))}
 				aria-hidden="true"
 			/>
-			<TriggerPopup key="popup">
+			<TriggerPopup key="popup" theme={themeProp} classes={classes} variant={variant}>
 				{{
 					trigger: (toggleOpen) => {
 						function openCalendar() {
@@ -179,7 +182,7 @@ export default factory(function({
 						}
 
 						return (
-							<div classes={classes.input}>
+							<div classes={themedCss.input}>
 								<TextInput
 									key="input"
 									disabled={disabled}
@@ -211,18 +214,24 @@ export default factory(function({
 											openCalendar();
 										}
 									}}
+									classes={classes}
+									variant={variant}
 								>
 									{{
 										label,
 										trailing: (
-											<Addon>
+											<Addon
+												theme={themeProp}
+												classes={classes}
+												variant={variant}
+											>
 												<button
 													key="dateIcon"
 													onclick={(e) => {
 														e.stopPropagation();
 														openCalendar();
 													}}
-													classes={classes.toggleCalendarButton}
+													classes={themedCss.toggleCalendarButton}
 													type="button"
 												>
 													<Icon type="dateIcon" />
@@ -242,7 +251,7 @@ export default factory(function({
 						}
 
 						return (
-							<div classes={classes.popup}>
+							<div classes={themedCss.popup}>
 								<Calendar
 									key="calendar"
 									focus={() => shouldFocus && focusNode === 'calendar'}
@@ -259,6 +268,9 @@ export default factory(function({
 										icache.set('shouldValidate', true);
 										closeCalendar();
 									}}
+									theme={themeProp}
+									classes={classes}
+									variant={variant}
 								/>
 							</div>
 						);

@@ -463,7 +463,7 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 		}
 
 		function renderPagingButtonContent(type: Paging) {
-			const { labels, classes } = properties();
+			const { labels, classes, variant } = properties();
 			const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
 			const labelText = type === Paging.next ? labels.nextYears : labels.previousYears;
 
@@ -476,6 +476,7 @@ export const DatePicker = create({ theme, focus, icache }).properties<DatePicker
 						'datePickerPaging'
 					)}
 					classes={classes}
+					variant={variant}
 				/>,
 				<span classes={baseCss.visuallyHidden}>{labelText}</span>
 			];
@@ -913,7 +914,7 @@ export const Calendar = factory(function Calendar({
 		currentMonth: boolean,
 		today: boolean
 	) {
-		const { minDate, maxDate, theme, classes } = properties();
+		const { minDate, maxDate, theme, classes, variant } = properties();
 
 		const date = dateObj.getDate();
 		const outOfRange = isOutOfDateRange(dateObj, minDate, maxDate);
@@ -922,6 +923,7 @@ export const Calendar = factory(function Calendar({
 		return (
 			<CalendarCell
 				classes={classes}
+				variant={variant}
 				key={`date-${index}`}
 				callFocus={(callDateFocus || shouldFocus) && focusable}
 				date={date}
@@ -943,6 +945,7 @@ export const Calendar = factory(function Calendar({
 			monthNames = getMonths(commonMessages),
 			theme,
 			classes,
+			variant,
 			minDate,
 			maxDate
 		} = properties();
@@ -952,6 +955,7 @@ export const Calendar = factory(function Calendar({
 			<DatePicker
 				key="date-picker"
 				classes={classes}
+				variant={variant}
 				labelId={monthLabelId}
 				labels={labels}
 				month={month}
@@ -975,7 +979,7 @@ export const Calendar = factory(function Calendar({
 	}
 
 	function renderPagingButtonContent(type: Paging, labels: CalendarMessages) {
-		const { classes } = properties();
+		const { classes, variant } = properties();
 		const iconType = type === Paging.next ? 'rightIcon' : 'leftIcon';
 		const labelText = type === Paging.next ? labels.nextMonth : labels.previousMonth;
 
@@ -988,6 +992,7 @@ export const Calendar = factory(function Calendar({
 					'calendarPaging'
 				)}
 				classes={classes}
+				variant={variant}
 			/>,
 			<span classes={[baseCss.visuallyHidden]}>{labelText}</span>
 		];

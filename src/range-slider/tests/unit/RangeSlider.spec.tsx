@@ -124,6 +124,7 @@ describe('RangeSlider', () => {
 		const testTemplate = template.prepend('@root', () => [
 			<Label
 				classes={undefined}
+				variant={undefined}
 				disabled={undefined}
 				focused={false}
 				hidden={undefined}

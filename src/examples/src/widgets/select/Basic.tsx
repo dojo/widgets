@@ -17,6 +17,7 @@ export default factory(function Basic({ id, middleware: { icache, resource } }) 
 	return (
 		<Example>
 			<Select
+				itemsInView={4}
 				resource={resource({
 					template,
 					transform: { value: 'id', label: 'summary' },

@@ -1,6 +1,5 @@
 import dojoTheme from '@dojo/widgets/theme/dojo';
 import materialTheme from '@dojo/widgets/theme/material';
-import defaultTheme from '@dojo/widgets/theme/default';
 import BasicAccordionPane from './widgets/accordion/Basic';
 import BasicAvatar from './widgets/avatar/Basic';
 import ImageAvatar from './widgets/avatar/Image';
@@ -10,6 +9,7 @@ import AvatarIcon from './widgets/avatar/Icon';
 import AvatarSecondary from './widgets/avatar/Secondary';
 import AvatarOutlines from './widgets/avatar/Outline';
 import Exclusive from './widgets/accordion/Exclusive';
+import BasicActionButton from './widgets/action-button/Basic';
 import BasicBreadcrumbGroup from './widgets/breadcrumb-group/Basic';
 import CustomRendererBreadcrumbGroup from './widgets/breadcrumb-group/CustomRenderer';
 import BasicButton from './widgets/button/Basic';
@@ -296,7 +296,7 @@ export const config = {
 		{ label: 'material', theme: materialTheme },
 		{ label: 'dojo-dark', theme: dojoDarkTheme },
 		{ label: 'material-dark', theme: materialDarkTheme },
-		{ label: 'default', theme: defaultTheme }
+		{ label: 'default', theme: { theme: {}, variants: {} } }
 	],
 	tests,
 	readmePath: (widget: string) => `src/${widget}/README.md`,
@@ -319,6 +319,15 @@ export const config = {
 				example: {
 					filename: 'Basic',
 					module: BasicAccordionPane
+				}
+			}
+		},
+		'action-button': {
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicActionButton
 				}
 			}
 		},

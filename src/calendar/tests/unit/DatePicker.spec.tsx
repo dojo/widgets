@@ -163,7 +163,7 @@ const expectedControls = function(open: boolean) {
 				disabled={false}
 				onclick={noop}
 			>
-				<Icon type="leftIcon" theme={{}} classes={undefined} />
+				<Icon type="leftIcon" theme={{}} classes={undefined} variant={undefined} />
 				<span classes={baseCss.visuallyHidden}>{bundle.messages.previousYears}</span>
 			</button>
 			<button
@@ -173,7 +173,7 @@ const expectedControls = function(open: boolean) {
 				disabled={false}
 				onclick={noop}
 			>
-				<Icon type="rightIcon" theme={{}} classes={undefined} />
+				<Icon type="rightIcon" theme={{}} classes={undefined} variant={undefined} />
 				<span classes={baseCss.visuallyHidden}>{bundle.messages.nextYears}</span>
 			</button>
 		</div>
@@ -436,7 +436,12 @@ registerSuite('Calendar DatePicker', {
 							type="button"
 							onclick={noop}
 						>
-							<Icon type="leftIcon" theme={{}} classes={undefined} />
+							<Icon
+								type="leftIcon"
+								theme={{}}
+								classes={undefined}
+								variant={undefined}
+							/>
 							<span classes={baseCss.visuallyHidden}>
 								{bundle.messages.previousYears}
 							</span>
@@ -448,7 +453,12 @@ registerSuite('Calendar DatePicker', {
 							type="button"
 							onclick={noop}
 						>
-							<Icon type="rightIcon" theme={{}} classes={undefined} />
+							<Icon
+								type="rightIcon"
+								theme={{}}
+								classes={undefined}
+								variant={undefined}
+							/>
 							<span classes={baseCss.visuallyHidden}>
 								{bundle.messages.nextYears}
 							</span>

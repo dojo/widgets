@@ -2,7 +2,6 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Button from '@dojo/widgets/button';
 import Form, { FormField, FormGroup } from '@dojo/widgets/form';
-import { FormMiddleware } from '@dojo/widgets/form/middleware';
 import TextInput from '@dojo/widgets/text-input';
 
 import Example from '../../Example';
@@ -26,7 +25,8 @@ const App = factory(function({ middleware: { icache } }) {
 	return (
 		<Example>
 			<Form onValue={(values) => icache.set('basic', { ...icache.get('basic'), ...values })}>
-				{({ field, reset }: FormMiddleware<Fields>) => {
+				{(form) => {
+					const { field, reset } = form<Fields>();
 					const firstName = field('firstName');
 					const middleName = field('middleName');
 					const lastName = field('lastName');

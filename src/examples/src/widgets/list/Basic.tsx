@@ -14,11 +14,15 @@ const factory = create({ icache, resource });
 const template = createMemoryResourceTemplate<Data>();
 
 export default factory(function Basic({ id, middleware: { icache, resource } }) {
+	const { createOptions } = resource;
+	const options = createOptions(id);
+	options({ size: 5 });
 	return (
 		<Example>
 			<List
 				resource={resource({
 					template,
+					options,
 					transform: { value: 'id', label: 'summary' },
 					initOptions: { id, data }
 				})}

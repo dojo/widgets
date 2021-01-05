@@ -94,6 +94,8 @@ export const Select = factory(function Select({
 	const { createOptions, isLoading, meta, find } = resource;
 	const {
 		classes,
+		variant,
+		theme: themeProp,
 		disabled,
 		helperText,
 		initialValue,
@@ -107,7 +109,6 @@ export const Select = factory(function Select({
 		resource: { template, options = createOptions(id) }
 	} = properties();
 	const [{ items, label } = { items: undefined, label: undefined }] = children();
-
 	let { value } = properties();
 
 	if (value === undefined) {
@@ -128,7 +129,7 @@ export const Select = factory(function Select({
 	const { messages } = i18n.localize(bundle);
 	const expanded = icache.get('expanded');
 	const metaInfo = icache.set('meta', (current) => {
-		const newMeta = meta(template, options());
+		const newMeta = meta(template, options(), true);
 		return newMeta || current;
 	});
 
@@ -162,6 +163,7 @@ export const Select = factory(function Select({
 						'label'
 					)}
 					classes={classes}
+					variant={variant}
 					disabled={disabled}
 					forId={triggerId}
 					valid={valid}
@@ -184,6 +186,9 @@ export const Select = factory(function Select({
 					}
 				}}
 				position={position}
+				theme={themeProp}
+				classes={classes}
+				variant={variant}
 			>
 				{{
 					trigger: (toggleOpen) => {
@@ -196,7 +201,7 @@ export const Select = factory(function Select({
 						}
 
 						let valueOption: ListOption | undefined;
-						if (value) {
+						if (value && metaInfo) {
 							valueOption = (
 								find(template, {
 									options: options(),
@@ -252,6 +257,7 @@ export const Select = factory(function Select({
 											'icon'
 										)}
 										classes={classes}
+										variant={variant}
 									/>
 								</span>
 							</button>
@@ -264,11 +270,17 @@ export const Select = factory(function Select({
 						}
 
 						return metaInfo === undefined && isLoading(template, options()) ? (
-							<LoadingIndicator key="loading" />
+							<LoadingIndicator
+								key="loading"
+								theme={themeProp}
+								variant={variant}
+								classes={classes}
+							/>
 						) : (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
 								<List
 									key="menu"
+									height="auto"
 									focus={() => focusNode === 'menu' && shouldFocus}
 									resource={resource({ template, options })}
 									onValue={(value) => {
@@ -288,6 +300,7 @@ export const Select = factory(function Select({
 										'menu'
 									)}
 									classes={classes}
+									variant={variant}
 									widgetId={menuId}
 								>
 									{items}
@@ -301,6 +314,9 @@ export const Select = factory(function Select({
 				key="helperText"
 				text={valid === false ? messages.requiredMessage : helperText}
 				valid={valid}
+				classes={classes}
+				variant={variant}
+				theme={themeProp}
 			/>
 		</div>
 	);

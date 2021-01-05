@@ -171,7 +171,8 @@ export const TextArea = factory(function TextArea({
 		classes,
 		labelHidden,
 		helperText,
-		onValidate
+		onValidate,
+		variant
 	} = properties();
 
 	let { value } = properties();
@@ -217,6 +218,7 @@ export const TextArea = factory(function TextArea({
 							'label'
 						)}
 						classes={classes}
+						variant={variant}
 						disabled={disabled}
 						valid={valid}
 						readOnly={readOnly}
@@ -300,6 +302,7 @@ export const TextArea = factory(function TextArea({
 				valid={valid}
 				classes={classes}
 				theme={themeProp}
+				variant={variant}
 			/>
 		</div>
 	);

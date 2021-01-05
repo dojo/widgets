@@ -52,7 +52,12 @@ describe('TitlePane', () => {
 							type="button"
 						>
 							<span classes={themeCss.arrow}>
-								<Icon type={isOpen ? 'downIcon' : 'rightIcon'} theme={undefined} />
+								<Icon
+									type={isOpen ? 'downIcon' : 'rightIcon'}
+									theme={undefined}
+									variant={undefined}
+									classes={undefined}
+								/>
 							</span>
 							title
 						</button>

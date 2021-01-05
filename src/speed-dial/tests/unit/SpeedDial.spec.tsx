@@ -3,6 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import harness from '@dojo/framework/testing/harness/harness';
 import * as css from '../../../theme/default/speed-dial.m.css';
+import * as fixCss from '../../styles/speed-dial.m.css';
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import * as sinon from 'sinon';
@@ -16,7 +17,7 @@ import Icon from '../../../icon';
 const baseTemplate = assertionTemplate(() => (
 	<div
 		key="root"
-		classes={[undefined, css.root, false, css.right, false, false]}
+		classes={[undefined, css.root, fixCss.root, false, css.right, false, false]}
 		onmouseleave={noop}
 	>
 		<FloatingActionButton
@@ -26,8 +27,16 @@ const baseTemplate = assertionTemplate(() => (
 			}}
 			onOver={noop}
 			onClick={noop}
+			variant={undefined}
+			classes={undefined}
 		>
-			<Icon size="large" theme={undefined} type="plusIcon" />
+			<Icon
+				size="large"
+				theme={undefined}
+				type="plusIcon"
+				variant={undefined}
+				classes={undefined}
+			/>
 		</FloatingActionButton>
 		<div key="actions" classes={[css.actions, undefined]} onpointerdown={noop}>
 			<div
@@ -131,6 +140,7 @@ describe('SpeedDial', () => {
 			baseTemplate.setProperty('@root', 'classes', [
 				undefined,
 				css.root,
+				fixCss.root,
 				false,
 				false,
 				false,
@@ -157,6 +167,7 @@ describe('SpeedDial', () => {
 			baseTemplate.setProperty('@root', 'classes', [
 				undefined,
 				css.root,
+				fixCss.root,
 				false,
 				false,
 				css.down,
@@ -183,6 +194,7 @@ describe('SpeedDial', () => {
 			baseTemplate.setProperty('@root', 'classes', [
 				undefined,
 				css.root,
+				fixCss.root,
 				css.left,
 				false,
 				false,

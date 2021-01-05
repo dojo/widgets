@@ -280,7 +280,14 @@ registerSuite('TabContainer', {
 									type="button"
 									onclick={noop}
 								>
-									<Icon type="closeIcon" altText="close" size="small" />
+									<Icon
+										type="closeIcon"
+										altText="close"
+										size="small"
+										theme={undefined}
+										variant={undefined}
+										classes={undefined}
+									/>
 								</button>
 								<span classes={[css.indicator, false]}>
 									<span classes={css.indicatorContent} />

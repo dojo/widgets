@@ -2,7 +2,7 @@ import { create, tsx, diffProperty } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
 import { flat } from '@dojo/framework/shim/array';
 
@@ -93,9 +93,12 @@ export default factory(function Tree({
 		onExpand,
 		disabledIds,
 		resource: { template },
-		parentSelection = false
+		parentSelection = false,
+		theme: themeProp,
+		classes,
+		variant
 	} = properties();
-	const classes = theme.classes(css);
+	const themedCss = theme.classes(css);
 	const defaultRenderer = (n: TreeNodeOption) => n.value;
 	const [itemRenderer] = children();
 
@@ -224,7 +227,7 @@ export default factory(function Tree({
 		const info = meta(template, options({ query: { parent: nodeId } }), true);
 
 		if (info === undefined || isLoading(template, options())) {
-			return <LoadingIndicator />;
+			return <LoadingIndicator theme={themeProp} classes={classes} variant={variant} />;
 		}
 
 		const results = getOrRead(
@@ -237,8 +240,8 @@ export default factory(function Tree({
 		return (
 			<ol
 				classes={[
-					nodeId === 'root' ? classes.root : null,
-					classes.nodeParent,
+					nodeId === 'root' ? themedCss.root : null,
+					themedCss.nodeParent,
 					theme.variant()
 				]}
 				onkeydown={onKeyDown}
@@ -250,14 +253,17 @@ export default factory(function Tree({
 					return (
 						<li
 							classes={[
-								classes.node,
-								node.hasChildren && classes.leaf,
-								selectable && classes.selectable,
-								node.id === selectedNode && classes.selected
+								themedCss.node,
+								node.hasChildren && themedCss.leaf,
+								selectable && themedCss.selectable,
+								node.id === selectedNode && themedCss.selected
 							]}
 							role={'treeitem'}
 						>
 							<TreeNode
+								classes={classes}
+								theme={themeProp}
+								variant={variant}
 								activeNode={activeNode}
 								checkable={checkable}
 								selectable={selectable}
@@ -334,10 +340,13 @@ export const TreeNode = treeNodeFactory(function TreeNode({
 		onValue,
 		onCheck,
 		onExpand,
-		parentSelection
+		parentSelection,
+		theme: themeProp,
+		classes,
+		variant
 	} = properties();
 	const [itemRenderer] = children();
-	const classes = theme.classes(css);
+	const themedCss = theme.classes(css);
 	const isActive = node.id === activeNode;
 	const isExpandable = node.hasChildren;
 
@@ -357,12 +366,20 @@ export const TreeNode = treeNodeFactory(function TreeNode({
 			}}
 			disabled={disabled}
 			widgetId={node.id}
+			classes={classes}
+			theme={themeProp}
+			variant={variant}
 		>
-			<div classes={classes.contentWrapper}>
-				<div classes={classes.content}>
+			<div classes={themedCss.contentWrapper}>
+				<div classes={themedCss.content}>
 					{isExpandable && (
-						<div classes={classes.expander}>
-							<Icon type={expanded ? 'downIcon' : 'rightIcon'} />
+						<div classes={themedCss.expander}>
+							<Icon
+								type={expanded ? 'downIcon' : 'rightIcon'}
+								theme={themeProp}
+								classes={classes}
+								variant={variant}
+							/>
 						</div>
 					)}
 					{checkable && (parentSelection || !isExpandable) && (
@@ -378,10 +395,13 @@ export const TreeNode = treeNodeFactory(function TreeNode({
 									onCheck(value);
 								}}
 								disabled={disabled}
+								classes={classes}
+								theme={themeProp}
+								variant={variant}
 							/>
 						</div>
 					)}
-					<div classes={classes.title}>{itemRenderer(node)}</div>
+					<div classes={themedCss.title}>{itemRenderer(node)}</div>
 				</div>
 			</div>
 		</ListItem>

@@ -1,6 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
 import FloatingActionButton from '../floating-action-button';
+import * as fixedCss from './styles/speed-dial.m.css';
 import * as css from '../theme/default/speed-dial.m.css';
 import * as fabCss from '../theme/default/floating-action-button.m.css';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
@@ -16,7 +17,7 @@ export interface ActionProperties {
 const actionFactory = create({ theme }).properties<ActionProperties>();
 
 export const Action = actionFactory(({ properties, children, middleware: { theme } }) => {
-	const { onClick, title } = properties();
+	const { onClick, title, variant, classes } = properties();
 
 	const fab = (
 		<FloatingActionButton
@@ -30,6 +31,8 @@ export const Action = actionFactory(({ properties, children, middleware: { theme
 			onClick={() => {
 				onClick();
 			}}
+			classes={classes}
+			variant={variant}
 		>
 			{children()}
 		</FloatingActionButton>
@@ -74,10 +77,12 @@ export const SpeedDial = factory(function SpeedDial({
 		onOpen,
 		onClose,
 		theme: themeProp,
+		classes,
+		variant,
 		delay = 30,
 		iconType = 'plusIcon'
 	} = properties();
-	const classes = theme.classes(css);
+	const themedCss = theme.classes(css);
 
 	let { open } = properties();
 
@@ -115,11 +120,12 @@ export const SpeedDial = factory(function SpeedDial({
 			key="root"
 			classes={[
 				theme.variant(),
-				classes.root,
-				direction === 'left' && classes.left,
-				direction === 'right' && classes.right,
-				direction === 'down' && classes.down,
-				direction === 'up' && classes.up
+				themedCss.root,
+				fixedCss.root,
+				direction === 'left' && themedCss.left,
+				direction === 'right' && themedCss.right,
+				direction === 'down' && themedCss.down,
+				direction === 'up' && themedCss.up
 			]}
 			onmouseleave={toggleClose}
 		>
@@ -139,12 +145,20 @@ export const SpeedDial = factory(function SpeedDial({
 						toggleOpen();
 					}
 				}}
+				classes={classes}
+				variant={variant}
 			>
-				<Icon size="large" theme={themeProp} type={iconType} />
+				<Icon
+					size="large"
+					theme={themeProp}
+					type={iconType}
+					classes={classes}
+					variant={variant}
+				/>
 			</FloatingActionButton>
 			<div
 				key="actions"
-				classes={[classes.actions, open ? classes.open : undefined]}
+				classes={[themedCss.actions, open ? themedCss.open : undefined]}
 				onpointerdown={toggleClose}
 			>
 				{actions.map((child, index) => {
@@ -154,7 +168,7 @@ export const SpeedDial = factory(function SpeedDial({
 						<div
 							key={`action-wrapper-${index}`}
 							styles={{ transitionDelay: calculatedDelay }}
-							classes={[classes.action, classes.actionTransition]}
+							classes={[themedCss.action, themedCss.actionTransition]}
 						>
 							{child}
 						</div>

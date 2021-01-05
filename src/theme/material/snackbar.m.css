@@ -15,6 +15,7 @@
 }
 
 .actions {
+	--mdc-theme-primary: var(--mdc-theme-primary-on-dark);
 	composes: mdc-snackbar__actions from '@material/snackbar/dist/mdc.snackbar.css';
 }
 

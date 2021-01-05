@@ -22,13 +22,37 @@ describe('CheckboxGroup', () => {
 			/>
 		));
 		const optionTemplate = template.setChildren('@root', () => [
-			<Checkbox name="test" value="cat" checked={false} onValue={noop}>
+			<Checkbox
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+			>
 				cat
 			</Checkbox>,
-			<Checkbox name="test" value="fish" checked={false} onValue={noop}>
+			<Checkbox
+				name="test"
+				value="fish"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+			>
 				fish
 			</Checkbox>,
-			<Checkbox name="test" value="dog" checked={false} onValue={noop}>
+			<Checkbox
+				name="test"
+				value="dog"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+			>
 				dog
 			</Checkbox>
 		]);
@@ -45,7 +69,15 @@ describe('CheckboxGroup', () => {
 		));
 		const labelTemplate = template.setChildren('@root', () => [
 			<legend classes={css.legend}>test label</legend>,
-			<Checkbox name="test" value="cat" checked={false} onValue={noop}>
+			<Checkbox
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+			>
 				cat
 			</Checkbox>
 		]);
@@ -62,13 +94,37 @@ describe('CheckboxGroup', () => {
 			/>
 		));
 		const optionTemplate = template.setChildren('@root', () => [
-			<Checkbox name="test" value="cat" checked={false} onValue={noop}>
+			<Checkbox
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+			>
 				cat
 			</Checkbox>,
-			<Checkbox name="test" value="fish" checked={true} onValue={noop}>
+			<Checkbox
+				name="test"
+				value="fish"
+				checked={true}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+			>
 				fish
 			</Checkbox>,
-			<Checkbox name="test" value="dog" checked={false} onValue={noop}>
+			<Checkbox
+				name="test"
+				value="dog"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+			>
 				dog
 			</Checkbox>
 		]);
@@ -85,13 +141,37 @@ describe('CheckboxGroup', () => {
 			/>
 		));
 		const optionTemplate = template.setChildren('@root', () => [
-			<Checkbox name="test" value="cat" checked={false} onValue={noop}>
+			<Checkbox
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+			>
 				cat
 			</Checkbox>,
-			<Checkbox name="test" value="fish" checked={true} onValue={noop}>
+			<Checkbox
+				name="test"
+				value="fish"
+				checked={true}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+			>
 				fish
 			</Checkbox>,
-			<Checkbox name="test" value="dog" checked={false} onValue={noop}>
+			<Checkbox
+				name="test"
+				value="dog"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+			>
 				dog
 			</Checkbox>
 		]);
@@ -106,7 +186,15 @@ describe('CheckboxGroup', () => {
 					checkboxes: () => {
 						return [
 							<span>custom label</span>,
-							<Checkbox name="test" value="cat" checked={false} onValue={noop}>
+							<Checkbox
+								name="test"
+								value="cat"
+								checked={false}
+								onValue={noop}
+								theme={undefined}
+								classes={undefined}
+								variant={undefined}
+							>
 								cat
 							</Checkbox>,
 							<hr />
@@ -118,7 +206,15 @@ describe('CheckboxGroup', () => {
 		const customTemplate = template.setChildren('@root', () => [
 			<legend classes={css.legend}>custom render label</legend>,
 			<span>custom label</span>,
-			<Checkbox name="test" value="cat" checked={false} onValue={noop}>
+			<Checkbox
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+			>
 				cat
 			</Checkbox>,
 			<hr />

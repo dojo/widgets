@@ -36,7 +36,7 @@ const factory = create({ theme })
 
 export const Result = factory(function Result({ children, properties, middleware: { theme } }) {
 	const themeCss = theme.classes(css);
-	const { title, subtitle, status } = properties();
+	const { title, subtitle, status, classes, variant } = properties();
 	const { actionButtons, content, icon } = children()[0] || ({} as ResultChildren);
 
 	return (
@@ -61,6 +61,8 @@ export const Result = factory(function Result({ children, properties, middleware
 								css,
 								'icon'
 							)}
+							classes={classes}
+							variant={variant}
 						/>
 					)}
 				</div>

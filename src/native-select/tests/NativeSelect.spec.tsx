@@ -51,10 +51,16 @@ const baseTemplate = assertionTemplate(() => (
 				})}
 			</select>
 			<span classes={css.arrow}>
-				<Icon type="downIcon" theme={{}} classes={undefined} />
+				<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
 			</span>
 		</div>
-		<HelperText key="helperText" text={undefined} />
+		<HelperText
+			variant={undefined}
+			classes={undefined}
+			theme={undefined}
+			key="helperText"
+			text={undefined}
+		/>
 	</div>
 ));
 
@@ -105,6 +111,7 @@ describe('Native Select', () => {
 					assertion-key="label"
 					theme={{}}
 					classes={undefined}
+					variant={undefined}
 					disabled={true}
 					forId={'something'}
 					required={true}
@@ -157,6 +164,7 @@ describe('Native Select', () => {
 					assertion-key="label"
 					theme={{}}
 					classes={undefined}
+					variant={undefined}
 					disabled={true}
 					forId={'something'}
 					required={true}
@@ -209,6 +217,7 @@ describe('Native Select', () => {
 					assertion-key="label"
 					theme={{}}
 					classes={undefined}
+					variant={undefined}
 					disabled={true}
 					forId={'something'}
 					required={true}

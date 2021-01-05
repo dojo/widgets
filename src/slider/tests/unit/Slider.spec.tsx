@@ -54,6 +54,7 @@ const expected = function(
 				<Label
 					theme={undefined}
 					classes={undefined}
+					variant={undefined}
 					disabled={undefined}
 					focused={focused}
 					hidden={undefined}

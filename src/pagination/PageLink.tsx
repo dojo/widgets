@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import i18n from '@dojo/framework/core/middleware/i18n';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 
 import * as css from '../theme/default/pagination.m.css';
 

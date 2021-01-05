@@ -1,10 +1,10 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { create, renderer, tsx } from '@dojo/framework/core/vdom';
-import global from '@dojo/framework/shim/global';
+import { create, tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../common/util';
-import theme from '../middleware/theme';
+import theme, { ThemeProperties } from '../middleware/theme';
+import offscreen from '../middleware/offscreen';
 import * as listItemCss from '../theme/default/list-item.m.css';
 import * as menuItemCss from '../theme/default/menu-item.m.css';
 import * as css from '../theme/default/list.m.css';
@@ -126,10 +126,12 @@ export const ListItem = listItemFactory(function ListItem({
 		onDrop,
 		movedUp,
 		movedDown,
-		collapsed
+		collapsed,
+		theme: themeProp,
+		variant
 	} = properties();
 
-	const classes = theme.classes(listItemCss);
+	const themedCss = theme.classes(listItemCss);
 
 	function select() {
 		!disabled && onSelect();
@@ -148,15 +150,15 @@ export const ListItem = listItemFactory(function ListItem({
 			}, 500)}
 			classes={[
 				theme.variant(),
-				classes.root,
-				selected && classes.selected,
-				active && classes.active,
-				disabled && classes.disabled,
-				movedUp && classes.movedUp,
-				movedDown && classes.movedDown,
-				collapsed && classes.collapsed,
-				dragged && classes.dragged,
-				draggable && classes.draggable
+				themedCss.root,
+				selected && themedCss.selected,
+				active && themedCss.active,
+				disabled && themedCss.disabled,
+				movedUp && themedCss.movedUp,
+				movedDown && themedCss.movedDown,
+				collapsed && themedCss.collapsed,
+				dragged && themedCss.dragged,
+				draggable && themedCss.draggable
 			]}
 			onclick={() => {
 				requestActive();
@@ -177,7 +179,9 @@ export const ListItem = listItemFactory(function ListItem({
 			{draggable && (
 				<Icon
 					type="barsIcon"
-					classes={{ '@dojo/widgets/icon': { icon: [classes.dragIcon] } }}
+					classes={{ '@dojo/widgets/icon': { icon: [themedCss.dragIcon] } }}
+					theme={themeProp}
+					variant={variant}
 				/>
 			)}
 		</div>
@@ -217,13 +221,15 @@ export interface ListProperties {
 	widgetId?: string;
 	/** Callback to determine if a list item is disabled. If not provided, ListOption.disabled will be used */
 	disabled?: (item: ListOption) => boolean;
+	/** Specifies if the list height should by fixed to the height of the items in view */
+	height?: 'auto' | 'fixed';
 }
 
 export interface ListChildren {
 	/** Custom renderer for item contents */
 	(
 		item: ItemRendererProperties,
-		properties: ListItemProperties & MenuItemProperties
+		properties: ListItemProperties & MenuItemProperties & ThemeProperties
 	): RenderResult;
 }
 
@@ -251,21 +257,11 @@ interface ListICache {
 	requestedInputText: string;
 }
 
-const offscreenHeight = (dnode: RenderResult) => {
-	const r = renderer(() => dnode);
-	const div = global.document.createElement('div');
-	div.style.position = 'absolute';
-	global.document.body.appendChild(div);
-	r.mount({ domNode: div, sync: true });
-	const dimensions = div.getBoundingClientRect();
-	global.document.body.removeChild(div);
-	return dimensions.height;
-};
-
 const factory = create({
 	icache: createICacheMiddleware<ListICache>(),
 	focus,
 	theme,
+	offscreen,
 	resource: createResourceMiddleware<ListOption>()
 })
 	.properties<ListProperties>()
@@ -275,7 +271,7 @@ export const List = factory(function List({
 	children,
 	properties,
 	id,
-	middleware: { icache, focus, theme, resource }
+	middleware: { icache, focus, theme, resource, offscreen }
 }) {
 	const { getOrRead, createOptions, find, meta, isLoading } = resource;
 	const {
@@ -291,8 +287,10 @@ export const List = factory(function List({
 		onValue,
 		widgetId,
 		theme: themeProp,
+		variant,
 		resource: { template, options = createOptions(id) },
-		classes
+		classes,
+		height = 'fixed'
 	} = properties();
 	const [itemRenderer] = children();
 
@@ -375,12 +373,13 @@ export const List = factory(function List({
 
 	function renderItems(start: number, count: number, startNode: number) {
 		const renderedItems = [];
+		const { size: resourceRequestSize } = options();
 		const metaInfo = meta(template, options(), true);
 		if (metaInfo && metaInfo.total) {
 			let pages: number[] = [];
 			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
 				const index = i + startNode;
-				const page = Math.floor(index / count) + 1;
+				const page = Math.floor(index / resourceRequestSize) + 1;
 				if (pages.indexOf(page) === -1) {
 					pages.push(page);
 				}
@@ -391,9 +390,9 @@ export const List = factory(function List({
 			const pageItems = getOrRead(template, options({ page: pages }));
 			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
 				const index = i + startNode;
-				const page = Math.floor(index / count) + 1;
+				const page = Math.floor(index / resourceRequestSize) + 1;
 				const pageIndex = pages.indexOf(page);
-				const indexWithinPage = index - (page - 1) * count;
+				const indexWithinPage = index - (page - 1) * resourceRequestSize;
 				const items = pageItems[pageIndex];
 				if (items && items[indexWithinPage]) {
 					const { value, label, disabled, divider } = items[indexWithinPage];
@@ -416,7 +415,8 @@ export const List = factory(function List({
 				setActiveIndex(index);
 			},
 			disabled: true,
-			classes
+			classes,
+			variant
 		};
 		return menu ? (
 			<MenuItem
@@ -529,7 +529,8 @@ export const List = factory(function List({
 				setActiveIndex(index);
 			},
 			disabled: itemDisabled,
-			classes
+			classes,
+			variant
 		};
 		let item: RenderResult;
 
@@ -542,7 +543,7 @@ export const List = factory(function List({
 					active,
 					selected
 				},
-				itemProps
+				{ ...itemProps, theme: themeProp }
 			);
 		} else {
 			const children = label || value;
@@ -635,22 +636,27 @@ export const List = factory(function List({
 			<ListItem {...offscreenItemProps}>offscreen</ListItem>
 		);
 
-		const itemHeight = icache.getOrSet('itemHeight', offscreenHeight(offscreenMenuItem));
+		const itemHeight = icache.getOrSet(
+			'itemHeight',
+			offscreen(() => offscreenMenuItem, (node) => node.getBoundingClientRect().height)
+		);
 
 		itemHeight && icache.set('menuHeight', itemsInView * itemHeight);
 	}
 
-	const nodePadding = Math.min(itemsInView, 20);
 	const menuHeight = icache.get('menuHeight');
 	const idBase = widgetId || `menu-${id}`;
-	const rootStyles = menuHeight ? { maxHeight: `${menuHeight}px` } : {};
+	let rootStyles: Partial<CSSStyleDeclaration> = {};
+	if (menuHeight) {
+		rootStyles =
+			height === 'fixed' ? { height: `${menuHeight}px` } : { maxHeight: `${menuHeight}px` };
+	}
 	const shouldFocus = focus.shouldFocus();
 	const themedCss = theme.classes(css);
 	const itemHeight = icache.getOrSet('itemHeight', 0);
 	let scrollTop = icache.getOrSet('scrollTop', 0);
-
+	const nodePadding = Math.min(itemsInView, 20);
 	const renderedItemsCount = itemsInView + 2 * nodePadding;
-	options({ size: renderedItemsCount });
 	let computedActiveIndex =
 		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 	const inputText = icache.get('inputText');
@@ -706,58 +712,52 @@ export const List = factory(function List({
 	const items = renderItems(startNode, renderedItemsCount, startNode);
 	const metaInfo = meta(template, options(), true);
 
-	if (!metaInfo || metaInfo.total === undefined) {
-		return;
-	}
-
-	const total = metaInfo.total;
+	const total = metaInfo && metaInfo.total ? metaInfo.total : 0;
 	const totalContentHeight = total * itemHeight;
 
 	return (
-		!!total && (
+		<div
+			key="root"
+			classes={[theme.variant(), themedCss.root, fixedCss.root]}
+			tabIndex={focusable ? 0 : -1}
+			onkeydown={(e) => {
+				onKeyDown(e, total);
+			}}
+			focus={() => shouldFocus}
+			onfocus={onFocus}
+			onpointerdown={focusable ? undefined : (event) => event.preventDefault()}
+			onblur={onBlur}
+			scrollTop={scrollTop}
+			onscroll={(e) => {
+				const newScrollTop = (e.target as HTMLElement).scrollTop;
+				if (scrollTop !== newScrollTop) {
+					icache.set('scrollTop', newScrollTop);
+				}
+			}}
+			styles={rootStyles}
+			role={menu ? 'menu' : 'listbox'}
+			aria-orientation="vertical"
+			aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
+			id={idBase}
+		>
 			<div
-				key="root"
-				classes={[theme.variant(), themedCss.root, fixedCss.root]}
-				tabIndex={focusable ? 0 : -1}
-				onkeydown={(e) => {
-					onKeyDown(e, total);
+				classes={fixedCss.wrapper}
+				styles={{
+					height: `${totalContentHeight}px`
 				}}
-				focus={() => shouldFocus}
-				onfocus={onFocus}
-				onpointerdown={focusable ? undefined : (event) => event.preventDefault()}
-				onblur={onBlur}
-				scrollTop={scrollTop}
-				onscroll={(e) => {
-					const newScrollTop = (e.target as HTMLElement).scrollTop;
-					if (scrollTop !== newScrollTop) {
-						icache.set('scrollTop', newScrollTop);
-					}
-				}}
-				styles={rootStyles}
-				role={menu ? 'menu' : 'listbox'}
-				aria-orientation="vertical"
-				aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
-				id={idBase}
+				key="wrapper"
 			>
 				<div
-					classes={fixedCss.wrapper}
+					classes={fixedCss.transformer}
 					styles={{
-						height: `${totalContentHeight}px`
+						transform: `translateY(${offsetY}px)`
 					}}
-					key="wrapper"
+					key="transformer"
 				>
-					<div
-						classes={fixedCss.transformer}
-						styles={{
-							transform: `translateY(${offsetY}px)`
-						}}
-						key="transformer"
-					>
-						{items}
-					</div>
+					{items}
 				</div>
 			</div>
-		)
+		</div>
 	);
 });
 

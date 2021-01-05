@@ -2,7 +2,7 @@ const { describe, it, afterEach, beforeEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import { sandbox } from 'sinon';
 import global from '@dojo/framework/shim/global';
-import { tsx } from '@dojo/framework/core/vdom';
+import { tsx, getRegistry, create } from '@dojo/framework/core/vdom';
 import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
 import {
 	createMemoryResourceTemplate,
@@ -16,6 +16,15 @@ import * as css from '../../theme/default/list.m.css';
 import * as fixedCss from '../list.m.css';
 import * as listItemCss from '../../theme/default/list-item.m.css';
 import * as menuItemCss from '../../theme/default/menu-item.m.css';
+import Registry from '@dojo/framework/core/Registry';
+import RegistryHandler from '@dojo/framework/core/RegistryHandler';
+
+const mockGetRegistry = create()(function() {
+	const registry = new Registry();
+	const handler = new RegistryHandler();
+	handler.base = registry;
+	return () => handler;
+});
 
 let template = createMemoryResourceTemplate<{ value: string; label: string; disabled?: boolean }>();
 const data = [
@@ -77,7 +86,7 @@ const baseAssertion = assertion(() => (
 		role={'listbox'}
 		scrollTop={0}
 		styles={{
-			maxHeight: '450px'
+			height: '450px'
 		}}
 		tabIndex={0}
 	>
@@ -106,6 +115,7 @@ const listWithListItemsAssertion = baseAssertion
 	.replaceChildren(WrappedItemContainer, () => [
 		<ListItem
 			classes={undefined}
+			variant={undefined}
 			active={true}
 			disabled={false}
 			key={'item-0'}
@@ -142,6 +152,7 @@ const listWithListItemsAssertion = baseAssertion
 		</ListItem>,
 		<ListItem
 			classes={undefined}
+			variant={undefined}
 			active={false}
 			disabled={false}
 			key={'item-1'}
@@ -178,6 +189,7 @@ const listWithListItemsAssertion = baseAssertion
 		</ListItem>,
 		<ListItem
 			classes={undefined}
+			variant={undefined}
 			active={false}
 			disabled={true}
 			key={'item-2'}
@@ -222,6 +234,7 @@ const listWithMenuItemsAssertion = baseAssertion
 	.replaceChildren(WrappedItemContainer, () => [
 		<MenuItem
 			classes={undefined}
+			variant={undefined}
 			active={true}
 			disabled={false}
 			key={'item-0'}
@@ -241,6 +254,7 @@ const listWithMenuItemsAssertion = baseAssertion
 		</MenuItem>,
 		<MenuItem
 			classes={undefined}
+			variant={undefined}
 			active={false}
 			disabled={false}
 			key={'item-1'}
@@ -260,6 +274,7 @@ const listWithMenuItemsAssertion = baseAssertion
 		</MenuItem>,
 		<MenuItem
 			classes={undefined}
+			variant={undefined}
 			active={false}
 			disabled={true}
 			key={'item-2'}
@@ -295,19 +310,11 @@ describe('List', () => {
 		sb.restore();
 	});
 
-	it('should not render with no data', () => {
-		const r = renderer(() => (
-			<List
-				resource={{
-					template: { template, id: 'test', initOptions: { data: [], id: 'test' } }
-				}}
-				onValue={onValueStub}
-			/>
-		));
-		r.expect(assertion(() => undefined));
-	});
-
 	it('should render with list item placeholders', async () => {
+		const data: any[] = [];
+		for (let i = 0; i < 60; i++) {
+			data.push({ value: `${i}`, label: `Item ${i}` });
+		}
 		let pageOneResolver: (options: { data: any[]; total: number }) => void;
 		const pageOnePromise = new Promise<{ data: any[]; total: number }>((resolve) => {
 			pageOneResolver = resolve;
@@ -318,10 +325,55 @@ describe('List', () => {
 		});
 		const listAssertion = listWithListItemsAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
-				height: '270px'
+				height: '2700px'
 			})
 			.setProperty(WrappedRoot, 'styles', {
-				maxHeight: '45px'
+				height: '450px'
+			})
+			.replaceChildren(WrappedItemContainer, () => {
+				const children: any[] = [];
+				for (let i = 0; i < 30; i++) {
+					children.push(
+						<ListItem
+							classes={undefined}
+							variant={undefined}
+							active={i === 0}
+							disabled={false}
+							key={`item-${i}`}
+							onRequestActive={noop}
+							onSelect={noop}
+							selected={false}
+							theme={{
+								'@dojo/widgets/list-item': {
+									active: listItemCss.active,
+									disabled: listItemCss.disabled,
+									root: listItemCss.root,
+									s: css.items,
+									selected: listItemCss.selected,
+									collapsed: listItemCss.collapsed,
+									dragged: listItemCss.dragged,
+									dragIcon: listItemCss.dragIcon,
+									draggable: listItemCss.draggable,
+									movedUp: listItemCss.movedUp,
+									movedDown: listItemCss.movedDown
+								}
+							}}
+							widgetId={`menu-test-item-${i}`}
+							collapsed={false}
+							draggable={undefined}
+							dragged={false}
+							movedDown={false}
+							movedUp={false}
+							onDragEnd={noop}
+							onDragOver={noop}
+							onDragStart={noop}
+							onDrop={noop}
+						>
+							{`Item ${i}`}
+						</ListItem>
+					);
+				}
+				return children;
 			});
 		const template = createResourceTemplate<{
 			value: string;
@@ -341,198 +393,171 @@ describe('List', () => {
 			find: () => {}
 		});
 
-		const r = renderer(() => (
-			<List
-				itemsInView={1}
-				resource={{ template: { template, id: 'test' } }}
-				onValue={onValueStub}
-			/>
-		));
-		r.expect(assertion(() => null));
-		pageOneResolver!({ data, total: 6 });
+		const r = renderer(
+			() => <List resource={{ template: { template, id: 'test' } }} onValue={onValueStub} />,
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		r.expect(baseAssertion);
+		pageOneResolver!({ data: data.slice(0, 30), total: data.length });
 		await pageOnePromise;
 		r.expect(listAssertion);
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.End }));
 		const endAssertion = listAssertion
-			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-5')
-			.setProperty(WrappedRoot, 'scrollTop', 225)
-			.setProperty(WrappedItemContainer, 'styles', { transform: 'translateY(180px)' });
-		const placeHolderAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
-			<ListItem
-				classes={undefined}
-				active={false}
-				disabled={true}
-				key={'item-4'}
-				onRequestActive={noop}
-				onSelect={noop}
-				selected={false}
-				theme={{
-					'@dojo/widgets/list-item': {
-						active: listItemCss.active,
-						disabled: listItemCss.disabled,
-						root: listItemCss.root,
-						s: css.items,
-						selected: listItemCss.selected,
-						collapsed: listItemCss.collapsed,
-						dragged: listItemCss.dragged,
-						dragIcon: listItemCss.dragIcon,
-						draggable: listItemCss.draggable,
-						movedUp: listItemCss.movedUp,
-						movedDown: listItemCss.movedDown
-					}
-				}}
-				widgetId={'menu-test-item-4'}
-				collapsed={false}
-				draggable={undefined}
-				dragged={false}
-				movedDown={false}
-				movedUp={false}
-				onDragEnd={noop}
-				onDragOver={noop}
-				onDragStart={noop}
-				onDrop={noop}
-			>
-				<LoadingIndicator />
-			</ListItem>,
-			<ListItem
-				classes={undefined}
-				active={false}
-				disabled={true}
-				key={'item-5'}
-				onRequestActive={noop}
-				onSelect={noop}
-				selected={false}
-				theme={{
-					'@dojo/widgets/list-item': {
-						active: listItemCss.active,
-						disabled: listItemCss.disabled,
-						root: listItemCss.root,
-						s: css.items,
-						selected: listItemCss.selected,
-						collapsed: listItemCss.collapsed,
-						dragged: listItemCss.dragged,
-						dragIcon: listItemCss.dragIcon,
-						draggable: listItemCss.draggable,
-						movedUp: listItemCss.movedUp,
-						movedDown: listItemCss.movedDown
-					}
-				}}
-				widgetId={'menu-test-item-5'}
-				collapsed={false}
-				draggable={undefined}
-				dragged={false}
-				movedDown={false}
-				movedUp={false}
-				onDragEnd={noop}
-				onDragOver={noop}
-				onDragStart={noop}
-				onDrop={noop}
-			>
-				<LoadingIndicator />
-			</ListItem>
-		]);
+			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-59')
+			.setProperty(WrappedRoot, 'scrollTop', 2250)
+			.setProperty(WrappedItemContainer, 'styles', { transform: 'translateY(1800px)' });
+		const placeHolderAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => {
+			const children: any[] = [];
+			for (let i = 40; i < 60; i++) {
+				children.push(
+					<ListItem
+						classes={undefined}
+						variant={undefined}
+						active={false}
+						disabled={true}
+						key={`item-${i}`}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
+							}
+						}}
+						widgetId={`menu-test-item-${i}`}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
+					>
+						<LoadingIndicator />
+					</ListItem>
+				);
+			}
+			return children;
+		});
 		r.expect(placeHolderAssertion);
-		pageTwoResolver!({ data, total: 6 });
+		pageTwoResolver!({ data: data.slice(30), total: data.length });
 		await pageTwoPromise;
-		const lastPageItemsAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
-			<ListItem
-				classes={undefined}
-				active={false}
-				disabled={false}
-				key={'item-4'}
-				onRequestActive={noop}
-				onSelect={noop}
-				selected={false}
-				theme={{
-					'@dojo/widgets/list-item': {
-						active: listItemCss.active,
-						disabled: listItemCss.disabled,
-						root: listItemCss.root,
-						s: css.items,
-						selected: listItemCss.selected,
-						collapsed: listItemCss.collapsed,
-						dragged: listItemCss.dragged,
-						dragIcon: listItemCss.dragIcon,
-						draggable: listItemCss.draggable,
-						movedUp: listItemCss.movedUp,
-						movedDown: listItemCss.movedDown
-					}
-				}}
-				widgetId={'menu-test-item-4'}
-				collapsed={false}
-				draggable={undefined}
-				dragged={false}
-				movedDown={false}
-				movedUp={false}
-				onDragEnd={noop}
-				onDragOver={noop}
-				onDragStart={noop}
-				onDrop={noop}
-			>
-				Cat
-			</ListItem>,
-			<ListItem
-				classes={undefined}
-				active={true}
-				disabled={true}
-				key={'item-5'}
-				onRequestActive={noop}
-				onSelect={noop}
-				selected={false}
-				theme={{
-					'@dojo/widgets/list-item': {
-						active: listItemCss.active,
-						disabled: listItemCss.disabled,
-						root: listItemCss.root,
-						s: css.items,
-						selected: listItemCss.selected,
-						collapsed: listItemCss.collapsed,
-						dragged: listItemCss.dragged,
-						dragIcon: listItemCss.dragIcon,
-						draggable: listItemCss.draggable,
-						movedUp: listItemCss.movedUp,
-						movedDown: listItemCss.movedDown
-					}
-				}}
-				widgetId={'menu-test-item-5'}
-				collapsed={false}
-				draggable={undefined}
-				dragged={false}
-				movedDown={false}
-				movedUp={false}
-				onDragEnd={noop}
-				onDragOver={noop}
-				onDragStart={noop}
-				onDrop={noop}
-			>
-				Fish
-			</ListItem>
-		]);
+		const lastPageItemsAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => {
+			const children: any[] = [];
+			for (let i = 40; i < 60; i++) {
+				children.push(
+					<ListItem
+						classes={undefined}
+						variant={undefined}
+						active={i === 59}
+						disabled={false}
+						key={`item-${i}`}
+						onRequestActive={noop}
+						onSelect={noop}
+						selected={false}
+						theme={{
+							'@dojo/widgets/list-item': {
+								active: listItemCss.active,
+								disabled: listItemCss.disabled,
+								root: listItemCss.root,
+								s: css.items,
+								selected: listItemCss.selected,
+								collapsed: listItemCss.collapsed,
+								dragged: listItemCss.dragged,
+								dragIcon: listItemCss.dragIcon,
+								draggable: listItemCss.draggable,
+								movedUp: listItemCss.movedUp,
+								movedDown: listItemCss.movedDown
+							}
+						}}
+						widgetId={`menu-test-item-${i}`}
+						collapsed={false}
+						draggable={undefined}
+						dragged={false}
+						movedDown={false}
+						movedUp={false}
+						onDragEnd={noop}
+						onDragOver={noop}
+						onDragStart={noop}
+						onDrop={noop}
+					>
+						{`Item ${i}`}
+					</ListItem>
+				);
+			}
+			return children;
+		});
 		r.expect(lastPageItemsAssertion);
 	});
 
 	it('should render list with list items data', () => {
-		const r = renderer(() => (
-			<List
-				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
-				onValue={onValueStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		r.expect(listWithListItemsAssertion);
 	});
 
+	it('should render list with auto height', () => {
+		const r = renderer(
+			() => (
+				<List
+					height="auto"
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		r.expect(
+			listWithListItemsAssertion.setProperty(WrappedRoot, 'styles', {
+				maxHeight: '450px'
+			})
+		);
+	});
+
 	it('should render list with menu items data', () => {
-		const r = renderer(() => (
-			<List
-				menu
-				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
-				onValue={onValueStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					menu
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		r.expect(listWithMenuItemsAssertion);
 	});
 
 	it('should render with menu item placeholders', async () => {
+		const data: any[] = [];
+		for (let i = 0; i < 60; i++) {
+			data.push({ value: `${i}`, label: `Item ${i}` });
+		}
 		let pageOneResolver: (options: { data: any[]; total: number }) => void;
 		const pageOnePromise = new Promise<{ data: any[]; total: number }>((resolve) => {
 			pageOneResolver = resolve;
@@ -543,10 +568,38 @@ describe('List', () => {
 		});
 		const menuAssertion = listWithMenuItemsAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
-				height: '270px'
+				height: '2700px'
 			})
 			.setProperty(WrappedRoot, 'styles', {
-				maxHeight: '45px'
+				height: '450px'
+			})
+			.replaceChildren(WrappedItemContainer, () => {
+				const children: any[] = [];
+				for (let i = 0; i < 30; i++) {
+					children.push(
+						<MenuItem
+							classes={undefined}
+							variant={undefined}
+							active={i === 0}
+							disabled={false}
+							key={`item-${i}`}
+							onRequestActive={noop}
+							onSelect={noop}
+							theme={{
+								'@dojo/widgets/menu-item': {
+									active: menuItemCss.active,
+									disabled: menuItemCss.disabled,
+									root: menuItemCss.root,
+									s: css.items
+								}
+							}}
+							widgetId={`menu-test-item-${i}`}
+						>
+							{`Item ${i}`}
+						</MenuItem>
+					);
+				}
+				return children;
 			});
 		const template = createResourceTemplate<{
 			value: string;
@@ -566,106 +619,84 @@ describe('List', () => {
 			find: () => {}
 		});
 
-		const r = renderer(() => (
-			<List
-				menu
-				itemsInView={1}
-				resource={{ template: { template, id: 'test' } }}
-				onValue={onValueStub}
-			/>
-		));
-		r.expect(assertion(() => null));
-		pageOneResolver!({ data, total: 6 });
+		const r = renderer(
+			() => (
+				<List
+					menu
+					resource={{ template: { template, id: 'test' } }}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		r.expect(baseAssertion.setProperty(WrappedRoot, 'role', 'menu'));
+		pageOneResolver!({ data: data.slice(0, 30), total: data.length });
 		await pageOnePromise;
 		r.expect(menuAssertion);
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.End }));
 		const endAssertion = menuAssertion
-			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-5')
-			.setProperty(WrappedRoot, 'scrollTop', 225)
-			.setProperty(WrappedItemContainer, 'styles', { transform: 'translateY(180px)' });
-		const placeHolderAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
-			<MenuItem
-				classes={undefined}
-				active={false}
-				disabled={true}
-				key={'item-4'}
-				onRequestActive={noop}
-				onSelect={noop}
-				theme={{
-					'@dojo/widgets/menu-item': {
-						active: menuItemCss.active,
-						disabled: menuItemCss.disabled,
-						root: menuItemCss.root,
-						s: css.items
-					}
-				}}
-				widgetId={'menu-test-item-4'}
-			>
-				<LoadingIndicator />
-			</MenuItem>,
-			<MenuItem
-				classes={undefined}
-				active={false}
-				disabled={true}
-				key={'item-5'}
-				onRequestActive={noop}
-				onSelect={noop}
-				theme={{
-					'@dojo/widgets/menu-item': {
-						active: menuItemCss.active,
-						disabled: menuItemCss.disabled,
-						root: menuItemCss.root,
-						s: css.items
-					}
-				}}
-				widgetId={'menu-test-item-5'}
-			>
-				<LoadingIndicator />
-			</MenuItem>
-		]);
+			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-59')
+			.setProperty(WrappedRoot, 'scrollTop', 2250)
+			.setProperty(WrappedItemContainer, 'styles', { transform: 'translateY(1800px)' });
+		const placeHolderAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => {
+			const children: any[] = [];
+			for (let i = 40; i < 60; i++) {
+				children.push(
+					<MenuItem
+						classes={undefined}
+						variant={undefined}
+						active={false}
+						disabled={true}
+						key={`item-${i}`}
+						onRequestActive={noop}
+						onSelect={noop}
+						theme={{
+							'@dojo/widgets/menu-item': {
+								active: menuItemCss.active,
+								disabled: menuItemCss.disabled,
+								root: menuItemCss.root,
+								s: css.items
+							}
+						}}
+						widgetId={`menu-test-item-${i}`}
+					>
+						<LoadingIndicator />
+					</MenuItem>
+				);
+			}
+			return children;
+		});
 		r.expect(placeHolderAssertion);
-		pageTwoResolver!({ data, total: 6 });
+		pageTwoResolver!({ data: data.slice(30), total: data.length });
 		await pageTwoPromise;
-		const lastPageItemsAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => [
-			<MenuItem
-				classes={undefined}
-				active={false}
-				disabled={false}
-				key={'item-4'}
-				onRequestActive={noop}
-				onSelect={noop}
-				theme={{
-					'@dojo/widgets/menu-item': {
-						active: menuItemCss.active,
-						disabled: menuItemCss.disabled,
-						root: menuItemCss.root,
-						s: css.items
-					}
-				}}
-				widgetId={'menu-test-item-4'}
-			>
-				Cat
-			</MenuItem>,
-			<MenuItem
-				classes={undefined}
-				active={true}
-				disabled={true}
-				key={'item-5'}
-				onRequestActive={noop}
-				onSelect={noop}
-				theme={{
-					'@dojo/widgets/menu-item': {
-						active: menuItemCss.active,
-						disabled: menuItemCss.disabled,
-						root: menuItemCss.root,
-						s: css.items
-					}
-				}}
-				widgetId={'menu-test-item-5'}
-			>
-				Fish
-			</MenuItem>
-		]);
+		const lastPageItemsAssertion = endAssertion.replaceChildren(WrappedItemContainer, () => {
+			const children: any[] = [];
+			for (let i = 40; i < 60; i++) {
+				children.push(
+					<MenuItem
+						classes={undefined}
+						variant={undefined}
+						active={59 === i}
+						disabled={false}
+						key={`item-${i}`}
+						onRequestActive={noop}
+						onSelect={noop}
+						theme={{
+							'@dojo/widgets/menu-item': {
+								active: menuItemCss.active,
+								disabled: menuItemCss.disabled,
+								root: menuItemCss.root,
+								s: css.items
+							}
+						}}
+						widgetId={`menu-test-item-${i}`}
+					>
+						{`Item ${i}`}
+					</MenuItem>
+				);
+			}
+			return children;
+		});
 		r.expect(lastPageItemsAssertion);
 	});
 
@@ -674,6 +705,7 @@ describe('List', () => {
 			return new Array(6).fill(undefined).map((_, index) => (
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={index === activeIndex}
 					disabled={testData[index].value === '3'}
 					key={`item-${index}`}
@@ -728,22 +760,25 @@ describe('List', () => {
 				}
 			]
 		];
-		const r = renderer(() => (
-			<List
-				resource={{
-					template: {
-						template,
-						id: 'test',
-						initOptions: { data: testData, id: 'test' }
-					}
-				}}
-				disabled={(item) => {
-					return item.value === '3';
-				}}
-				onValue={onValueStub}
-				onRequestClose={onRequestCloseStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: testData, id: 'test' }
+						}
+					}}
+					disabled={(item) => {
+						return item.value === '3';
+					}}
+					onValue={onValueStub}
+					onRequestClose={onRequestCloseStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		r.expect(
 			baseAssertion
 				.setProperty(WrappedItemWrapper, 'styles', {
@@ -1004,18 +1039,21 @@ describe('List', () => {
 				label: 'Bobby'
 			}
 		];
-		const r = renderer(() => (
-			<List
-				resource={{
-					template: {
-						template,
-						id: 'test',
-						initOptions: { data: testData, id: 'test' }
-					}
-				}}
-				onValue={onValueStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: testData, id: 'test' }
+						}
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		const listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '225px'
@@ -1023,6 +1061,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -1059,6 +1098,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -1095,6 +1135,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-2'}
@@ -1131,6 +1172,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-3'}
@@ -1167,6 +1209,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-4'}
@@ -1224,6 +1267,7 @@ describe('List', () => {
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1260,6 +1304,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={true}
 						disabled={false}
 						key={'item-1'}
@@ -1296,6 +1341,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1332,6 +1378,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-3'}
@@ -1368,6 +1415,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-4'}
@@ -1415,6 +1463,7 @@ describe('List', () => {
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1451,6 +1500,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-1'}
@@ -1487,6 +1537,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1523,6 +1574,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={true}
 						disabled={false}
 						key={'item-3'}
@@ -1559,6 +1611,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-4'}
@@ -1603,6 +1656,7 @@ describe('List', () => {
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1639,6 +1693,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-1'}
@@ -1675,6 +1730,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1711,6 +1767,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-3'}
@@ -1747,6 +1804,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={true}
 						disabled={false}
 						key={'item-4'}
@@ -1791,6 +1849,7 @@ describe('List', () => {
 				.replaceChildren(WrappedItemContainer, () => [
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-0'}
@@ -1827,6 +1886,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={true}
 						disabled={false}
 						key={'item-1'}
@@ -1863,6 +1923,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-2'}
@@ -1899,6 +1960,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-3'}
@@ -1935,6 +1997,7 @@ describe('List', () => {
 					</ListItem>,
 					<ListItem
 						classes={undefined}
+						variant={undefined}
 						active={false}
 						disabled={false}
 						key={'item-4'}
@@ -1991,18 +2054,21 @@ describe('List', () => {
 				value: 'Bobby'
 			}
 		];
-		const r = renderer(() => (
-			<List
-				resource={{
-					template: {
-						template,
-						id: 'test',
-						initOptions: { data: testData, id: 'test' }
-					}
-				}}
-				onValue={onValueStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: testData, id: 'test' }
+						}
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		const listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '225px'
@@ -2010,6 +2076,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2046,6 +2113,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2082,6 +2150,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-2'}
@@ -2118,6 +2187,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-3'}
@@ -2154,6 +2224,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-4'}
@@ -2206,6 +2277,8 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
+					theme={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2217,6 +2290,8 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
+					theme={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2228,6 +2303,8 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
+					theme={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -2238,31 +2315,41 @@ describe('List', () => {
 					Fish
 				</ListItem>
 			]);
-		const r = renderer(() => (
-			<List
-				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
-				onValue={onValueStub}
-			>
-				{(item, itemProps) => {
-					return (
-						<ListItem classes={undefined} {...itemProps}>
-							{item.label || item.value}
-						</ListItem>
-					);
-				}}
-			</List>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+				>
+					{(item, itemProps) => {
+						return (
+							<ListItem classes={undefined} variant={undefined} {...itemProps}>
+								{item.label || item.value}
+							</ListItem>
+						);
+					}}
+				</List>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		r.expect(listWithListItemsAssertion);
 	});
 
 	it('should render with initial value', () => {
-		const r = renderer(() => (
-			<List
-				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
-				onValue={onValueStub}
-				initialValue="2"
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+					initialValue="2"
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		const listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '135px'
@@ -2270,6 +2357,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2306,6 +2394,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2342,6 +2431,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -2384,13 +2474,18 @@ describe('List', () => {
 		const props = {
 			value: '2'
 		};
-		const r = renderer(() => (
-			<List
-				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
-				onValue={onValueStub}
-				value={props.value}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: { template, id: 'test', initOptions: { data, id: 'test' } }
+					}}
+					onValue={onValueStub}
+					value={props.value}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		let listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '135px'
@@ -2398,6 +2493,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2434,6 +2530,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2470,6 +2567,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -2514,6 +2612,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2550,6 +2649,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2586,6 +2686,7 @@ describe('List', () => {
 				</ListItem>,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}
@@ -2642,14 +2743,21 @@ describe('List', () => {
 				disabled: true
 			}
 		];
-		const r = renderer(() => (
-			<List
-				resource={{
-					template: { template, id: 'test', initOptions: { data: testData, id: 'test' } }
-				}}
-				onValue={onValueStub}
-			/>
-		));
+		const r = renderer(
+			() => (
+				<List
+					resource={{
+						template: {
+							template,
+							id: 'test',
+							initOptions: { data: testData, id: 'test' }
+						}
+					}}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
 		const listAssertion = baseAssertion
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '135px'
@@ -2657,6 +2765,7 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => [
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={true}
 					disabled={false}
 					key={'item-0'}
@@ -2694,6 +2803,7 @@ describe('List', () => {
 				<hr classes={css.divider} />,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={false}
 					key={'item-1'}
@@ -2731,6 +2841,7 @@ describe('List', () => {
 				<hr classes={css.divider} />,
 				<ListItem
 					classes={undefined}
+					variant={undefined}
 					active={false}
 					disabled={true}
 					key={'item-2'}

@@ -79,7 +79,10 @@ export const SlidePane = factory(function SlidePane({
 		title = '',
 		align = 'left',
 		width = DEFAULT_WIDTH,
-		underlay = false
+		underlay = false,
+		theme: themeProp,
+		variant,
+		classes
 	} = properties();
 	const themeCss = theme.classes(css);
 
@@ -258,7 +261,12 @@ export const SlidePane = factory(function SlidePane({
 						<button classes={themeCss.close} type="button" onclick={onCloseClick}>
 							{closeText}
 							<span classes={themeCss.closeIcon}>
-								<Icon type="closeIcon" />
+								<Icon
+									type="closeIcon"
+									theme={themeProp}
+									classes={classes}
+									variant={variant}
+								/>
 							</span>
 						</button>
 					</div>

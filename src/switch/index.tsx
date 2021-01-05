@@ -1,6 +1,6 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import { formatAriaProperties } from '../common/util';
@@ -65,6 +65,7 @@ export default factory(function Switch({ children, properties, id, middleware: {
 		required,
 		theme: themeProp,
 		valid,
+		variant,
 		value = false
 	} = properties();
 
@@ -143,6 +144,7 @@ export default factory(function Switch({ children, properties, id, middleware: {
 					key="label"
 					classes={classes}
 					theme={themeProp}
+					variant={variant}
 					disabled={disabled}
 					focused={focus.isFocused('root')}
 					valid={valid}

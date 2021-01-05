@@ -78,6 +78,7 @@ describe('ContextMenu', () => {
 			() => (
 				<List
 					key="menu"
+					height="auto"
 					menu
 					focus={() => null as any}
 					theme={{}}
@@ -85,6 +86,8 @@ describe('ContextMenu', () => {
 					onBlur={() => {}}
 					onRequestClose={() => {}}
 					onValue={() => {}}
+					variant={undefined}
+					classes={undefined}
 				/>
 			),
 			() =>

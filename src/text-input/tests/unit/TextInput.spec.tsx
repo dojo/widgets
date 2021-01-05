@@ -92,6 +92,8 @@ const expected = function({
 						hidden={labelHidden}
 						forId={''}
 						active={false}
+						classes={undefined}
+						variant={undefined}
 					>
 						foo
 					</Label>
@@ -138,6 +140,7 @@ const expected = function({
 				text={helperTextValue}
 				valid={valid}
 				classes={undefined}
+				variant={undefined}
 				theme={undefined}
 			/>
 		</div>
@@ -159,6 +162,7 @@ const baseAssertion = assertionTemplate(() => {
 				text={undefined}
 				valid={undefined}
 				classes={undefined}
+				variant={undefined}
 				theme={undefined}
 			/>
 		</div>

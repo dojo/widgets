@@ -16,7 +16,7 @@ const factory = create({ theme, resource: createResourceMiddleware<ListOption>()
 >();
 
 export const ContextMenu = factory(function({ properties, children, middleware: { theme } }) {
-	const { resource, onSelect } = properties();
+	const { resource, onSelect, classes, variant } = properties();
 	return (
 		<ContextPopup>
 			{{
@@ -24,12 +24,15 @@ export const ContextMenu = factory(function({ properties, children, middleware: 
 				content: ({ close, shouldFocus }) => (
 					<List
 						key="menu"
+						height="auto"
 						focus={shouldFocus}
 						theme={theme.compose(
 							menuCss,
 							css,
 							'menu'
 						)}
+						classes={classes}
+						variant={variant}
 						menu
 						resource={resource}
 						onBlur={close}

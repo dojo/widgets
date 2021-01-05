@@ -1,6 +1,6 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import { uuid } from '@dojo/framework/core/util';
 import { tsx, create } from '@dojo/framework/core/vdom';
 
@@ -66,6 +66,7 @@ export const Checkbox = factory(function Checkbox({
 		readOnly,
 		required,
 		theme: themeProp,
+		variant,
 		valid,
 		value,
 		widgetId = _uuid
@@ -121,6 +122,7 @@ export const Checkbox = factory(function Checkbox({
 					key="label"
 					classes={classes}
 					theme={themeProp}
+					variant={variant}
 					disabled={disabled}
 					focused={focus.isFocused('root')}
 					valid={valid}

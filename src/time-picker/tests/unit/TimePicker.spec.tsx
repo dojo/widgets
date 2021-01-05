@@ -55,7 +55,7 @@ const baseTemplate = (date?: Date) =>
 					value={date ? format24HourTime(date) : ''}
 					aria-hidden="true"
 				/>
-				<TriggerPopup key="popup">
+				<TriggerPopup variant={undefined} classes={undefined} theme={undefined} key="popup">
 					{{
 						trigger: () => <button />,
 						content: () => <div />
@@ -82,6 +82,8 @@ const buttonTemplate = assertionTemplate(() => {
 				helperText=""
 				onKeyDown={noop}
 				type="text"
+				variant={undefined}
+				classes={undefined}
 			>
 				{{ label: undefined, trailing: undefined }}
 			</TextInput>
@@ -129,6 +131,7 @@ const menuTemplate = assertionTemplate(() => {
 		<div key="menu-wrapper" classes={css.menuWrapper}>
 			<List
 				key="menu"
+				height="auto"
 				focus={() => false}
 				resource={createTestResource(options30Minutes)}
 				onValue={noop}
@@ -136,6 +139,9 @@ const menuTemplate = assertionTemplate(() => {
 				onBlur={noop}
 				initialValue={''}
 				menu
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
 			/>
 		</div>
 	);

@@ -74,6 +74,9 @@ describe('BreadcrumbGroup', () => {
 						current={undefined}
 						href={undefined}
 						title={undefined}
+						theme={undefined}
+						classes={undefined}
+						variant={undefined}
 					>
 						Home
 					</Breadcrumb>
@@ -85,6 +88,9 @@ describe('BreadcrumbGroup', () => {
 						current={undefined}
 						href={undefined}
 						title={undefined}
+						theme={undefined}
+						classes={undefined}
+						variant={undefined}
 					>
 						Overview
 					</Breadcrumb>
@@ -96,6 +102,9 @@ describe('BreadcrumbGroup', () => {
 						current="page"
 						href={undefined}
 						title={undefined}
+						theme={undefined}
+						classes={undefined}
+						variant={undefined}
 					>
 						Tests
 					</Breadcrumb>

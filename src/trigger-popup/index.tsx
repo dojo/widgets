@@ -66,6 +66,7 @@ export const TriggerPopup = factory(function TriggerPopup({
 			<Popup
 				key="popup"
 				{...otherProperties}
+				classes={classes}
 				yTop={triggerBottom}
 				yBottom={triggerTop}
 				xLeft={triggerPosition.left}

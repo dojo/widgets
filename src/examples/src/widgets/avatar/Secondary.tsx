@@ -8,13 +8,13 @@ export default factory(function Basic() {
 	return (
 		<Example>
 			<div styles={{ maxWidth: '400px', display: 'flex', justifyContent: 'space-around' }}>
-				<Avatar secondary variant="circle">
+				<Avatar secondary type="circle">
 					A
 				</Avatar>
-				<Avatar secondary variant="rounded">
+				<Avatar secondary type="rounded">
 					A
 				</Avatar>
-				<Avatar secondary variant="square">
+				<Avatar secondary type="square">
 					A
 				</Avatar>
 			</div>

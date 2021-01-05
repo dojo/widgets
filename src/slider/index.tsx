@@ -1,7 +1,7 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { formatAriaProperties } from '../common/util';
 import Label from '../label/index';
@@ -101,6 +101,7 @@ export const Slider = factory(function Slider({
 		verticalHeight = '200px',
 		outputIsTooltip = false,
 		theme: themeProp,
+		variant,
 		classes,
 		onOut,
 		onOver,
@@ -214,6 +215,7 @@ export const Slider = factory(function Slider({
 			<Label
 				theme={themeProp}
 				classes={classes}
+				variant={variant}
 				disabled={disabled}
 				focused={focus.shouldFocus()}
 				valid={valid}
