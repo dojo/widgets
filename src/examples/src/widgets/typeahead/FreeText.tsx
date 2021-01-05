@@ -27,7 +27,7 @@ export default factory(function FreeText({ id, middleware: { icache, resource } 
 				strict={false}
 				resource={resource({ template, initOptions: { id, data: options } })}
 				onValidate={(valid) => {
-					console.log('is valid', valid);
+					icache.set('valid', valid);
 				}}
 				onValue={(value) => {
 					icache.set('value', value);
@@ -37,7 +37,13 @@ export default factory(function FreeText({ id, middleware: { icache, resource } 
 					label: 'Basic Typeahead'
 				}}
 			</Typeahead>
-			<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>
+			<div>
+				<div>
+					<span>Value: </span>
+					<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>
+				</div>
+				<div>{`Valid: ${icache.getOrSet('valid', 'not set')}`}</div>
+			</div>
 		</Example>
 	);
 });
