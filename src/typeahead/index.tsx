@@ -364,6 +364,9 @@ export const Typeahead = factory(function Typeahead({
 								toggleOpen();
 								icache.set('expanded', false);
 							}
+							if (!icache.get('dirty')) {
+								icache.set('dirty', true);
+							}
 						}
 
 						const selectedOption = icache.get('selectedOption');
