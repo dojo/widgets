@@ -26,6 +26,9 @@ export default factory(function FreeText({ id, middleware: { icache, resource } 
 				required={true}
 				strict={false}
 				resource={resource({ template, initOptions: { id, data: options } })}
+				onValidate={(valid) => {
+					console.log('is valid', valid);
+				}}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
