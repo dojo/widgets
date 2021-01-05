@@ -257,7 +257,7 @@ registerSuite('ChipTypeahead', {
 				<ChipTypeahead
 					resource={createTestResource(animalOptions)}
 					onValue={valueStub}
-					initialValue={['cat']}
+					initialValue={['1']}
 				>
 					{{
 						selected: (value) => value.toUpperCase()

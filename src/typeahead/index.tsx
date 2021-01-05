@@ -23,6 +23,7 @@ import { Keys } from '../common/util';
 import LoadingIndicator from '../loading-indicator';
 import * as inputCss from '../theme/default/text-input.m.css';
 import { flat } from '@dojo/framework/shim/array';
+import { findIndex } from '@dojo/framework/shim/array';
 
 export interface TypeaheadProperties {
 	/** Callback called when user selects a value */
@@ -65,8 +66,9 @@ export interface TypeaheadICache {
 	focusNode: string;
 	initial: string;
 	valid: boolean | undefined;
-	selected: boolean;
 	meta?: ResourceMeta;
+	selectedOption?: ListOption;
+	selectionType: 'keyboard' | 'mouse' | 'none';
 }
 
 export interface TypeaheadChildren {
@@ -119,6 +121,21 @@ export const Typeahead = factory(function Typeahead({
 
 	const [{ label, items, leading } = {} as TypeaheadChildren] = children();
 
+	function getQuery({ value, label }: { value?: string; label?: string }) {
+		let existingQuery = { ...options().query } as any;
+		if (!value) {
+			delete existingQuery.value;
+		} else {
+			existingQuery = { ...existingQuery, value };
+		}
+		if (!label) {
+			delete existingQuery.label;
+		} else {
+			existingQuery = { ...existingQuery, label };
+		}
+		return existingQuery;
+	}
+
 	if (
 		initialValue !== undefined &&
 		controlledValue === undefined &&
@@ -128,12 +145,18 @@ export const Typeahead = factory(function Typeahead({
 		icache.set('value', initialValue);
 		icache.delete('labelValue');
 	}
-
-	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
+	const updatedValue = icache.get('lastValue') !== controlledValue;
+	if (controlledValue !== undefined && updatedValue) {
 		icache.set('value', controlledValue);
 		icache.set('lastValue', controlledValue);
 		icache.delete('labelValue');
-		options({ query: { value: controlledValue } });
+		icache.set('selectedOption', (option) => {
+			if (option && option.value !== controlledValue) {
+				return undefined;
+			}
+			return option;
+		});
+		options({ query: getQuery({ value: controlledValue }) });
 	}
 
 	let valid = icache.get('valid');
@@ -177,7 +200,6 @@ export const Typeahead = factory(function Typeahead({
 		onOpen: () => boolean,
 		onClose: () => void
 	) {
-		const activeIndex = icache.getOrSet('activeIndex', 0);
 		const metaInfo = meta(template, options()) || icache.get('meta');
 		const total = (metaInfo && metaInfo.total) || 0;
 		switch (event) {
@@ -187,62 +209,113 @@ export const Typeahead = factory(function Typeahead({
 			case Keys.Down:
 				preventDefault();
 				if (!onOpen()) {
-					icache.set('activeIndex', total ? (activeIndex + 1) % total : total);
+					icache.set('activeIndex', (activeIndex = strict ? 0 : -1) => {
+						return total ? (activeIndex + 1) % total : total;
+					});
 				}
 				break;
 			case Keys.Up:
 				preventDefault();
 				if (!onOpen()) {
-					icache.set('activeIndex', total ? (activeIndex - 1 + total) % total : total);
+					icache.set('activeIndex', (activeIndex = 0) => {
+						activeIndex = activeIndex === -1 ? 0 : activeIndex;
+						return total ? (activeIndex - 1 + total) % total : total;
+					});
 				}
 				break;
 			case Keys.Enter:
 				preventDefault();
-				icache.set('selected', true);
+				icache.set('selectionType', 'keyboard');
 				onClose();
 				break;
 		}
 	}
 
 	const { page, size } = options();
-	const index = icache.getOrSet('activeIndex', 0);
+	const currentItems = flat(getOrRead(template, options()));
+	const index = icache.set('activeIndex', (currentIndex = strict ? 0 : -1) => {
+		if (currentItems && currentIndex === -1 && !strict && labelValue) {
+			return findIndex(currentItems, (item) => {
+				return Boolean(labelValue && item.label.toLowerCase() === labelValue.toLowerCase());
+			});
+		}
+		return currentIndex;
+	});
 	const currentPage = Math.ceil((index + 1) / size);
 	const pageIndex = Array.isArray(page)
 		? page.indexOf(currentPage) !== -1
 			? page.indexOf(currentPage)
 			: 0
 		: 0;
-	const activeIndex = pageIndex * size + (index % size);
-	const currentItems = flat(getOrRead(template, options()));
+	const activeIndex = index === -1 ? -1 : pageIndex * size + (index % size);
 	const isCurrentlyLoading = isLoading(template, options());
 	const metaInfo = icache.set('meta', (current) => {
 		const newMeta = meta(template, options());
 		return newMeta || current;
 	});
+	const selectionType = icache.getOrSet('selectionType', 'none');
 	const activeItem = currentItems[activeIndex];
-	if (icache.get('selected') && !isCurrentlyLoading) {
-		if (currentItems && currentItems.length === 0) {
+	if (selectionType === 'keyboard' && !isCurrentlyLoading) {
+		const option = icache.set('selectedOption', () => {
 			if (strict) {
-				if (required) {
-					valid = icache.set('valid', false);
-					onValidate && onValidate(false);
+				if (currentItems && currentItems.length === 0) {
+					if (required) {
+						valid = icache.set('valid', false);
+						onValidate && onValidate(false);
+					}
+					labelValue = icache.set('labelValue', '');
+				} else {
+					let disabled = itemDisabled ? itemDisabled(activeItem) : !!activeItem.disabled;
+					if (!disabled) {
+						const { value: itemValue, label, disabled, divider } = activeItem;
+						value = icache.set('value', activeItem.value);
+						return { value: itemValue, label, disabled, divider };
+					}
 				}
 			} else {
-				const labelValue = icache.getOrSet('labelValue', '');
-				icache.set('value', labelValue);
-				value = labelValue;
-				callOnValue({ value: labelValue, label: labelValue });
+				let disabled = activeItem
+					? itemDisabled
+						? itemDisabled(activeItem)
+						: !!activeItem.disabled
+					: false;
+				const labelValue = icache.get('labelValue');
+				if (activeItem && !disabled) {
+					const { value: itemValue, label, disabled, divider } = activeItem;
+					value = icache.set('value', activeItem.value);
+					return { value: itemValue, label, disabled, divider };
+				} else if (labelValue) {
+					icache.set('value', labelValue);
+					value = labelValue;
+					return { value: labelValue, label: labelValue };
+				}
 			}
-			icache.set('selected', false);
-		} else if (activeItem) {
-			let disabled = itemDisabled ? itemDisabled(activeItem) : !!activeItem.disabled;
-			if (!disabled) {
-				const { value: itemValue, label, disabled, divider } = activeItem;
-				value = icache.set('value', activeItem.value);
-				callOnValue({ value: itemValue, label, disabled, divider });
+			return undefined;
+		});
+		if (option) {
+			callOnValue(option);
+		}
+		icache.set('selectionType', 'none');
+	}
+
+	if (!icache.get('selectedOption') && !isCurrentlyLoading && value) {
+		const option = currentItems.find((item) => item.value === controlledValue);
+		if (option) {
+			icache.set('selectedOption', option);
+		} else {
+			const findOptions = createOptions(`find-${id}`);
+			const item = find(template, {
+				options: findOptions({
+					page: options().page,
+					size: options().size,
+					query: getQuery({})
+				}),
+				start: 0,
+				query: { value }
+			});
+			if (item) {
+				icache.set('selectedOption', item.item);
 			}
 		}
-		icache.set('selected', false);
 	}
 
 	return (
@@ -278,7 +351,7 @@ export const Typeahead = factory(function Typeahead({
 							if (!disabled && !icache.get('expanded')) {
 								toggleOpen();
 								icache.set('expanded', true);
-								icache.set('activeIndex', 0);
+								icache.set('activeIndex', strict ? 0 : -1);
 								return true;
 							}
 
@@ -292,35 +365,18 @@ export const Typeahead = factory(function Typeahead({
 							}
 						}
 
-						let valueOption: ListOption | undefined;
-						if (value) {
-							const findOptions = createOptions(`${id}-find`);
-							valueOption = (
-								find(template, {
-									options: findOptions({
-										page: options().page,
-										size: options().size
-									}),
-									start: 0,
-									query: { value },
-									type: 'exact'
-								}) || {
-									item: undefined
-								}
-							).item;
-							if (valueOption && icache.get('labelValue') !== valueOption.label) {
-								options({ query: { label: valueOption.label } });
-							}
-						}
+						const selectedOption = icache.get('selectedOption');
 
 						return (
 							<TextInput
 								autocomplete={false}
 								onValue={(value) => {
 									openMenu();
-									options({ query: { label: value } });
+									options({ query: getQuery({ label: value }) });
 									icache.set('labelValue', value || '');
+									icache.set('activeIndex', strict ? 0 : -1);
 									icache.delete('value');
+									icache.delete('selectedOption');
 								}}
 								theme={theme.compose(
 									inputCss,
@@ -333,27 +389,33 @@ export const Typeahead = factory(function Typeahead({
 								}}
 								onBlur={() => {
 									const { onBlur } = properties();
-
 									if (!strict) {
 										const value = icache.getOrSet('labelValue', '');
 										icache.set('value', value);
-										callOnValue(
-											valueOption
-												? {
-														value: valueOption.value,
-														label: valueOption.label,
-														divider: valueOption.divider,
-														disabled: valueOption.disabled
-												  }
-												: { value, label: value }
+										const currentOption = icache.get('selectedOption');
+										const selectedOption = icache.set(
+											'selectedOption',
+											(selectedOption) => {
+												return selectedOption
+													? selectedOption
+													: { value, label: value };
+											}
 										);
+										if (selectedOption) {
+											if (
+												!currentOption ||
+												currentOption.value !== selectedOption.value
+											) {
+												callOnValue(selectedOption);
+											}
+										}
 									}
 
 									closeMenu();
 									onBlur && onBlur();
 								}}
 								name={name}
-								initialValue={valueOption ? valueOption.label : labelValue}
+								value={selectedOption ? selectedOption.label : labelValue || ''}
 								focus={() =>
 									icache.get('focusNode') === 'trigger' && focus.shouldFocus()
 								}
@@ -411,6 +473,7 @@ export const Typeahead = factory(function Typeahead({
 										closeMenu();
 										if (value.value !== icache.get('value')) {
 											icache.set('value', value.value);
+											icache.set('selectedOption', value);
 										}
 										callOnValue(value);
 									}}

@@ -122,7 +122,7 @@ export const compareResource = {
 	comparator: isResourceComparator
 };
 
-export function createTestResource(data: any[], options?: any, transform?: any) {
+export function createTestResource(data: any[], options?: any, transform?: any): any {
 	return {
 		template: {
 			id: 'test',
