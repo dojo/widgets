@@ -23,6 +23,7 @@ export default factory(function FreeText({ id, middleware: { icache, resource } 
 	return (
 		<Example>
 			<Typeahead
+				required={true}
 				strict={false}
 				resource={resource({ template, initOptions: { id, data: options } })}
 				onValue={(value) => {
