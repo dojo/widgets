@@ -588,4 +588,79 @@ describe('Typeahead', () => {
 		);
 		assert.strictEqual(onValueStub.callCount, 1);
 	});
+
+	it('Required typeahead should be validated when item is selected and then the typeahead blurred', () => {
+		const toggleClosedStub = sb.stub();
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+				strict={false}
+				required={true}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [toggleClosedStub, 'above']
+		});
+		r.expect(nonStrictModeBaseAssertion);
+		r.property(WrappedPopup, 'onClose');
+		r.property(WrappedList, 'onValue', {
+			value: '1',
+			label: 'Dog'
+		});
+		const validatedAssertion = nonStrictModeBaseAssertion
+			.setProperty(WrappedHelperText, 'valid', true)
+			.setProperty(WrappedRoot, 'classes', [null, css.root, null, css.valid, false])
+			.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion
+					.setProperty(WrappedTrigger, 'value', 'Dog')
+					.setProperty(WrappedTrigger, 'valid', true),
+				content: nonStrictModeContent.setProperty(WrappedList, 'initialValue', '1')
+			}));
+		r.expect(validatedAssertion);
+		r.property(WrappedTrigger, 'onBlur');
+		r.expect(validatedAssertion);
+	});
+
+	it('Typeahead onValue should not be called with an empty value', () => {
+		const toggleClosedStub = sb.stub();
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+				strict={false}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [toggleClosedStub, 'above']
+		});
+		r.expect(nonStrictModeBaseAssertion);
+		r.property(WrappedTrigger, 'onValue', 'free text');
+		const expandedAssertion = nonStrictModeBaseAssertion
+			.setProperty(WrappedRoot, 'classes', [null, css.root, null, false, false])
+			.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperties(WrappedTrigger, (current: any) => {
+					return {
+						...current,
+						value: 'free text',
+						aria: { ...current.aria, expanded: 'true' }
+					};
+				}),
+				content: nonStrictModeContent.setProperty(WrappedList, 'initialValue', undefined)
+			}));
+		r.expect(expandedAssertion);
+		r.property(WrappedTrigger, 'onValue', '');
+		r.property(WrappedTrigger, 'onBlur');
+		r.expect(
+			expandedAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperties(WrappedTrigger, (current: any) => {
+					return { ...current, value: '', aria: { ...current.aria, expanded: 'false' } };
+				}),
+				content: nonStrictModeContent.setProperty(WrappedList, 'initialValue', '')
+			}))
+		);
+		assert.strictEqual(onValueStub.callCount, 0);
+	});
 });

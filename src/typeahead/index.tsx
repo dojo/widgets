@@ -166,15 +166,6 @@ export const Typeahead = factory(function Typeahead({
 	const triggerId = `typeahead-trigger-${id}`;
 	const dirty = icache.get('dirty');
 
-	if (required && dirty) {
-		const isValid = Boolean(value);
-		if (isValid !== valid) {
-			icache.set('valid', isValid);
-			valid = isValid;
-			onValidate && onValidate(isValid);
-		}
-	}
-
 	function callOnValue(value: ListOption) {
 		const { onValidate, onValue, required } = properties();
 		const lastValue = icache.get('lastValue');
@@ -297,6 +288,16 @@ export const Typeahead = factory(function Typeahead({
 		icache.set('selectionType', 'none');
 	}
 
+	const selectedOption = icache.get('selectedOption');
+	if (required && dirty) {
+		const isValid = Boolean(selectedOption) || Boolean(!strict && !!labelValue);
+		if (isValid !== valid) {
+			icache.set('valid', isValid);
+			valid = isValid;
+			onValidate && onValidate(isValid);
+		}
+	}
+
 	if (!icache.get('selectedOption') && !isCurrentlyLoading && value) {
 		const option = currentItems.find((item) => item.value === controlledValue);
 		if (option) {
@@ -363,6 +364,9 @@ export const Typeahead = factory(function Typeahead({
 								toggleOpen();
 								icache.set('expanded', false);
 							}
+							if (!icache.get('dirty')) {
+								icache.set('dirty', true);
+							}
 						}
 
 						const selectedOption = icache.get('selectedOption');
@@ -391,15 +395,21 @@ export const Typeahead = factory(function Typeahead({
 									const { onBlur } = properties();
 									if (!strict) {
 										const value = icache.getOrSet('labelValue', '');
-										icache.set('value', value);
 										const currentOption = icache.get('selectedOption');
 										const selectedOption = icache.set(
 											'selectedOption',
 											(selectedOption) => {
-												return selectedOption
-													? selectedOption
-													: { value, label: value };
+												if (selectedOption) {
+													return selectedOption;
+												}
+												if (value) {
+													return { value, label: value };
+												}
 											}
+										);
+										icache.set(
+											'value',
+											selectedOption ? selectedOption.value : value
 										);
 										if (selectedOption) {
 											if (
