@@ -69,6 +69,8 @@ const buttonTemplate = assertionTemplate(() => {
 		<div classes={css.input}>
 			<TextInput
 				key="input"
+				disabled={false}
+				readOnly={false}
 				focus={() => false}
 				theme={{}}
 				type="text"
@@ -161,6 +163,30 @@ describe('DateInput', () => {
 
 		// If `toggleOpen` is called, the popup content (i.e., the calendar) is shown
 		sinon.assert.calledOnce(toggleOpen);
+	});
+
+	it('renders disabled', () => {
+		const h = harness(() => <DateInput disabled={true}>Label</DateInput>);
+
+		// Execute render-prop to show "trigger" content
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			() => {}
+		);
+		h.expect(buttonTemplate.setProperty('@input', 'disabled', true), () => triggerResult);
+	});
+
+	it('renders readonly', () => {
+		const h = harness(() => <DateInput readOnly={true}>Label</DateInput>);
+
+		// Execute render-prop to show "trigger" content
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			() => {}
+		);
+		h.expect(buttonTemplate.setProperty('@input', 'readOnly', true), () => triggerResult);
 	});
 
 	it('renders with a label as the only child', () => {
