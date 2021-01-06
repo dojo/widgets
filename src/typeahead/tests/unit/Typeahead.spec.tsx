@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 import { sandbox } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
 import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
-import { createMemoryResourceTemplate } from '@dojo/framework/core/middleware/resources';
+import { createResourceTemplate, memoryTemplate } from '@dojo/framework/core/middleware/resources';
 
 import Typeahead from '../../index';
 import TriggerPopup from '../../../trigger-popup';
@@ -16,6 +16,7 @@ import * as inputCss from '../../../theme/default/text-input.m.css';
 import * as listCss from '../../../theme/default/list.m.css';
 import List from '../../../list';
 import { Keys } from '../../../common/util';
+// import LoadingIndicator from '../../../loading-indicator';
 
 const { ' _key': key, ...inputTheme } = inputCss as any;
 const { ' _key': listKey, ...listTheme } = listCss as any;
@@ -36,7 +37,7 @@ const data = [
 	}
 ];
 
-const template = createMemoryResourceTemplate<{
+const template = createResourceTemplate<{
 	value: string;
 	label: string;
 	disabled?: boolean;
@@ -662,5 +663,59 @@ describe('Typeahead', () => {
 			}))
 		);
 		assert.strictEqual(onValueStub.callCount, 0);
+	});
+
+	it('deals with loading items in non strict mode', async () => {
+		const resolvers: any[] = [];
+		const promises: any[] = [];
+		const template = createResourceTemplate<any, any>({
+			read: (req, controls) => {
+				const prom = new Promise((res) => {
+					resolvers.push(res);
+				});
+				promises.push(prom);
+				return prom.then(() => {
+					memoryTemplate.read(req, controls);
+				});
+			},
+			find: memoryTemplate.find,
+			init: memoryTemplate.init
+		});
+		const toggleClosedStub = sb.stub();
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template: { template, id: 'test', initOptions: { data, id: 'test' } } }}
+				onValue={onValueStub}
+				strict={false}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [toggleClosedStub, 'above']
+		});
+		r.expect(nonStrictModeBaseAssertion);
+		let resolver = resolvers.shift();
+		let promise = promises.shift();
+		resolver && resolver();
+		await promise;
+		r.expect(nonStrictModeBaseAssertion);
+		r.property(WrappedTrigger, 'onValue', 'dog');
+		const expandedAssertion = nonStrictModeBaseAssertion.replaceChildren(WrappedPopup, () => ({
+			trigger: expandedTriggerAssertion.setProperty(WrappedTrigger, 'value', 'dog'),
+			content: nonStrictModeContent
+		}));
+		r.expect(expandedAssertion);
+		resolver = resolvers.shift();
+		promise = promises.shift();
+		resolver();
+		await promise;
+		const expandedSelectedAssertion = nonStrictModeBaseAssertion.replaceChildren(
+			WrappedPopup,
+			() => ({
+				trigger: expandedTriggerAssertion.setProperty(WrappedTrigger, 'value', 'dog'),
+				content: nonStrictModeContent.setProperty(WrappedList, 'activeIndex', 0)
+			})
+		);
+		r.expect(expandedSelectedAssertion);
 	});
 });
