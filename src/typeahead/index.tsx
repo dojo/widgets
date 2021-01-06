@@ -223,9 +223,11 @@ export const Typeahead = factory(function Typeahead({
 	}
 
 	const { page, size } = options();
-	const currentItems = flat(getOrRead(template, options()));
+	const result = getOrRead(template, options());
+	const isCurrentlyLoading = isLoading(template, options());
+	const currentItems = isCurrentlyLoading ? [] : flat(result);
 	const index = icache.set('activeIndex', (currentIndex = strict ? 0 : -1) => {
-		if (currentItems && currentIndex === -1 && !strict && labelValue) {
+		if (currentItems && currentItems.length && currentIndex === -1 && !strict && labelValue) {
 			return findIndex(currentItems, (item) => {
 				return Boolean(labelValue && item.label.toLowerCase() === labelValue.toLowerCase());
 			});
@@ -239,7 +241,6 @@ export const Typeahead = factory(function Typeahead({
 			: 0
 		: 0;
 	const activeIndex = index === -1 ? -1 : pageIndex * size + (index % size);
-	const isCurrentlyLoading = isLoading(template, options());
 	const metaInfo = icache.set('meta', (current) => {
 		const newMeta = meta(template, options());
 		return newMeta || current;
