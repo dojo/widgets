@@ -16,7 +16,6 @@ import * as inputCss from '../../../theme/default/text-input.m.css';
 import * as listCss from '../../../theme/default/list.m.css';
 import List from '../../../list';
 import { Keys } from '../../../common/util';
-// import LoadingIndicator from '../../../loading-indicator';
 
 const { ' _key': key, ...inputTheme } = inputCss as any;
 const { ' _key': listKey, ...listTheme } = listCss as any;
