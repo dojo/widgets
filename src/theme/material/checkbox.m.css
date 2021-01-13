@@ -20,6 +20,14 @@
 	border-color: var(--mdc-border-color);
 }
 
+.root .input:enabled:not(:checked):not(:indeterminate) ~ .background {
+	background-color: var(--mdc-checkbox-background-enabled);
+}
+
+.root .input:enabled:checked:not(:indeterminate) ~ .background {
+	background-color: var(--mdc-checkbox-background-checked);
+}
+
 .background::after {
 	content: '';
 	opacity: 0;
@@ -33,7 +41,7 @@
 	left: 0;
 	width: 7px;
 	height: 14px;
-	border: solid 2px var(--mdc-theme-surface);
+	border: solid 2px var(--mdc-checkbox-check);
 	border-left: none;
 	border-top: none;
 	transform: translate(3.5px, -0.5px) rotate(45deg);

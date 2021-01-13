@@ -74,6 +74,11 @@
 	/* Two column layout */
 	--mdc-divider-width: 9px;
 
+	/* Checkbox */
+	--mdc-checkbox-background-enabled: transparent;
+	--mdc-checkbox-background-checked: var(--mdc-theme-secondary);
+	--mdc-checkbox-check: var(--mdc-theme-surface);
+
 	/* Extras */
 	--mdc-theme-background-active: #f1f1f1;
 	--mdc-theme-background-selected: #e1e1e1;
