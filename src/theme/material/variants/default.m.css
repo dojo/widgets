@@ -92,6 +92,7 @@
 	--mdc-tab-background: var(--mdc-theme-surface);
 	--mdc-tooltip-background: #6d6d6d;
 	--mdc-chip-background: var(--mdc-theme-on-surface);
+	--mdc-chip-color: var(--mdc-text-color);
 	--mdc-chip-background-hover: var(--mdc-theme-on-surface-hover);
 	--mdc-snackbar-background: #333333;
 }
