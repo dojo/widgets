@@ -201,7 +201,7 @@ export const TextInput = factory(function TextInput({
 	}
 
 	if (onValidate) {
-		if (value === '' && !dirty) {
+		if (value === undefined && !dirty) {
 			_callOnValidate(undefined, '');
 		} else {
 			icache.set('dirty', true);
