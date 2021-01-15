@@ -56,30 +56,56 @@ This allows our [`dojo cli`](https://github.com/dojo/cli) build tooling to make 
 
 ## Widgets
 
-Live examples of current widgets are available in the [widget showcase](https://dojo.github.io/examples/widget-showcase/).
+Live examples of current widgets are available in the [widget showcase](https://widgets.dojo.io/#).
 
 ### Form widgets
 [Button](src/button/README.md)
 
 [Calendar](src/calendar/README.md)
 
-[Checkbox/Toggle](src/checkbox/README.md)
+[Checkbox](src/checkbox/README.md)
+
+[CheckboxGroup](src/checkbox-group/README.md)
 
 [ComboBox](src/combobox/README.md)
 
+[DateInput](src/date-input/README.md)
+
+[EmailInput](src/email-input/README.md)
+
+[FloatingActionButton](src/floating-action-button/README.md)
+
+[Form](src/form/README.md)
+
 [Label](src/label/README.md)
+
+[List](src/list/README.md)
 
 [Listbox](src/listbox/README.md)
 
+[NativeSelect](src/native-select/README.md)
+
+[NumberInput](src/number-input/README.md)
+
+[OutlinedButton](src/outlined-button/README.md)
+
+[PasswordInput](src/password-input/README.md)
+
+[Progress](src/progress/README.md)
+
 [Radio](src/radio/README.md)
+
+[RadioGroup](src/radio-group/README.md)
+
+[RaisedButton](src/raised-button/README.md)
 
 [RangeSlider](src/range-slider/README.md)
 
 [Select](src/select/README.md)
 
-[NativeSelect](src/native-select/README.md)
-
 [Slider](src/slider/README.md)
+
+[Switch](src/switch/README.md)
 
 [TextArea](src/text-area/README.md)
 
@@ -87,18 +113,44 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 [TimePicker](src/time-picker/README.md)
 
+[Typeahead](src/typeahead/README.md)
+
 ### Layout widgets
 [Accordion](src/accordion/README.md)
+
+[Card](src/card/README.md)
+
+[Header](src/header/README.md)
+
+[HeaderCard](src/header-card/README.md)
 
 [SlidePane](src/slide-pane/README.md)
 
 [SplitPane](src/split-pane/README.md)
 
-[TabController](src/tab-controller/README.md)
+[TabContainer](src/tab-container/README.md)
+
+[ThreeColumnLayout](src/three-column-layout/README.md)
 
 [TitlePane](src/title-pane/README.md)
 
+[TwoColumnLayout](src/two-column-layout/README.md)
+
 ### Misc widgets
+[Avatar](src/avatar/README.md)
+
+[BreadcrumbGroup](src/breadcrumb-group/README.md)
+
+[Chip](src/chip/README.md)
+
+[ChipTypeahead](src/chip-typeahead/README.md)
+
+[ConstrainedInput](src/constrained-input/README.md)
+
+[ContextMenu](src/context-menu/README.md)
+
+[ContextPopup](src/context-popup/README.md)
+
 [Grid](src/grid/README.md)
 
 [Dialog](src/dialog/README.md)
@@ -107,7 +159,19 @@ Live examples of current widgets are available in the [widget showcase](https://
 
 [Icon](src/icon/README.md)
 
+[LoadingIndicator](src/loading-indicator/README.md)
+
+[Pagination](src/pagination/README.md)
+
 [Progress](src/progress/README.md)
+
+[Result](src/result/README.md)
+
+[Snackbar](src/snackbar/README.md)
+
+[SpeedDial](src/speed-dial/README.md)
+
+[TriggerPopup](src/trigger-popup/README.md)
 
 [Toolbar](src/toolbar/README.md)
 
