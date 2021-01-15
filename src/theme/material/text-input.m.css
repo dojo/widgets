@@ -106,3 +106,7 @@
 .input::-ms-clear {
 	display: none;
 }
+
+.input::placeholder {
+	color: var(--mdc-secondary-text-color) !important;
+}
