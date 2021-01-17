@@ -3,7 +3,7 @@ import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 
@@ -15,16 +15,15 @@ interface Animal {
 }
 
 const animals = [{ value: 'cat' }, { value: 'dog' }, { value: 'mouse' }, { value: 'rat' }];
-const template = createMemoryResourceTemplate<Animal>();
+const template = createResourceTemplate<Animal>('value');
 
 export default factory(function Disabled({ id, middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<List
 				resource={resource({
-					template,
-					transform: { value: 'value', label: 'value' },
-					initOptions: { id, data: animals }
+					template: template({ id, data: animals }),
+					transform: { value: 'value', label: 'value' }
 				})}
 				onValue={(value) => {
 					icache.set('value', value);

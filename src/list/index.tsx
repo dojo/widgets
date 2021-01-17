@@ -246,6 +246,7 @@ interface ListICache {
 	dragIndex?: number;
 	dragOverIndex?: number;
 	initial: string;
+	previousInputText: string;
 	inputText: string;
 	itemHeight: number;
 	itemsInView: number;
@@ -254,7 +255,6 @@ interface ListICache {
 	value: string;
 	scrollTop: number;
 	previousActiveIndex: number;
-	requestedInputText: string;
 }
 
 const factory = create({
@@ -262,7 +262,7 @@ const factory = create({
 	focus,
 	theme,
 	offscreen,
-	resource: createResourceMiddleware<ListOption>()
+	resource: createResourceMiddleware<{ data: ListOption }>()
 })
 	.properties<ListProperties>()
 	.children<ListChildren | undefined>();
@@ -273,7 +273,7 @@ export const List = factory(function List({
 	id,
 	middleware: { icache, focus, theme, resource, offscreen }
 }) {
-	const { getOrRead, createOptions, find, meta, isLoading } = resource;
+	const { get, getOrRead, createOptions } = resource;
 	const {
 		activeIndex,
 		focusable = true,
@@ -288,7 +288,7 @@ export const List = factory(function List({
 		widgetId,
 		theme: themeProp,
 		variant,
-		resource: { template, options = createOptions(id) },
+		resource: { template, options = createOptions((curr, next) => ({ ...curr, ...next })) },
 		classes,
 		height = 'fixed'
 	} = properties();
@@ -308,10 +308,10 @@ export const List = factory(function List({
 	}
 
 	function onKeyDown(event: KeyboardEvent, total: number) {
-		const { disabled } = properties();
-
+		const { disabled, activeIndex } = properties();
 		event.stopPropagation();
-
+		let computedActiveIndex =
+			activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 		switch (event.which) {
 			case Keys.Enter:
 			case Keys.Space:
@@ -361,6 +361,7 @@ export const List = factory(function List({
 						}
 						return setTimeout(() => {
 							icache.delete('inputText');
+							icache.delete('previousInputText');
 						}, 800);
 					});
 					icache.set('inputText', (value = '') => {
@@ -371,13 +372,15 @@ export const List = factory(function List({
 		}
 	}
 
-	function renderItems(start: number, count: number, startNode: number) {
+	function renderItems(start: number, count: number) {
 		const renderedItems = [];
 		const { size: resourceRequestSize } = options();
-		const metaInfo = meta(template, options(), true);
-		if (metaInfo && metaInfo.total) {
+		const {
+			meta: { total = 0 }
+		} = getOrRead(template, options(), true);
+		if (total) {
 			let pages: number[] = [];
-			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
+			for (let i = 0; i < Math.min(total - start, count); i++) {
 				const index = i + startNode;
 				const page = Math.floor(index / resourceRequestSize) + 1;
 				if (pages.indexOf(page) === -1) {
@@ -387,8 +390,13 @@ export const List = factory(function List({
 			if (!pages.length) {
 				pages.push(1);
 			}
-			const pageItems = getOrRead(template, options({ page: pages }));
-			for (let i = 0; i < Math.min(metaInfo.total - start, count); i++) {
+			const pageItems = pages.map((page, index) => {
+				if (index === pages.length - 1) {
+					options({ page });
+				}
+				return getOrRead(template, { ...options(), page });
+			});
+			for (let i = 0; i < Math.min(total - start, count); i++) {
 				const index = i + startNode;
 				const page = Math.floor(index / resourceRequestSize) + 1;
 				const pageIndex = pages.indexOf(page);
@@ -660,29 +668,34 @@ export const List = factory(function List({
 	let computedActiveIndex =
 		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 	const inputText = icache.get('inputText');
-	const requestedInputText = icache.get('requestedInputText');
-	if (inputText || requestedInputText) {
-		const findOptions = {
-			options: options(),
-			start: computedActiveIndex + 1,
-			type: 'start' as const,
-			query: { label: inputText || requestedInputText }
-		};
-		if (!isLoading(template, findOptions)) {
-			const foundItem = find(template, findOptions);
-			if (!foundItem) {
-				if (inputText && (!requestedInputText || inputText !== requestedInputText)) {
-					icache.set('requestedInputText', inputText);
-				} else {
-					icache.delete('requestedInputText');
-				}
-			} else {
-				icache.delete('requestedInputText');
-			}
-			if (foundItem && computedActiveIndex !== foundItem.index) {
-				setActiveIndex(foundItem.index);
+	const {
+		meta: { total = 0 }
+	} = getOrRead(template, options(), true);
+	if (inputText && inputText !== icache.get('previousInputText') && total) {
+		const items = get(template, { ...options(), page: 1, size: total });
+		const first = items.slice(0, computedActiveIndex);
+		const second = items.slice(computedActiveIndex);
+		let foundIndex = computedActiveIndex;
+		for (let i = 1; i < second.length; i++) {
+			const item = second[i];
+			if (item && item.label.toLowerCase().indexOf(inputText.toLowerCase()) === 0) {
+				foundIndex = foundIndex + i;
+				break;
 			}
 		}
+		if (foundIndex === computedActiveIndex) {
+			for (let i = 0; i < first.length; i++) {
+				const item = first[i];
+				if (item && item.label.toLowerCase().indexOf(inputText.toLowerCase()) === 0) {
+					foundIndex = i;
+					break;
+				}
+			}
+		}
+		if (foundIndex !== computedActiveIndex) {
+			setActiveIndex(foundIndex);
+		}
+		icache.set('previousInputText', inputText);
 	}
 
 	const previousActiveIndex = icache.get('previousActiveIndex');
@@ -709,19 +722,15 @@ export const List = factory(function List({
 	const startNode = Math.max(0, Math.floor(scrollTop / itemHeight) - nodePadding);
 	const offsetY = startNode * itemHeight;
 
-	const items = renderItems(startNode, renderedItemsCount, startNode);
-	const metaInfo = meta(template, options(), true);
-
-	const total = metaInfo && metaInfo.total ? metaInfo.total : 0;
+	const items = renderItems(startNode, renderedItemsCount);
 	const totalContentHeight = total * itemHeight;
-
 	return (
 		<div
 			key="root"
 			classes={[theme.variant(), themedCss.root, fixedCss.root]}
 			tabIndex={focusable ? 0 : -1}
 			onkeydown={(e) => {
-				onKeyDown(e, total);
+				total && onKeyDown(e, total);
 			}}
 			focus={() => shouldFocus}
 			onfocus={onFocus}

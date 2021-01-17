@@ -243,6 +243,9 @@ import BasicTypeahead from './widgets/typeahead/Basic';
 import RemoteTypeahead from './widgets/typeahead/RemoteSource';
 import ValidatedTypeahead from './widgets/typeahead/Validation';
 import FreeTextTypeahead from './widgets/typeahead/FreeText';
+import InitialValueTypeahead from './widgets/typeahead/InitialValue';
+import ControlledTypeahead from './widgets/typeahead/Controlled';
+import DisabledTypeahead from './widgets/typeahead/Disabled';
 import BasicTwoColumnLayout from './widgets/two-column-layout/Basic';
 import TrailingBiasTwoColumnLayout from './widgets/two-column-layout/TrailingBias';
 import CollapsingLayout from './widgets/two-column-layout/Collapsing';
@@ -1959,6 +1962,21 @@ export const config = {
 					filename: 'FreeText',
 					module: FreeTextTypeahead,
 					title: 'Free Text Typeahead'
+				},
+				{
+					filename: 'InitialValue',
+					module: InitialValueTypeahead,
+					title: 'Initial Value Typeahead'
+				},
+				{
+					filename: 'Controlled',
+					module: ControlledTypeahead,
+					title: 'Controlled Typeahead'
+				},
+				{
+					filename: 'Disabled',
+					module: DisabledTypeahead,
+					title: 'Disabled Typeahead'
 				}
 			],
 			overview: {

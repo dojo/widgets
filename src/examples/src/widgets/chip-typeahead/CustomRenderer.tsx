@@ -3,7 +3,7 @@ import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import { ListItem, ListOption } from '@dojo/widgets/list';
 import Example from '../../Example';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 
@@ -15,12 +15,12 @@ const options = [
 	{ value: '3', label: 'Pizza' }
 ];
 
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createResourceTemplate<ListOption>('value');
 
 export default factory(function CustomRenderer({ id, middleware: { resource } }) {
 	return (
 		<Example>
-			<ChipTypeahead resource={resource({ template, initOptions: { id, data: options } })}>
+			<ChipTypeahead resource={resource({ template: template({ id, data: options }) })}>
 				{{
 					label: 'Favorite Foods',
 					items: (item, props) => (

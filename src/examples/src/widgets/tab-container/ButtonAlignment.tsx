@@ -4,7 +4,7 @@ import TabContainer from '@dojo/widgets/tab-container';
 import Select from '@dojo/widgets/select';
 import Example from '../../Example';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 import { ListOption } from '@dojo/widgets/list';
@@ -18,7 +18,7 @@ const options = [
 	{ value: 'bottom', label: 'Bottom' }
 ];
 
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createResourceTemplate<ListOption>('value');
 
 export default factory(function ButtonAlignment({ id, middleware: { icache, resource } }) {
 	const alignButtons = icache.getOrSet('align', 'top');
@@ -35,7 +35,7 @@ export default factory(function ButtonAlignment({ id, middleware: { icache, reso
 			<div>
 				<Select
 					initialValue={alignButtons}
-					resource={resource({ template, initOptions: { id, data: options } })}
+					resource={resource({ template: template({ id, data: options }) })}
 					onValue={(value) => {
 						icache.set('align', value);
 					}}

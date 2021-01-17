@@ -2,7 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 import ContextMenu from '@dojo/widgets/context-menu';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 import { ListOption } from '@dojo/widgets/list';
@@ -10,7 +10,7 @@ import { ListOption } from '@dojo/widgets/list';
 const resource = createResourceMiddleware();
 const factory = create({ resource, icache });
 const options = [{ value: 'print', label: 'Print' }, { value: 'delete', label: 'Delete' }];
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createResourceTemplate<ListOption>('value');
 
 export default factory(function Basic({ id, middleware: { icache, resource } }) {
 	const text = icache.getOrSet(
@@ -22,7 +22,7 @@ export default factory(function Basic({ id, middleware: { icache, resource } }) 
 	return (
 		<virtual>
 			<ContextMenu
-				resource={resource({ template, initOptions: { id, data: options } })}
+				resource={resource({ template: template({ id, data: options }) })}
 				onSelect={(value) => {
 					const selection = window.getSelection() || '';
 					if (value.value === 'print') {

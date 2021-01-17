@@ -4,13 +4,13 @@ import icache from '@dojo/framework/core/middleware/icache';
 import { listOptions } from '../../data';
 import Example from '../../Example';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
-const template = createMemoryResourceTemplate<{ value: string; disabled?: boolean }>();
+const template = createResourceTemplate<{ value: string; disabled?: boolean }>('value');
 
 export default factory(function Controlled({ id, middleware: { icache, resource } }) {
 	const activeIndex = icache.getOrSet('activeIndex', 0);
@@ -53,9 +53,8 @@ export default factory(function Controlled({ id, middleware: { icache, resource 
 					focusable={false}
 					itemsInView={4}
 					resource={resource({
-						template,
-						transform: { value: 'value', label: 'value' },
-						initOptions: { id, data: listOptions }
+						template: template({ id, data: listOptions }),
+						transform: { value: 'value', label: 'value' }
 					})}
 					onActiveIndexChange={(index: number) => {
 						icache.set('activeIndex', index);

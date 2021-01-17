@@ -19,6 +19,7 @@ import * as chipCss from '../theme/default/chip.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 import { PopupPosition } from '@dojo/widgets/popup';
 import Label from '../label';
+import { find } from '@dojo/framework/shim/array';
 
 export interface ChipTypeaheadProperties {
 	/** The initial selected value */
@@ -64,7 +65,7 @@ export interface ChipTypeaheadIcache {
 const factory = create({
 	icache: createICacheMiddleware<ChipTypeaheadIcache>(),
 	theme,
-	resource: createResourceMiddleware<ListOption>(),
+	resource: createResourceMiddleware<{ data: ListOption }>(),
 	focus
 })
 	.properties<ChipTypeaheadProperties>()
@@ -90,7 +91,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 	properties,
 	children
 }) {
-	const { createOptions, find } = resource;
+	const { createOptions, getOrRead } = resource;
 	const {
 		value,
 		classes = {},
@@ -102,21 +103,20 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 		name,
 		placement = 'inline',
 		strict,
-		resource: { template, options = createOptions(id) }
+		resource: { template, options = createOptions((curr, next) => ({ ...curr, ...next })) }
 	} = properties();
 	const [{ label, items, selected } = {} as ChipTypeaheadChildren] = children();
 	const themeCss = theme.classes(css);
 	const focused = icache.getOrSet('focused', false);
 	const selectedOptions = icache.set('options', (current) => {
 		if (!current && initialValue && !value) {
+			const items = getOrRead(template, options());
 			const initialSelectedOptions = initialValue.map((valueId) => {
-				const findResult = find(template, {
-					options: options(),
-					start: 0,
-					query: { value: valueId }
-				});
-				if (findResult) {
-					return findResult.item;
+				if (items) {
+					const findResult = find(items, (item) => item.value === valueId);
+					if (findResult) {
+						return findResult;
+					}
 				}
 				return {
 					value: '',
@@ -129,13 +129,12 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 			return initialSelectedOptions;
 		} else if (value && valueChanged(value, current)) {
 			const controlledOptions = value.map((valueId) => {
-				const findResult = find(template, {
-					options: options(),
-					start: 0,
-					query: { value: valueId }
-				});
-				if (findResult) {
-					return findResult.item;
+				const items = getOrRead(template, options());
+				if (items) {
+					const findResult = find(items, (item) => item.value === valueId);
+					if (findResult) {
+						return findResult;
+					}
 				}
 				return {
 					value: '',

@@ -13,7 +13,7 @@ import { Keys } from '../common/util';
 import bundle from './nls/TimePicker';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 
@@ -152,7 +152,7 @@ const formats24 = ['hh', 'hhmm', 'hhmmss'];
 
 const formats12 = ['hh', 'hhmm', 'hhmmss', 'hham', 'hhmmam', 'hhmmssam'];
 
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createResourceTemplate<ListOption>('value');
 
 export function parseTime(time: string | undefined, hour12: boolean) {
 	if (!time) {
@@ -460,8 +460,7 @@ export const TimePicker = factory(function TimePicker({
 									key="menu"
 									focus={() => shouldFocus && focusNode === 'menu'}
 									resource={resource({
-										template,
-										initOptions: { id, data: options }
+										template: template({ id, data: options })
 									})}
 									onValue={(value) => {
 										if (controlledValue === undefined) {

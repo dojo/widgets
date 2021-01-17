@@ -11,9 +11,10 @@ export interface ContextMenuProperties {
 	onSelect(value: ListOption): void;
 }
 
-const factory = create({ theme, resource: createResourceMiddleware<ListOption>() }).properties<
-	ContextMenuProperties
->();
+const factory = create({
+	theme,
+	resource: createResourceMiddleware<{ data: ListOption }>()
+}).properties<ContextMenuProperties>();
 
 export const ContextMenu = factory(function({ properties, children, middleware: { theme } }) {
 	const { resource, onSelect, classes, variant } = properties();

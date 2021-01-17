@@ -9,7 +9,7 @@ import {
 import { CustomComparator, harness } from '@dojo/framework/testing/harness/harness';
 import { SinonStub } from 'sinon';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
-import { createMemoryResourceTemplate } from '@dojo/framework/core/middleware/resources';
+import { createResourceTemplate } from '@dojo/framework/core/middleware/resources';
 
 export const noop: any = () => {};
 
@@ -122,11 +122,11 @@ export const compareResource = {
 	comparator: isResourceComparator
 };
 
-export function createTestResource(data: any[], options?: any, transform?: any): any {
+export function createTestResource(data: any[], id: string, options?: any, transform?: any): any {
 	return {
 		template: {
 			id: 'test',
-			template: createMemoryResourceTemplate<any>(),
+			template: createResourceTemplate<any>(id),
 			initOptions: { id: 'test', data },
 			transform
 		},

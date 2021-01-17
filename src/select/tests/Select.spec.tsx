@@ -12,8 +12,7 @@ import {
 	compareTheme,
 	compareWidgetId,
 	createHarness,
-	compareResource,
-	createTestResource
+	compareResource
 } from '../../common/tests/support/test-helpers';
 import HelperText from '../../helper-text';
 import Icon from '../../icon';
@@ -23,9 +22,13 @@ import TriggerPopup from '../../trigger-popup';
 import * as css from '../../theme/default/select.m.css';
 import Select from '../index';
 import bundle from '../nls/Select';
-import { createResourceTemplate, defaultFind } from '@dojo/framework/core/middleware/resources';
+import { createResourceTemplate } from '@dojo/framework/core/middleware/resources';
 
-const options = [{ value: 'dog' }, { value: 'cat' }, { value: 'fish' }];
+const options = [
+	{ value: '1', label: 'Dog' },
+	{ value: '2', label: 'Cat' },
+	{ value: '3', label: 'Fish' }
+];
 const { messages } = bundle;
 
 const harness = createHarness([compareTheme, compareResource]);
@@ -91,7 +94,7 @@ const menuTemplate = assertionTemplate(() => (
 			key="menu"
 			height="auto"
 			focus={() => false}
-			resource={createTestResource(options)}
+			resource={{ data: options, idKey: 'value', id: 'test' }}
 			onValue={() => {}}
 			onRequestClose={() => {}}
 			onBlur={() => {}}
@@ -108,7 +111,7 @@ const menuTemplate = assertionTemplate(() => (
 describe('Select', () => {
 	it('renders', () => {
 		const h = harness(() => (
-			<Select onValue={() => {}} resource={createTestResource(options)} />
+			<Select onValue={() => {}} resource={{ data: options, idKey: 'value', id: 'test' }} />
 		));
 		h.expect(baseTemplate);
 	});
@@ -118,7 +121,7 @@ describe('Select', () => {
 			() => (
 				<Select
 					onValue={() => {}}
-					resource={createTestResource(options)}
+					resource={{ data: options, idKey: 'value', id: 'test' }}
 					itemsInView={10}
 					position="above"
 					placeholder="test"
@@ -158,7 +161,12 @@ describe('Select', () => {
 		const toggleOpenStub = stub();
 
 		const h = harness(
-			() => <Select onValue={() => {}} resource={createTestResource(options)} />,
+			() => (
+				<Select
+					onValue={() => {}}
+					resource={{ data: options, idKey: 'value', id: 'test' }}
+				/>
+			),
 			[compareAriaControls, compareId]
 		);
 
@@ -176,7 +184,13 @@ describe('Select', () => {
 		const toggleOpenStub = stub();
 
 		const h = harness(
-			() => <Select disabled onValue={() => {}} resource={createTestResource(options)} />,
+			() => (
+				<Select
+					disabled
+					onValue={() => {}}
+					resource={{ data: options, idKey: 'value', id: 'test' }}
+				/>
+			),
 			[compareAriaControls, compareId]
 		);
 
@@ -196,7 +210,12 @@ describe('Select', () => {
 		const toggleOpenStub = stub();
 
 		const h = harness(
-			() => <Select onValue={() => {}} resource={createTestResource(options)} />,
+			() => (
+				<Select
+					onValue={() => {}}
+					resource={{ data: options, idKey: 'value', id: 'test' }}
+				/>
+			),
 			[compareAriaControls, compareId]
 		);
 
@@ -229,7 +248,12 @@ describe('Select', () => {
 		const closeMenuStub = stub();
 
 		const h = harness(
-			() => <Select onValue={() => {}} resource={createTestResource(options)} />,
+			() => (
+				<Select
+					onValue={() => {}}
+					resource={{ data: options, idKey: 'value', id: 'test' }}
+				/>
+			),
 			[compareWidgetId, ignoreMenuTheme]
 		);
 
@@ -251,7 +275,12 @@ describe('Select', () => {
 		const closeMenuStub = stub();
 
 		const h = harness(
-			() => <Select onValue={onValueStub} resource={createTestResource(options)} />,
+			() => (
+				<Select
+					onValue={onValueStub}
+					resource={{ data: options, idKey: 'value', id: 'test' }}
+				/>
+			),
 			[compareWidgetId, ignoreMenuTheme]
 		);
 
@@ -273,27 +302,20 @@ describe('Select', () => {
 		const onValueStub = stub();
 		const toggleOpenStub = stub();
 
-		const data = [{ value: 'dog', label: 'Dog' }, { value: 'cat' }, { value: 'fish' }];
-
 		let res: any;
-		const testResource = {
-			template: {
-				id: 'test',
-				template: createResourceTemplate<any>({
-					find: defaultFind,
-					read: (req, { put }) => {
-						new Promise((r) => {
-							res = r;
-						}).then(() => {
-							put({ data, total: data.length }, req);
-						});
-					}
-				})
+		const template = createResourceTemplate<any>({
+			idKey: 'value',
+			read: (req, { put }) => {
+				new Promise((r) => {
+					res = r;
+				}).then(() => {
+					put({ data: [...options], total: options.length }, req);
+				});
 			}
-		};
+		});
 
 		const h = harness(
-			() => <Select onValue={onValueStub} resource={testResource} initialValue="dog" />,
+			() => <Select onValue={onValueStub} resource={{ template }} initialValue="1" />,
 			[compareAriaControls, compareId]
 		);
 		h.trigger('@popup', (node) => (node.children as any)[0].trigger, toggleOpenStub);
@@ -304,7 +326,7 @@ describe('Select', () => {
 			toggleOpenStub
 		);
 		h.expect(
-			buttonTemplate.setProperty('@trigger', 'value', 'dog').setChildren('@trigger', () => [
+			buttonTemplate.setProperty('@trigger', 'value', '1').setChildren('@trigger', () => [
 				<span classes={[css.value, false]}>Dog</span>,
 				<span classes={css.arrow}>
 					<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
@@ -318,11 +340,13 @@ describe('Select', () => {
 		const onValueStub = stub();
 		const toggleOpenStub = stub();
 
-		const options = [{ value: 'dog', label: 'Dog' }, { value: 'cat' }, { value: 'fish' }];
-
 		const h = harness(
 			() => (
-				<Select onValue={onValueStub} resource={createTestResource(options)} value="dog" />
+				<Select
+					onValue={onValueStub}
+					resource={{ data: options, idKey: 'value', id: 'test' }}
+					value="1"
+				/>
 			),
 			[compareAriaControls, compareId]
 		);
@@ -334,7 +358,7 @@ describe('Select', () => {
 		);
 
 		h.expect(
-			buttonTemplate.setProperty('@trigger', 'value', 'dog').setChildren('@trigger', () => [
+			buttonTemplate.setProperty('@trigger', 'value', '1').setChildren('@trigger', () => [
 				<span classes={[css.value, undefined]}>Dog</span>,
 				<span classes={css.arrow}>
 					<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
@@ -349,7 +373,7 @@ describe('Select', () => {
 		const h = harness(() => (
 			<Select
 				onValue={() => {}}
-				resource={createTestResource(options)}
+				resource={{ data: options, idKey: 'value', id: 'test' }}
 				required={true}
 				onValidate={onValidate}
 			/>

@@ -19,7 +19,7 @@ export const data: Data[] = [
 		price: '625.00',
 		description:
 			'The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design',
-		summary: 'Awesome Granite Bacon / Cheese / Baby / $625.00'
+		summary: 'Zwesome Granite Bacon / Cheese / Baby / $625.00'
 	},
 	{
 		id: 'f106a6ce-d514-4cf3-bb74-41e08d541dcb',

@@ -2,7 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import Example from '../../Example';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 import { ListOption } from '@dojo/widgets/list';
@@ -15,13 +15,13 @@ const options = [
 	{ value: '3', label: 'Fish' }
 ];
 
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createResourceTemplate<ListOption>('value');
 
 export default factory(function Disabled({ id, middleware: { resource } }) {
 	return (
 		<Example>
 			<ChipTypeahead
-				resource={resource({ template, initOptions: { id, data: options } })}
+				resource={resource({ template: template({ id, data: options }) })}
 				disabled
 				initialValue={['cat', 'dog']}
 			>

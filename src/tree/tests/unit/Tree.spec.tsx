@@ -1,14 +1,10 @@
-const { describe, it, beforeEach } = intern.getInterface('bdd');
+const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import * as sinon from 'sinon';
 
 import { tsx } from '@dojo/framework/core/vdom';
 import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
-import {
-	createMemoryResourceTemplate,
-	createResourceTemplate,
-	defaultFind
-} from '@dojo/framework/core/middleware/resources';
+import { createResourceTemplate } from '@dojo/framework/core/middleware/resources';
 
 import { Keys } from '../../../common/util';
 import { stubEvent, noop } from '../../../common/tests/support/test-helpers';
@@ -75,35 +71,15 @@ const simpleTreeAssertion = baseAssertion.replaceChildren(WrappedRoot, () => [
 ]);
 
 describe('Tree', () => {
-	let template = createMemoryResourceTemplate<TreeNodeOption>();
-
-	const emptyDataProps = {
-		resource: {
-			template: { template, id: 'test', initOptions: { data: [], id: 'test' } }
-		}
-	};
-
-	beforeEach(() => {
-		template = createMemoryResourceTemplate<TreeNodeOption>();
-	});
-
 	it('renders with no data', () => {
-		const r = renderer(() => <Tree {...emptyDataProps} />);
+		const r = renderer(() => <Tree resource={{ data: [], id: 'test', idKey: 'value' }} />);
 
 		r.expect(baseAssertion);
 	});
 
 	it('renders data', () => {
 		const r = renderer(() => (
-			<Tree
-				resource={{
-					template: {
-						template,
-						id: 'test',
-						initOptions: { data: simpleTree, id: 'test' } as any
-					}
-				}}
-			/>
+			<Tree resource={{ data: simpleTree, id: 'test', idKey: 'value' }} />
 		));
 		r.child(WrappedNode1, { value: 'node-1' });
 		r.child(WrappedNode2, { value: 'node-2' });
@@ -115,13 +91,7 @@ describe('Tree', () => {
 		const disabledNodes = [simpleTree[0].id];
 		const r = renderer(() => (
 			<Tree
-				resource={{
-					template: {
-						template,
-						id: 'test',
-						initOptions: { data: simpleTree, id: 'test' } as any
-					}
-				}}
+				resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 				disabledIds={disabledNodes}
 			/>
 		));
@@ -137,15 +107,7 @@ describe('Tree', () => {
 
 	it('can navigate active node with keyboard', () => {
 		const r = renderer(() => (
-			<Tree
-				resource={{
-					template: {
-						template,
-						id: 'test',
-						initOptions: { data: [...simpleTree], id: 'test' } as any
-					}
-				}}
-			/>
+			<Tree resource={{ data: simpleTree, id: 'test', idKey: 'value' }} />
 		));
 
 		r.child(WrappedNode1, { value: 'node-1' });
@@ -230,13 +192,7 @@ describe('Tree', () => {
 			};
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					expandedIds={expandedNodes}
 				/>
 			));
@@ -282,13 +238,7 @@ describe('Tree', () => {
 			};
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					initialExpanded={expandedNodes}
 				/>
 			));
@@ -330,13 +280,7 @@ describe('Tree', () => {
 			const onExpand = sinon.spy();
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					onExpand={onExpand}
 				/>
 			));
@@ -368,13 +312,7 @@ describe('Tree', () => {
 			const onExpand = sinon.stub();
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					onExpand={onExpand}
 				/>
 			));
@@ -419,13 +357,7 @@ describe('Tree', () => {
 			const onExpand = sinon.stub();
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					onExpand={onExpand}
 					expandedIds={['parent-1']}
 				/>
@@ -464,13 +396,7 @@ describe('Tree', () => {
 		it('renders with checkable nodes', () => {
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					checkable={true}
 				/>
 			));
@@ -484,13 +410,7 @@ describe('Tree', () => {
 			const checkedNodes = [simpleTree[0].id];
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					checkable={true}
 					checkedIds={checkedNodes}
 				/>
@@ -509,13 +429,7 @@ describe('Tree', () => {
 			const checkedNodes = [simpleTree[0].id];
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					checkable={true}
 					initialChecked={checkedNodes}
 				/>
@@ -534,13 +448,7 @@ describe('Tree', () => {
 			const onCheck = sinon.stub();
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					checkable={true}
 					onCheck={onCheck}
 				/>
@@ -584,13 +492,7 @@ describe('Tree', () => {
 		it('renders with selectable nodes', () => {
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					selectable={true}
 				/>
 			));
@@ -604,13 +506,7 @@ describe('Tree', () => {
 			const selectedNode = simpleTree[0].id;
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					selectable={true}
 					value={selectedNode}
 				/>
@@ -636,13 +532,7 @@ describe('Tree', () => {
 			const onValue = sinon.stub();
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					selectable={true}
 					onValue={onValue}
 				/>
@@ -675,13 +565,7 @@ describe('Tree', () => {
 		it('can select the active node with keyboard', () => {
 			const r = renderer(() => (
 				<Tree
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
+					resource={{ data: simpleTree, id: 'test', idKey: 'value' }}
 					selectable={true}
 				/>
 			));
@@ -731,23 +615,13 @@ describe('Tree', () => {
 				resolvePromise = res;
 			});
 			const loadingTemplate = createResourceTemplate<TreeNodeOption>({
-				find: defaultFind,
-				read: async (request, { put, get }) => {
+				idKey: 'id',
+				read: async (request, { put }) => {
 					const data = await dataPromise;
 					put({ data, total: simpleTree.length }, request);
 				}
 			});
-			const r = renderer(() => (
-				<Tree
-					resource={{
-						template: {
-							template: loadingTemplate,
-							id: 'test',
-							initOptions: { data: simpleTree, id: 'test' } as any
-						}
-					}}
-				/>
-			));
+			const r = renderer(() => <Tree resource={{ template: loadingTemplate }} />);
 
 			r.child(WrappedNode1, { value: 'node-1' });
 			r.child(WrappedNode2, { value: 'node-2' });

@@ -2,7 +2,7 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { i18n } from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { createResourceMiddleware, ResourceMeta } from '@dojo/framework/core/middleware/resources';
+import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import { uuid } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { Keys } from '../common/util';
@@ -25,6 +25,7 @@ import * as iconCss from '../theme/default/icon.m.css';
 import * as css from '../theme/default/select.m.css';
 import bundle from './nls/Select';
 import LoadingIndicator from '../loading-indicator';
+import { find } from '@dojo/framework/shim/array';
 
 export interface SelectProperties {
 	/** Callback called when user selects a value */
@@ -70,7 +71,6 @@ interface SelectICache {
 	triggerId: string;
 	valid: boolean;
 	value: string;
-	meta?: ResourceMeta;
 }
 
 const icache = createICacheMiddleware<SelectICache>();
@@ -80,7 +80,7 @@ const factory = create({
 	focus,
 	theme,
 	i18n,
-	resource: createResourceMiddleware<ListOption>()
+	resource: createResourceMiddleware<{ data: ListOption }>()
 })
 	.properties<SelectProperties>()
 	.children<SelectChildren | undefined>();
@@ -91,7 +91,7 @@ export const Select = factory(function Select({
 	properties,
 	middleware: { icache, focus, theme, i18n, resource }
 }) {
-	const { createOptions, isLoading, meta, find } = resource;
+	const { createOptions, getOrRead } = resource;
 	const {
 		classes,
 		variant,
@@ -106,7 +106,7 @@ export const Select = factory(function Select({
 		position,
 		required,
 		name,
-		resource: { template, options = createOptions(id) }
+		resource: { template, options = createOptions((curr, next) => ({ ...curr, ...next })) }
 	} = properties();
 	const [{ items, label } = { items: undefined, label: undefined }] = children();
 	let { value } = properties();
@@ -128,10 +128,10 @@ export const Select = factory(function Select({
 	const dirty = icache.get('dirty');
 	const { messages } = i18n.localize(bundle);
 	const expanded = icache.get('expanded');
-	const metaInfo = icache.set('meta', (current) => {
-		const newMeta = meta(template, options(), true);
-		return newMeta || current;
-	});
+	const {
+		meta: { total, status },
+		data
+	} = getOrRead(template, options(), true);
 
 	if (required && dirty) {
 		const isValid = value !== undefined;
@@ -201,17 +201,21 @@ export const Select = factory(function Select({
 						}
 
 						let valueOption: ListOption | undefined;
-						if (value && metaInfo) {
-							valueOption = (
-								find(template, {
-									options: options(),
-									start: 0,
-									query: { value },
-									type: 'exact'
-								}) || {
-									item: undefined
+						if (value && data) {
+							let found = find(data, (item) => {
+								return Boolean(item.value && item.value.value === value);
+							});
+							if (found) {
+								valueOption = found.value;
+							} else {
+								const items = getOrRead(template, {
+									...options(),
+									query: { value }
+								});
+								if (items) {
+									valueOption = items[0];
 								}
-							).item;
+							}
 						}
 
 						return (
@@ -269,7 +273,7 @@ export const Select = factory(function Select({
 							close();
 						}
 
-						return metaInfo === undefined && isLoading(template, options()) ? (
+						return total === undefined && status === 'reading' ? (
 							<LoadingIndicator
 								key="loading"
 								theme={themeProp}

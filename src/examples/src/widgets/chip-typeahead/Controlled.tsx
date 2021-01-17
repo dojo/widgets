@@ -4,7 +4,7 @@ import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import Icon from '@dojo/widgets/icon';
 import Example from '../../Example';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 import { data, Data } from '../../data';
@@ -14,16 +14,15 @@ const icache = createICacheMiddleware<{ value: ListOption[] }>();
 const resource = createResourceMiddleware();
 const factory = create({ resource, icache });
 
-const template = createMemoryResourceTemplate<Data>();
+const template = createResourceTemplate<Data>('id');
 
 export default factory(function Controlled({ id, middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<ChipTypeahead
 				resource={resource({
-					template,
-					transform: { value: 'id', label: 'product' },
-					initOptions: { id, data }
+					template: template({ id, data }),
+					transform: { value: 'id', label: 'product' }
 				})}
 				value={icache.getOrSet('value', []).map((value) => value.value)}
 				onValue={(value) => icache.set('value', value)}

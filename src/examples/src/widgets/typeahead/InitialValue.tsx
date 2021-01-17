@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
+import Typeahead from '@dojo/widgets/typeahead';
 import Example from '../../Example';
 import {
 	createResourceTemplate,
@@ -13,23 +13,31 @@ const factory = create({ icache, resource });
 
 const template = createResourceTemplate<Data>('id');
 
+const dataWithDisabled = data.map((item) => ({ ...item, disabled: Math.random() < 0.1 }));
+
 export default factory(function Basic({ id, middleware: { icache, resource } }) {
-	const { createOptions } = resource;
-	const options = createOptions((curr, next) => ({ ...curr, ...next }));
-	// options({ size: 5 });
+	const strict = icache.getOrSet('strict', true);
 	return (
 		<Example>
-			<List
+			<Typeahead
+				strict={strict}
+				initialValue={'c8500f1d-806c-4475-a9df-e9da4f7ac315'}
 				resource={resource({
-					template: template({ id, data }),
-					options,
-					transform: { value: 'id', label: 'summary' }
+					template: template({ data: dataWithDisabled, id }),
+					transform: { value: 'id', label: 'product' }
 				})}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-			/>
-			<p>{`Clicked on: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
+			>
+				{{
+					label: 'Basic Typeahead'
+				}}
+			</Typeahead>
+			<button onclick={() => icache.set('strict', (strict = true) => !strict)}>
+				{strict ? 'Non strict' : 'strict'}
+			</button>
+			<pre>{JSON.stringify(icache.get('value'))}</pre>
 		</Example>
 	);
 });
