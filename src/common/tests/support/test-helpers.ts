@@ -82,10 +82,7 @@ export const compareLabelId = {
 
 interface HarnessOptions {
 	customComparator?: CustomComparator[];
-	middleware?: [
-		MiddlewareResultFactory<any, any, any, any>,
-		MiddlewareResultFactory<any, any, any, any>
-	][];
+	middleware?: [MiddlewareResultFactory<any, any, any, any>, any][];
 }
 
 export const createHarness = (globalCompares: CustomComparator[]) => {
