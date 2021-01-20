@@ -93,6 +93,34 @@ registerSuite('Button', {
 			assert.isTrue(blurred);
 			assert.isTrue(clicked);
 			assert.isTrue(focused);
+		},
+
+		'renders secondary button kinds'() {
+			const h = harness(() => <Button kind="secondary" />, [compareId]);
+			h.expect(
+				template.setProperty('button', 'classes', [
+					undefined,
+					css.root,
+					null,
+					null,
+					css.secondary,
+					null
+				])
+			);
+		},
+
+		'renders cancel button kinds'() {
+			const h = harness(() => <Button kind="cancel" />, [compareId]);
+			h.expect(
+				template.setProperty('button', 'classes', [
+					undefined,
+					css.root,
+					null,
+					null,
+					null,
+					css.cancel
+				])
+			);
 		}
 	}
 });
