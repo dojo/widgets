@@ -35,11 +35,11 @@
 
 .root.cancel:before,
 .root.cancel:after {
-	background-color: var(--mdc-theme-on-surface);
+	background-color: var(--mdc-text-color);
 }
 
 .root.secondary:not(.disabled) {
-	color: var(--mdc-secondary-text-color);
+	color: var(--mdc-theme-secondary);
 }
 
 .root.secondary:before,
