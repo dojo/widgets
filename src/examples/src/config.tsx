@@ -250,6 +250,7 @@ import ErrorResult from './widgets/result/Error';
 import SuccessResult from './widgets/result/Success';
 import CustomIconResult from './widgets/result/CustomIcon';
 import BasicWizard from './widgets/wizard/Basic';
+import CustomWizard from './widgets/wizard/Custom';
 import VerticalWizard from './widgets/wizard/Vertical';
 import ErrorWizard from './widgets/wizard/Error';
 import BasicTree from './widgets/tree/Basic';
@@ -1966,6 +1967,11 @@ export const config = {
 					filename: 'Error',
 					module: ErrorWizard,
 					title: 'Wizard with an error'
+				},
+				{
+					filename: 'Custom',
+					module: CustomWizard,
+					title: 'Custom step renderer'
 				}
 			]
 		}
