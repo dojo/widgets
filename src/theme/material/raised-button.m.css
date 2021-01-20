@@ -16,3 +16,23 @@
 .root.disabled:disabled {
 	background-color: var(--mdc-disabled-text-color);
 }
+
+.root.cancel:not(:disabled) {
+	background-color: var(--mdc-theme-on-surface);
+	color: var(--mdc-text-color);
+}
+
+.root.cancel:before,
+.root.cancel:after {
+	background-color: var(--mdc-theme-on-surface);
+}
+
+.root.secondary:not(:disabled) {
+	background-color: var(--mdc-theme-secondary);
+	color: var(--mdc-theme-on-secondary);
+}
+
+.root.secondary:before,
+.root.secondary:after {
+	background-color: var(--mdc-theme-secondary);
+}
