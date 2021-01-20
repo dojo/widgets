@@ -148,15 +148,6 @@ describe('Wizard', () => {
 			</WrappedStep3>
 		</WrappedRoot>
 	));
-	const WrappedStepRoot = wrap('div');
-	const baseStepAssertion = assertion(() => (
-		<WrappedStepRoot classes={[undefined, css.stepContent]}>
-			<div classes={[css.stepTitle, css.noTitle, css.noDescription]}>
-				<div classes={css.stepSubTitle} />
-			</div>
-			<div classes={css.stepDescription} />
-		</WrappedStepRoot>
-	));
 
 	it('renders', () => {
 		const r = mockedRenderer(() => (
