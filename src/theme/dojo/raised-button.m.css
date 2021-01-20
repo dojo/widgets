@@ -34,3 +34,19 @@
 .disabled:hover {
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 }
+
+.secondary {
+	background-color: var(--color-secondary);
+}
+
+.secondary .label {
+	color: var(--color-text-secondary);
+}
+
+.cancel {
+	background-color: var(--color-alert);
+}
+
+.cancel .label {
+	color: var(--color-text-inverted);
+}

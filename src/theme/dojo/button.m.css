@@ -48,3 +48,11 @@
 .pressed .label {
 	color: var(--color-text-inverted);
 }
+
+.secondary .label {
+	color: var(--color-text-secondary);
+}
+
+.cancel .label {
+	color: var(--color-alert);
+}
