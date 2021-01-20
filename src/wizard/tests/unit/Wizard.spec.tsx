@@ -3,7 +3,7 @@ const { it, describe } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
 
-import Wizard, { Step } from '../../index';
+import Wizard from '../../index';
 import * as css from '../../../theme/default/wizard.m.css';
 import * as avatarCss from '../../../theme/default/avatar.m.css';
 import Avatar from '../../../avatar';
@@ -66,7 +66,12 @@ describe('Wizard', () => {
 							/>
 						</Avatar>
 					</div>
-					<div>Step 1</div>
+					<div classes={[null, css.stepContent]}>
+						<div classes={[css.stepTitle, false, css.noDescription]}>
+							Step 1<div classes={css.stepSubTitle}>{''}</div>
+						</div>
+						<div classes={css.stepDescription}>{''}</div>
+					</div>
 				</virtual>
 			</WrappedStep1>
 			<WrappedStep2 key="step2" classes={[css.step, false, false, false]} onclick={noop}>
@@ -95,7 +100,12 @@ describe('Wizard', () => {
 							2
 						</WrappedAvatar>
 					</div>
-					<div>Step 2</div>
+					<div classes={[null, css.stepContent]}>
+						<div classes={[css.stepTitle, false, css.noDescription]}>
+							Step 2<div classes={css.stepSubTitle}>{''}</div>
+						</div>
+						<div classes={css.stepDescription}>{''}</div>
+					</div>
 				</virtual>
 			</WrappedStep2>
 			<WrappedStep3
@@ -128,28 +138,23 @@ describe('Wizard', () => {
 							3
 						</Avatar>
 					</div>
-					<div>Step 3</div>
+					<div classes={[null, css.stepContent]}>
+						<div classes={[css.stepTitle, false, css.noDescription]}>
+							Step 3<div classes={css.stepSubTitle}>{''}</div>
+						</div>
+						<div classes={css.stepDescription}>{''}</div>
+					</div>
 				</virtual>
 			</WrappedStep3>
 		</WrappedRoot>
 	));
-	const WrappedStepRoot = wrap('div');
-	const baseStepAssertion = assertion(() => (
-		<WrappedStepRoot classes={[undefined, css.stepContent]}>
-			<div classes={[css.stepTitle, css.noTitle, css.noDescription]}>
-				<div classes={css.stepSubTitle} />
-			</div>
-			<div classes={css.stepDescription} />
-		</WrappedStepRoot>
-	));
 
 	it('renders', () => {
 		const r = mockedRenderer(() => (
-			<Wizard activeStep={1}>
-				<div>Step 1</div>
-				<div>Step 2</div>
-				<div>Step 3</div>
-			</Wizard>
+			<Wizard
+				activeStep={1}
+				steps={[{ title: 'Step 1' }, { title: 'Step 2' }, { title: 'Step 3' }]}
+			/>
 		));
 
 		r.expect(baseAssertion);
@@ -157,11 +162,11 @@ describe('Wizard', () => {
 
 	it('renders vertically', () => {
 		const r = mockedRenderer(() => (
-			<Wizard direction="vertical" activeStep={1}>
-				<div>Step 1</div>
-				<div>Step 2</div>
-				<div>Step 3</div>
-			</Wizard>
+			<Wizard
+				direction="vertical"
+				activeStep={1}
+				steps={[{ title: 'Step 1' }, { title: 'Step 2' }, { title: 'Step 3' }]}
+			/>
 		));
 
 		r.expect(
@@ -176,11 +181,11 @@ describe('Wizard', () => {
 
 	it('renders with "clickable" set to true', () => {
 		const r = mockedRenderer(() => (
-			<Wizard clickable activeStep={1}>
-				<div>Step 1</div>
-				<div>Step 2</div>
-				<div>Step 3</div>
-			</Wizard>
+			<Wizard
+				clickable
+				activeStep={1}
+				steps={[{ title: 'Step 1' }, { title: 'Step 2' }, { title: 'Step 3' }]}
+			/>
 		));
 
 		r.expect(
@@ -195,11 +200,14 @@ describe('Wizard', () => {
 
 	it('renders with an error', () => {
 		const r = mockedRenderer(() => (
-			<Wizard activeStep={1}>
-				<div>Step 1</div>
-				<Step status="error" />
-				<div>Step 3</div>
-			</Wizard>
+			<Wizard
+				activeStep={1}
+				steps={[
+					{ title: 'Step 1' },
+					{ status: 'error', title: 'Step 2' },
+					{ title: 'Step 3' }
+				]}
+			/>
 		));
 
 		r.expect(
@@ -232,7 +240,12 @@ describe('Wizard', () => {
 								2
 							</WrappedAvatar>
 						</div>
-						<Step status="error" />
+						<div classes={[null, css.stepContent]}>
+							<div classes={[css.stepTitle, false, css.noDescription]}>
+								Step 2<div classes={css.stepSubTitle}>{''}</div>
+							</div>
+							<div classes={css.stepDescription}>{''}</div>
+						</div>
 					</virtual>
 				])
 				.setProperty(WrappedAvatar, 'outline', true)
@@ -257,11 +270,8 @@ describe('Wizard', () => {
 					requestIndex = step;
 				}}
 				activeStep={1}
-			>
-				<div>Step 1</div>
-				<div>Step 2</div>
-				<div>Step 3</div>
-			</Wizard>
+				steps={[{ title: 'Step 1' }, { title: 'Step 2' }, { title: 'Step 3' }]}
+			/>
 		));
 
 		r.expect(
@@ -287,31 +297,28 @@ describe('Wizard', () => {
 		assert.equal(requestIndex, 2);
 	});
 
-	describe('step', () => {
-		it('renders step by default', () => {
-			const r = mockedRenderer(() => <Step />);
-			r.expect(baseStepAssertion);
-		});
+	it('calls a custom renderer', () => {
+		const r = mockedRenderer(() => (
+			<Wizard activeStep={0} steps={[{ title: 'Step 1' }]}>
+				{{
+					step: (status, index, step) => (
+						<div>
+							{status} {String(index)} {step.title}
+						</div>
+					)
+				}}
+			</Wizard>
+		));
 
-		it('renders with title, subtitle, and description', () => {
-			const r = mockedRenderer(() => (
-				<Step>
-					{{
-						title: 'title',
-						subTitle: 'subTitle',
-						description: 'description'
-					}}
-				</Step>
-			));
-			r.expect(
-				baseStepAssertion.replaceChildren(WrappedStepRoot, () => [
-					<div classes={[css.stepTitle, false, false]}>
-						title
-						<div classes={css.stepSubTitle}>subTitle</div>
-					</div>,
-					<div classes={css.stepDescription}>description</div>
-				])
-			);
-		});
+		r.expect(
+			baseAssertion.setChildren(WrappedRoot, () => [
+				<div key="step1" classes={[css.step, false, false, false]} onclick={noop}>
+					<div classes={css.tail} />
+					<div>
+						{'inProgress'} {'0'} {'Step 1'}
+					</div>
+				</div>
+			])
+		);
 	});
 });

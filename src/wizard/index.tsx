@@ -1,11 +1,17 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { RenderResult, WNode } from '@dojo/framework/core/interfaces';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '../middleware/theme';
 import Icon from '../icon';
 import * as css from '../theme/default/wizard.m.css';
 import * as avatarCss from '../theme/default/avatar.m.css';
 import Avatar from '../avatar';
 
+export interface Step {
+	title?: RenderResult;
+	subTitle?: RenderResult;
+	description?: RenderResult;
+	status?: StepStatus;
+}
 export interface WizardProperties {
 	/** A callback that will be notified when a step is clicked if this is clickable */
 	onStep?(step: number): void;
@@ -15,53 +21,20 @@ export interface WizardProperties {
 	clickable?: boolean;
 	/** The active step can be controlled to automatically set step status. Will be overridden by statuses provided to each step. If this property is not used, individual statuses should be passed to steps */
 	activeStep?: number;
+	/** The steps available to the wizard */
+	steps: Step[];
+}
+
+export interface WizardChildren {
+	/** Custom renderer for the wizardSteps, receives the checkbox group middleware and options */
+	step?(status: StepStatus | undefined, index: number, step: Step): RenderResult;
 }
 
 export type StepStatus = 'pending' | 'inProgress' | 'complete' | 'error';
 
-export interface StepProperties {
-	status?: StepStatus;
-}
-export interface StepChildren {
-	title?: RenderResult;
-	subTitle?: RenderResult;
-	description?: RenderResult;
-}
-
-const stepFactory = create({ theme })
-	.properties<StepProperties>()
-	.children<StepChildren | undefined>();
-
-export const Step = stepFactory(({ children, middleware: { theme } }) => {
-	const [
-		{ title, subTitle, description } = {
-			description: undefined,
-			title: undefined,
-			subTitle: undefined
-		}
-	] = children();
-	const themedCss = theme.classes(css);
-
-	return (
-		<div classes={[theme.variant(), themedCss.stepContent]}>
-			<div
-				classes={[
-					themedCss.stepTitle,
-					!title && themedCss.noTitle,
-					!description && themedCss.noDescription
-				]}
-			>
-				{title}
-				<div classes={themedCss.stepSubTitle}>{subTitle}</div>
-			</div>
-			<div classes={themedCss.stepDescription}>{description}</div>
-		</div>
-	);
-});
-
 const factory = create({ theme })
-	.children<WNode[]>()
-	.properties<WizardProperties>();
+	.properties<WizardProperties>()
+	.children<WizardChildren | undefined>();
 
 export default factory(function Wizard({ properties, children, middleware: { theme } }) {
 	const themedCss = theme.classes(css);
@@ -72,12 +45,13 @@ export default factory(function Wizard({ properties, children, middleware: { the
 		clickable = false,
 		classes,
 		variant,
+		steps,
 		theme: themeProp
 	} = properties();
 
-	const stepNodes = children();
+	const [{ step: stepRenderer } = { step: undefined }] = children();
 
-	const stepWrappers = stepNodes.map((step, index) => {
+	const stepWrappers = steps.map((step, index) => {
 		let content;
 		let defaultStatus: StepStatus | undefined;
 
@@ -91,7 +65,15 @@ export default factory(function Wizard({ properties, children, middleware: { the
 			defaultStatus = 'inProgress';
 		}
 
-		const { status = defaultStatus } = step.properties;
+		const { title, description, subTitle, status = defaultStatus } = step;
+
+		if (stepRenderer) {
+			return {
+				content: stepRenderer(defaultStatus, index, step),
+				status
+			};
+		}
+
 		switch (status) {
 			case 'complete':
 				content = (
@@ -106,6 +88,7 @@ export default factory(function Wizard({ properties, children, middleware: { the
 			default:
 				content = String(index + 1);
 		}
+
 		return {
 			content: (
 				<virtual>
@@ -123,7 +106,19 @@ export default factory(function Wizard({ properties, children, middleware: { the
 							{content}
 						</Avatar>
 					</div>
-					{step}
+					<div classes={[theme.variant(), themedCss.stepContent]}>
+						<div
+							classes={[
+								themedCss.stepTitle,
+								!title && themedCss.noTitle,
+								!description && themedCss.noDescription
+							]}
+						>
+							{title}
+							<div classes={themedCss.stepSubTitle}>{subTitle}</div>
+						</div>
+						<div classes={themedCss.stepDescription}>{description}</div>
+					</div>
 				</virtual>
 			),
 			status
