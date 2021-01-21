@@ -37,7 +37,7 @@ export interface ButtonProperties {
 	/** The title text for the button node */
 	title?: string;
 	/** The kind of button */
-	kind?: 'primary' | 'secondary' | 'cancel';
+	kind?: 'primary' | 'secondary' | 'default';
 }
 
 const factory = create({ focus, theme }).properties<ButtonProperties>();
@@ -64,7 +64,7 @@ export const Button = factory(function Button({
 		onBlur,
 		onFocus,
 		title,
-		kind = 'primary'
+		kind = 'default'
 	} = properties();
 
 	const themeCss = theme.classes(css);
@@ -77,8 +77,8 @@ export const Button = factory(function Button({
 				themeCss.root,
 				disabled ? themeCss.disabled : null,
 				pressed ? themeCss.pressed : null,
-				kind === 'secondary' ? themeCss.secondary : null,
-				kind === 'cancel' ? themeCss.cancel : null
+				kind === 'secondary' ? themeCss.secondaryKind : null,
+				kind === 'default' ? themeCss.defaultKind : null
 			]}
 			title={title}
 			disabled={disabled}

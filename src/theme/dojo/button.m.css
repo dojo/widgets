@@ -49,10 +49,10 @@
 	color: var(--color-text-inverted);
 }
 
-.secondary .label {
-	color: var(--color-text-secondary);
+.secondaryKind .label {
+	color: var(--color-text-faded);
 }
 
-.cancel .label {
-	color: var(--color-alert);
+.defaultKind .label {
+	color: var(--color-text);
 }

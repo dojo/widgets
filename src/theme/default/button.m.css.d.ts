@@ -3,5 +3,5 @@ export const pressed: string;
 export const popup: string;
 export const disabled: string;
 export const label: string;
-export const secondary: string;
-export const cancel: string;
+export const secondaryKind: string;
+export const defaultKind: string;

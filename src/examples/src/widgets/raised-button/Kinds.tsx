@@ -14,7 +14,7 @@ export default factory(function Kinds() {
 				<RaisedButton kind="secondary">Secondary</RaisedButton>
 				<br />
 				<br />
-				<RaisedButton kind="cancel">Cancel</RaisedButton>
+				<RaisedButton kind="default">Default</RaisedButton>
 			</div>
 		</Example>
 	);

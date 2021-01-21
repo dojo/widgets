@@ -14,7 +14,7 @@ export default factory(function Kinds() {
 				<OutlinedButton kind="secondary">Secondary</OutlinedButton>
 				<br />
 				<br />
-				<OutlinedButton kind="cancel">Cancel</OutlinedButton>
+				<OutlinedButton kind="default">Default</OutlinedButton>
 				<br />
 				<br />
 			</div>

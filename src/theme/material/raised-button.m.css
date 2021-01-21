@@ -17,22 +17,22 @@
 	background-color: var(--mdc-disabled-text-color);
 }
 
-.root.cancel:not(:disabled) {
+.root.defaultKind:not(:disabled) {
 	background-color: var(--mdc-theme-on-surface);
 	color: var(--mdc-text-color);
 }
 
-.root.cancel:before,
-.root.cancel:after {
+.root.defaultKind:before,
+.root.defaultKind:after {
 	background-color: var(--mdc-theme-on-surface);
 }
 
-.root.secondary:not(:disabled) {
+.root.secondaryKind:not(:disabled) {
 	background-color: var(--mdc-theme-secondary);
 	color: var(--mdc-theme-on-secondary);
 }
 
-.root.secondary:before,
-.root.secondary:after {
+.root.secondaryKind:before,
+.root.secondaryKind:after {
 	background-color: var(--mdc-theme-secondary);
 }

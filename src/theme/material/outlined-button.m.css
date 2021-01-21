@@ -7,22 +7,22 @@
 	composes: mdc-button--unelevated from '@material/button/dist/mdc.button.css';
 }
 
-.root.cancel:not(:disabled) {
+.root.defaultKind:not(:disabled) {
 	border-color: var(--mdc-theme-on-surface);
 	color: var(--mdc-text-color);
 }
 
-.root.cancel:before,
-.root.cancel:after {
+.root.defaultKind:before,
+.root.defaultKind:after {
 	background-color: var(--mdc-theme-on-surface);
 }
 
-.root.secondary:not(:disabled) {
+.root.secondaryKind:not(:disabled) {
 	border-color: var(--mdc-theme-secondary) !important;
 	color: var(--mdc-secondary-text-color);
 }
 
-.root.secondary:before,
-.root.secondary:after {
+.root.secondaryKind:before,
+.root.secondaryKind:after {
 	background-color: var(--mdc-theme-secondary);
 }

@@ -26,7 +26,7 @@ function createMockFocusMiddleware({
 
 const template = assertionTemplate(() => (
 	<button
-		classes={[undefined, css.root, null, null, null, null]}
+		classes={[undefined, css.root, null, null, null, css.defaultKind]}
 		disabled={undefined}
 		id="button-test"
 		focus={false}
@@ -103,14 +103,14 @@ registerSuite('Button', {
 					css.root,
 					null,
 					null,
-					css.secondary,
+					css.secondaryKind,
 					null
 				])
 			);
 		},
 
-		'renders cancel button kinds'() {
-			const h = harness(() => <Button kind="cancel" />, [compareId]);
+		'renders primary button kinds'() {
+			const h = harness(() => <Button kind="primary" />, [compareId]);
 			h.expect(
 				template.setProperty('button', 'classes', [
 					undefined,
@@ -118,7 +118,7 @@ registerSuite('Button', {
 					null,
 					null,
 					null,
-					css.cancel
+					null
 				])
 			);
 		}

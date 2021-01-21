@@ -41,10 +41,12 @@
 	color: var(--color-text-faded);
 }
 
-.secondary {
+.secondaryKind {
 	border-color: var(--color-secondary);
+	color: var(--color-text-faded);
 }
 
-.cancel {
-	border-color: var(--color-alert);
+.defaultKind {
+	border-color: var(--color-text);
+	color: var(--color-text);
 }

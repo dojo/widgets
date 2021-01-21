@@ -29,20 +29,20 @@
 	border-color: var(--mdc-disabled-text-color);
 }
 
-.root.cancel:not(.disabled) {
+.root.defaultKind:not(.disabled) {
 	color: var(--mdc-text-color);
 }
 
-.root.cancel:before,
-.root.cancel:after {
+.root.defaultKind:before,
+.root.defaultKind:after {
 	background-color: var(--mdc-text-color);
 }
 
-.root.secondary:not(.disabled) {
+.root.secondaryKind:not(.disabled) {
 	color: var(--mdc-theme-secondary);
 }
 
-.root.secondary:before,
-.root.secondary:after {
+.root.secondaryKind:before,
+.root.secondaryKind:after {
 	background-color: var(--mdc-theme-secondary);
 }

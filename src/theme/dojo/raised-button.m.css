@@ -35,18 +35,14 @@
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 }
 
-.secondary {
+.secondaryKind {
 	background-color: var(--color-secondary);
 }
 
-.secondary .label {
+.secondaryKind .label {
 	color: var(--color-text-secondary);
 }
 
-.cancel {
-	background-color: var(--color-alert);
-}
-
-.cancel .label {
-	color: var(--color-text-inverted);
+.defaultKind .label {
+	color: var(--color-text);
 }

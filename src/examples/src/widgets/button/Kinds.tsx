@@ -8,10 +8,13 @@ export default factory(function Kinds() {
 	return (
 		<Example>
 			<div>
+				<Button kind="primary">Primary</Button>
+				<br />
+				<br />
 				<Button kind="secondary">Secondary</Button>
 				<br />
 				<br />
-				<Button kind="cancel">Cancel</Button>
+				<Button kind="default">Default</Button>
 			</div>
 		</Example>
 	);
