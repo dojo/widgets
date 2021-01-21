@@ -34,3 +34,15 @@
 .disabled:hover {
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
 }
+
+.secondaryKind {
+	background-color: var(--color-secondary);
+}
+
+.secondaryKind .label {
+	color: var(--color-text-secondary);
+}
+
+.defaultKind .label {
+	color: var(--color-text);
+}

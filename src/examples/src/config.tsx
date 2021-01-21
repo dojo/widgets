@@ -14,6 +14,7 @@ import BasicBreadcrumbGroup from './widgets/breadcrumb-group/Basic';
 import CustomRendererBreadcrumbGroup from './widgets/breadcrumb-group/CustomRenderer';
 import BasicButton from './widgets/button/Basic';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
+import KindButton from './widgets/button/Kinds';
 import ToggleButton from './widgets/button/ToggleButton';
 import BasicCalendar from './widgets/calendar/Basic';
 import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
@@ -115,6 +116,7 @@ import FreeTextChipTypeahead from './widgets/chip-typeahead/FreeText';
 import BasicNumberInput from './widgets/number-input/Basic';
 import ValidatedNumberInput from './widgets/number-input/Validation';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
+import OutlinedButtonKinds from './widgets/outlined-button/Kinds';
 import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
 import OutlinedToggleButton from './widgets/outlined-button/ToggleButton';
 import BasicPassword from './widgets/password-input/Basic';
@@ -139,6 +141,7 @@ import CustomRendererRadioGroup from './widgets/radio-group/CustomRenderer';
 import InitialValueRadioGroup from './widgets/radio-group/InitialValue';
 import BasicRaisedButton from './widgets/raised-button/Basic';
 import RaisedDisabledSubmit from './widgets/raised-button/DisabledSubmit';
+import RaisedButtonKinds from './widgets/raised-button/Kinds';
 import RaisedToggleButton from './widgets/raised-button/ToggleButton';
 import BasicRangeSlider from './widgets/range-slider/Basic';
 import MinMaxRangeSlider from './widgets/range-slider/MinMax';
@@ -400,6 +403,11 @@ export const config = {
 					filename: 'ToggleButton',
 					module: ToggleButton,
 					title: 'Toggle Button'
+				},
+				{
+					filename: 'Kinds',
+					module: KindButton,
+					title: 'Kinds'
 				}
 			],
 			filename: 'index',
@@ -1211,6 +1219,11 @@ export const config = {
 					filename: 'ToggleButton',
 					module: OutlinedToggleButton,
 					title: 'Toggle Button'
+				},
+				{
+					filename: 'Kinds',
+					module: OutlinedButtonKinds,
+					title: 'Kinds'
 				}
 			],
 			overview: {
@@ -1357,6 +1370,11 @@ export const config = {
 					filename: 'ToggleButton',
 					module: RaisedToggleButton,
 					title: 'Toggle Button'
+				},
+				{
+					filename: 'Kinds',
+					module: RaisedButtonKinds,
+					title: 'Kinds'
 				}
 			],
 			overview: {

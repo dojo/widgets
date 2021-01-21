@@ -23,6 +23,7 @@
 	/* Color hex values */
 	--color-dark: #333;
 	--color-text-primary: #000000;
+	--color-text-secondary: #000000;
 	--color-text-faded: #5c6c7c;
 	--color-text-inverted: #ffffff;
 	--color-highlight: #006be6;
@@ -68,4 +69,7 @@
 	--divider-width: 9px;
 
 	--tab-width: calc(var(--grid-base) * 16);
+
+	--color-primary: #ffffff;
+	--color-secondary: rgb(199, 222, 209);
 }

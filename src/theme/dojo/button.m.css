@@ -48,3 +48,11 @@
 .pressed .label {
 	color: var(--color-text-inverted);
 }
+
+.secondaryKind .label {
+	color: var(--color-text-faded);
+}
+
+.defaultKind .label {
+	color: var(--color-text);
+}

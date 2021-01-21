@@ -40,3 +40,13 @@
 .disabled:hover .label {
 	color: var(--color-text-faded);
 }
+
+.secondaryKind {
+	border-color: var(--color-secondary);
+	color: var(--color-text-faded);
+}
+
+.defaultKind {
+	border-color: var(--color-text);
+	color: var(--color-text);
+}
