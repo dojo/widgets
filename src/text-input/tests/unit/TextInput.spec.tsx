@@ -480,7 +480,7 @@ registerSuite('TextInput', {
 			assert.isFalse(validateSpy.called);
 		},
 
-		'does not show error message on initial render'() {
+		'onValidate called with undefined on initial render'() {
 			const focusMock = createFocusMock();
 			const validityMock = createValidityMock();
 
