@@ -446,7 +446,7 @@ registerSuite('TextInput', {
 			assert.isTrue(validateSpy.calledWith(true, ''));
 		},
 
-		'onValidate only called when validity or message changed'() {
+		'onValidate called when validity or message changed'() {
 			const focusMock = createFocusMock();
 			const validityMock = createValidityMock();
 
@@ -478,6 +478,23 @@ registerSuite('TextInput', {
 			);
 
 			assert.isFalse(validateSpy.called);
+		},
+
+		'onValidate called with undefined on initial render'() {
+			const focusMock = createFocusMock();
+			const validityMock = createValidityMock();
+
+			focusMock('isFocused', false);
+			validityMock('input', { valid: false, message: 'test' });
+
+			let validateSpy = sinon.spy();
+
+			const h = harness(() => <TextInput onValidate={validateSpy} />, {
+				middleware: [[focus, focusMock], [validity, validityMock]]
+			});
+
+			h.expect(expected);
+			validateSpy.calledWith(undefined, '');
 		},
 
 		'customValidator not called when native validation fails'() {
