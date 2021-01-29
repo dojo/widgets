@@ -6,6 +6,7 @@ const locales = {
 const messages = {
 	invalidProps: 'Min date cannot be greater than max date',
 	invalidDate: 'Invalid date format',
+	requiredDate: 'Date is required',
 	tooEarly: 'Date must be at after Min date',
 	tooLate: 'Date must be before Max date'
 };

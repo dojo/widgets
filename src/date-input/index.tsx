@@ -36,6 +36,8 @@ export interface DateInputProperties extends ThemeProperties, FocusProperties {
 	disabled?: boolean;
 	/** The readonly attribute of the input */
 	readOnly?: boolean;
+	/** Determines if this input is required, styles accordingly */
+	required?: boolean;
 }
 
 export interface DateInputChildren {
@@ -60,6 +62,8 @@ interface DateInputICache {
 	validationMessage: string | undefined;
 	/** Indicates which node will be focused */
 	focusNode: 'input' | 'calendar';
+	/** Indicates if user has interacted with input */
+	dirty: boolean;
 }
 
 const icache = createICacheMiddleware<DateInputICache>();
@@ -82,7 +86,8 @@ export default factory(function({
 		readOnly = false,
 		theme: themeProp,
 		variant,
-		classes
+		classes,
+		required
 	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const themedCss = theme.classes(css);
@@ -120,6 +125,7 @@ export default factory(function({
 	const shouldValidate = icache.getOrSet('shouldValidate', true);
 	const shouldFocus = focus.shouldFocus();
 	const focusNode = icache.getOrSet('focusNode', 'input');
+	const dirty = icache.get('dirty');
 	const [labelChild] = children();
 	const label = isRenderResult(labelChild) ? labelChild : labelChild.label;
 
@@ -155,6 +161,10 @@ export default factory(function({
 
 			isValid = validationMessages.length === 0;
 		}
+		if ((controlledValue ? icache.get('nextValue') : inputValue) === '' && dirty && required) {
+			validationMessages = [messages.requiredDate];
+			isValid = false;
+		}
 
 		const validationMessage = validationMessages.join('; ');
 		onValidate && onValidate(isValid, validationMessage);
@@ -169,6 +179,7 @@ export default factory(function({
 				name={name}
 				value={formatDateISO(icache.get('value'))}
 				aria-hidden="true"
+				required={required}
 			/>
 			<TriggerPopup key="popup" theme={themeProp} classes={classes} variant={variant}>
 				{{
@@ -187,6 +198,7 @@ export default factory(function({
 									key="input"
 									disabled={disabled}
 									readOnly={readOnly}
+									required={required}
 									focus={() => shouldFocus && focusNode === 'input'}
 									theme={theme.compose(
 										textInputCss,
@@ -197,6 +209,7 @@ export default factory(function({
 									initialValue={icache.get('inputValue')}
 									onBlur={() => icache.set('shouldValidate', true)}
 									onValue={(v) => {
+										icache.set('dirty', true);
 										icache.set(
 											controlledValue === undefined
 												? 'inputValue'

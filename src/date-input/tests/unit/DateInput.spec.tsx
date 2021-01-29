@@ -20,6 +20,7 @@ import DateInput from '../../index';
 import { formatDate, formatDateISO } from '../../date-utils';
 import bundle from '../../nls/DateInput';
 import * as css from '../../../theme/default/date-input.m.css';
+import { wrap } from '@dojo/framework/testing/renderer';
 
 const { messages } = bundle;
 const now = new Date();
@@ -43,7 +44,9 @@ function createFocusMock({
 		}))();
 }
 
-const baseTemplate = (date?: Date) =>
+const WrappedCalendar = wrap(Calendar);
+
+const baseTemplate = (date?: Date | '') =>
 	assertionTemplate(() => {
 		return (
 			<div classes={[undefined, css.root]}>
@@ -53,6 +56,7 @@ const baseTemplate = (date?: Date) =>
 					name="dateInput"
 					value={formatDateISO(date || today)}
 					aria-hidden="true"
+					required={undefined}
 				/>
 				<TriggerPopup variant={undefined} classes={undefined} theme={undefined} key="popup">
 					{{
@@ -71,6 +75,7 @@ const buttonTemplate = assertionTemplate(() => {
 				key="input"
 				disabled={false}
 				readOnly={false}
+				required={undefined}
 				focus={() => false}
 				theme={{}}
 				type="text"
@@ -91,7 +96,7 @@ const buttonTemplate = assertionTemplate(() => {
 const calendarTemplate = assertionTemplate(() => {
 	return (
 		<div classes={css.popup}>
-			<Calendar
+			<WrappedCalendar
 				key="calendar"
 				focus={() => false}
 				maxDate={undefined}
@@ -512,5 +517,33 @@ describe('DateInput', () => {
 			() => triggerResult
 		);
 		sinon.assert.calledWith(onValidate, false, messages.invalidProps);
+	});
+
+	it('requires date input', () => {
+		const onValidate = sinon.stub();
+		const h = harness(() => (
+			<DateInput name="dateInput" onValue={onValue} onValidate={onValidate} required={true} />
+		));
+
+		const toggleOpen = sinon.stub();
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpen
+		);
+		h.expect(buttonTemplate.setProperty('@input', 'required', true), () => triggerResult);
+
+		// Find the input widget and trigger it's value changed
+		const [input] = select('@input', triggerResult);
+		onValue.resetHistory();
+		input.properties.onValue('');
+
+		h.expect(baseTemplate().setProperty('@input', 'required', true));
+
+		input.properties.onBlur();
+
+		h.expect(baseTemplate('').setProperty('@input', 'required', true));
+		sinon.assert.calledWith(onValidate, false, messages.requiredDate);
+		sinon.assert.notCalled(onValue);
 	});
 });
