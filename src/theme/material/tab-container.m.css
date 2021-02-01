@@ -17,11 +17,6 @@
 	composes: mdc-tab__text-label from '@material/tab/dist/mdc.tab.css';
 }
 
-.tab {
-	composes: mdc-tab__content from '@material/tab/dist/mdc.tab.css';
-	pointer-events: auto;
-}
-
 .activeTabButton {
 	composes: mdc-tab--active from '@material/tab/dist/mdc.tab.css';
 }
