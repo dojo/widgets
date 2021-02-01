@@ -20,7 +20,6 @@ import DateInput from '../../index';
 import { formatDate, formatDateISO } from '../../date-utils';
 import bundle from '../../nls/DateInput';
 import * as css from '../../../theme/default/date-input.m.css';
-import { wrap } from '@dojo/framework/testing/renderer';
 
 const { messages } = bundle;
 const now = new Date();
@@ -43,8 +42,6 @@ function createFocusMock({
 			focus
 		}))();
 }
-
-const WrappedCalendar = wrap(Calendar);
 
 const baseTemplate = (date?: Date | '') =>
 	assertionTemplate(() => {
@@ -96,7 +93,7 @@ const buttonTemplate = assertionTemplate(() => {
 const calendarTemplate = assertionTemplate(() => {
 	return (
 		<div classes={css.popup}>
-			<WrappedCalendar
+			<Calendar
 				key="calendar"
 				focus={() => false}
 				maxDate={undefined}
