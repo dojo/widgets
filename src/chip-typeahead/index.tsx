@@ -65,7 +65,7 @@ export interface ChipTypeaheadIcache {
 const factory = create({
 	icache: createICacheMiddleware<ChipTypeaheadIcache>(),
 	theme,
-	resource: createResourceMiddleware<{ data: ListOption }>(),
+	resource: createResourceMiddleware<ListOption>(),
 	focus
 })
 	.properties<ChipTypeaheadProperties>()
@@ -86,12 +86,10 @@ function valueChanged(values: string[] = [], options: ListOption[] = []): boolea
 }
 
 export const ChipTypeahead = factory(function ChipTypeahead({
-	id,
 	middleware: { icache, theme, focus, resource },
 	properties,
 	children
 }) {
-	const { createOptions, getOrRead } = resource;
 	const {
 		value,
 		classes = {},
@@ -103,14 +101,22 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 		name,
 		placement = 'inline',
 		strict,
-		resource: { template, options = createOptions((curr, next) => ({ ...curr, ...next })) }
+		resource: {
+			template,
+			options = resource.createOptions((curr, next) => ({ ...curr, ...next }))
+		}
 	} = properties();
+	const {
+		get,
+		template: { read }
+	} = resource.template(template);
+
 	const [{ label, items, selected } = {} as ChipTypeaheadChildren] = children();
 	const themeCss = theme.classes(css);
 	const focused = icache.getOrSet('focused', false);
 	const selectedOptions = icache.set('options', (current) => {
 		if (!current && initialValue && !value) {
-			const items = getOrRead(template, options());
+			const items = get(options(), { read });
 			const initialSelectedOptions = initialValue.map((valueId) => {
 				if (items) {
 					const findResult = find(items, (item) => item.value === valueId);
@@ -129,7 +135,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 			return initialSelectedOptions;
 		} else if (value && valueChanged(value, current)) {
 			const controlledOptions = value.map((valueId) => {
-				const items = getOrRead(template, options());
+				const items = get(options(), { read });
 				if (items) {
 					const findResult = find(items, (item) => item.value === valueId);
 					if (findResult) {

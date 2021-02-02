@@ -81,7 +81,7 @@ export interface TypeaheadChildren {
 
 const factory = create({
 	icache: createICacheMiddleware<TypeaheadICache>(),
-	resource: createResourceMiddleware<{ data: ListOption }>(),
+	resource: createResourceMiddleware<ListOption>(),
 	theme,
 	focus,
 	i18n
@@ -95,7 +95,6 @@ export const Typeahead = factory(function Typeahead({
 	children,
 	middleware: { icache, resource, theme, focus, i18n }
 }) {
-	const { get, getOrRead, createOptions } = resource;
 	const {
 		initialValue,
 		disabled,
@@ -108,11 +107,19 @@ export const Typeahead = factory(function Typeahead({
 		strict = true,
 		value: controlledValue,
 		itemDisabled,
-		resource: { template, options = createOptions((curr, next) => ({ ...curr, ...next })) },
+		resource: {
+			template,
+			options = resource.createOptions((curr, next) => ({ ...curr, ...next }))
+		},
 		classes,
 		theme: themeProp,
 		variant
 	} = properties();
+	const {
+		get,
+		template: { read }
+	} = resource.template(template);
+
 	const themedCss = theme.classes(css);
 	const { messages } = i18n.localize(bundle);
 
@@ -175,7 +182,7 @@ export const Typeahead = factory(function Typeahead({
 	) {
 		const {
 			meta: { total = 0 }
-		} = getOrRead(template, options(), true);
+		} = get(options(), { meta: true, read });
 		switch (event) {
 			case Keys.Escape:
 				onClose();
@@ -202,7 +209,7 @@ export const Typeahead = factory(function Typeahead({
 				const activeIndex = icache.getOrSet('activeIndex', strict ? 0 : -1);
 				const labelValue = icache.get('labelValue');
 				if (activeIndex > -1 || labelValue) {
-					const data = get(template, { ...options(), size: total });
+					const data = get({ ...options(), size: total });
 					let selectedValue: ListOption | undefined;
 					const activeItem = data[activeIndex];
 					if (strict) {
@@ -256,7 +263,7 @@ export const Typeahead = factory(function Typeahead({
 	}
 	const {
 		meta: { total, status }
-	} = get(template, options(), true);
+	} = get(options(), { meta: true });
 	const selectedOption = icache.get('selectedOption');
 	if (required && dirty) {
 		const isValid = Boolean(selectedOption) || Boolean(!strict && !!labelValue);
@@ -268,13 +275,13 @@ export const Typeahead = factory(function Typeahead({
 	}
 
 	if (!icache.get('selectedOption') && value) {
-		const currentItems = getOrRead(template, options()) || [];
+		const currentItems = get(options(), { read }) || [];
 		const option = currentItems.find((item) => Boolean(item && item.value === value));
 		if (option) {
 			icache.set('selectedOption', option);
 		} else {
 			const findItem =
-				getOrRead(template, { ...options(), query: { ...options().query, value } }) || [];
+				get({ ...options(), query: { ...options().query, value } }, { read }) || [];
 			if (findItem) {
 				icache.set('selectedOption', findItem[0]);
 			}

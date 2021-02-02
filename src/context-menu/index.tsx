@@ -13,7 +13,7 @@ export interface ContextMenuProperties {
 
 const factory = create({
 	theme,
-	resource: createResourceMiddleware<{ data: ListOption }>()
+	resource: createResourceMiddleware<ListOption>()
 }).properties<ContextMenuProperties>();
 
 export const ContextMenu = factory(function({ properties, children, middleware: { theme } }) {

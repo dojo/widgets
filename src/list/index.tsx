@@ -262,7 +262,7 @@ const factory = create({
 	focus,
 	theme,
 	offscreen,
-	resource: createResourceMiddleware<{ data: ListOption }>()
+	resource: createResourceMiddleware<ListOption>()
 })
 	.properties<ListProperties>()
 	.children<ListChildren | undefined>();
@@ -273,7 +273,6 @@ export const List = factory(function List({
 	id,
 	middleware: { icache, focus, theme, resource, offscreen }
 }) {
-	const { get, getOrRead, createOptions } = resource;
 	const {
 		activeIndex,
 		focusable = true,
@@ -288,10 +287,18 @@ export const List = factory(function List({
 		widgetId,
 		theme: themeProp,
 		variant,
-		resource: { template, options = createOptions((curr, next) => ({ ...curr, ...next })) },
+		resource: {
+			template,
+			options = resource.createOptions((curr, next) => ({ ...curr, ...next }))
+		},
 		classes,
 		height = 'fixed'
 	} = properties();
+	const {
+		get,
+		template: { read }
+	} = resource.template(template);
+
 	const [itemRenderer] = children();
 
 	function setActiveIndex(index: number) {
@@ -377,7 +384,7 @@ export const List = factory(function List({
 		const { size: resourceRequestSize } = options();
 		const {
 			meta: { total = 0 }
-		} = getOrRead(template, options(), true);
+		} = get(options(), { meta: true, read });
 		if (total) {
 			let pages: number[] = [];
 			for (let i = 0; i < Math.min(total - start, count); i++) {
@@ -392,9 +399,9 @@ export const List = factory(function List({
 			}
 			const pageItems = pages.map((page, index) => {
 				if (index === pages.length - 1) {
-					options({ page });
+					options({ offset: (page - 1) * options().size });
 				}
-				return getOrRead(template, { ...options(), page });
+				return get({ ...options(), offset: (page - 1) * options().size }, { read });
 			});
 			for (let i = 0; i < Math.min(total - start, count); i++) {
 				const index = i + startNode;
@@ -670,9 +677,9 @@ export const List = factory(function List({
 	const inputText = icache.get('inputText');
 	const {
 		meta: { total = 0 }
-	} = getOrRead(template, options(), true);
+	} = get(options(), { meta: true, read });
 	if (inputText && inputText !== icache.get('previousInputText') && total) {
-		const items = get(template, { ...options(), page: 1, size: total });
+		const items = get({ ...options(), offset: 0, size: total });
 		const first = items.slice(0, computedActiveIndex);
 		const second = items.slice(computedActiveIndex);
 		let foundIndex = computedActiveIndex;

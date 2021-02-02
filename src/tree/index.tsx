@@ -47,7 +47,7 @@ interface TreeCache {
 	expandedIds: string[];
 }
 
-const resource = createResourceMiddleware<{ data: TreeNodeOption }>();
+const resource = createResourceMiddleware<TreeNodeOption>();
 const icache = createICacheMiddleware<TreeCache>();
 const factory = create({ theme, icache, diffProperty, focus, resource })
 	.properties<TreeProperties>()
@@ -81,8 +81,6 @@ export default factory(function Tree({
 			}
 		}
 	);
-
-	const { createOptions, getOrRead } = resource;
 	const {
 		checkable = false,
 		selectable = false,
@@ -98,6 +96,11 @@ export default factory(function Tree({
 		classes,
 		variant
 	} = properties();
+	const {
+		get,
+		template: { read }
+	} = resource.template(template);
+
 	const themedCss = theme.classes(css);
 	const defaultRenderer = (n: TreeNodeOption) => n.value;
 	const [itemRenderer] = children();
@@ -150,12 +153,12 @@ export default factory(function Tree({
 
 	function createNodeFlatMap(nodeId: string = 'root'): TreeNodeOption[] {
 		let nodes: TreeNodeOption[] = [];
-		const options = createOptions((curr, next) => ({ ...curr, ...next }));
+		const options = resource.createOptions((curr, next) => ({ ...curr, ...next }));
 		const {
 			meta: { total }
-		} = getOrRead(template, options({ query: { parent: nodeId } }), true);
+		} = get(options({ query: { parent: nodeId } }), { read, meta: true });
 		if (total) {
-			const results = getOrRead(template, options({ size: total }));
+			const results = get(options({ size: total }), { read });
 			const queriedNodes = results ? flat(results) : [];
 
 			queriedNodes.forEach((node) => {
@@ -223,21 +226,23 @@ export default factory(function Tree({
 	}
 
 	function mapNodeTree(nodeId: string = 'root') {
-		const { meta } = getOrRead(
-			template,
-			{ size: 30, page: 1, query: { parent: nodeId } },
-			true
+		const { meta } = get(
+			{ size: 30, offset: 0, query: { parent: nodeId } },
+			{ read, meta: true }
 		);
 
 		if (meta.status !== 'read') {
 			return <LoadingIndicator theme={themeProp} classes={classes} variant={variant} />;
 		}
 
-		const results = getOrRead(template, {
-			size: meta.total || 0,
-			page: 1,
-			query: { parent: nodeId }
-		});
+		const results = get(
+			{
+				size: meta.total || 0,
+				offset: 0,
+				query: { parent: nodeId }
+			},
+			{ read }
+		);
 
 		const nodes = results ? flat(results) : [];
 

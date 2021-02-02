@@ -80,18 +80,16 @@ const factory = create({
 	focus,
 	theme,
 	i18n,
-	resource: createResourceMiddleware<{ data: ListOption }>()
+	resource: createResourceMiddleware<ListOption>()
 })
 	.properties<SelectProperties>()
 	.children<SelectChildren | undefined>();
 
 export const Select = factory(function Select({
-	id,
 	children,
 	properties,
 	middleware: { icache, focus, theme, i18n, resource }
 }) {
-	const { createOptions, getOrRead } = resource;
 	const {
 		classes,
 		variant,
@@ -106,8 +104,16 @@ export const Select = factory(function Select({
 		position,
 		required,
 		name,
-		resource: { template, options = createOptions((curr, next) => ({ ...curr, ...next })) }
+		resource: {
+			template,
+			options = resource.createOptions((curr, next) => ({ ...curr, ...next }))
+		}
 	} = properties();
+	const {
+		get,
+		template: { read }
+	} = resource.template(template);
+
 	const [{ items, label } = { items: undefined, label: undefined }] = children();
 	let { value } = properties();
 
@@ -131,7 +137,7 @@ export const Select = factory(function Select({
 	const {
 		meta: { total, status },
 		data
-	} = getOrRead(template, options(), true);
+	} = get(options(), { read, meta: true });
 
 	if (required && dirty) {
 		const isValid = value !== undefined;
@@ -208,10 +214,13 @@ export const Select = factory(function Select({
 							if (found) {
 								valueOption = found.value;
 							} else {
-								const items = getOrRead(template, {
-									...options(),
-									query: { value }
-								});
+								const items = get(
+									{
+										...options(),
+										query: { value }
+									},
+									{ read }
+								);
 								if (items) {
 									valueOption = items[0];
 								}

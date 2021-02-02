@@ -23,7 +23,7 @@ export default factory(function Disabled({ id, middleware: { resource } }) {
 			<ChipTypeahead
 				resource={resource({ template: template({ id, data: options }) })}
 				disabled
-				initialValue={['cat', 'dog']}
+				initialValue={['1', '2']}
 			>
 				{{
 					label: 'Disabled'
