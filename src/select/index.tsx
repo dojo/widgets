@@ -214,13 +214,7 @@ export const Select = factory(function Select({
 							if (found) {
 								valueOption = found.value;
 							} else {
-								const items = get(
-									{
-										...options(),
-										query: { value }
-									},
-									{ read }
-								);
+								const items = get(options({ query: { value } }), { read });
 								if (items) {
 									valueOption = items[0];
 								}
