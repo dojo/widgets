@@ -34,6 +34,7 @@ export default factory(function Basic({ middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<Typeahead
+				initialValue={'bfae9901-4c4a-4dc1-8f0b-ac7c60c5976a-418'}
 				strict={strict}
 				resource={resource({
 					template: listOptionTemplate
