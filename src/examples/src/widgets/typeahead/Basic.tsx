@@ -4,26 +4,40 @@ import Typeahead from '@dojo/widgets/typeahead';
 import Example from '../../Example';
 import {
 	createResourceTemplate,
-	createResourceMiddleware
+	createResourceMiddleware,
+	defaultFilter
 } from '@dojo/framework/core/middleware/resources';
-import { data, Data } from '../../data';
+import { largeListOptions } from '../../data';
+import { ListOption } from '@dojo/widgets/list';
 
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
 
-const template = createResourceTemplate<Data>('id');
+const dataWithDisabled = largeListOptions.map((item) => ({
+	...item,
+	disabled: Math.random() < 0.1
+}));
 
-const dataWithDisabled = data.map((item) => ({ ...item, disabled: Math.random() < 0.1 }));
+export const listOptionTemplate = createResourceTemplate<ListOption>({
+	idKey: 'value',
+	read: async (req, { put }) => {
+		console.log('start');
+		await new Promise((res) => setTimeout(res, 1000));
+		const { offset, size, query } = req;
+		const filteredData = dataWithDisabled.filter((item) => defaultFilter(query, item));
+		put({ data: filteredData.slice(offset, offset + size), total: filteredData.length }, req);
+		console.log('finish');
+	}
+});
 
-export default factory(function Basic({ id, middleware: { icache, resource } }) {
+export default factory(function Basic({ middleware: { icache, resource } }) {
 	const strict = icache.getOrSet('strict', true);
 	return (
 		<Example>
 			<Typeahead
 				strict={strict}
 				resource={resource({
-					template: template({ data: dataWithDisabled, id }),
-					transform: { value: 'id', label: 'product' }
+					template: listOptionTemplate
 				})}
 				onValue={(value) => {
 					icache.set('value', value);
