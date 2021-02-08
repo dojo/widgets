@@ -5,7 +5,7 @@ import Example from '../../Example';
 
 const factory = create({ icache });
 
-export default factory(function Controlled({ middleware: { icache } }) {
+export default factory(function Required({ middleware: { icache } }) {
 	return (
 		<Example>
 			<DateInput

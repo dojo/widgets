@@ -217,7 +217,14 @@ export default factory(function({
 											v || ''
 										);
 									}}
-									helperText={icache.get('validationMessage')}
+									valid={
+										icache.get('validationMessage')
+											? {
+													valid: false,
+													message: icache.get('validationMessage')
+											  }
+											: true
+									}
 									onKeyDown={(key) => {
 										if (
 											key === Keys.Down ||
