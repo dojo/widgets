@@ -4,8 +4,7 @@ import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
 import {
 	createResourceTemplate,
-	createResourceMiddleware,
-	defaultFind
+	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 
 interface User {
@@ -15,7 +14,7 @@ interface User {
 }
 
 const template = createResourceTemplate<User>({
-	find: defaultFind,
+	idKey: 'id',
 	read: async (request, { put }) => {
 		const { offset, size, query } = request;
 		let url = `https://mixolydian-appendix.glitch.me/user?`;

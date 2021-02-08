@@ -273,7 +273,7 @@ describe('Pagination', () => {
 				<Select
 					key="page-size-select"
 					initialValue="20"
-					resource={createTestResource([{ value: '10' }, { value: '20' }])}
+					resource={createTestResource([{ value: '10' }, { value: '20' }], 'value')}
 					onValue={noop}
 					value={undefined}
 				/>

@@ -3,7 +3,7 @@ import List, { ListOption } from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 
@@ -19,14 +19,14 @@ const options = [
 	{ value: '6', label: 'Share' }
 ];
 
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createResourceTemplate<ListOption>('value');
 
 export default factory(function Menu({ id, middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<List
 				menu
-				resource={resource({ template, initOptions: { id, data: options } })}
+				resource={resource({ template: template({ id, data: options }) })}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}

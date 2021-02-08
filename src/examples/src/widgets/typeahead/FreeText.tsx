@@ -3,7 +3,7 @@ import icache from '@dojo/framework/core/middleware/icache';
 import Typeahead from '@dojo/widgets/typeahead';
 import Example from '../../Example';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 import { ListOption } from '@dojo/widgets/list';
@@ -17,7 +17,7 @@ const options = [
 	{ value: '4', label: 'Cat' }
 ];
 
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createResourceTemplate<ListOption>('value');
 
 export default factory(function FreeText({ id, middleware: { icache, resource } }) {
 	return (
@@ -25,7 +25,7 @@ export default factory(function FreeText({ id, middleware: { icache, resource } 
 			<Typeahead
 				required={true}
 				strict={false}
-				resource={resource({ template, initOptions: { id, data: options } })}
+				resource={resource({ template: template({ id, data: options }) })}
 				onValidate={(valid) => {
 					icache.set('valid', valid);
 				}}

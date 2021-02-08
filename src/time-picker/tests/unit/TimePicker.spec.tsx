@@ -133,7 +133,7 @@ const menuTemplate = assertionTemplate(() => {
 				key="menu"
 				height="auto"
 				focus={() => false}
-				resource={createTestResource(options30Minutes)}
+				resource={createTestResource(options30Minutes, 'value')}
 				onValue={noop}
 				onRequestClose={noop}
 				onBlur={noop}
@@ -380,7 +380,11 @@ describe('TimePicker', () => {
 			onClose
 		);
 		h.expect(
-			menuTemplate.setProperty('@menu', 'resource', createTestResource(options30Minutes12)),
+			menuTemplate.setProperty(
+				'@menu',
+				'resource',
+				createTestResource(options30Minutes12, 'value')
+			),
 			() => contentResult
 		);
 
@@ -537,7 +541,8 @@ describe('TimePicker', () => {
 						hour12: false,
 						hour: 'numeric',
 						minute: 'numeric'
-					})
+					}),
+					'value'
 				)
 			),
 			() => contentResult

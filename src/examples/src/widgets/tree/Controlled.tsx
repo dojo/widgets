@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
@@ -52,7 +52,7 @@ const nodes: TreeNodeOption[] = [
 		hasChildren: false
 	}
 ];
-const template = createMemoryResourceTemplate<TreeNodeOption>();
+const template = createResourceTemplate<TreeNodeOption>('value');
 
 export default factory(function Advanced({ id, middleware: { icache, resource } }) {
 	const expanded = icache.getOrSet('expanded', []);
@@ -66,7 +66,7 @@ export default factory(function Advanced({ id, middleware: { icache, resource } 
 				onExpand={(ids) => {}}
 				expandedIds={expanded}
 				checkedIds={checked}
-				resource={resource({ template, initOptions: { id, data: nodes } })}
+				resource={resource({ template: template({ id, data: nodes }) })}
 			/>
 			<ul>
 				<li>

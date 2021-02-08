@@ -4,8 +4,7 @@ import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
 import {
 	createResourceTemplate,
-	createResourceMiddleware,
-	defaultFind
+	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 import { ListOption } from '@dojo/widgets/list';
 
@@ -18,7 +17,7 @@ const options = [
 ];
 
 const template = createResourceTemplate<{ value: string; label: string }>({
-	find: defaultFind,
+	idKey: 'value',
 	read: async (req, { put }) => {
 		put({ data: options, total: options.length }, req);
 	}

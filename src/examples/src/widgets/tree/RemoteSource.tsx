@@ -1,15 +1,14 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import {
 	createResourceMiddleware,
-	defaultFind,
 	createResourceTemplate
 } from '@dojo/framework/core/middleware/resources';
 import Example from '../../Example';
 import Tree, { TreeNodeOption } from '@dojo/widgets/tree';
 
 const template = createResourceTemplate<TreeNodeOption>({
-	find: defaultFind,
-	read: async (request, { put, get }) => {
+	idKey: 'id',
+	read: async (request, { put }) => {
 		const { query } = request;
 		const response = await fetch(`https://foamy-picayune-lamprey.glitch.me/${query.parent}`, {
 			headers: {
