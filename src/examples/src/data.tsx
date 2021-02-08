@@ -992,7 +992,17 @@ export const data: Data[] = [
 	}
 ];
 
+export const largeData = [...data, ...data, ...data, ...data, ...data].map((item, index) => ({
+	...item,
+	id: `${item.id}-${index}`
+}));
+
 export const listOptions: ListOption[] = data.map((item) => ({
+	value: item.id,
+	label: item.summary
+}));
+
+export const largeListOptions: ListOption[] = largeData.map((item) => ({
 	value: item.id,
 	label: item.summary
 }));

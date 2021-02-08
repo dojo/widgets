@@ -2,29 +2,15 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import List from '@dojo/widgets/list';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
-import {
-	createResourceTemplate,
-	createResourceMiddleware
-} from '@dojo/framework/core/middleware/resources';
-import { data, Data } from '../../data';
+import { listOptionTemplate } from '../../template';
 
-const resource = createResourceMiddleware();
-const factory = create({ icache, resource });
+const factory = create({ icache });
 
-const template = createResourceTemplate<Data>('id');
-
-export default factory(function Basic({ id, middleware: { icache, resource } }) {
-	const { createOptions } = resource;
-	const options = createOptions((curr, next) => ({ ...curr, ...next }));
-	// options({ size: 5 });
+export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<Example>
 			<List
-				resource={resource({
-					template: template({ id, data }),
-					options,
-					transform: { value: 'id', label: 'summary' }
-				})}
+				resource={{ template: listOptionTemplate }}
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
