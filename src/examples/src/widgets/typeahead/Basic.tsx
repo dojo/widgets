@@ -21,12 +21,11 @@ const dataWithDisabled = largeListOptions.map((item) => ({
 export const listOptionTemplate = createResourceTemplate<ListOption>({
 	idKey: 'value',
 	read: async (req, { put }) => {
-		console.log('start');
+		// emulate an async request
 		await new Promise((res) => setTimeout(res, 1000));
 		const { offset, size, query } = req;
 		const filteredData = dataWithDisabled.filter((item) => defaultFilter(query, item));
 		put({ data: filteredData.slice(offset, offset + size), total: filteredData.length }, req);
-		console.log('finish');
 	}
 });
 

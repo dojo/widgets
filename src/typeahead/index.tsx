@@ -263,7 +263,7 @@ export const Typeahead = factory(function Typeahead({
 	}
 	const {
 		meta: { total, status }
-	} = get(options(), { meta: true });
+	} = get(options(), { meta: true, read });
 	const selectedOption = icache.get('selectedOption');
 	if (required && dirty) {
 		const isValid = Boolean(selectedOption) || Boolean(!strict && !!labelValue);
