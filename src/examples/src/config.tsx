@@ -30,6 +30,8 @@ import CardWithMediaContent from './widgets/card/CardWithMediaContent';
 import CardWithMediaRectangle from './widgets/card/CardWithMediaRectangle';
 import CardWithMediaSquare from './widgets/card/CardWithMediaSquare';
 import BasicHeaderCard from './widgets/header-card/Basic';
+import HeaderActionsHeaderCard from './widgets/header-card/HeaderActions';
+import OverflowActionsHeaderCard from './widgets/header-card/OverflowActions';
 import MediaHeaderCard from './widgets/header-card/MediaCard';
 import ActionHeaderCard from './widgets/header-card/ActionCard';
 import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
@@ -512,6 +514,18 @@ export const config = {
 					title: 'Header Card with media',
 					module: MediaHeaderCard,
 					filename: 'MediaCard'
+				},
+				{
+					title: 'Card with header actions',
+					module: HeaderActionsHeaderCard,
+					filename: 'HeaderActions'
+				},
+				{
+					title: 'Card with overflow actions',
+					module: OverflowActionsHeaderCard,
+					filename: 'OverflowActions',
+					sandbox: true,
+					size: 'large'
 				}
 			],
 			filename: 'index',
@@ -708,7 +722,7 @@ export const config = {
 				{
 					filename: 'CloseableDialog',
 					module: CloseableDialog,
-					title: 'Dialog with Configurable Closeability',
+					title: 'Closeable Dialog with Configurable',
 					sandbox: true,
 					size: 'medium'
 				},
@@ -1088,7 +1102,7 @@ export const config = {
 			},
 			examples: [
 				{
-					title: 'Contolled Native Select',
+					title: 'Controlled Native Select',
 					filename: 'ControlledNativeSelect',
 					module: ControlledNativeSelect
 				}

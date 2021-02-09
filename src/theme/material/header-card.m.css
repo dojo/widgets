@@ -3,6 +3,7 @@
 	display: flex;
 	padding-top: 1rem;
 	align-items: center;
+	width: 100%;
 }
 
 .headerContent {
@@ -11,6 +12,10 @@
 
 .avatar {
 	margin-right: 1rem;
+	flex: 0 0 auto;
+}
+
+.actions {
 	flex: 0 0 auto;
 }
 

@@ -6,6 +6,7 @@ import HeaderCard from '../../index';
 import Card from '../../../card';
 import Avatar from '../../../avatar';
 import * as css from '../../../theme/default/header-card.m.css';
+import Button from '../../../button';
 
 describe('HeaderCard', () => {
 	const template = assertionTemplate(() => (
@@ -49,7 +50,7 @@ describe('HeaderCard', () => {
 		);
 	});
 
-	it('renders with a an avatar', () => {
+	it('renders with an avatar', () => {
 		const avatar = <Avatar>D</Avatar>;
 		const h = harness(() => (
 			<HeaderCard square title="title" subtitle="subtitle">
@@ -69,6 +70,34 @@ describe('HeaderCard', () => {
 										{<h2 classes={css.title}>title</h2>}
 										<h3 classes={css.subtitle}>subtitle</h3>
 									</div>
+								</div>
+							)
+						}
+					] as any
+			)
+		);
+	});
+
+	it('renders with an action', () => {
+		const headerActions = <Button>D</Button>;
+		const h = harness(() => (
+			<HeaderCard square title="title" subtitle="subtitle">
+				{{ headerActions }}
+			</HeaderCard>
+		));
+		h.expect(
+			template.setProperty('@root', 'square', true).setChildren(
+				'@root',
+				() =>
+					[
+						{
+							header: () => (
+								<div key="header" classes={css.header}>
+									<div key="headerContent" classes={css.headerContent}>
+										{<h2 classes={css.title}>title</h2>}
+										<h3 classes={css.subtitle}>subtitle</h3>
+									</div>
+									<Button>D</Button>
 								</div>
 							)
 						}
