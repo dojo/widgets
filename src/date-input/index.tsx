@@ -150,6 +150,8 @@ export default factory(function({
 				}
 			} else if (testValue) {
 				validationMessages.push(messages.invalidDate);
+			} else {
+				onValue && onValue('');
 			}
 
 			isValid = validationMessages.length === 0;
