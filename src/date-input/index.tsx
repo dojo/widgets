@@ -47,7 +47,7 @@ interface DateInputICache {
 	/** The most recent "initialValue" property passed */
 	initialValue: string;
 	/** Current user-inputted value */
-	inputValue: string;
+	inputValue?: string;
 	/** The last valid Date of value */
 	value: Date;
 	/** The last "value" property passed */
@@ -114,8 +114,7 @@ export default factory(function({
 
 	const inputValue = icache.getOrSet('inputValue', () => {
 		const parsed = initialValue && parseDate(initialValue);
-
-		return formatDate(parsed || new Date());
+		return parsed ? formatDate(parsed) : undefined;
 	});
 	const shouldValidate = icache.getOrSet('shouldValidate', true);
 	const shouldFocus = focus.shouldFocus();
@@ -149,8 +148,10 @@ export default factory(function({
 						onValue(formatDateISO(newDate));
 					}
 				}
-			} else {
+			} else if (testValue) {
 				validationMessages.push(messages.invalidDate);
+			} else {
+				onValue && onValue('');
 			}
 
 			isValid = validationMessages.length === 0;
@@ -257,7 +258,9 @@ export default factory(function({
 									focus={() => shouldFocus && focusNode === 'calendar'}
 									maxDate={max}
 									minDate={min}
-									initialValue={icache.get('value')}
+									initialValue={
+										icache.get('value') || parseDate(formatDateISO(new Date()))
+									}
 									onValue={(date) => {
 										icache.set(
 											controlledValue === undefined
