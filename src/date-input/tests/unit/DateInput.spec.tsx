@@ -51,7 +51,7 @@ const baseTemplate = (date?: Date) =>
 					assertion-key="input"
 					type="hidden"
 					name="dateInput"
-					value={formatDateISO(date || today)}
+					value={date ? formatDateISO(date) : ''}
 					aria-hidden="true"
 				/>
 				<TriggerPopup variant={undefined} classes={undefined} theme={undefined} key="popup">
@@ -76,7 +76,7 @@ const buttonTemplate = assertionTemplate(() => {
 				type="text"
 				onBlur={noop}
 				onValue={noop}
-				initialValue={formatDate(today)}
+				initialValue={undefined}
 				helperText=""
 				onKeyDown={noop}
 				variant={undefined}
@@ -113,12 +113,6 @@ describe('DateInput', () => {
 		onValue.resetHistory();
 	});
 
-	it('renders with default date', () => {
-		const h = harness(() => <DateInput name="dateInput" onValue={onValue} />);
-		h.expect(baseTemplate());
-		sinon.assert.calledWith(onValue, formatDateISO(today));
-	});
-
 	it('renders with default date when provided an invalid initial date', () => {
 		const h = harness(() => (
 			<DateInput name="dateInput" initialValue="not a date" onValue={onValue} />
@@ -131,7 +125,6 @@ describe('DateInput', () => {
 			<DateInput name="dateInput" value="not a date" onValue={onValue} />
 		));
 		h.expect(baseTemplate().setProperty('@input', 'value', ''));
-		sinon.assert.calledWith(onValue, formatDateISO(today));
 	});
 
 	it('renders with initial value', () => {
