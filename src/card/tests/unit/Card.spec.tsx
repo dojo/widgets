@@ -1,7 +1,6 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
-import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
-import harness from '@dojo/framework/testing/harness/harness';
+import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
 import { tsx } from '@dojo/framework/core/vdom';
 import Card from '../../index';
 import Button from '../../../button/index';
@@ -10,30 +9,47 @@ import * as css from '../../../theme/default/card.m.css';
 import { spy } from 'sinon';
 
 const noop = () => {};
-describe('Card', () => {
-	const template = assertionTemplate(() => (
-		<div key="root" classes={[undefined, css.root]}>
-			<div key="content" classes={[css.content, null]} onClick={noop} />
-		</div>
-	));
 
+const Root = wrap('div');
+const Content = wrap('div');
+
+const template = assertion(() => (
+	<Root key="root" classes={[undefined, css.root, false]}>
+		<Content key="content" classes={[css.content, null]} onClick={noop} />
+	</Root>
+));
+
+describe('Card', () => {
 	it('renders', () => {
-		const h = harness(() => <Card />);
-		h.expect(template);
+		const r = renderer(() => <Card />);
+		r.expect(template);
+	});
+
+	it('renders outlined', () => {
+		const r = renderer(() => <Card outlined />);
+		const outlinedTemplate = template.setProperty(Root, 'classes', [
+			undefined,
+			css.root,
+			css.outlined
+		]);
+		r.expect(outlinedTemplate);
 	});
 
 	describe('action', () => {
 		const onAction = spy();
-		const h = harness(() => <Card onAction={onAction} />);
-		h.expect(template.setProperty('@content', 'classes', [css.content, css.primary]));
+		const r = renderer(() => <Card onAction={onAction} />);
 
-		h.trigger('@content', 'onClick');
+		const actionTemplate = template.setProperty(Content, 'classes', [css.content, css.primary]);
+
+		r.expect(actionTemplate);
+		r.property(Content, 'onClick');
+		r.expect(actionTemplate);
 		assert.isTrue(onAction.calledOnce);
 	});
 
 	describe('header', () => {
 		it('renders header content', () => {
-			const h = harness(() => (
+			const r = renderer(() => (
 				<Card>
 					{{
 						header: 'Hello, World'
@@ -41,133 +57,130 @@ describe('Card', () => {
 				</Card>
 			));
 
-			h.expect(
-				template.prepend('@root', () => [
-					<div key="header" classes={css.header}>
-						Hello, World
-					</div>
-				])
-			);
+			const headerTemplate = template.prepend(Root, () => [
+				<div key="header" classes={css.header}>
+					Hello, World
+				</div>
+			]);
+
+			r.expect(headerTemplate);
 		});
 	});
 
 	describe('content', () => {
 		it('renders content', () => {
-			const h = harness(() => (
+			const r = renderer(() => (
 				<Card>
 					{{
 						content: 'Hello, World'
 					}}
 				</Card>
 			));
-			h.expect(
-				template.setChildren('@content', () => [
-					<div classes={css.contentWrapper}>Hello, World</div>
-				])
-			);
+
+			const contentTemplate = template.setChildren(Content, () => [
+				<div classes={css.contentWrapper}>Hello, World</div>
+			]);
+			r.expect(contentTemplate);
 		});
 
 		it('renders a title and subtitle', () => {
-			const h = harness(() => <Card title="Hello, World" subtitle="this is a test" />);
-			h.expect(
-				template.append('@content', () => [
-					<div classes={css.titleWrapper}>
-						{<h2 classes={css.title}>Hello, World</h2>}
-						<h3 classes={css.subtitle}>this is a test</h3>
-					</div>
-				])
-			);
+			const r = renderer(() => <Card title="Hello, World" subtitle="this is a test" />);
+			const contentTemplate = template.append(Content, () => [
+				<div classes={css.titleWrapper}>
+					{<h2 classes={css.title}>Hello, World</h2>}
+					<h3 classes={css.subtitle}>this is a test</h3>
+				</div>
+			]);
+			r.expect(contentTemplate);
 		});
 
 		it('renders a title, subtitle, and content', () => {
-			const h = harness(() => (
+			const r = renderer(() => (
 				<Card title="Hello, World" subtitle="this is a test">
 					{{
 						content: 'test'
 					}}
 				</Card>
 			));
-			h.expect(
-				template.append('@content', () => [
-					<div classes={css.titleWrapper}>
-						{<h2 classes={css.title}>Hello, World</h2>}
-						<h3 classes={css.subtitle}>this is a test</h3>
-					</div>,
-					<div classes={css.contentWrapper}>test</div>
-				])
-			);
+			const contentTemplate = template.append(Content, () => [
+				<div classes={css.titleWrapper}>
+					{<h2 classes={css.title}>Hello, World</h2>}
+					<h3 classes={css.subtitle}>this is a test</h3>
+				</div>,
+				<div classes={css.contentWrapper}>test</div>
+			]);
+			r.expect(contentTemplate);
 		});
 
 		it('renders media', () => {
-			const h = harness(() => <Card mediaSrc="test.png" mediaTitle="test" />);
-			h.expect(
-				template.append('@content', () => [
-					<div
-						title="test"
-						classes={[css.media, css.media16by9]}
-						styles={{
-							backgroundImage: 'url("test.png")'
-						}}
-					/>
-				])
-			);
+			const r = renderer(() => <Card mediaSrc="test.png" mediaTitle="test" />);
+			const contentTemplate = template.append(Content, () => [
+				<div
+					title="test"
+					classes={[css.media, css.media16by9]}
+					styles={{
+						backgroundImage: 'url("test.png")'
+					}}
+				/>
+			]);
+			r.expect(contentTemplate);
 		});
 
 		it('renders square media', () => {
-			const h = harness(() => <Card square mediaSrc="test.png" mediaTitle="test" />);
-			h.expect(
-				template.append('@content', () => [
-					<div
-						title="test"
-						classes={[css.media, css.mediaSquare]}
-						styles={{
-							backgroundImage: 'url("test.png")'
-						}}
-					/>
-				])
-			);
+			const r = renderer(() => <Card square mediaSrc="test.png" mediaTitle="test" />);
+			const contentTemplate = template.append(Content, () => [
+				<div
+					title="test"
+					classes={[css.media, css.mediaSquare]}
+					styles={{
+						backgroundImage: 'url("test.png")'
+					}}
+				/>
+			]);
+			r.expect(contentTemplate);
 		});
 	});
 
 	describe('actions', () => {
-		const actionsTemplate = template.append('@root', () => [
-			<div key="actions" classes={css.actions} />
+		const Actions = wrap('div');
+		const actionsTemplate = template.append(Root, () => [
+			<Actions key="actions" classes={css.actions} />
 		]);
 
 		it('renders action buttons', () => {
-			const h = harness(() => (
+			const r = renderer(() => (
 				<Card>
 					{{
 						actionButtons: <Button>test</Button>
 					}}
 				</Card>
 			));
-			const childrenTemplate = actionsTemplate.setChildren('@actions', () => [
+			const childrenTemplate = actionsTemplate.setChildren(Actions, () => [
 				<div classes={css.actionButtons}>
 					<Button>test</Button>
 				</div>
 			]);
-			h.expect(childrenTemplate);
+			r.expect(childrenTemplate);
 		});
 
 		it('renders action icons', () => {
-			const h = harness(() => (
+			const r = renderer(() => (
 				<Card>
 					{{
 						actionIcons: <Icon type="upIcon" />
 					}}
 				</Card>
 			));
-			const childrenTemplate = actionsTemplate.setChildren('@actions', () => [
+			const childrenTemplate = actionsTemplate.setChildren(Actions, () => [
 				<div classes={css.actionIcons}>
 					<Icon type="upIcon" />
 				</div>
 			]);
-			h.expect(childrenTemplate);
+			r.expect(childrenTemplate);
 		});
 
 		it('renders action buttons and icons', () => {
-			const h = harness(() => (
+			const r = renderer(() => (
 				<Card>
 					{{
 						actionButtons: <Button>test</Button>,
@@ -175,7 +188,7 @@ describe('Card', () => {
 					}}
 				</Card>
 			));
-			const childrenTemplate = actionsTemplate.setChildren('@actions', () => [
+			const childrenTemplate = actionsTemplate.setChildren(Actions, () => [
 				<div classes={css.actionButtons}>
 					<Button>test</Button>
 				</div>,
@@ -183,12 +196,12 @@ describe('Card', () => {
 					<Icon type="upIcon" />
 				</div>
 			]);
-			h.expect(childrenTemplate);
+			r.expect(childrenTemplate);
 		});
 	});
 
 	it('renders everything together', () => {
-		const h = harness(() => (
+		const r = renderer(() => (
 			<Card
 				title="Hello, World"
 				subtitle="this is a test"
@@ -205,14 +218,14 @@ describe('Card', () => {
 			</Card>
 		));
 
-		h.expect(
+		r.expect(
 			template
-				.prepend('@root', () => [
+				.prepend(Root, () => [
 					<div key="header" classes={css.header}>
 						Header Content
 					</div>
 				])
-				.setChildren('@content', () => [
+				.setChildren(Content, () => [
 					<div
 						title="test"
 						classes={[css.media, css.mediaSquare]}
@@ -226,7 +239,7 @@ describe('Card', () => {
 					</div>,
 					<div classes={css.contentWrapper}>Content</div>
 				])
-				.append('@root', () => [
+				.append(Root, () => [
 					<div key="actions" classes={css.actions}>
 						<div classes={css.actionButtons}>
 							<Button>test</Button>

@@ -10,6 +10,7 @@ export interface CardProperties {
 	square?: boolean;
 	title?: string;
 	subtitle?: string;
+	outlined?: boolean;
 }
 
 export interface CardChildren {
@@ -25,11 +26,19 @@ const factory = create({ theme })
 
 export const Card = factory(function Card({ children, properties, middleware: { theme } }) {
 	const themeCss = theme.classes(css);
-	const { onAction, mediaSrc, mediaTitle, square, title, subtitle } = properties();
+	const {
+		onAction,
+		mediaSrc,
+		mediaTitle,
+		square,
+		title,
+		subtitle,
+		outlined = false
+	} = properties();
 	const { header, content, actionButtons, actionIcons } = children()[0] || ({} as CardChildren);
 
 	return (
-		<div key="root" classes={[theme.variant(), themeCss.root]}>
+		<div key="root" classes={[theme.variant(), themeCss.root, outlined && themeCss.outlined]}>
 			{header && (
 				<div key="header" classes={themeCss.header}>
 					{header}

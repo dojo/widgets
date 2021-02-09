@@ -25,11 +25,13 @@ import ActionButtons from './widgets/card/ActionButtons';
 import ActionButtonsAndIcons from './widgets/card/ActionButtonsAndIcons';
 import ActionIcons from './widgets/card/ActionIcons';
 import BasicCard from './widgets/card/Basic';
+import OutlinedCard from './widgets/card/Outlined';
 import CardCombined from './widgets/card/CardCombined';
 import CardWithMediaContent from './widgets/card/CardWithMediaContent';
 import CardWithMediaRectangle from './widgets/card/CardWithMediaRectangle';
 import CardWithMediaSquare from './widgets/card/CardWithMediaSquare';
 import BasicHeaderCard from './widgets/header-card/Basic';
+import OutlinedHeaderCard from './widgets/header-card/Outlined';
 import MediaHeaderCard from './widgets/header-card/MediaCard';
 import ActionHeaderCard from './widgets/header-card/ActionCard';
 import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
@@ -458,6 +460,11 @@ export const config = {
 		card: {
 			examples: [
 				{
+					title: 'Basic outlined Card',
+					module: OutlinedCard,
+					filename: 'Outlined'
+				},
+				{
 					title: 'Basic Card with Action Buttons',
 					module: ActionButtons,
 					filename: 'ActionButtons'
@@ -512,6 +519,11 @@ export const config = {
 					title: 'Header Card with media',
 					module: MediaHeaderCard,
 					filename: 'MediaCard'
+				},
+				{
+					title: 'Outlined Header Card',
+					module: OutlinedHeaderCard,
+					filename: 'Outlined'
 				}
 			],
 			filename: 'index',

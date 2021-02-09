@@ -12,3 +12,4 @@ export const titleWrapper: string;
 export const contentWrapper: string;
 export const title: string;
 export const subtitle: string;
+export const outlined: string;
