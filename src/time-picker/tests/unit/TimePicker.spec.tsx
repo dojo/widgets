@@ -131,6 +131,7 @@ const menuTemplate = assertionTemplate(() => {
 		<div key="menu-wrapper" classes={css.menuWrapper}>
 			<List
 				key="menu"
+				itemsInView={undefined}
 				height="auto"
 				focus={() => false}
 				resource={createTestResource(options30Minutes, 'value')}

@@ -1,3 +1,4 @@
+import Map from '@dojo/framework/shim/Map';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
 import { padStart } from '@dojo/framework/shim/string';
@@ -55,6 +56,9 @@ export interface TimePickerProperties {
 
 	/** How the time is formatted. 24 hour, 12 hour */
 	format?: '24' | '12';
+
+	/** Property to determine how many items to render. Defaults to 10 */
+	itemsInView?: number;
 }
 
 export interface TimePickerChildren {
@@ -74,6 +78,10 @@ export interface TimePickerICache {
 	inputValidMessage?: string;
 	isValid?: boolean;
 	initialValue?: string;
+	min: string;
+	max: string;
+	step: number;
+	options: (ListOption & { dt: number })[];
 }
 
 const resource = createResourceMiddleware();
@@ -217,6 +225,8 @@ function isTimePickerChildren(children: any): children is TimePickerChildren {
 	return children && children.hasOwnProperty && children.hasOwnProperty('label');
 }
 
+const optionsCache = new Map<string, (ListOption & { dt: number })[]>();
+
 export const TimePicker = factory(function TimePicker({
 	id,
 	middleware: { theme, icache, focus, i18n, resource },
@@ -252,7 +262,16 @@ export const TimePicker = factory(function TimePicker({
 		}
 	};
 
-	const { initialValue, format = '24', value: controlledValue } = properties();
+	const {
+		initialValue,
+		format = '24',
+		value: controlledValue,
+		min = '00:00:00',
+		max = '23:59:59',
+		step = 1800,
+		timeDisabled,
+		itemsInView
+	} = properties();
 	if (
 		initialValue !== undefined &&
 		controlledValue === undefined &&
@@ -333,33 +352,42 @@ export const TimePicker = factory(function TimePicker({
 		icache.set('shouldValidate', false);
 	}
 
-	const generateOptions = () => {
-		const { min = '00:00:00', max = '23:59:59', step = 1800, timeDisabled } = properties();
+	if (min !== icache.get('min') || max !== icache.get('max') || step !== icache.get('step')) {
+		icache.set('options', () => {
+			const key = `${min}-${max}-${step}`;
+			const cached = optionsCache.get(key);
+			if (cached) {
+				return cached;
+			}
+			const options: (ListOption & { dt: number })[] = [];
+			const dt = parseTime(min, false) || new Date(1970, 0, 1, 0, 0, 0, 0);
+			const end = parseTime(max, false) || new Date(1970, 0, 1, 23, 59, 59, 99);
+			while (dt.getDate() === 1 && dt <= end) {
+				const value = formatTime(dt);
 
-		const options: ListOption[] = [];
+				options.push({
+					dt: dt.getTime(),
+					label: value,
+					value: value
+				});
 
-		const dt = parseTime(min, false) || new Date(1970, 0, 1, 0, 0, 0, 0);
-		const end = parseTime(max, false) || new Date(1970, 0, 1, 23, 59, 59, 99);
-
-		while (dt.getDate() === 1 && dt <= end) {
-			const value = formatTime(dt);
-
-			options.push({
-				label: value,
-				value: value,
-				disabled: timeDisabled ? timeDisabled(dt) : false
-			});
-
-			dt.setSeconds(dt.getSeconds() + step);
-		}
-
-		return options;
-	};
-
+				dt.setSeconds(dt.getSeconds() + step);
+			}
+			optionsCache.set(key, options);
+			return options;
+		});
+		icache.set('min', min);
+		icache.set('max', max);
+		icache.set('step', step);
+	}
+	const options = icache.getOrSet('options', []).map(({ label, value, dt }) => ({
+		label,
+		value,
+		disabled: timeDisabled ? timeDisabled(new Date(dt)) : false
+	}));
 	const { name, theme: themeProp, classes, variant } = properties();
 	const [labelChild] = children();
 	const label = isTimePickerChildren(labelChild) ? labelChild.label : labelChild;
-	const options = generateOptions();
 
 	return (
 		<div classes={[theme.variant(), themedCss.root]}>
@@ -453,6 +481,7 @@ export const TimePicker = factory(function TimePicker({
 						return (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
 								<List
+									itemsInView={itemsInView}
 									height="auto"
 									theme={themeProp}
 									classes={classes}
