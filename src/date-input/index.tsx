@@ -54,12 +54,12 @@ interface DateInputICache {
 	lastValue: string;
 	/** A possible new value that should not be saved until we call a callback */
 	nextValue: string;
-	/** Should validate the input value on the next cycle */
-	shouldValidate: boolean;
 	/** Message for current validation state */
 	validationMessage: string | undefined;
 	/** Indicates which node will be focused */
 	focusNode: 'input' | 'calendar';
+	dirty: boolean;
+	callOnValue: void;
 }
 
 const icache = createICacheMiddleware<DateInputICache>();
@@ -100,7 +100,7 @@ export default factory(function({
 			icache.set('inputValue', formatDate(parsed));
 		}
 		icache.set('initialValue', initialValue);
-		icache.set('shouldValidate', true);
+		icache.delete('callOnValue');
 	}
 
 	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
@@ -112,18 +112,13 @@ export default factory(function({
 		icache.set('lastValue', controlledValue);
 	}
 
-	const inputValue = icache.getOrSet('inputValue', () => {
-		const parsed = initialValue && parseDate(initialValue);
-		return parsed ? formatDate(parsed) : undefined;
-	});
-	const shouldValidate = icache.getOrSet('shouldValidate', true);
 	const shouldFocus = focus.shouldFocus();
 	const focusNode = icache.getOrSet('focusNode', 'input');
 	const [labelChild] = children();
 	const label = isRenderResult(labelChild) ? labelChild : labelChild.label;
 
-	if (shouldValidate) {
-		const testValue = icache.get('nextValue') || inputValue;
+	function callOnValue() {
+		const testValue = icache.get('nextValue') || icache.get('inputValue');
 		let isValid: boolean | undefined;
 		let validationMessages: string[] = [];
 
@@ -160,8 +155,9 @@ export default factory(function({
 		const validationMessage = validationMessages.join('; ');
 		onValidate && onValidate(isValid, validationMessage);
 		icache.set('validationMessage', validationMessage);
-		icache.set('shouldValidate', false);
+		icache.set('dirty', false);
 	}
+	icache.getOrSet('callOnValue', () => callOnValue());
 
 	return (
 		<div classes={[theme.variant(), themedCss.root]}>
@@ -196,14 +192,21 @@ export default factory(function({
 									)}
 									type="text"
 									initialValue={icache.get('inputValue')}
-									onBlur={() => icache.set('shouldValidate', true)}
-									onValue={(v) => {
+									onBlur={() => {
+										if (icache.get('dirty')) {
+											callOnValue();
+										}
+									}}
+									onValue={(v = '') => {
 										icache.set(
 											controlledValue === undefined
 												? 'inputValue'
 												: 'nextValue',
-											v || ''
+											v
 										);
+									}}
+									onFocus={() => {
+										icache.set('dirty', true);
 									}}
 									helperText={icache.get('validationMessage')}
 									onKeyDown={(key) => {
@@ -212,6 +215,9 @@ export default factory(function({
 											key === Keys.Space ||
 											key === Keys.Enter
 										) {
+											if (key === Keys.Enter && icache.get('dirty')) {
+												callOnValue();
+											}
 											openCalendar();
 										}
 									}}
@@ -268,7 +274,7 @@ export default factory(function({
 												: 'nextValue',
 											formatDate(date)
 										);
-										icache.set('shouldValidate', true);
+										callOnValue();
 										closeCalendar();
 									}}
 									theme={themeProp}

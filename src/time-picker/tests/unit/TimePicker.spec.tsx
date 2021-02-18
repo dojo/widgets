@@ -74,6 +74,7 @@ const buttonTemplate = assertionTemplate(() => {
 				focus={() => false}
 				theme={{}}
 				onBlur={noop}
+				onFocus={noop}
 				onValue={noop}
 				initialValue={''}
 				onValidate={noop}
@@ -321,6 +322,7 @@ describe('TimePicker', () => {
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue(format24HourTime(expected));
 
 		h.expect(baseTemplate());
@@ -458,6 +460,7 @@ describe('TimePicker', () => {
 		let [input] = select('@input', triggerResult);
 		onValidate.resetHistory();
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue('foobar');
 		input.properties.onBlur();
 		h.expect(baseTemplate());
@@ -495,6 +498,7 @@ describe('TimePicker', () => {
 		onValidate.resetHistory();
 		let [input] = select('@input', triggerResult);
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue('12:29:59');
 		input.properties.onBlur();
 		h.expect(baseTemplate());
@@ -511,6 +515,7 @@ describe('TimePicker', () => {
 		// Set value after the max date
 		onValidate.resetHistory();
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue('13:30:01');
 		input.properties.onBlur();
 		h.expect(baseTemplate());
