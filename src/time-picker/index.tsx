@@ -71,7 +71,6 @@ export interface TimePickerICache {
 	lastValue: string;
 	nextValue: string;
 	inputValue: string;
-	shouldValidate: boolean;
 	validationMessage: string | undefined;
 	focusNode: 'input' | 'menu';
 	inputValid?: boolean;
@@ -82,6 +81,8 @@ export interface TimePickerICache {
 	max: string;
 	step: number;
 	options: (ListOption & { dt: number })[];
+	dirty: boolean;
+	callOnValue: void;
 }
 
 const resource = createResourceMiddleware();
@@ -280,7 +281,7 @@ export const TimePicker = factory(function TimePicker({
 		const parsed = initialValue && parseTime(initialValue, format === '12');
 		icache.set('inputValue', parsed ? formatTime(parsed) : '');
 		icache.set('initialValue', initialValue);
-		icache.set('shouldValidate', true);
+		icache.delete('callOnValue');
 	}
 
 	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
@@ -290,18 +291,11 @@ export const TimePicker = factory(function TimePicker({
 		icache.set('lastValue', controlledValue);
 	}
 
-	const inputValue = icache.getOrSet('inputValue', () => {
-		const { initialValue, format } = properties();
-		const parsed = initialValue && parseTime(initialValue, format === '12');
-
-		return parsed ? formatTime(parsed) : '';
-	});
-
-	const shouldValidate = icache.getOrSet('shouldValidate', true);
 	const shouldFocus = focus.shouldFocus();
 	const focusNode = icache.getOrSet('focusNode', 'input');
 
-	if (shouldValidate) {
+	function callOnValue() {
+		const inputValue = icache.get('inputValue');
 		const testValue = icache.get('nextValue') || inputValue;
 		const { onValidate, onValue, format } = properties();
 		const max = parseTime(properties().max, format === '12');
@@ -349,8 +343,9 @@ export const TimePicker = factory(function TimePicker({
 		onValidate && onValidate(isValid, validationMessage);
 
 		icache.set('validationMessage', validationMessage);
-		icache.set('shouldValidate', false);
+		icache.set('dirty', false);
 	}
+	icache.getOrSet('callOnValue', () => callOnValue());
 
 	if (min !== icache.get('min') || max !== icache.get('max') || step !== icache.get('step')) {
 		icache.set('options', () => {
@@ -422,13 +417,20 @@ export const TimePicker = factory(function TimePicker({
 									)}
 									classes={classes}
 									variant={variant}
-									initialValue={icache.get('inputValue')}
-									onBlur={() => icache.set('shouldValidate', true)}
+									initialValue={icache.getOrSet('inputValue', '')}
+									onBlur={() => {
+										if (icache.get('dirty')) {
+											callOnValue();
+										}
+									}}
 									onValue={(v) =>
 										controlledValue === undefined
 											? icache.set('inputValue', v || '')
 											: icache.set('nextValue', v || '')
 									}
+									onFocus={() => {
+										icache.set('dirty', true);
+									}}
 									helperText={icache.get('validationMessage')}
 									valid={icache.get('isValid') && icache.get('inputValid')}
 									onValidate={(valid, message) => {
@@ -439,6 +441,9 @@ export const TimePicker = factory(function TimePicker({
 									}}
 									onKeyDown={(key) => {
 										if (key === Keys.Down || key === Keys.Enter) {
+											if (key === Keys.Enter) {
+												callOnValue();
+											}
 											openMenu();
 										}
 									}}
@@ -497,7 +502,7 @@ export const TimePicker = factory(function TimePicker({
 										} else {
 											icache.set('nextValue', value.value);
 										}
-										icache.set('shouldValidate', true);
+										callOnValue();
 										closeMenu();
 									}}
 									onRequestClose={closeMenu}

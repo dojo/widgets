@@ -74,6 +74,7 @@ const buttonTemplate = assertionTemplate(() => {
 				focus={() => false}
 				theme={{}}
 				type="text"
+				onFocus={noop}
 				onBlur={noop}
 				onValue={noop}
 				initialValue={undefined}
@@ -306,6 +307,7 @@ describe('DateInput', () => {
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue(formatDate(expected));
 
 		h.expect(baseTemplate());
@@ -409,6 +411,7 @@ describe('DateInput', () => {
 		let [input] = select('@input', triggerResult);
 		onValidate.resetHistory();
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue('foobar');
 		input.properties.onBlur();
 		h.expect(baseTemplate());
@@ -452,6 +455,7 @@ describe('DateInput', () => {
 		onValidate.resetHistory();
 		let [input] = select('@input', triggerResult);
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue(formatDate(tooEarly));
 		input.properties.onBlur();
 		h.expect(baseTemplate(initialValue));
@@ -468,6 +472,7 @@ describe('DateInput', () => {
 		// Set value after the max date
 		onValidate.resetHistory();
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue(formatDate(tooLate));
 		input.properties.onBlur();
 		h.expect(baseTemplate(initialValue));
