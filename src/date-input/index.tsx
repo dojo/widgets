@@ -223,7 +223,7 @@ export default factory(function({
 													valid: false,
 													message: icache.get('validationMessage')
 											  }
-											: undefined
+											: dirty && true
 									}
 									onKeyDown={(key) => {
 										if (
