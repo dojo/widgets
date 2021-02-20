@@ -106,3 +106,13 @@
 .input::-ms-clear {
 	display: none;
 }
+
+/*
+ * Handle chrome autofill not triggering change event
+ * Context: https://github.com/dojo/widgets/issues/1610
+ */
+@keyframes onAutofillShown {
+}
+.input:-webkit-autofill {
+	animation-name: onAutofillShown;
+}

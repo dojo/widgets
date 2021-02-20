@@ -32,8 +32,6 @@ interface States {
 }
 
 interface ExpectedOptions {
-	label?: boolean;
-	labelHidden?: boolean;
 	inputOverrides?: any;
 	states?: States;
 	focused?: boolean;
@@ -42,13 +40,11 @@ interface ExpectedOptions {
 }
 
 const expected = function({
-	label = false,
 	inputOverrides = {},
 	states = {},
 	focused = false,
 	helperText,
-	value,
-	labelHidden = false
+	value
 }: ExpectedOptions = {}) {
 	const { disabled, required, readOnly, valid: validState } = states;
 	let valid: boolean | undefined;
@@ -77,27 +73,10 @@ const expected = function({
 					required ? css.required : null,
 					null,
 					null,
-					!label || labelHidden ? css.noLabel : null
+					css.noLabel
 				]}
 				role="presentation"
 			>
-				{label && (
-					<Label
-						theme={undefined}
-						disabled={disabled}
-						valid={valid}
-						focused={focused}
-						readOnly={readOnly}
-						required={required}
-						hidden={labelHidden}
-						forId={''}
-						active={false}
-						classes={undefined}
-						variant={undefined}
-					>
-						foo
-					</Label>
-				)}
 				<div
 					key="inputWrapper"
 					classes={[css.inputWrapper, focused ? css.inputWrapperFocused : undefined]}
@@ -132,6 +111,7 @@ const expected = function({
 						onclick={noop}
 						onpointerenter={noop}
 						onpointerleave={noop}
+						onanimationstart={noop}
 						{...inputOverrides}
 					/>
 				</div>
@@ -169,6 +149,38 @@ const baseAssertion = assertionTemplate(() => {
 	);
 });
 
+const labeledAssertion = baseAssertion
+	.prepend('@wrapper', () => [
+		<Label
+			assertion-key="label"
+			theme={undefined}
+			disabled={undefined}
+			valid={undefined}
+			focused={false}
+			readOnly={undefined}
+			required={undefined}
+			hidden={false}
+			forId={''}
+			active={false}
+			classes={undefined}
+			variant={undefined}
+		>
+			foo
+		</Label>
+	])
+	.setProperty('@wrapper', 'classes', [
+		css.wrapper,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null
+	]);
+
 const input = () => (
 	<div key="inputWrapper" role="presentation" classes={[css.inputWrapper, undefined]}>
 		<input
@@ -197,6 +209,7 @@ const input = () => (
 			onclick={noop}
 			onpointerenter={noop}
 			onpointerleave={noop}
+			onanimationstart={noop}
 			min={undefined}
 			max={undefined}
 			step={undefined}
@@ -265,7 +278,7 @@ registerSuite('TextInput', {
 		label() {
 			const h = harness(() => <TextInput>{{ label: 'foo' }}</TextInput>);
 
-			h.expect(() => expected({ label: true }));
+			h.expect(labeledAssertion);
 		},
 
 		pattern: {
@@ -750,7 +763,22 @@ registerSuite('TextInput', {
 		hiddenLabel() {
 			const h = harness(() => <TextInput labelHidden={true}>{{ label: 'foo' }}</TextInput>);
 
-			h.expect(() => expected({ label: true, labelHidden: true }));
+			h.expect(
+				labeledAssertion
+					.setProperty('~label', 'hidden', true)
+					.setProperty('@wrapper', 'classes', [
+						css.wrapper,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.noLabel
+					])
+			);
 		},
 
 		addon() {
@@ -783,6 +811,24 @@ registerSuite('TextInput', {
 
 			const h = harness(() => w(Addon, {}, ['foo', <div>bar</div>]));
 			h.expect(addonTemplate);
+		},
+
+		'autofill sets active'() {
+			const h = harness(() => <TextInput>{{ label: 'foo' }}</TextInput>);
+			h.expect(labeledAssertion);
+
+			h.trigger('@input', 'onanimationstart', {
+				...stubEvent,
+				animationName: 'other-animation'
+			});
+			h.expect(labeledAssertion);
+
+			h.trigger('@input', 'onanimationstart', {
+				...stubEvent,
+				animationName: css.onAutofillShown
+			});
+			const activeTemplate = labeledAssertion.setProperty('~label', 'active', true);
+			h.expect(activeTemplate);
 		}
 	}
 });

@@ -16,3 +16,4 @@ export const noLabel: string;
 export const label: string;
 export const helperText: string;
 export const valid: string;
+export const onAutofillShown: string;
