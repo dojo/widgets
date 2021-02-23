@@ -13,3 +13,4 @@ export const addonRoot: string;
 export const hasLeading: string;
 export const hasTrailing: string;
 export const valid: string;
+export const onAutofillShown: string;

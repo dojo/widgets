@@ -106,6 +106,7 @@ interface TextInputICache {
 	dirty: boolean;
 	value?: string;
 	initialValue?: string;
+	autofilled?: boolean;
 }
 
 const factory = create({
@@ -223,6 +224,7 @@ export const TextInput = factory(function TextInput({
 
 	const computedHelperText = (valid === false && message) || helperText;
 	const inputFocused = focus.isFocused('input');
+	const autofilled = Boolean(icache.get('autofilled'));
 
 	return (
 		<div key="root" classes={[theme.variant(), themeCss.root]} role="presentation">
@@ -254,7 +256,7 @@ export const TextInput = factory(function TextInput({
 						required={required}
 						hidden={labelHidden}
 						forId={widgetId}
-						active={!!value || inputFocused}
+						active={!!value || inputFocused || autofilled}
 					>
 						{label}
 					</Label>
@@ -318,6 +320,11 @@ export const TextInput = factory(function TextInput({
 						}}
 						onpointerleave={() => {
 							onOut && onOut();
+						}}
+						onanimationstart={(event: AnimationEvent) => {
+							if (event.animationName === themeCss.onAutofillShown) {
+								icache.set('autofilled', true);
+							}
 						}}
 					/>
 					{trailing}
