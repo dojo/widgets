@@ -4,10 +4,6 @@ import { sandbox } from 'sinon';
 import global from '@dojo/framework/shim/global';
 import { tsx, getRegistry, create } from '@dojo/framework/core/vdom';
 import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
-import {
-	createMemoryResourceTemplate,
-	createResourceTemplate
-} from '@dojo/framework/core/middleware/resources';
 import { noop } from '../../common/tests/support/test-helpers';
 import { Keys } from '../../common/util';
 import List, { ListItem, MenuItem } from '../index';
@@ -18,6 +14,7 @@ import * as listItemCss from '../../theme/default/list-item.m.css';
 import * as menuItemCss from '../../theme/default/menu-item.m.css';
 import Registry from '@dojo/framework/core/Registry';
 import RegistryHandler from '@dojo/framework/core/RegistryHandler';
+import { createResourceTemplate } from '@dojo/framework/core/middleware/resources';
 
 const mockGetRegistry = create()(function() {
 	const registry = new Registry();
@@ -26,7 +23,6 @@ const mockGetRegistry = create()(function() {
 	return () => handler;
 });
 
-let template = createMemoryResourceTemplate<{ value: string; label: string; disabled?: boolean }>();
 const data = [
 	{
 		value: '1',
@@ -299,11 +295,6 @@ describe('List', () => {
 		sb.stub(global.window.HTMLDivElement.prototype, 'getBoundingClientRect').callsFake(() => ({
 			height: 45
 		}));
-		template = createMemoryResourceTemplate<{
-			value: string;
-			label: string;
-			disabled?: boolean;
-		}>();
 	});
 
 	afterEach(() => {
@@ -380,6 +371,7 @@ describe('List', () => {
 			label: string;
 			disabled?: boolean;
 		}>({
+			idKey: 'value',
 			read: (request, { put }) => {
 				if (request.offset === 0) {
 					return pageOnePromise.then((res) => {
@@ -389,14 +381,12 @@ describe('List', () => {
 				return pageTwoPromise.then((res) => {
 					put(res, request);
 				});
-			},
-			find: () => {}
+			}
 		});
 
-		const r = renderer(
-			() => <List resource={{ template: { template, id: 'test' } }} onValue={onValueStub} />,
-			{ middleware: [[getRegistry, mockGetRegistry]] }
-		);
+		const r = renderer(() => <List resource={{ template }} onValue={onValueStub} />, {
+			middleware: [[getRegistry, mockGetRegistry]]
+		});
 		r.expect(baseAssertion);
 		pageOneResolver!({ data: data.slice(0, 30), total: data.length });
 		await pageOnePromise;
@@ -504,14 +494,7 @@ describe('List', () => {
 
 	it('should render list with list items data', () => {
 		const r = renderer(
-			() => (
-				<List
-					resource={{
-						template: { template, id: 'test', initOptions: { data, id: 'test' } }
-					}}
-					onValue={onValueStub}
-				/>
-			),
+			() => <List resource={{ data, id: 'test', idKey: 'value' }} onValue={onValueStub} />,
 			{ middleware: [[getRegistry, mockGetRegistry]] }
 		);
 		r.expect(listWithListItemsAssertion);
@@ -522,9 +505,7 @@ describe('List', () => {
 			() => (
 				<List
 					height="auto"
-					resource={{
-						template: { template, id: 'test', initOptions: { data, id: 'test' } }
-					}}
+					resource={{ data, id: 'test', idKey: 'value' }}
 					onValue={onValueStub}
 				/>
 			),
@@ -540,13 +521,7 @@ describe('List', () => {
 	it('should render list with menu items data', () => {
 		const r = renderer(
 			() => (
-				<List
-					menu
-					resource={{
-						template: { template, id: 'test', initOptions: { data, id: 'test' } }
-					}}
-					onValue={onValueStub}
-				/>
+				<List menu resource={{ data, id: 'test', idKey: 'value' }} onValue={onValueStub} />
 			),
 			{ middleware: [[getRegistry, mockGetRegistry]] }
 		);
@@ -606,6 +581,7 @@ describe('List', () => {
 			label: string;
 			disabled?: boolean;
 		}>({
+			idKey: 'value',
 			read: (request, { put }) => {
 				if (request.offset === 0) {
 					return pageOnePromise.then((res) => {
@@ -615,20 +591,12 @@ describe('List', () => {
 				return pageTwoPromise.then((res) => {
 					put(res, request);
 				});
-			},
-			find: () => {}
+			}
 		});
 
-		const r = renderer(
-			() => (
-				<List
-					menu
-					resource={{ template: { template, id: 'test' } }}
-					onValue={onValueStub}
-				/>
-			),
-			{ middleware: [[getRegistry, mockGetRegistry]] }
-		);
+		const r = renderer(() => <List menu resource={{ template }} onValue={onValueStub} />, {
+			middleware: [[getRegistry, mockGetRegistry]]
+		});
 		r.expect(baseAssertion.setProperty(WrappedRoot, 'role', 'menu'));
 		pageOneResolver!({ data: data.slice(0, 30), total: data.length });
 		await pageOnePromise;
@@ -763,13 +731,7 @@ describe('List', () => {
 		const r = renderer(
 			() => (
 				<List
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: testData, id: 'test' }
-						}
-					}}
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
 					disabled={(item) => {
 						return item.value === '3';
 					}}
@@ -1042,13 +1004,7 @@ describe('List', () => {
 		const r = renderer(
 			() => (
 				<List
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: testData, id: 'test' }
-						}
-					}}
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
 					onValue={onValueStub}
 				/>
 			),
@@ -2039,31 +1995,30 @@ describe('List', () => {
 	it('should scroll list', () => {
 		const testData = [
 			{
-				value: 'Bob'
+				value: 'Bob',
+				label: 'Bob'
 			},
 			{
-				value: 'Adam'
+				value: 'Adam',
+				label: 'Adam'
 			},
 			{
-				value: 'Ant'
+				value: 'Ant',
+				label: 'Ant'
 			},
 			{
-				value: 'Anthony'
+				value: 'Anthony',
+				label: 'Anthony'
 			},
 			{
-				value: 'Bobby'
+				value: 'Bobby',
+				label: 'Bobby'
 			}
 		];
 		const r = renderer(
 			() => (
 				<List
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: testData, id: 'test' }
-						}
-					}}
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
 					onValue={onValueStub}
 				/>
 			),
@@ -2317,12 +2272,7 @@ describe('List', () => {
 			]);
 		const r = renderer(
 			() => (
-				<List
-					resource={{
-						template: { template, id: 'test', initOptions: { data, id: 'test' } }
-					}}
-					onValue={onValueStub}
-				>
+				<List resource={{ data, id: 'test', idKey: 'value' }} onValue={onValueStub}>
 					{(item, itemProps) => {
 						return (
 							<ListItem classes={undefined} variant={undefined} {...itemProps}>
@@ -2341,9 +2291,7 @@ describe('List', () => {
 		const r = renderer(
 			() => (
 				<List
-					resource={{
-						template: { template, id: 'test', initOptions: { data, id: 'test' } }
-					}}
+					resource={{ data, id: 'test', idKey: 'value' }}
 					onValue={onValueStub}
 					initialValue="2"
 				/>
@@ -2477,9 +2425,7 @@ describe('List', () => {
 		const r = renderer(
 			() => (
 				<List
-					resource={{
-						template: { template, id: 'test', initOptions: { data, id: 'test' } }
-					}}
+					resource={{ data, id: 'test', idKey: 'value' }}
 					onValue={onValueStub}
 					value={props.value}
 				/>
@@ -2746,13 +2692,7 @@ describe('List', () => {
 		const r = renderer(
 			() => (
 				<List
-					resource={{
-						template: {
-							template,
-							id: 'test',
-							initOptions: { data: testData, id: 'test' }
-						}
-					}}
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
 					onValue={onValueStub}
 				/>
 			),

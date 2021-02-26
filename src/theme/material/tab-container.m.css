@@ -15,7 +15,6 @@
 
 .tabButtonContent {
 	composes: mdc-tab__text-label from '@material/tab/dist/mdc.tab.css';
-	composes: mdc-tab__content from '@material/tab/dist/mdc.tab.css';
 }
 
 .activeTabButton {

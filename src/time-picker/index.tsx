@@ -1,3 +1,4 @@
+import Map from '@dojo/framework/shim/Map';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
 import { padStart } from '@dojo/framework/shim/string';
@@ -13,7 +14,7 @@ import { Keys } from '../common/util';
 import bundle from './nls/TimePicker';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 
@@ -55,6 +56,9 @@ export interface TimePickerProperties {
 
 	/** How the time is formatted. 24 hour, 12 hour */
 	format?: '24' | '12';
+
+	/** Property to determine how many items to render. Defaults to 10 */
+	itemsInView?: number;
 }
 
 export interface TimePickerChildren {
@@ -67,13 +71,18 @@ export interface TimePickerICache {
 	lastValue: string;
 	nextValue: string;
 	inputValue: string;
-	shouldValidate: boolean;
 	validationMessage: string | undefined;
 	focusNode: 'input' | 'menu';
 	inputValid?: boolean;
 	inputValidMessage?: string;
 	isValid?: boolean;
 	initialValue?: string;
+	min: string;
+	max: string;
+	step: number;
+	options: (ListOption & { dt: number })[];
+	dirty: boolean;
+	callOnValue: void;
 }
 
 const resource = createResourceMiddleware();
@@ -152,7 +161,7 @@ const formats24 = ['hh', 'hhmm', 'hhmmss'];
 
 const formats12 = ['hh', 'hhmm', 'hhmmss', 'hham', 'hhmmam', 'hhmmssam'];
 
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createResourceTemplate<ListOption>('value');
 
 export function parseTime(time: string | undefined, hour12: boolean) {
 	if (!time) {
@@ -217,6 +226,8 @@ function isTimePickerChildren(children: any): children is TimePickerChildren {
 	return children && children.hasOwnProperty && children.hasOwnProperty('label');
 }
 
+const optionsCache = new Map<string, (ListOption & { dt: number })[]>();
+
 export const TimePicker = factory(function TimePicker({
 	id,
 	middleware: { theme, icache, focus, i18n, resource },
@@ -252,7 +263,16 @@ export const TimePicker = factory(function TimePicker({
 		}
 	};
 
-	const { initialValue, format = '24', value: controlledValue } = properties();
+	const {
+		initialValue,
+		format = '24',
+		value: controlledValue,
+		min = '00:00:00',
+		max = '23:59:59',
+		step = 1800,
+		timeDisabled,
+		itemsInView
+	} = properties();
 	if (
 		initialValue !== undefined &&
 		controlledValue === undefined &&
@@ -261,7 +281,7 @@ export const TimePicker = factory(function TimePicker({
 		const parsed = initialValue && parseTime(initialValue, format === '12');
 		icache.set('inputValue', parsed ? formatTime(parsed) : '');
 		icache.set('initialValue', initialValue);
-		icache.set('shouldValidate', true);
+		icache.delete('callOnValue');
 	}
 
 	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
@@ -271,18 +291,11 @@ export const TimePicker = factory(function TimePicker({
 		icache.set('lastValue', controlledValue);
 	}
 
-	const inputValue = icache.getOrSet('inputValue', () => {
-		const { initialValue, format } = properties();
-		const parsed = initialValue && parseTime(initialValue, format === '12');
-
-		return parsed ? formatTime(parsed) : '';
-	});
-
-	const shouldValidate = icache.getOrSet('shouldValidate', true);
 	const shouldFocus = focus.shouldFocus();
 	const focusNode = icache.getOrSet('focusNode', 'input');
 
-	if (shouldValidate) {
+	function callOnValue() {
+		const inputValue = icache.get('inputValue');
 		const testValue = icache.get('nextValue') || inputValue;
 		const { onValidate, onValue, format } = properties();
 		const max = parseTime(properties().max, format === '12');
@@ -330,36 +343,46 @@ export const TimePicker = factory(function TimePicker({
 		onValidate && onValidate(isValid, validationMessage);
 
 		icache.set('validationMessage', validationMessage);
-		icache.set('shouldValidate', false);
+		icache.set('dirty', false);
 	}
+	icache.getOrSet('callOnValue', () => callOnValue());
 
-	const generateOptions = () => {
-		const { min = '00:00:00', max = '23:59:59', step = 1800, timeDisabled } = properties();
+	if (min !== icache.get('min') || max !== icache.get('max') || step !== icache.get('step')) {
+		icache.set('options', () => {
+			const key = `${min}-${max}-${step}`;
+			const cached = optionsCache.get(key);
+			if (cached) {
+				return cached;
+			}
+			const options: (ListOption & { dt: number })[] = [];
+			const dt = parseTime(min, false) || new Date(1970, 0, 1, 0, 0, 0, 0);
+			const end = parseTime(max, false) || new Date(1970, 0, 1, 23, 59, 59, 99);
+			while (dt.getDate() === 1 && dt <= end) {
+				const value = formatTime(dt);
 
-		const options: ListOption[] = [];
+				options.push({
+					dt: dt.getTime(),
+					label: value,
+					value: value
+				});
 
-		const dt = parseTime(min, false) || new Date(1970, 0, 1, 0, 0, 0, 0);
-		const end = parseTime(max, false) || new Date(1970, 0, 1, 23, 59, 59, 99);
-
-		while (dt.getDate() === 1 && dt <= end) {
-			const value = formatTime(dt);
-
-			options.push({
-				label: value,
-				value: value,
-				disabled: timeDisabled ? timeDisabled(dt) : false
-			});
-
-			dt.setSeconds(dt.getSeconds() + step);
-		}
-
-		return options;
-	};
-
+				dt.setSeconds(dt.getSeconds() + step);
+			}
+			optionsCache.set(key, options);
+			return options;
+		});
+		icache.set('min', min);
+		icache.set('max', max);
+		icache.set('step', step);
+	}
+	const options = icache.getOrSet('options', []).map(({ label, value, dt }) => ({
+		label,
+		value,
+		disabled: timeDisabled ? timeDisabled(new Date(dt)) : false
+	}));
 	const { name, theme: themeProp, classes, variant } = properties();
 	const [labelChild] = children();
 	const label = isTimePickerChildren(labelChild) ? labelChild.label : labelChild;
-	const options = generateOptions();
 
 	return (
 		<div classes={[theme.variant(), themedCss.root]}>
@@ -394,13 +417,20 @@ export const TimePicker = factory(function TimePicker({
 									)}
 									classes={classes}
 									variant={variant}
-									initialValue={icache.get('inputValue')}
-									onBlur={() => icache.set('shouldValidate', true)}
+									initialValue={icache.getOrSet('inputValue', '')}
+									onBlur={() => {
+										if (icache.get('dirty')) {
+											callOnValue();
+										}
+									}}
 									onValue={(v) =>
 										controlledValue === undefined
 											? icache.set('inputValue', v || '')
 											: icache.set('nextValue', v || '')
 									}
+									onFocus={() => {
+										icache.set('dirty', true);
+									}}
 									helperText={icache.get('validationMessage')}
 									valid={icache.get('isValid') && icache.get('inputValid')}
 									onValidate={(valid, message) => {
@@ -411,6 +441,9 @@ export const TimePicker = factory(function TimePicker({
 									}}
 									onKeyDown={(key) => {
 										if (key === Keys.Down || key === Keys.Enter) {
+											if (key === Keys.Enter) {
+												callOnValue();
+											}
 											openMenu();
 										}
 									}}
@@ -453,6 +486,7 @@ export const TimePicker = factory(function TimePicker({
 						return (
 							<div key="menu-wrapper" classes={themedCss.menuWrapper}>
 								<List
+									itemsInView={itemsInView}
 									height="auto"
 									theme={themeProp}
 									classes={classes}
@@ -460,8 +494,7 @@ export const TimePicker = factory(function TimePicker({
 									key="menu"
 									focus={() => shouldFocus && focusNode === 'menu'}
 									resource={resource({
-										template,
-										initOptions: { id, data: options }
+										template: template({ id, data: options })
 									})}
 									onValue={(value) => {
 										if (controlledValue === undefined) {
@@ -469,7 +502,7 @@ export const TimePicker = factory(function TimePicker({
 										} else {
 											icache.set('nextValue', value.value);
 										}
-										icache.set('shouldValidate', true);
+										callOnValue();
 										closeMenu();
 									}}
 									onRequestClose={closeMenu}

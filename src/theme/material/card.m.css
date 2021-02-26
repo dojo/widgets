@@ -39,6 +39,14 @@
 	composes: mdc-typography mdc-typography--body2 from '@material/typography/dist/mdc.typography.css';
 }
 
+.textWrapper:first-child {
+	padding-top: 16px;
+}
+
+.textWrapper:last-child {
+	padding-bottom: 16px;
+}
+
 .header {
 	display: flex;
 }
@@ -89,4 +97,8 @@
 	composes: mdc-typography mdc-typography--subtitle2 from '@material/typography/dist/mdc.typography.css';
 	color: var(--mdc-text-secondary-color);
 	margin: 0;
+}
+
+.outlined {
+	composes: mdc-card--outlined from '@material/card/dist/mdc.card.css';
 }

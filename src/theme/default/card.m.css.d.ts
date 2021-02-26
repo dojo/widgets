@@ -12,3 +12,5 @@ export const media16by9: string;
 export const titleWrapper: string;
 export const title: string;
 export const subtitle: string;
+export const outlined: string;
+export const textWrapper: string;

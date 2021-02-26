@@ -41,7 +41,7 @@ describe('ContextMenu', () => {
 
 	it('renders', () => {
 		const h = harness(() => (
-			<ContextMenu resource={createTestResource(options)} onSelect={noop}>
+			<ContextMenu resource={createTestResource(options, 'value')} onSelect={noop}>
 				{children}
 			</ContextMenu>
 		));
@@ -51,7 +51,7 @@ describe('ContextMenu', () => {
 
 	it('passes children as `trigger`', () => {
 		const h = harness(() => (
-			<ContextMenu resource={createTestResource(options)} onSelect={noop}>
+			<ContextMenu resource={createTestResource(options, 'value')} onSelect={noop}>
 				{children}
 			</ContextMenu>
 		));
@@ -68,7 +68,7 @@ describe('ContextMenu', () => {
 		const onSelect = stub();
 		const shouldFocus = stub();
 		const h = harness(() => (
-			<ContextMenu resource={createTestResource(options)} onSelect={onSelect}>
+			<ContextMenu resource={createTestResource(options, 'value')} onSelect={onSelect}>
 				{children}
 			</ContextMenu>
 		));
@@ -82,7 +82,7 @@ describe('ContextMenu', () => {
 					menu
 					focus={() => null as any}
 					theme={{}}
-					resource={createTestResource(options)}
+					resource={createTestResource(options, 'value')}
 					onBlur={() => {}}
 					onRequestClose={() => {}}
 					onValue={() => {}}

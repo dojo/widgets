@@ -4,7 +4,7 @@ import Button from '@dojo/widgets/button';
 import TriggerPopup from '@dojo/widgets/trigger-popup';
 import Example from '../../Example';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 
@@ -15,7 +15,7 @@ const options = [
 	{ value: '2', label: 'Copy' },
 	{ value: '3', label: 'Paste', disabled: true }
 ];
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createResourceTemplate<ListOption>('value');
 
 export default factory(function MenuTriggerPopup({ id, middleware: { resource } }) {
 	return (
@@ -27,8 +27,7 @@ export default factory(function MenuTriggerPopup({ id, middleware: { resource } 
 						<div styles={{ border: '1px solid black' }}>
 							<List
 								resource={resource({
-									template,
-									initOptions: { id, data: options }
+									template: template({ id, data: options })
 								})}
 								onValue={onClose}
 							/>

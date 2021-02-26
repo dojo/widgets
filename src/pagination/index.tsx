@@ -7,7 +7,7 @@ import resize from '@dojo/framework/core/middleware/resize';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import {
 	createResourceMiddleware,
-	createMemoryResourceTemplate
+	createResourceTemplate
 } from '@dojo/framework/core/middleware/resources';
 import global from '@dojo/framework/shim/global';
 
@@ -57,7 +57,7 @@ interface PaginationCache {
 	pageSizes: number[];
 }
 
-const pageSizesTemplate = createMemoryResourceTemplate<ListOption>();
+const pageSizesTemplate = createResourceTemplate<ListOption>('value');
 
 function getRenderedWidth(dnode: RenderResult, wrapperClass?: string): number {
 	if (dnode === undefined) {
@@ -289,14 +289,13 @@ export default factory(function Pagination({
 							}
 							value={pageSize === undefined ? undefined : pageSize.toString()}
 							resource={resource({
-								template: pageSizesTemplate,
-								initOptions: {
+								template: pageSizesTemplate({
 									id,
 									data: pageSizes.map((ps) => ({
 										value: `${ps}`,
 										label: `${ps}`
 									}))
-								}
+								})
 							})}
 							onValue={(value) => {
 								onPageSize && onPageSize(parseInt(value.value, 10));

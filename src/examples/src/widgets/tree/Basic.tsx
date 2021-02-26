@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 import Example from '../../Example';
@@ -46,14 +46,14 @@ const nodes: TreeNodeOption[] = [
 		hasChildren: false
 	}
 ];
-const template = createMemoryResourceTemplate<TreeNodeOption>();
+const template = createResourceTemplate<TreeNodeOption>('value');
 
 export default factory(function Basic({ id, middleware: { resource } }) {
 	return (
 		<Example>
 			<Tree
 				selectable={true}
-				resource={resource({ template, initOptions: { id, data: nodes } })}
+				resource={resource({ template: template({ id, data: nodes }) })}
 			/>
 		</Example>
 	);

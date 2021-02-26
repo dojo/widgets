@@ -81,8 +81,6 @@ export default factory(function Tree({
 			}
 		}
 	);
-
-	const { getOrRead, createOptions, isLoading, meta } = resource;
 	const {
 		checkable = false,
 		selectable = false,
@@ -98,6 +96,11 @@ export default factory(function Tree({
 		classes,
 		variant
 	} = properties();
+	const {
+		get,
+		template: { read }
+	} = resource.template(template);
+
 	const themedCss = theme.classes(css);
 	const defaultRenderer = (n: TreeNodeOption) => n.value;
 	const [itemRenderer] = children();
@@ -150,21 +153,21 @@ export default factory(function Tree({
 
 	function createNodeFlatMap(nodeId: string = 'root'): TreeNodeOption[] {
 		let nodes: TreeNodeOption[] = [];
-		const options = createOptions(nodeId);
-		const info = meta(template, options({ query: { parent: nodeId } }), true);
+		const options = resource.createOptions((curr, next) => ({ ...curr, ...next }));
+		const {
+			meta: { total }
+		} = get(options({ query: { parent: nodeId } }), { read, meta: true });
+		if (total) {
+			const results = get(options({ size: total }), { read });
+			const queriedNodes = results ? flat(results) : [];
 
-		const results = getOrRead(
-			template,
-			options({ query: { parent: nodeId }, size: info && info.total })
-		);
-		const queriedNodes = flat(results);
-
-		queriedNodes.forEach((node) => {
-			nodes.push(node);
-			if (expandedNodes.indexOf(node.id) !== -1) {
-				nodes = [...nodes, ...createNodeFlatMap(node.id)];
-			}
-		});
+			queriedNodes.forEach((node) => {
+				nodes.push(node);
+				if (expandedNodes.indexOf(node.id) !== -1) {
+					nodes = [...nodes, ...createNodeFlatMap(node.id)];
+				}
+			});
+		}
 		return nodes;
 	}
 
@@ -223,19 +226,25 @@ export default factory(function Tree({
 	}
 
 	function mapNodeTree(nodeId: string = 'root') {
-		const options = createOptions(nodeId);
-		const info = meta(template, options({ query: { parent: nodeId } }), true);
+		const { meta } = get(
+			{ size: 30, offset: 0, query: { parent: nodeId } },
+			{ read, meta: true }
+		);
 
-		if (info === undefined || isLoading(template, options())) {
+		if (meta.status !== 'read') {
 			return <LoadingIndicator theme={themeProp} classes={classes} variant={variant} />;
 		}
 
-		const results = getOrRead(
-			template,
-			options({ query: { parent: nodeId }, size: info.total })
+		const results = get(
+			{
+				size: meta.total || 0,
+				offset: 0,
+				query: { parent: nodeId }
+			},
+			{ read }
 		);
 
-		const nodes = flat(results);
+		const nodes = results ? flat(results) : [];
 
 		return (
 			<ol

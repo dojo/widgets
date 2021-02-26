@@ -51,7 +51,7 @@ const baseTemplate = (date?: Date | '') =>
 					assertion-key="input"
 					type="hidden"
 					name="dateInput"
-					value={formatDateISO(date || today)}
+					value={date ? formatDateISO(date) : ''}
 					aria-hidden="true"
 					required={undefined}
 				/>
@@ -76,6 +76,7 @@ const buttonTemplate = assertionTemplate(() => {
 				focus={() => false}
 				theme={{}}
 				type="text"
+				onFocus={noop}
 				onBlur={noop}
 				onValue={noop}
 				initialValue={formatDate(today)}
@@ -115,12 +116,6 @@ describe('DateInput', () => {
 		onValue.resetHistory();
 	});
 
-	it('renders with default date', () => {
-		const h = harness(() => <DateInput name="dateInput" onValue={onValue} />);
-		h.expect(baseTemplate());
-		sinon.assert.calledWith(onValue, formatDateISO(today));
-	});
-
 	it('renders with default date when provided an invalid initial date', () => {
 		const h = harness(() => (
 			<DateInput name="dateInput" initialValue="not a date" onValue={onValue} />
@@ -133,7 +128,6 @@ describe('DateInput', () => {
 			<DateInput name="dateInput" value="not a date" onValue={onValue} />
 		));
 		h.expect(baseTemplate().setProperty('@input', 'value', ''));
-		sinon.assert.calledWith(onValue, formatDateISO(today));
 	});
 
 	it('renders with initial value', () => {
@@ -315,6 +309,7 @@ describe('DateInput', () => {
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue(formatDate(expected));
 
 		h.expect(baseTemplate());
@@ -418,6 +413,7 @@ describe('DateInput', () => {
 		let [input] = select('@input', triggerResult);
 		onValidate.resetHistory();
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue('foobar');
 		input.properties.onBlur();
 		h.expect(baseTemplate());
@@ -461,6 +457,7 @@ describe('DateInput', () => {
 		onValidate.resetHistory();
 		let [input] = select('@input', triggerResult);
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue(formatDate(tooEarly));
 		input.properties.onBlur();
 		h.expect(baseTemplate(initialValue));
@@ -477,6 +474,7 @@ describe('DateInput', () => {
 		// Set value after the max date
 		onValidate.resetHistory();
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue(formatDate(tooLate));
 		input.properties.onBlur();
 		h.expect(baseTemplate(initialValue));

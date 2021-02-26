@@ -1,6 +1,6 @@
 import icache from '@dojo/framework/core/middleware/icache';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 import { create, tsx } from '@dojo/framework/core/vdom';
@@ -15,11 +15,11 @@ const items = Array.from(Array(100).keys()).map((value, i) => ({
 	value: `${i}`,
 	label: `${value}`
 }));
-const template = createMemoryResourceTemplate<ListOption>();
+const template = createResourceTemplate<ListOption>('value');
 
 export default factory(function Draggable({ id, middleware: { icache, resource } }) {
 	const rawData = icache.getOrSet('rawData', items);
-	const data = resource({ template, initOptions: { id, data: rawData } });
+	const data = resource({ template: template({ id, data: rawData }) });
 
 	return (
 		<Example>

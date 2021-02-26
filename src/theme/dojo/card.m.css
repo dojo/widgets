@@ -97,3 +97,11 @@
 	font-weight: inherit;
 	margin: 0;
 }
+
+.outlined {
+	box-shadow: 0px 0px 0px 0px var(--color-box-shadow), 0px 0px 0px 0px rgba(0, 0, 0, 0.14),
+		0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+	border-width: var(--border-width);
+	border-style: solid;
+	border-color: var(--color-border);
+}

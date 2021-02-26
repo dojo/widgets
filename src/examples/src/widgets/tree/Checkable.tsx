@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 import Tree, { TreeNodeOption } from '@dojo/widgets/tree';
@@ -46,14 +46,14 @@ const nodes: TreeNodeOption[] = [
 		hasChildren: false
 	}
 ];
-const template = createMemoryResourceTemplate<TreeNodeOption>();
+const template = createResourceTemplate<TreeNodeOption>('value');
 
 export default factory(function Checkable({ id, middleware: { resource } }) {
 	return (
 		<Example>
 			<Tree
 				checkable={true}
-				resource={resource({ template, initOptions: { id, data: nodes } })}
+				resource={resource({ template: template({ id, data: nodes }) })}
 			/>
 		</Example>
 	);

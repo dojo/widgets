@@ -74,6 +74,7 @@ const buttonTemplate = assertionTemplate(() => {
 				focus={() => false}
 				theme={{}}
 				onBlur={noop}
+				onFocus={noop}
 				onValue={noop}
 				initialValue={''}
 				onValidate={noop}
@@ -131,9 +132,10 @@ const menuTemplate = assertionTemplate(() => {
 		<div key="menu-wrapper" classes={css.menuWrapper}>
 			<List
 				key="menu"
+				itemsInView={undefined}
 				height="auto"
 				focus={() => false}
-				resource={createTestResource(options30Minutes)}
+				resource={createTestResource(options30Minutes, 'value')}
 				onValue={noop}
 				onRequestClose={noop}
 				onBlur={noop}
@@ -320,6 +322,7 @@ describe('TimePicker', () => {
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue(format24HourTime(expected));
 
 		h.expect(baseTemplate());
@@ -380,7 +383,11 @@ describe('TimePicker', () => {
 			onClose
 		);
 		h.expect(
-			menuTemplate.setProperty('@menu', 'resource', createTestResource(options30Minutes12)),
+			menuTemplate.setProperty(
+				'@menu',
+				'resource',
+				createTestResource(options30Minutes12, 'value')
+			),
 			() => contentResult
 		);
 
@@ -453,6 +460,7 @@ describe('TimePicker', () => {
 		let [input] = select('@input', triggerResult);
 		onValidate.resetHistory();
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue('foobar');
 		input.properties.onBlur();
 		h.expect(baseTemplate());
@@ -490,6 +498,7 @@ describe('TimePicker', () => {
 		onValidate.resetHistory();
 		let [input] = select('@input', triggerResult);
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue('12:29:59');
 		input.properties.onBlur();
 		h.expect(baseTemplate());
@@ -506,6 +515,7 @@ describe('TimePicker', () => {
 		// Set value after the max date
 		onValidate.resetHistory();
 		onValue.resetHistory();
+		input.properties.onFocus();
 		input.properties.onValue('13:30:01');
 		input.properties.onBlur();
 		h.expect(baseTemplate());
@@ -537,7 +547,8 @@ describe('TimePicker', () => {
 						hour12: false,
 						hour: 'numeric',
 						minute: 'numeric'
-					})
+					}),
+					'value'
 				)
 			),
 			() => contentResult

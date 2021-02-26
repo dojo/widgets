@@ -3,23 +3,22 @@ import ChipTypeahead from '@dojo/widgets/chip-typeahead';
 import { data, Data } from '../../data';
 import Example from '../../Example';
 import {
-	createMemoryResourceTemplate,
+	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
 
 const resource = createResourceMiddleware();
 const factory = create({ resource });
 
-const template = createMemoryResourceTemplate<Data>();
+const template = createResourceTemplate<Data>('id');
 
 export default factory(function Bottom({ id, middleware: { resource } }) {
 	return (
 		<Example>
 			<ChipTypeahead
 				resource={resource({
-					template,
-					transform: { value: 'id', label: 'summary' },
-					initOptions: { id, data }
+					template: template({ id, data }),
+					transform: { value: 'id', label: 'summary' }
 				})}
 				placement="bottom"
 			>
