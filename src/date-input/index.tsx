@@ -62,6 +62,7 @@ interface DateInputICache {
 	focusNode: 'input' | 'calendar';
 	/** Indicates if user has interacted with input */
 	dirty: boolean;
+	/** Calls when user inputs value */
 	callOnValue: void;
 }
 
