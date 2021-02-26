@@ -72,15 +72,14 @@ const buttonTemplate = assertionTemplate(() => {
 				key="input"
 				disabled={false}
 				readOnly={false}
-				required={undefined}
 				focus={() => false}
 				theme={{}}
 				type="text"
 				onFocus={noop}
 				onBlur={noop}
 				onValue={noop}
-				initialValue={formatDate(today)}
-				valid={true}
+				initialValue={undefined}
+				valid={undefined}
 				onKeyDown={noop}
 				variant={undefined}
 				classes={undefined}
@@ -529,7 +528,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate.setProperty('@input', 'required', true), () => triggerResult);
+		h.expect(buttonTemplate, () => triggerResult);
 
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
@@ -540,8 +539,9 @@ describe('DateInput', () => {
 
 		input.properties.onBlur();
 
-		h.expect(baseTemplate('').setProperty('@input', 'required', true));
+		console.log('onValidate', onValidate.callsArg);
+
+		h.expect(baseTemplate().setProperty('@input', 'required', true));
 		sinon.assert.calledWith(onValidate, false, messages.requiredDate);
-		sinon.assert.notCalled(onValue);
 	});
 });

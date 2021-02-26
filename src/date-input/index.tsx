@@ -156,11 +156,8 @@ export default factory(function({
 
 			isValid = validationMessages.length === 0;
 		}
-		if (
-			(controlledValue ? icache.get('nextValue') : icache.get('inputValue')) === '' &&
-			dirty &&
-			required
-		) {
+
+		if ((testValue === '' || testValue === undefined) && icache.get('dirty') && required) {
 			validationMessages = [messages.requiredDate];
 			isValid = false;
 		}
@@ -197,7 +194,6 @@ export default factory(function({
 									key="input"
 									disabled={disabled}
 									readOnly={readOnly}
-									required={required}
 									focus={() => shouldFocus && focusNode === 'input'}
 									theme={theme.compose(
 										textInputCss,
