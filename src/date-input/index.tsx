@@ -107,22 +107,14 @@ export default factory(function({
 		icache.delete('callOnValue');
 	}
 
-	console.log('xxx controlledValue', controlledValue);
 	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
 		const parsed = controlledValue && parseDate(controlledValue);
 		if (parsed) {
 			icache.set('inputValue', formatDate(parsed));
-			console.log('xxx', parsed);
 			icache.set('value', parsed);
 		}
 		icache.set('lastValue', controlledValue);
 	}
-
-	const inputValue = icache.getOrSet('inputValue', () => {
-		const parsed = initialValue && parseDate(initialValue);
-
-		return formatDate(parsed || new Date());
-	});
 
 	const shouldFocus = focus.shouldFocus();
 	const focusNode = icache.getOrSet('focusNode', 'input');
@@ -164,7 +156,11 @@ export default factory(function({
 
 			isValid = validationMessages.length === 0;
 		}
-		if ((controlledValue ? icache.get('nextValue') : inputValue) === '' && dirty && required) {
+		if (
+			(controlledValue ? icache.get('nextValue') : icache.get('inputValue')) === '' &&
+			dirty &&
+			required
+		) {
 			validationMessages = [messages.requiredDate];
 			isValid = false;
 		}
@@ -173,7 +169,7 @@ export default factory(function({
 		onValidate && onValidate(isValid, validationMessage);
 		icache.set('validationMessage', validationMessage);
 	}
-	dirty && icache.getOrSet('callOnValue', () => callOnValue());
+	icache.getOrSet('callOnValue', () => callOnValue());
 
 	return (
 		<div classes={[theme.variant(), themedCss.root]}>
