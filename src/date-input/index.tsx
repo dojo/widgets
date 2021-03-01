@@ -119,7 +119,6 @@ export default factory(function({
 
 	const shouldFocus = focus.shouldFocus();
 	const focusNode = icache.getOrSet('focusNode', 'input');
-	const dirty = icache.get('dirty');
 	const [labelChild] = children();
 	const label = isRenderResult(labelChild) ? labelChild : labelChild.label;
 
@@ -224,7 +223,7 @@ export default factory(function({
 													valid: false,
 													message: icache.get('validationMessage')
 											  }
-											: dirty && true
+											: undefined
 									}
 									onFocus={() => {
 										icache.set('dirty', true);
