@@ -124,7 +124,8 @@ export default factory(function({
 	const label = isRenderResult(labelChild) ? labelChild : labelChild.label;
 
 	function callOnValue() {
-		const testValue = icache.get('nextValue') || icache.get('inputValue');
+		const testValue =
+			controlledValue === undefined ? icache.get('inputValue') : icache.get('nextValue');
 		let isValid: boolean | undefined;
 		let validationMessages: string[] = [];
 
@@ -158,11 +159,7 @@ export default factory(function({
 			isValid = validationMessages.length === 0;
 		}
 
-		if (
-			(controlledValue ? icache.get('nextValue') : icache.get('inputValue')) === '' &&
-			icache.get('dirty') &&
-			required
-		) {
+		if (testValue === '' && icache.get('dirty') && required) {
 			validationMessages = [messages.requiredDate];
 			isValid = false;
 		}

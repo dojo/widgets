@@ -1,0 +1,8 @@
+diff a/src/date-input/index.tsx b/src/date-input/index.tsx	(rejected hunks)
+@@ -161 +161,5 @@ export default factory(function({
+-		if ((controlledValue ? icache.get('nextValue') : icache.get('inputValue')) === '' && icache.get('dirty') && required) {
++		if (
++			(controlledValue ? icache.get('nextValue') : icache.get('inputValue')) === '' &&
++			icache.get('dirty') &&
++			required
++		) {
