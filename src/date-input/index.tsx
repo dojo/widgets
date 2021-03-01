@@ -158,7 +158,11 @@ export default factory(function({
 			isValid = validationMessages.length === 0;
 		}
 
-		if ((testValue === '' || testValue === undefined) && icache.get('dirty') && required) {
+		if (
+			(controlledValue ? icache.get('nextValue') : icache.get('inputValue')) === '' &&
+			icache.get('dirty') &&
+			required
+		) {
 			validationMessages = [messages.requiredDate];
 			isValid = false;
 		}
