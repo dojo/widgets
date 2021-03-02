@@ -36,6 +36,8 @@ export interface DateInputProperties extends ThemeProperties, FocusProperties {
 	disabled?: boolean;
 	/** The readonly attribute of the input */
 	readOnly?: boolean;
+	/** Determines if this input is required, styles accordingly */
+	required?: boolean;
 }
 
 export interface DateInputChildren {
@@ -58,7 +60,9 @@ interface DateInputICache {
 	validationMessage: string | undefined;
 	/** Indicates which node will be focused */
 	focusNode: 'input' | 'calendar';
+	/** Indicates if user has interacted with input */
 	dirty: boolean;
+	/** Calls when user inputs value */
 	callOnValue: void;
 }
 
@@ -82,7 +86,8 @@ export default factory(function({
 		readOnly = false,
 		theme: themeProp,
 		variant,
-		classes
+		classes,
+		required
 	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const themedCss = theme.classes(css);
@@ -118,7 +123,8 @@ export default factory(function({
 	const label = isRenderResult(labelChild) ? labelChild : labelChild.label;
 
 	function callOnValue() {
-		const testValue = icache.get('nextValue') || icache.get('inputValue');
+		const testValue =
+			controlledValue === undefined ? icache.get('inputValue') : icache.get('nextValue');
 		let isValid: boolean | undefined;
 		let validationMessages: string[] = [];
 
@@ -152,10 +158,14 @@ export default factory(function({
 			isValid = validationMessages.length === 0;
 		}
 
+		if (testValue === '' && icache.get('dirty') && required) {
+			validationMessages = [messages.requiredDate];
+			isValid = false;
+		}
+
 		const validationMessage = validationMessages.join('; ');
 		onValidate && onValidate(isValid, validationMessage);
 		icache.set('validationMessage', validationMessage);
-		icache.set('dirty', false);
 	}
 	icache.getOrSet('callOnValue', () => callOnValue());
 
@@ -166,6 +176,7 @@ export default factory(function({
 				name={name}
 				value={formatDateISO(icache.get('value'))}
 				aria-hidden="true"
+				required={required}
 			/>
 			<TriggerPopup key="popup" theme={themeProp} classes={classes} variant={variant}>
 				{{
@@ -198,6 +209,7 @@ export default factory(function({
 										}
 									}}
 									onValue={(v = '') => {
+										icache.set('dirty', true);
 										icache.set(
 											controlledValue === undefined
 												? 'inputValue'
@@ -205,10 +217,17 @@ export default factory(function({
 											v
 										);
 									}}
+									valid={
+										icache.get('validationMessage')
+											? {
+													valid: false,
+													message: icache.get('validationMessage')
+											  }
+											: undefined
+									}
 									onFocus={() => {
 										icache.set('dirty', true);
 									}}
-									helperText={icache.get('validationMessage')}
 									onKeyDown={(key) => {
 										if (
 											key === Keys.Down ||

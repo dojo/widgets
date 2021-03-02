@@ -43,7 +43,7 @@ function createFocusMock({
 		}))();
 }
 
-const baseTemplate = (date?: Date) =>
+const baseTemplate = (date?: Date | '') =>
 	assertionTemplate(() => {
 		return (
 			<div classes={[undefined, css.root]}>
@@ -53,6 +53,7 @@ const baseTemplate = (date?: Date) =>
 					name="dateInput"
 					value={date ? formatDateISO(date) : ''}
 					aria-hidden="true"
+					required={undefined}
 				/>
 				<TriggerPopup variant={undefined} classes={undefined} theme={undefined} key="popup">
 					{{
@@ -78,7 +79,7 @@ const buttonTemplate = assertionTemplate(() => {
 				onBlur={noop}
 				onValue={noop}
 				initialValue={undefined}
-				helperText=""
+				valid={undefined}
 				onKeyDown={noop}
 				variant={undefined}
 				classes={undefined}
@@ -423,7 +424,7 @@ describe('DateInput', () => {
 			'@input',
 			h.trigger('@popup', (node) => (node.children as any)[0].trigger, noop)
 		);
-		assert.equal(input.properties.helperText, messages.invalidDate);
+		assert.deepEqual(input.properties.valid, { valid: false, message: messages.invalidDate });
 	});
 
 	it('validates manual date entry range', () => {
@@ -467,7 +468,7 @@ describe('DateInput', () => {
 			'@input',
 			h.trigger('@popup', (node) => (node.children as any)[0].trigger, noop)
 		);
-		assert.equal(input.properties.helperText, messages.tooEarly);
+		assert.deepEqual(input.properties.valid, { valid: false, message: messages.tooEarly });
 
 		// Set value after the max date
 		onValidate.resetHistory();
@@ -482,7 +483,7 @@ describe('DateInput', () => {
 			'@input',
 			h.trigger('@popup', (node) => (node.children as any)[0].trigger, noop)
 		);
-		assert.equal(input.properties.helperText, messages.tooLate);
+		assert.deepEqual(input.properties.valid, { valid: false, message: messages.tooLate });
 		sinon.assert.calledWith(onValidate, false, messages.tooLate);
 	});
 
@@ -506,9 +507,41 @@ describe('DateInput', () => {
 			noop
 		);
 		h.expect(
-			buttonTemplate.setProperty('@input', 'helperText', messages.invalidProps),
+			buttonTemplate.setProperty('@input', 'valid', {
+				valid: false,
+				message: messages.invalidProps
+			}),
 			() => triggerResult
 		);
 		sinon.assert.calledWith(onValidate, false, messages.invalidProps);
+	});
+
+	it('requires date input', () => {
+		const onValidate = sinon.stub();
+		const h = harness(() => (
+			<DateInput name="dateInput" onValue={onValue} onValidate={onValidate} required={true} />
+		));
+
+		const toggleOpen = sinon.stub();
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpen
+		);
+		h.expect(buttonTemplate, () => triggerResult);
+
+		// Find the input widget and trigger it's value changed
+		const [input] = select('@input', triggerResult);
+		onValue.resetHistory();
+		input.properties.onValue('');
+
+		h.expect(baseTemplate().setProperty('@input', 'required', true));
+
+		input.properties.onBlur();
+
+		console.log('onValidate', onValidate.callsArg);
+
+		h.expect(baseTemplate().setProperty('@input', 'required', true));
+		sinon.assert.calledWith(onValidate, false, messages.requiredDate);
 	});
 });

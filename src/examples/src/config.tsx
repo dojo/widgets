@@ -226,6 +226,7 @@ import BasicDateInput from './widgets/date-input/Basic';
 import ControlledDateInput from './widgets/date-input/Controlled';
 import DisabledDateInput from './widgets/date-input/Disabled';
 import ReadOnlyDateInput from './widgets/date-input/ReadOnly';
+import RequiredDateInput from './widgets/date-input/Required';
 import BasicLoadingIndicator from './widgets/loading-indicator/Basic';
 import BasicHeader from './widgets/header/Basic';
 import LeadingHeader from './widgets/header/Leading';
@@ -688,6 +689,13 @@ export const config = {
 					sandbox: true,
 					size: 'large',
 					title: 'Read only date input'
+				},
+				{
+					filename: 'Required',
+					module: RequiredDateInput,
+					sandbox: true,
+					size: 'large',
+					title: 'Required date input'
 				}
 			]
 		},
