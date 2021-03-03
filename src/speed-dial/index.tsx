@@ -42,8 +42,10 @@ export const Action = actionFactory(({ properties, children, middleware: { theme
 });
 
 export interface SpeedDialProperties {
-	/** Speed dial direction. Defaults to "right" */
+	/** Speed dial direction. Defaults to "up" if position is set or "right" otherwise */
 	direction?: 'up' | 'left' | 'down' | 'right';
+	/** Where to position the FAB. Displayed inline if not set */
+	position?: 'bottom-right' | 'bottom-center';
 	/** Set an initial value for the open property */
 	initialOpen?: boolean;
 	/** Control the open property */
@@ -73,7 +75,7 @@ export const SpeedDial = factory(function SpeedDial({
 }) {
 	const {
 		initialOpen,
-		direction = 'right',
+		position,
 		onOpen,
 		onClose,
 		theme: themeProp,
@@ -84,7 +86,7 @@ export const SpeedDial = factory(function SpeedDial({
 	} = properties();
 	const themedCss = theme.classes(css);
 
-	let { open } = properties();
+	let { open, direction } = properties();
 
 	if (open === undefined) {
 		open = icache.get('open');
@@ -94,6 +96,13 @@ export const SpeedDial = factory(function SpeedDial({
 			icache.set('open', initialOpen);
 			icache.set('initialOpen', initialOpen);
 			open = initialOpen;
+		}
+	}
+	if (direction === undefined) {
+		if (position !== undefined) {
+			direction = 'up';
+		} else {
+			direction = 'right';
 		}
 	}
 
@@ -125,7 +134,9 @@ export const SpeedDial = factory(function SpeedDial({
 				direction === 'left' && themedCss.left,
 				direction === 'right' && themedCss.right,
 				direction === 'down' && themedCss.down,
-				direction === 'up' && themedCss.up
+				direction === 'up' && themedCss.up,
+				position === 'bottom-right' && themedCss.bottomRight,
+				position === 'bottom-center' && themedCss.bottomCenter
 			]}
 			onmouseleave={toggleClose}
 		>

@@ -8,3 +8,4 @@ Dojo's `SpeedDial` widget provides a way to display a small set of related actio
 - Supports native button titles as tooltips
 - Can be controlled or uncontrolled
 - Takes a direction property
+- Takes a position property to display at bottom of page

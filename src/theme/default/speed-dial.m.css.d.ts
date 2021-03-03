@@ -3,6 +3,8 @@ export const up: string;
 export const down: string;
 export const left: string;
 export const right: string;
+export const bottomRight: string;
+export const bottomCenter: string;
 export const iconOpen: string;
 export const actions: string;
 export const open: string;

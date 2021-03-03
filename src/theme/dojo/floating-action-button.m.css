@@ -21,7 +21,6 @@
 }
 
 .root:not(.pressed) {
-	background: none;
 	color: inherit;
 }
 

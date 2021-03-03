@@ -7,3 +7,5 @@ export const left: string;
 export const right: string;
 export const open: string;
 export const actionTransition: string;
+export const bottomRight: string;
+export const bottomCenter: string;

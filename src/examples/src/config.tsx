@@ -179,6 +179,7 @@ import StackedSnackbar from './widgets/snackbar/Stacked';
 import SuccessSnackbar from './widgets/snackbar/Success';
 import BasicSpeedDial from './widgets/speed-dial/Basic';
 import DirectionSpeedDial from './widgets/speed-dial/Direction';
+import PositionSpeedDial from './widgets/speed-dial/Position';
 import CustomIconSpeedDial from './widgets/speed-dial/CustomIcons';
 import TitleText from './widgets/speed-dial/TitleText';
 import BasicSwitch from './widgets/switch/Basic';
@@ -1658,6 +1659,11 @@ export const config = {
 					filename: 'Direction',
 					module: DirectionSpeedDial,
 					title: 'With a direction'
+				},
+				{
+					filename: 'Position',
+					module: PositionSpeedDial,
+					title: 'With a position'
 				},
 				{
 					filename: 'CustomIcons',

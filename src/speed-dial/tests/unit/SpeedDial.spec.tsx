@@ -17,7 +17,7 @@ import Icon from '../../../icon';
 const baseTemplate = assertionTemplate(() => (
 	<div
 		key="root"
-		classes={[undefined, css.root, fixCss.root, false, css.right, false, false]}
+		classes={[undefined, css.root, fixCss.root, false, css.right, false, false, false, false]}
 		onmouseleave={noop}
 	>
 		<FloatingActionButton
@@ -144,7 +144,9 @@ describe('SpeedDial', () => {
 				false,
 				false,
 				false,
-				css.up
+				css.up,
+				false,
+				false
 			])
 		);
 	});
@@ -171,6 +173,8 @@ describe('SpeedDial', () => {
 				false,
 				false,
 				css.down,
+				false,
+				false,
 				false
 			])
 		);
@@ -198,6 +202,66 @@ describe('SpeedDial', () => {
 				css.left,
 				false,
 				false,
+				false,
+				false,
+				false
+			])
+		);
+	});
+
+	it('allows positioning bottom-center', () => {
+		const h = harness(
+			() => (
+				<SpeedDial position="bottom-center">
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				fixCss.root,
+				false,
+				false,
+				false,
+				css.up,
+				false,
+				css.bottomCenter
+			])
+		);
+	});
+
+	it('allows positioning bottom-right', () => {
+		const h = harness(
+			() => (
+				<SpeedDial position="bottom-right">
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				fixCss.root,
+				false,
+				false,
+				false,
+				css.up,
+				css.bottomRight,
 				false
 			])
 		);
