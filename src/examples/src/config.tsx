@@ -306,7 +306,7 @@ export const config = {
 		{ label: 'material', theme: materialTheme },
 		{ label: 'dojo-dark', theme: dojoDarkTheme },
 		{ label: 'material-dark', theme: materialDarkTheme },
-		{ label: 'default', theme: { theme: {}, variants: {} } }
+		{ label: 'default', theme: { theme: {} } }
 	],
 	tests,
 	readmePath: (widget: string) => `src/${widget}/README.md`,
