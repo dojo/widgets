@@ -2,6 +2,10 @@
 .root {
 }
 
+/* Not actively loading, outermost container */
+.inactive {
+}
+
 /* Loading track background */
 .buffer {
 }

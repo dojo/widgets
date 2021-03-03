@@ -1,4 +1,5 @@
 export const root: string;
+export const inactive: string;
 export const buffer: string;
 export const bar: string;
 export const primary: string;
