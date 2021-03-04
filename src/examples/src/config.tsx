@@ -117,6 +117,7 @@ import DuplicatesChipTypeahead from './widgets/chip-typeahead/Duplicates';
 import FreeTextChipTypeahead from './widgets/chip-typeahead/FreeText';
 import BasicNumberInput from './widgets/number-input/Basic';
 import ValidatedNumberInput from './widgets/number-input/Validation';
+import LeadingTrailingNumberInput from './widgets/number-input/LeadingTrailing';
 import BasicOutlinedButton from './widgets/outlined-button/Basic';
 import OutlinedButtonKinds from './widgets/outlined-button/Kinds';
 import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
@@ -1228,6 +1229,11 @@ export const config = {
 					title: 'Validation',
 					filename: 'Validation',
 					module: ValidatedNumberInput
+				},
+				{
+					filename: 'LeadingTrailing',
+					module: LeadingTrailingNumberInput,
+					title: 'NumberInput with leading and trailing'
 				}
 			]
 		},
