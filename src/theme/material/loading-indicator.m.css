@@ -2,6 +2,10 @@
 	composes: mdc-linear-progress mdc-linear-progress--indeterminate from '@material/linear-progress/dist/mdc.linear-progress.css';
 }
 
+.inactive {
+	visibility: hidden;
+}
+
 .buffer {
 	composes: mdc-linear-progress__buffer from '@material/linear-progress/dist/mdc.linear-progress.css';
 }
