@@ -41,11 +41,28 @@ export const Action = actionFactory(({ properties, children, middleware: { theme
 	return fab;
 });
 
+export type SpeedDialPositions =
+	| 'bottom-right'
+	| 'bottom-center'
+	| 'bottom-left'
+	| 'left-center'
+	| 'right-center'
+	| 'top-left'
+	| 'top-center'
+	| 'top-right';
+
 export interface SpeedDialProperties {
-	/** Speed dial direction. Defaults to "up" if position is set or "right" otherwise */
+	/**
+	 * Speed dial direction. Defaults to "right" if position is not set.
+	 * Defaults to up for bottom positions, down for top positions,
+	 * right for left-center position, and left for right-center position.
+	 */
 	direction?: 'up' | 'left' | 'down' | 'right';
-	/** Where to position the FAB. Displayed inline if not set */
-	position?: 'bottom-right' | 'bottom-center';
+	/**
+	 * Where to position the FAB. Displayed inline if not set.
+	 * Position-direction combinations which point off screen are not supported.
+	 */
+	position?: SpeedDialPositions;
 	/** Set an initial value for the open property */
 	initialOpen?: boolean;
 	/** Control the open property */
@@ -98,12 +115,42 @@ export const SpeedDial = factory(function SpeedDial({
 			open = initialOpen;
 		}
 	}
-	if (direction === undefined) {
-		if (position !== undefined) {
-			direction = 'up';
-		} else {
-			direction = 'right';
-		}
+	let positionClass: string | undefined;
+	switch (position) {
+		case 'bottom-left':
+			positionClass = themedCss.bottomLeft;
+			direction = direction || 'up';
+			break;
+		case 'bottom-right':
+			positionClass = themedCss.bottomRight;
+			direction = direction || 'up';
+			break;
+		case 'bottom-center':
+			positionClass = themedCss.bottomCenter;
+			direction = direction || 'up';
+			break;
+		case 'left-center':
+			positionClass = themedCss.leftCenter;
+			direction = direction || 'right';
+			break;
+		case 'right-center':
+			positionClass = themedCss.rightCenter;
+			direction = direction || 'left';
+			break;
+		case 'top-left':
+			positionClass = themedCss.topLeft;
+			direction = direction || 'down';
+			break;
+		case 'top-right':
+			positionClass = themedCss.topRight;
+			direction = direction || 'down';
+			break;
+		case 'top-center':
+			positionClass = themedCss.topCenter;
+			direction = direction || 'down';
+			break;
+		default:
+			direction = direction || 'right';
 	}
 
 	const actions = children();
@@ -135,8 +182,7 @@ export const SpeedDial = factory(function SpeedDial({
 				direction === 'right' && themedCss.right,
 				direction === 'down' && themedCss.down,
 				direction === 'up' && themedCss.up,
-				position === 'bottom-right' && themedCss.bottomRight,
-				position === 'bottom-center' && themedCss.bottomCenter
+				positionClass
 			]}
 			onmouseleave={toggleClose}
 		>

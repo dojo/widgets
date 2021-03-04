@@ -1663,7 +1663,9 @@ export const config = {
 				{
 					filename: 'Position',
 					module: PositionSpeedDial,
-					title: 'With a position'
+					title: 'With a position',
+					sandbox: true,
+					size: 'large'
 				},
 				{
 					filename: 'CustomIcons',

@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import SpeedDial, { Action } from '@dojo/widgets/speed-dial';
+import SpeedDial, { Action, SpeedDialPositions } from '@dojo/widgets/speed-dial';
 import Icon from '@dojo/widgets/icon';
 import icache from '@dojo/framework/core/middleware/icache';
 import NativeSelect from '@dojo/widgets/native-select';
@@ -8,7 +8,7 @@ import Example from '../../Example';
 const factory = create({ icache });
 
 export default factory(function Direction({ middleware: { icache } }) {
-	const position: 'bottom-center' | 'bottom-right' | undefined =
+	const position: SpeedDialPositions | undefined =
 		icache.getOrSet('position', 'bottom-right') || undefined;
 	const direction: 'right' | 'left' | 'up' | 'down' | undefined =
 		icache.get('direction') || undefined;
@@ -58,6 +58,12 @@ export default factory(function Direction({ middleware: { icache } }) {
 						options={[
 							{ value: 'bottom-right' },
 							{ value: 'bottom-center' },
+							{ value: 'bottom-left' },
+							{ value: 'left-center' },
+							{ value: 'right-center' },
+							{ value: 'top-right' },
+							{ value: 'top-center' },
+							{ value: 'top-left' },
 							{ value: '', label: 'unset' }
 						]}
 						onValue={(position?: string) => {
