@@ -59,48 +59,52 @@
 
 .bottomRight {
 	position: fixed;
-	bottom: 50px;
-	right: 50px;
+	bottom: calc(2 * var(--mdc-theme-grid-base));
+	right: calc(2 * var(--mdc-theme-grid-base));
 }
 
 .bottomCenter {
 	position: fixed;
-	bottom: 50px;
-	right: calc(50% - 28px); /** subtract half of button width */
+	bottom: calc(2 * var(--mdc-theme-grid-base));
+	right: 50%;
+	transform: translateX(50%);
 }
 
 .bottomLeft {
 	position: fixed;
-	bottom: 50px;
-	left: 50px;
+	bottom: calc(2 * var(--mdc-theme-grid-base));
+	left: calc(2 * var(--mdc-theme-grid-base));
 }
 
 .rightCenter {
 	position: fixed;
-	top: calc(50% - 28px); /** subtract half of button width */
-	right: 50px;
+	top: 50%;
+	right: calc(2 * var(--mdc-theme-grid-base));
+	transform: translateY(-50%);
 }
 
 .leftCenter {
 	position: fixed;
-	top: calc(50% - 28px); /** subtract half of button width */
-	left: 50px;
+	top: 50%;
+	left: calc(2 * var(--mdc-theme-grid-base));
+	transform: translateY(-50%);
 }
 
 .topLeft {
 	position: fixed;
-	top: 50px;
-	left: 50px;
+	top: calc(2 * var(--mdc-theme-grid-base));
+	left: calc(2 * var(--mdc-theme-grid-base));
 }
 
 .topCenter {
 	position: fixed;
-	top: 50px;
-	right: calc(50% - 28px); /** subtract half of button width */
+	top: calc(2 * var(--mdc-theme-grid-base));
+	right: 50%;
+	transform: translateX(50%);
 }
 
 .topRight {
 	position: fixed;
-	top: 50px;
-	right: 50px;
+	top: calc(2 * var(--mdc-theme-grid-base));
+	right: calc(2 * var(--mdc-theme-grid-base));
 }

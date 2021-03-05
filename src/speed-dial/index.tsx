@@ -60,7 +60,7 @@ export interface SpeedDialProperties {
 	direction?: 'up' | 'left' | 'down' | 'right';
 	/**
 	 * Where to position the FAB. Displayed inline if not set.
-	 * Position-direction combinations which point off screen are not supported.
+	 * Position-direction combinations other than away from an adjacent edge are not supported.
 	 */
 	position?: SpeedDialPositions;
 	/** Set an initial value for the open property */

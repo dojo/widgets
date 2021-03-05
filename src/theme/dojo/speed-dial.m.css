@@ -59,48 +59,52 @@
 
 .bottomRight {
 	position: fixed;
-	bottom: 50px;
-	right: 50px;
+	bottom: var(--spacing-large);
+	right: var(--spacing-large);
 }
 
 .bottomCenter {
 	position: fixed;
-	bottom: 50px;
-	right: calc(50% - 28px); /** subtract half of button width */
+	bottom: var(--spacing-large);
+	right: 50%;
+	transform: translateX(50%);
 }
 
 .bottomLeft {
 	position: fixed;
-	bottom: 50px;
-	left: 50px;
+	bottom: var(--spacing-large);
+	left: var(--spacing-large);
 }
 
 .rightCenter {
 	position: fixed;
-	top: calc(50% - 28px); /** subtract half of button width */
-	right: 50px;
+	top: 50%;
+	right: var(--spacing-large);
+	transform: translateY(-50%);
 }
 
 .leftCenter {
 	position: fixed;
-	top: calc(50% - 28px); /** subtract half of button width */
-	left: 50px;
+	top: 50%;
+	left: var(--spacing-large);
+	transform: translateY(-50%);
 }
 
 .topLeft {
 	position: fixed;
-	top: 50px;
-	left: 50px;
+	top: var(--spacing-large);
+	left: var(--spacing-large);
 }
 
 .topCenter {
 	position: fixed;
-	top: 50px;
-	right: calc(50% - 28px); /** subtract half of button width */
+	top: var(--spacing-large);
+	right: 50%;
+	transform: translateX(50%);
 }
 
 .topRight {
 	position: fixed;
-	top: 50px;
-	right: 50px;
+	top: var(--spacing-large);
+	right: var(--spacing-large);
 }
