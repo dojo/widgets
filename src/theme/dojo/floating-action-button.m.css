@@ -21,7 +21,6 @@
 }
 
 .root:not(.pressed) {
-	background: none;
 	color: inherit;
 }
 
@@ -49,4 +48,64 @@
 
 .disabled:hover {
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+}
+
+.bottomRight {
+	position: fixed;
+	z-index: 150;
+	bottom: var(--spacing-large);
+	right: var(--spacing-large);
+}
+
+.bottomCenter {
+	position: fixed;
+	z-index: 150;
+	bottom: var(--spacing-large);
+	right: 50%;
+	transform: translateX(50%);
+}
+
+.bottomLeft {
+	position: fixed;
+	z-index: 150;
+	bottom: var(--spacing-large);
+	left: var(--spacing-large);
+}
+
+.rightCenter {
+	position: fixed;
+	z-index: 150;
+	top: 50%;
+	right: var(--spacing-large);
+	transform: translateY(-50%);
+}
+
+.leftCenter {
+	position: fixed;
+	z-index: 150;
+	top: 50%;
+	left: var(--spacing-large);
+	transform: translateY(-50%);
+}
+
+.topLeft {
+	position: fixed;
+	z-index: 150;
+	top: var(--spacing-large);
+	left: var(--spacing-large);
+}
+
+.topCenter {
+	position: fixed;
+	z-index: 150;
+	top: var(--spacing-large);
+	right: 50%;
+	transform: translateX(50%);
+}
+
+.topRight {
+	position: fixed;
+	z-index: 150;
+	top: var(--spacing-large);
+	right: var(--spacing-large);
 }
