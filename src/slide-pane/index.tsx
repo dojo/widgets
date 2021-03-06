@@ -63,7 +63,9 @@ export interface SlidePaneICache {
 }
 
 export interface SlidePaneChildren {
+	/** The title of the slide pane */
 	title?: RenderResult;
+	/** The slide pane content */
 	content?: RenderResult;
 }
 
