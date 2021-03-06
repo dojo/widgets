@@ -10,7 +10,7 @@
 }
 
 .tabButton:not(.activeTabButton) .tabButtonContent {
-	color: var(--mdc-secondary-text-color);
+	color: var(--mdc-tab-button-text-color);
 }
 
 .tabButtonContent {
@@ -21,12 +21,16 @@
 	composes: mdc-tab--active from '@material/tab/dist/mdc.tab.css';
 }
 
+.root .activeTabButtonLabel {
+	color: var(--mdc-tab-button-active-text-color);
+}
+
 .root .disabledTabButton {
 	cursor: default;
 }
 
 .root .disabledTabButton .tabButtonContent {
-	color: var(--mdc-disabled-text-color);
+	color: var(--mdc-tab-button-disabled-text-color);
 }
 
 .close {
@@ -55,10 +59,11 @@
 
 /* TABS */
 .root {
-	background-color: var(--mdc-tab-background);
+	background-color: var(--mdc-tab-button-background);
 }
 
 .root .tab {
+	background-color: var(--mdc-tab-content-background);
 	color: var(--mdc-text-color);
 }
 

@@ -140,7 +140,10 @@ export const TabContainer = factory(function TabContainer({
 				role="tab"
 				tabIndex={active ? 0 : -1}
 			>
-				<span key="tabButtonContent" classes={themeCss.tabButtonContent}>
+				<span
+					key="tabButtonContent"
+					classes={[themeCss.tabButtonContent, active && themeCss.activeTabButtonLabel]}
+				>
 					{name}
 					{closeable ? (
 						<button

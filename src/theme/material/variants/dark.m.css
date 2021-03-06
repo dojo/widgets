@@ -81,6 +81,12 @@
 	--mdc-disabled-color: var(--mdc-theme-text-hint-on-dark);
 
 	--mdc-tab-background: var(--mdc-raised-surface-background);
+	--mdc-tab-content-background: var(--mdc-tab-background);
+	--mdc-tab-button-background: var(--mdc-tab-background);
+	--mdc-tab-button-text-color: var(--mdc-secondary-text-color);
+	--mdc-tab-button-active-text-color: var(--mdc-theme-primary);
+	--mdc-tab-button-disabled-text-color: var(--mdc-disabled-text-color);
+
 	--mdc-tooltip-background: #6d6d6d;
 	--mdc-chip-background: #6d6d6d;
 	--mdc-chip-color: var(--mdc-text-color);

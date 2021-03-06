@@ -45,6 +45,10 @@
 .tabButtonContent {
 }
 
+/* Controls the label of a TabButton when active*/
+.activeTabButtonLabel {
+}
+
 /* Added to an active TabButton */
 .activeTabButton {
 	background: #fff;

@@ -539,8 +539,6 @@ describe('DateInput', () => {
 
 		input.properties.onBlur();
 
-		console.log('onValidate', onValidate.callsArg);
-
 		h.expect(baseTemplate().setProperty('@input', 'required', true));
 		sinon.assert.calledWith(onValidate, false, messages.requiredDate);
 	});
