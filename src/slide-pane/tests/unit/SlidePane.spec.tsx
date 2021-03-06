@@ -90,7 +90,7 @@ registerSuite('SlidePane', {
 		'Should construct SlidePane with passed properties'() {
 			const h = harness(() => (
 				<SlidePane key="foo" align="left" aria={{ describedBy: 'foo' }} open underlay>
-					{GREEKING}
+					{{ content: GREEKING }}
 				</SlidePane>
 			));
 
@@ -273,14 +273,17 @@ registerSuite('SlidePane', {
 			let called = false;
 
 			const h = harness(() =>
-				w(SlidePane, {
-					open: true,
-					title: 'foo',
-					closeText: 'close',
-					onRequestClose() {
-						called = true;
-					}
-				})
+				w(
+					SlidePane,
+					{
+						open: true,
+						closeText: 'close',
+						onRequestClose() {
+							called = true;
+						}
+					},
+					[{ title: 'foo' }]
+				)
 			);
 
 			h.trigger(`.${css.close}`, 'onclick', stubEvent);
@@ -518,7 +521,7 @@ registerSuite('SlidePane', {
 			};
 			properties.onRequestClose = () => (properties.open = false);
 
-			const h = harness(() => <SlidePane {...properties}>{GREEKING}</SlidePane>);
+			const h = harness(() => <SlidePane {...properties}>{{ content: GREEKING }}</SlidePane>);
 
 			h.expect(
 				openTemplate.setProperty('@content', 'classes', [
@@ -565,7 +568,7 @@ registerSuite('SlidePane', {
 			};
 			properties.onRequestClose = () => (properties.open = false);
 
-			const h = harness(() => <SlidePane {...properties}>{GREEKING}</SlidePane>);
+			const h = harness(() => <SlidePane {...properties}>{{ content: GREEKING }}</SlidePane>);
 			h.expect(
 				openTemplateRight.setProperty('@content', 'classes', [
 					css.pane,
