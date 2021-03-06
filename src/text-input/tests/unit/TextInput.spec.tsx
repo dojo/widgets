@@ -84,7 +84,7 @@ const expected = function({
 				>
 					<input
 						aria-invalid={valid === false ? 'true' : undefined}
-						autocomplete={undefined}
+						autocomplete="off"
 						classes={css.input}
 						disabled={disabled}
 						id={''}
@@ -189,7 +189,7 @@ const input = () => (
 			id=""
 			disabled={undefined}
 			aria-invalid={undefined}
-			autocomplete={undefined}
+			autocomplete="off"
 			maxlength={null}
 			minlength={null}
 			name={undefined}
