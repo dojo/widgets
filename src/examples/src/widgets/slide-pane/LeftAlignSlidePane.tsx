@@ -10,7 +10,6 @@ export default factory(function LeftAlignSlidePane({ middleware: { icache } }) {
 	return (
 		<Example>
 			<SlidePane
-				title="Left Aligned SlidePane"
 				open={icache.getOrSet('open', true)}
 				underlay={false}
 				align="left"
@@ -19,7 +18,7 @@ export default factory(function LeftAlignSlidePane({ middleware: { icache } }) {
 					icache.set('open', false);
 				}}
 			>
-				{DEMO_TEXT}
+				{{ content: DEMO_TEXT, title: 'Left Aligned SlidePane' }}
 			</SlidePane>
 		</Example>
 	);

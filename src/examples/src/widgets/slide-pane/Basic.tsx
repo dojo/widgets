@@ -10,13 +10,12 @@ export default factory(function Basic({ middleware: { icache } }) {
 	return (
 		<Example>
 			<SlidePane
-				title="Basic SlidePane"
 				open={icache.getOrSet('open', true)}
 				onRequestClose={() => {
 					icache.set('open', false);
 				}}
 			>
-				{DEMO_TEXT}
+				{{ content: DEMO_TEXT, title: 'Basic SlidePane' }}
 			</SlidePane>
 			<button onclick={() => icache.set('open', !icache.get('open'))}>Toggle</button>
 		</Example>
