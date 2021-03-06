@@ -3,6 +3,8 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import Button from '@dojo/widgets/button';
 import Form, { FormField, FormGroup } from '@dojo/widgets/form';
 import TextInput from '@dojo/widgets/text-input';
+import TimePicker from '@dojo/widgets/time-picker';
+import DateInput from '@dojo/widgets/date-input';
 
 import Example from '../../Example';
 
@@ -107,6 +109,27 @@ const App = factory(function({ middleware: { icache } }) {
 									>
 										{{ label: 'Email' }}
 									</TextInput>
+								</FormField>
+							</FormGroup>
+							<FormGroup>
+								<FormField>
+									<DateInput />
+								</FormField>
+							</FormGroup>
+							<FormGroup>
+								<FormField>
+									<TimePicker />
+								</FormField>
+							</FormGroup>
+							<FormGroup>
+								<FormField>
+									<DateInput />
+								</FormField>
+								<FormField>
+									<TimePicker />
+								</FormField>
+								<FormField>
+									<TimePicker />
 								</FormField>
 							</FormGroup>
 							<Button
