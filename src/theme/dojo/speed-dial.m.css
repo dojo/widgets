@@ -56,3 +56,55 @@
 .actionTransition {
 	transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, opacity 0.5s;
 }
+
+.bottomRight {
+	position: fixed;
+	bottom: var(--spacing-large);
+	right: var(--spacing-large);
+}
+
+.bottomCenter {
+	position: fixed;
+	bottom: var(--spacing-large);
+	right: 50%;
+	transform: translateX(50%);
+}
+
+.bottomLeft {
+	position: fixed;
+	bottom: var(--spacing-large);
+	left: var(--spacing-large);
+}
+
+.rightCenter {
+	position: fixed;
+	top: 50%;
+	right: var(--spacing-large);
+	transform: translateY(-50%);
+}
+
+.leftCenter {
+	position: fixed;
+	top: 50%;
+	left: var(--spacing-large);
+	transform: translateY(-50%);
+}
+
+.topLeft {
+	position: fixed;
+	top: var(--spacing-large);
+	left: var(--spacing-large);
+}
+
+.topCenter {
+	position: fixed;
+	top: var(--spacing-large);
+	right: 50%;
+	transform: translateX(50%);
+}
+
+.topRight {
+	position: fixed;
+	top: var(--spacing-large);
+	right: var(--spacing-large);
+}

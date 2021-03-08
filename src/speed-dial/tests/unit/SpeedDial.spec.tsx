@@ -8,16 +8,17 @@ import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import * as sinon from 'sinon';
 
-import SpeedDial, { Action } from '../../index';
+import SpeedDial, { Action, SpeedDialPositions } from '../../index';
 import FloatingActionButton from '../../../floating-action-button';
 import * as fabCss from '../../../theme/default/floating-action-button.m.css';
 import { compareTheme, noop } from '../../../common/tests/support/test-helpers';
 import Icon from '../../../icon';
+import { SupportedClassName } from '@dojo/framework/core/interfaces';
 
 const baseTemplate = assertionTemplate(() => (
 	<div
 		key="root"
-		classes={[undefined, css.root, fixCss.root, false, css.right, false, false]}
+		classes={[undefined, css.root, fixCss.root, false, css.right, false, false, undefined]}
 		onmouseleave={noop}
 	>
 		<FloatingActionButton
@@ -144,7 +145,8 @@ describe('SpeedDial', () => {
 				false,
 				false,
 				false,
-				css.up
+				css.up,
+				undefined
 			])
 		);
 	});
@@ -171,7 +173,8 @@ describe('SpeedDial', () => {
 				false,
 				false,
 				css.down,
-				false
+				false,
+				undefined
 			])
 		);
 	});
@@ -198,7 +201,134 @@ describe('SpeedDial', () => {
 				css.left,
 				false,
 				false,
-				false
+				false,
+				undefined
+			])
+		);
+	});
+
+	const positionTestCases: { position: SpeedDialPositions; classes: SupportedClassName[] }[] = [
+		{
+			position: 'bottom-right',
+			classes: [
+				undefined,
+				css.root,
+				fixCss.root,
+				false,
+				false,
+				false,
+				css.up,
+				css.bottomRight
+			]
+		},
+		{
+			position: 'bottom-center',
+			classes: [
+				undefined,
+				css.root,
+				fixCss.root,
+				false,
+				false,
+				false,
+				css.up,
+				css.bottomCenter
+			]
+		},
+		{
+			position: 'bottom-left',
+			classes: [undefined, css.root, fixCss.root, false, false, false, css.up, css.bottomLeft]
+		},
+		{
+			position: 'left-center',
+			classes: [
+				undefined,
+				css.root,
+				fixCss.root,
+				false,
+				css.right,
+				false,
+				false,
+				css.leftCenter
+			]
+		},
+		{
+			position: 'right-center',
+			classes: [
+				undefined,
+				css.root,
+				fixCss.root,
+				css.left,
+				false,
+				false,
+				false,
+				css.rightCenter
+			]
+		},
+		{
+			position: 'top-right',
+			classes: [undefined, css.root, fixCss.root, false, false, css.down, false, css.topRight]
+		},
+		{
+			position: 'top-center',
+			classes: [
+				undefined,
+				css.root,
+				fixCss.root,
+				false,
+				false,
+				css.down,
+				false,
+				css.topCenter
+			]
+		},
+		{
+			position: 'top-left',
+			classes: [undefined, css.root, fixCss.root, false, false, css.down, false, css.topLeft]
+		}
+	];
+	positionTestCases.forEach(({ position, classes }) => {
+		it(`allows positioning "${position}"`, () => {
+			const h = harness(
+				() => (
+					<SpeedDial position={position}>
+						<Action key="edit" onClick={noop}>
+							<Icon type="editIcon" />
+						</Action>
+						<Action key="star" onClick={noop}>
+							<Icon type="starIcon" />
+						</Action>
+					</SpeedDial>
+				),
+				[compareTheme]
+			);
+			h.expect(baseTemplate.setProperty('@root', 'classes', classes));
+		});
+	});
+
+	it('allows setting the direction with position', () => {
+		const h = harness(
+			() => (
+				<SpeedDial position="bottom-right" direction="left">
+					<Action key="edit" onClick={noop}>
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop}>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				fixCss.root,
+				css.left,
+				false,
+				false,
+				false,
+				css.bottomRight
 			])
 		);
 	});

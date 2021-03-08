@@ -56,3 +56,55 @@
 .actionTransition {
 	transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, opacity 0.5s;
 }
+
+.bottomRight {
+	position: fixed;
+	bottom: calc(2 * var(--mdc-theme-grid-base));
+	right: calc(2 * var(--mdc-theme-grid-base));
+}
+
+.bottomCenter {
+	position: fixed;
+	bottom: calc(2 * var(--mdc-theme-grid-base));
+	right: 50%;
+	transform: translateX(50%);
+}
+
+.bottomLeft {
+	position: fixed;
+	bottom: calc(2 * var(--mdc-theme-grid-base));
+	left: calc(2 * var(--mdc-theme-grid-base));
+}
+
+.rightCenter {
+	position: fixed;
+	top: 50%;
+	right: calc(2 * var(--mdc-theme-grid-base));
+	transform: translateY(-50%);
+}
+
+.leftCenter {
+	position: fixed;
+	top: 50%;
+	left: calc(2 * var(--mdc-theme-grid-base));
+	transform: translateY(-50%);
+}
+
+.topLeft {
+	position: fixed;
+	top: calc(2 * var(--mdc-theme-grid-base));
+	left: calc(2 * var(--mdc-theme-grid-base));
+}
+
+.topCenter {
+	position: fixed;
+	top: calc(2 * var(--mdc-theme-grid-base));
+	right: 50%;
+	transform: translateX(50%);
+}
+
+.topRight {
+	position: fixed;
+	top: calc(2 * var(--mdc-theme-grid-base));
+	right: calc(2 * var(--mdc-theme-grid-base));
+}

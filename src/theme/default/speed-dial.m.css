@@ -13,6 +13,38 @@
 /* Class applied to the root when its direction is "right" */
 .right {
 }
+
+/* Class applied to the root when its position is "bottom-right" */
+.bottomRight {
+}
+/* Class applied to the root when its position is "bottom-center" */
+.bottomCenter {
+}
+
+/* Class applied to the root when its position is "bottom-left" */
+.bottomLeft {
+}
+
+/* Class applied to the root when its position is "right-center" */
+.rightCenter {
+}
+
+/* Class applied to the root when its position is "left-center" */
+.leftCenter {
+}
+
+/* Class applied to the root when its position is "top-left" */
+.topLeft {
+}
+
+/* Class applied to the root when its position is "top-center" */
+.topCenter {
+}
+
+/* Class applied to the root when its position is "top-right" */
+.topRight {
+}
+
 /* Class applied to the icon when it the component is open */
 .iconOpen {
 }
