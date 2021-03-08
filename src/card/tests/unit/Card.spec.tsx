@@ -14,8 +14,8 @@ const Root = wrap('div');
 const Content = wrap('div');
 
 const template = assertion(() => (
-	<Root key="root" classes={[undefined, css.root, false]}>
-		<Content key="content" classes={[css.content, null]} onClick={noop} />
+	<Root key="root" classes={[undefined, css.root, false, false]}>
+		<Content key="content" classes={[css.content, null, false]} onClick={noop} />
 	</Root>
 ));
 
@@ -30,16 +30,21 @@ describe('Card', () => {
 		const outlinedTemplate = template.setProperty(Root, 'classes', [
 			undefined,
 			css.root,
-			css.outlined
+			css.outlined,
+			false
 		]);
 		r.expect(outlinedTemplate);
 	});
 
-	describe('action', () => {
+	it('action', () => {
 		const onAction = spy();
 		const r = renderer(() => <Card onAction={onAction} />);
 
-		const actionTemplate = template.setProperty(Content, 'classes', [css.content, css.primary]);
+		const actionTemplate = template.setProperty(Content, 'classes', [
+			css.content,
+			css.primary,
+			false
+		]);
 
 		r.expect(actionTemplate);
 		r.property(Content, 'onClick');
@@ -78,7 +83,7 @@ describe('Card', () => {
 			));
 
 			const contentTemplate = template.setChildren(Content, () => [
-				<div classes={css.contentWrapper}>Hello, World</div>
+				<div classes={[css.contentWrapper, false]}>Hello, World</div>
 			]);
 			r.expect(contentTemplate);
 		});
@@ -107,7 +112,7 @@ describe('Card', () => {
 					{<h2 classes={css.title}>Hello, World</h2>}
 					<h3 classes={css.subtitle}>this is a test</h3>
 				</div>,
-				<div classes={css.contentWrapper}>test</div>
+				<div classes={[css.contentWrapper, false]}>test</div>
 			]);
 			r.expect(contentTemplate);
 		});
@@ -237,7 +242,7 @@ describe('Card', () => {
 						{<h2 classes={css.title}>Hello, World</h2>}
 						<h3 classes={css.subtitle}>this is a test</h3>
 					</div>,
-					<div classes={css.contentWrapper}>Content</div>
+					<div classes={[css.contentWrapper, false]}>Content</div>
 				])
 				.append(Root, () => [
 					<div key="actions" classes={css.actions}>

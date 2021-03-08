@@ -14,3 +14,4 @@ export const title: string;
 export const subtitle: string;
 export const outlined: string;
 export const textWrapper: string;
+export const stretch: string;

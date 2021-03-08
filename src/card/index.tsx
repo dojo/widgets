@@ -11,6 +11,7 @@ export interface CardProperties {
 	title?: string;
 	subtitle?: string;
 	outlined?: boolean;
+	stretch?: boolean;
 }
 
 export interface CardChildren {
@@ -33,12 +34,21 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 		square,
 		title,
 		subtitle,
-		outlined = false
+		outlined = false,
+		stretch = false
 	} = properties();
 	const { header, content, actionButtons, actionIcons } = children()[0] || ({} as CardChildren);
 
 	return (
-		<div key="root" classes={[theme.variant(), themeCss.root, outlined && themeCss.outlined]}>
+		<div
+			key="root"
+			classes={[
+				theme.variant(),
+				themeCss.root,
+				outlined && themeCss.outlined,
+				stretch && themeCss.stretch
+			]}
+		>
 			{header && (
 				<div key="header" classes={themeCss.header}>
 					{header}
@@ -46,7 +56,11 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 			)}
 			<div
 				key="content"
-				classes={[themeCss.content, onAction ? themeCss.primary : null]}
+				classes={[
+					themeCss.content,
+					onAction ? themeCss.primary : null,
+					stretch && themeCss.stretch
+				]}
 				onClick={() => onAction && onAction()}
 			>
 				{mediaSrc && (
@@ -67,7 +81,11 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 						{subtitle && <h3 classes={themeCss.subtitle}>{subtitle}</h3>}
 					</div>
 				)}
-				{content && <div classes={themeCss.contentWrapper}>{content}</div>}
+				{content && (
+					<div classes={[themeCss.contentWrapper, stretch && themeCss.stretch]}>
+						{content}
+					</div>
+				)}
 			</div>
 			{(actionButtons || actionIcons) && (
 				<div key="actions" classes={themeCss.actions}>

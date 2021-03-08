@@ -4,6 +4,10 @@
 	color: var(--mdc-text-color);
 }
 
+.stretch {
+	height: 100%;
+}
+
 .actions {
 	composes: mdc-card__action from '@material/card/dist/mdc.card.css';
 	padding: 1rem;

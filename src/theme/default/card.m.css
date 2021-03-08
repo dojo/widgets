@@ -9,6 +9,9 @@
 	align-items: center;
 }
 
+.stretch {
+}
+
 /* May be added to action buttons supplied by the actionsRenderer */
 .actionButtons {
 }
