@@ -57,6 +57,10 @@
 	composes: mdc-tab-indicator__content mdc-tab-indicator__content--underline from '@material/tab-indicator/dist/mdc.tab-indicator.css';
 }
 
+.root .indicatorContent {
+	border-color: var(--mdc-tab-button-active-text-color);
+}
+
 /* TABS */
 .root {
 	background-color: var(--mdc-tab-button-background);
