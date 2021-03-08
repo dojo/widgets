@@ -23,3 +23,63 @@
 .icon {
 	composes: mdc-fab__icon from '@material/fab/dist/mdc.fab.css';
 }
+
+.bottomRight {
+	position: fixed;
+	z-index: 150;
+	bottom: calc(2 * var(--mdc-theme-grid-base));
+	right: calc(2 * var(--mdc-theme-grid-base));
+}
+
+.bottomCenter {
+	position: fixed;
+	z-index: 150;
+	bottom: calc(2 * var(--mdc-theme-grid-base));
+	right: 50%;
+	transform: translateX(50%);
+}
+
+.bottomLeft {
+	position: fixed;
+	z-index: 150;
+	bottom: calc(2 * var(--mdc-theme-grid-base));
+	left: calc(2 * var(--mdc-theme-grid-base));
+}
+
+.rightCenter {
+	position: fixed;
+	z-index: 150;
+	top: 50%;
+	right: calc(2 * var(--mdc-theme-grid-base));
+	transform: translateY(-50%);
+}
+
+.leftCenter {
+	position: fixed;
+	z-index: 150;
+	top: 50%;
+	left: calc(2 * var(--mdc-theme-grid-base));
+	transform: translateY(-50%);
+}
+
+.topLeft {
+	position: fixed;
+	z-index: 150;
+	top: calc(2 * var(--mdc-theme-grid-base));
+	left: calc(2 * var(--mdc-theme-grid-base));
+}
+
+.topCenter {
+	position: fixed;
+	z-index: 150;
+	top: calc(2 * var(--mdc-theme-grid-base));
+	right: 50%;
+	transform: translateX(50%);
+}
+
+.topRight {
+	position: fixed;
+	z-index: 150;
+	top: calc(2 * var(--mdc-theme-grid-base));
+	right: calc(2 * var(--mdc-theme-grid-base));
+}

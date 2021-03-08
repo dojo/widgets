@@ -67,6 +67,7 @@ import Advanced from './widgets/grid/Advanced';
 import BasicFab from './widgets/floating-action-button/Basic';
 import ExtendedFab from './widgets/floating-action-button/Extended';
 import SmallFab from './widgets/floating-action-button/Small';
+import PositionFab from './widgets/floating-action-button/Position';
 import BasicForm from './widgets/form/Basic';
 import ControlledForm from './widgets/form/Basic';
 import ValidationForm from './widgets/form/Validation';
@@ -796,6 +797,13 @@ export const config = {
 					title: 'Small FAB',
 					module: SmallFab,
 					filename: 'Small'
+				},
+				{
+					filename: 'Position',
+					module: PositionFab,
+					title: 'With a position',
+					sandbox: true,
+					size: 'large'
 				}
 			]
 		},
