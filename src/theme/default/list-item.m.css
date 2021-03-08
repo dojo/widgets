@@ -9,6 +9,9 @@
 	position: relative;
 }
 
+.height {
+}
+
 /* Added to selected items */
 .selected {
 	background: lightgrey;

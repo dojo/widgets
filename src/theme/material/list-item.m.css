@@ -4,7 +4,11 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	height: 48px;
+}
+
+.root.height {
+	min-height: 48px;
+	height: 100%;
 }
 
 .root:hover {
@@ -18,7 +22,8 @@
 .active {
 	border: none;
 	background: var(--mdc-theme-on-surface);
-	height: 48px;
+	min-height: 48px;
+	height: 100%;
 	box-shadow: none;
 }
 

@@ -1,5 +1,4 @@
 .root {
-	padding: 8px 0;
 	background: var(--mdc-raised-surface-background) !important;
 	color: var(--mdc-text-color);
 	composes: mdc-menu from '@material/menu/dist/mdc.menu.css';
