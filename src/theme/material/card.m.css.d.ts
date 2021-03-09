@@ -1,4 +1,5 @@
 export const root: string;
+export const stretch: string;
 export const actions: string;
 export const actionButtons: string;
 export const actionIcons: string;
