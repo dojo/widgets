@@ -1,5 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '../middleware/theme';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import bundle from './nls/SlidePane';
@@ -28,10 +29,10 @@ export interface SlidePaneProperties {
 
 	/** Determines whether the pane is open or closed */
 	open?: boolean;
-	/** Title to display in the pane */
-	title?: string;
+
 	/** Determines whether a semi-transparent background shows behind the pane */
 	underlay?: boolean;
+
 	/** Width of the pane in pixels */
 	width?: number;
 }
@@ -61,11 +62,20 @@ export interface SlidePaneICache {
 	open: boolean;
 }
 
+export interface SlidePaneChildren {
+	/** The title of the slide pane */
+	title?: RenderResult;
+	/** The slide pane content */
+	content?: RenderResult;
+}
+
 const factory = create({
 	icache: createICacheMiddleware<SlidePaneICache>(),
 	theme,
 	i18n
-}).properties<SlidePaneProperties>();
+})
+	.properties<SlidePaneProperties>()
+	.children<SlidePaneChildren | undefined>();
 
 export const SlidePane = factory(function SlidePane({
 	middleware: { icache, theme, i18n },
@@ -76,7 +86,6 @@ export const SlidePane = factory(function SlidePane({
 		aria = {},
 		closeText,
 		open = false,
-		title = '',
 		align = 'left',
 		width = DEFAULT_WIDTH,
 		underlay = false,
@@ -85,7 +94,8 @@ export const SlidePane = factory(function SlidePane({
 		classes
 	} = properties();
 	const themeCss = theme.classes(css);
-
+	const [slidePaneChildren = {}] = children();
+	const { title, content } = slidePaneChildren;
 	if (icache.get('open') !== open) {
 		const wasOpen = icache.get('open');
 		icache.set('open', open);
@@ -271,7 +281,7 @@ export const SlidePane = factory(function SlidePane({
 						</button>
 					</div>
 				) : null}
-				<div classes={[themeCss.content, fixedCss.contentFixed]}>{children()}</div>
+				<div classes={[themeCss.content, fixedCss.contentFixed]}>{content}</div>
 			</div>
 		</div>
 	);

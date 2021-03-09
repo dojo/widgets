@@ -10,7 +10,6 @@ export default factory(function UnderlaySlidePane({ middleware: { icache } }) {
 	return (
 		<Example>
 			<SlidePane
-				title="Underlay SlidePane"
 				open={icache.getOrSet('open', true)}
 				underlay={true}
 				align="right"
@@ -18,7 +17,7 @@ export default factory(function UnderlaySlidePane({ middleware: { icache } }) {
 					icache.set('open', false);
 				}}
 			>
-				{DEMO_TEXT}
+				{{ content: DEMO_TEXT, title: 'Underlay SlidePane' }}
 			</SlidePane>
 		</Example>
 	);

@@ -10,14 +10,13 @@ export default factory(function BottomWidthSlidePane({ middleware: { icache } })
 	return (
 		<Example>
 			<SlidePane
-				title="Bottom Aligned SlidePane"
 				open={icache.getOrSet('open', true)}
 				align="bottom"
 				onRequestClose={() => {
 					icache.set('open', false);
 				}}
 			>
-				{DEMO_TEXT}
+				{{ content: DEMO_TEXT, title: 'Bottom Aligned SlidePane' }}
 			</SlidePane>
 		</Example>
 	);

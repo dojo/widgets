@@ -10,7 +10,6 @@ export default factory(function FixedWidthSlidePane({ middleware: { icache } }) 
 	return (
 		<Example>
 			<SlidePane
-				title="Fixed Width"
 				open={icache.getOrSet('open', true)}
 				width={250}
 				align="right"
@@ -18,7 +17,7 @@ export default factory(function FixedWidthSlidePane({ middleware: { icache } }) 
 					icache.set('open', false);
 				}}
 			>
-				{DEMO_TEXT}
+				{{ content: DEMO_TEXT, title: 'Fixed Width' }}
 			</SlidePane>
 		</Example>
 	);
