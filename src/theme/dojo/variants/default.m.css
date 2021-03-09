@@ -69,6 +69,12 @@
 	--divider-width: 9px;
 
 	--tab-width: calc(var(--grid-base) * 16);
+	--tab-background: var(--color-background);
+	--tab-content-background: var(--tab-background);
+	--tab-button-background: var(--tab-background);
+	--tab-button-color: var(--color-text-faded);
+	--tab-button-active-color: var(--color-highlight);
+	--tab-button-disabled-color: var(--color-border);
 
 	--color-primary: #ffffff;
 	--color-secondary: rgb(199, 222, 209);

@@ -5,6 +5,7 @@ export const indicator: string;
 export const indicatorActive: string;
 export const indicatorContent: string;
 export const tabButtonContent: string;
+export const activeTabButtonLabel: string;
 export const activeTabButton: string;
 export const root: string;
 export const tabButton: string;

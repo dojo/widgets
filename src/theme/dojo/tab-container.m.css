@@ -11,11 +11,11 @@
 }
 
 .tabButton {
-	border-bottom: var(--border-width) solid var(--color-border);
+	border-bottom: var(--border-width) solid var(--tab-button-disabled-color);
 	border-left: var(--border-width) solid transparent;
 	border-right: var(--border-width) solid transparent;
 	border-top: var(--border-width) solid transparent;
-	color: var(--color-text-faded);
+	color: var(--tab-button-color);
 	cursor: pointer;
 	display: inline-block;
 	flex: 1;
@@ -29,7 +29,7 @@
 	white-space: nowrap;
 	width: var(--tab-width);
 	margin: 0;
-	background-color: var(--color-background);
+	background-color: var(--tab-button-background);
 }
 
 .tabButton:hover:not(.disabledTabButton):not(.activeTabButton) {
@@ -39,17 +39,21 @@
 }
 
 .tabButton:focus:not(.disabledTabButton) {
-	border-color: var(--color-highlight);
+	border-color: var(--tab-button-active-color);
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
 }
 
 .activeTabButton {
-	border-bottom-color: var(--color-highlight);
-	color: var(--color-highlight);
+	border-bottom-color: var(--tab-button-active-color);
+	color: var(--tab-button-active-color);
+}
+
+.activeTabButtonLabel {
+	color: var(--tab-button-active-color);
 }
 
 .disabledTabButton {
-	color: var(--color-border);
+	color: var(--tab-button-disabled-color);
 	cursor: default;
 }
 
@@ -72,7 +76,7 @@
 
 .tab {
 	position: relative;
-	background-color: var(--color-background);
+	background-color: var(--tab-content-background);
 }
 
 .alignLeft .tabs {
@@ -89,14 +93,14 @@
 .alignLeft .tabButton {
 	border-bottom: var(--border-width) solid transparent;
 	border-left: var(--border-width) solid transparent;
-	border-right: var(--border-width) solid var(--color-border);
+	border-right: var(--border-width) solid var(--tab-button-disabled-color);
 	border-top: var(--border-width) solid transparent;
 	display: block;
 }
 
 .alignLeft .activeTabButton {
-	border-right-color: var(--color-highlight);
-	color: var(--color-highlight);
+	border-right-color: var(--tab-button-active-color);
+	color: var(--tab-button-active-color);
 }
 
 .alignRight .tabs {
@@ -112,23 +116,23 @@
 
 .alignRight .tabButton {
 	border-bottom: var(--border-width) solid transparent;
-	border-left: var(--border-width) solid var(--color-border);
+	border-left: var(--border-width) solid var(--tab-button-disabled-color);
 	border-right: var(--border-width) solid transparent;
 	border-top: var(--border-width) solid transparent;
 	display: block;
 }
 
 .alignRight .activeTabButton {
-	border-left-color: var(--color-highlight);
-	color: var(--color-highlight);
+	border-left-color: var(--tab-button-active-color);
+	color: var(--tab-button-active-color);
 }
 
 .alignBottom .tabButton {
 	border-bottom-color: transparent;
-	border-top-color: var(--color-border);
+	border-top-color: var(--tab-button-disabled-color);
 }
 
 .alignBottom .activeTabButton {
 	border-bottom-color: transparent;
-	border-top-color: var(--color-highlight);
+	border-top-color: var(--tab-button-active-color);
 }

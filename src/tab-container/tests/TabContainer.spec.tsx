@@ -89,7 +89,10 @@ registerSuite('TabContainer', {
 				.setProperty('@root', 'aria-describedby', 'foo')
 				.setChildren('@buttons', () => [
 					<div {...tabButtonProperties}>
-						<span key="tabButtonContent" classes={css.tabButtonContent}>
+						<span
+							key="tabButtonContent"
+							classes={[css.tabButtonContent, css.activeTabButtonLabel]}
+						>
 							test
 							<span classes={[css.indicator, css.indicatorActive]}>
 								<span classes={css.indicatorContent} />
@@ -117,7 +120,10 @@ registerSuite('TabContainer', {
 			const orientationTemplate = reverseOrientationTemplate
 				.setChildren('@buttons', () => [
 					<div {...tabButtonProperties}>
-						<span key="tabButtonContent" classes={css.tabButtonContent}>
+						<span
+							key="tabButtonContent"
+							classes={[css.tabButtonContent, css.activeTabButtonLabel]}
+						>
 							test
 							<span classes={[css.indicator, css.indicatorActive]}>
 								<span classes={css.indicatorContent} />
@@ -150,7 +156,10 @@ registerSuite('TabContainer', {
 			const twoChildTemplate = baseTemplate
 				.setChildren('@buttons', () => [
 					<div {...tabButtonProperties}>
-						<span key="tabButtonContent" classes={css.tabButtonContent}>
+						<span
+							key="tabButtonContent"
+							classes={[css.tabButtonContent, css.activeTabButtonLabel]}
+						>
 							tab0
 							<span classes={[css.indicator, css.indicatorActive]}>
 								<span classes={css.indicatorContent} />
@@ -165,7 +174,7 @@ registerSuite('TabContainer', {
 						tabIndex={-1}
 						key="1-tabbutton"
 					>
-						<span key="tabButtonContent" classes={css.tabButtonContent}>
+						<span key="tabButtonContent" classes={[css.tabButtonContent, false]}>
 							tab1
 							<span classes={[css.indicator, false]}>
 								<span classes={css.indicatorContent} />
@@ -205,7 +214,7 @@ registerSuite('TabContainer', {
 						classes={[css.tabButton, null, null, null]}
 						tabIndex={-1}
 					>
-						<span key="tabButtonContent" classes={css.tabButtonContent}>
+						<span key="tabButtonContent" classes={[css.tabButtonContent, false]}>
 							tab0
 							<span classes={[css.indicator, false]}>
 								<span classes={css.indicatorContent} />
@@ -213,7 +222,10 @@ registerSuite('TabContainer', {
 						</span>
 					</div>,
 					<div {...tabButtonProperties} aria-controls="test-tab-1" key="1-tabbutton">
-						<span key="tabButtonContent" classes={css.tabButtonContent}>
+						<span
+							key="tabButtonContent"
+							classes={[css.tabButtonContent, css.activeTabButtonLabel]}
+						>
 							tab1
 							<span classes={[css.indicator, css.indicatorActive]}>
 								<span classes={css.indicatorContent} />
@@ -255,7 +267,10 @@ registerSuite('TabContainer', {
 							{...tabButtonProperties}
 							classes={[css.tabButton, css.activeTabButton, null, null]}
 						>
-							<span key="tabButtonContent" classes={css.tabButtonContent}>
+							<span
+								key="tabButtonContent"
+								classes={[css.tabButtonContent, css.activeTabButtonLabel]}
+							>
 								tab0
 								<span classes={[css.indicator, css.indicatorActive]}>
 									<span classes={css.indicatorContent} />
@@ -270,7 +285,7 @@ registerSuite('TabContainer', {
 							classes={[css.tabButton, null, css.closeable, null]}
 							tabIndex={-1}
 						>
-							<span key="tabButtonContent" classes={css.tabButtonContent}>
+							<span key="tabButtonContent" classes={[css.tabButtonContent, false]}>
 								tab1
 								<button
 									disabled={undefined}
@@ -373,7 +388,10 @@ registerSuite('TabContainer', {
 			const disabledTemplate = baseTemplate
 				.setChildren('@buttons', () => [
 					<div {...tabButtonProperties}>
-						<span key="tabButtonContent" classes={css.tabButtonContent}>
+						<span
+							key="tabButtonContent"
+							classes={[css.tabButtonContent, css.activeTabButtonLabel]}
+						>
 							tab0
 							<span classes={[css.indicator, css.indicatorActive]}>
 								<span classes={css.indicatorContent} />
@@ -389,7 +407,7 @@ registerSuite('TabContainer', {
 						classes={[css.tabButton, null, null, css.disabledTabButton]}
 						tabIndex={-1}
 					>
-						<span key="tabButtonContent" classes={css.tabButtonContent}>
+						<span key="tabButtonContent" classes={[css.tabButtonContent, false]}>
 							tab1
 							<span classes={[css.indicator, false]}>
 								<span classes={css.indicatorContent} />
