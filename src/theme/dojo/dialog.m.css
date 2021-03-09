@@ -57,6 +57,7 @@
 }
 
 .close .closeIcon {
+	display: flex;
 	font-size: var(--font-size-title);
 }
 

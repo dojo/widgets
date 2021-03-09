@@ -54,6 +54,7 @@
 }
 
 .closeIcon {
+	display: flex;
 	font-size: 1.25rem;
 	color: var(--mdc-secondary-text-color);
 }
