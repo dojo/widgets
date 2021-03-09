@@ -138,7 +138,7 @@ export const TextInput = factory(function TextInput({
 
 	const {
 		aria = {},
-		autocomplete,
+		autocomplete = false,
 		classes,
 		customValidator,
 		disabled,
