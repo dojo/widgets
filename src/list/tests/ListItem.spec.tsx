@@ -17,6 +17,7 @@ describe('ListBoxItem', () => {
 			classes={[
 				undefined,
 				css.root,
+				css.height,
 				false,
 				false,
 				false,
@@ -70,6 +71,7 @@ describe('ListBoxItem', () => {
 			.setProperty('@root', 'classes', [
 				undefined,
 				css.root,
+				css.height,
 				css.selected,
 				false,
 				false,
@@ -93,6 +95,7 @@ describe('ListBoxItem', () => {
 			.setProperty('@root', 'classes', [
 				undefined,
 				css.root,
+				css.height,
 				false,
 				false,
 				css.disabled,
@@ -115,6 +118,7 @@ describe('ListBoxItem', () => {
 		const activeTemplate = template.setProperty('@root', 'classes', [
 			undefined,
 			css.root,
+			css.height,
 			false,
 			css.active,
 			false,
@@ -136,6 +140,7 @@ describe('ListBoxItem', () => {
 		const selectedTemplate = template.setProperty('@root', 'classes', [
 			undefined,
 			css.root,
+			css.height,
 			false,
 			false,
 			false,
@@ -157,6 +162,7 @@ describe('ListBoxItem', () => {
 		const selectedTemplate = template.setProperty('@root', 'classes', [
 			undefined,
 			css.root,
+			css.height,
 			false,
 			false,
 			false,
@@ -178,6 +184,7 @@ describe('ListBoxItem', () => {
 		const selectedTemplate = template.setProperty('@root', 'classes', [
 			undefined,
 			css.root,
+			css.height,
 			false,
 			false,
 			false,
@@ -200,6 +207,7 @@ describe('ListBoxItem', () => {
 			.setProperty('@root', 'classes', [
 				undefined,
 				css.root,
+				css.height,
 				false,
 				false,
 				false,

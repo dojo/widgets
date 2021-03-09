@@ -151,6 +151,7 @@ export const ListItem = listItemFactory(function ListItem({
 			classes={[
 				theme.variant(),
 				themedCss.root,
+				themedCss.height,
 				selected && themedCss.selected,
 				active && themedCss.active,
 				disabled && themedCss.disabled,
@@ -298,6 +299,7 @@ export const List = factory(function List({
 		get,
 		template: { read }
 	} = resource.template(template);
+	const themedCss = theme.classes(css);
 
 	const [itemRenderer] = children();
 
@@ -433,46 +435,52 @@ export const List = factory(function List({
 			classes,
 			variant
 		};
-		return menu ? (
-			<MenuItem
-				{...itemProps}
-				theme={theme.compose(
-					menuItemCss,
-					css,
-					'item'
+		const itemHeight = icache.getOrSet('itemHeight', 0);
+		return (
+			<div key={`item-${index}`} styles={{ height: `${itemHeight}px` }}>
+				{menu ? (
+					<MenuItem
+						{...itemProps}
+						theme={theme.compose(
+							menuItemCss,
+							css,
+							'item'
+						)}
+					>
+						<LoadingIndicator />
+					</MenuItem>
+				) : (
+					<ListItem
+						{...itemProps}
+						selected={false}
+						theme={theme.compose(
+							listItemCss,
+							css,
+							'item'
+						)}
+						dragged={icache.get('dragIndex') === index}
+						draggable={draggable}
+						onDragStart={(event) => onDragStart(event, index)}
+						onDragEnd={onDragEnd}
+						onDragOver={(event) => onDragOver(event, index)}
+						onDrop={(event) => onDrop(event, index)}
+						movedUp={
+							icache.get('dragOverIndex') === index &&
+							icache.get('dragIndex')! < icache.get('dragOverIndex')!
+						}
+						movedDown={
+							icache.get('dragOverIndex') === index &&
+							icache.get('dragIndex')! > icache.get('dragOverIndex')!
+						}
+						collapsed={
+							icache.get('dragIndex') === index &&
+							icache.get('dragOverIndex') !== undefined
+						}
+					>
+						<LoadingIndicator />
+					</ListItem>
 				)}
-			>
-				<LoadingIndicator />
-			</MenuItem>
-		) : (
-			<ListItem
-				{...itemProps}
-				selected={false}
-				theme={theme.compose(
-					listItemCss,
-					css,
-					'item'
-				)}
-				dragged={icache.get('dragIndex') === index}
-				draggable={draggable}
-				onDragStart={(event) => onDragStart(event, index)}
-				onDragEnd={onDragEnd}
-				onDragOver={(event) => onDragOver(event, index)}
-				onDrop={(event) => onDrop(event, index)}
-				movedUp={
-					icache.get('dragOverIndex') === index &&
-					icache.get('dragIndex')! < icache.get('dragOverIndex')!
-				}
-				movedDown={
-					icache.get('dragOverIndex') === index &&
-					icache.get('dragIndex')! > icache.get('dragOverIndex')!
-				}
-				collapsed={
-					icache.get('dragIndex') === index && icache.get('dragOverIndex') !== undefined
-				}
-			>
-				<LoadingIndicator />
-			</ListItem>
+			</div>
 		);
 	}
 
@@ -653,7 +661,14 @@ export const List = factory(function List({
 
 		const itemHeight = icache.getOrSet(
 			'itemHeight',
-			offscreen(() => offscreenMenuItem, (node) => node.getBoundingClientRect().height)
+			offscreen(
+				() => (
+					<div styles={{ padding: '0' }} classes={[themedCss.root, fixedCss.root]}>
+						{offscreenMenuItem}
+					</div>
+				),
+				(node) => node.getBoundingClientRect().height
+			)
 		);
 
 		itemHeight && icache.set('menuHeight', itemsInView * itemHeight);
@@ -667,7 +682,6 @@ export const List = factory(function List({
 			height === 'fixed' ? { height: `${menuHeight}px` } : { maxHeight: `${menuHeight}px` };
 	}
 	const shouldFocus = focus.shouldFocus();
-	const themedCss = theme.classes(css);
 	const itemHeight = icache.getOrSet('itemHeight', 0);
 	let scrollTop = icache.getOrSet('scrollTop', 0);
 	const nodePadding = Math.min(itemsInView, 20);

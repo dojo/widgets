@@ -305,8 +305,8 @@ export const config = {
 	name: '@dojo/widgets',
 	home: 'src/examples/README.md',
 	themes: [
-		{ label: 'dojo', theme: dojoTheme },
 		{ label: 'material', theme: materialTheme },
+		{ label: 'dojo', theme: dojoTheme },
 		{ label: 'dojo-dark', theme: dojoDarkTheme },
 		{ label: 'material-dark', theme: materialDarkTheme },
 		{ label: 'default', theme: { theme: {} } }

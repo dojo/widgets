@@ -29,7 +29,11 @@ export default factory(function ItemRenderer({ id, middleware: { icache, resourc
 					const color = value.length > 7 ? 'red' : 'blue';
 					return (
 						<ListItem {...props}>
-							<div styles={{ color: color }}>{value}</div>
+							<div>
+								<div styles={{ color }}>{value}</div>
+								<div styles={{ color }}>{value}</div>
+								<div styles={{ color }}>{value}</div>
+							</div>
 						</ListItem>
 					);
 				}}
