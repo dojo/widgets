@@ -46,3 +46,9 @@
 .root.secondaryKind:after {
 	background-color: var(--mdc-theme-secondary);
 }
+
+.label {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--mdc-theme-grid-base);
+}

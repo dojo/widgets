@@ -16,6 +16,7 @@
 }
 
 .label {
+	composes: label from './button.m.css';
 	color: var(--color-highlight);
 	font-size: var(--font-size-base);
 	font-weight: bold;

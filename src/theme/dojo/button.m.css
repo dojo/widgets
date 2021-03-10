@@ -56,3 +56,9 @@
 .defaultKind .label {
 	color: var(--color-text);
 }
+
+.label {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--grid-base);
+}

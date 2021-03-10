@@ -25,6 +25,10 @@
 	color: var(--color-text-inverted);
 }
 
+.label {
+	composes: label from './button.m.css';
+}
+
 .root:hover .label {
 	color: var(--color-text-inverted);
 }
