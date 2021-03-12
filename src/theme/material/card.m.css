@@ -90,7 +90,13 @@
 
 .title {
 	composes: mdc-typography mdc-typography--headline6 from '@material/typography/dist/mdc.typography.css';
-	margin: 0;
+	margin-bottom: 0;
+}
+
+/* If the title isn't the first element it shouldn't have a margin */
+.content:not(:first-child) .title,
+.titleWrapper:not(:first-child) .title {
+	margin-top: 0;
 }
 
 .subtitle {
