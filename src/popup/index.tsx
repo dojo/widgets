@@ -6,6 +6,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import * as css from '../theme/default/popup.m.css';
 import * as fixedCss from './popup.m.css';
 import { RenderResult } from '@dojo/framework/core/interfaces';
+import inert from '@dojo/framework/core/middleware/inert';
 
 export type PopupPosition = 'above' | 'below' | 'left' | 'right';
 
@@ -35,14 +36,14 @@ export interface PopupChildren {
 	(position: PopupPosition): RenderResult;
 }
 
-const factory = create({ dimensions, theme, bodyScroll, resize })
+const factory = create({ dimensions, theme, bodyScroll, resize, inert })
 	.properties<PopupProperties>()
 	.children<PopupChildren | RenderResult>();
 
 export const Popup = factory(function Popup({
 	properties,
 	children,
-	middleware: { dimensions, theme, bodyScroll, resize }
+	middleware: { dimensions, theme, bodyScroll, resize, inert }
 }) {
 	const { underlayVisible = false, yBottom, yTop, xRight, xLeft, onClose, open } = properties();
 	let { position = 'below' as PopupPosition } = properties();
@@ -112,6 +113,7 @@ export const Popup = factory(function Popup({
 	const contentResult = typeof content === 'function' ? content(position) : content;
 
 	bodyScroll(!open);
+	inert.set('wrapper', false);
 
 	return (
 		open && (
