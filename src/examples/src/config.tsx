@@ -15,6 +15,7 @@ import CustomRendererBreadcrumbGroup from './widgets/breadcrumb-group/CustomRend
 import BasicButton from './widgets/button/Basic';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
 import KindButton from './widgets/button/Kinds';
+import IconButton from './widgets/button/IconButton';
 import ToggleButton from './widgets/button/ToggleButton';
 import BasicCalendar from './widgets/calendar/Basic';
 import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
@@ -93,7 +94,7 @@ import RowSelection from './widgets/grid/RowSelection';
 import Sorting from './widgets/grid/Sorting';
 import AltTextIcon from './widgets/icon/AltText';
 import BasicIcons from './widgets/icon/Basic';
-import IconButton from './widgets/icon/IconButton';
+import IconButtonTypes from './widgets/icon/IconButton';
 import IconSizes from './widgets/icon/Sizes';
 import BasicLabel from './widgets/label/Basic';
 import HiddenLabel from './widgets/label/HiddenLabel';
@@ -417,6 +418,11 @@ export const config = {
 					filename: 'Kinds',
 					module: KindButton,
 					title: 'Kinds'
+				},
+				{
+					filename: 'IconButton',
+					module: IconButton,
+					title: 'Icon within a button'
 				}
 			],
 			filename: 'index',
@@ -990,8 +996,8 @@ export const config = {
 				},
 				{
 					filename: 'IconButton',
-					module: IconButton,
-					title: 'Icon within a button'
+					module: IconButtonTypes,
+					title: 'Icon within different kinds of buttons'
 				},
 				{
 					filename: 'Sizes',

@@ -9,7 +9,10 @@
 	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
 	cursor: pointer;
-	display: inline-block;
+	display: inline-flex;
+	vertical-align: middle;
+	align-items: center;
+	justify-content: center;
 	min-width: calc(var(--grid-base) * 20);
 	padding: var(--spacing-regular);
 	transition: box-shadow var(--transition-duration) var(--transition-easing);
@@ -21,6 +24,10 @@
 	border-color: var(--color-highlight);
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
 	outline: none;
+}
+
+.iconOnly {
+	min-width: 0;
 }
 
 .pressed {
@@ -55,4 +62,16 @@
 
 .defaultKind .label {
 	color: var(--color-text);
+}
+
+.icon {
+	display: inline-flex;
+}
+
+.label + .icon {
+	margin-left: var(--grid-base);
+}
+
+.icon + .label {
+	margin-left: var(--grid-base);
 }

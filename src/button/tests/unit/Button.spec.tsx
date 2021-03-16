@@ -9,6 +9,7 @@ import harness from '@dojo/framework/testing/harness/harness';
 import { compareId, noop, stubEvent } from '../../../common/tests/support/test-helpers';
 import * as css from '../../../theme/default/button.m.css';
 import Button from '../../index';
+import Icon from '../../../icon/index';
 
 const middlewareFactory = create();
 function createMockFocusMiddleware({
@@ -26,7 +27,7 @@ function createMockFocusMiddleware({
 
 const template = assertionTemplate(() => (
 	<button
-		classes={[undefined, css.root, null, null, null, css.defaultKind]}
+		classes={[undefined, css.root, null, null, null, css.defaultKind, null]}
 		disabled={undefined}
 		id="button-test"
 		focus={false}
@@ -104,6 +105,7 @@ registerSuite('Button', {
 					null,
 					null,
 					css.secondaryKind,
+					null,
 					null
 				])
 			);
@@ -118,8 +120,88 @@ registerSuite('Button', {
 					null,
 					null,
 					null,
+					null,
 					null
 				])
+			);
+		},
+
+		'renders labels'() {
+			const h = harness(() => <Button>{{ label: 'Text' }}</Button>, [compareId]);
+			h.expect(template.replaceChildren('button', [<span classes={css.label}>Text</span>]));
+		},
+
+		'renders icons before labels'() {
+			const h = harness(
+				() => (
+					<Button>
+						{{
+							label: 'Text',
+							icon: <Icon type="starIcon" size="small" />
+						}}
+					</Button>
+				),
+				[compareId]
+			);
+			h.expect(
+				template.replaceChildren('button', [
+					<span classes={css.icon}>
+						<Icon type="starIcon" size="small" />
+					</span>,
+					<span classes={css.label}>Text</span>
+				])
+			);
+		},
+
+		'renders icons after labels'() {
+			const h = harness(
+				() => (
+					<Button iconPosition="after">
+						{{
+							label: 'Text',
+							icon: <Icon type="starIcon" size="small" />
+						}}
+					</Button>
+				),
+				[compareId]
+			);
+			h.expect(
+				template.replaceChildren('button', [
+					<span classes={css.label}>Text</span>,
+					<span classes={css.icon}>
+						<Icon type="starIcon" size="small" />
+					</span>
+				])
+			);
+		},
+
+		'renders icon only buttons'() {
+			const h = harness(
+				() => (
+					<Button>
+						{{
+							icon: <Icon type="starIcon" size="small" />
+						}}
+					</Button>
+				),
+				[compareId]
+			);
+			h.expect(
+				template
+					.setProperty('button', 'classes', [
+						undefined,
+						css.root,
+						null,
+						null,
+						null,
+						css.defaultKind,
+						css.iconOnly
+					])
+					.replaceChildren('button', () => [
+						<span classes={css.icon}>
+							<Icon type="starIcon" size="small" />
+						</span>
+					])
 			);
 		}
 	}

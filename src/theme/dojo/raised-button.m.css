@@ -2,11 +2,19 @@
 	font-family: var(--font-family);
 	border: 0;
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
 	font-size: inherit;
 	line-height: var(--line-height-base);
 	min-width: calc(var(--grid-base) * 20);
 	padding: var(--spacing-regular);
 	background-color: var(--color-background);
+}
+
+.iconOnly {
+	min-width: 0;
 }
 
 .pressed {
@@ -16,6 +24,7 @@
 }
 
 .label {
+	composes: label from './button.m.css';
 	color: var(--color-highlight);
 	font-size: var(--font-size-base);
 	font-weight: bold;

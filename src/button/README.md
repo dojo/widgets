@@ -6,6 +6,7 @@ Dojo's `Button` widget creates a `<button>` element with support `pressed` and `
 
 - Provides an API for valid `<button>` attributes
 - Can be used to create a toggle button (i.e. a button with an on/off state)
+- Supports adding icons with correct padding
 
 ### Accessibility Features
 

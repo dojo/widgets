@@ -1,0 +1,9 @@
+.root {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+}
+
+.fullWidth {
+	flex-basis: 100%;
+}

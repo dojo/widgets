@@ -27,6 +27,14 @@
 	cursor: default;
 }
 
+/* The (optional) icon for the button. May be before or after the label */
+.icon {
+}
+
+/* A button which only contains an icon */
+.iconOnly {
+}
+
 /* The button label */
 .label {
 }

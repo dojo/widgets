@@ -28,4 +28,9 @@ describe('ActionButton', () => {
 			})
 		);
 	});
+
+	it('should pass children', () => {
+		const r = renderer(() => <ActionButton>{{ label: 'Text' }}</ActionButton>);
+		r.expect(baseTemplate.replaceChildren(WrappedButton, () => ({ label: 'Text' })));
+	});
 });

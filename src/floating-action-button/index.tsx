@@ -75,8 +75,14 @@ export const FloatingActionButton = factory(function FloatingActionButton({
 				}
 			}}
 		>
-			<span aria="hidden" classes={classes.effect} />
-			{children()}
+			{{
+				label: (
+					<virtual>
+						<span aria="hidden" classes={classes.effect} />
+						{children()}
+					</virtual>
+				)
+			}}
 		</Button>
 	);
 });

@@ -1,88 +1,95 @@
 const { registerSuite } = intern.getInterface('object');
 
-import harness from '@dojo/framework/testing/harness/harness';
-
 import FloatingActionButton, { FloatingActionButtonPositions } from '../../index';
 import * as buttonCss from '../../../theme/default/button.m.css';
 import * as css from '../../../theme/default/floating-action-button.m.css';
 import { tsx } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
 import Button from '../../../button/index';
-import { compareTheme } from '../../../common/tests/support/test-helpers';
 import { SupportedClassName } from '@dojo/framework/core/interfaces';
+import { createTestTheme } from '../../../common/tests/support/test-helpers';
 
-const baseTemplate = assertionTemplate(() => (
-	<Button
-		assertion-key="button"
-		theme={{ '@dojo/widgets/button': buttonCss }}
+const WrappedButton = wrap(Button);
+const theme = createTestTheme({ ...buttonCss, icon: css.icon, root: css.root });
+
+const baseTemplate = assertion(() => (
+	<WrappedButton
+		theme={theme}
 		classes={{
 			'@dojo/widgets/button': {
 				root: [false, false, undefined]
 			}
 		}}
 	>
-		<span aria="hidden" classes={css.effect} />
-	</Button>
+		{{
+			label: (
+				<virtual>
+					<span aria="hidden" classes={css.effect} />
+				</virtual>
+			)
+		}}
+	</WrappedButton>
 ));
 
 registerSuite('FloatingActionButton', {
 	tests: {
 		'no content'() {
-			const h = harness(() => <FloatingActionButton />, [compareTheme]);
-			h.expect(baseTemplate);
+			const r = renderer(() => <FloatingActionButton />);
+			r.expect(baseTemplate);
 		},
 
 		'extended, properties, and attributes'() {
-			const h = harness(
-				() => (
-					<FloatingActionButton
-						size="extended"
-						type="submit"
-						name="bar"
-						disabled={true}
-					/>
-				),
-				[compareTheme]
-			);
-			h.expect(() => (
-				<Button
-					theme={{ '@dojo/widgets/button': buttonCss }}
-					classes={{
-						'@dojo/widgets/button': {
-							root: [css.extended, false, undefined]
-						}
-					}}
-					type="submit"
-					name="bar"
-					disabled={true}
-				>
-					<span aria="hidden" classes={css.effect} />
-				</Button>
+			const r = renderer(() => (
+				<FloatingActionButton size="extended" type="submit" name="bar" disabled={true} />
 			));
+			r.expect(
+				baseTemplate
+					.setProperties(WrappedButton, {
+						classes: {
+							'@dojo/widgets/button': {
+								root: [css.extended, false, undefined]
+							}
+						},
+						disabled: true,
+						name: 'bar',
+						type: 'submit',
+						theme
+					})
+					.replaceChildren(WrappedButton, () => ({
+						label: (
+							<virtual>
+								<span aria="hidden" classes={css.effect} />
+							</virtual>
+						)
+					}))
+			);
 		},
 
 		small() {
-			const h = harness(
-				() => (
-					<FloatingActionButton size="small" type="submit" name="bar" disabled={true} />
-				),
-				[compareTheme]
-			);
-			h.expect(() => (
-				<Button
-					theme={{ '@dojo/widgets/button': buttonCss }}
-					classes={{
-						'@dojo/widgets/button': {
-							root: [false, css.small, undefined]
-						}
-					}}
-					type="submit"
-					name="bar"
-					disabled={true}
-				>
-					<span aria="hidden" classes={css.effect} />
-				</Button>
+			const r = renderer(() => (
+				<FloatingActionButton size="small" type="submit" name="bar" disabled={true} />
 			));
+			r.expect(
+				baseTemplate
+					.setProperties(WrappedButton, {
+						classes: {
+							'@dojo/widgets/button': {
+								root: [false, css.small, undefined]
+							}
+						},
+						disabled: true,
+						name: 'bar',
+						type: 'submit',
+						theme
+					})
+					.replaceChildren(WrappedButton, () => ({
+						label: (
+							<virtual>
+								<span aria="hidden" classes={css.effect} />
+							</virtual>
+						)
+					}))
+			);
 		},
 
 		position: (() => {
@@ -127,11 +134,9 @@ registerSuite('FloatingActionButton', {
 				(testObject, { position, positionClass }) => ({
 					...testObject,
 					[position]: () => {
-						const h = harness(() => <FloatingActionButton position={position} />, [
-							compareTheme
-						]);
-						h.expect(
-							baseTemplate.setProperty('~button', 'classes', {
+						const r = renderer(() => <FloatingActionButton position={position} />);
+						r.expect(
+							baseTemplate.setProperty(WrappedButton, 'classes', {
 								'@dojo/widgets/button': {
 									root: [false, false, positionClass]
 								}

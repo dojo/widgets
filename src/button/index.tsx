@@ -1,9 +1,10 @@
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { create, tsx } from '@dojo/framework/core/vdom';
 
-import { formatAriaProperties } from '../common/util';
+import { formatAriaProperties, isRenderResult } from '../common/util';
 import { theme } from '../middleware/theme';
 import * as css from '../theme/default/button.m.css';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export interface ButtonProperties {
 	/** Custom aria attributes */
@@ -38,9 +39,20 @@ export interface ButtonProperties {
 	title?: string;
 	/** The kind of button */
 	kind?: 'primary' | 'secondary' | 'default';
+	/** Where to add the icon. Default to "before" */
+	iconPosition?: 'before' | 'after';
+}
+export interface ButtonChildren {
+	/** The icon for the button */
+	icon?: RenderResult;
+	/** The label for the button */
+	label?: RenderResult;
 }
 
-const factory = create({ focus, theme }).properties<ButtonProperties>();
+const factory = create({ focus, theme })
+	.properties<ButtonProperties>()
+	// [ButtonChildren] is needed for variant buttons to type correctly
+	.children<ButtonChildren | [ButtonChildren] | RenderResult | RenderResult[]>();
 
 export const Button = factory(function Button({
 	children,
@@ -64,11 +76,19 @@ export const Button = factory(function Button({
 		onBlur,
 		onFocus,
 		title,
-		kind = 'default'
+		kind = 'default',
+		iconPosition = 'before'
 	} = properties();
 
 	const themeCss = theme.classes(css);
 	const idBase = widgetId || `button-${id}`;
+
+	const [labelChild] = children();
+	const { label, icon = undefined } = isRenderResult(labelChild)
+		? { label: children() }
+		: labelChild;
+	const iconOnly = icon && !label;
+	const iconSpan = <span classes={themeCss.icon}>{icon}</span>;
 
 	return (
 		<button
@@ -78,7 +98,8 @@ export const Button = factory(function Button({
 				disabled ? themeCss.disabled : null,
 				pressed ? themeCss.pressed : null,
 				kind === 'secondary' ? themeCss.secondaryKind : null,
-				kind === 'default' ? themeCss.defaultKind : null
+				kind === 'default' ? themeCss.defaultKind : null,
+				iconOnly ? themeCss.iconOnly : null
 			]}
 			title={title}
 			disabled={disabled}
@@ -100,7 +121,9 @@ export const Button = factory(function Button({
 			{...formatAriaProperties(aria)}
 			aria-pressed={typeof pressed === 'boolean' ? (pressed ? 'true' : 'false') : undefined}
 		>
-			<span classes={themeCss.label}>{children()}</span>
+			{icon && iconPosition === 'before' ? iconSpan : undefined}
+			{label ? <span classes={themeCss.label}>{label}</span> : undefined}
+			{icon && iconPosition === 'after' ? iconSpan : undefined}
 		</button>
 	);
 });
