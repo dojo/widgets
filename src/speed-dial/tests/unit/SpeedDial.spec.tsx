@@ -8,7 +8,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import * as sinon from 'sinon';
 
-import SpeedDial, { Action, SpeedDialPositions } from '../../index';
+import SpeedDial, { Action, LabelOrientation, SpeedDialPositions } from '../../index';
 import FloatingActionButton from '../../../floating-action-button';
 import * as fabCss from '../../../theme/default/floating-action-button.m.css';
 import { compareTheme, noop } from '../../../common/tests/support/test-helpers';
@@ -18,7 +18,7 @@ import { SupportedClassName } from '@dojo/framework/core/interfaces';
 const baseTemplate = assertionTemplate(() => (
 	<div
 		key="root"
-		classes={[undefined, css.root, fixCss.root, false, css.right, false, false, undefined]}
+		classes={[undefined, css.root, fixCss.root, false, false, false, css.up, css.bottomRight]}
 		onmouseleave={noop}
 	>
 		<FloatingActionButton
@@ -78,6 +78,157 @@ describe('SpeedDial', () => {
 			[compareTheme]
 		);
 		h.expect(baseTemplate);
+	});
+
+	it('renders actions with labels', () => {
+		const h = harness(
+			() => (
+				<SpeedDial>
+					<Action key="edit" onClick={noop} label="edit">
+						<Icon type="editIcon" />
+					</Action>
+					<Action key="star" onClick={noop} label="star">
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate.setProperty('@edit', 'label', 'edit').setProperty('@star', 'label', 'star')
+		);
+	});
+
+	it('renders actions with top-oriented labels', () => {
+		const h = harness(
+			() => (
+				<SpeedDial>
+					<Action
+						key="edit"
+						label="edit"
+						labelOrientation={LabelOrientation.top}
+						onClick={noop}
+					>
+						<Icon type="editIcon" />
+					</Action>
+					<Action
+						key="star"
+						label="star"
+						labelOrientation={LabelOrientation.top}
+						onClick={noop}
+					>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate
+				.setProperty('@edit', 'label', 'edit')
+				.setProperty('@edit', 'labelOrientation', LabelOrientation.top)
+				.setProperty('@star', 'label', 'star')
+				.setProperty('@star', 'labelOrientation', LabelOrientation.top)
+		);
+	});
+
+	it('renders actions with right-oriented labels', () => {
+		const h = harness(
+			() => (
+				<SpeedDial>
+					<Action
+						key="edit"
+						label="edit"
+						labelOrientation={LabelOrientation.right}
+						onClick={noop}
+					>
+						<Icon type="editIcon" />
+					</Action>
+					<Action
+						key="star"
+						label="star"
+						labelOrientation={LabelOrientation.right}
+						onClick={noop}
+					>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate
+				.setProperty('@edit', 'label', 'edit')
+				.setProperty('@edit', 'labelOrientation', LabelOrientation.right)
+				.setProperty('@star', 'label', 'star')
+				.setProperty('@star', 'labelOrientation', LabelOrientation.right)
+		);
+	});
+
+	it('renders actions with bottom-oriented labels', () => {
+		const h = harness(
+			() => (
+				<SpeedDial>
+					<Action
+						key="edit"
+						label="edit"
+						labelOrientation={LabelOrientation.bottom}
+						onClick={noop}
+					>
+						<Icon type="editIcon" />
+					</Action>
+					<Action
+						key="star"
+						label="star"
+						labelOrientation={LabelOrientation.bottom}
+						onClick={noop}
+					>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate
+				.setProperty('@edit', 'label', 'edit')
+				.setProperty('@edit', 'labelOrientation', LabelOrientation.bottom)
+				.setProperty('@star', 'label', 'star')
+				.setProperty('@star', 'labelOrientation', LabelOrientation.bottom)
+		);
+	});
+
+	it('renders actions with left-oriented labels', () => {
+		const h = harness(
+			() => (
+				<SpeedDial>
+					<Action
+						key="edit"
+						label="edit"
+						labelOrientation={LabelOrientation.left}
+						onClick={noop}
+					>
+						<Icon type="editIcon" />
+					</Action>
+					<Action
+						key="star"
+						label="star"
+						labelOrientation={LabelOrientation.left}
+						onClick={noop}
+					>
+						<Icon type="starIcon" />
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			baseTemplate
+				.setProperty('@edit', 'label', 'edit')
+				.setProperty('@edit', 'labelOrientation', LabelOrientation.left)
+				.setProperty('@star', 'label', 'star')
+				.setProperty('@star', 'labelOrientation', LabelOrientation.left)
+		);
 	});
 
 	it('renders initially open', () => {
@@ -146,7 +297,7 @@ describe('SpeedDial', () => {
 				false,
 				false,
 				css.up,
-				undefined
+				css.bottomRight
 			])
 		);
 	});
@@ -174,7 +325,7 @@ describe('SpeedDial', () => {
 				false,
 				css.down,
 				false,
-				undefined
+				css.bottomRight
 			])
 		);
 	});
@@ -202,7 +353,7 @@ describe('SpeedDial', () => {
 				false,
 				false,
 				false,
-				undefined
+				css.bottomRight
 			])
 		);
 	});

@@ -1,6 +1,6 @@
 .root {
-	display: inline-flex;
 	align-items: center;
+	display: inline-flex;
 }
 
 .up,
@@ -107,4 +107,42 @@
 	position: fixed;
 	top: calc(2 * var(--mdc-theme-grid-base));
 	right: calc(2 * var(--mdc-theme-grid-base));
+}
+
+.labelContainer {
+	position: relative;
+}
+
+.label {
+	background-color: var(--mdc-theme-surface);
+	border-radius: var(--mdc-theme-border-radius);
+	box-shadow: var(--mdc-theme-elevation-1);
+	color: var(--mdc-text-color);
+	font-family: var(--mdc-theme-font-family);
+	padding: calc(var(--mdc-theme-grid-base) / 2) calc(var(--mdc-theme-grid-base) * 2);
+	position: absolute;
+}
+
+.labelLeft .label {
+	right: calc(100% + var(--mdc-theme-grid-base));
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.labelRight .label {
+	left: calc(100% + var(--mdc-theme-grid-base));
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.labelTop .label {
+	bottom: calc(100% + var(--mdc-theme-grid-base));
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.labelBottom .label {
+	left: 50%;
+	top: calc(100% + var(--mdc-theme-grid-base));
+	transform: translateX(-50%);
 }

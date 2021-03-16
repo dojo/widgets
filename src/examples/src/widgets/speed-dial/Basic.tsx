@@ -13,13 +13,6 @@ export default factory(function Basic({ middleware: { icache } }) {
 			<SpeedDial>
 				<Action
 					onClick={() => {
-						icache.set('action', 'Mailing');
-					}}
-				>
-					<Icon type="mailIcon" />
-				</Action>
-				<Action
-					onClick={() => {
 						icache.set('action', 'Save');
 					}}
 				>

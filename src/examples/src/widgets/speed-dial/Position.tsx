@@ -11,18 +11,11 @@ type Directions = 'right' | 'left' | 'up' | 'down';
 export default factory(function Direction({ middleware: { icache } }) {
 	const position: SpeedDialPositions = icache.getOrSet('position', 'bottom-right');
 	const supportedDirections = getSupportedDirections(position);
-	let direction: Directions | undefined = icache.get('direction');
+	let direction: Directions | undefined = icache.getOrSet('direction', 'left');
 	return (
 		<Example>
 			<virtual>
 				<SpeedDial position={position} direction={direction}>
-					<Action
-						onClick={() => {
-							icache.set('action', 'Mailing');
-						}}
-					>
-						<Icon type="mailIcon" />
-					</Action>
 					<Action
 						onClick={() => {
 							icache.set('action', 'Save');

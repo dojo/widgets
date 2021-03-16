@@ -108,3 +108,40 @@
 	top: var(--spacing-large);
 	right: var(--spacing-large);
 }
+
+.labelContainer {
+	position: relative;
+}
+
+.label {
+	background-color: var(--color-background-inverted);
+	color: var(--color-text-inverted);
+	display: inline-block;
+	font-size: var(--font-size-small);
+	padding: calc(var(--grid-base) / 4) calc(var(--grid-base) / 1.5);
+	position: absolute;
+}
+
+.labelLeft .label {
+	right: calc(100% + var(--grid-base));
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.labelRight .label {
+	left: calc(100% + var(--grid-base));
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.labelTop .label {
+	bottom: calc(100% + var(--grid-base));
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.labelBottom .label {
+	top: calc(100% + var(--grid-base));
+	left: 50%;
+	transform: translateX(-50%);
+}
