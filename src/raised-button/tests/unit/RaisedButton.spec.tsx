@@ -1,37 +1,36 @@
 const { registerSuite } = intern.getInterface('object');
 
-import harness from '@dojo/framework/testing/harness/harness';
-
 import { RaisedButton } from '../../index';
 import * as buttonCss from '../../../theme/default/button.m.css';
 import { tsx } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import Button from '../../../button/index';
-import { compareTheme } from '../../../common/tests/support/test-helpers';
+import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
+import { createTestTheme } from '../../../common/tests/support/test-helpers';
 
-const baseTemplate = assertionTemplate(() => (
-	<Button theme={{ '@dojo/widgets/button': buttonCss }} />
-));
+const WrappedButton = wrap(Button);
+
+const baseAssertion = assertion(() => <WrappedButton theme={createTestTheme(buttonCss)} />);
 
 registerSuite('RaisedButton', {
 	tests: {
 		'no content'() {
-			const h = harness(() => <RaisedButton />, [compareTheme]);
-			h.expect(baseTemplate);
+			const r = renderer(() => <RaisedButton />);
+			r.expect(baseAssertion);
 		},
 
 		'properties and attributes'() {
-			const h = harness(() => <RaisedButton type="submit" name="bar" disabled={true} />, [
-				compareTheme
-			]);
-			h.expect(() => (
-				<Button
-					theme={{ '@dojo/widgets/button': buttonCss }}
-					type="submit"
-					name="bar"
-					disabled={true}
-				/>
-			));
+			const r = renderer(() => <RaisedButton type="submit" name="bar" disabled={true} />);
+			r.expect(
+				baseAssertion
+					.setProperty(WrappedButton, 'type', 'submit')
+					.setProperty(WrappedButton, 'name', 'bar')
+					.setProperty(WrappedButton, 'disabled', true)
+			);
+		},
+
+		'should pass children'() {
+			const r = renderer(() => <RaisedButton>{{ label: 'Text' }}</RaisedButton>);
+			r.expect(baseAssertion.replaceChildren(WrappedButton, () => ({ label: 'Text' })));
 		}
 	}
 });

@@ -3,7 +3,10 @@
 	border: var(--border-width) solid var(--color-highlight);
 	color: var(--color-highlight);
 	cursor: pointer;
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
 	font-size: var(--font-size-base);
 	font-weight: bold;
 	line-height: var(--line-height-base);
@@ -11,6 +14,10 @@
 	padding: var(--spacing-regular);
 	margin: 0;
 	font-family: var(--font-family);
+}
+
+.iconOnly {
+	min-width: 0;
 }
 
 .root:hover {

@@ -47,8 +47,23 @@
 	background-color: var(--mdc-theme-secondary);
 }
 
+.icon {
+	composes: mdc-button__icon from '@material/button/dist/mdc.button.css';
+}
+
+.root.iconOnly {
+	min-width: fit-content;
+}
+
+.root.iconOnly .icon {
+	margin: 0;
+}
+
 .label {
+	composes: mdc-button__label from '@material/button/dist/mdc.button.css';
+}
+
+/* class repeated for increased specificity */
+.root .icon.icon {
 	display: inline-flex;
-	align-items: center;
-	gap: var(--mdc-theme-grid-base);
 }

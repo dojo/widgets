@@ -10,6 +10,7 @@ import { CustomComparator, harness } from '@dojo/framework/testing/harness/harne
 import { SinonStub } from 'sinon';
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { createResourceTemplate } from '@dojo/framework/core/middleware/resources';
+import { THEME_KEY } from '../../../middleware/theme';
 
 export const noop: any = () => {};
 
@@ -133,3 +134,19 @@ export function createTestResource(data: any[], id: string, options?: any, trans
 		options
 	};
 }
+
+/**
+ * Creates a theme object from css objects using the theme key
+ */
+export const createTestTheme = (...classes: Record<string, string>[]) => {
+	const theme: Record<string, Record<string, string>> = {};
+	classes.forEach((classesParam) => {
+		const { [THEME_KEY]: key, ...classNames } = classesParam;
+		if (key) {
+			theme[key] = classNames;
+		} else {
+			Object.assign(theme, classNames);
+		}
+	});
+	return theme;
+};

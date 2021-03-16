@@ -1,12 +1,16 @@
 import theme from '../middleware/theme';
 import { tsx, create } from '@dojo/framework/core/vdom';
-import Button, { ButtonProperties } from '../button/index';
+import Button, { ButtonProperties, ButtonChildren } from '../button/index';
 import * as outlinedButtonCss from '../theme/default/outlined-button.m.css';
 import * as buttonCss from '../theme/default/button.m.css';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export interface OutlinedButtonProperties extends ButtonProperties {}
+export interface OutlinedButtonChildren extends ButtonChildren {}
 
-const factory = create({ theme }).properties<OutlinedButtonProperties>();
+const factory = create({ theme })
+	.properties<OutlinedButtonProperties>()
+	.children<OutlinedButtonChildren | RenderResult>();
 
 export const OutlinedButton = factory(function OutlinedButton({
 	properties,
