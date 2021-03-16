@@ -8,7 +8,7 @@ export interface ActionButtonChildren extends ButtonChildren {}
 
 const factory = create({ theme })
 	.properties<ActionButtonProperties>()
-	.children<ActionButtonChildren | RenderResult>();
+	.children<ActionButtonChildren | [ActionButtonChildren] | RenderResult | RenderResult[]>();
 
 export const ActionButton = factory(function ActionButton({ properties, children }) {
 	return (

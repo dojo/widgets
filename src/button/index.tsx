@@ -52,7 +52,7 @@ export interface ButtonChildren {
 const factory = create({ focus, theme })
 	.properties<ButtonProperties>()
 	// [ButtonChildren] is needed for variant buttons to type correctly
-	.children<ButtonChildren | [ButtonChildren] | RenderResult>();
+	.children<ButtonChildren | [ButtonChildren] | RenderResult | RenderResult[]>();
 
 export const Button = factory(function Button({
 	children,

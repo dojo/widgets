@@ -10,7 +10,7 @@ export interface RaisedButtonChildren extends ButtonChildren {}
 
 const factory = create({ theme })
 	.properties<RaisedButtonProperties>()
-	.children<RaisedButtonChildren | RenderResult>();
+	.children<RaisedButtonChildren | [RaisedButtonChildren] | RenderResult | RenderResult[]>();
 
 export const RaisedButton = factory(function RaisedButton({
 	properties,

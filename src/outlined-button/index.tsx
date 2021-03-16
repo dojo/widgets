@@ -10,7 +10,7 @@ export interface OutlinedButtonChildren extends ButtonChildren {}
 
 const factory = create({ theme })
 	.properties<OutlinedButtonProperties>()
-	.children<OutlinedButtonChildren | RenderResult>();
+	.children<OutlinedButtonChildren | [OutlinedButtonChildren] | RenderResult | RenderResult[]>();
 
 export const OutlinedButton = factory(function OutlinedButton({
 	properties,
