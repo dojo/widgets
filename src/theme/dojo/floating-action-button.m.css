@@ -7,6 +7,7 @@
 	justify-content: center;
 	box-sizing: border-box;
 	padding: 0;
+	background-color: var(--fab-background);
 }
 
 .root:not(.extended) {
@@ -21,7 +22,7 @@
 }
 
 .root:not(.pressed) {
-	color: inherit;
+	color: var(--fab-color);
 }
 
 .pressed {
