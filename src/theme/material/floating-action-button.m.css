@@ -1,5 +1,7 @@
 .root {
 	composes: mdc-fab from '@material/fab/dist/mdc.fab.css';
+	background-color: var(--mdc-fab-background);
+	color: var(--mdc-fab-color);
 }
 
 .small {

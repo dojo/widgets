@@ -101,4 +101,6 @@
 	--mdc-chip-color: var(--mdc-text-color);
 	--mdc-chip-background-hover: var(--mdc-theme-on-surface-hover);
 	--mdc-snackbar-background: #333333;
+	--mdc-fab-background: var(--mdc-theme-secondary);
+	--mdc-fab-color: var(--mdc-text-color);
 }

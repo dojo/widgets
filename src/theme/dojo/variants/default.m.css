@@ -76,6 +76,9 @@
 	--tab-button-active-color: var(--color-highlight);
 	--tab-button-disabled-color: var(--color-border);
 
+	--fab-background: var(--color-background);
+	--fab-color: inherit;
+
 	--color-primary: #ffffff;
 	--color-secondary: rgb(199, 222, 209);
 }
