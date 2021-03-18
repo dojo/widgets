@@ -3,6 +3,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import * as css from '../../theme/default/list-item.m.css';
 import { ListItem } from '../../list';
 import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
+import Icon from '../../icon';
 const { describe, it, after } = intern.getInterface('bdd');
 
 const noop: any = () => {};
@@ -41,7 +42,7 @@ describe('ListBoxItem', () => {
 				visibility: undefined
 			}}
 		>
-			test
+			<span classes={css.primary}>test</span>
 		</WrappedRoot>
 	));
 	const disabledTemplate = template
@@ -73,6 +74,23 @@ describe('ListBoxItem', () => {
 			</ListItem>
 		));
 		r.expect(template);
+	});
+
+	it('renders with leading and trailing items', () => {
+		const r = renderer(() => (
+			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop}>
+				{{
+					leading: 'In front',
+					primary: 'test',
+					trailing: 'After'
+				}}
+			</ListItem>
+		));
+		r.expect(
+			template
+				.prepend(WrappedRoot, () => <span classes={css.leading}>In front</span>)
+				.append(WrappedRoot, () => <span classes={css.trailing}>After</span>)
+		);
 	});
 
 	it('renders selected', () => {
@@ -218,6 +236,70 @@ describe('ListBoxItem', () => {
 			])
 			.setProperty(WrappedRoot, 'styles', { visibility: 'hidden' });
 		r.expect(selectedTemplate);
+	});
+
+	it('renders draggable', () => {
+		const r = renderer(() => (
+			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop} draggable>
+				test
+			</ListItem>
+		));
+		const draggableTemplate = template
+			.setProperty(WrappedRoot, 'draggable', true)
+			.setProperty(WrappedRoot, 'classes', [
+				undefined,
+				css.root,
+				css.height,
+				false,
+				false,
+				false,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				css.draggable
+			])
+			.append(WrappedRoot, () => [
+				<Icon
+					type="barsIcon"
+					classes={{ '@dojo/widgets/icon': { icon: [css.dragIcon] } }}
+					theme={undefined}
+					variant={undefined}
+				/>
+			]);
+		r.expect(draggableTemplate);
+	});
+
+	it('renders draggable with custom icon', () => {
+		const r = renderer(() => (
+			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop} draggable>
+				{{
+					primary: 'test',
+					trailing: <Icon type="starIcon" />
+				}}
+			</ListItem>
+		));
+		const draggableTemplate = template
+			.setProperty(WrappedRoot, 'draggable', true)
+			.setProperty(WrappedRoot, 'classes', [
+				undefined,
+				css.root,
+				css.height,
+				false,
+				false,
+				false,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				css.draggable
+			])
+			.append(WrappedRoot, () => [
+				<span classes={css.trailing}>
+					<Icon type="starIcon" />
+				</span>
+			]);
+		r.expect(draggableTemplate);
 	});
 
 	it('requests active onpointermove', () => {

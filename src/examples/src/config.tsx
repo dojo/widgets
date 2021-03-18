@@ -105,6 +105,7 @@ import BasicList from './widgets/list/Basic';
 import DividedList from './widgets/list/Dividers';
 import ControlledList from './widgets/list/Controlled';
 import ItemRenderer from './widgets/list/ItemRenderer';
+import ListItemRenderer from './widgets/list/ListItemRenderer';
 import FetchedResource from './widgets/list/FetchedResource';
 import DisabledList from './widgets/list/Disabled';
 import DraggableList from './widgets/list/Draggable';
@@ -1068,6 +1069,11 @@ export const config = {
 					filename: 'ItemRenderer',
 					module: ItemRenderer,
 					title: 'Item Renderer'
+				},
+				{
+					filename: 'ListItemRenderer',
+					module: ListItemRenderer,
+					title: 'ListItem Renderer'
 				},
 				{
 					description:

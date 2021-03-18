@@ -50,3 +50,15 @@
 	position: absolute;
 	right: var(--grid-base);
 }
+
+.primary {
+	flex-grow: 1;
+}
+
+.leading {
+	margin-right: var(--grid-base);
+}
+
+.trailing {
+	margin-left: var(--grid-base);
+}

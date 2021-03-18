@@ -4,7 +4,7 @@ import { sandbox } from 'sinon';
 import global from '@dojo/framework/shim/global';
 import { tsx, getRegistry, create } from '@dojo/framework/core/vdom';
 import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
-import { noop } from '../../common/tests/support/test-helpers';
+import { noop, createTestTheme } from '../../common/tests/support/test-helpers';
 import { Keys } from '../../common/util';
 import List, { ListItem, MenuItem } from '../index';
 import LoadingIndicator from '../../loading-indicator';
@@ -62,6 +62,8 @@ function createMockEvent({
 	};
 }
 
+const listItemTheme = createTestTheme({ ...listItemCss, s: css.items });
+
 const WrappedItemContainer = wrap('div');
 const WrappedItemWrapper = wrap('div');
 const WrappedRoot = wrap('div');
@@ -118,22 +120,7 @@ const listWithListItemsAssertion = baseAssertion
 			onRequestActive={noop}
 			onSelect={noop}
 			selected={false}
-			theme={{
-				'@dojo/widgets/list-item': {
-					active: listItemCss.active,
-					disabled: listItemCss.disabled,
-					root: listItemCss.root,
-					s: css.items,
-					selected: listItemCss.selected,
-					collapsed: listItemCss.collapsed,
-					dragged: listItemCss.dragged,
-					height: listItemCss.height,
-					dragIcon: listItemCss.dragIcon,
-					draggable: listItemCss.draggable,
-					movedUp: listItemCss.movedUp,
-					movedDown: listItemCss.movedDown
-				}
-			}}
+			theme={listItemTheme}
 			widgetId={'menu-test-item-0'}
 			collapsed={false}
 			draggable={undefined}
@@ -156,22 +143,7 @@ const listWithListItemsAssertion = baseAssertion
 			onRequestActive={noop}
 			onSelect={noop}
 			selected={false}
-			theme={{
-				'@dojo/widgets/list-item': {
-					active: listItemCss.active,
-					disabled: listItemCss.disabled,
-					root: listItemCss.root,
-					s: css.items,
-					selected: listItemCss.selected,
-					collapsed: listItemCss.collapsed,
-					dragged: listItemCss.dragged,
-					height: listItemCss.height,
-					dragIcon: listItemCss.dragIcon,
-					draggable: listItemCss.draggable,
-					movedUp: listItemCss.movedUp,
-					movedDown: listItemCss.movedDown
-				}
-			}}
+			theme={listItemTheme}
 			widgetId={'menu-test-item-1'}
 			collapsed={false}
 			draggable={undefined}
@@ -194,22 +166,7 @@ const listWithListItemsAssertion = baseAssertion
 			onRequestActive={noop}
 			onSelect={noop}
 			selected={false}
-			theme={{
-				'@dojo/widgets/list-item': {
-					active: listItemCss.active,
-					disabled: listItemCss.disabled,
-					root: listItemCss.root,
-					s: css.items,
-					selected: listItemCss.selected,
-					collapsed: listItemCss.collapsed,
-					dragged: listItemCss.dragged,
-					height: listItemCss.height,
-					dragIcon: listItemCss.dragIcon,
-					draggable: listItemCss.draggable,
-					movedUp: listItemCss.movedUp,
-					movedDown: listItemCss.movedDown
-				}
-			}}
+			theme={listItemTheme}
 			widgetId={'menu-test-item-2'}
 			collapsed={false}
 			draggable={undefined}
@@ -337,22 +294,7 @@ describe('List', () => {
 							onRequestActive={noop}
 							onSelect={noop}
 							selected={false}
-							theme={{
-								'@dojo/widgets/list-item': {
-									active: listItemCss.active,
-									disabled: listItemCss.disabled,
-									root: listItemCss.root,
-									s: css.items,
-									selected: listItemCss.selected,
-									collapsed: listItemCss.collapsed,
-									dragged: listItemCss.dragged,
-									height: listItemCss.height,
-									dragIcon: listItemCss.dragIcon,
-									draggable: listItemCss.draggable,
-									movedUp: listItemCss.movedUp,
-									movedDown: listItemCss.movedDown
-								}
-							}}
+							theme={listItemTheme}
 							widgetId={`menu-test-item-${i}`}
 							collapsed={false}
 							draggable={undefined}
@@ -414,22 +356,7 @@ describe('List', () => {
 							onRequestActive={noop}
 							onSelect={noop}
 							selected={false}
-							theme={{
-								'@dojo/widgets/list-item': {
-									active: listItemCss.active,
-									disabled: listItemCss.disabled,
-									root: listItemCss.root,
-									s: css.items,
-									selected: listItemCss.selected,
-									collapsed: listItemCss.collapsed,
-									dragged: listItemCss.dragged,
-									height: listItemCss.height,
-									dragIcon: listItemCss.dragIcon,
-									draggable: listItemCss.draggable,
-									movedUp: listItemCss.movedUp,
-									movedDown: listItemCss.movedDown
-								}
-							}}
+							theme={listItemTheme}
 							widgetId={`menu-test-item-${i}`}
 							collapsed={false}
 							draggable={undefined}
@@ -464,22 +391,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={`menu-test-item-${i}`}
 						collapsed={false}
 						draggable={undefined}
@@ -690,22 +602,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={!!selected && index === selected}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={`menu-test-item-${index}`}
 					collapsed={false}
 					draggable={undefined}
@@ -1035,22 +932,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-0'}
 					collapsed={false}
 					draggable={undefined}
@@ -1073,22 +955,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-1'}
 					collapsed={false}
 					draggable={undefined}
@@ -1111,22 +978,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-2'}
 					collapsed={false}
 					draggable={undefined}
@@ -1149,22 +1001,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-3'}
 					collapsed={false}
 					draggable={undefined}
@@ -1187,22 +1024,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-4'}
 					collapsed={false}
 					draggable={undefined}
@@ -1246,22 +1068,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-0'}
 						collapsed={false}
 						draggable={undefined}
@@ -1284,22 +1091,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-1'}
 						collapsed={false}
 						draggable={undefined}
@@ -1322,22 +1114,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-2'}
 						collapsed={false}
 						draggable={undefined}
@@ -1360,22 +1137,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-3'}
 						collapsed={false}
 						draggable={undefined}
@@ -1398,22 +1160,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-4'}
 						collapsed={false}
 						draggable={undefined}
@@ -1447,22 +1194,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-0'}
 						collapsed={false}
 						draggable={undefined}
@@ -1485,22 +1217,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-1'}
 						collapsed={false}
 						draggable={undefined}
@@ -1523,22 +1240,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-2'}
 						collapsed={false}
 						draggable={undefined}
@@ -1561,22 +1263,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-3'}
 						collapsed={false}
 						draggable={undefined}
@@ -1599,22 +1286,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-4'}
 						collapsed={false}
 						draggable={undefined}
@@ -1645,22 +1317,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-0'}
 						collapsed={false}
 						draggable={undefined}
@@ -1683,22 +1340,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-1'}
 						collapsed={false}
 						draggable={undefined}
@@ -1721,22 +1363,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-2'}
 						collapsed={false}
 						draggable={undefined}
@@ -1759,22 +1386,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-3'}
 						collapsed={false}
 						draggable={undefined}
@@ -1797,22 +1409,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-4'}
 						collapsed={false}
 						draggable={undefined}
@@ -1843,22 +1440,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-0'}
 						collapsed={false}
 						draggable={undefined}
@@ -1881,22 +1463,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-1'}
 						collapsed={false}
 						draggable={undefined}
@@ -1919,22 +1486,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-2'}
 						collapsed={false}
 						draggable={undefined}
@@ -1957,22 +1509,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-3'}
 						collapsed={false}
 						draggable={undefined}
@@ -1995,22 +1532,7 @@ describe('List', () => {
 						onRequestActive={noop}
 						onSelect={noop}
 						selected={false}
-						theme={{
-							'@dojo/widgets/list-item': {
-								active: listItemCss.active,
-								disabled: listItemCss.disabled,
-								root: listItemCss.root,
-								s: css.items,
-								selected: listItemCss.selected,
-								collapsed: listItemCss.collapsed,
-								dragged: listItemCss.dragged,
-								height: listItemCss.height,
-								dragIcon: listItemCss.dragIcon,
-								draggable: listItemCss.draggable,
-								movedUp: listItemCss.movedUp,
-								movedDown: listItemCss.movedDown
-							}
-						}}
+						theme={listItemTheme}
 						widgetId={'menu-test-item-4'}
 						collapsed={false}
 						draggable={undefined}
@@ -2074,22 +1596,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-0'}
 					collapsed={false}
 					draggable={undefined}
@@ -2112,22 +1619,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-1'}
 					collapsed={false}
 					draggable={undefined}
@@ -2150,22 +1642,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-2'}
 					collapsed={false}
 					draggable={undefined}
@@ -2188,22 +1665,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-3'}
 					collapsed={false}
 					draggable={undefined}
@@ -2226,22 +1688,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-4'}
 					collapsed={false}
 					draggable={undefined}
@@ -2353,22 +1800,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-0'}
 					collapsed={false}
 					draggable={undefined}
@@ -2391,22 +1823,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={true}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-1'}
 					collapsed={false}
 					draggable={undefined}
@@ -2429,22 +1846,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-2'}
 					collapsed={false}
 					draggable={undefined}
@@ -2490,22 +1892,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-0'}
 					collapsed={false}
 					draggable={undefined}
@@ -2528,22 +1915,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={true}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-1'}
 					collapsed={false}
 					draggable={undefined}
@@ -2566,22 +1938,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-2'}
 					collapsed={false}
 					draggable={undefined}
@@ -2612,22 +1969,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={true}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-0'}
 					collapsed={false}
 					draggable={undefined}
@@ -2650,22 +1992,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-1'}
 					collapsed={false}
 					draggable={undefined}
@@ -2688,22 +2015,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-2'}
 					collapsed={false}
 					draggable={undefined}
@@ -2762,22 +2074,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-0'}
 					collapsed={false}
 					draggable={undefined}
@@ -2801,22 +2098,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-1'}
 					collapsed={false}
 					draggable={undefined}
@@ -2840,22 +2122,7 @@ describe('List', () => {
 					onRequestActive={noop}
 					onSelect={noop}
 					selected={false}
-					theme={{
-						'@dojo/widgets/list-item': {
-							active: listItemCss.active,
-							disabled: listItemCss.disabled,
-							root: listItemCss.root,
-							s: css.items,
-							selected: listItemCss.selected,
-							collapsed: listItemCss.collapsed,
-							dragged: listItemCss.dragged,
-							height: listItemCss.height,
-							dragIcon: listItemCss.dragIcon,
-							draggable: listItemCss.draggable,
-							movedUp: listItemCss.movedUp,
-							movedDown: listItemCss.movedDown
-						}
-					}}
+					theme={listItemTheme}
 					widgetId={'menu-test-item-2'}
 					collapsed={false}
 					draggable={undefined}
