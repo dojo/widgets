@@ -2,6 +2,7 @@
 .root {
 	display: flex;
 	width: 100%;
+	flex-wrap: wrap;
 }
 /* Class added to the root when the wizard is rendered vertically */
 .vertical {
