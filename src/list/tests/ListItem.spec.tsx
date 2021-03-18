@@ -1,17 +1,16 @@
-import { sandbox } from 'sinon';
+import { sandbox, assert as assertSinon } from 'sinon';
 import { tsx } from '@dojo/framework/core/vdom';
-import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
-import harness from '@dojo/framework/testing/harness/harness';
 import * as css from '../../theme/default/list-item.m.css';
 import { ListItem } from '../../list';
+import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
 const { describe, it, after } = intern.getInterface('bdd');
-const { assert } = intern.getPlugin('chai');
 
 const noop: any = () => {};
+const WrappedRoot = wrap('div');
 
 describe('ListBoxItem', () => {
-	const template = assertionTemplate(() => (
-		<div
+	const template = assertion(() => (
+		<WrappedRoot
 			key="root"
 			onpointermove={noop}
 			classes={[
@@ -43,8 +42,23 @@ describe('ListBoxItem', () => {
 			}}
 		>
 			test
-		</div>
+		</WrappedRoot>
 	));
+	const disabledTemplate = template
+		.setProperty(WrappedRoot, 'classes', [
+			undefined,
+			css.root,
+			css.height,
+			false,
+			false,
+			css.disabled,
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+			undefined
+		])
+		.setProperty(WrappedRoot, 'aria-disabled', 'true');
 
 	const sb = sandbox.create();
 
@@ -53,22 +67,22 @@ describe('ListBoxItem', () => {
 	});
 
 	it('renders with a label', () => {
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop}>
 				test
 			</ListItem>
 		));
-		h.expect(template);
+		r.expect(template);
 	});
 
 	it('renders selected', () => {
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" selected onRequestActive={noop} onSelect={noop}>
 				test
 			</ListItem>
 		));
 		const selectedTemplate = template
-			.setProperty('@root', 'classes', [
+			.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
 				css.height,
@@ -81,41 +95,26 @@ describe('ListBoxItem', () => {
 				undefined,
 				undefined
 			])
-			.setProperty('@root', 'aria-selected', 'true');
-		h.expect(selectedTemplate);
+			.setProperty(WrappedRoot, 'aria-selected', 'true');
+		r.expect(selectedTemplate);
 	});
 
 	it('renders disabled', () => {
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" disabled onRequestActive={noop} onSelect={noop}>
 				test
 			</ListItem>
 		));
-		const disabledTemplate = template
-			.setProperty('@root', 'classes', [
-				undefined,
-				css.root,
-				css.height,
-				false,
-				false,
-				css.disabled,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined
-			])
-			.setProperty('@root', 'aria-disabled', 'true');
-		h.expect(disabledTemplate);
+		r.expect(disabledTemplate);
 	});
 
 	it('renders active', () => {
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" active onRequestActive={noop} onSelect={noop}>
 				test
 			</ListItem>
 		));
-		const activeTemplate = template.setProperty('@root', 'classes', [
+		const activeTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
 			css.height,
@@ -128,16 +127,16 @@ describe('ListBoxItem', () => {
 			undefined,
 			undefined
 		]);
-		h.expect(activeTemplate);
+		r.expect(activeTemplate);
 	});
 
 	it('renders moved up', () => {
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop} movedUp>
 				test
 			</ListItem>
 		));
-		const selectedTemplate = template.setProperty('@root', 'classes', [
+		const selectedTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
 			css.height,
@@ -150,16 +149,16 @@ describe('ListBoxItem', () => {
 			undefined,
 			undefined
 		]);
-		h.expect(selectedTemplate);
+		r.expect(selectedTemplate);
 	});
 
 	it('renders moved down', () => {
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop} movedDown>
 				test
 			</ListItem>
 		));
-		const selectedTemplate = template.setProperty('@root', 'classes', [
+		const selectedTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
 			css.height,
@@ -172,16 +171,16 @@ describe('ListBoxItem', () => {
 			undefined,
 			undefined
 		]);
-		h.expect(selectedTemplate);
+		r.expect(selectedTemplate);
 	});
 
 	it('renders collapsed', () => {
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop} collapsed>
 				test
 			</ListItem>
 		));
-		const selectedTemplate = template.setProperty('@root', 'classes', [
+		const selectedTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
 			css.height,
@@ -194,17 +193,17 @@ describe('ListBoxItem', () => {
 			undefined,
 			undefined
 		]);
-		h.expect(selectedTemplate);
+		r.expect(selectedTemplate);
 	});
 
 	it('renders dragged', () => {
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop} dragged>
 				test
 			</ListItem>
 		));
 		const selectedTemplate = template
-			.setProperty('@root', 'classes', [
+			.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
 				css.height,
@@ -217,51 +216,59 @@ describe('ListBoxItem', () => {
 				css.dragged,
 				undefined
 			])
-			.setProperty('@root', 'styles', { visibility: 'hidden' });
-		h.expect(selectedTemplate);
+			.setProperty(WrappedRoot, 'styles', { visibility: 'hidden' });
+		r.expect(selectedTemplate);
 	});
 
 	it('requests active onpointermove', () => {
 		const onRequestActive = sb.stub();
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" onRequestActive={onRequestActive} onSelect={noop}>
 				test
 			</ListItem>
 		));
-		h.trigger('@root', 'onpointermove');
-		assert.isTrue(onRequestActive.calledOnce);
+		r.expect(template);
+		r.property(WrappedRoot, 'onpointermove');
+		r.expect(template);
+		assertSinon.calledOnce(onRequestActive);
 	});
 
 	it('does not request active onpointermove when disabled', () => {
 		const onRequestActive = sb.stub();
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" disabled onRequestActive={onRequestActive} onSelect={noop}>
 				test
 			</ListItem>
 		));
-		h.trigger('@root', 'onpointermove');
-		assert.isTrue(onRequestActive.notCalled);
+		r.expect(disabledTemplate);
+		r.property(WrappedRoot, 'onpointermove');
+		r.expect(disabledTemplate);
+		assertSinon.notCalled(onRequestActive);
 	});
 
 	it('calls onSelect onclick', () => {
 		const onSelect = sb.stub();
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" onRequestActive={noop} onSelect={onSelect}>
 				test
 			</ListItem>
 		));
-		h.trigger('@root', 'onclick');
-		assert.isTrue(onSelect.calledOnce);
+		r.expect(template);
+		r.property(WrappedRoot, 'onclick');
+		r.expect(template);
+		assertSinon.calledOnce(onSelect);
 	});
 
 	it('does not call onSelect onclick when disabled', () => {
 		const onSelect = sb.stub();
-		const h = harness(() => (
+		const r = renderer(() => (
 			<ListItem widgetId="test" disabled onRequestActive={noop} onSelect={onSelect}>
 				test
 			</ListItem>
 		));
-		h.trigger('@root', 'onclick');
-		assert.isTrue(onSelect.notCalled);
+		r.expect(disabledTemplate);
+		r.property(WrappedRoot, 'onclick');
+		r.expect(disabledTemplate);
+		assertSinon.notCalled(onSelect);
 	});
 });
