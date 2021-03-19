@@ -1,6 +1,8 @@
 .root {
 	display: flex;
 	width: 100%;
+	box-sizing: border-box;
+	flex-wrap: wrap;
 }
 
 .vertical {
@@ -10,6 +12,10 @@
 .horizontal .step {
 	margin-right: 16px;
 	white-space: nowrap;
+}
+
+.tail {
+	box-sizing: border-box;
 }
 
 .vertical .tail {
