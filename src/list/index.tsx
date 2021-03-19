@@ -2,7 +2,7 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { Keys } from '../common/util';
+import { Keys, isRenderResult } from '../common/util';
 import theme, { ThemeProperties } from '../middleware/theme';
 import offscreen from '../middleware/offscreen';
 import * as listItemCss from '../theme/default/list-item.m.css';
@@ -104,7 +104,18 @@ export interface ListItemProperties {
 	collapsed?: boolean;
 }
 
-const listItemFactory = create({ theme }).properties<ListItemProperties>();
+export interface ListItemChildren {
+	/** Icon or avatar to place before the primary content */
+	leading?: RenderResult;
+	/** The main content of the item, typically text */
+	primary?: RenderResult;
+	/** Icon or text to place after the primary content */
+	trailing?: RenderResult;
+}
+
+const listItemFactory = create({ theme })
+	.properties<ListItemProperties>()
+	.children<ListItemChildren | RenderResult | RenderResult[]>();
 
 export const ListItem = listItemFactory(function ListItem({
 	properties,
@@ -141,6 +152,11 @@ export const ListItem = listItemFactory(function ListItem({
 		!disabled && !active && onRequestActive();
 	}
 
+	const [firstChild, ...otherChildren] = children();
+	const { leading = undefined, primary, trailing = undefined } = isRenderResult(firstChild)
+		? { primary: [firstChild, ...otherChildren] }
+		: firstChild;
+
 	return (
 		<div
 			id={widgetId}
@@ -176,8 +192,10 @@ export const ListItem = listItemFactory(function ListItem({
 			ondrop={onDrop}
 			styles={{ visibility: dragged ? 'hidden' : undefined }}
 		>
-			{children()}
-			{draggable && (
+			{leading ? <span classes={themedCss.leading}>{leading}</span> : undefined}
+			<span classes={themedCss.primary}>{primary}</span>
+			{trailing ? <span classes={themedCss.trailing}>{trailing}</span> : undefined}
+			{draggable && !trailing && (
 				<Icon
 					type="barsIcon"
 					classes={{ '@dojo/widgets/icon': { icon: [themedCss.dragIcon] } }}

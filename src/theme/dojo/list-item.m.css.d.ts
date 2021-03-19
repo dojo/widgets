@@ -6,3 +6,6 @@ export const movedUp: string;
 export const movedDown: string;
 export const collapsed: string;
 export const dragIcon: string;
+export const primary: string;
+export const leading: string;
+export const trailing: string;
