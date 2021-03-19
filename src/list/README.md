@@ -19,3 +19,9 @@ Dojo's `List` provides a base widget that can be used as a List or an options Li
 - Up Arrow: highlights the previous option
 - Down Arrow: highlights the next option
 - a-z, 0-9: highlights matching entries, ie. `ne` would match `nevada` in a list of states.
+
+### ListItem
+When using a custom renderer, the `ListItem` widget supports different child properties.
+- Leading: Content to display at the start of the list item, such as an icon
+- Primary: Main content of the list item
+- Trailing: Content to display at the end of the list item, such as minor details
