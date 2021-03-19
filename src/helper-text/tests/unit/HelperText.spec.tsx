@@ -10,7 +10,7 @@ const baseTemplate = assertationTemplate(() => {
 	return <div key="root" classes={[undefined, css.root, null, null]} />;
 });
 
-const textTemplate = baseTemplate.setChildren('@root', [
+const textTemplate = baseTemplate.setChildren('@root', () => [
 	<p key="text" classes={css.text} aria-hidden="true" title="test">
 		test
 	</p>

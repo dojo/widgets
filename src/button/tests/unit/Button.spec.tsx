@@ -128,7 +128,9 @@ registerSuite('Button', {
 
 		'renders labels'() {
 			const h = harness(() => <Button>{{ label: 'Text' }}</Button>, [compareId]);
-			h.expect(template.replaceChildren('button', [<span classes={css.label}>Text</span>]));
+			h.expect(
+				template.replaceChildren('button', () => [<span classes={css.label}>Text</span>])
+			);
 		},
 
 		'renders icons before labels'() {
@@ -144,7 +146,7 @@ registerSuite('Button', {
 				[compareId]
 			);
 			h.expect(
-				template.replaceChildren('button', [
+				template.replaceChildren('button', () => [
 					<span classes={css.icon}>
 						<Icon type="starIcon" size="small" />
 					</span>,
@@ -166,7 +168,7 @@ registerSuite('Button', {
 				[compareId]
 			);
 			h.expect(
-				template.replaceChildren('button', [
+				template.replaceChildren('button', () => [
 					<span classes={css.label}>Text</span>,
 					<span classes={css.icon}>
 						<Icon type="starIcon" size="small" />

@@ -148,7 +148,7 @@ describe('Avatar', () => {
 					.setProperty('@root', 'role', 'image')
 					.setProperty('@root', 'aria-label', 'test')
 					.setProperty('@root', 'styles', { backgroundImage: 'url(img.jpg)' })
-					.setChildren('@root', [])
+					.setChildren('@root', () => [])
 			);
 		});
 

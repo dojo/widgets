@@ -448,7 +448,7 @@ describe('Popup', () => {
 					opacity: '1',
 					top: '300px'
 				})
-				.setChildren('@wrapper', [<div>hello world</div>])
+				.setChildren('@wrapper', () => [<div>hello world</div>])
 		);
 		// despite widget given position="above", the effective position is "below"
 		// due to space restrictions

@@ -622,7 +622,7 @@ registerSuite('Calendar', {
 			h.trigger('@date-4', 'onKeyDown', Keys.Left, () => {});
 			h.expect(
 				baseTemplate
-					.setChildren('tbody', mayDates(-1, 31))
+					.setChildren('tbody', () => mayDates(-1, 31))
 					.setProperty('@date-picker', 'month', 4)
 					.setProperty('@date-31', 'focusable', true)
 			);

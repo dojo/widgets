@@ -49,7 +49,7 @@ describe('Snackbar', () => {
 				}}
 			</Snackbar>
 		));
-		const nonStringTemplate = template.setChildren('@label', [<div>test</div>]);
+		const nonStringTemplate = template.setChildren('@label', () => [<div>test</div>]);
 		h.expect(nonStringTemplate);
 	});
 
@@ -61,7 +61,7 @@ describe('Snackbar', () => {
 				}}
 			</Snackbar>
 		));
-		const multipleNonStringTemplate = template.setChildren('@label', [
+		const multipleNonStringTemplate = template.setChildren('@label', () => [
 			<div>test</div>,
 			<div>test2</div>
 		]);
@@ -177,7 +177,7 @@ describe('Snackbar', () => {
 				}}
 			</Snackbar>
 		));
-		const actionsTemplate = template.insertAfter('~label', [
+		const actionsTemplate = template.insertAfter('~label', () => [
 			<div key="actions" classes={css.actions}>
 				<Button>Dismiss</Button>
 			</div>
@@ -194,7 +194,7 @@ describe('Snackbar', () => {
 				}}
 			</Snackbar>
 		));
-		const actionsTemplate = template.insertAfter('~label', [
+		const actionsTemplate = template.insertAfter('~label', () => [
 			<div key="actions" classes={css.actions}>
 				<Button>Retry</Button>
 				<Button>Close</Button>
