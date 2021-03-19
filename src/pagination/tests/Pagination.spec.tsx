@@ -255,7 +255,7 @@ describe('Pagination', () => {
 		);
 
 		h.expect(
-			visibleAssertion.replaceChildren('@links', [
+			visibleAssertion.replaceChildren('@links', () => [
 				prev,
 				...makeLinks(5, 9),
 				<div key="current" classes={css.currentPage}>
@@ -268,7 +268,7 @@ describe('Pagination', () => {
 	});
 
 	describe('page size selector', () => {
-		const sizeSelectorAssertion = visibleAssertion.append(':root', [
+		const sizeSelectorAssertion = visibleAssertion.append(':root', () => [
 			<div classes={css.selectWrapper}>
 				<Select
 					key="page-size-select"
@@ -357,7 +357,7 @@ describe('Pagination', () => {
 				}
 			);
 			h.expect(
-				visibleAssertion.setChildren('@links', [
+				visibleAssertion.setChildren('@links', () => [
 					prev,
 					...makeLinks(7, 9),
 					<div key="current" classes={css.currentPage}>
@@ -384,7 +384,7 @@ describe('Pagination', () => {
 					.setProperty('@links', 'styles', {
 						opacity: '1'
 					})
-					.setChildren('@links', [
+					.setChildren('@links', () => [
 						prev,
 						...makeLinks(8, 9),
 						<div key="current" classes={css.currentPage}>
@@ -408,7 +408,7 @@ describe('Pagination', () => {
 			});
 
 			h.expect(
-				visibleAssertion.setChildren('@links', [
+				visibleAssertion.setChildren('@links', () => [
 					prev,
 					...makeLinks(1),
 					<div key="current" classes={css.currentPage}>

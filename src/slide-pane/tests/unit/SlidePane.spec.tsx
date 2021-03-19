@@ -57,7 +57,7 @@ const closedTemplateRight = closedTemplate.setProperty('@content', 'classes', [
 ]);
 
 const openTemplate = closedTemplate
-	.insertBefore('@content', [
+	.insertBefore('@content', () => [
 		v('div', {
 			classes: [null, fixedCss.underlay],
 			enterAnimation: animations.fadeIn,
@@ -137,7 +137,7 @@ registerSuite('SlidePane', {
 		'Render correct children'() {
 			const h = harness(() => <SlidePane key="foo" underlay={false} />);
 
-			h.expect(closedTemplate.setChildren('~textContent', []));
+			h.expect(closedTemplate.setChildren('~textContent', () => []));
 		},
 
 		'change property to close'() {

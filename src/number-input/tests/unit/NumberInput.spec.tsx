@@ -73,9 +73,10 @@ registerSuite('NumberInput', {
 						type: 'number',
 						theme: { '@dojo/widgets/text-input': textInputCss }
 					})
-					.setChildren(':root', [
-						{ label: 'label', leading: <div />, trailing: <div /> }
-					] as any)
+					.setChildren(
+						':root',
+						() => [{ label: 'label', leading: <div />, trailing: <div /> }] as any
+					)
 			);
 		},
 		'passes correct value to underlying TextInput'() {

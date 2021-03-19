@@ -220,7 +220,7 @@ registerSuite('Slider', {
 						.setProperty('~fill', 'styles', { width: '20%' })
 						.setProperty('~thumb', 'styles', { left: '20%' })
 						.setProperty('~output', 'styles', { top: '80%' })
-						.setChildren('~output', ['6'])
+						.setChildren('~output', () => ['6'])
 				);
 			}
 		},
@@ -233,7 +233,7 @@ registerSuite('Slider', {
 					.setProperty('@input', 'max', '40')
 					.setProperty('~fill', 'styles', { width: '100%' })
 					.setProperty('~thumb', 'styles', { left: '100%' })
-					.setChildren('~output', ['40'])
+					.setChildren('~output', () => ['40'])
 			);
 		},
 
@@ -246,7 +246,7 @@ registerSuite('Slider', {
 					.setProperty('@input', 'min', '30')
 					.setProperty('~fill', 'styles', { width: '0%' })
 					.setProperty('~thumb', 'styles', { left: '0%' })
-					.setChildren('~output', ['30'])
+					.setChildren('~output', () => ['30'])
 			);
 		},
 
@@ -260,7 +260,7 @@ registerSuite('Slider', {
 						.setProperty('@input', 'max', '40')
 						.setProperty('~fill', 'styles', { width: '100%' })
 						.setProperty('~thumb', 'styles', { left: '100%' })
-						.setChildren('~output', ['40'])
+						.setChildren('~output', () => ['40'])
 				);
 			},
 			'min value should be respected'() {
@@ -272,7 +272,7 @@ registerSuite('Slider', {
 						.setProperty('@input', 'min', '30')
 						.setProperty('~fill', 'styles', { width: '0%' })
 						.setProperty('~thumb', 'styles', { left: '0%' })
-						.setChildren('~output', ['30'])
+						.setChildren('~output', () => ['30'])
 				);
 			},
 			'max value should be respected'() {
@@ -283,7 +283,7 @@ registerSuite('Slider', {
 						.setProperty('@input', 'max', '40')
 						.setProperty('~fill', 'styles', { width: '100%' })
 						.setProperty('~thumb', 'styles', { left: '100%' })
-						.setChildren('~output', ['40'])
+						.setChildren('~output', () => ['40'])
 				);
 			},
 			events() {
