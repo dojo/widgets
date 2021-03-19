@@ -8,15 +8,12 @@ import {
 	createResourceTemplate,
 	createResourceMiddleware
 } from '@dojo/framework/core/middleware/resources';
-import Button from '@dojo/widgets/button';
-import * as exampleCss from './ListItemRenderer.m.css';
 
 const resource = createResourceMiddleware();
 const factory = create({ icache, resource });
 const template = createResourceTemplate<typeof states[0]>('value');
 
 export default factory(function ListItemRenderer({ id, middleware: { icache, resource } }) {
-	const listItemClasses = { '@dojo/widgets/list-item': { height: [exampleCss.rowHeight] } };
 	return (
 		<Example>
 			<List
@@ -29,75 +26,15 @@ export default factory(function ListItemRenderer({ id, middleware: { icache, res
 				}}
 				itemsInView={8}
 			>
-				{({ value, label }, props) => {
-					switch (value) {
-						case 'Alabama':
-						case 'Alaska':
-						case 'Arizona':
-						case 'Arkansas':
-							return (
-								<ListItem {...props} classes={listItemClasses}>
-									{{
-										leading: <Icon type="locationIcon" />,
-										primary: label,
-										trailing: value
-									}}
-								</ListItem>
-							);
-						case 'California':
-						case 'Colorado':
-						case 'Connecticut':
-							return (
-								<ListItem {...props} classes={listItemClasses}>
-									{{
-										leading: <Icon type="infoIcon" />,
-										primary: label,
-										trailing: (
-											<Button
-												onClick={() =>
-													alert(
-														`You clicked ${value}. This doesn't select it.`
-													)
-												}
-												classes={{
-													'@dojo/widgets/button': {
-														root: [exampleCss.buttonStyles]
-													}
-												}}
-											>
-												{{
-													icon: (
-														<Icon
-															type="alertIcon"
-															altText="Alert"
-															size="small"
-														/>
-													)
-												}}
-											</Button>
-										)
-									}}
-								</ListItem>
-							);
-						case 'Delaware':
-						case 'Florida':
-							return (
-								<ListItem {...props} classes={listItemClasses}>
-									{{
-										leading: ' ',
-										primary: label,
-										trailing: 'Inset'
-									}}
-								</ListItem>
-							);
-						default:
-							return (
-								<ListItem {...props} classes={listItemClasses}>
-									{label}
-								</ListItem>
-							);
-					}
-				}}
+				{({ value, label }, props) => (
+					<ListItem {...props}>
+						{{
+							leading: <Icon type="locationIcon" />,
+							primary: label,
+							trailing: value
+						}}
+					</ListItem>
+				)}
 			</List>
 			<p>{`Clicked On: ${JSON.stringify(icache.getOrSet('value', ''))}`}</p>
 		</Example>
