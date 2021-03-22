@@ -8,7 +8,7 @@ import Icon from '../icon';
 
 type ResultStatus = 'alert' | 'error' | 'info' | 'success';
 
-export enum StatusIcon {
+enum StatusIcon {
 	alert = 'alertIcon',
 	error = 'cancelIcon',
 	info = 'infoIcon',
