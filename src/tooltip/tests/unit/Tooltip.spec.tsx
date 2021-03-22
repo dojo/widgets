@@ -3,7 +3,7 @@ const { registerSuite } = intern.getInterface('object');
 import { tsx } from '@dojo/framework/core/vdom';
 import harness from '@dojo/framework/testing/harness/harness';
 
-import Tooltip, { Orientation } from '../../index';
+import Tooltip from '../../index';
 import Button from '../../../button/index';
 import * as css from '../../../theme/default/tooltip.m.css';
 import * as fixedCss from '../../styles/tooltip.m.css';
@@ -54,7 +54,7 @@ registerSuite('Tooltip', {
 
 		'should render correct orientation'() {
 			const h = harness(() => (
-				<Tooltip orientation={Orientation.bottom}>{{ content: 'foobar' }}</Tooltip>
+				<Tooltip orientation="bottom">{{ content: 'foobar' }}</Tooltip>
 			));
 
 			h.expect(() => (

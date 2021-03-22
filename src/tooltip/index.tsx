@@ -12,7 +12,7 @@ export interface TooltipProperties {
 	/** Determines if this tooltip is visible */
 	open?: boolean;
 	/** Where this tooltip should render relative to its child */
-	orientation?: Orientation;
+	orientation?: 'bottom' | 'left' | 'right' | 'top' | Orientation;
 }
 
 export interface TooltipChildren {
@@ -20,7 +20,9 @@ export interface TooltipChildren {
 	content: RenderResult;
 }
 
-// Enum used to position the Tooltip
+/**
+ * @deprecated this enum will be removed in the next major release
+ */
 export enum Orientation {
 	bottom = 'bottom',
 	left = 'left',
@@ -33,7 +35,7 @@ const factory = create({ theme })
 	.children<TooltipChildren>();
 
 export const Tooltip = factory(function Tooltip({ children, properties, middleware: { theme } }) {
-	const { open, aria = {}, orientation = Orientation.right } = properties();
+	const { open, aria = {}, orientation = 'right' } = properties();
 	const classes = theme.classes(css);
 	const fixedClasses = theme.classes(fixedCss);
 	const [{ trigger, content }] = children();
