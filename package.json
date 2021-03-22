@@ -53,17 +53,18 @@
     }
   },
   "peerDependencies": {
-    "@dojo/framework": "8.0.0-beta.1"
+    "@dojo/framework": "8.0.0-beta.4"
   },
   "devDependencies": {
     "@dojo/cli": "~7.0.0",
-    "@dojo/cli-build-app": "~7.0.3",
+    "@dojo/cli-build-app": "8.0.0-alpha.3",
     "@dojo/cli-build-theme": "~7.0.0",
-    "@dojo/cli-build-widget": "7.0.0",
+    "@dojo/cli-build-widget": "8.0.0-alpha.1",
     "@dojo/cli-test-intern": "~7.0.0",
-    "@dojo/framework": "8.0.0-beta.1",
+    "@dojo/framework": "8.0.0-beta.4",
     "@dojo/parade": "~1.0.0",
     "@dojo/scripts": "^4.0.3",
+    "@dojo/webpack-contrib": "8.0.0-beta.1",
     "@material/button": "3.0.0",
     "@material/card": "5.1.0",
     "@material/checkbox": "5.1.0",
