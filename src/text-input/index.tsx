@@ -269,7 +269,7 @@ export const TextInput = factory(function TextInput({
 					]}
 					role="presentation"
 				>
-					{leading}
+					{leading && <span classes={themeCss.leading}>{leading}</span>}
 					<input
 						{...formatAriaProperties(aria)}
 						aria-invalid={valid === false ? 'true' : undefined}
@@ -327,7 +327,7 @@ export const TextInput = factory(function TextInput({
 							}
 						}}
 					/>
-					{trailing}
+					{trailing && <span classes={themeCss.trailing}>{trailing}</span>}
 				</div>
 			</div>
 			<HelperText
@@ -338,25 +338,6 @@ export const TextInput = factory(function TextInput({
 				variant={variant}
 			/>
 		</div>
-	);
-});
-
-export interface AddonProperties {
-	filled?: boolean;
-}
-
-const addonFactory = create({
-	theme
-}).properties<AddonProperties>();
-
-export const Addon = addonFactory(function Addon({ middleware: { theme }, properties, children }) {
-	const themeCss = theme.classes(css);
-	const { filled } = properties();
-
-	return (
-		<span classes={[themeCss.addonRoot, filled ? themeCss.addonFilled : null]}>
-			{children()}
-		</span>
 	);
 });
 

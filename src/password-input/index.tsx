@@ -5,7 +5,7 @@ import ConstrainedInput, { ConstrainedInputProperties } from '../constrained-inp
 import theme from '../middleware/theme';
 import * as css from '../theme/default/password-input.m.css';
 import * as textInputCss from '../theme/default/text-input.m.css';
-import TextInput, { TextInputChildren, Addon } from '../text-input';
+import TextInput, { TextInputChildren } from '../text-input';
 import { ValidationRules } from '../middleware/validation';
 
 export type Omit<T, E> = Pick<T, Exclude<keyof T, E>>;
@@ -37,18 +37,16 @@ export const PasswordInput = factory(function PasswordInput({
 	const classes = theme.classes(css);
 
 	const trailing = (
-		<Addon>
-			<button
-				onclick={(e) => {
-					e.stopPropagation();
-					icache.set('showPassword', !showPassword);
-				}}
-				classes={classes.toggleButton}
-				type="button"
-			>
-				<Icon type={showPassword ? 'eyeSlashIcon' : 'eyeIcon'} />
-			</button>
-		</Addon>
+		<button
+			onclick={(e) => {
+				e.stopPropagation();
+				icache.set('showPassword', !showPassword);
+			}}
+			classes={classes.toggleButton}
+			type="button"
+		>
+			<Icon type={showPassword ? 'eyeSlashIcon' : 'eyeIcon'} />
+		</button>
 	);
 
 	const handleValidation = (valid?: boolean, message?: string) => {

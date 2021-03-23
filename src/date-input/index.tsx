@@ -8,7 +8,7 @@ import { parseDate, formatDateISO, formatDate } from './date-utils';
 import { isRenderResult, Keys } from '../common/util';
 import theme, { ThemeProperties } from '../middleware/theme';
 import Calendar from '../calendar';
-import TextInput, { Addon } from '../text-input';
+import TextInput from '../text-input';
 import Icon from '../icon';
 import TriggerPopup from '../trigger-popup';
 import * as textInputCss from '../theme/default/text-input.m.css';
@@ -246,23 +246,17 @@ export default factory(function({
 									{{
 										label,
 										trailing: (
-											<Addon
-												theme={themeProp}
-												classes={classes}
-												variant={variant}
+											<button
+												key="dateIcon"
+												onclick={(e) => {
+													e.stopPropagation();
+													openCalendar();
+												}}
+												classes={themedCss.toggleCalendarButton}
+												type="button"
 											>
-												<button
-													key="dateIcon"
-													onclick={(e) => {
-														e.stopPropagation();
-														openCalendar();
-													}}
-													classes={themedCss.toggleCalendarButton}
-													type="button"
-												>
-													<Icon type="dateIcon" />
-												</button>
-											</Addon>
+												<Icon type="dateIcon" />
+											</button>
 										)
 									}}
 								</TextInput>

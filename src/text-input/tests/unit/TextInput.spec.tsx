@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { tsx, w } from '@dojo/framework/core/vdom';
+import { tsx } from '@dojo/framework/core/vdom';
 import focus from '@dojo/framework/core/middleware/focus';
 import validity from '@dojo/framework/core/middleware/validity';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
@@ -11,7 +11,7 @@ import createFocusMock from '@dojo/framework/testing/mocks/middleware/focus';
 import createValidityMock from '@dojo/framework/testing/mocks/middleware/validity';
 
 import Label from '../../../label/index';
-import TextInput, { Addon } from '../../index';
+import TextInput from '../../index';
 import * as css from '../../../theme/default/text-input.m.css';
 import {
 	compareForId,
@@ -591,7 +591,11 @@ registerSuite('TextInput', {
 		},
 
 		'leading property'() {
-			const leading = <span>A</span>;
+			const leading = (
+				<span classes={css.leading}>
+					<span>A</span>
+				</span>
+			);
 			const leadingTemplate = baseAssertion
 				.setProperty('@wrapper', 'classes', [
 					css.wrapper,
@@ -606,12 +610,12 @@ registerSuite('TextInput', {
 					css.noLabel
 				])
 				.prepend('@inputWrapper', () => [leading]);
-			const h = harness(() => <TextInput>{{ leading }}</TextInput>);
+			const h = harness(() => <TextInput>{{ leading: <span>A</span> }}</TextInput>);
 			h.expect(leadingTemplate);
 		},
 
 		'trailing property'() {
-			const trailing = <span>Z</span>;
+			const trailing = <span classes={css.trailing}>Z</span>;
 			const trailingTemplate = baseAssertion
 				.setProperty('@wrapper', 'classes', [
 					css.wrapper,
@@ -626,7 +630,7 @@ registerSuite('TextInput', {
 					css.noLabel
 				])
 				.append('@inputWrapper', () => [trailing]);
-			const h = harness(() => <TextInput>{{ trailing }}</TextInput>);
+			const h = harness(() => <TextInput>{{ trailing: 'Z' }}</TextInput>);
 			h.expect(trailingTemplate);
 		},
 
@@ -779,38 +783,6 @@ registerSuite('TextInput', {
 						css.noLabel
 					])
 			);
-		},
-
-		addon() {
-			const addonTemplate = assertionTemplate(() => {
-				return <span classes={[css.addonRoot, null]}>foo</span>;
-			});
-
-			const h = harness(() => <Addon>foo</Addon>);
-			h.expect(addonTemplate);
-		},
-
-		'addon filled'() {
-			const addonTemplate = assertionTemplate(() => {
-				return <span classes={[css.addonRoot, css.addonFilled]}>foo</span>;
-			});
-
-			const h = harness(() => <Addon filled>foo</Addon>);
-			h.expect(addonTemplate);
-		},
-
-		'addon with multiple children'() {
-			const addonTemplate = assertionTemplate(() => {
-				return (
-					<span classes={[css.addonRoot, null]}>
-						foo
-						<div>bar</div>
-					</span>
-				);
-			});
-
-			const h = harness(() => w(Addon, {}, ['foo', <div>bar</div>]));
-			h.expect(addonTemplate);
 		},
 
 		'autofill sets active'() {
