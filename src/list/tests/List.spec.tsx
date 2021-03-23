@@ -643,10 +643,239 @@ describe('List', () => {
 			]);
 
 		const factory = create();
+		let height = 0;
+		let width = 0;
 		const mockDimensions = factory(() => {
 			return {
 				get() {
-					return { size: { height: 90 } };
+					return { size: { height, width } };
+				}
+			};
+		});
+		const r = renderer(
+			() => (
+				<List
+					itemsInView="fill"
+					resource={{ data, id: 'test', idKey: 'value' }}
+					onValue={onValueStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry], [dimensions, mockDimensions]] }
+		);
+		r.expect(assertion(() => <div key="fill-root" styles={{ height: '100%' }} />));
+		height = 90;
+		r.expect(listWithListItemsAssertion);
+	});
+
+	it('should fall back to default number of items for "fill" when no height can be determined', () => {
+		const data = [
+			{
+				value: '1',
+				label: 'Dog'
+			},
+			{
+				value: '2',
+				label: 'Cat'
+			},
+			{
+				value: '3',
+				label: 'Fish',
+				disabled: true
+			},
+			{
+				value: '4',
+				label: 'Dog'
+			},
+			{
+				value: '5',
+				label: 'Cat'
+			},
+			{
+				value: '6',
+				label: 'Fish',
+				disabled: true
+			},
+			{
+				value: '7',
+				label: 'Dog'
+			}
+		];
+		const listWithListItemsAssertion = baseAssertion
+			.setProperty(WrappedRoot, 'styles', {
+				height: '450px'
+			})
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '315px'
+			})
+			.replaceChildren(WrappedItemContainer, () => [
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={true}
+					disabled={false}
+					key={'item-0'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={listItemTheme}
+					widgetId={'menu-test-item-0'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					Dog
+				</ListItem>,
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={false}
+					disabled={false}
+					key={'item-1'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={listItemTheme}
+					widgetId={'menu-test-item-1'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					Cat
+				</ListItem>,
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={false}
+					disabled={true}
+					key={'item-2'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={listItemTheme}
+					widgetId={'menu-test-item-2'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					Fish
+				</ListItem>,
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={false}
+					disabled={false}
+					key={'item-3'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={listItemTheme}
+					widgetId={'menu-test-item-3'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					Dog
+				</ListItem>,
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={false}
+					disabled={false}
+					key={'item-4'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={listItemTheme}
+					widgetId={'menu-test-item-4'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					Cat
+				</ListItem>,
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={false}
+					disabled={true}
+					key={'item-5'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={listItemTheme}
+					widgetId={'menu-test-item-5'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					Fish
+				</ListItem>,
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={false}
+					disabled={false}
+					key={'item-6'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={listItemTheme}
+					widgetId={'menu-test-item-6'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					Dog
+				</ListItem>
+			]);
+
+		const factory = create();
+		const mockDimensions = factory(() => {
+			return {
+				get() {
+					return { size: { width: 90 } };
 				}
 			};
 		});
