@@ -66,15 +66,11 @@
 	color: var(--mdc-secondary-text-color);
 }
 
-/* .hasLeading.hasTrailing .addonRoot,
-.hasLeading .addonRoot { */
 .leading {
 	left: 16px;
 	right: auto;
 }
 
-/* .hasLeading.hasTrailing .addonRoot ~ .addonRoot,
-.hasTrailing .addonRoot { */
 .trailing {
 	right: 12px;
 	left: auto;
