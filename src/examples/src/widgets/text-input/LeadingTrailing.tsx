@@ -9,10 +9,9 @@ export default factory(function Basic() {
 		<Example>
 			<TextInput>
 				{{
-					label: 'Input label'
-					// ,
-					// leading: 'A',
-					// trailing: 'Z'
+					label: 'Input label',
+					leading: 'A',
+					trailing: 'Z'
 				}}
 			</TextInput>
 		</Example>

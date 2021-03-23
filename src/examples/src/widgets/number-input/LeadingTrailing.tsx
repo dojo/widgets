@@ -9,10 +9,9 @@ export default factory(function Basic() {
 		<Example>
 			<NumberInput>
 				{{
-					label: 'Number Input'
-					// ,
-					// leading: '$',
-					// trailing: '.00'
+					label: 'Number Input',
+					leading: '$',
+					trailing: '.00'
 				}}
 			</NumberInput>
 		</Example>
