@@ -1,5 +1,6 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { focus } from '@dojo/framework/core/middleware/focus';
+import dimensions from '@dojo/framework/core/middleware/dimensions';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { Keys, isRenderResult } from '../common/util';
@@ -233,7 +234,7 @@ export interface ListProperties {
 	/** Callback called when menu root is blurred */
 	onBlur?(): void;
 	/** Property to determine how many items to render. Not passing a number will render all results */
-	itemsInView?: number;
+	itemsInView?: number | 'fill';
 	/** Property to determine if this list is being used as a menu, changes a11y and item type */
 	menu?: boolean;
 	/** The id to be applied to the root of this widget, if not passed, one will be generated for a11y reasons */
@@ -268,7 +269,8 @@ interface ListICache {
 	previousInputText: string;
 	inputText: string;
 	itemHeight: number;
-	itemsInView: number;
+	itemsInView: number | 'fill';
+	calculatedItemsInView: number;
 	menuHeight: number;
 	resetInputTextTimer: any;
 	value: string;
@@ -281,22 +283,25 @@ const factory = create({
 	focus,
 	theme,
 	offscreen,
+	dimensions,
 	resource: createResourceMiddleware<ListOption>()
 })
 	.properties<ListProperties>()
 	.children<ListChildren | undefined>();
 
+const defaultItemsInView = 10;
+
 export const List = factory(function List({
 	children,
 	properties,
 	id,
-	middleware: { icache, focus, theme, resource, offscreen }
+	middleware: { icache, focus, theme, resource, offscreen, dimensions }
 }) {
 	const {
 		activeIndex,
 		focusable = true,
 		initialValue,
-		itemsInView = 10,
+		itemsInView = defaultItemsInView,
 		menu = false,
 		onActiveIndexChange,
 		onBlur,
@@ -646,9 +651,9 @@ export const List = factory(function List({
 		selectedValue = icache.get('value');
 	}
 
-	if (itemsInView !== icache.get('itemsInView')) {
-		icache.set('itemsInView', itemsInView);
+	let calculatedItemsInView = icache.getOrSet('calculatedItemsInView', 0);
 
+	if (itemsInView !== icache.get('itemsInView')) {
 		const offscreenItemProps = {
 			selected: false,
 			onSelect: () => {},
@@ -689,7 +694,24 @@ export const List = factory(function List({
 			)
 		);
 
-		itemHeight && icache.set('menuHeight', itemsInView * itemHeight);
+		if (itemsInView !== 'fill') {
+			calculatedItemsInView = itemsInView;
+			itemHeight && icache.set('menuHeight', calculatedItemsInView * itemHeight);
+		} else {
+			const dims = dimensions.get('fill-root');
+			if (dims.size.height) {
+				calculatedItemsInView = Math.ceil(dims.size.height / itemHeight);
+				itemHeight && icache.set('menuHeight', dims.size.height);
+			} else if (dims.size.width) {
+				calculatedItemsInView = defaultItemsInView;
+				itemHeight && icache.set('menuHeight', calculatedItemsInView * itemHeight);
+			} else {
+				return <div key="fill-root" styles={{ height: '100%' }} />;
+			}
+		}
+
+		icache.set('itemsInView', itemsInView);
+		icache.set('calculatedItemsInView', calculatedItemsInView);
 	}
 
 	const menuHeight = icache.get('menuHeight');
@@ -702,8 +724,8 @@ export const List = factory(function List({
 	const shouldFocus = focus.shouldFocus();
 	const itemHeight = icache.getOrSet('itemHeight', 0);
 	let scrollTop = icache.getOrSet('scrollTop', 0);
-	const nodePadding = Math.min(itemsInView, 20);
-	const renderedItemsCount = itemsInView + 2 * nodePadding;
+	const nodePadding = Math.min(calculatedItemsInView, 20);
+	const renderedItemsCount = calculatedItemsInView + 2 * nodePadding;
 	let computedActiveIndex =
 		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 	const inputText = icache.get('inputText');
@@ -744,11 +766,11 @@ export const List = factory(function List({
 
 	if (computedActiveIndex !== previousActiveIndex) {
 		const visibleStartIndex = Math.floor(scrollTop / itemHeight);
-		const visibleEndIndex = visibleStartIndex + itemsInView - 1;
+		const visibleEndIndex = visibleStartIndex + calculatedItemsInView - 1;
 		if (computedActiveIndex < visibleStartIndex) {
 			scrollTop = computedActiveIndex * itemHeight;
 		} else if (computedActiveIndex > visibleEndIndex) {
-			scrollTop = Math.max(computedActiveIndex + 1 - itemsInView, 0) * itemHeight;
+			scrollTop = Math.max(computedActiveIndex + 1 - calculatedItemsInView, 0) * itemHeight;
 		}
 
 		if (icache.get('scrollTop') !== scrollTop) {

@@ -102,6 +102,7 @@ import InvalidLabel from './widgets/label/InvalidLabel';
 import DisabledLabel from './widgets/label/DisabledLabel';
 import SecondaryLabel from './widgets/label/SecondaryLabel';
 import BasicList from './widgets/list/Basic';
+import FillList from './widgets/list/Fill';
 import DividedList from './widgets/list/Dividers';
 import ControlledList from './widgets/list/Controlled';
 import ItemRenderer from './widgets/list/ItemRenderer';
@@ -1112,6 +1113,13 @@ export const config = {
 					filename: 'Draggable',
 					module: DraggableList,
 					title: 'Draggable'
+				},
+				{
+					description:
+						'This example shows how the list can fill available space when the container has a height',
+					filename: 'Fill',
+					module: FillList,
+					title: 'Fill'
 				}
 			],
 			overview: {
