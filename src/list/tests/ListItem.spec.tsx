@@ -8,6 +8,7 @@ const { describe, it, after } = intern.getInterface('bdd');
 
 const noop: any = () => {};
 const WrappedRoot = wrap('div');
+const WrappedPrimary = wrap('span');
 
 describe('ListBoxItem', () => {
 	const template = assertion(() => (
@@ -17,7 +18,7 @@ describe('ListBoxItem', () => {
 			classes={[
 				undefined,
 				css.root,
-				css.height,
+				css.small,
 				false,
 				false,
 				false,
@@ -42,14 +43,14 @@ describe('ListBoxItem', () => {
 				visibility: undefined
 			}}
 		>
-			<span classes={css.primary}>test</span>
+			<WrappedPrimary classes={css.primary}>test</WrappedPrimary>
 		</WrappedRoot>
 	));
 	const disabledTemplate = template
 		.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
-			css.height,
+			css.small,
 			false,
 			false,
 			css.disabled,
@@ -93,6 +94,62 @@ describe('ListBoxItem', () => {
 		);
 	});
 
+	it('accepts a height property', () => {
+		const r = renderer(() => (
+			<ListItem widgetId="test" height="extraSmall" onRequestActive={noop} onSelect={noop}>
+				{{
+					primary: 'test'
+				}}
+			</ListItem>
+		));
+		r.expect(
+			template.setProperty(WrappedRoot, 'classes', [
+				undefined,
+				css.root,
+				css.extraSmall,
+				false,
+				false,
+				false,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined
+			])
+		);
+	});
+
+	it('renders with secondary text', () => {
+		const r = renderer(() => (
+			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop}>
+				{{
+					primary: 'test',
+					secondary: 'Less important'
+				}}
+			</ListItem>
+		));
+		r.expect(
+			template
+				.setProperty(WrappedRoot, 'classes', [
+					undefined,
+					css.root,
+					css.medium,
+					false,
+					false,
+					false,
+					undefined,
+					undefined,
+					undefined,
+					undefined,
+					undefined
+				])
+				.replaceChildren(WrappedPrimary, () => [
+					'test',
+					<span classes={css.secondary}>Less important</span>
+				])
+		);
+	});
+
 	it('renders selected', () => {
 		const r = renderer(() => (
 			<ListItem widgetId="test" selected onRequestActive={noop} onSelect={noop}>
@@ -103,7 +160,7 @@ describe('ListBoxItem', () => {
 			.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
-				css.height,
+				css.small,
 				css.selected,
 				false,
 				false,
@@ -135,7 +192,7 @@ describe('ListBoxItem', () => {
 		const activeTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
-			css.height,
+			css.small,
 			false,
 			css.active,
 			false,
@@ -157,7 +214,7 @@ describe('ListBoxItem', () => {
 		const selectedTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
-			css.height,
+			css.small,
 			false,
 			false,
 			false,
@@ -179,7 +236,7 @@ describe('ListBoxItem', () => {
 		const selectedTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
-			css.height,
+			css.small,
 			false,
 			false,
 			false,
@@ -201,7 +258,7 @@ describe('ListBoxItem', () => {
 		const selectedTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
-			css.height,
+			css.small,
 			false,
 			false,
 			false,
@@ -224,7 +281,7 @@ describe('ListBoxItem', () => {
 			.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
-				css.height,
+				css.small,
 				false,
 				false,
 				false,
@@ -249,7 +306,7 @@ describe('ListBoxItem', () => {
 			.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
-				css.height,
+				css.small,
 				false,
 				false,
 				false,
@@ -284,7 +341,7 @@ describe('ListBoxItem', () => {
 			.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
-				css.height,
+				css.small,
 				false,
 				false,
 				false,

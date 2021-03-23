@@ -1,5 +1,4 @@
 export const root: string;
-export const height: string;
 export const selected: string;
 export const active: string;
 export const disabled: string;
@@ -10,5 +9,11 @@ export const movedDown: string;
 export const dragged: string;
 export const dragIcon: string;
 export const primary: string;
+export const secondary: string;
 export const leading: string;
 export const trailing: string;
+export const extraSmall: string;
+export const small: string;
+export const medium: string;
+export const large: string;
+export const extraLarge: string;

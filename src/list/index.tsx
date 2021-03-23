@@ -103,6 +103,8 @@ export interface ListItemProperties {
 	onDrop?: (event: DragEvent) => void;
 	/** Determines if this item is visually collapsed during DnD */
 	collapsed?: boolean;
+	/** Height of list item. Defaults to 'medium' if secondary text is passed or 'small' otherwise. */
+	height?: 'extraSmall' | 'small' | 'medium' | 'large' | 'extraLarge';
 }
 
 export interface ListItemChildren {
@@ -110,6 +112,8 @@ export interface ListItemChildren {
 	leading?: RenderResult;
 	/** The main content of the item, typically text */
 	primary?: RenderResult;
+	/** The further details about the item to display below the primary content, typically text */
+	secondary?: RenderResult;
 	/** Icon or text to place after the primary content */
 	trailing?: RenderResult;
 }
@@ -132,6 +136,7 @@ export const ListItem = listItemFactory(function ListItem({
 		widgetId,
 		draggable,
 		dragged,
+		height,
 		onDragStart,
 		onDragEnd,
 		onDragOver,
@@ -154,9 +159,25 @@ export const ListItem = listItemFactory(function ListItem({
 	}
 
 	const [firstChild, ...otherChildren] = children();
-	const { leading = undefined, primary, trailing = undefined } = isRenderResult(firstChild)
-		? { primary: [firstChild, ...otherChildren] }
-		: firstChild;
+	const {
+		leading = undefined,
+		primary,
+		secondary = undefined,
+		trailing = undefined
+	} = isRenderResult(firstChild) ? { primary: [firstChild, ...otherChildren] } : firstChild;
+	const size = height || (secondary ? 'medium' : 'small');
+	const sizeStyle =
+		size === 'extraSmall'
+			? themedCss.extraSmall
+			: size === 'small'
+			? themedCss.small
+			: size === 'medium'
+			? themedCss.medium
+			: size === 'large'
+			? themedCss.large
+			: size === 'extraLarge'
+			? themedCss.extraLarge
+			: undefined;
 
 	return (
 		<div
@@ -168,7 +189,7 @@ export const ListItem = listItemFactory(function ListItem({
 			classes={[
 				theme.variant(),
 				themedCss.root,
-				themedCss.height,
+				sizeStyle,
 				selected && themedCss.selected,
 				active && themedCss.active,
 				disabled && themedCss.disabled,
@@ -194,7 +215,10 @@ export const ListItem = listItemFactory(function ListItem({
 			styles={{ visibility: dragged ? 'hidden' : undefined }}
 		>
 			{leading ? <span classes={themedCss.leading}>{leading}</span> : undefined}
-			<span classes={themedCss.primary}>{primary}</span>
+			<span classes={themedCss.primary}>
+				{primary}
+				{secondary ? <span classes={themedCss.secondary}>{secondary}</span> : undefined}
+			</span>
 			{trailing ? <span classes={themedCss.trailing}>{trailing}</span> : undefined}
 			{draggable && !trailing && (
 				<Icon

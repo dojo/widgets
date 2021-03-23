@@ -6,11 +6,6 @@
 	white-space: nowrap;
 }
 
-.root.height {
-	min-height: 48px;
-	height: 100%;
-}
-
 .root:hover {
 	background: var(--mdc-theme-on-surface);
 }
@@ -25,6 +20,10 @@
 	min-height: 48px;
 	height: 100%;
 	box-shadow: none;
+}
+
+.disabled .leading {
+	font-style: normal;
 }
 
 .collapsed {
@@ -60,6 +59,13 @@
 
 .primary {
 	composes: mdc-list-item__text from '@material/list/dist/mdc.list.css';
+	display: flex;
+	flex-direction: column;
+	line-height: normal;
+}
+
+.secondary {
+	composes: mdc-list-item__secondary-text from '@material/list/dist/mdc.list.css';
 }
 
 .leading {
@@ -68,4 +74,24 @@
 
 .trailing {
 	composes: mdc-list-item__meta from '@material/list/dist/mdc.list.css';
+}
+
+.extraSmall {
+	height: calc(6 * var(--mdc-theme-grid-base));
+}
+
+.small {
+	height: calc(7 * var(--mdc-theme-grid-base));
+}
+
+.medium {
+	height: calc(8 * var(--mdc-theme-grid-base));
+}
+
+.large {
+	height: calc(9 * var(--mdc-theme-grid-base));
+}
+
+.extraLarge {
+	height: calc(11 * var(--mdc-theme-grid-base));
 }

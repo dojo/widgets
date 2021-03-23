@@ -1,6 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import List, { ListItem } from '@dojo/widgets/list';
-import Icon from '@dojo/widgets/icon';
+import Avatar from '@dojo/widgets/avatar';
 import states from './states';
 import icache from '@dojo/framework/core/middleware/icache';
 import Example from '../../Example';
@@ -29,8 +29,9 @@ export default factory(function ListItemRenderer({ id, middleware: { icache, res
 				{({ value, label }, props) => (
 					<ListItem {...props}>
 						{{
-							leading: <Icon type="locationIcon" />,
+							leading: <Avatar>{label[0]}</Avatar>,
 							primary: label,
+							secondary: `This state's name has ${label.length} letters`,
 							trailing: value
 						}}
 					</ListItem>

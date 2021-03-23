@@ -9,9 +9,6 @@
 	position: relative;
 }
 
-.height {
-}
-
 /* Added to selected items */
 .selected {
 	background: lightgrey;
@@ -62,10 +59,39 @@
 .primary {
 }
 
+/* Wrapper for the secondary content of the item */
+.secondary {
+}
+
 /* Wrapper for the leading content in front of the primary content */
 .leading {
 }
 
 /* Wrapper for the trailing content after the primary content*/
 .trailing {
+}
+
+/* Extra small list item height, suitable for text only */
+.extraSmall {
+	height: 48px;
+}
+
+/* Small list item height, suitable for displaying icons and avatars */
+.small {
+	height: 56px;
+}
+
+/* Large list item height, suitable for displaying two lines of text */
+.medium {
+	height: 64px;
+}
+
+/* Large list item height, suitable for displaying two lines of text */
+.large {
+	height: 72px;
+}
+
+/* Extra large list item height, suitable for displaying three lines of text */
+.extraLarge {
+	height: 88px;
 }
