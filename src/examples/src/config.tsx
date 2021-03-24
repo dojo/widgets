@@ -128,6 +128,7 @@ import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
 import OutlinedToggleButton from './widgets/outlined-button/ToggleButton';
 import BasicPassword from './widgets/password-input/Basic';
 import NoRules from './widgets/password-input/NoRules';
+import DisabledPassword from './widgets/password-input/Disabled';
 import BasicTriggerPopup from './widgets/trigger-popup/Basic';
 import MenuTriggerPopup from './widgets/trigger-popup/MenuPopup';
 import SetWidth from './widgets/trigger-popup/SetWidth';
@@ -1156,6 +1157,11 @@ export const config = {
 					title: 'No Rules',
 					filename: 'NoRules',
 					module: NoRules
+				},
+				{
+					title: 'Disabled',
+					filename: 'Disabled',
+					module: DisabledPassword
 				}
 			]
 		},
