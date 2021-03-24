@@ -11,11 +11,11 @@
 }
 
 .circular {
-	border: 16px solid var(--color-background-faded);
+	border: calc(var(--grid-base) / 2) solid var(--color-background-faded);
 	border-radius: 50%;
-	border-top: 16px solid var(--color-background-inverted);
-	width: 120px;
-	height: 120px;
+	border-top: calc(var(--grid-base) / 2) solid var(--color-background-inverted);
+	width: calc(var(--grid-base) * 6.25);
+	height: calc(var(--grid-base) * 6.25);
 	animation: spin 2s linear infinite;
 }
 
