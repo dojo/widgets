@@ -139,7 +139,7 @@ export const Select = factory(function Select({
 		data
 	} = get(options(), { read, meta: true });
 
-	if (required && dirty) {
+	if (required && (dirty || value !== undefined)) {
 		const isValid = value !== undefined;
 		if (isValid !== valid) {
 			icache.set('valid', isValid);

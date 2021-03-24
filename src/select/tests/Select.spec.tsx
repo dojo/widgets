@@ -398,4 +398,32 @@ describe('Select', () => {
 
 		assert.isTrue(onValidate.calledWith(false));
 	});
+
+	it('calls onValidate on initial value when required', () => {
+		const onValidate = stub();
+		const h = harness(() => (
+			<Select
+				onValue={() => {}}
+				resource={{ data: options, idKey: 'value', id: 'test' }}
+				required={true}
+				value={'1'}
+				onValidate={onValidate}
+			/>
+		));
+		h.expect(
+			baseTemplate
+				.setProperty(':root', 'classes', [
+					undefined,
+					css.root,
+					undefined,
+					css.valid,
+					false,
+					false,
+					undefined
+				])
+				.setProperty('@helperText', 'valid', true)
+		);
+
+		assert.isTrue(onValidate.calledWith(true));
+	});
 });
