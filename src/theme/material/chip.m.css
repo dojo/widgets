@@ -42,7 +42,8 @@
 	cursor: pointer;
 }
 
-.disabled {
+.root.disabled {
+	cursor: default;
 }
 
 .root .icon {

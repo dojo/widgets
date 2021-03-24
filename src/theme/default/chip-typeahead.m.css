@@ -2,6 +2,9 @@
 .root {
 }
 
+.disabled {
+}
+
 /* Added when the MultiSelectTypeahead is focused */
 .focused {
 }

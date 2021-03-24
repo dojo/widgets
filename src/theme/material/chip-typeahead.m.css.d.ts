@@ -1,6 +1,6 @@
 export const root: string;
-export const focused: string;
 export const disabled: string;
+export const focused: string;
 export const value: string;
 export const hasLabel: string;
 export const wrapper: string;

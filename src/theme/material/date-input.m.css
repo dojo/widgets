@@ -6,8 +6,12 @@
 	color: var(--mdc-secondary-text-color);
 }
 
-.toggleCalendarButton:hover {
+.toggleCalendarButton:hover:not([disabled]) {
 	color: var(--mdc-text-color);
+}
+
+.toggleCalendarButton[disabled] {
+	cursor: default;
 }
 
 .popup {

@@ -6,8 +6,12 @@
 	color: var(--mdc-secondary-text-color);
 }
 
-.toggleMenuButton:hover {
+.toggleMenuButton:hover:not([disabled]) {
 	color: var(--mdc-text-color);
+}
+
+.toggleMenuButton[disabled] {
+	cursor: default;
 }
 
 .popup {
