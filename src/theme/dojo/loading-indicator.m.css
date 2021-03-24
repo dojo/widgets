@@ -16,7 +16,7 @@
 	border-top: calc(var(--grid-base) / 2) solid var(--color-background-inverted);
 	width: calc(var(--grid-base) * 6.25);
 	height: calc(var(--grid-base) * 6.25);
-	animation: spin 2s linear infinite;
+	animation: spin 1.5s linear infinite;
 }
 
 .inactive {

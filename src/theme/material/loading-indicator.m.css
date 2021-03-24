@@ -1,4 +1,4 @@
-.root {
+.linear {
 	composes: mdc-linear-progress mdc-linear-progress--indeterminate from '@material/linear-progress/dist/mdc.linear-progress.css';
 }
 
@@ -27,5 +27,38 @@
 }
 
 .circular {
+	composes: mdc-circular-progress from '@material/circular-progress/dist/mdc.circular-progress.css';
+}
+
+.circular {
 	composes: mdc-circular-progress--indeterminate from '@material/circular-progress/dist/mdc.circular-progress.css';
+}
+
+.circularContainer {
+	display: inline-block;
+	composes: mdc-circular-progress__indeterminate-container from '@material/circular-progress/dist/mdc.circular-progress.css';
+}
+
+.spinnerLayer {
+	composes: mdc-circular-progress__spinner-layer from '@material/circular-progress/dist/mdc.circular-progress.css';
+}
+
+.circleClipper {
+	composes: mdc-circular-progress__circle-clipper from '@material/circular-progress/dist/mdc.circular-progress.css';
+}
+
+.circleLeft {
+	composes: mdc-circular-progress__circle-left from '@material/circular-progress/dist/mdc.circular-progress.css';
+}
+
+.circleRight {
+	composes: mdc-circular-progress__circle-right from '@material/circular-progress/dist/mdc.circular-progress.css';
+}
+
+.circleGraphic {
+	composes: mdc-circular-progress__indeterminate-circle-graphic from '@material/circular-progress/dist/mdc.circular-progress.css';
+}
+
+.gapPatch {
+	composes: mdc-circular-progress__gap-patch from '@material/circular-progress/dist/mdc.circular-progress.css';
 }

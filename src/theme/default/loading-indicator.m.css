@@ -2,6 +2,14 @@
 .root {
 }
 
+/* Root to linear loader */
+.linear {
+}
+
+/* Root to circular loader */
+.circular {
+}
+
 /* Not actively loading, outermost container */
 .inactive {
 }
@@ -20,4 +28,48 @@
 
 /* Loading track foreground inner */
 .inner {
+}
+
+/* Root to svg based loader */
+.circularContainer {
+	display: none;
+}
+
+/* Wrapper for svg based loader */
+.spinnerLayer {
+}
+
+/* Clips an indeterminate SVG circle so that only a section of it is visible. */
+.circleClipper {
+}
+
+/* One of two circle sections that when combined are animated to form the full indeterminate progress indicator. */
+.circleLeft {
+}
+
+/* One of two circle sections that when combined are animated to form the full indeterminate progress indicator. */
+.circleRight {
+}
+
+/*  An indeterminate SVG (there are three of these in total). */
+.circleGraphic {
+}
+
+/* A tiny little sliver of an SVG circle used to patch a gap between the circle-left and the circle-right. */
+.gapPatch {
+}
+
+.small {
+	height: 24px;
+	width: 24px;
+}
+
+.medium {
+	height: 36px;
+	width: 36px;
+}
+
+.large {
+	height: 48px;
+	width: 48px;
 }
