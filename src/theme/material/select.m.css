@@ -28,7 +28,6 @@
 
 .disabled {
 	composes: mdc-select--disabled from '@material/select/dist/mdc.select.css';
-	background-color: var(--mdc-disabled-color);
 }
 
 .required {

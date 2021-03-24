@@ -18,11 +18,11 @@
 	composes: mdc-line-ripple from '@material/textfield/dist/mdc.textfield.css';
 }
 
-.root .wrapper {
+.root .wrapper:not(.disabled) {
 	background-color: var(--mdc-theme-on-surface);
 }
 
-.root:hover:not(.disabled) .wrapper {
+.root:hover .wrapper:not(.disabled) {
 	background-color: var(--mdc-theme-on-surface-hover);
 }
 
