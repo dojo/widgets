@@ -4,7 +4,7 @@ import * as css from '../theme/default/card.m.css';
 import theme from '../middleware/theme';
 
 export interface CardProperties {
-	onAction?: () => void;
+	onContentClick?: () => void;
 	mediaSrc?: string;
 	mediaTitle?: string;
 	square?: boolean;
@@ -27,7 +27,7 @@ const factory = create({ theme })
 export const Card = factory(function Card({ children, properties, middleware: { theme } }) {
 	const themeCss = theme.classes(css);
 	const {
-		onAction,
+		onContentClick,
 		mediaSrc,
 		mediaTitle,
 		square,
@@ -46,8 +46,8 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 			)}
 			<div
 				key="content"
-				classes={[themeCss.content, onAction ? themeCss.primary : null]}
-				onClick={() => onAction && onAction()}
+				classes={[themeCss.content, onContentClick ? themeCss.primary : null]}
+				onClick={() => onContentClick && onContentClick()}
 			>
 				{mediaSrc && (
 					<div

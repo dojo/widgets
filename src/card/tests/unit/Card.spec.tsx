@@ -36,15 +36,15 @@ describe('Card', () => {
 	});
 
 	describe('action', () => {
-		const onAction = spy();
-		const r = renderer(() => <Card onAction={onAction} />);
+		const onContentClick = spy();
+		const r = renderer(() => <Card onContentClick={onContentClick} />);
 
 		const actionTemplate = template.setProperty(Content, 'classes', [css.content, css.primary]);
 
 		r.expect(actionTemplate);
 		r.property(Content, 'onClick');
 		r.expect(actionTemplate);
-		assert.isTrue(onAction.calledOnce);
+		assert.isTrue(onContentClick.calledOnce);
 	});
 
 	describe('header', () => {

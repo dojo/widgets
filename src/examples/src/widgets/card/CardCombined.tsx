@@ -12,7 +12,7 @@ export default factory(function CardWithMediaContent() {
 		<Example>
 			<div styles={{ maxWidth: '400px' }}>
 				<Card
-					onAction={() => {}}
+					onContentClick={() => {}}
 					mediaSrc={mediaSrc}
 					title="Hello, World"
 					subtitle="A pretty picture"
