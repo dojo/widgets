@@ -591,11 +591,7 @@ registerSuite('TextInput', {
 		},
 
 		'leading property'() {
-			const leading = (
-				<span classes={css.leading}>
-					<span>A</span>
-				</span>
-			);
+			const leading = <span classes={css.leading}>A</span>;
 			const leadingTemplate = baseAssertion
 				.setProperty('@wrapper', 'classes', [
 					css.wrapper,
@@ -610,7 +606,7 @@ registerSuite('TextInput', {
 					css.noLabel
 				])
 				.prepend('@inputWrapper', () => [leading]);
-			const h = harness(() => <TextInput>{{ leading: <span>A</span> }}</TextInput>);
+			const h = harness(() => <TextInput>{{ leading: 'A' }}</TextInput>);
 			h.expect(leadingTemplate);
 		},
 

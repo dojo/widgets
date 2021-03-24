@@ -11,7 +11,7 @@ export default factory(function Basic() {
 				{{
 					label: 'Number Input',
 					leading: <span>$</span>,
-					trailing: <span>.00</span>
+					trailing: '00'
 				}}
 			</NumberInput>
 		</Example>

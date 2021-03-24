@@ -99,7 +99,6 @@
 	flex: 0 0 auto;
 	font-size: inherit;
 	line-height: var(--line-height-base);
-	/* padding: 0 var(--grid-base); */
 	padding: var(--grid-base);
 	box-sizing: border-box;
 }
