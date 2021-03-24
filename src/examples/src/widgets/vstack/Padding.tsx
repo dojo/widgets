@@ -1,7 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import Example from '../../Example';
-import VStack from '@dojo/widgets/vstack/VStack';
+import VStack from '@dojo/widgets/stack/VStack';
 
 const factory = create();
 

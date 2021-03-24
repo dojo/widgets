@@ -2,7 +2,7 @@ import { tsx, create, isWNode } from '@dojo/framework/core/vdom';
 import theme from '@dojo/framework/core/middleware/theme';
 import * as fixedCss from './styles/hstack.m.css';
 import * as css from '../theme/default/hstack.m.css';
-import Spacer from './../spacer/Spacer';
+import Spacer from './Spacer';
 
 export interface HStackProperties {
 	/**  */

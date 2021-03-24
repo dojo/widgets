@@ -1,8 +1,8 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import Example from '../../Example';
-import VStack from '@dojo/widgets/vstack/VStack';
-import Spacer from '@dojo/widgets/spacer/Spacer';
+import VStack from '@dojo/widgets/stack/VStack';
+import Spacer from '@dojo/widgets/stack/Spacer';
 import TextInput from '@dojo/widgets/text-input';
 
 const factory = create({});

@@ -2,7 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import icache from '@dojo/framework/core/middleware/icache';
 
 import Example from '../../Example';
-import HStack from '@dojo/widgets/hstack/HStack';
+import HStack from '@dojo/widgets/stack/HStack';
 import RadioGroup from '@dojo/widgets/radio-group';
 
 const factory = create({ icache });
