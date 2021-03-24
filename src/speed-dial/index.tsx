@@ -6,6 +6,8 @@ import * as css from '../theme/default/speed-dial.m.css';
 import * as fabCss from '../theme/default/floating-action-button.m.css';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import Icon, { IconType } from '../icon';
+import { RenderResult } from '@dojo/framework/core/interfaces';
+import { isRenderResult } from '../common/util';
 
 // Enum used to position the action label
 export enum LabelOrientation {
@@ -20,17 +22,23 @@ export interface ActionProperties {
 	onClick(): void;
 	/* Title text for the action */
 	title?: string;
-	/* Static label for the action */
-	label?: string;
 	/* Orientation for the label */
 	labelOrientation?: LabelOrientation;
 }
 
-const actionFactory = create({ theme }).properties<ActionProperties>();
+export interface ActionChildren {
+	/** The icon for the action */
+	icon?: RenderResult;
+	/* Static label for the action */
+	label?: RenderResult;
+}
+
+const actionFactory = create({ theme })
+	.properties<ActionProperties>()
+	.children<ActionChildren | [ActionChildren] | RenderResult | RenderResult[]>();
 
 export const Action = actionFactory(({ properties, children, middleware: { theme } }) => {
 	const {
-		label,
 		labelOrientation = LabelOrientation.left,
 		onClick,
 		title,
@@ -38,6 +46,10 @@ export const Action = actionFactory(({ properties, children, middleware: { theme
 		classes
 	} = properties();
 	const themedCss = theme.classes(css);
+	const [labelChild] = children();
+	const { label, icon = undefined } = isRenderResult(labelChild)
+		? { label: children() }
+		: labelChild;
 
 	const fab = (
 		<FloatingActionButton
@@ -54,7 +66,7 @@ export const Action = actionFactory(({ properties, children, middleware: { theme
 			classes={classes}
 			variant={variant}
 		>
-			{children()}
+			{icon}
 		</FloatingActionButton>
 	);
 
@@ -78,7 +90,7 @@ export const Action = actionFactory(({ properties, children, middleware: { theme
 
 		return (
 			<div classes={[themedCss.labelContainer, orientationClass]}>
-				<div classes={themedCss.label}>{label}</div>
+				<label classes={themedCss.label}>{label}</label>
 				{fab}
 			</div>
 		);

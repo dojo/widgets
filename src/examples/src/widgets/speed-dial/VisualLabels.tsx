@@ -12,36 +12,44 @@ export default factory(function VisualLabels({ middleware: { icache } }) {
 		<Example>
 			<SpeedDial>
 				<Action
-					label="Save"
 					onClick={() => {
 						icache.set('action', 'Save');
 					}}
 				>
-					<Icon type="starIcon" />
+					{{
+						label: 'Save',
+						icon: <Icon type="starIcon" />
+					}}
 				</Action>
 				<Action
-					label="Time"
 					onClick={() => {
 						icache.set('action', 'Timing');
 					}}
 				>
-					<Icon type="clockIcon" />
+					{{
+						label: 'Time',
+						icon: <Icon type="clockIcon" />
+					}}
 				</Action>
 				<Action
-					label="Look"
 					onClick={() => {
 						icache.set('action', 'Looking');
 					}}
 				>
-					<Icon type="eyeIcon" />
+					{{
+						label: 'Look',
+						icon: <Icon type="eyeIcon" />
+					}}
 				</Action>
 				<Action
-					label="Locate"
 					onClick={() => {
 						icache.set('action', 'Locating');
 					}}
 				>
-					<Icon type="locationIcon" />
+					{{
+						label: 'Locate',
+						icon: <Icon type="locationIcon" />
+					}}
 				</Action>
 			</SpeedDial>
 			<div>Last action: {action}</div>

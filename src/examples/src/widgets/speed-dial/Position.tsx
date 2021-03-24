@@ -11,7 +11,7 @@ type Directions = 'right' | 'left' | 'up' | 'down';
 export default factory(function Direction({ middleware: { icache } }) {
 	const position: SpeedDialPositions = icache.getOrSet('position', 'bottom-right');
 	const supportedDirections = getSupportedDirections(position);
-	let direction: Directions | undefined = icache.getOrSet('direction', 'left');
+	const direction: Directions | undefined = icache.getOrSet('direction', 'left');
 	return (
 		<Example>
 			<virtual>

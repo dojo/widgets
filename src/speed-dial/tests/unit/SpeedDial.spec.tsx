@@ -62,6 +62,59 @@ const baseTemplate = assertionTemplate(() => (
 	</div>
 ));
 
+const labelTemplate = assertionTemplate(() => (
+	<div
+		key="root"
+		classes={[undefined, css.root, fixCss.root, false, false, false, css.up, css.bottomRight]}
+		onmouseleave={noop}
+	>
+		<FloatingActionButton
+			key="trigger"
+			theme={{
+				'@dojo/widgets/floating-action-button': fabCss
+			}}
+			onOver={noop}
+			onClick={noop}
+			variant={undefined}
+			classes={undefined}
+		>
+			<Icon
+				size="large"
+				theme={undefined}
+				type="plusIcon"
+				variant={undefined}
+				classes={undefined}
+			/>
+		</FloatingActionButton>
+		<div key="actions" classes={[css.actions, undefined]} onpointerdown={noop}>
+			<div
+				key="action-wrapper-0"
+				styles={{ transitionDelay: '30ms' }}
+				classes={[css.action, css.actionTransition]}
+			>
+				<Action key="edit" onClick={noop}>
+					{{
+						icon: <Icon type="editIcon" />,
+						label: 'edit'
+					}}
+				</Action>
+			</div>
+			<div
+				key="action-wrapper-1"
+				styles={{ transitionDelay: '0ms' }}
+				classes={[css.action, css.actionTransition]}
+			>
+				<Action key="star" onClick={noop}>
+					{{
+						icon: <Icon type="starIcon" />,
+						label: 'star'
+					}}
+				</Action>
+			</div>
+		</div>
+	</div>
+));
+
 describe('SpeedDial', () => {
 	it('renders with actions', () => {
 		const h = harness(
@@ -84,50 +137,48 @@ describe('SpeedDial', () => {
 		const h = harness(
 			() => (
 				<SpeedDial>
-					<Action key="edit" onClick={noop} label="edit">
-						<Icon type="editIcon" />
+					<Action key="edit" onClick={noop}>
+						{{
+							label: 'edit',
+							icon: <Icon type="editIcon" />
+						}}
 					</Action>
-					<Action key="star" onClick={noop} label="star">
-						<Icon type="starIcon" />
+					<Action key="star" onClick={noop}>
+						{{
+							label: 'star',
+							icon: <Icon type="starIcon" />
+						}}
 					</Action>
 				</SpeedDial>
 			),
 			[compareTheme]
 		);
-		h.expect(
-			baseTemplate.setProperty('@edit', 'label', 'edit').setProperty('@star', 'label', 'star')
-		);
+		h.expect(labelTemplate);
 	});
 
 	it('renders actions with top-oriented labels', () => {
 		const h = harness(
 			() => (
 				<SpeedDial>
-					<Action
-						key="edit"
-						label="edit"
-						labelOrientation={LabelOrientation.top}
-						onClick={noop}
-					>
-						<Icon type="editIcon" />
+					<Action key="edit" labelOrientation={LabelOrientation.top} onClick={noop}>
+						{{
+							label: 'edit',
+							icon: <Icon type="editIcon" />
+						}}
 					</Action>
-					<Action
-						key="star"
-						label="star"
-						labelOrientation={LabelOrientation.top}
-						onClick={noop}
-					>
-						<Icon type="starIcon" />
+					<Action key="star" labelOrientation={LabelOrientation.top} onClick={noop}>
+						{{
+							label: 'star',
+							icon: <Icon type="starIcon" />
+						}}
 					</Action>
 				</SpeedDial>
 			),
 			[compareTheme]
 		);
 		h.expect(
-			baseTemplate
-				.setProperty('@edit', 'label', 'edit')
+			labelTemplate
 				.setProperty('@edit', 'labelOrientation', LabelOrientation.top)
-				.setProperty('@star', 'label', 'star')
 				.setProperty('@star', 'labelOrientation', LabelOrientation.top)
 		);
 	});
@@ -136,31 +187,25 @@ describe('SpeedDial', () => {
 		const h = harness(
 			() => (
 				<SpeedDial>
-					<Action
-						key="edit"
-						label="edit"
-						labelOrientation={LabelOrientation.right}
-						onClick={noop}
-					>
-						<Icon type="editIcon" />
+					<Action key="edit" labelOrientation={LabelOrientation.right} onClick={noop}>
+						{{
+							label: 'edit',
+							icon: <Icon type="editIcon" />
+						}}
 					</Action>
-					<Action
-						key="star"
-						label="star"
-						labelOrientation={LabelOrientation.right}
-						onClick={noop}
-					>
-						<Icon type="starIcon" />
+					<Action key="star" labelOrientation={LabelOrientation.right} onClick={noop}>
+						{{
+							label: 'star',
+							icon: <Icon type="starIcon" />
+						}}
 					</Action>
 				</SpeedDial>
 			),
 			[compareTheme]
 		);
 		h.expect(
-			baseTemplate
-				.setProperty('@edit', 'label', 'edit')
+			labelTemplate
 				.setProperty('@edit', 'labelOrientation', LabelOrientation.right)
-				.setProperty('@star', 'label', 'star')
 				.setProperty('@star', 'labelOrientation', LabelOrientation.right)
 		);
 	});
@@ -169,31 +214,25 @@ describe('SpeedDial', () => {
 		const h = harness(
 			() => (
 				<SpeedDial>
-					<Action
-						key="edit"
-						label="edit"
-						labelOrientation={LabelOrientation.bottom}
-						onClick={noop}
-					>
-						<Icon type="editIcon" />
+					<Action key="edit" labelOrientation={LabelOrientation.bottom} onClick={noop}>
+						{{
+							label: 'edit',
+							icon: <Icon type="editIcon" />
+						}}
 					</Action>
-					<Action
-						key="star"
-						label="star"
-						labelOrientation={LabelOrientation.bottom}
-						onClick={noop}
-					>
-						<Icon type="starIcon" />
+					<Action key="star" labelOrientation={LabelOrientation.bottom} onClick={noop}>
+						{{
+							label: 'star',
+							icon: <Icon type="starIcon" />
+						}}
 					</Action>
 				</SpeedDial>
 			),
 			[compareTheme]
 		);
 		h.expect(
-			baseTemplate
-				.setProperty('@edit', 'label', 'edit')
+			labelTemplate
 				.setProperty('@edit', 'labelOrientation', LabelOrientation.bottom)
-				.setProperty('@star', 'label', 'star')
 				.setProperty('@star', 'labelOrientation', LabelOrientation.bottom)
 		);
 	});
@@ -202,31 +241,25 @@ describe('SpeedDial', () => {
 		const h = harness(
 			() => (
 				<SpeedDial>
-					<Action
-						key="edit"
-						label="edit"
-						labelOrientation={LabelOrientation.left}
-						onClick={noop}
-					>
-						<Icon type="editIcon" />
+					<Action key="edit" labelOrientation={LabelOrientation.left} onClick={noop}>
+						{{
+							label: 'edit',
+							icon: <Icon type="editIcon" />
+						}}
 					</Action>
-					<Action
-						key="star"
-						label="star"
-						labelOrientation={LabelOrientation.left}
-						onClick={noop}
-					>
-						<Icon type="starIcon" />
+					<Action key="star" labelOrientation={LabelOrientation.left} onClick={noop}>
+						{{
+							label: 'star',
+							icon: <Icon type="starIcon" />
+						}}
 					</Action>
 				</SpeedDial>
 			),
 			[compareTheme]
 		);
 		h.expect(
-			baseTemplate
-				.setProperty('@edit', 'label', 'edit')
+			labelTemplate
 				.setProperty('@edit', 'labelOrientation', LabelOrientation.left)
-				.setProperty('@star', 'label', 'star')
 				.setProperty('@star', 'labelOrientation', LabelOrientation.left)
 		);
 	});
