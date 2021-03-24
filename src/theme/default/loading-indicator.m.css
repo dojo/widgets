@@ -59,16 +59,19 @@
 .gapPatch {
 }
 
+/* Small size for circular loader */
 .small {
 	height: 24px;
 	width: 24px;
 }
 
+/* Medium size for circular loader */
 .medium {
 	height: 36px;
 	width: 36px;
 }
 
+/* Large size for circular loader */
 .large {
 	height: 48px;
 	width: 48px;
