@@ -56,6 +56,10 @@
 	color: var(--mdc-disabled-text-color) !important;
 }
 
+.disabled .value:before {
+	border-bottom-style: solid !important;
+}
+
 .value::before {
 	border-bottom-color: var(--mdc-border-color) !important;
 }
