@@ -399,7 +399,7 @@ describe('Select', () => {
 		assert.isTrue(onValidate.calledWith(false));
 	});
 
-	it('calls onValidate on initial value', () => {
+	it('calls onValidate on initial value when required', () => {
 		const onValidate = stub();
 		const h = harness(() => (
 			<Select
