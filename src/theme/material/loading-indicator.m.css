@@ -25,3 +25,7 @@
 .inner {
 	composes: mdc-linear-progress__bar-inner from '@material/linear-progress/dist/mdc.linear-progress.css';
 }
+
+.circular {
+	composes: mdc-circular-progress--indeterminate from '@material/circular-progress/dist/mdc.circular-progress.css';
+}

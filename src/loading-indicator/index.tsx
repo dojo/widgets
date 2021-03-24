@@ -6,6 +6,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 export interface LoadingIndicatorProperties extends ThemedProperties {
 	/** If the element is actively loading. Defaults to true */
 	active?: boolean;
+	type?: 'linear' | 'circular';
 }
 
 const factory = create({ theme }).properties<LoadingIndicatorProperties>();
@@ -15,20 +16,40 @@ export const LoadingIndicator = factory(function LoadingIndicator({
 	middleware: { theme }
 }) {
 	const classes = theme.classes(css);
-	const { active = true } = properties();
+	const { active = true, type = 'linear' } = properties();
 
 	return (
-		<div
-			classes={[theme.variant(), classes.root, !active && classes.inactive]}
-			role="progressbar"
-		>
-			<div classes={classes.buffer} />
-			{active ? (
-				<div classes={[classes.bar, classes.primary]}>
-					<span classes={classes.inner} />
+		<virtual>
+			{type === 'linear' && (
+				<div
+					classes={[
+						theme.variant(),
+						classes.root,
+						!active && classes.inactive,
+						classes.linear
+					]}
+					role="progressbar"
+				>
+					<div classes={classes.buffer} />
+					{active ? (
+						<div classes={[classes.bar, classes.primary]}>
+							<span classes={classes.inner} />
+						</div>
+					) : null}
 				</div>
-			) : null}
-		</div>
+			)}
+			{type === 'circular' && (
+				<div
+					classes={[
+						theme.variant(),
+						classes.root,
+						!active && classes.inactive,
+						classes.circular
+					]}
+					role="loader"
+				/>
+			)}
+		</virtual>
 	);
 });
 

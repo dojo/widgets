@@ -1,10 +1,22 @@
 .root {
+}
+
+.linear {
 	background-color: var(--color-background-faded);
 	height: calc(var(--grid-base) / 2);
 	position: relative;
 	overflow: hidden;
 	font-family: var(--font-family);
 	width: 100%;
+}
+
+.circular {
+	border: 16px solid var(--color-background-faded);
+	border-radius: 50%;
+	border-top: 16px solid var(--color-background-inverted);
+	width: 120px;
+	height: 120px;
+	animation: spin 2s linear infinite;
 }
 
 .inactive {
@@ -35,5 +47,14 @@
 	}
 	100% {
 		left: 100%;
+	}
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
 	}
 }
