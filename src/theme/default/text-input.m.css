@@ -30,11 +30,11 @@
 /* Added when the contents of the TextInput are invalid */
 .invalid {
 }
-/* Root of the addon widget*/
-.addonRoot {
+/* Root of the leading wrapper*/
+.leading {
 }
-/* Optional class to render addon filled */
-.addonFilled {
+/* Root of the trailing wrapper*/
+.trailing {
 }
 /* Added to the wrapper when there is leading content */
 .hasLeading {

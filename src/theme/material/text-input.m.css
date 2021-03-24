@@ -57,21 +57,21 @@
 .invalid {
 }
 /* Contains leading content */
-.addonRoot {
+.leading,
+.trailing {
 	composes: mdc-text-field__icon from '@material/textfield/dist/mdc.textfield.css';
 }
-.root .addonRoot {
+.root .leading,
+.root .trailing {
 	color: var(--mdc-secondary-text-color);
 }
 
-.hasLeading.hasTrailing .addonRoot,
-.hasLeading .addonRoot {
+.leading {
 	left: 16px;
 	right: auto;
 }
 
-.hasLeading.hasTrailing .addonRoot ~ .addonRoot,
-.hasTrailing .addonRoot {
+.trailing {
 	right: 12px;
 	left: auto;
 }
