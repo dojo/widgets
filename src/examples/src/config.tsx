@@ -327,18 +327,8 @@ export const config: Config = {
 		{ label: 'default', theme: { theme: {} } }
 	],
 	tests,
-	readmePath: (widget: string) => {
-		if (widget === 'vstack' || widget === 'hstack') {
-			widget = 'stack';
-		}
-		return `src/${widget}/README.md`;
-	},
-	widgetPath: (widget: string, filename: string) => {
-		if (widget === 'vstack' || widget === 'hstack') {
-			widget = 'stack';
-		}
-		return `src/${widget}/${filename || 'index'}.tsx`;
-	},
+	readmePath: (widget: string) => `src/${widget}/README.md`,
+	widgetPath: (widget: string, filename: string) => `src/${widget}/${filename || 'index'}.tsx`,
 	examplePath: (widget: string, filename: string) =>
 		`src/examples/src/widgets/${widget}/${filename || 'index'}.tsx`,
 	codesandboxPath: (widget: string, filename: string, themeName?: string) => {
