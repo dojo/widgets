@@ -16,6 +16,10 @@
 	font-family: var(--font-family);
 }
 
+.root:focus {
+	outline: none;
+}
+
 .iconOnly {
 	min-width: 0;
 }
@@ -29,7 +33,6 @@
 .pressed {
 	background-color: var(--color-highlight);
 	border-color: var(--color-highlight);
-	color: var(--color-text-inverted);
 }
 
 .label {
@@ -37,6 +40,10 @@
 }
 
 .root:hover .label {
+	color: var(--color-text-inverted);
+}
+
+.pressed .label {
 	color: var(--color-text-inverted);
 }
 
