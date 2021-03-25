@@ -1,6 +1,5 @@
 .root {
 	display: flex;
-	flex: 1 1 auto;
 	flex-direction: column;
 	width: 100%;
 }
@@ -19,6 +18,12 @@
 
 .right {
 	align-items: flex-end;
+}
+
+.child {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 }
 
 .child:last-child {

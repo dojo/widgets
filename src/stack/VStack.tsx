@@ -70,19 +70,11 @@ export const VStack = factory(function VStack({ properties, middleware: { theme 
 		if (isWNode(child) && spacer.widgetConstructor === child.widgetConstructor) {
 			return child;
 		}
-		return <div classes={[spacingClass, fixedCss.child]}>{child}</div>;
+		return <div classes={[spacingClass, alignClass, fixedCss.child]}>{child}</div>;
 	});
 
 	return (
-		<div
-			classes={[
-				theme.variant(),
-				fixedCss.root,
-				alignClass,
-				paddingClass,
-				stretch && fixedCss.stretch
-			]}
-		>
+		<div classes={[theme.variant(), fixedCss.root, paddingClass, stretch && fixedCss.stretch]}>
 			{wrappedChildren}
 		</div>
 	);

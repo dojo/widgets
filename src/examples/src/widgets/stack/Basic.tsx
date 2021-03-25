@@ -18,8 +18,7 @@ const Box = factory(function Box() {
 				background: `#${Math.floor(Math.random() * 16777215)
 					.toString(16)
 					.padStart(6, '0')}`,
-				minWidth: '25px',
-				width: '100%',
+				width: '25px',
 				height: '25px'
 			}}
 		/>
