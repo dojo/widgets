@@ -37,7 +37,7 @@ const actionFactory = create({ theme })
 	.properties<ActionProperties>()
 	.children<ActionChildren | [ActionChildren] | RenderResult | RenderResult[]>();
 
-export const Action = actionFactory(({ properties, children, middleware: { theme } }) => {
+export const Action = actionFactory(({ properties, id, children, middleware: { theme } }) => {
 	const {
 		labelOrientation = LabelOrientation.left,
 		onClick,
@@ -47,6 +47,7 @@ export const Action = actionFactory(({ properties, children, middleware: { theme
 	} = properties();
 	const themedCss = theme.classes(css);
 	const [labelChild] = children();
+	const labelId = `${id}-label`;
 	const { label, icon = undefined } = isRenderResult(labelChild)
 		? { label: children() }
 		: labelChild;
@@ -65,6 +66,13 @@ export const Action = actionFactory(({ properties, children, middleware: { theme
 			}}
 			classes={classes}
 			variant={variant}
+			aria={
+				label
+					? {
+							'aria-describedby': labelId
+					  }
+					: undefined
+			}
 		>
 			{icon}
 		</FloatingActionButton>
@@ -90,7 +98,9 @@ export const Action = actionFactory(({ properties, children, middleware: { theme
 
 		return (
 			<div classes={[themedCss.labelContainer, orientationClass]}>
-				<label classes={themedCss.label}>{label}</label>
+				<label classes={themedCss.label} id={labelId}>
+					{label}
+				</label>
 				{fab}
 			</div>
 		);
