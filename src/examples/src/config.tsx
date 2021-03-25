@@ -106,7 +106,8 @@ import FillList from './widgets/list/Fill';
 import DividedList from './widgets/list/Dividers';
 import ControlledList from './widgets/list/Controlled';
 import ItemRenderer from './widgets/list/ItemRenderer';
-import ListItemRenderer from './widgets/list/ListItemRenderer';
+import ListItem from './widgets/list/ListItem';
+import TwoLineListItem from './widgets/list/TwoLineListItem';
 import FetchedResource from './widgets/list/FetchedResource';
 import DisabledList from './widgets/list/Disabled';
 import DraggableList from './widgets/list/Draggable';
@@ -1072,9 +1073,14 @@ export const config = {
 					title: 'Item Renderer'
 				},
 				{
-					filename: 'ListItemRenderer',
-					module: ListItemRenderer,
-					title: 'ListItem Renderer'
+					filename: 'ListItem',
+					module: ListItem,
+					title: 'Single Line ListItem'
+				},
+				{
+					filename: 'TwoLineListItem',
+					module: TwoLineListItem,
+					title: 'Two Line ListItem'
 				},
 				{
 					description:

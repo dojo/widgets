@@ -9,6 +9,13 @@
 	position: relative;
 }
 
+.height {
+}
+
+/* Added to ListItem with primary and secondary text */
+.twoLine {
+}
+
 /* Added to selected items */
 .selected {
 	background: lightgrey;
@@ -55,11 +62,11 @@
 .dragIcon {
 }
 
-/* Wrapper for the main content of the item */
-.primary {
+/* Wrapper for the main text of the item */
+.text {
 }
 
-/* Wrapper for the secondary content of the item */
+/* Wrapper for the secondary text of the item */
 .secondary {
 }
 
@@ -69,29 +76,4 @@
 
 /* Wrapper for the trailing content after the primary content*/
 .trailing {
-}
-
-/* Extra small list item height, suitable for text only */
-.extraSmall {
-	height: 48px;
-}
-
-/* Small list item height, suitable for displaying icons and avatars */
-.small {
-	height: 56px;
-}
-
-/* Large list item height, suitable for displaying two lines of text */
-.medium {
-	height: 64px;
-}
-
-/* Large list item height, suitable for displaying two lines of text */
-.large {
-	height: 72px;
-}
-
-/* Extra large list item height, suitable for displaying three lines of text */
-.extraLarge {
-	height: 88px;
 }

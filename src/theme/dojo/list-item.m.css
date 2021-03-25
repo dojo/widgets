@@ -56,10 +56,6 @@
 }
 
 .text {
-	color: red;
-}
-
-.primary {
 	flex-grow: 1;
 }
 
@@ -75,24 +71,4 @@
 
 .trailing {
 	margin-left: var(--grid-base);
-}
-
-.extraSmall {
-	height: calc(6 * var(--grid-base));
-}
-
-.small {
-	height: calc(7 * var(--grid-base));
-}
-
-.medium {
-	height: calc(8 * var(--grid-base));
-}
-
-.large {
-	height: calc(9 * var(--grid-base));
-}
-
-.extraLarge {
-	height: calc(11 * var(--grid-base));
 }

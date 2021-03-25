@@ -103,8 +103,6 @@ export interface ListItemProperties {
 	onDrop?: (event: DragEvent) => void;
 	/** Determines if this item is visually collapsed during DnD */
 	collapsed?: boolean;
-	/** Height of list item. Defaults to 'medium' if secondary text is passed or 'small' otherwise. */
-	height?: 'extraSmall' | 'small' | 'medium' | 'large' | 'extraLarge';
 }
 
 export interface ListItemChildren {
@@ -136,7 +134,6 @@ export const ListItem = listItemFactory(function ListItem({
 		widgetId,
 		draggable,
 		dragged,
-		height,
 		onDragStart,
 		onDragEnd,
 		onDragOver,
@@ -165,19 +162,6 @@ export const ListItem = listItemFactory(function ListItem({
 		secondary = undefined,
 		trailing = undefined
 	} = isRenderResult(firstChild) ? { primary: [firstChild, ...otherChildren] } : firstChild;
-	const size = height || (secondary ? 'medium' : 'small');
-	const sizeStyle =
-		size === 'extraSmall'
-			? themedCss.extraSmall
-			: size === 'small'
-			? themedCss.small
-			: size === 'medium'
-			? themedCss.medium
-			: size === 'large'
-			? themedCss.large
-			: size === 'extraLarge'
-			? themedCss.extraLarge
-			: undefined;
 
 	return (
 		<div
@@ -189,7 +173,8 @@ export const ListItem = listItemFactory(function ListItem({
 			classes={[
 				theme.variant(),
 				themedCss.root,
-				sizeStyle,
+				themedCss.height,
+				Boolean(secondary) && themedCss.twoLine,
 				selected && themedCss.selected,
 				active && themedCss.active,
 				disabled && themedCss.disabled,
@@ -215,7 +200,7 @@ export const ListItem = listItemFactory(function ListItem({
 			styles={{ visibility: dragged ? 'hidden' : undefined }}
 		>
 			{leading ? <span classes={themedCss.leading}>{leading}</span> : undefined}
-			<span classes={themedCss.primary}>
+			<span classes={themedCss.text}>
 				{primary}
 				{secondary ? <span classes={themedCss.secondary}>{secondary}</span> : undefined}
 			</span>
