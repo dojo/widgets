@@ -2125,7 +2125,6 @@ export const config: Config = {
 			}
 		},
 		stack: {
-			filename: 'Stack',
 			overview: {
 				example: {
 					filename: 'Basic',

@@ -1,3 +1,5 @@
+export const vertical: string;
+export const horizontal: string;
 export const smallSpacing: string;
 export const mediumSpacing: string;
 export const largeSpacing: string;

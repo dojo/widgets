@@ -1,0 +1,70 @@
+.root {
+	display: flex;
+}
+
+.vertical {
+	flex-direction: column;
+	width: 100%;
+}
+
+.horizontal {
+	flex-direction: row;
+	justify-content: center;
+	height: 100%;
+}
+
+.vertical.stretch {
+	height: 100%;
+}
+
+.horizontal.stretch {
+	width: 100%;
+}
+
+.vertical > .child.start {
+	align-items: flex-start;
+}
+
+.vertical > .child.middle {
+	align-items: center;
+}
+
+.vertical > .child.end {
+	align-items: flex-end;
+}
+
+.horizontal.start {
+	align-items: flex-start;
+}
+
+.horizontal.middle {
+	align-items: center;
+}
+
+.horizontal.end {
+	align-items: flex-end;
+}
+
+.vertical > .child {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	align-items: stretch;
+}
+
+.horizontal.stretch > .child {
+	width: 100%;
+}
+
+.vertical > .child:last-child {
+	margin-bottom: 0;
+	margin-bottom: auto;
+}
+
+.vertical > .child:first-child {
+	margin-top: auto;
+}
+
+.horizontal > .child:last-child {
+	margin-right: 0;
+}

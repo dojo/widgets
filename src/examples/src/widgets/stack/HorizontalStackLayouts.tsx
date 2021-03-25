@@ -1,8 +1,7 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 
 import Example from '../../Example';
-import Stack from '@dojo/widgets/stack/Stack';
-import Spacer from '@dojo/widgets/stack/Spacer';
+import Stack, { Spacer } from '@dojo/widgets/stack';
 
 const factory = create();
 

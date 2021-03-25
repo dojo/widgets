@@ -1,0 +1,67 @@
+/* Class set when in vertical mode */
+.vertical {
+}
+
+/* Class set when in horizontal mode */
+.horizontal {
+}
+
+/* Defines the small spacing size */
+.horizontal > .smallSpacing {
+	margin-right: 8px;
+}
+
+/* Defines the medium spacing size */
+.horizontal > .mediumSpacing {
+	margin-right: 12px;
+}
+
+/* Defines the large spacing size */
+.horizontal > .largeSpacing {
+	margin-right: 16px;
+}
+
+/* Defines the small padding size */
+.horizontal.smallPadding {
+	padding: 8px;
+}
+
+/* Defines the medium padding size */
+.horizontal.mediumPadding {
+	padding: 12px;
+}
+
+/* Defines the large padding size */
+.horizontal.largePadding {
+	padding: 16px;
+}
+
+/* Defines the small spacing size */
+.vertical > .smallSpacing {
+	margin-bottom: 8px;
+}
+
+/* Defines the medium spacing size */
+.vertical > .mediumSpacing {
+	margin-bottom: 12px;
+}
+
+/* Defines the large spacing size */
+.vertical > .largeSpacing {
+	margin-bottom: 16px;
+}
+
+/* Defines the small padding size */
+.vertical.smallPadding {
+	padding: 8px;
+}
+
+/* Defines the medium padding size */
+.vertical.mediumPadding {
+	padding: 12px;
+}
+
+/* Defines the large padding size */
+.vertical.largePadding {
+	padding: 16px;
+}

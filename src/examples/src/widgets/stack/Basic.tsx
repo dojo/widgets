@@ -2,7 +2,7 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 
 import Example from '../../Example';
-import Stack, { StackProperties } from '@dojo/widgets/stack/Stack';
+import Stack, { StackProperties } from '@dojo/widgets/stack';
 import RadioGroup from '@dojo/widgets/radio-group';
 import Checkbox from '@dojo/widgets/checkbox';
 import Spacer from '@dojo/widgets/stack/Spacer';
