@@ -40,6 +40,7 @@
 	padding: 0 1rem 8px;
 	color: var(--mdc-text-secondary-color);
 	composes: mdc-typography mdc-typography--body2 from '@material/typography/dist/mdc.typography.css';
+	height: 100%;
 }
 
 .textWrapper:first-child {

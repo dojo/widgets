@@ -87,6 +87,7 @@
 
 .contentWrapper {
 	padding: 0 calc(2 * var(--grid-base)) var(--grid-base);
+	height: 100%;
 }
 
 .title {

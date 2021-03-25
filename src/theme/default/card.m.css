@@ -29,6 +29,7 @@
 
 /* Wrapper around the content child */
 .contentWrapper {
+	height: 100%;
 }
 
 /* The wrapper around the header content area */
