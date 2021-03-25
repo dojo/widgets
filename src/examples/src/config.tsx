@@ -246,6 +246,8 @@ import LeadingHeader from './widgets/header/Leading';
 import StickyHeader from './widgets/header/Sticky';
 import TrailingHeader from './widgets/header/Trailing';
 import BasicStack from './widgets/stack/Basic';
+import VStackLayouts from './widgets/stack/VerticalStackLayouts';
+import HStackLayouts from './widgets/stack/HorizontalStackLayouts';
 import BasicRate from './widgets/rate/Basic';
 import HalfRate from './widgets/rate/AllowHalf';
 import ControlledRate from './widgets/rate/Controlled';
@@ -2139,7 +2141,19 @@ export const config: Config = {
 					filename: 'Basic',
 					module: BasicStack
 				}
-			}
+			},
+			examples: [
+				{
+					filename: 'VerticalStackLayouts',
+					module: VStackLayouts,
+					title: 'Vertical Stack Layouts'
+				},
+				{
+					filename: 'HorizontalStackLayouts',
+					module: HStackLayouts,
+					title: 'Horizontal Stack Layouts'
+				}
+			]
 		},
 		wizard: {
 			overview: {

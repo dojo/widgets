@@ -21,7 +21,7 @@
 	align-items: flex-end;
 }
 
-.stretch .child {
+.stretch > .child {
 	width: 100%;
 }
 
