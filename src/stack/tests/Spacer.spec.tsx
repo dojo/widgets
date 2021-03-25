@@ -5,16 +5,20 @@ import { renderer, assertion } from '@dojo/framework/testing/renderer';
 import Spacer from '../Spacer';
 import * as css from '../styles/spacer.m.css';
 
-describe('Stacks - Spacer', () => {
-	it('Default Render', () => {
+describe('Stacks - Spacer Rendering', () => {
+	it('Default', () => {
 		const r = renderer(() => <Spacer />);
-		const expectedAssertion = assertion(() => <div classes={[css.root, css.normal]} />);
+		const expectedAssertion = assertion(() => (
+			<div styles={{ flex: '1' }} classes={[css.root]} />
+		));
 		r.expect(expectedAssertion);
 	});
 
-	it('Double size', () => {
-		const r = renderer(() => <Spacer size="double" />);
-		const expectedAssertion = assertion(() => <div classes={[css.root, css.double]} />);
+	it('With Span', () => {
+		const r = renderer(() => <Spacer span={2} />);
+		const expectedAssertion = assertion(() => (
+			<div styles={{ flex: '2' }} classes={[css.root]} />
+		));
 		r.expect(expectedAssertion);
 	});
 });
