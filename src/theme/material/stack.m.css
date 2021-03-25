@@ -8,17 +8,17 @@
 
 /* Defines the small spacing size */
 .horizontal > .smallSpacing {
-	margin-right: var(--mdc-vstack-spacing-small);
+	margin-right: var(--mdc-hstack-spacing-small);
 }
 
 /* Defines the medium spacing size */
 .horizontal > .mediumSpacing {
-	margin-right: var(--mdc-vstack-spacing-medium);
+	margin-right: var(--mdc-hstack-spacing-medium);
 }
 
 /* Defines the large spacing size */
 .horizontal > .largeSpacing {
-	margin-right: var(--mdc-vstack-spacing-large);
+	margin-right: var(--mdc-hstack-spacing-large);
 }
 
 /* Defines the small padding size */
