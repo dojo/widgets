@@ -27,7 +27,7 @@ const Box = factory(function Box() {
 
 export default factory(function Basic({ middleware: { icache } }) {
 	const stretch = icache.get('stretch');
-	const align = icache.getOrSet('align', 'middle');
+	const align = icache.get('align');
 	const padding = icache.get('padding');
 	const spacing = icache.get('spacing');
 	const direction = icache.getOrSet('direction', 'horizontal');
@@ -57,7 +57,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 							}
 						}}
 						options={[
-							{ value: '', label: 'None' },
+							{ value: '', label: 'none' },
 							{ value: 'small' },
 							{ value: 'medium' },
 							{ value: 'large' }
@@ -70,9 +70,18 @@ export default factory(function Basic({ middleware: { icache } }) {
 						value={align}
 						name="align"
 						onValue={(value: any) => {
-							icache.set('align', value);
+							if (!value) {
+								icache.delete('align');
+							} else {
+								icache.set('align', value);
+							}
 						}}
-						options={[{ value: 'start' }, { value: 'middle' }, { value: 'end' }]}
+						options={[
+							{ value: '', label: 'none' },
+							{ value: 'start' },
+							{ value: 'middle' },
+							{ value: 'end' }
+						]}
 					>
 						{{ label: 'Alignment' }}
 					</RadioGroup>
@@ -88,7 +97,7 @@ export default factory(function Basic({ middleware: { icache } }) {
 							}
 						}}
 						options={[
-							{ value: '', label: 'None' },
+							{ value: '', label: 'none' },
 							{ value: 'small' },
 							{ value: 'medium' },
 							{ value: 'large' }

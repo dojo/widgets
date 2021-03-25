@@ -3,6 +3,12 @@ import theme from '../middleware/theme';
 import * as fixedCss from './styles/vstack.m.css';
 import * as css from '../theme/default/vstack.m.css';
 import Spacer from './Spacer';
+import {
+	DNode,
+	WNodeFactory,
+	OptionalWNodeFactory,
+	DefaultChildrenWNodeFactory
+} from '@dojo/framework/core/interfaces';
 
 export interface VStackProperties {
 	/** The sets the horizontal alignment of the stack */
@@ -15,7 +21,13 @@ export interface VStackProperties {
 	stretch?: boolean;
 }
 
-const spacer = <Spacer />;
+function typeOf(
+	node: DNode,
+	factory: WNodeFactory<any> | OptionalWNodeFactory<any> | DefaultChildrenWNodeFactory<any>
+) {
+	const compareTo = factory({}, []);
+	return isWNode(node) && compareTo.widgetConstructor === node.widgetConstructor;
+}
 
 const factory = create({ theme }).properties<VStackProperties>();
 
@@ -67,7 +79,7 @@ export const VStack = factory(function VStack({ properties, middleware: { theme 
 	}
 
 	const wrappedChildren = children().map((child) => {
-		if (isWNode(child) && spacer.widgetConstructor === child.widgetConstructor) {
+		if (typeOf(child, Spacer)) {
 			return child;
 		}
 		return <div classes={[spacingClass, alignClass, fixedCss.child]}>{child}</div>;

@@ -3,6 +3,12 @@ import theme from '../middleware/theme';
 import * as fixedCss from './styles/hstack.m.css';
 import * as css from '../theme/default/hstack.m.css';
 import Spacer from './Spacer';
+import {
+	DNode,
+	WNodeFactory,
+	OptionalWNodeFactory,
+	DefaultChildrenWNodeFactory
+} from '@dojo/framework/core/interfaces';
 
 export interface HStackProperties {
 	/** The vertical alignment of the stack */
@@ -17,7 +23,13 @@ export interface HStackProperties {
 
 const factory = create({ theme }).properties<HStackProperties>();
 
-const spacer = <Spacer />;
+function typeOf(
+	node: DNode,
+	factory: WNodeFactory<any> | OptionalWNodeFactory<any> | DefaultChildrenWNodeFactory<any>
+) {
+	const compareTo = factory({}, []);
+	return isWNode(node) && compareTo.widgetConstructor === node.widgetConstructor;
+}
 
 export const HStack = factory(function HStack({ properties, middleware: { theme }, children }) {
 	const { align, spacing, padding = false, stretch = false } = properties();
@@ -67,11 +79,8 @@ export const HStack = factory(function HStack({ properties, middleware: { theme 
 	}
 
 	const wrappedChildren = children().map((child) => {
-		if (isWNode(child) && spacer.widgetConstructor === child.widgetConstructor) {
+		if (typeOf(child, Spacer)) {
 			return child;
-		}
-		if (!child) {
-			return null;
 		}
 		return <div classes={[spacingClass, fixedCss.child]}>{child}</div>;
 	});
