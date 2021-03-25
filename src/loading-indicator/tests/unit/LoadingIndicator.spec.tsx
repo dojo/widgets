@@ -90,7 +90,7 @@ describe('LoadingIndicator', () => {
 	});
 
 	it('renders circular loader', () => {
-		const h = harness(() => <LoadingIndicator type={'circular'} />);
+		const h = harness(() => <LoadingIndicator type={'circular-small'} />);
 		h.expect(circularTemplate);
 	});
 
@@ -109,7 +109,7 @@ describe('LoadingIndicator', () => {
 	});
 
 	it('renders large circular loader', () => {
-		const h = harness(() => <LoadingIndicator type={'circular'} size={'large'} />);
+		const h = harness(() => <LoadingIndicator type={'circular-large'} />);
 		h.expect(
 			circularTemplate.setProperty('~root', 'classes', [
 				undefined,

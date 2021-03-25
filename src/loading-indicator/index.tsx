@@ -7,10 +7,10 @@ export interface LoadingIndicatorProperties extends ThemedProperties {
 	/** If the element is actively loading. Defaults to true */
 	active?: boolean;
 	/* Sets loader type to linear or circular */
-	type?: 'linear' | 'circular';
-	/* Size of circular loader */
-	size?: 'small' | 'medium' | 'large';
+	type?: 'linear' | 'circular-small' | 'circular-medium' | 'circular-large';
 }
+
+const typeExp = /^([a-zA-Z]+)(?:[\-]{1})([a-zA-Z]+$)/;
 
 const factory = create({ theme }).properties<LoadingIndicatorProperties>();
 
@@ -19,12 +19,15 @@ export const LoadingIndicator = factory(function LoadingIndicator({
 	middleware: { theme }
 }) {
 	const classes = theme.classes(css);
-	const { active = true, type = 'linear', size = 'small' } = properties();
+	const { active = true, type = 'linear' } = properties();
+
+	const [loadingType, size = 'small'] =
+		typeExp.exec(type) === null ? [type] : (typeExp.exec(type) as RegExpExecArray).slice(1);
 
 	const sizeClass = size && classes[size as keyof typeof classes];
 	return (
 		<virtual>
-			{type === 'linear' && (
+			{loadingType === 'linear' && (
 				<div
 					classes={[
 						theme.variant(),
@@ -42,7 +45,7 @@ export const LoadingIndicator = factory(function LoadingIndicator({
 					) : null}
 				</div>
 			)}
-			{type === 'circular' && (
+			{loadingType === 'circular' && (
 				<div
 					classes={[
 						theme.variant(),
