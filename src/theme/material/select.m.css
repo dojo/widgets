@@ -4,8 +4,8 @@
 	flex-direction: column;
 }
 
-.root:not(.disabled) .trigger {
-	background-color: var(--mdc-theme-on-surface);
+.root .trigger {
+	background-color: var(--mdc-theme-on-surface) !important;
 }
 
 .root:hover:not(.disabled) .trigger {
@@ -28,7 +28,6 @@
 
 .disabled {
 	composes: mdc-select--disabled from '@material/select/dist/mdc.select.css';
-	background-color: var(--mdc-disabled-color);
 }
 
 .required {
@@ -43,6 +42,10 @@
 	outline: none;
 }
 
+.root .trigger {
+	display: flex;
+}
+
 .value {
 	composes: mdc-select__selected-text mdc-line-ripple from '@material/select/dist/mdc.select.css';
 	text-align: left;
@@ -51,6 +54,10 @@
 
 .disabled .value {
 	color: var(--mdc-disabled-text-color) !important;
+}
+
+.disabled .value:before {
+	border-bottom-style: solid !important;
 }
 
 .value::before {
@@ -66,14 +73,14 @@
 }
 
 .labelRoot {
+	composes: root from './label.m.css';
 	composes: mdc-floating-label from '@material/select/dist/mdc.select.css';
 	z-index: 10;
-	color: var(--mdc-secondary-text-color) !important;
 }
 
 .labelActive {
-	composes: mdc-floating-label--float-above from '@material/textfield/dist/mdc.textfield.css';
-	color: var(--mdc-theme-primary) !important;
+	composes: active from './label.m.css';
+	composes: mdc-floating-label--float-above from '@material/select/dist/mdc.select.css';
 }
 
 .root .labelActive {

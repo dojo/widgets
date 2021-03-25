@@ -1,16 +1,15 @@
 .root {
 	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
-	background-color: var(--mdc-theme-on-surface) !important;
 	height: auto !important;
 	display: block !important;
 }
 
-.focused {
-	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';
+.disabled {
+	composes: mdc-text-field--disabled from '@material/textfield/dist/mdc.textfield.css';
 }
 
-.root:hover:not(.disabled) {
-	background-color: var(--mdc-theme-on-surface-hover) !important;
+.focused {
+	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';
 }
 
 .value {

@@ -172,6 +172,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 					}
 				}}
 				variant={variant}
+				disabled={disabled}
 				onClose={
 					disabled
 						? undefined
@@ -199,6 +200,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 			key="root"
 			classes={[
 				theme.variant(),
+				disabled ? themeCss.disabled : null,
 				themeCss.root,
 				selectedOptions.length > 0 ? themeCss.hasValue : null,
 				focused ? themeCss.focused : null,
@@ -208,6 +210,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 			{label && (
 				<Label
 					focused={focused}
+					disabled={disabled}
 					active={active}
 					theme={theme.compose(
 						labelCss,

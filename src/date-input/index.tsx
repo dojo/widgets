@@ -248,6 +248,7 @@ export default factory(function({
 										trailing: (
 											<button
 												key="dateIcon"
+												disabled={disabled}
 												onclick={(e) => {
 													e.stopPropagation();
 													openCalendar();

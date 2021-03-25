@@ -22,7 +22,7 @@
 	background-color: var(--mdc-theme-on-surface);
 }
 
-.root:hover:not(.disabled) .wrapper {
+.root:hover .wrapper:not(.disabled) {
 	background-color: var(--mdc-theme-on-surface-hover);
 }
 

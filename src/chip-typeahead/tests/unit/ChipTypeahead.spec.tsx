@@ -30,7 +30,7 @@ const animalOptions: ListOption[] = [
 ];
 
 const baseAssertion = assertionTemplate(() => (
-	<div key="root" classes={[undefined, themeCss.root, null, null, null]}>
+	<div key="root" classes={[undefined, null, themeCss.root, null, null, null]}>
 		<Typeahead
 			strict={undefined}
 			key="typeahead"
@@ -67,16 +67,27 @@ const baseAssertion = assertionTemplate(() => (
 
 const hasValueAssertion = baseAssertion.setProperty('@root', 'classes', [
 	undefined,
+	null,
 	themeCss.root,
 	themeCss.hasValue,
 	null,
 	null
 ]);
 
-const disabledAssertion = hasValueAssertion.setProperty('@typeahead', 'disabled', true);
+const disabledAssertion = hasValueAssertion
+	.setProperty('@typeahead', 'disabled', true)
+	.setProperty('@root', 'classes', [
+		undefined,
+		themeCss.disabled,
+		themeCss.root,
+		themeCss.hasValue,
+		null,
+		null
+	]);
 
 const focusedAssertion = baseAssertion.setProperty('@root', 'classes', [
 	undefined,
+	null,
 	themeCss.root,
 	null,
 	themeCss.focused,
@@ -87,6 +98,7 @@ const bottomAssertion = hasValueAssertion.insertAfter('@typeahead', () => [
 	<div classes={themeCss.values}>
 		<Chip
 			theme={{ '@dojo/widgets/chip': chipCss }}
+			disabled={undefined}
 			key="value-2"
 			classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 			onClose={stub}
@@ -98,9 +110,17 @@ const bottomAssertion = hasValueAssertion.insertAfter('@typeahead', () => [
 ]);
 
 const labeledAssertion = baseAssertion
-	.setProperty('@root', 'classes', [undefined, themeCss.root, null, null, themeCss.hasLabel])
+	.setProperty('@root', 'classes', [
+		undefined,
+		null,
+		themeCss.root,
+		null,
+		null,
+		themeCss.hasLabel
+	])
 	.insertBefore('@typeahead', () => [
 		<Label
+			disabled={undefined}
 			focused={false}
 			active={false}
 			theme={{ '@dojo/widgets/Label': labelCss }}
@@ -148,6 +168,7 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
+						disabled={undefined}
 						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
@@ -184,6 +205,7 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
+						disabled={undefined}
 						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
@@ -206,6 +228,7 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
+						disabled={undefined}
 						key="value-1"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
@@ -238,6 +261,7 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
+						disabled={undefined}
 						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
@@ -304,6 +328,7 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
+						disabled={undefined}
 						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={stub}
@@ -439,6 +464,7 @@ registerSuite('ChipTypeahead', {
 				() => [
 					<Chip
 						theme={{ '@dojo/widgets/chip': chipCss }}
+						disabled={true}
 						key="value-2"
 						classes={{ '@dojo/widgets/chip': { root: [themeCss.value] } }}
 						onClose={undefined}
