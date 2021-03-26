@@ -70,4 +70,8 @@
 	--tab-button-color: var(--color-text-faded);
 	--tab-button-active-color: var(--color-highlight);
 	--tab-button-disabled-color: var(--color-border);
+
+	--loader-size-small: 24px;
+	--loader-size-medium: 36px;
+	--loader-size-large: 48px;
 }
