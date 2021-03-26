@@ -5,7 +5,7 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { radioGroup } from './middleware';
 
-type RadioOptions = { value: string; label?: string }[];
+type RadioOptions = { value: string; label?: string; disabled?: boolean }[];
 
 export interface RadioGroupProperties {
 	/** Initial value of the radio group */
@@ -57,7 +57,7 @@ export const RadioGroup = factory(function({
 		if (radios) {
 			return radios(name, radio, options);
 		}
-		return options.map(({ value, label }) => {
+		return options.map(({ value, label, disabled }) => {
 			const { checked } = radio(value);
 			return (
 				<Radio
@@ -68,6 +68,7 @@ export const RadioGroup = factory(function({
 					theme={themeCss}
 					classes={classes}
 					variant={variant}
+					disabled={disabled}
 				>
 					{label || value}
 				</Radio>

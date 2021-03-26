@@ -146,6 +146,7 @@ import BasicRadioGroup from './widgets/radio-group/Basic';
 import ControlledRadioGroup from './widgets/radio-group/Basic';
 import CustomLabelRadioGroup from './widgets/radio-group/CustomLabel';
 import CustomRendererRadioGroup from './widgets/radio-group/CustomRenderer';
+import DisabledRadioGroup from './widgets/radio-group/Disabled';
 import InitialValueRadioGroup from './widgets/radio-group/InitialValue';
 import BasicRaisedButton from './widgets/raised-button/Basic';
 import RaisedDisabledSubmit from './widgets/raised-button/DisabledSubmit';
@@ -1413,6 +1414,11 @@ export const config = {
 					filename: 'CustomRenderer',
 					module: CustomRendererRadioGroup,
 					title: 'Custom Renderer'
+				},
+				{
+					filename: 'Disabled',
+					module: DisabledRadioGroup,
+					title: 'Disabled'
 				}
 			],
 			filename: 'index',
