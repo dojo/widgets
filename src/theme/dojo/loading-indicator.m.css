@@ -14,8 +14,6 @@
 	border: calc(var(--grid-base) / 2) solid var(--color-background-faded);
 	border-radius: 50%;
 	border-top: calc(var(--grid-base) / 2) solid var(--color-background-inverted);
-	width: calc(var(--grid-base) * 6.25);
-	height: calc(var(--grid-base) * 6.25);
 	animation: spin 1.5s linear infinite;
 }
 
@@ -42,12 +40,18 @@
 }
 
 .small {
+	height: var(--loader-size-small);
+	width: var(--loader-size-small);
 }
 
 .medium {
+	height: var(--loader-size-medium);
+	width: var(--loader-size-medium);
 }
 
 .large {
+	height: var(--loader-size-large);
+	width: var(--loader-size-large);
 }
 
 @keyframes progress {

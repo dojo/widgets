@@ -61,10 +61,16 @@
 }
 
 .small {
+	height: var(--loader-size-small);
+	width: var(--loader-size-small);
 }
 
 .medium {
+	height: var(--loader-size-medium);
+	width: var(--loader-size-medium);
 }
 
 .large {
+	height: var(--loader-size-large);
+	width: var(--loader-size-large);
 }
