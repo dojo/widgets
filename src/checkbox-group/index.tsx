@@ -5,7 +5,7 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '../middleware/theme';
 import * as css from '../theme/default/checkbox-group.m.css';
 
-type CheckboxOptions = { value: string; label?: string }[];
+type CheckboxOptions = { value: string; label?: string; disabled?: boolean }[];
 
 export interface CheckboxGroupProperties {
 	/** The name attribute for this form group */
@@ -59,7 +59,7 @@ export const CheckboxGroup = factory(function({
 		if (checkboxes) {
 			return checkboxes(name, checkbox, options);
 		}
-		return options.map(({ value, label }) => {
+		return options.map(({ value, label, disabled }) => {
 			const { checked } = checkbox(value);
 			return (
 				<Checkbox
@@ -70,6 +70,7 @@ export const CheckboxGroup = factory(function({
 					classes={classes}
 					theme={themeProp}
 					variant={variant}
+					disabled={disabled}
 				>
 					{label || value}
 				</Checkbox>

@@ -38,6 +38,7 @@ import ActionHeaderCard from './widgets/header-card/ActionCard';
 import BasicCheckboxGroup from './widgets/checkbox-group/Basic';
 import CustomLabelCheckboxGroup from './widgets/checkbox-group/CustomLabel';
 import CustomRendererCheckboxGroup from './widgets/checkbox-group/CustomRenderer';
+import DisabledCheckboxGroup from './widgets/checkbox-group/Disabled';
 import InitialValueCheckboxGroup from './widgets/checkbox-group/InitialValue';
 import ControlledCheckboxGroup from './widgets/checkbox-group/Controlled';
 import BasicCheckbox from './widgets/checkbox/Basic';
@@ -593,6 +594,11 @@ export const config = {
 					filename: 'Controlled',
 					module: ControlledCheckboxGroup,
 					title: 'Controlled'
+				},
+				{
+					filename: 'Disabled',
+					module: DisabledCheckboxGroup,
+					title: 'Disabled'
 				}
 			],
 			filename: 'index',

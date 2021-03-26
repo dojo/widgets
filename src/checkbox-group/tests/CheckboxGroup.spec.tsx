@@ -30,6 +30,7 @@ describe('CheckboxGroup', () => {
 				theme={undefined}
 				classes={undefined}
 				variant={undefined}
+				disabled={undefined}
 			>
 				cat
 			</Checkbox>,
@@ -41,6 +42,7 @@ describe('CheckboxGroup', () => {
 				theme={undefined}
 				classes={undefined}
 				variant={undefined}
+				disabled={undefined}
 			>
 				fish
 			</Checkbox>,
@@ -52,6 +54,7 @@ describe('CheckboxGroup', () => {
 				theme={undefined}
 				classes={undefined}
 				variant={undefined}
+				disabled={undefined}
 			>
 				dog
 			</Checkbox>
@@ -77,6 +80,7 @@ describe('CheckboxGroup', () => {
 				theme={undefined}
 				classes={undefined}
 				variant={undefined}
+				disabled={undefined}
 			>
 				cat
 			</Checkbox>
@@ -102,6 +106,7 @@ describe('CheckboxGroup', () => {
 				theme={undefined}
 				classes={undefined}
 				variant={undefined}
+				disabled={undefined}
 			>
 				cat
 			</Checkbox>,
@@ -113,6 +118,7 @@ describe('CheckboxGroup', () => {
 				theme={undefined}
 				classes={undefined}
 				variant={undefined}
+				disabled={undefined}
 			>
 				fish
 			</Checkbox>,
@@ -124,6 +130,7 @@ describe('CheckboxGroup', () => {
 				theme={undefined}
 				classes={undefined}
 				variant={undefined}
+				disabled={undefined}
 			>
 				dog
 			</Checkbox>
@@ -149,6 +156,7 @@ describe('CheckboxGroup', () => {
 				theme={undefined}
 				classes={undefined}
 				variant={undefined}
+				disabled={undefined}
 			>
 				cat
 			</Checkbox>,
@@ -160,6 +168,7 @@ describe('CheckboxGroup', () => {
 				theme={undefined}
 				classes={undefined}
 				variant={undefined}
+				disabled={undefined}
 			>
 				fish
 			</Checkbox>,
@@ -171,6 +180,7 @@ describe('CheckboxGroup', () => {
 				theme={undefined}
 				classes={undefined}
 				variant={undefined}
+				disabled={undefined}
 			>
 				dog
 			</Checkbox>
@@ -194,6 +204,7 @@ describe('CheckboxGroup', () => {
 								theme={undefined}
 								classes={undefined}
 								variant={undefined}
+								disabled={undefined}
 							>
 								cat
 							</Checkbox>,
@@ -214,11 +225,62 @@ describe('CheckboxGroup', () => {
 				theme={undefined}
 				classes={undefined}
 				variant={undefined}
+				disabled={undefined}
 			>
 				cat
 			</Checkbox>,
 			<hr />
 		]);
 		h.expect(customTemplate);
+	});
+
+	it('renders with disabled value', () => {
+		const h = harness(() => (
+			<CheckboxGroup
+				onValue={noop}
+				name="test"
+				options={[{ value: 'cat', disabled: true }, { value: 'fish' }, { value: 'dog' }]}
+				value={['fish']}
+			/>
+		));
+		const optionTemplate = template.setChildren('@root', () => [
+			<Checkbox
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+				disabled={true}
+			>
+				cat
+			</Checkbox>,
+			<Checkbox
+				name="test"
+				value="fish"
+				checked={true}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+				disabled={undefined}
+			>
+				fish
+			</Checkbox>,
+			<Checkbox
+				name="test"
+				value="dog"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+				disabled={undefined}
+			>
+				dog
+			</Checkbox>
+		]);
+		h.expect(optionTemplate);
 	});
 });
