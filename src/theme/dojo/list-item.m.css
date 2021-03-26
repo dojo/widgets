@@ -1,5 +1,4 @@
 .root {
-	padding: var(--spacing-regular);
 	border: 1px solid transparent;
 	color: var(--color-text-primary);
 	font-family: var(--font-family);
@@ -11,6 +10,10 @@
 	justify-content: flex-start;
 	min-height: calc(var(--grid-base) * 5.5);
 	display: flex;
+}
+
+.root .contentWrapper {
+	padding: var(--spacing-regular);
 }
 
 .root.active {

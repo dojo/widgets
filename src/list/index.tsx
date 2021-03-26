@@ -116,7 +116,7 @@ export interface ListItemChildren {
 
 const listItemFactory = create({ theme })
 	.properties<ListItemProperties>()
-	.children<ListItemChildren | RenderResult | RenderResult[]>();
+	.children<ListItemChildren | RenderResult>();
 
 export const ListItem = listItemFactory(function ListItem({
 	properties,
@@ -153,10 +153,29 @@ export const ListItem = listItemFactory(function ListItem({
 		!disabled && !active && onRequestActive();
 	}
 
-	const [firstChild, ...otherChildren] = children();
-	const { leading = undefined, primary, trailing = undefined } = isRenderResult(firstChild)
-		? { primary: [firstChild, ...otherChildren] }
-		: firstChild;
+	const [firstChild] = children();
+	let listContents: RenderResult;
+
+	if (isRenderResult(firstChild)) {
+		listContents = firstChild;
+	} else {
+		const { leading = undefined, primary, trailing = undefined } = firstChild;
+		listContents = (
+			<div classes={themedCss.contentWrapper}>
+				{leading ? <span classes={themedCss.leading}>{leading}</span> : undefined}
+				<span classes={themedCss.primary}>{primary}</span>
+				{trailing ? <span classes={themedCss.trailing}>{trailing}</span> : undefined}
+				{draggable && !trailing && (
+					<Icon
+						type="barsIcon"
+						classes={{ '@dojo/widgets/icon': { icon: [themedCss.dragIcon] } }}
+						theme={themeProp}
+						variant={variant}
+					/>
+				)}
+			</div>
+		);
+	}
 
 	return (
 		<div
@@ -168,7 +187,6 @@ export const ListItem = listItemFactory(function ListItem({
 			classes={[
 				theme.variant(),
 				themedCss.root,
-				themedCss.height,
 				selected && themedCss.selected,
 				active && themedCss.active,
 				disabled && themedCss.disabled,
@@ -193,17 +211,7 @@ export const ListItem = listItemFactory(function ListItem({
 			ondrop={onDrop}
 			styles={{ visibility: dragged ? 'hidden' : undefined }}
 		>
-			{leading ? <span classes={themedCss.leading}>{leading}</span> : undefined}
-			<span classes={themedCss.primary}>{primary}</span>
-			{trailing ? <span classes={themedCss.trailing}>{trailing}</span> : undefined}
-			{draggable && !trailing && (
-				<Icon
-					type="barsIcon"
-					classes={{ '@dojo/widgets/icon': { icon: [themedCss.dragIcon] } }}
-					theme={themeProp}
-					variant={variant}
-				/>
-			)}
+			{listContents}
 		</div>
 	);
 });

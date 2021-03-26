@@ -1,14 +1,14 @@
 .root {
-	composes: mdc-list-item from '@material/list/dist/mdc.list.css';
 	color: var(--mdc-text-color);
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-}
-
-.root.height {
 	min-height: 48px;
 	height: 100%;
+}
+
+.contentWrapper {
+	composes: mdc-list-item from '@material/list/dist/mdc.list.css';
 }
 
 .root:hover {
@@ -22,7 +22,6 @@
 .active {
 	border: none;
 	background: var(--mdc-theme-on-surface);
-	min-height: 48px;
 	height: 100%;
 	box-shadow: none;
 }

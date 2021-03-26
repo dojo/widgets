@@ -1,5 +1,5 @@
 export const root: string;
-export const height: string;
+export const contentWrapper: string;
 export const selected: string;
 export const active: string;
 export const collapsed: string;
