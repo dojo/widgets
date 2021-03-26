@@ -28,9 +28,6 @@
 
 .circular {
 	composes: mdc-circular-progress from '@material/circular-progress/dist/mdc.circular-progress.css';
-}
-
-.circular {
 	composes: mdc-circular-progress--indeterminate from '@material/circular-progress/dist/mdc.circular-progress.css';
 }
 
@@ -61,4 +58,13 @@
 
 .gapPatch {
 	composes: mdc-circular-progress__gap-patch from '@material/circular-progress/dist/mdc.circular-progress.css';
+}
+
+.small {
+}
+
+.medium {
+}
+
+.large {
 }

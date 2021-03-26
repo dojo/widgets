@@ -41,6 +41,15 @@
 .inner {
 }
 
+.small {
+}
+
+.medium {
+}
+
+.large {
+}
+
 @keyframes progress {
 	0% {
 		left: -25%;
