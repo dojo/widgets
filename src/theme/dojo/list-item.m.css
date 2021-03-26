@@ -12,8 +12,16 @@
 	display: flex;
 }
 
-.root .contentWrapper {
+.smallPadding {
 	padding: var(--spacing-regular);
+}
+
+.mediumPadding {
+	padding: var(--spacing-large);
+}
+
+.noPadding {
+	padding: 0;
 }
 
 .root.active {

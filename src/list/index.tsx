@@ -103,6 +103,8 @@ export interface ListItemProperties {
 	onDrop?: (event: DragEvent) => void;
 	/** Determines if this item is visually collapsed during DnD */
 	collapsed?: boolean;
+	/** Specifies if the list item should be padded, defaults to small */
+	padding?: 'none' | 'small' | 'medium';
 }
 
 export interface ListItemChildren {
@@ -140,7 +142,8 @@ export const ListItem = listItemFactory(function ListItem({
 		movedDown,
 		collapsed,
 		theme: themeProp,
-		variant
+		variant,
+		padding = 'medium'
 	} = properties();
 
 	const themedCss = theme.classes(listItemCss);
@@ -161,7 +164,7 @@ export const ListItem = listItemFactory(function ListItem({
 	} else {
 		const { leading = undefined, primary, trailing = undefined } = firstChild;
 		listContents = (
-			<div classes={themedCss.contentWrapper}>
+			<virtual>
 				{leading ? <span classes={themedCss.leading}>{leading}</span> : undefined}
 				<span classes={themedCss.primary}>{primary}</span>
 				{trailing ? <span classes={themedCss.trailing}>{trailing}</span> : undefined}
@@ -173,8 +176,23 @@ export const ListItem = listItemFactory(function ListItem({
 						variant={variant}
 					/>
 				)}
-			</div>
+			</virtual>
 		);
+	}
+
+	let paddingClass: string | undefined;
+	switch (padding) {
+		case 'small':
+			paddingClass = themedCss.smallPadding;
+			break;
+		case 'medium':
+			paddingClass = themedCss.mediumPadding;
+			break;
+		case 'none':
+			paddingClass = themedCss.noPadding;
+			break;
+		default:
+			break;
 	}
 
 	return (
@@ -194,7 +212,8 @@ export const ListItem = listItemFactory(function ListItem({
 				movedDown && themedCss.movedDown,
 				collapsed && themedCss.collapsed,
 				dragged && themedCss.dragged,
-				draggable && themedCss.draggable
+				draggable && themedCss.draggable,
+				paddingClass
 			]}
 			onclick={() => {
 				requestActive();

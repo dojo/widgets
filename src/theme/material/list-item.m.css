@@ -5,10 +5,19 @@
 	white-space: nowrap;
 	min-height: 48px;
 	height: 100%;
+	composes: mdc-list-item from '@material/list/dist/mdc.list.css';
 }
 
-.contentWrapper {
-	composes: mdc-list-item from '@material/list/dist/mdc.list.css';
+.smallPadding {
+}
+
+.mediumPadding {
+	padding-left: calc(var(--mdc-theme-grid-base) * 2);
+	padding-right: calc(var(--mdc-theme-grid-base) * 2);
+}
+
+.noPadding {
+	padding: 0 !important;
 }
 
 .root:hover {
