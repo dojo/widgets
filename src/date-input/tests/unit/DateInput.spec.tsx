@@ -108,6 +108,21 @@ const calendarTemplate = assertionTemplate(() => {
 	);
 });
 
+/** Example custom parser for YYYY|MM|DD date strings */
+function customDateParser(input?: string) {
+	if (!input) {
+		return undefined;
+	}
+	const parts = input.split('|');
+	return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+}
+function customDateFormatter(input?: Date) {
+	if (!input || isNaN(input.valueOf())) {
+		return undefined;
+	}
+	return [input.getFullYear(), input.getMonth() + 1, input.getDate()].join('|');
+}
+
 describe('DateInput', () => {
 	const onValue = sinon.stub();
 
@@ -139,6 +154,19 @@ describe('DateInput', () => {
 			/>
 		));
 		h.expect(baseTemplate(initialValue));
+	});
+
+	it('renders with an initial value in a custom format', () => {
+		const h = harness(() => (
+			<DateInput
+				name="dateInput"
+				onValue={onValue}
+				initialValue="2020|5|1"
+				dateParser={customDateParser}
+				dateFormatter={customDateFormatter}
+			/>
+		));
+		h.expect(baseTemplate(new Date(2020, 4, 1)));
 	});
 
 	it('shows calendar when triggered via icon', () => {
@@ -310,6 +338,44 @@ describe('DateInput', () => {
 		onValue.resetHistory();
 		input.properties.onFocus();
 		input.properties.onValue(formatDate(expected));
+
+		h.expect(baseTemplate());
+		sinon.assert.notCalled(onValue); // onValue not called until validated; validation delayed for manual input until blur
+
+		// If `onValue` is called, the input was accepted & validated
+		input.properties.onBlur();
+		h.expect(baseTemplate(expected));
+		sinon.assert.calledWith(onValue, formatDateISO(expected));
+
+		// The icon wasn't clicked; the calendar should NOT have been shown
+		sinon.assert.notCalled(toggleOpen);
+	});
+
+	it('uses custom date parsers', () => {
+		const expected = new Date(2019, 11, 19); // Dec 19, 2019
+		const inputString = '2019|12|19'; // A custom date format
+		const h = harness(() => (
+			<DateInput
+				name="dateInput"
+				onValue={onValue}
+				dateParser={customDateParser}
+				dateFormatter={customDateFormatter}
+			/>
+		));
+
+		const toggleOpen = sinon.stub();
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpen
+		);
+		h.expect(buttonTemplate, () => triggerResult);
+
+		// Find the input widget and trigger it's value changed
+		const [input] = select('@input', triggerResult);
+		onValue.resetHistory();
+		input.properties.onFocus();
+		input.properties.onValue(inputString);
 
 		h.expect(baseTemplate());
 		sinon.assert.notCalled(onValue); // onValue not called until validated; validation delayed for manual input until blur
