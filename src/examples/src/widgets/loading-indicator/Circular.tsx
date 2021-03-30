@@ -11,7 +11,9 @@ export default factory(function Circular({ middleware: { icache } }) {
 	return (
 		<Example>
 			<virtual>
-				<LoadingIndicator type="circular-large" active={active} />
+				<LoadingIndicator active={active} type="circular-small" />
+				<LoadingIndicator active={active} type="circular-medium" />
+				<LoadingIndicator active={active} type="circular-large" />
 				<div styles={{ marginTop: '20px' }}>
 					<Switch
 						value={active}
