@@ -19,25 +19,14 @@ export default factory(function Basic({ middleware: { icache } }) {
 						if (!input) {
 							return undefined;
 						}
-						const parts = input.split('#');
-						if (
-							parts.length === 3 &&
-							parts.every((part) => Number.isInteger(Number(part)))
-						) {
-							return new Date(
-								Number(parts[0]),
-								Number(parts[1]) - 1,
-								Number(parts[2])
-							);
-						}
+						const date = new Date(input);
+						return isNaN(date.valueOf()) ? undefined : date;
 					}}
 					dateFormatter={(input?: Date) => {
 						if (!input || isNaN(input.valueOf())) {
 							return undefined;
 						}
-						return [input.getFullYear(), input.getMonth() + 1, input.getDate()].join(
-							'#'
-						);
+						return input.toISOString();
 					}}
 				/>
 			</div>
