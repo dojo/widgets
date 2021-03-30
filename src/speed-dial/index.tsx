@@ -69,7 +69,7 @@ export const Action = actionFactory(({ properties, id, children, middleware: { t
 			aria={
 				label
 					? {
-							'aria-describedby': labelId
+							describedby: labelId
 					  }
 					: undefined
 			}
