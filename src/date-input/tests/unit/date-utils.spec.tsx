@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { parseDate } from '../../date-utils';
+import { parseDate, formatDate, formatDateISO } from '../../date-utils';
 
 describe('DateInput Date Utils', () => {
 	describe('parseDate', () => {
@@ -62,6 +62,41 @@ describe('DateInput Date Utils', () => {
 		it('handles invalid formats', () => {
 			const actual = parseDate('not-a-date');
 			assert.isUndefined(actual);
+		});
+	});
+
+	describe('formatDate', () => {
+		it('formats a date using DateTimeFormat', () => {
+			const stub = sinon.stub(Intl, 'DateTimeFormat');
+			stub.onFirstCall().returns({ format: () => '3/30/2021' });
+			stub.onSecondCall().returns({ format: () => '4/3/2018' }); // forces "canary" date to match "en-us"
+
+			const value = new Date(2021, 2, 30);
+			const actual = formatDate(value);
+
+			assert.equal(actual, '3/30/2021');
+			stub.restore();
+		});
+
+		it('defaults to ISO date strings if DateTimeFormat locale is unsupported', () => {
+			const stub = sinon.stub(Intl, 'DateTimeFormat');
+			stub.onFirstCall().returns({ format: () => '30. 3. 2021' }); // Format returned by "sl" locale
+			stub.onSecondCall().returns({ format: () => '3. 4. 2018' }); // unrecognized "canary" date
+
+			const value = new Date(2021, 2, 30);
+			const actual = formatDate(value);
+
+			assert.equal(actual, '2021-03-30');
+			stub.restore();
+		});
+	});
+
+	describe('formatDateISO', () => {
+		it('formats a date', () => {
+			const value = new Date(2021, 2, 30);
+			const actual = formatDateISO(value);
+
+			assert.equal(actual, '2021-03-30');
 		});
 	});
 });

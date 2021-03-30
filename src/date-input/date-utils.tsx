@@ -96,5 +96,11 @@ export function formatDateISO(date: Date | undefined) {
 }
 
 export function formatDate(date: Date) {
-	return Intl.DateTimeFormat().format(date);
+	const formattedDate = Intl.DateTimeFormat().format(date);
+	// Check if is a supported date format
+	const parsedDate = parseDate(formattedDate);
+	if (parsedDate && parsedDate.valueOf() === date.valueOf()) {
+		return formattedDate;
+	}
+	return formatDateISO(date);
 }
