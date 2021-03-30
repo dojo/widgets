@@ -235,6 +235,7 @@ import DisabledDateInput from './widgets/date-input/Disabled';
 import ReadOnlyDateInput from './widgets/date-input/ReadOnly';
 import RequiredDateInput from './widgets/date-input/Required';
 import BasicLoadingIndicator from './widgets/loading-indicator/Basic';
+import CircularLoadingIndicator from './widgets/loading-indicator/Circular';
 import BasicHeader from './widgets/header/Basic';
 import LeadingHeader from './widgets/header/Leading';
 import StickyHeader from './widgets/header/Sticky';
@@ -1056,7 +1057,14 @@ export const config = {
 					module: BasicLoadingIndicator,
 					filename: 'Basic'
 				}
-			}
+			},
+			examples: [
+				{
+					filename: 'Circular',
+					module: CircularLoadingIndicator,
+					title: 'Circular Loader'
+				}
+			]
 		},
 		list: {
 			examples: [

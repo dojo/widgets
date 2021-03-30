@@ -1,10 +1,20 @@
 .root {
+}
+
+.linear {
 	background-color: var(--color-background-faded);
 	height: calc(var(--grid-base) / 2);
 	position: relative;
 	overflow: hidden;
 	font-family: var(--font-family);
 	width: 100%;
+}
+
+.circular {
+	border: calc(var(--grid-base) / 2) solid var(--color-background-faded);
+	border-radius: 50%;
+	border-top: calc(var(--grid-base) / 2) solid var(--color-background-inverted);
+	animation: spin 1.5s linear infinite;
 }
 
 .inactive {
@@ -29,11 +39,35 @@
 .inner {
 }
 
+.small {
+	height: var(--loader-size-small);
+	width: var(--loader-size-small);
+}
+
+.medium {
+	height: var(--loader-size-medium);
+	width: var(--loader-size-medium);
+}
+
+.large {
+	height: var(--loader-size-large);
+	width: var(--loader-size-large);
+}
+
 @keyframes progress {
 	0% {
 		left: -25%;
 	}
 	100% {
 		left: 100%;
+	}
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
 	}
 }

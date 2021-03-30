@@ -103,4 +103,8 @@
 	--mdc-snackbar-background: #333333;
 	--mdc-fab-background: var(--mdc-theme-secondary);
 	--mdc-fab-color: var(--mdc-text-color);
+
+	--loader-size-small: 24px;
+	--loader-size-medium: 36px;
+	--loader-size-large: 48px;
 }

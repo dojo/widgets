@@ -92,4 +92,8 @@
 	--mdc-chip-color: var(--mdc-text-color);
 	--mdc-chip-background-hover: #8d8d8d;
 	--mdc-snackbar-background: var(--mdc-raised-surface-background);
+
+	--loader-size-small: 24px;
+	--loader-size-medium: 36px;
+	--loader-size-large: 48px;
 }

@@ -81,4 +81,8 @@
 
 	--color-primary: #ffffff;
 	--color-secondary: rgb(199, 222, 209);
+
+	--loader-size-small: 24px;
+	--loader-size-medium: 36px;
+	--loader-size-large: 48px;
 }
