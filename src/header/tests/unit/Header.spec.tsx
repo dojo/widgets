@@ -1,5 +1,6 @@
 const { describe, it } = intern.getInterface('bdd');
 import { tsx } from '@dojo/framework/core/vdom';
+import Link from '@dojo/framework/routing/Link';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import harness from '@dojo/framework/testing/harness/harness';
 import Header, { Action } from '../..';
@@ -104,6 +105,17 @@ describe('HeaderToolbar', () => {
 			<Action to="#foo">Action</Action>
 		]);
 		h.expect(testTemplate);
+	});
+
+	it('renders action as link', () => {
+		const h = harness(() => <Action to="#foo">test</Action>);
+		h.expect(
+			assertionTemplate(() => (
+				<Link to="#foo" classes={[undefined, classes.action]}>
+					test
+				</Link>
+			))
+		);
 	});
 
 	it('Renders a sticky header', () => {

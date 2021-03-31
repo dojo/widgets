@@ -2,6 +2,7 @@ const { describe, it } = intern.getInterface('bdd');
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import harness from '@dojo/framework/testing/harness/harness';
+import ActionButton from '../../../action-button';
 import Icon from '../../../icon';
 import * as css from '../../../theme/default/result.m.css';
 import Result, { Action } from '../../index';
@@ -97,7 +98,7 @@ describe('Result', () => {
 			<div key="actions" classes={css.actions} />
 		]);
 
-		it('renders action buttons', () => {
+		it('renders actions', () => {
 			const h = harness(() => (
 				<Result>
 					{{
@@ -111,6 +112,11 @@ describe('Result', () => {
 				</div>
 			]);
 			h.expect(childrenTemplate);
+		});
+
+		it('renders action buttons', () => {
+			const h = harness(() => <Action name="testButton">test</Action>);
+			h.expect(assertionTemplate(() => <ActionButton name="testButton">test</ActionButton>));
 		});
 	});
 

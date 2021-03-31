@@ -13,7 +13,7 @@ export const Action = actionFactory(({ properties, children, middleware: { theme
 	const themedCss = theme.classes(css);
 
 	const action = (
-		<Link {...properties()} classes={themedCss.action}>
+		<Link {...properties()} classes={[theme.variant(), themedCss.action]}>
 			{children()}
 		</Link>
 	);

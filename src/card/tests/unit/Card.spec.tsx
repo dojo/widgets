@@ -3,6 +3,8 @@ const { assert } = intern.getPlugin('chai');
 import { tsx } from '@dojo/framework/core/vdom';
 import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
 import { spy } from 'sinon';
+import ActionButton from '../../../action-button';
+import Icon from '../../../icon';
 import * as css from '../../../theme/default/card.m.css';
 import Card, { Action, ActionIcon } from '../../index';
 
@@ -145,7 +147,7 @@ describe('Card', () => {
 			<Actions key="actions" classes={css.actions} />
 		]);
 
-		it('renders action buttons', () => {
+		it('renders actions', () => {
 			const r = renderer(() => (
 				<Card>
 					{{
@@ -159,6 +161,11 @@ describe('Card', () => {
 				</div>
 			]);
 			r.expect(childrenTemplate);
+		});
+
+		it('renders action buttons', () => {
+			const h = renderer(() => <Action name="testButton">test</Action>);
+			h.expect(assertion(() => <ActionButton name="testButton">test</ActionButton>));
 		});
 
 		it('renders action icons', () => {
@@ -175,6 +182,11 @@ describe('Card', () => {
 				</div>
 			]);
 			r.expect(childrenTemplate);
+		});
+
+		it('renders action icons as icons', () => {
+			const h = renderer(() => <ActionIcon type="alertIcon" />);
+			h.expect(assertion(() => <Icon type="alertIcon" />));
 		});
 
 		it('renders action buttons and icons', () => {

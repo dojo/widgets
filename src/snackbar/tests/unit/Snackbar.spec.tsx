@@ -1,14 +1,15 @@
 const { describe, it } = intern.getInterface('bdd');
 
 import { tsx } from '@dojo/framework/core/vdom';
-import assertationTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import harness from '@dojo/framework/testing/harness/harness';
+import ActionButton from '../../../action-button';
 import * as css from '../../../theme/default/snackbar.m.css';
 import Snackbar, { Action } from '../../index';
 import * as fixedCss from '../../styles/snackbar.m.css';
 
 describe('Snackbar', () => {
-	const template = assertationTemplate(() => {
+	const template = assertionTemplate(() => {
 		return (
 			<div
 				key="root"
@@ -200,5 +201,10 @@ describe('Snackbar', () => {
 			</div>
 		]);
 		h.expect(actionsTemplate);
+	});
+
+	it('renders action buttons', () => {
+		const h = harness(() => <Action name="testButton">test</Action>);
+		h.expect(assertionTemplate(() => <ActionButton name="testButton">test</ActionButton>));
 	});
 });

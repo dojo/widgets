@@ -1,6 +1,7 @@
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import * as sinon from 'sinon';
+import ActionButton from '../../../action-button';
 import {
 	compareAriaLabelledBy,
 	compareId,
@@ -260,5 +261,10 @@ describe('Dialog', () => {
 					</div>
 				])
 		);
+	});
+
+	it('renders action buttons', () => {
+		const h = harness(() => <Action name="testButton">test</Action>);
+		h.expect(assertionTemplate(() => <ActionButton name="testButton">test</ActionButton>));
 	});
 });
