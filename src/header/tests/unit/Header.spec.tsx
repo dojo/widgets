@@ -4,6 +4,7 @@ import Link from '@dojo/framework/routing/Link';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import harness from '@dojo/framework/testing/harness/harness';
 import Header, { Action } from '../..';
+import ActionButton from '../../../action-button';
 import * as classes from '../../../theme/default/header.m.css';
 
 const baseTemplate = assertionTemplate(() => (
@@ -116,6 +117,11 @@ describe('HeaderToolbar', () => {
 				</Link>
 			))
 		);
+	});
+
+	it('renders action as button', () => {
+		const h = harness(() => <Action name="testButton">test</Action>);
+		h.expect(assertionTemplate(() => <ActionButton name="testButton">test</ActionButton>));
 	});
 
 	it('Renders a sticky header', () => {

@@ -2,23 +2,31 @@ import { RenderResult } from '@dojo/framework/core/interfaces';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import { LinkProperties } from '@dojo/framework/routing/interfaces';
 import Link from '@dojo/framework/routing/Link';
+import ActionButton, { ActionButtonProperties } from '../action-button';
 import theme from '../middleware/theme';
 import * as css from '../theme/default/header.m.css';
 
-export interface ActionProperties extends LinkProperties {}
+export type ActionProperties = LinkProperties | ActionButtonProperties;
 
 const actionFactory = create({ theme }).properties<ActionProperties>();
 
+function IsLink(properties: ActionProperties): properties is LinkProperties {
+	return Boolean(properties && properties.hasOwnProperty('to'));
+}
+
 export const Action = actionFactory(({ properties, children, middleware: { theme } }) => {
 	const themedCss = theme.classes(css);
+	const props = properties();
 
-	const action = (
-		<Link {...properties()} classes={[theme.variant(), themedCss.action]}>
-			{children()}
-		</Link>
-	);
-
-	return action;
+	if (IsLink(props)) {
+		return (
+			<Link {...props} classes={[theme.variant(), themedCss.action]}>
+				{children()}
+			</Link>
+		);
+	} else {
+		return <ActionButton {...props}>{children()}</ActionButton>;
+	}
 });
 
 export interface HeaderProperties {
