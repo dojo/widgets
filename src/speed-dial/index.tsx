@@ -48,8 +48,8 @@ export const Action = actionFactory(({ properties, id, children, middleware: { t
 	const themedCss = theme.classes(css);
 	const [labelChild] = children();
 	const labelId = `${id}-label`;
-	const { label, icon = undefined } = isRenderResult(labelChild)
-		? { label: children() }
+	const { icon, label = undefined } = isRenderResult(labelChild)
+		? { icon: labelChild }
 		: labelChild;
 
 	const fab = (
@@ -61,9 +61,7 @@ export const Action = actionFactory(({ properties, id, children, middleware: { t
 				css,
 				'action'
 			)}
-			onClick={() => {
-				onClick();
-			}}
+			onClick={onClick}
 			classes={classes}
 			variant={variant}
 			aria={
@@ -97,7 +95,7 @@ export const Action = actionFactory(({ properties, id, children, middleware: { t
 		}
 
 		return (
-			<div classes={[themedCss.labelContainer, orientationClass]}>
+			<div classes={[themedCss.labelContainer, orientationClass]} key="labelRoot">
 				<label classes={themedCss.label} id={labelId}>
 					{label}
 				</label>
