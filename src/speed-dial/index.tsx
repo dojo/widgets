@@ -6,18 +6,51 @@ import * as css from '../theme/default/speed-dial.m.css';
 import * as fabCss from '../theme/default/floating-action-button.m.css';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import Icon, { IconType } from '../icon';
+import { RenderResult } from '@dojo/framework/core/interfaces';
+import { isRenderResult } from '../common/util';
+
+// Enum used to position the action label
+export enum LabelOrientation {
+	bottom = 'bottom',
+	left = 'left',
+	right = 'right',
+	top = 'top'
+}
 
 export interface ActionProperties {
 	/* On click callback for the action */
 	onClick(): void;
 	/* Title text for the action */
 	title?: string;
+	/* Orientation for the label */
+	labelOrientation?: LabelOrientation;
 }
 
-const actionFactory = create({ theme }).properties<ActionProperties>();
+export interface ActionChildren {
+	/** The icon for the action */
+	icon?: RenderResult;
+	/* Static label for the action */
+	label?: RenderResult;
+}
 
-export const Action = actionFactory(({ properties, children, middleware: { theme } }) => {
-	const { onClick, title, variant, classes } = properties();
+const actionFactory = create({ theme })
+	.properties<ActionProperties>()
+	.children<ActionChildren | [ActionChildren] | RenderResult | RenderResult[]>();
+
+export const Action = actionFactory(({ properties, id, children, middleware: { theme } }) => {
+	const {
+		labelOrientation = LabelOrientation.left,
+		onClick,
+		title,
+		variant,
+		classes
+	} = properties();
+	const themedCss = theme.classes(css);
+	const [labelChild] = children();
+	const labelId = `${id}-label`;
+	const { icon, label = undefined } = isRenderResult(labelChild)
+		? { icon: labelChild }
+		: labelChild;
 
 	const fab = (
 		<FloatingActionButton
@@ -28,15 +61,48 @@ export const Action = actionFactory(({ properties, children, middleware: { theme
 				css,
 				'action'
 			)}
-			onClick={() => {
-				onClick();
-			}}
+			onClick={onClick}
 			classes={classes}
 			variant={variant}
+			aria={
+				label
+					? {
+							describedby: labelId
+					  }
+					: undefined
+			}
 		>
-			{children()}
+			{icon}
 		</FloatingActionButton>
 	);
+
+	if (label) {
+		let orientationClass: string | undefined;
+		switch (labelOrientation) {
+			case LabelOrientation.top:
+				orientationClass = themedCss.labelTop;
+				break;
+			case LabelOrientation.right:
+				orientationClass = themedCss.labelRight;
+				break;
+			case LabelOrientation.bottom:
+				orientationClass = themedCss.labelBottom;
+				break;
+			case LabelOrientation.left:
+			default:
+				orientationClass = themedCss.labelLeft;
+				break;
+		}
+
+		return (
+			<div classes={[themedCss.labelContainer, orientationClass]} key="labelRoot">
+				<label classes={themedCss.label} id={labelId}>
+					{label}
+				</label>
+				{fab}
+			</div>
+		);
+	}
 
 	return fab;
 });
@@ -121,10 +187,6 @@ export const SpeedDial = factory(function SpeedDial({
 			positionClass = themedCss.bottomLeft;
 			direction = direction || 'up';
 			break;
-		case 'bottom-right':
-			positionClass = themedCss.bottomRight;
-			direction = direction || 'up';
-			break;
 		case 'bottom-center':
 			positionClass = themedCss.bottomCenter;
 			direction = direction || 'up';
@@ -149,8 +211,11 @@ export const SpeedDial = factory(function SpeedDial({
 			positionClass = themedCss.topCenter;
 			direction = direction || 'down';
 			break;
+		case 'bottom-right':
 		default:
-			direction = direction || 'right';
+			positionClass = themedCss.bottomRight;
+			direction = direction || 'up';
+			break;
 	}
 
 	const actions = children();

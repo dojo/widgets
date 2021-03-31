@@ -12,14 +12,6 @@ export default factory(function TitleText({ middleware: { icache } }) {
 		<Example>
 			<SpeedDial>
 				<Action
-					title="Mail"
-					onClick={() => {
-						icache.set('action', 'Mailing');
-					}}
-				>
-					<Icon type="mailIcon" />
-				</Action>
-				<Action
 					title="Save"
 					onClick={() => {
 						icache.set('action', 'Save');

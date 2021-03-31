@@ -8,7 +8,7 @@ import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import * as sinon from 'sinon';
 
-import SpeedDial, { Action, SpeedDialPositions } from '../../index';
+import SpeedDial, { Action, LabelOrientation, SpeedDialPositions } from '../../index';
 import FloatingActionButton from '../../../floating-action-button';
 import * as fabCss from '../../../theme/default/floating-action-button.m.css';
 import { compareTheme, noop } from '../../../common/tests/support/test-helpers';
@@ -18,7 +18,7 @@ import { SupportedClassName } from '@dojo/framework/core/interfaces';
 const baseTemplate = assertionTemplate(() => (
 	<div
 		key="root"
-		classes={[undefined, css.root, fixCss.root, false, css.right, false, false, undefined]}
+		classes={[undefined, css.root, fixCss.root, false, false, false, css.up, css.bottomRight]}
 		onmouseleave={noop}
 	>
 		<FloatingActionButton
@@ -62,6 +62,59 @@ const baseTemplate = assertionTemplate(() => (
 	</div>
 ));
 
+const labelTemplate = assertionTemplate(() => (
+	<div
+		key="root"
+		classes={[undefined, css.root, fixCss.root, false, false, false, css.up, css.bottomRight]}
+		onmouseleave={noop}
+	>
+		<FloatingActionButton
+			key="trigger"
+			theme={{
+				'@dojo/widgets/floating-action-button': fabCss
+			}}
+			onOver={noop}
+			onClick={noop}
+			variant={undefined}
+			classes={undefined}
+		>
+			<Icon
+				size="large"
+				theme={undefined}
+				type="plusIcon"
+				variant={undefined}
+				classes={undefined}
+			/>
+		</FloatingActionButton>
+		<div key="actions" classes={[css.actions, undefined]} onpointerdown={noop}>
+			<div
+				key="action-wrapper-0"
+				styles={{ transitionDelay: '30ms' }}
+				classes={[css.action, css.actionTransition]}
+			>
+				<Action key="edit" onClick={noop}>
+					{{
+						icon: <Icon type="editIcon" />,
+						label: 'edit'
+					}}
+				</Action>
+			</div>
+			<div
+				key="action-wrapper-1"
+				styles={{ transitionDelay: '0ms' }}
+				classes={[css.action, css.actionTransition]}
+			>
+				<Action key="star" onClick={noop}>
+					{{
+						icon: <Icon type="starIcon" />,
+						label: 'star'
+					}}
+				</Action>
+			</div>
+		</div>
+	</div>
+));
+
 describe('SpeedDial', () => {
 	it('renders with actions', () => {
 		const h = harness(
@@ -78,6 +131,137 @@ describe('SpeedDial', () => {
 			[compareTheme]
 		);
 		h.expect(baseTemplate);
+	});
+
+	it('renders actions with labels', () => {
+		const h = harness(
+			() => (
+				<SpeedDial>
+					<Action key="edit" onClick={noop}>
+						{{
+							label: 'edit',
+							icon: <Icon type="editIcon" />
+						}}
+					</Action>
+					<Action key="star" onClick={noop}>
+						{{
+							label: 'star',
+							icon: <Icon type="starIcon" />
+						}}
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(labelTemplate);
+	});
+
+	it('renders actions with top-oriented labels', () => {
+		const h = harness(
+			() => (
+				<SpeedDial>
+					<Action key="edit" labelOrientation={LabelOrientation.top} onClick={noop}>
+						{{
+							label: 'edit',
+							icon: <Icon type="editIcon" />
+						}}
+					</Action>
+					<Action key="star" labelOrientation={LabelOrientation.top} onClick={noop}>
+						{{
+							label: 'star',
+							icon: <Icon type="starIcon" />
+						}}
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			labelTemplate
+				.setProperty('@edit', 'labelOrientation', LabelOrientation.top)
+				.setProperty('@star', 'labelOrientation', LabelOrientation.top)
+		);
+	});
+
+	it('renders actions with right-oriented labels', () => {
+		const h = harness(
+			() => (
+				<SpeedDial>
+					<Action key="edit" labelOrientation={LabelOrientation.right} onClick={noop}>
+						{{
+							label: 'edit',
+							icon: <Icon type="editIcon" />
+						}}
+					</Action>
+					<Action key="star" labelOrientation={LabelOrientation.right} onClick={noop}>
+						{{
+							label: 'star',
+							icon: <Icon type="starIcon" />
+						}}
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			labelTemplate
+				.setProperty('@edit', 'labelOrientation', LabelOrientation.right)
+				.setProperty('@star', 'labelOrientation', LabelOrientation.right)
+		);
+	});
+
+	it('renders actions with bottom-oriented labels', () => {
+		const h = harness(
+			() => (
+				<SpeedDial>
+					<Action key="edit" labelOrientation={LabelOrientation.bottom} onClick={noop}>
+						{{
+							label: 'edit',
+							icon: <Icon type="editIcon" />
+						}}
+					</Action>
+					<Action key="star" labelOrientation={LabelOrientation.bottom} onClick={noop}>
+						{{
+							label: 'star',
+							icon: <Icon type="starIcon" />
+						}}
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			labelTemplate
+				.setProperty('@edit', 'labelOrientation', LabelOrientation.bottom)
+				.setProperty('@star', 'labelOrientation', LabelOrientation.bottom)
+		);
+	});
+
+	it('renders actions with left-oriented labels', () => {
+		const h = harness(
+			() => (
+				<SpeedDial>
+					<Action key="edit" labelOrientation={LabelOrientation.left} onClick={noop}>
+						{{
+							label: 'edit',
+							icon: <Icon type="editIcon" />
+						}}
+					</Action>
+					<Action key="star" labelOrientation={LabelOrientation.left} onClick={noop}>
+						{{
+							label: 'star',
+							icon: <Icon type="starIcon" />
+						}}
+					</Action>
+				</SpeedDial>
+			),
+			[compareTheme]
+		);
+		h.expect(
+			labelTemplate
+				.setProperty('@edit', 'labelOrientation', LabelOrientation.left)
+				.setProperty('@star', 'labelOrientation', LabelOrientation.left)
+		);
 	});
 
 	it('renders initially open', () => {
@@ -146,7 +330,7 @@ describe('SpeedDial', () => {
 				false,
 				false,
 				css.up,
-				undefined
+				css.bottomRight
 			])
 		);
 	});
@@ -174,7 +358,7 @@ describe('SpeedDial', () => {
 				false,
 				css.down,
 				false,
-				undefined
+				css.bottomRight
 			])
 		);
 	});
@@ -202,7 +386,7 @@ describe('SpeedDial', () => {
 				false,
 				false,
 				false,
-				undefined
+				css.bottomRight
 			])
 		);
 	});

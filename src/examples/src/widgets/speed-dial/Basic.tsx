@@ -10,44 +10,39 @@ export default factory(function Basic({ middleware: { icache } }) {
 	const action = icache.getOrSet('action', '');
 	return (
 		<Example>
-			<SpeedDial>
-				<Action
-					onClick={() => {
-						icache.set('action', 'Mailing');
-					}}
-				>
-					<Icon type="mailIcon" />
-				</Action>
-				<Action
-					onClick={() => {
-						icache.set('action', 'Save');
-					}}
-				>
-					<Icon type="starIcon" />
-				</Action>
-				<Action
-					onClick={() => {
-						icache.set('action', 'Timing');
-					}}
-				>
-					<Icon type="clockIcon" />
-				</Action>
-				<Action
-					onClick={() => {
-						icache.set('action', 'Looking');
-					}}
-				>
-					<Icon type="eyeIcon" />
-				</Action>
-				<Action
-					onClick={() => {
-						icache.set('action', 'Locating');
-					}}
-				>
-					<Icon type="locationIcon" />
-				</Action>
-			</SpeedDial>
-			<div>Last action: {action}</div>
+			<virtual>
+				<SpeedDial>
+					<Action
+						onClick={() => {
+							icache.set('action', 'Save');
+						}}
+					>
+						<Icon type="starIcon" />
+					</Action>
+					<Action
+						onClick={() => {
+							icache.set('action', 'Timing');
+						}}
+					>
+						<Icon type="clockIcon" />
+					</Action>
+					<Action
+						onClick={() => {
+							icache.set('action', 'Looking');
+						}}
+					>
+						<Icon type="eyeIcon" />
+					</Action>
+					<Action
+						onClick={() => {
+							icache.set('action', 'Locating');
+						}}
+					>
+						<Icon type="locationIcon" />
+					</Action>
+				</SpeedDial>
+				<div>Last action: {action}</div>
+			</virtual>
 		</Example>
 	);
 });

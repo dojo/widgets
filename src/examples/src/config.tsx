@@ -187,6 +187,7 @@ import BasicSpeedDial from './widgets/speed-dial/Basic';
 import DirectionSpeedDial from './widgets/speed-dial/Direction';
 import PositionSpeedDial from './widgets/speed-dial/Position';
 import CustomIconSpeedDial from './widgets/speed-dial/CustomIcons';
+import LabelsSpeedDial from './widgets/speed-dial/VisualLabels';
 import TitleText from './widgets/speed-dial/TitleText';
 import BasicSwitch from './widgets/switch/Basic';
 import DisabledSwitch from './widgets/switch/Disabled';
@@ -1705,31 +1706,46 @@ export const config = {
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicSpeedDial
+					module: BasicSpeedDial,
+					sandbox: true,
+					size: 'medium'
 				}
 			},
 			examples: [
 				{
 					filename: 'Direction',
 					module: DirectionSpeedDial,
+					sandbox: true,
+					size: 'medium',
 					title: 'With a direction'
 				},
 				{
 					filename: 'Position',
 					module: PositionSpeedDial,
-					title: 'With a position',
 					sandbox: true,
-					size: 'large'
+					size: 'medium',
+					title: 'With a position'
 				},
 				{
 					filename: 'CustomIcons',
 					module: CustomIconSpeedDial,
+					sandbox: true,
+					size: 'medium',
 					title: 'With custom icons'
 				},
 				{
 					filename: 'TitleText',
 					module: TitleText,
+					sandbox: true,
+					size: 'medium',
 					title: 'Title Text on Actions'
+				},
+				{
+					filename: 'VisualLabels',
+					module: LabelsSpeedDial,
+					sandbox: true,
+					size: 'medium',
+					title: 'Visual labels on Actions'
 				}
 			]
 		},

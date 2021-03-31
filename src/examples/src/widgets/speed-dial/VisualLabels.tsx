@@ -6,38 +6,50 @@ import Example from '../../Example';
 
 const factory = create({ icache });
 
-export default factory(function CustomIcon({ middleware: { icache } }) {
+export default factory(function VisualLabels({ middleware: { icache } }) {
 	const action = icache.getOrSet('action', '');
 	return (
 		<Example>
-			<SpeedDial iconType="editIcon">
+			<SpeedDial>
 				<Action
 					onClick={() => {
 						icache.set('action', 'Save');
 					}}
 				>
-					<Icon type="starIcon" />
+					{{
+						label: 'Save',
+						icon: <Icon type="starIcon" />
+					}}
 				</Action>
 				<Action
 					onClick={() => {
 						icache.set('action', 'Timing');
 					}}
 				>
-					<Icon type="clockIcon" />
+					{{
+						label: 'Time',
+						icon: <Icon type="clockIcon" />
+					}}
 				</Action>
 				<Action
 					onClick={() => {
 						icache.set('action', 'Looking');
 					}}
 				>
-					<Icon type="eyeIcon" />
+					{{
+						label: 'Look',
+						icon: <Icon type="eyeIcon" />
+					}}
 				</Action>
 				<Action
 					onClick={() => {
 						icache.set('action', 'Locating');
 					}}
 				>
-					<Icon type="locationIcon" />
+					{{
+						label: 'Locate',
+						icon: <Icon type="locationIcon" />
+					}}
 				</Action>
 			</SpeedDial>
 			<div>Last action: {action}</div>

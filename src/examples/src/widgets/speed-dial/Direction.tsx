@@ -8,18 +8,11 @@ import Example from '../../Example';
 const factory = create({ icache });
 
 export default factory(function Direction({ middleware: { icache } }) {
-	const direction = icache.getOrSet('direction', 'right');
+	const direction = icache.getOrSet('direction', 'left');
 	return (
 		<Example>
-			<div styles={{ width: '500px', height: '500px' }}>
+			<virtual>
 				<SpeedDial direction={direction}>
-					<Action
-						onClick={() => {
-							icache.set('action', 'Mailing');
-						}}
-					>
-						<Icon type="mailIcon" />
-					</Action>
 					<Action
 						onClick={() => {
 							icache.set('action', 'Save');
@@ -49,21 +42,19 @@ export default factory(function Direction({ middleware: { icache } }) {
 						<Icon type="locationIcon" />
 					</Action>
 				</SpeedDial>
-				<div styles={{ marginTop: '20px' }}>
-					<NativeSelect
-						value={direction}
-						options={[
-							{ value: 'right' },
-							{ value: 'left' },
-							{ value: 'up' },
-							{ value: 'down' }
-						]}
-						onValue={(direction) => {
-							icache.set('direction', direction);
-						}}
-					/>
-				</div>
-			</div>
+				<NativeSelect
+					value={direction}
+					options={[
+						{ value: 'right' },
+						{ value: 'left' },
+						{ value: 'up' },
+						{ value: 'down' }
+					]}
+					onValue={(direction) => {
+						icache.set('direction', direction);
+					}}
+				/>
+			</virtual>
 		</Example>
 	);
 });

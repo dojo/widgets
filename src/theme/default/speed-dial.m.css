@@ -81,3 +81,21 @@
 /* Class applied to the fifth action when closing, and the fifth to last when opening */
 .action4 {
 }
+/* Class applied to the container around action labels and icons */
+.labelContainer {
+}
+/* Class applied to a top-positioned action label */
+.labelTop {
+}
+/* Class applied to a right-positioned action label */
+.labelRight {
+}
+/* Class applied to a bottom-positioned action label */
+.labelBottom {
+}
+/* Class applied to a left-positioned action label */
+.labelLeft {
+}
+/* Class applied to an action label */
+.label {
+}
