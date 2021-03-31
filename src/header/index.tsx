@@ -1,7 +1,25 @@
-import * as css from '../theme/default/header.m.css';
-import theme from '../middleware/theme';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { create, tsx } from '@dojo/framework/core/vdom';
+import { LinkProperties } from '@dojo/framework/routing/interfaces';
+import Link from '@dojo/framework/routing/Link';
+import theme from '../middleware/theme';
+import * as css from '../theme/default/header.m.css';
+
+export interface ActionProperties extends LinkProperties {}
+
+const actionFactory = create({ theme }).properties<ActionProperties>();
+
+export const Action = actionFactory(({ properties, children, middleware: { theme } }) => {
+	const themedCss = theme.classes(css);
+
+	const action = (
+		<Link {...properties()} classes={themedCss.action}>
+			{children()}
+		</Link>
+	);
+
+	return action;
+});
 
 export interface HeaderProperties {
 	/** Determines if this header is fixed */
@@ -40,10 +58,7 @@ export const Header = factory(function Header({ children, properties, middleware
 					</div>
 					<div classes={classes.secondary} key="secondary">
 						<nav classes={classes.actions} key="actions">
-							{actions &&
-								(Array.isArray(actions) ? actions : [actions]).map((action) => (
-									<div classes={classes.action}>{action}</div>
-								))}
+							{actions}
 						</nav>
 						{trailing && <div classes={classes.trailing}>{trailing}</div>}
 					</div>

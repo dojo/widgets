@@ -1,7 +1,29 @@
-import { tsx, create } from '@dojo/framework/core/vdom';
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import * as css from '../theme/default/card.m.css';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import ActionButton, { ActionButtonProperties } from '../action-button/index';
+import Icon, { IconProperties } from '../icon/index';
 import theme from '../middleware/theme';
+import * as css from '../theme/default/card.m.css';
+
+export interface ActionProperties extends ActionButtonProperties {}
+
+const actionFactory = create().properties<ActionProperties>();
+
+export const Action = actionFactory(({ properties, children }) => {
+	const action = <ActionButton {...properties()}>{children()}</ActionButton>;
+
+	return action;
+});
+
+export interface ActionIconProperties extends IconProperties {}
+
+const actionIconFactory = create().properties<ActionIconProperties>();
+
+export const ActionIcon = actionIconFactory(({ properties, children }) => {
+	const action = <Icon {...properties()}>{children()}</Icon>;
+
+	return action;
+});
 
 export interface CardProperties {
 	onAction?: () => void;

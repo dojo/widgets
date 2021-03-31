@@ -1,8 +1,19 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import theme from '../middleware/theme';
 import { create, tsx } from '@dojo/framework/core/vdom';
+import ActionButton, { ActionButtonProperties } from '../action-button';
+import theme from '../middleware/theme';
 import * as css from '../theme/default/snackbar.m.css';
 import * as fixedCss from './styles/snackbar.m.css';
+
+export interface ActionProperties extends ActionButtonProperties {}
+
+const actionFactory = create().properties<ActionProperties>();
+
+export const Action = actionFactory(({ properties, children }) => {
+	const action = <ActionButton {...properties()}>{children()}</ActionButton>;
+
+	return action;
+});
 
 export interface SnackbarProperties {
 	/** If the snackbar is displayed */

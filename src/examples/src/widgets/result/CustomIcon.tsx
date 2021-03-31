@@ -1,6 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Result from '@dojo/widgets/result';
-import Button from '@dojo/widgets/button';
+import Result, { Action } from '@dojo/widgets/result';
 import Example from '../../Example';
 const dojo = require('../avatar/img/dojo.jpg');
 
@@ -15,7 +14,7 @@ export default factory(function Alert() {
 					content: <span>Content describing the alert.</span>,
 					actionButtons: (
 						<virtual>
-							<Button>Result Action</Button>
+							<Action>Result Action</Action>
 						</virtual>
 					)
 				}}

@@ -1,6 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Result from '@dojo/widgets/result';
-import Button from '@dojo/widgets/button';
+import Result, { Action } from '@dojo/widgets/result';
 import Example from '../../Example';
 
 const factory = create();
@@ -13,7 +12,7 @@ export default factory(function Error() {
 					content: <span>This is the success content.</span>,
 					actionButtons: (
 						<virtual>
-							<Button>OK</Button>
+							<Action>OK</Action>
 						</virtual>
 					)
 				}}

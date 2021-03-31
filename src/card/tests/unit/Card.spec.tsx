@@ -1,12 +1,10 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
-import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
 import { tsx } from '@dojo/framework/core/vdom';
-import Card from '../../index';
-import Button from '../../../button/index';
-import Icon from '../../../icon';
-import * as css from '../../../theme/default/card.m.css';
+import renderer, { assertion, wrap } from '@dojo/framework/testing/renderer';
 import { spy } from 'sinon';
+import * as css from '../../../theme/default/card.m.css';
+import Card, { Action, ActionIcon } from '../../index';
 
 const noop = () => {};
 
@@ -151,13 +149,13 @@ describe('Card', () => {
 			const r = renderer(() => (
 				<Card>
 					{{
-						actionButtons: <Button>test</Button>
+						actionButtons: <Action>test</Action>
 					}}
 				</Card>
 			));
 			const childrenTemplate = actionsTemplate.setChildren(Actions, () => [
 				<div classes={css.actionButtons}>
-					<Button>test</Button>
+					<Action>test</Action>
 				</div>
 			]);
 			r.expect(childrenTemplate);
@@ -167,13 +165,13 @@ describe('Card', () => {
 			const r = renderer(() => (
 				<Card>
 					{{
-						actionIcons: <Icon type="upIcon" />
+						actionIcons: <ActionIcon type="upIcon" />
 					}}
 				</Card>
 			));
 			const childrenTemplate = actionsTemplate.setChildren(Actions, () => [
 				<div classes={css.actionIcons}>
-					<Icon type="upIcon" />
+					<ActionIcon type="upIcon" />
 				</div>
 			]);
 			r.expect(childrenTemplate);
@@ -183,17 +181,17 @@ describe('Card', () => {
 			const r = renderer(() => (
 				<Card>
 					{{
-						actionButtons: <Button>test</Button>,
-						actionIcons: <Icon type="upIcon" />
+						actionButtons: <Action>test</Action>,
+						actionIcons: <ActionIcon type="upIcon" />
 					}}
 				</Card>
 			));
 			const childrenTemplate = actionsTemplate.setChildren(Actions, () => [
 				<div classes={css.actionButtons}>
-					<Button>test</Button>
+					<Action>test</Action>
 				</div>,
 				<div classes={css.actionIcons}>
-					<Icon type="upIcon" />
+					<ActionIcon type="upIcon" />
 				</div>
 			]);
 			r.expect(childrenTemplate);
@@ -212,8 +210,8 @@ describe('Card', () => {
 				{{
 					header: 'Header Content',
 					content: 'Content',
-					actionButtons: <Button>test</Button>,
-					actionIcons: <Icon type="upIcon" />
+					actionButtons: <Action>test</Action>,
+					actionIcons: <ActionIcon type="upIcon" />
 				}}
 			</Card>
 		));
@@ -242,10 +240,10 @@ describe('Card', () => {
 				.append(Root, () => [
 					<div key="actions" classes={css.actions}>
 						<div classes={css.actionButtons}>
-							<Button>test</Button>
+							<Action>test</Action>
 						</div>
 						<div classes={css.actionIcons}>
-							<Icon type="upIcon" />
+							<ActionIcon type="upIcon" />
 						</div>
 					</div>
 				])

@@ -1,11 +1,10 @@
 const { describe, it } = intern.getInterface('bdd');
+import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import harness from '@dojo/framework/testing/harness/harness';
-import { tsx } from '@dojo/framework/core/vdom';
-import Result from '../../index';
-import Button from '../../../button/index';
 import Icon from '../../../icon';
 import * as css from '../../../theme/default/result.m.css';
+import Result, { Action } from '../../index';
 
 describe('Result', () => {
 	const template = assertionTemplate(() => <div key="root" classes={[undefined, css.root]} />);
@@ -102,13 +101,13 @@ describe('Result', () => {
 			const h = harness(() => (
 				<Result>
 					{{
-						actionButtons: <Button>test</Button>
+						actionButtons: <Action>test</Action>
 					}}
 				</Result>
 			));
 			const childrenTemplate = actionsTemplate.setChildren('@actions', () => [
 				<div classes={css.actionButtons}>
-					<Button>test</Button>
+					<Action>test</Action>
 				</div>
 			]);
 			h.expect(childrenTemplate);
@@ -121,7 +120,7 @@ describe('Result', () => {
 				{{
 					icon: <Icon type="clockIcon" />,
 					content: 'Result Content',
-					actionButtons: <Button>test</Button>
+					actionButtons: <Action>test</Action>
 				}}
 			</Result>
 		));
@@ -138,7 +137,7 @@ describe('Result', () => {
 				<div classes={css.contentWrapper}>Result Content</div>,
 				<div key="actions" classes={css.actions}>
 					<div classes={css.actionButtons}>
-						<Button>test</Button>
+						<Action>test</Action>
 					</div>
 				</div>
 			])

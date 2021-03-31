@@ -1,17 +1,28 @@
 import { DNode } from '@dojo/framework/core/interfaces';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import inert from '@dojo/framework/core/middleware/inert';
 import { uuid } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
+import ActionButton, { ActionButtonProperties } from '../action-button';
 import { formatAriaProperties, Keys } from '../common/util';
-import Icon from '../icon';
-import theme from '../middleware/theme';
-import bodyScroll from '../middleware/bodyScroll';
-import * as css from '../theme/default/dialog.m.css';
-import * as fixedCss from './styles/dialog.m.css';
-import bundle from './nls/Dialog';
 import GlobalEvent from '../global-event';
-import inert from '@dojo/framework/core/middleware/inert';
+import Icon from '../icon';
+import bodyScroll from '../middleware/bodyScroll';
+import theme from '../middleware/theme';
+import * as css from '../theme/default/dialog.m.css';
+import bundle from './nls/Dialog';
+import * as fixedCss from './styles/dialog.m.css';
+
+export interface ActionProperties extends ActionButtonProperties {}
+
+const actionFactory = create().properties<ActionProperties>();
+
+export const Action = actionFactory(({ properties, children }) => {
+	const action = <ActionButton {...properties()}>{children()}</ActionButton>;
+
+	return action;
+});
 
 export interface DialogPropertiesBase {
 	/** Custom aria attributes */

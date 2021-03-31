@@ -1,22 +1,21 @@
-import { Keys } from '../../../common/util';
-
-const { describe, it } = intern.getInterface('bdd');
-const { assert } = intern.getPlugin('chai');
 import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
-import Icon from '../../../icon';
+import * as sinon from 'sinon';
 import {
 	compareAriaLabelledBy,
 	compareId,
 	createHarness,
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
-import * as themeCss from '../../../theme/default/dialog.m.css';
-import * as fixedCss from '../../styles/dialog.m.css';
-import * as sinon from 'sinon';
-
-import Dialog, { DialogProperties } from '../../index';
+import { Keys } from '../../../common/util';
 import GlobalEvent from '../../../global-event';
+import Icon from '../../../icon';
+import * as themeCss from '../../../theme/default/dialog.m.css';
+import Dialog, { Action, DialogProperties } from '../../index';
+import * as fixedCss from '../../styles/dialog.m.css';
+
+const { describe, it } = intern.getInterface('bdd');
+const { assert } = intern.getPlugin('chai');
 
 const harness = createHarness([compareId, compareAriaLabelledBy]);
 
@@ -247,7 +246,7 @@ describe('Dialog', () => {
 				{{
 					title: 'foo',
 					content: 'bar',
-					actions: 'action'
+					actions: <Action>Action</Action>
 				}}
 			</Dialog>
 		));
@@ -257,7 +256,7 @@ describe('Dialog', () => {
 				.setChildren('@content', () => ['bar'])
 				.insertAfter('@content', () => [
 					<div classes={themeCss.actions} key="actions">
-						action
+						<Action>Action</Action>
 					</div>
 				])
 		);

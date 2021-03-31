@@ -1,6 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Card from '@dojo/widgets/card';
-import Icon from '@dojo/widgets/icon';
+import Card, { ActionIcon } from '@dojo/widgets/card';
 import Example from '../../Example';
 
 const factory = create();
@@ -14,9 +13,9 @@ export default factory(function ActionIcons() {
 						content: <h2>Hello, World</h2>,
 						actionIcons: (
 							<virtual>
-								<Icon type="secureIcon" />
-								<Icon type="downIcon" />
-								<Icon type="upIcon" />
+								<ActionIcon type="secureIcon" />
+								<ActionIcon type="downIcon" />
+								<ActionIcon type="upIcon" />
 							</virtual>
 						)
 					}}

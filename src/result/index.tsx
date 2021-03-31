@@ -1,10 +1,20 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import { create, tsx } from '@dojo/framework/core/vdom';
-
-import theme from '../middleware/theme';
-import * as css from '../theme/default/result.m.css';
-import * as iconCss from '../theme/default/icon.m.css';
+import ActionButton, { ActionButtonProperties } from '../action-button';
 import Icon from '../icon';
+import theme from '../middleware/theme';
+import * as iconCss from '../theme/default/icon.m.css';
+import * as css from '../theme/default/result.m.css';
+
+export interface ActionProperties extends ActionButtonProperties {}
+
+const actionFactory = create().properties<ActionProperties>();
+
+export const Action = actionFactory(({ properties, children }) => {
+	const action = <ActionButton {...properties()}>{children()}</ActionButton>;
+
+	return action;
+});
 
 type ResultStatus = 'alert' | 'error' | 'info' | 'success';
 

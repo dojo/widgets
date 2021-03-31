@@ -1,5 +1,4 @@
-import Header from '@dojo/widgets/header';
-import { Link } from '@dojo/framework/routing/Link';
+import Header, { Action } from '@dojo/widgets/header';
 import { create, tsx } from '@dojo/framework/core/vdom';
 import Example from '../../Example';
 
@@ -12,9 +11,9 @@ export default factory(function Basic() {
 				{{
 					title: 'My App',
 					actions: [
-						<Link to="#foo">Foo</Link>,
-						<Link to="#bar">Bar</Link>,
-						<Link to="#baz">Baz</Link>
+						<Action to="#foo">Foo</Action>,
+						<Action to="#bar">Bar</Action>,
+						<Action to="#baz">Baz</Action>
 					]
 				}}
 			</Header>

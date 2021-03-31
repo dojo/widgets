@@ -1,7 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import Card from '@dojo/widgets/card';
-import Button from '@dojo/widgets/button';
-import Icon from '@dojo/widgets/icon';
+import Card, { Action, ActionIcon } from '@dojo/widgets/card';
 import Example from '../../Example';
 const mediaSrc = require('./img/card-photo.jpg');
 
@@ -22,15 +20,15 @@ export default factory(function CardWithMediaContent() {
 						content: <span>Travel the world today.</span>,
 						actionButtons: (
 							<virtual>
-								<Button>Read</Button>
-								<Button>Bookmark</Button>
+								<Action>Read</Action>
+								<Action>Bookmark</Action>
 							</virtual>
 						),
 						actionIcons: (
 							<virtual>
-								<Icon type="secureIcon" />
-								<Icon type="downIcon" />
-								<Icon type="upIcon" />
+								<ActionIcon type="secureIcon" />
+								<ActionIcon type="downIcon" />
+								<ActionIcon type="upIcon" />
 							</virtual>
 						)
 					}}

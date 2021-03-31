@@ -1,9 +1,9 @@
 const { describe, it } = intern.getInterface('bdd');
-import * as classes from '../../../theme/default/header.m.css';
-import Header from '../..';
+import { tsx } from '@dojo/framework/core/vdom';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import harness from '@dojo/framework/testing/harness/harness';
-import { tsx } from '@dojo/framework/core/vdom';
+import Header, { Action } from '../..';
+import * as classes from '../../../theme/default/header.m.css';
 
 const baseTemplate = assertionTemplate(() => (
 	<header key="header" classes={[undefined, undefined]}>
@@ -81,12 +81,12 @@ describe('HeaderToolbar', () => {
 			<Header>
 				{{
 					title: 'title',
-					actions: ['action']
+					actions: [<Action to="#foo">Action</Action>]
 				}}
 			</Header>
 		));
 		const testTemplate = baseTemplate.replaceChildren('@actions', () => [
-			<div classes={classes.action}>action</div>
+			<Action to="#foo">Action</Action>
 		]);
 		h.expect(testTemplate);
 	});
@@ -96,12 +96,12 @@ describe('HeaderToolbar', () => {
 			<Header>
 				{{
 					title: 'title',
-					actions: 'action'
+					actions: <Action to="#foo">Action</Action>
 				}}
 			</Header>
 		));
 		const testTemplate = baseTemplate.replaceChildren('@actions', () => [
-			<div classes={classes.action}>action</div>
+			<Action to="#foo">Action</Action>
 		]);
 		h.expect(testTemplate);
 	});

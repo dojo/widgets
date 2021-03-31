@@ -1,7 +1,7 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
-import Dialog from '@dojo/widgets/dialog';
-import Button from '@dojo/widgets/button';
 import icache from '@dojo/framework/core/middleware/icache';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import Button from '@dojo/widgets/button';
+import Dialog, { Action } from '@dojo/widgets/dialog';
 import Example from '../../Example';
 
 const factory = create({ icache });
@@ -26,7 +26,7 @@ export default factory(function ActionsDialog({ middleware: { icache } }) {
 						),
 						actions: (
 							<virtual>
-								<Button onClick={() => icache.set('isOpen', false)}>OK</Button>
+								<Action onClick={() => icache.set('isOpen', false)}>OK</Action>
 							</virtual>
 						)
 					}}

@@ -1,12 +1,11 @@
 const { describe, it } = intern.getInterface('bdd');
 
+import { tsx } from '@dojo/framework/core/vdom';
 import assertationTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 import harness from '@dojo/framework/testing/harness/harness';
-import { tsx } from '@dojo/framework/core/vdom';
-import Snackbar from '../../index';
 import * as css from '../../../theme/default/snackbar.m.css';
+import Snackbar, { Action } from '../../index';
 import * as fixedCss from '../../styles/snackbar.m.css';
-import Button from '../../../button/index';
 
 describe('Snackbar', () => {
 	const template = assertationTemplate(() => {
@@ -173,13 +172,13 @@ describe('Snackbar', () => {
 			<Snackbar open={true}>
 				{{
 					message: 'test',
-					actions: <Button>Dismiss</Button>
+					actions: <Action>Dismiss</Action>
 				}}
 			</Snackbar>
 		));
 		const actionsTemplate = template.insertAfter('~label', () => [
 			<div key="actions" classes={css.actions}>
-				<Button>Dismiss</Button>
+				<Action>Dismiss</Action>
 			</div>
 		]);
 		h.expect(actionsTemplate);
@@ -190,14 +189,14 @@ describe('Snackbar', () => {
 			<Snackbar open={true}>
 				{{
 					message: 'test',
-					actions: [<Button>Retry</Button>, <Button>Close</Button>]
+					actions: [<Action>Retry</Action>, <Action>Close</Action>]
 				}}
 			</Snackbar>
 		));
 		const actionsTemplate = template.insertAfter('~label', () => [
 			<div key="actions" classes={css.actions}>
-				<Button>Retry</Button>
-				<Button>Close</Button>
+				<Action>Retry</Action>
+				<Action>Close</Action>
 			</div>
 		]);
 		h.expect(actionsTemplate);

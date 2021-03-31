@@ -1,7 +1,6 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
 import { icache } from '@dojo/framework/core/middleware/icache';
-import Card from '@dojo/widgets/card';
-import Button from '@dojo/widgets/button';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import Card, { Action } from '@dojo/widgets/card';
 import Example from '../../Example';
 
 const factory = create({ icache });
@@ -14,11 +13,11 @@ export default factory(function ActionButtons({ middleware: { icache } }) {
 				<Card title="Hello, World">
 					{{
 						actionButtons: (
-							<Button onClick={() => icache.set('clickCount', clickCount + 1)}>
+							<Action onClick={() => icache.set('clickCount', clickCount + 1)}>
 								{clickCount === 0
 									? 'Action'
 									: `Clicked: ${clickCount} time${clickCount > 1 ? 's' : ''}`}
-							</Button>
+							</Action>
 						),
 						content: <span>Lorem ipsum</span>
 					}}
