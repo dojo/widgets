@@ -53,9 +53,9 @@
 
 .header {
 	display: flex;
+	padding: 1rem;
 }
 
-.header,
 .titleWrapper {
 	padding: 0 1rem 8px;
 	align-items: center;

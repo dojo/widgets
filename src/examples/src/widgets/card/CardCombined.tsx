@@ -11,12 +11,7 @@ export default factory(function CardWithMediaContent() {
 	return (
 		<Example>
 			<div styles={{ maxWidth: '400px' }}>
-				<Card
-					onAction={() => {}}
-					mediaSrc={mediaSrc}
-					title="Hello, World"
-					subtitle="A pretty picture"
-				>
+				<Card mediaSrc={mediaSrc} title="Hello, World" subtitle="A pretty picture">
 					{{
 						header: <div>Header Content</div>,
 						content: <span>Travel the world today.</span>,

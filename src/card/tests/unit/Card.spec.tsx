@@ -15,7 +15,7 @@ const Content = wrap('div');
 
 const template = assertion(() => (
 	<Root key="root" classes={[undefined, css.root, false]}>
-		<Content key="content" classes={[css.content, null]} onClick={noop} />
+		<Content key="content" classes={[css.content, null]} onclick={noop} />
 	</Root>
 ));
 
@@ -36,15 +36,15 @@ describe('Card', () => {
 	});
 
 	describe('action', () => {
-		const onAction = spy();
-		const r = renderer(() => <Card onAction={onAction} />);
+		const onClick = spy();
+		const r = renderer(() => <Card onClick={onClick} />);
 
 		const actionTemplate = template.setProperty(Content, 'classes', [css.content, css.primary]);
 
 		r.expect(actionTemplate);
-		r.property(Content, 'onClick');
+		r.property(Content, 'onclick');
 		r.expect(actionTemplate);
-		assert.isTrue(onAction.calledOnce);
+		assert.isTrue(onClick.calledOnce);
 	});
 
 	describe('header', () => {
@@ -57,7 +57,7 @@ describe('Card', () => {
 				</Card>
 			));
 
-			const headerTemplate = template.prepend(Root, () => [
+			const headerTemplate = template.prepend(Content, () => [
 				<div key="header" classes={css.header}>
 					Hello, World
 				</div>
@@ -220,12 +220,10 @@ describe('Card', () => {
 
 		r.expect(
 			template
-				.prepend(Root, () => [
+				.setChildren(Content, () => [
 					<div key="header" classes={css.header}>
 						Header Content
-					</div>
-				])
-				.setChildren(Content, () => [
+					</div>,
 					<div
 						title="test"
 						classes={[css.media, css.mediaSquare]}
