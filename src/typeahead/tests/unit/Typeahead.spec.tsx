@@ -93,13 +93,17 @@ const contentAssertion = assertion(() => (
 			activeIndex={0}
 			disabled={undefined}
 			focusable={false}
-			initialValue={undefined}
+			initialValue=""
 			itemsInView={undefined}
 			key="menu"
 			onBlur={noop}
 			onRequestClose={noop}
 			onValue={noop}
 			widgetId="typeahead-list-test"
+			staticOption={{
+				label: '',
+				value: ''
+			}}
 			theme={{
 				'@dojo/widgets/list': {
 					...listTheme,
@@ -246,7 +250,14 @@ describe('Typeahead', () => {
 			trigger: [() => {}],
 			content: [() => {}, 'below']
 		});
-		r.expect(baseAssertion);
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion,
+				content: contentAssertion
+					.setProperty(WrappedList, 'initialValue', undefined)
+					.setProperty(WrappedList, 'staticOption', undefined)
+			}))
+		);
 		// open the drop down
 		r.property(WrappedTrigger, 'onClick');
 		// focus second item from the drop down, `cat`
@@ -254,7 +265,10 @@ describe('Typeahead', () => {
 		r.expect(
 			baseAssertion.replaceChildren(WrappedPopup, () => ({
 				trigger: expandedTriggerAssertion,
-				content: contentAssertion.setProperty(WrappedList, 'activeIndex', 1)
+				content: contentAssertion
+					.setProperty(WrappedList, 'activeIndex', 1)
+					.setProperty(WrappedList, 'initialValue', undefined)
+					.setProperty(WrappedList, 'staticOption', undefined)
 			}))
 		);
 		// select second item from the drop down, `cat`
@@ -272,6 +286,7 @@ describe('Typeahead', () => {
 					content: contentAssertion
 						.setProperty(WrappedList, 'initialValue', '2')
 						.setProperty(WrappedList, 'activeIndex', 1)
+						.setProperty(WrappedList, 'staticOption', undefined)
 				}))
 		);
 		r.property(WrappedTrigger, 'onValue', '');
@@ -284,7 +299,9 @@ describe('Typeahead', () => {
 					trigger: expandedTriggerAssertion
 						.setProperty(WrappedTrigger, 'valid', false)
 						.setProperty(WrappedTrigger, 'value', ''),
-					content: contentAssertion.setProperty(WrappedList, 'initialValue', undefined)
+					content: contentAssertion
+						.setProperty(WrappedList, 'initialValue', undefined)
+						.setProperty(WrappedList, 'staticOption', undefined)
 				}))
 		);
 	});
@@ -304,7 +321,14 @@ describe('Typeahead', () => {
 			trigger: [() => {}],
 			content: [() => {}, 'below']
 		});
-		r.expect(baseAssertion);
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion,
+				content: contentAssertion
+					.setProperty(WrappedList, 'initialValue', undefined)
+					.setProperty(WrappedList, 'staticOption', undefined)
+			}))
+		);
 		// open the drop down
 		r.property(WrappedTrigger, 'onValue', 'unknown');
 		// focus second item from the drop down, `cat`
@@ -317,6 +341,8 @@ describe('Typeahead', () => {
 				.replaceChildren(WrappedPopup, () => ({
 					trigger: triggerAssertion.setProperty(WrappedTrigger, 'valid', false),
 					content: contentAssertion
+						.setProperty(WrappedList, 'initialValue', undefined)
+						.setProperty(WrappedList, 'staticOption', undefined)
 				}))
 		);
 	});
@@ -346,6 +372,7 @@ describe('Typeahead', () => {
 			trigger: [() => {}]
 		});
 		r.expect(baseAssertion);
+		assert.strictEqual(onValueStub.callCount, 1);
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Down, () => {});
 		r.expect(
 			baseAssertion.replaceChildren(WrappedPopup, () => ({
@@ -353,7 +380,7 @@ describe('Typeahead', () => {
 				content: contentAssertion
 			}))
 		);
-		assert.strictEqual(onValueStub.callCount, 0);
+		assert.strictEqual(onValueStub.callCount, 1);
 	});
 
 	it('Should open dropdown on up key', () => {
@@ -364,6 +391,7 @@ describe('Typeahead', () => {
 			trigger: [() => {}]
 		});
 		r.expect(baseAssertion);
+		assert.strictEqual(onValueStub.callCount, 1);
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Up, () => {});
 		r.property(WrappedPopup, 'onOpen');
 		r.expect(
@@ -372,7 +400,7 @@ describe('Typeahead', () => {
 				content: contentAssertion
 			}))
 		);
-		assert.strictEqual(onValueStub.callCount, 0);
+		assert.strictEqual(onValueStub.callCount, 1);
 	});
 
 	it('Should close the list on escape ', () => {
@@ -383,6 +411,7 @@ describe('Typeahead', () => {
 			trigger: [() => {}]
 		});
 		r.expect(baseAssertion);
+		assert.strictEqual(onValueStub.callCount, 1);
 		// open the drop down
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Down, () => {});
 		r.expect(
@@ -394,7 +423,7 @@ describe('Typeahead', () => {
 		// close the drop down
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Escape, () => {});
 		r.expect(baseAssertion);
-		assert.strictEqual(onValueStub.callCount, 0);
+		assert.strictEqual(onValueStub.callCount, 1);
 	});
 
 	it('Should select item on enter ', () => {
@@ -405,6 +434,7 @@ describe('Typeahead', () => {
 			trigger: [() => {}]
 		});
 		r.expect(baseAssertion);
+		assert.strictEqual(onValueStub.callCount, 1);
 		// open the drop down
 		r.property(WrappedTrigger, 'onClick');
 		// focus second item from the drop down, `cat`
@@ -419,7 +449,7 @@ describe('Typeahead', () => {
 					.setProperty(WrappedList, 'activeIndex', 1)
 			}))
 		);
-		assert.strictEqual(onValueStub.callCount, 1);
+		assert.strictEqual(onValueStub.callCount, 2);
 	});
 
 	it('Should select value on blur in non-strict mode', () => {
@@ -434,6 +464,8 @@ describe('Typeahead', () => {
 			trigger: [() => {}]
 		});
 		r.expect(nonStrictModeBaseAssertion);
+		assert.strictEqual(onValueStub.callCount, 1);
+		assert.deepEqual(onValueStub.firstCall.args, [{ value: '', label: '' }]);
 		// open the drop down
 		r.property(WrappedTrigger, 'onClick');
 		// focus second item from the drop down, `cat`
@@ -446,8 +478,8 @@ describe('Typeahead', () => {
 				content: nonStrictModeContent.setProperty(WrappedList, 'initialValue', 'c')
 			}))
 		);
-		assert.strictEqual(onValueStub.callCount, 1);
-		assert.deepEqual(onValueStub.firstCall.args, [{ value: 'c', label: 'c' }]);
+		assert.strictEqual(onValueStub.callCount, 2);
+		assert.deepEqual(onValueStub.secondCall.args, [{ value: 'c', label: 'c' }]);
 	});
 
 	it('Should not be able to select a disabled item', () => {
@@ -458,6 +490,7 @@ describe('Typeahead', () => {
 			trigger: [() => {}]
 		});
 		r.expect(baseAssertion);
+		assert.strictEqual(onValueStub.callCount, 1);
 		// open the drop down
 		r.property(WrappedTrigger, 'onClick');
 		// focus second item from the drop down, `cat`
@@ -472,7 +505,7 @@ describe('Typeahead', () => {
 				content: contentAssertion.setProperty(WrappedList, 'activeIndex', 2)
 			}))
 		);
-		assert.strictEqual(onValueStub.callCount, 0);
+		assert.strictEqual(onValueStub.callCount, 1);
 	});
 
 	it('Should not be able to select an item that is considered disabled by the `itemDisabled` property', () => {
@@ -497,6 +530,7 @@ describe('Typeahead', () => {
 			trigger: [() => {}]
 		});
 		r.expect(disabledAssertion);
+		assert.strictEqual(onValueStub.callCount, 1);
 		r.property(WrappedTrigger, 'onClick');
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Down, () => {});
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
@@ -506,7 +540,7 @@ describe('Typeahead', () => {
 				content: disabledContentAssertion.setProperty(WrappedList, 'activeIndex', 1)
 			}))
 		);
-		assert.strictEqual(onValueStub.callCount, 0);
+		assert.strictEqual(onValueStub.callCount, 1);
 	});
 
 	it('Should not be able to select an invalid item', () => {
@@ -517,11 +551,12 @@ describe('Typeahead', () => {
 			trigger: [() => {}]
 		});
 		r.expect(baseAssertion);
+		assert.strictEqual(onValueStub.callCount, 1);
 		r.property(WrappedTrigger, 'onClick');
 		r.property(WrappedTrigger, 'onValue', 'Unknown');
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
 		r.expect(baseAssertion);
-		assert.strictEqual(onValueStub.callCount, 0);
+		assert.strictEqual(onValueStub.callCount, 1);
 	});
 
 	it('Should be able to select a free text value in non-strict mode', () => {
@@ -536,6 +571,7 @@ describe('Typeahead', () => {
 			trigger: [() => {}]
 		});
 		r.expect(nonStrictModeBaseAssertion);
+		assert.strictEqual(onValueStub.callCount, 1);
 		r.property(WrappedTrigger, 'onClick');
 		r.property(WrappedTrigger, 'onValue', 'Unknown');
 		r.property(WrappedTrigger, 'onKeyDown', Keys.Enter, () => {});
@@ -545,7 +581,7 @@ describe('Typeahead', () => {
 				content: nonStrictModeContent.setProperty(WrappedList, 'initialValue', 'Unknown')
 			}))
 		);
-		assert.strictEqual(onValueStub.callCount, 1);
+		assert.strictEqual(onValueStub.callCount, 2);
 	});
 
 	it('Required typeahead should be validated when item is selected and then the typeahead blurred', () => {
@@ -562,7 +598,14 @@ describe('Typeahead', () => {
 			trigger: [() => {}],
 			content: [toggleClosedStub, 'above']
 		});
-		r.expect(nonStrictModeBaseAssertion);
+		r.expect(
+			nonStrictModeBaseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion,
+				content: nonStrictModeContent
+					.setProperty(WrappedList, 'initialValue', undefined)
+					.setProperty(WrappedList, 'staticOption', undefined)
+			}))
+		);
 		r.property(WrappedPopup, 'onClose');
 		r.property(WrappedList, 'onValue', {
 			value: '1',
@@ -575,7 +618,9 @@ describe('Typeahead', () => {
 				trigger: triggerAssertion
 					.setProperty(WrappedTrigger, 'value', 'Dog')
 					.setProperty(WrappedTrigger, 'valid', true),
-				content: nonStrictModeContent.setProperty(WrappedList, 'initialValue', '1')
+				content: nonStrictModeContent
+					.setProperty(WrappedList, 'staticOption', undefined)
+					.setProperty(WrappedList, 'initialValue', '1')
 			}));
 		r.expect(validatedAssertion);
 		r.property(WrappedTrigger, 'onBlur');
@@ -607,9 +652,10 @@ describe('Typeahead', () => {
 						aria: { ...current.aria, expanded: 'true' }
 					};
 				}),
-				content: nonStrictModeContent.setProperty(WrappedList, 'initialValue', undefined)
+				content: nonStrictModeContent
 			}));
 		r.expect(expandedAssertion);
+		assert.strictEqual(onValueStub.callCount, 1);
 		r.property(WrappedTrigger, 'onValue', '');
 		r.property(WrappedTrigger, 'onBlur');
 		r.expect(
@@ -617,10 +663,10 @@ describe('Typeahead', () => {
 				trigger: triggerAssertion.setProperties(WrappedTrigger, (current: any) => {
 					return { ...current, value: '', aria: { ...current.aria, expanded: 'false' } };
 				}),
-				content: nonStrictModeContent.setProperty(WrappedList, 'initialValue', '')
+				content: nonStrictModeContent
 			}))
 		);
-		assert.strictEqual(onValueStub.callCount, 0);
+		assert.strictEqual(onValueStub.callCount, 1);
 	});
 
 	// it('deals with loading items in non strict mode', async () => {
@@ -676,4 +722,86 @@ describe('Typeahead', () => {
 	// 	);
 	// 	r.expect(expandedSelectedAssertion);
 	// });
+
+	it('should create placeholder object when not required and no placeholder provided', () => {
+		const toggleClosedStub = sb.stub();
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ data, id: 'test', idKey: 'value' }}
+				onValue={onValueStub}
+				strict={false}
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [toggleClosedStub, 'above']
+		});
+		r.expect(nonStrictModeBaseAssertion);
+
+		assert.strictEqual(onValueStub.callCount, 1);
+		assert.deepEqual(onValueStub.firstCall.args, [{ value: '', label: '' }]);
+	});
+
+	it('should should use provided placeholder', () => {
+		const toggleClosedStub = sb.stub();
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ data, id: 'test', idKey: 'value' }}
+				onValue={onValueStub}
+				strict={false}
+				placeholder={{ value: 'placeholder', label: 'This is a placeholder' }}
+			/>
+		));
+
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [toggleClosedStub, 'above']
+		});
+		r.expect(
+			nonStrictModeBaseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(
+					WrappedTrigger,
+					'value',
+					'This is a placeholder'
+				),
+				content: nonStrictModeContent
+					.setProperty(WrappedList, 'initialValue', 'placeholder')
+					.setProperty(WrappedList, 'staticOption', {
+						value: 'placeholder',
+						label: 'This is a placeholder'
+					})
+			}))
+		);
+
+		assert.strictEqual(onValueStub.callCount, 1);
+		assert.deepEqual(onValueStub.firstCall.args, [
+			{ value: 'placeholder', label: 'This is a placeholder' }
+		]);
+	});
+
+	it('should not create placeholder object when required and no placeholder provided', () => {
+		const toggleClosedStub = sb.stub();
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ data, id: 'test', idKey: 'value' }}
+				onValue={onValueStub}
+				strict={false}
+				required
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [toggleClosedStub, 'above']
+		});
+		r.expect(
+			nonStrictModeBaseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion,
+				content: nonStrictModeContent
+					.setProperty(WrappedList, 'initialValue', undefined)
+					.setProperty(WrappedList, 'staticOption', undefined)
+			}))
+		);
+
+		assert.strictEqual(onValueStub.callCount, 0);
+	});
 });

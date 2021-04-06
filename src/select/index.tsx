@@ -5,6 +5,7 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
 import { uuid } from '@dojo/framework/core/util';
 import { create, tsx } from '@dojo/framework/core/vdom';
+import { find } from '@dojo/framework/shim/array';
 import { Keys } from '../common/util';
 import HelperText from '../helper-text';
 import Icon from '../icon';
@@ -12,20 +13,19 @@ import Label from '../label';
 import {
 	ItemRendererProperties,
 	List,
-	ListOption,
 	ListItemProperties,
+	ListOption,
 	MenuItemProperties
 } from '../list';
+import LoadingIndicator from '../loading-indicator';
 import theme from '../middleware/theme';
 import { PopupPosition } from '../popup';
-import TriggerPopup from '../trigger-popup';
-import * as listCss from '../theme/default/list.m.css';
-import * as labelCss from '../theme/default/label.m.css';
 import * as iconCss from '../theme/default/icon.m.css';
+import * as labelCss from '../theme/default/label.m.css';
+import * as listCss from '../theme/default/list.m.css';
 import * as css from '../theme/default/select.m.css';
+import TriggerPopup from '../trigger-popup';
 import bundle from './nls/Select';
-import LoadingIndicator from '../loading-indicator';
-import { find } from '@dojo/framework/shim/array';
 
 export interface SelectProperties {
 	/** Callback called when user selects a value */
@@ -39,7 +39,7 @@ export interface SelectProperties {
 	/** placement of the select menu; 'above' or 'below' */
 	position?: PopupPosition;
 	/** Placeholder value to show when nothing has been selected */
-	placeholder?: string;
+	placeholder?: ListOption;
 	/** Property to determine if the input is disabled */
 	disabled?: boolean;
 	/** Sets the helper text of the input */
@@ -100,7 +100,6 @@ export const Select = factory(function Select({
 		itemsInView = 6,
 		onValidate,
 		onValue,
-		placeholder = '',
 		position,
 		required,
 		name,
@@ -115,7 +114,11 @@ export const Select = factory(function Select({
 	} = resource.template(template);
 
 	const [{ items, label } = { items: undefined, label: undefined }] = children();
-	let { value } = properties();
+	let { value, placeholder } = properties();
+
+	if (!required && placeholder === undefined) {
+		placeholder = { value: '', label: '' };
+	}
 
 	if (value === undefined) {
 		if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -123,6 +126,11 @@ export const Select = factory(function Select({
 			icache.set('value', initialValue);
 		}
 		value = icache.get('value');
+		if (value === undefined && placeholder !== undefined) {
+			icache.set('value', placeholder.value);
+			value = icache.get('value');
+			onValue(placeholder);
+		}
 	}
 
 	const menuId = icache.getOrSet('menuId', uuid());
@@ -207,7 +215,7 @@ export const Select = factory(function Select({
 						}
 
 						let valueOption: ListOption | undefined;
-						if (value && data) {
+						if (value && data && (!placeholder || placeholder.value !== value)) {
 							let found = find(data, (item) => {
 								return Boolean(item.value && item.value.value === value);
 							});
@@ -251,8 +259,12 @@ export const Select = factory(function Select({
 								<span
 									classes={[themedCss.value, expanded && themedCss.valueExpanded]}
 								>
-									{(valueOption && valueOption.label) || value || (
-										<span classes={themedCss.placeholder}>{placeholder}</span>
+									{placeholder && placeholder.value === value ? (
+										<span classes={themedCss.placeholder}>
+											{placeholder.label}
+										</span>
+									) : (
+										(valueOption && valueOption.label) || value
 									)}
 								</span>
 								<span classes={themedCss.arrow}>
@@ -295,6 +307,7 @@ export const Select = factory(function Select({
 										closeMenu();
 										value.value !== icache.get('value') &&
 											icache.set('value', value.value);
+
 										onValue(value);
 									}}
 									onRequestClose={closeMenu}
@@ -309,6 +322,7 @@ export const Select = factory(function Select({
 									classes={classes}
 									variant={variant}
 									widgetId={menuId}
+									staticOption={placeholder}
 								>
 									{items}
 								</List>

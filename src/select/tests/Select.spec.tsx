@@ -71,7 +71,7 @@ const buttonTemplate = assertionTemplate(() => (
 		onclick={() => {}}
 		onkeydown={() => {}}
 		name={undefined}
-		value={undefined}
+		value=""
 	>
 		<span classes={[css.value, undefined]}>
 			<span classes={css.placeholder} />
@@ -98,8 +98,12 @@ const menuTemplate = assertionTemplate(() => (
 			onValue={() => {}}
 			onRequestClose={() => {}}
 			onBlur={() => {}}
-			initialValue={undefined}
+			initialValue=""
 			itemsInView={6}
+			staticOption={{
+				value: '',
+				label: ''
+			}}
 			theme={{}}
 			classes={undefined}
 			variant={undefined}
@@ -124,7 +128,7 @@ describe('Select', () => {
 					resource={{ data: options, idKey: 'value', id: 'test' }}
 					itemsInView={10}
 					position="above"
-					placeholder="test"
+					placeholder={{ value: 'test', label: 'Test' }}
 					helperText="test-helper"
 					required={true}
 				>
@@ -135,6 +139,15 @@ describe('Select', () => {
 		);
 
 		const optionalPropertyTemplate = baseTemplate
+			.setProperty(':root', 'classes', [
+				undefined,
+				css.root,
+				undefined,
+				css.valid,
+				false,
+				false,
+				undefined
+			])
 			.prepend('@root', () => [
 				<Label
 					theme={{}}
@@ -142,17 +155,17 @@ describe('Select', () => {
 					variant={undefined}
 					disabled={undefined}
 					forId={'id'}
-					valid={undefined}
+					valid={true}
 					required={true}
-					active={false}
+					active={true}
 					focused={false}
 				>
 					test-label
 				</Label>
 			])
-
 			.setProperty('@popup', 'position', 'above')
-			.setProperty('@helperText', 'text', 'test-helper');
+			.setProperty('@helperText', 'text', 'test-helper')
+			.setProperty('@helperText', 'valid', true);
 
 		h.expect(optionalPropertyTemplate);
 	});
@@ -270,13 +283,43 @@ describe('Select', () => {
 		assert.isTrue(closeMenuStub.calledOnce);
 	});
 
-	it('calls onValue when a menu item is selected', () => {
+	it('calls onValue immediately with an empty value for non-required select', () => {
+		const onValueStub = stub();
+
+		const h = harness(
+			() => (
+				<Select
+					onValue={onValueStub}
+					resource={{ data: options, idKey: 'value', id: 'test' }}
+				/>
+			),
+			[compareWidgetId, ignoreMenuTheme]
+		);
+
+		const optionalPropertyTemplate = baseTemplate.setProperty(':root', 'classes', [
+			undefined,
+			css.root,
+			undefined,
+			false,
+			false,
+			false,
+			undefined
+		]);
+
+		h.expect(optionalPropertyTemplate);
+
+		assert.equal(onValueStub.callCount, 1);
+		assert.isTrue(onValueStub.calledOnceWith({ value: '', label: '' }));
+	});
+
+	it('calls onValue when a menu item is selected for required select', () => {
 		const onValueStub = stub();
 		const closeMenuStub = stub();
 
 		const h = harness(
 			() => (
 				<Select
+					required
 					onValue={onValueStub}
 					resource={{ data: options, idKey: 'value', id: 'test' }}
 				/>
@@ -290,7 +333,12 @@ describe('Select', () => {
 			closeMenuStub
 		);
 
-		h.expect(menuTemplate, () => menuRenderResult);
+		h.expect(
+			menuTemplate
+				.setProperty('@menu', 'initialValue', undefined)
+				.setProperty('@menu', 'staticOption', undefined),
+			() => menuRenderResult
+		);
 		const [menu] = select('@menu', menuRenderResult);
 
 		menu.properties.onValue('cat');

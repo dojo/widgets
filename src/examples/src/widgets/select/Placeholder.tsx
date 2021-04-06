@@ -18,7 +18,7 @@ const options = [
 
 const template = createResourceTemplate<ListOption>('value');
 
-export default factory(function AdditionalText({ id, middleware: { icache, resource } }) {
+export default factory(function Placeholder({ id, middleware: { icache, resource } }) {
 	return (
 		<Example>
 			<Select
@@ -26,7 +26,10 @@ export default factory(function AdditionalText({ id, middleware: { icache, resou
 				onValue={(value) => {
 					icache.set('value', value);
 				}}
-				helperText="I am the helper text"
+				placeholder={{
+					value: 'placeholder',
+					label: 'I am a placeholder'
+				}}
 			>
 				{{
 					label: 'Additional Text'

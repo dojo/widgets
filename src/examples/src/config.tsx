@@ -160,6 +160,7 @@ import RequiredRangeSlider from './widgets/range-slider/Required';
 import LabelledRangeSlider from './widgets/range-slider/Labelled';
 import ControlledRangeSlider from './widgets/range-slider/Controlled';
 import AdditionalText from './widgets/select/AdditionalText';
+import PlaceholderSelect from './widgets/select/Placeholder';
 import BasicSelect from './widgets/select/Basic';
 import ControlledSelect from './widgets/select/Controlled';
 import CustomRenderer from './widgets/select/CustomRenderer';
@@ -252,6 +253,7 @@ import PaginationPageSizeSelector from './widgets/pagination/PageSizeSelector';
 import PaginationControlled from './widgets/pagination/Controlled';
 import PaginationSiblingCount from './widgets/pagination/SiblingCount';
 import BasicTypeahead from './widgets/typeahead/Basic';
+import PlaceholderTypeahead from './widgets/typeahead/Placeholder';
 import RemoteTypeahead from './widgets/typeahead/RemoteSource';
 import ValidatedTypeahead from './widgets/typeahead/Validation';
 import FreeTextTypeahead from './widgets/typeahead/FreeText';
@@ -1559,6 +1561,13 @@ export const config = {
 					size: 'medium'
 				},
 				{
+					filename: 'Placeholder',
+					module: PlaceholderSelect,
+					title: 'Placeholder',
+					sandbox: true,
+					size: 'medium'
+				},
+				{
 					filename: 'DisabledSelect',
 					module: DisabledSelect,
 					title: 'Disabled Select',
@@ -2065,6 +2074,11 @@ export const config = {
 					filename: 'InitialValue',
 					module: InitialValueTypeahead,
 					title: 'Initial Value Typeahead'
+				},
+				{
+					filename: 'Placeholder',
+					module: PlaceholderTypeahead,
+					title: 'Placeholder'
 				},
 				{
 					filename: 'Controlled',

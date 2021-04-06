@@ -1,28 +1,28 @@
-import { create, tsx } from '@dojo/framework/core/vdom';
-import { PopupPosition } from '@dojo/widgets/popup';
 import { RenderResult } from '@dojo/framework/core/interfaces';
+import focus from '@dojo/framework/core/middleware/focus';
+import i18n from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import { find } from '@dojo/framework/shim/array';
+import { PopupPosition } from '@dojo/widgets/popup';
+import { Keys } from '../common/util';
+import HelperText from '../helper-text';
 import List, {
 	ItemRendererProperties,
-	ListOption,
 	ListItemProperties,
-	MenuItemProperties,
-	ListProperties
+	ListOption,
+	ListProperties,
+	MenuItemProperties
 } from '../list';
+import LoadingIndicator from '../loading-indicator';
 import theme from '../middleware/theme';
-import focus from '@dojo/framework/core/middleware/focus';
+import bundle from '../select/nls/Select';
+import TextInput from '../text-input';
+import * as listCss from '../theme/default/list.m.css';
+import * as inputCss from '../theme/default/text-input.m.css';
 import * as css from '../theme/default/typeahead.m.css';
 import TriggerPopup from '../trigger-popup';
-import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
-import TextInput from '../text-input';
-import bundle from '../select/nls/Select';
-import i18n from '@dojo/framework/core/middleware/i18n';
-import HelperText from '../helper-text';
-import * as listCss from '../theme/default/list.m.css';
-import { Keys } from '../common/util';
-import LoadingIndicator from '../loading-indicator';
-import * as inputCss from '../theme/default/text-input.m.css';
-import { find } from '@dojo/framework/shim/array';
 
 export interface TypeaheadProperties {
 	/** Callback called when user selects a value */
@@ -53,6 +53,8 @@ export interface TypeaheadProperties {
 	itemDisabled?: ListProperties['disabled'];
 	/** Flag to indicate if values other than those in the resource can be entered, defaults to true */
 	strict?: boolean;
+	/** Placeholder value to show when nothing has been selected */
+	placeholder?: ListOption;
 }
 
 export interface TypeaheadICache {
@@ -125,6 +127,11 @@ export const Typeahead = factory(function Typeahead({
 
 	const [{ label, items, leading } = {} as TypeaheadChildren] = children();
 
+	let { placeholder } = properties();
+	if (!required && placeholder === undefined) {
+		placeholder = { value: '', label: '' };
+	}
+
 	if (
 		initialValue !== undefined &&
 		controlledValue === undefined &&
@@ -150,6 +157,12 @@ export const Typeahead = factory(function Typeahead({
 
 	let valid = icache.get('valid');
 	let value = icache.get('value');
+	if (value === undefined && placeholder !== undefined) {
+		icache.set('value', placeholder.value);
+		value = icache.get('value');
+		callOnValue(placeholder);
+	}
+
 	let labelValue = icache.get('labelValue');
 	const listId = `typeahead-list-${id}`;
 	const triggerId = `typeahead-trigger-${id}`;
@@ -275,15 +288,19 @@ export const Typeahead = factory(function Typeahead({
 	}
 
 	if (!icache.get('selectedOption') && value) {
-		const currentItems = get(options(), { read }) || [];
-		const option = currentItems.find((item) => Boolean(item && item.value === value));
-		if (option) {
-			icache.set('selectedOption', option);
+		if (placeholder && placeholder.value === value) {
+			icache.set('selectedOption', placeholder);
 		} else {
-			const findItem =
-				get({ ...options(), query: { ...options().query, value } }, { read }) || [];
-			if (findItem) {
-				icache.set('selectedOption', findItem[0]);
+			const currentItems = get(options(), { read }) || [];
+			const option = currentItems.find((item) => Boolean(item && item.value === value));
+			if (option) {
+				icache.set('selectedOption', option);
+			} else {
+				const findItem =
+					get({ ...options(), query: { ...options().query, value } }, { read }) || [];
+				if (findItem) {
+					icache.set('selectedOption', findItem[0]);
+				}
 			}
 		}
 	}
@@ -467,6 +484,7 @@ export const Typeahead = factory(function Typeahead({
 									)}
 									variant={variant}
 									widgetId={listId}
+									staticOption={placeholder}
 								>
 									{items}
 								</List>

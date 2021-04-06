@@ -1,19 +1,19 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
-import { focus } from '@dojo/framework/core/middleware/focus';
 import dimensions from '@dojo/framework/core/middleware/dimensions';
+import { focus } from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
-import { create, tsx } from '@dojo/framework/core/vdom';
-import { Keys, isRenderResult } from '../common/util';
-import theme, { ThemeProperties } from '../middleware/theme';
-import offscreen from '../middleware/offscreen';
-import * as listItemCss from '../theme/default/list-item.m.css';
-import * as menuItemCss from '../theme/default/menu-item.m.css';
-import * as css from '../theme/default/list.m.css';
-import * as fixedCss from './list.m.css';
 import { createResourceMiddleware } from '@dojo/framework/core/middleware/resources';
-import LoadingIndicator from '../loading-indicator';
 import { throttle } from '@dojo/framework/core/util';
+import { create, tsx } from '@dojo/framework/core/vdom';
+import { isRenderResult, Keys } from '../common/util';
 import Icon from '../icon';
+import LoadingIndicator from '../loading-indicator';
+import offscreen from '../middleware/offscreen';
+import theme, { ThemeProperties } from '../middleware/theme';
+import * as listItemCss from '../theme/default/list-item.m.css';
+import * as css from '../theme/default/list.m.css';
+import * as menuItemCss from '../theme/default/menu-item.m.css';
+import * as fixedCss from './list.m.css';
 
 export interface MenuItemProperties {
 	/** Callback used when the item is clicked */
@@ -243,6 +243,8 @@ export interface ListProperties {
 	disabled?: (item: ListOption) => boolean;
 	/** Specifies if the list height should by fixed to the height of the items in view */
 	height?: 'auto' | 'fixed';
+	/** Static option to always show */
+	staticOption?: ListOption;
 }
 
 export interface ListChildren {
@@ -405,6 +407,7 @@ export const List = factory(function List({
 	}
 
 	function renderItems(start: number, count: number) {
+		const { staticOption } = properties();
 		const renderedItems = [];
 		const { size: resourceRequestSize } = options();
 		const {
@@ -428,7 +431,12 @@ export const List = factory(function List({
 				}
 				return get({ ...options(), offset: (page - 1) * options().size }, { read });
 			});
-			for (let i = 0; i < Math.min(total - start, count); i++) {
+			if (staticOption !== undefined) {
+				const { value, label, disabled, divider } = staticOption;
+				renderedItems[0] = renderItem({ value, label, disabled, divider }, -1);
+			}
+			const offset = renderedItems.length;
+			for (let i = offset; i < Math.min(total - start, count) + offset; i++) {
 				const index = i + startNode;
 				const page = Math.floor(index / resourceRequestSize) + 1;
 				const pageIndex = pages.indexOf(page);
@@ -438,14 +446,14 @@ export const List = factory(function List({
 					const { value, label, disabled, divider } = items[indexWithinPage];
 					renderedItems[i] = renderItem({ value, label, disabled, divider }, index);
 				} else if (!items) {
-					renderedItems[i] = renderPlaceholder(index);
+					renderedItems[i] = renderLoading(index);
 				}
 			}
 		}
 		return renderedItems;
 	}
 
-	function renderPlaceholder(index: number) {
+	function renderLoading(index: number) {
 		const itemProps = {
 			widgetId: `${idBase}-item-${index}`,
 			key: `item-${index}`,
