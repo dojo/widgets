@@ -436,7 +436,7 @@ export const List = factory(function List({
 				renderedItems[0] = renderItem({ value, label, disabled, divider }, -1);
 			}
 			const offset = renderedItems.length;
-			for (let i = offset; i < Math.min(total - start, count) + offset; i++) {
+			for (let i = 0; i < Math.min(total - start, count); i++) {
 				const index = i + startNode;
 				const page = Math.floor(index / resourceRequestSize) + 1;
 				const pageIndex = pages.indexOf(page);
@@ -444,9 +444,12 @@ export const List = factory(function List({
 				const items = pageItems[pageIndex];
 				if (items && items[indexWithinPage]) {
 					const { value, label, disabled, divider } = items[indexWithinPage];
-					renderedItems[i] = renderItem({ value, label, disabled, divider }, index);
+					renderedItems[i + offset] = renderItem(
+						{ value, label, disabled, divider },
+						index
+					);
 				} else if (!items) {
-					renderedItems[i] = renderLoading(index);
+					renderedItems[i + offset] = renderLoading(index);
 				}
 			}
 		}

@@ -421,6 +421,46 @@ describe('List', () => {
 		r.expect(listWithListItemsAssertion);
 	});
 
+	it('should render list with static option', () => {
+		const r = renderer(
+			() => (
+				<List
+					resource={{ data, id: 'test', idKey: 'value' }}
+					onValue={onValueStub}
+					staticOption={{ value: 'staticOption', label: 'This is a static option' }}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		r.expect(
+			listWithListItemsAssertion.prepend(WrappedItemContainer, () => [
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={false}
+					disabled={false}
+					key={'item--1'}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={false}
+					theme={listItemTheme}
+					widgetId={'menu-test-item--1'}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					This is a static option
+				</ListItem>
+			])
+		);
+	});
+
 	it('should render list with auto height', () => {
 		const r = renderer(
 			() => (
