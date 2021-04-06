@@ -1,10 +1,11 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { RenderResult } from '@dojo/framework/core/interfaces';
+import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '../middleware/theme';
 import Icon from '../icon';
 import * as css from '../theme/default/wizard.m.css';
 import * as avatarCss from '../theme/default/avatar.m.css';
 import Avatar from '../avatar';
+import { isRenderResult } from '../common/util';
 
 export interface Step {
 	title?: RenderResult;
@@ -25,16 +26,22 @@ export interface WizardProperties {
 	steps: Step[];
 }
 
+export type StepRenderer = (
+	status: StepStatus | undefined,
+	index: number,
+	step: Step
+) => RenderResult;
+
 export interface WizardChildren {
 	/** Custom renderer for the wizardSteps, receives the checkbox group middleware and options */
-	step?(status: StepStatus | undefined, index: number, step: Step): RenderResult;
+	step?: StepRenderer;
 }
 
 export type StepStatus = 'pending' | 'inProgress' | 'complete' | 'error';
 
 const factory = create({ theme })
 	.properties<WizardProperties>()
-	.children<WizardChildren | undefined>();
+	.children<WizardChildren | RenderResult | undefined>();
 
 export default factory(function Wizard({ properties, children, middleware: { theme } }) {
 	const themedCss = theme.classes(css);
@@ -49,7 +56,15 @@ export default factory(function Wizard({ properties, children, middleware: { the
 		theme: themeProp
 	} = properties();
 
-	const [{ step: stepRenderer } = { step: undefined }] = children();
+	let stepRenderer: StepRenderer | undefined;
+	let stepContent: DNode[] | undefined;
+	const body = children();
+
+	if (body && body[0] && !isRenderResult(body[0])) {
+		stepRenderer = body[0].step;
+	} else if (isRenderResult(body)) {
+		stepContent = body;
+	}
 
 	const stepWrappers = steps.map((step, index) => {
 		let content;
@@ -118,6 +133,7 @@ export default factory(function Wizard({ properties, children, middleware: { the
 							<div classes={themedCss.stepSubTitle}>{subTitle}</div>
 						</div>
 						<div classes={themedCss.stepDescription}>{description}</div>
+						{stepContent && stepContent[index]}
 					</div>
 				</virtual>
 			),

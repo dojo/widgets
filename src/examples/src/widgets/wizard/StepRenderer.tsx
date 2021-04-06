@@ -5,7 +5,7 @@ import icache from '@dojo/framework/core/middleware/icache';
 
 const factory = create({ icache }).properties();
 
-export default factory(function Custom({ middleware: { icache } }) {
+export default factory(function StepRenderer({ middleware: { icache } }) {
 	const steps = [
 		{
 			title: 'Complete'

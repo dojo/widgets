@@ -268,7 +268,8 @@ import ErrorResult from './widgets/result/Error';
 import SuccessResult from './widgets/result/Success';
 import CustomIconResult from './widgets/result/CustomIcon';
 import BasicWizard from './widgets/wizard/Basic';
-import CustomWizard from './widgets/wizard/Custom';
+import StepRendererWizard from './widgets/wizard/StepRenderer';
+import StepContentWizard from './widgets/wizard/StepContent';
 import VerticalWizard from './widgets/wizard/Vertical';
 import ErrorWizard from './widgets/wizard/Error';
 import BasicTree from './widgets/tree/Basic';
@@ -2103,9 +2104,14 @@ export const config = {
 					title: 'Wizard with an error'
 				},
 				{
-					filename: 'Custom',
-					module: CustomWizard,
+					filename: 'StepRenderer',
+					module: StepRendererWizard,
 					title: 'Custom step renderer'
+				},
+				{
+					filename: 'StepContent',
+					module: StepContentWizard,
+					title: 'Step content'
 				}
 			]
 		}
