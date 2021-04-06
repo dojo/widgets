@@ -110,6 +110,7 @@ import ListItemRenderer from './widgets/list/ListItemRenderer';
 import FetchedResource from './widgets/list/FetchedResource';
 import DisabledList from './widgets/list/Disabled';
 import DraggableList from './widgets/list/Draggable';
+import StaticOptionList from './widgets/list/StaticOption';
 import Menu from './widgets/list/Menu';
 import CustomTransformer from './widgets/list/CustomTransformer';
 import BasicChipTypeahead from './widgets/chip-typeahead/Basic';
@@ -1138,6 +1139,11 @@ export const config = {
 					filename: 'Fill',
 					module: FillList,
 					title: 'Fill'
+				},
+				{
+					filename: 'StaticOption',
+					module: StaticOptionList,
+					title: 'Static Option'
 				}
 			],
 			overview: {
