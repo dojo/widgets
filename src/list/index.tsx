@@ -651,7 +651,8 @@ export const List = factory(function List({
 		return divider ? [item, <hr classes={themedCss.divider} />] : item;
 	}
 
-	let { value: selectedValue, draggable, onMove } = properties();
+	const { draggable, onMove, staticOption } = properties();
+	let { value: selectedValue } = properties();
 
 	if (selectedValue === undefined) {
 		if (initialValue !== undefined && initialValue !== icache.get('initial')) {
@@ -740,7 +741,7 @@ export const List = factory(function List({
 	let computedActiveIndex =
 		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
 	const inputText = icache.get('inputText');
-	const {
+	let {
 		meta: { total = 0 }
 	} = get(options(), { meta: true, read });
 	if (inputText && inputText !== icache.get('previousInputText') && total) {
@@ -795,6 +796,10 @@ export const List = factory(function List({
 	const offsetY = startNode * itemHeight;
 
 	const items = renderItems(startNode, renderedItemsCount);
+
+	if (staticOption !== undefined) {
+		total++;
+	}
 	const totalContentHeight = total * itemHeight;
 	return (
 		<div
