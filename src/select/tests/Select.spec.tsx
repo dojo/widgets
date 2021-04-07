@@ -368,6 +368,42 @@ describe('Select', () => {
 		);
 	});
 
+	it('rejects bad values', () => {
+		const onValueStub = stub();
+		const toggleOpenStub = stub();
+
+		const h = harness(
+			() => (
+				<Select
+					onValue={onValueStub}
+					resource={{ data: options, idKey: 'value', id: 'test' }}
+					value="4"
+				/>
+			),
+			[compareAriaControls, compareId]
+		);
+
+		const triggerRenderResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpenStub
+		);
+
+		h.expect(
+			buttonTemplate
+				.setProperty('@trigger', 'value', undefined)
+				.setChildren('@trigger', () => [
+					<span classes={[css.value, undefined]}>
+						<span classes={css.placeholder} />
+					</span>,
+					<span classes={css.arrow}>
+						<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
+					</span>
+				]),
+			() => triggerRenderResult
+		);
+	});
+
 	it('invalidates correctly', () => {
 		const onValidate = stub();
 		const h = harness(() => (
