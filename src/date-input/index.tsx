@@ -71,7 +71,7 @@ const factory = create({ theme, icache, i18n, focus })
 	.properties<DateInputProperties>()
 	.children<DateInputChildren | RenderResult | undefined>();
 
-export default factory(function({
+export default factory(function DateInput({
 	properties,
 	children,
 	middleware: { theme, icache, i18n, focus }
