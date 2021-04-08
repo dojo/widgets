@@ -148,6 +148,22 @@ export const Select = factory(function Select({
 		}
 	}
 
+	let valueOption: ListOption | undefined;
+	if (value && data) {
+		let found = find(data, (item) => {
+			return Boolean(item.value && item.value.value === value);
+		});
+		if (found) {
+			valueOption = found.value;
+		} else {
+			const items = get(options({ query: { value } }), { read });
+			if (items && items.length > 0 && items[0].value === value) {
+				valueOption = items[0];
+			}
+		}
+	}
+	value = valueOption ? valueOption.value : undefined;
+
 	return (
 		<div
 			classes={[
@@ -206,21 +222,6 @@ export const Select = factory(function Select({
 							}
 						}
 
-						let valueOption: ListOption | undefined;
-						if (value && data) {
-							let found = find(data, (item) => {
-								return Boolean(item.value && item.value.value === value);
-							});
-							if (found) {
-								valueOption = found.value;
-							} else {
-								const items = get(options({ query: { value } }), { read });
-								if (items) {
-									valueOption = items[0];
-								}
-							}
-						}
-
 						return (
 							<button
 								name={name}
@@ -251,7 +252,7 @@ export const Select = factory(function Select({
 								<span
 									classes={[themedCss.value, expanded && themedCss.valueExpanded]}
 								>
-									{(valueOption && valueOption.label) || value || (
+									{(valueOption && valueOption.label) || (
 										<span classes={themedCss.placeholder}>{placeholder}</span>
 									)}
 								</span>
