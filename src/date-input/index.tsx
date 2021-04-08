@@ -32,6 +32,10 @@ export interface DateInputProperties extends ThemeProperties, FocusProperties {
 	onValue?(date: string): void;
 	/** Callback fired when input validation changes */
 	onValidate?: (valid: boolean | undefined, message: string) => void;
+	/** Custom date string parser function to allow custom date formats. Must work with dateFormatter */
+	dateParser?(date?: string): Date | undefined;
+	/** Custom date formatter function to convert Dates to strings. Must work with dateParser */
+	dateFormatter?(date?: Date): string | undefined;
 	/** The disabled property of the input */
 	disabled?: boolean;
 	/** The readonly attribute of the input */
@@ -81,9 +85,13 @@ export default factory(function({
 		name,
 		onValue,
 		onValidate,
+		dateParser = parseDate,
+		dateFormatter = formatDate,
 		value: controlledValue,
 		disabled = false,
 		readOnly = false,
+		min: minInput,
+		max: maxInput,
 		theme: themeProp,
 		variant,
 		classes,
@@ -91,27 +99,27 @@ export default factory(function({
 	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const themedCss = theme.classes(css);
-	const max = parseDate(properties().max);
-	const min = parseDate(properties().min);
+	const max = (Boolean(maxInput) && dateParser(maxInput)) || undefined;
+	const min = (Boolean(minInput) && dateParser(minInput)) || undefined;
 
 	if (
 		initialValue !== undefined &&
 		controlledValue === undefined &&
 		icache.get('initialValue') !== initialValue
 	) {
-		const parsed = initialValue && parseDate(initialValue);
+		const parsed = initialValue && dateParser(initialValue);
 
 		if (parsed) {
-			icache.set('inputValue', formatDate(parsed));
+			icache.set('inputValue', dateFormatter(parsed));
 		}
 		icache.set('initialValue', initialValue);
 		icache.delete('callOnValue');
 	}
 
 	if (controlledValue !== undefined && icache.get('lastValue') !== controlledValue) {
-		const parsed = controlledValue && parseDate(controlledValue);
+		const parsed = controlledValue && dateParser(controlledValue);
 		if (parsed) {
-			icache.set('inputValue', formatDate(parsed));
+			icache.set('inputValue', dateFormatter(parsed));
 			icache.set('value', parsed);
 		}
 		icache.set('lastValue', controlledValue);
@@ -133,7 +141,7 @@ export default factory(function({
 			validationMessages.push(messages.invalidProps);
 			isValid = false;
 		} else {
-			const newDate = parseDate(testValue);
+			const newDate = dateParser(testValue);
 
 			if (newDate !== undefined) {
 				if (min && newDate < min) {
@@ -143,7 +151,7 @@ export default factory(function({
 				} else {
 					if (controlledValue === undefined) {
 						icache.set('value', newDate);
-						icache.set('inputValue', formatDate(newDate));
+						icache.set('inputValue', dateFormatter(newDate));
 					}
 					if (onValue) {
 						onValue(formatDateISO(newDate));
@@ -286,7 +294,7 @@ export default factory(function({
 											controlledValue === undefined
 												? 'inputValue'
 												: 'nextValue',
-											formatDate(date)
+											dateFormatter(date)
 										);
 										callOnValue();
 										closeCalendar();

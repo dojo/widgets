@@ -16,18 +16,47 @@ const dateExpressions = () => {
 	];
 
 	const usCanary = Intl.DateTimeFormat().format(new Date(2018, 3, 3)); // April 3
-	if (usCanary === '4/3/2018') {
-		// US-only 'mm/dd/yyyy' format
-		tokens.push([
-			new RegExp(`^${components.month}\/${components.day}\/${components.year}$`),
-			{ month: 1, day: 2, year: 3 }
-		]);
-	} else {
-		// standard 'dd/mm/yyyy' format
-		tokens.push([
-			new RegExp(`^${components.day}\/${components.month}\/${components.year}$`),
-			{ month: 2, day: 1, year: 3 }
-		]);
+	switch (usCanary) {
+		case '4/3/2018':
+		case '04/03/2018':
+			// US-only 'mm/dd/yyyy' format
+			tokens.push([
+				new RegExp(`^${components.month}\/${components.day}\/${components.year}$`),
+				{ month: 1, day: 2, year: 3 }
+			]);
+			break;
+		case '3/4/2018':
+		case '03/04/2018':
+			// standard 'dd/mm/yyyy' format
+			tokens.push([
+				new RegExp(`^${components.day}\/${components.month}\/${components.year}$`),
+				{ month: 2, day: 1, year: 3 }
+			]);
+			break;
+		case '3.4.2018':
+		case '03.04.2018':
+			// standard 'dd.mm.yyyy' format
+			tokens.push([
+				new RegExp(`^${components.day}\\.${components.month}\\.${components.year}$`),
+				{ month: 2, day: 1, year: 3 }
+			]);
+			break;
+		case '3-4-2018':
+		case '03-04-2018':
+			// standard 'dd.mm.yyyy' format
+			tokens.push([
+				new RegExp(`^${components.day}\-${components.month}\-${components.year}$`),
+				{ month: 2, day: 1, year: 3 }
+			]);
+			break;
+		case '2018/4/3':
+		case '2018/04/03':
+			// standard 'yyyy/mm/dd' format
+			tokens.push([
+				new RegExp(`^${components.year}\/${components.month}\/${components.day}$`),
+				{ month: 2, day: 3, year: 1 }
+			]);
+			break;
 	}
 
 	return tokens;
@@ -66,5 +95,11 @@ export function formatDateISO(date: Date | undefined) {
 }
 
 export function formatDate(date: Date) {
-	return Intl.DateTimeFormat().format(date);
+	const formattedDate = Intl.DateTimeFormat().format(date);
+	// Check if is a supported date format
+	const parsedDate = parseDate(formattedDate);
+	if (parsedDate && parsedDate.valueOf() === date.valueOf()) {
+		return formattedDate;
+	}
+	return formatDateISO(date);
 }
