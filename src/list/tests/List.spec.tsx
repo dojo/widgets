@@ -1467,6 +1467,48 @@ describe('List', () => {
 		assert.strictEqual(onRequestCloseStub.callCount, 1);
 	});
 
+	it('should set active index when provided', async () => {
+		const testData = [
+			{
+				value: '1',
+				label: 'Bob'
+			},
+			{
+				value: '2',
+				label: 'Adam'
+			},
+			{
+				value: '3',
+				label: 'Ant'
+			},
+			{
+				value: '4',
+				label: 'Anthony'
+			},
+			{
+				value: '5',
+				label: 'Bobby'
+			}
+		];
+		const r = renderer(
+			() => (
+				<List
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
+					onValue={onValueStub}
+					activeIndex={2}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		const listAssertion = baseAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '225px'
+			})
+			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-2')
+			.replaceChildren(WrappedItemContainer, () => createChildren({ activeItem: 'item-2' }));
+		r.expect(listAssertion);
+	});
+
 	it('should set active item based on keyboard input', async () => {
 		const testData = [
 			{
