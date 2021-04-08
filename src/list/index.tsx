@@ -726,17 +726,16 @@ export const List = factory(function List({
 	let scrollTop = icache.getOrSet('scrollTop', 0);
 	const nodePadding = Math.min(calculatedItemsInView, 20);
 	const renderedItemsCount = calculatedItemsInView + 2 * nodePadding;
-	let computedActiveIndex =
-		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
+	let computedActiveIndex = activeIndex === undefined ? icache.get('activeIndex') : activeIndex;
 	const inputText = icache.get('inputText');
 	const {
 		meta: { total = 0 }
 	} = get(options(), { meta: true, read });
 	if (inputText && inputText !== icache.get('previousInputText') && total) {
 		const items = get({ ...options(), offset: 0, size: total });
-		const first = items.slice(0, computedActiveIndex);
-		const second = items.slice(computedActiveIndex);
-		let foundIndex = computedActiveIndex;
+		const first = computedActiveIndex ? items.slice(0, computedActiveIndex) : [];
+		const second = computedActiveIndex ? items.slice(computedActiveIndex) : items;
+		let foundIndex = computedActiveIndex || 0;
 		for (let i = 1; i < second.length; i++) {
 			const item = second[i];
 			if (item && item.label.toLowerCase().indexOf(inputText.toLowerCase()) === 0) {
@@ -760,11 +759,10 @@ export const List = factory(function List({
 	}
 
 	const previousActiveIndex = icache.get('previousActiveIndex');
-	computedActiveIndex =
-		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
+	computedActiveIndex = activeIndex === undefined ? icache.get('activeIndex') : activeIndex;
 	let activeItem: ListOption | undefined = undefined;
 
-	if (computedActiveIndex !== previousActiveIndex) {
+	if (computedActiveIndex !== undefined && computedActiveIndex !== previousActiveIndex) {
 		const visibleStartIndex = Math.floor(scrollTop / itemHeight);
 		const visibleEndIndex = visibleStartIndex + calculatedItemsInView - 1;
 		if (computedActiveIndex < visibleStartIndex) {
@@ -807,7 +805,11 @@ export const List = factory(function List({
 			styles={rootStyles}
 			role={menu ? 'menu' : 'listbox'}
 			aria-orientation="vertical"
-			aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
+			aria-activedescendant={
+				computedActiveIndex !== undefined
+					? `${idBase}-item-${computedActiveIndex}`
+					: undefined
+			}
 			id={idBase}
 		>
 			<div
