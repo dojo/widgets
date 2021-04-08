@@ -1,3 +1,5 @@
+import { padStart } from '@dojo/framework/shim/string';
+
 const components = {
 	day: '(\\d{1,2})',
 	month: '(\\d{1,2})',
@@ -57,11 +59,8 @@ export function formatDateISO(date: Date | undefined) {
 	}
 
 	const year = date.getFullYear();
-	const month = (date.getMonth() + 1).toString().padStart(2, '0');
-	const day = date
-		.getDate()
-		.toString()
-		.padStart(2, '0');
+	const month = padStart((date.getMonth() + 1).toString(), 2, '0');
+	const day = padStart(date.getDate().toString(), 2, '0');
 
 	return `${year}-${month}-${day}`;
 }
