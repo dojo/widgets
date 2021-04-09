@@ -2057,38 +2057,52 @@ export const config = {
 				{
 					filename: 'RemoteSource',
 					module: RemoteTypeahead,
-					title: 'Remote Source'
+					title: 'Remote Source',
+					sandbox: true,
+					size: 'large'
 				},
 				{
 					filename: 'Validation',
 					module: ValidatedTypeahead,
-					title: 'Validation'
+					title: 'Validation',
+					sandbox: true,
+					size: 'large'
 				},
 				{
 					filename: 'FreeText',
 					module: FreeTextTypeahead,
-					title: 'Free Text Typeahead'
+					title: 'Free Text Typeahead',
+					sandbox: true,
+					size: 'large'
 				},
 				{
 					filename: 'InitialValue',
 					module: InitialValueTypeahead,
-					title: 'Initial Value Typeahead'
+					title: 'Initial Value Typeahead',
+					sandbox: true,
+					size: 'large'
 				},
 				{
 					filename: 'Controlled',
 					module: ControlledTypeahead,
-					title: 'Controlled Typeahead'
+					title: 'Controlled Typeahead',
+					sandbox: true,
+					size: 'large'
 				},
 				{
 					filename: 'Disabled',
 					module: DisabledTypeahead,
-					title: 'Disabled Typeahead'
+					title: 'Disabled Typeahead',
+					sandbox: true,
+					size: 'large'
 				}
 			],
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicTypeahead
+					module: BasicTypeahead,
+					sandbox: true,
+					size: 'large'
 				}
 			}
 		},

@@ -16,7 +16,7 @@
 	margin: 0;
 	font-size: inherit;
 	height: calc(
-		var(--line-height-base) + 2 * var(--grid-base) + 2 * var(--border-width)
+		var(--line-height-base) + 2 * var(--grid-base) + 2 * var(--border-width) - 2
 	); /* for IE 11 */
 	line-height: var(--line-height-base);
 	padding: var(--grid-base);

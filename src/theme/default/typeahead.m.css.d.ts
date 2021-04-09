@@ -4,3 +4,6 @@ export const invalid: string;
 export const valid: string;
 export const trigger: string;
 export const menuWrapper: string;
+export const arrow: string;
+export const focused: string;
+export const expanded: string;

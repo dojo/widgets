@@ -23,6 +23,8 @@ import { Keys } from '../common/util';
 import LoadingIndicator from '../loading-indicator';
 import * as inputCss from '../theme/default/text-input.m.css';
 import { find } from '@dojo/framework/shim/array';
+import Icon from '../icon';
+import * as iconCss from '../theme/default/icon.m.css';
 
 export interface TypeaheadProperties {
 	/** Callback called when user selects a value */
@@ -53,6 +55,8 @@ export interface TypeaheadProperties {
 	itemDisabled?: ListProperties['disabled'];
 	/** Flag to indicate if values other than those in the resource can be entered, defaults to true */
 	strict?: boolean;
+	/** Flag to indicate if drop down arrow should be shown in trailing section of text input, defaults to false */
+	showDropDownButton?: boolean;
 }
 
 export interface TypeaheadICache {
@@ -62,6 +66,7 @@ export interface TypeaheadICache {
 	activeIndex: number;
 	dirty: boolean;
 	expanded: boolean;
+	focused: boolean;
 	focusNode: string;
 	initial: string;
 	valid: boolean | undefined;
@@ -113,7 +118,8 @@ export const Typeahead = factory(function Typeahead({
 		},
 		classes,
 		theme: themeProp,
-		variant
+		variant,
+		showDropDownButton
 	} = properties();
 	const {
 		get,
@@ -288,6 +294,9 @@ export const Typeahead = factory(function Typeahead({
 		}
 	}
 
+	const expanded = icache.get('expanded');
+	const focused = icache.get('focused');
+
 	return (
 		<div
 			key="root"
@@ -296,7 +305,9 @@ export const Typeahead = factory(function Typeahead({
 				themedCss.root,
 				disabled && themedCss.disabled,
 				valid === true && themedCss.valid,
-				valid === false && themedCss.invalid
+				valid === false && themedCss.invalid,
+				expanded && themedCss.expanded,
+				focused && themedCss.focused
 			]}
 		>
 			<TriggerPopup
@@ -358,10 +369,12 @@ export const Typeahead = factory(function Typeahead({
 								)}
 								onFocus={() => {
 									const { onFocus } = properties();
+									icache.set('focused', true);
 									onFocus && onFocus();
 								}}
 								onBlur={() => {
 									const { onBlur } = properties();
+									icache.set('focused', false);
 									if (!strict) {
 										const value = icache.getOrSet('labelValue', '');
 										const currentOption = icache.get('selectedOption');
@@ -418,7 +431,28 @@ export const Typeahead = factory(function Typeahead({
 								}}
 								valid={valid}
 							>
-								{{ label, leading }}
+								{{
+									label,
+									leading,
+									trailing: showDropDownButton && (
+										<button
+											classes={themedCss.arrow}
+											type="button"
+											onclick={openMenu}
+										>
+											<Icon
+												type="downIcon"
+												theme={theme.compose(
+													iconCss,
+													css,
+													'icon'
+												)}
+												classes={classes}
+												variant={variant}
+											/>
+										</button>
+									)
+								}}
 							</TextInput>
 						);
 					},
