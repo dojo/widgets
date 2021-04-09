@@ -499,6 +499,80 @@ describe('Select', () => {
 		);
 	});
 
+	it('pulls value from current data', () => {
+		const onValueStub = stub();
+		const toggleOpenStub = stub();
+
+		const readSub = stub();
+		readSub.callsFake((req, { put }) => {
+			put({ data: [...options], total: options.length }, req);
+		});
+
+		const template = createResourceTemplate<any>({
+			idKey: 'value',
+			read: readSub
+		});
+
+		const h = harness(
+			() => <Select onValue={onValueStub} resource={{ template }} value="2" />,
+			[compareAriaControls, compareId]
+		);
+
+		const triggerRenderResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpenStub
+		);
+
+		h.expect(
+			buttonTemplate.setProperty('@trigger', 'value', '2').setChildren('@trigger', () => [
+				<span classes={[css.value, undefined]}>Cat</span>,
+				<span classes={css.arrow}>
+					<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
+				</span>
+			]),
+			() => triggerRenderResult
+		);
+	});
+
+	it('handles when no data is returned', () => {
+		const onValueStub = stub();
+		const toggleOpenStub = stub();
+
+		const readSub = stub();
+		readSub.callsFake((req, { put }) => {
+			put({ data: [], total: options.length }, req);
+		});
+
+		const template = createResourceTemplate<any>({
+			idKey: 'value',
+			read: readSub
+		});
+
+		const h = harness(
+			() => <Select onValue={onValueStub} resource={{ template }} value="2" />,
+			[compareAriaControls, compareId]
+		);
+
+		const triggerRenderResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpenStub
+		);
+
+		h.expect(
+			buttonTemplate
+				.setProperty('@trigger', 'value', undefined)
+				.setChildren('@trigger', () => [
+					<span classes={[css.value, undefined]} />,
+					<span classes={css.arrow}>
+						<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
+					</span>
+				]),
+			() => triggerRenderResult
+		);
+	});
+
 	it('invalidates correctly', () => {
 		const onValidate = stub();
 		const h = harness(() => (
