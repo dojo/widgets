@@ -1467,6 +1467,170 @@ describe('List', () => {
 		assert.strictEqual(onRequestCloseStub.callCount, 1);
 	});
 
+	it('should navigate to the first item when pressing down and no item is active', () => {
+		function createListItems(activeIndex: number | undefined = undefined, selected?: number) {
+			return new Array(6).fill(undefined).map((_, index) => (
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={index === activeIndex}
+					disabled={testData[index].value === '3'}
+					key={`item-${index}`}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={!!selected && index === selected}
+					theme={listItemTheme}
+					widgetId={`menu-test-item-${index}`}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					{testData[index].label || testData[index].value}
+				</ListItem>
+			));
+		}
+		const onRequestCloseStub = sb.stub();
+		const testData = [
+			...data,
+			...[
+				{
+					value: '4',
+					label: 'Panda'
+				},
+				{
+					value: '5',
+					label: 'Crow'
+				},
+				{
+					value: '6',
+					label: 'Fire-Bellied Toad'
+				}
+			]
+		];
+		const r = renderer(
+			() => (
+				<List
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
+					disabled={(item) => {
+						return item.value === '3';
+					}}
+					onValue={onValueStub}
+					onRequestClose={onRequestCloseStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems();
+				})
+		);
+		// navigate to first item from nothing
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-0')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(0);
+				})
+		);
+	});
+
+	it('should navigate to the last item when pressing up and no item is active', () => {
+		function createListItems(activeIndex: number | undefined = undefined, selected?: number) {
+			return new Array(6).fill(undefined).map((_, index) => (
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={index === activeIndex}
+					disabled={testData[index].value === '3'}
+					key={`item-${index}`}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={!!selected && index === selected}
+					theme={listItemTheme}
+					widgetId={`menu-test-item-${index}`}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					{testData[index].label || testData[index].value}
+				</ListItem>
+			));
+		}
+		const onRequestCloseStub = sb.stub();
+		const testData = [
+			...data,
+			...[
+				{
+					value: '4',
+					label: 'Panda'
+				},
+				{
+					value: '5',
+					label: 'Crow'
+				},
+				{
+					value: '6',
+					label: 'Fire-Bellied Toad'
+				}
+			]
+		];
+		const r = renderer(
+			() => (
+				<List
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
+					disabled={(item) => {
+						return item.value === '3';
+					}}
+					onValue={onValueStub}
+					onRequestClose={onRequestCloseStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems();
+				})
+		);
+		// navigate to last item from nothing
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Up }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-5')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(5);
+				})
+		);
+	});
+
 	it('should set active index when provided', async () => {
 		const testData = [
 			{
