@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import { DNode, RenderResult } from '@dojo/framework/core/interfaces';
+import { RenderResult } from '@dojo/framework/core/interfaces';
 import theme from '../middleware/theme';
 import Icon from '../icon';
 import * as css from '../theme/default/wizard.m.css';
@@ -41,7 +41,7 @@ export type StepStatus = 'pending' | 'inProgress' | 'complete' | 'error';
 
 const factory = create({ theme })
 	.properties<WizardProperties>()
-	.children<WizardChildren | RenderResult | undefined>();
+	.children<WizardChildren | RenderResult | RenderResult[] | undefined>();
 
 export default factory(function Wizard({ properties, children, middleware: { theme } }) {
 	const themedCss = theme.classes(css);
@@ -57,13 +57,10 @@ export default factory(function Wizard({ properties, children, middleware: { the
 	} = properties();
 
 	let stepRenderer: StepRenderer | undefined;
-	let stepContent: DNode[] | undefined;
-	const body = children();
+	const [renderer] = children();
 
-	if (body && body[0] && !isRenderResult(body[0])) {
-		stepRenderer = body[0].step;
-	} else if (isRenderResult(body)) {
-		stepContent = body;
+	if (renderer && !isRenderResult(renderer)) {
+		stepRenderer = renderer.step;
 	}
 
 	const stepWrappers = steps.map((step, index) => {
@@ -133,7 +130,7 @@ export default factory(function Wizard({ properties, children, middleware: { the
 							<div classes={themedCss.stepSubTitle}>{subTitle}</div>
 						</div>
 						<div classes={themedCss.stepDescription}>{description}</div>
-						{stepContent && stepContent[index]}
+						{children()[index]}
 					</div>
 				</virtual>
 			),
