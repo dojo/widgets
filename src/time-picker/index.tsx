@@ -239,11 +239,16 @@ export const TimePicker = factory(function TimePicker({
 
 	const formatTime = (time: Date) => {
 		const { format = '24', step = 1800 } = properties();
-
 		const hideSeconds = step >= 60 && time.getSeconds() === 0;
 
+		// Use a new, local date so that display formatting does not offset based on timezone
+		const newTime = new Date();
+		newTime.setHours(time.getHours());
+		newTime.setMinutes(time.getMinutes());
+		newTime.setSeconds(time.getSeconds());
+
 		if (format === '24') {
-			return time
+			return newTime
 				.toLocaleTimeString(undefined, {
 					hour12: false,
 					hour: 'numeric',
@@ -252,7 +257,7 @@ export const TimePicker = factory(function TimePicker({
 				})
 				.replace(/[^a-zA-Z\d\s:.]/g, '');
 		} else {
-			return time
+			return newTime
 				.toLocaleTimeString(undefined, {
 					hour12: true,
 					hour: 'numeric',

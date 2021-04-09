@@ -346,7 +346,7 @@ describe('Select', () => {
 		assert.isTrue(onValueStub.calledOnceWith('cat'));
 	});
 
-	it('displays an optional label when available', async () => {
+	it('displays values label when available', async () => {
 		const onValueStub = stub();
 		const toggleOpenStub = stub();
 
@@ -367,6 +367,17 @@ describe('Select', () => {
 			[compareAriaControls, compareId]
 		);
 		h.trigger('@popup', (node) => (node.children as any)[0].trigger, toggleOpenStub);
+		h.expect(
+			baseTemplate.setProperty('@root', 'classes', [
+				undefined,
+				css.root,
+				undefined,
+				false,
+				false,
+				false,
+				false
+			])
+		);
 		await res();
 		const triggerRenderResult = h.trigger(
 			'@popup',
@@ -408,6 +419,82 @@ describe('Select', () => {
 		h.expect(
 			buttonTemplate.setProperty('@trigger', 'value', '1').setChildren('@trigger', () => [
 				<span classes={[css.value, undefined]}>Dog</span>,
+				<span classes={css.arrow}>
+					<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
+				</span>
+			]),
+			() => triggerRenderResult
+		);
+	});
+
+	it('rejects bad values', () => {
+		const onValueStub = stub();
+		const toggleOpenStub = stub();
+
+		const h = harness(
+			() => (
+				<Select
+					onValue={onValueStub}
+					resource={{ data: options, idKey: 'value', id: 'test' }}
+					value="4"
+				/>
+			),
+			[compareAriaControls, compareId]
+		);
+
+		const triggerRenderResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpenStub
+		);
+
+		h.expect(
+			buttonTemplate
+				.setProperty('@trigger', 'value', undefined)
+				.setChildren('@trigger', () => [
+					<span classes={[css.value, undefined]}>
+						<span classes={css.placeholder} />
+					</span>,
+					<span classes={css.arrow}>
+						<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
+					</span>
+				]),
+			() => triggerRenderResult
+		);
+	});
+
+	it('queries for matching value if not found', () => {
+		const onValueStub = stub();
+		const toggleOpenStub = stub();
+
+		const readSub = stub();
+		readSub.callsFake((req, { put }) => {
+			if (req.query.value === '4') {
+				put({ data: [{ value: '4', label: 'Frog' }], total: 1 }, req);
+			} else {
+				put({ data: [...options], total: options.length }, req);
+			}
+		});
+
+		const template = createResourceTemplate<any>({
+			idKey: 'value',
+			read: readSub
+		});
+
+		const h = harness(
+			() => <Select onValue={onValueStub} resource={{ template }} value="4" />,
+			[compareAriaControls, compareId]
+		);
+
+		const triggerRenderResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpenStub
+		);
+
+		h.expect(
+			buttonTemplate.setProperty('@trigger', 'value', '4').setChildren('@trigger', () => [
+				<span classes={[css.value, undefined]}>Frog</span>,
 				<span classes={css.arrow}>
 					<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
 				</span>

@@ -237,6 +237,7 @@ import ControlledDateInput from './widgets/date-input/Controlled';
 import DisabledDateInput from './widgets/date-input/Disabled';
 import ReadOnlyDateInput from './widgets/date-input/ReadOnly';
 import RequiredDateInput from './widgets/date-input/Required';
+import CustomParserDateInput from './widgets/date-input/CustomParser';
 import BasicLoadingIndicator from './widgets/loading-indicator/Basic';
 import CircularLoadingIndicator from './widgets/loading-indicator/Circular';
 import BasicHeader from './widgets/header/Basic';
@@ -719,6 +720,13 @@ export const config = {
 					sandbox: true,
 					size: 'large',
 					title: 'Required date input'
+				},
+				{
+					filename: 'CustomParser',
+					module: CustomParserDateInput,
+					sandbox: true,
+					size: 'large',
+					title: 'Custom parser date input'
 				}
 			]
 		},
