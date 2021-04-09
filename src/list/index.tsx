@@ -733,8 +733,8 @@ export const List = factory(function List({
 	} = get(options(), { meta: true, read });
 	if (inputText && inputText !== icache.get('previousInputText') && total) {
 		const items = get({ ...options(), offset: 0, size: total });
-		const first = computedActiveIndex ? items.slice(0, computedActiveIndex) : [];
-		const second = computedActiveIndex ? items.slice(computedActiveIndex) : items;
+		const first = computedActiveIndex !== undefined ? items.slice(0, computedActiveIndex) : [];
+		const second = computedActiveIndex !== undefined ? items.slice(computedActiveIndex) : items;
 		let foundIndex = computedActiveIndex || 0;
 		for (let i = 1; i < second.length; i++) {
 			const item = second[i];
