@@ -71,11 +71,9 @@ const buttonTemplate = assertionTemplate(() => (
 		onclick={() => {}}
 		onkeydown={() => {}}
 		name={undefined}
-		value=""
+		value={undefined}
 	>
-		<span classes={[css.value, undefined]}>
-			<span classes={css.placeholder} />
-		</span>
+		<span classes={[css.value, undefined]} />
 		<span classes={css.arrow}>
 			<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
 		</span>
@@ -98,7 +96,7 @@ const menuTemplate = assertionTemplate(() => (
 			onValue={() => {}}
 			onRequestClose={() => {}}
 			onBlur={() => {}}
-			initialValue=""
+			initialValue={undefined}
 			itemsInView={6}
 			staticOption={{
 				value: '',
@@ -157,7 +155,7 @@ describe('Select', () => {
 					forId={'id'}
 					valid={true}
 					required={true}
-					active={true}
+					active={false}
 					focused={false}
 				>
 					test-label
@@ -452,9 +450,7 @@ describe('Select', () => {
 			buttonTemplate
 				.setProperty('@trigger', 'value', undefined)
 				.setChildren('@trigger', () => [
-					<span classes={[css.value, undefined]}>
-						<span classes={css.placeholder} />
-					</span>,
+					<span classes={[css.value, undefined]} />,
 					<span classes={css.arrow}>
 						<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
 					</span>
