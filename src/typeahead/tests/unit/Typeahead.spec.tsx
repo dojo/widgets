@@ -15,6 +15,7 @@ import * as inputCss from '../../../theme/default/text-input.m.css';
 import * as listCss from '../../../theme/default/list.m.css';
 import List from '../../../list';
 import { Keys } from '../../../common/util';
+import { createResourceTemplate } from '@dojo/framework/core/middleware/resources';
 
 const { ' _key': key, ...inputTheme } = inputCss as any;
 const { ' _key': listKey, ...listTheme } = listCss as any;
@@ -803,5 +804,47 @@ describe('Typeahead', () => {
 		);
 
 		assert.strictEqual(onValueStub.callCount, 0);
+	});
+
+	it('queries for matching value if not found', () => {
+		const onValueStub = sb.stub();
+		const toggleClosedStub = sb.stub();
+
+		const readSub = sb.stub();
+		readSub.callsFake((req, { put }) => {
+			if (req.query.value === '4') {
+				put({ data: [{ value: '4', label: 'Frog' }], total: 1 }, req);
+			} else {
+				put({ data, total: data.length }, req);
+			}
+		});
+
+		const template = createResourceTemplate<any>({
+			idKey: 'value',
+			read: readSub
+		});
+
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template }}
+				onValue={onValueStub}
+				strict={false}
+				value="4"
+				required
+			/>
+		));
+
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [toggleClosedStub, 'above']
+		});
+		r.expect(
+			nonStrictModeBaseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'value', 'Frog'),
+				content: nonStrictModeContent
+					.setProperty(WrappedList, 'initialValue', '4')
+					.setProperty(WrappedList, 'staticOption', undefined)
+			}))
+		);
 	});
 });
