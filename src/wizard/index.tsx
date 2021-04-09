@@ -5,6 +5,7 @@ import Icon from '../icon';
 import * as css from '../theme/default/wizard.m.css';
 import * as avatarCss from '../theme/default/avatar.m.css';
 import Avatar from '../avatar';
+import { isRenderResult } from '../common/util';
 
 export interface Step {
 	title?: RenderResult;
@@ -25,16 +26,22 @@ export interface WizardProperties {
 	steps: Step[];
 }
 
+export type StepRenderer = (
+	status: StepStatus | undefined,
+	index: number,
+	step: Step
+) => RenderResult;
+
 export interface WizardChildren {
 	/** Custom renderer for the wizardSteps, receives the checkbox group middleware and options */
-	step?(status: StepStatus | undefined, index: number, step: Step): RenderResult;
+	step?: StepRenderer;
 }
 
 export type StepStatus = 'pending' | 'inProgress' | 'complete' | 'error';
 
 const factory = create({ theme })
 	.properties<WizardProperties>()
-	.children<WizardChildren | undefined>();
+	.children<WizardChildren | RenderResult | RenderResult[] | undefined>();
 
 export default factory(function Wizard({ properties, children, middleware: { theme } }) {
 	const themedCss = theme.classes(css);
@@ -49,7 +56,12 @@ export default factory(function Wizard({ properties, children, middleware: { the
 		theme: themeProp
 	} = properties();
 
-	const [{ step: stepRenderer } = { step: undefined }] = children();
+	let stepRenderer: StepRenderer | undefined;
+	const [renderer] = children();
+
+	if (renderer && !isRenderResult(renderer)) {
+		stepRenderer = renderer.step;
+	}
 
 	const stepWrappers = steps.map((step, index) => {
 		let content;
@@ -118,6 +130,7 @@ export default factory(function Wizard({ properties, children, middleware: { the
 							<div classes={themedCss.stepSubTitle}>{subTitle}</div>
 						</div>
 						<div classes={themedCss.stepDescription}>{description}</div>
+						{children()[index]}
 					</div>
 				</virtual>
 			),

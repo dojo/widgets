@@ -28,6 +28,9 @@ describe('Wizard', () => {
 	const WrappedStep1 = wrap('div');
 	const WrappedStep2 = wrap('div');
 	const WrappedStep3 = wrap('div');
+	const WrappedStepContent1 = wrap('div');
+	const WrappedStepContent2 = wrap('div');
+	const WrappedStepContent3 = wrap('div');
 	const WrappedAvatar = wrap(Avatar);
 	const baseAssertion = assertion(() => (
 		<WrappedRoot key="root" classes={[undefined, css.root, css.horizontal, false]}>
@@ -66,12 +69,12 @@ describe('Wizard', () => {
 							/>
 						</Avatar>
 					</div>
-					<div classes={[null, css.stepContent]}>
+					<WrappedStepContent1 classes={[null, css.stepContent]}>
 						<div classes={[css.stepTitle, false, css.noDescription]}>
 							Step 1<div classes={css.stepSubTitle}>{''}</div>
 						</div>
 						<div classes={css.stepDescription}>{''}</div>
-					</div>
+					</WrappedStepContent1>
 				</virtual>
 			</WrappedStep1>
 			<WrappedStep2 key="step2" classes={[css.step, false, false, false]} onclick={noop}>
@@ -100,12 +103,12 @@ describe('Wizard', () => {
 							2
 						</WrappedAvatar>
 					</div>
-					<div classes={[null, css.stepContent]}>
+					<WrappedStepContent2 classes={[null, css.stepContent]}>
 						<div classes={[css.stepTitle, false, css.noDescription]}>
 							Step 2<div classes={css.stepSubTitle}>{''}</div>
 						</div>
 						<div classes={css.stepDescription}>{''}</div>
-					</div>
+					</WrappedStepContent2>
 				</virtual>
 			</WrappedStep2>
 			<WrappedStep3
@@ -138,12 +141,12 @@ describe('Wizard', () => {
 							3
 						</Avatar>
 					</div>
-					<div classes={[null, css.stepContent]}>
+					<WrappedStepContent3 classes={[null, css.stepContent]}>
 						<div classes={[css.stepTitle, false, css.noDescription]}>
 							Step 3<div classes={css.stepSubTitle}>{''}</div>
 						</div>
 						<div classes={css.stepDescription}>{''}</div>
-					</div>
+					</WrappedStepContent3>
 				</virtual>
 			</WrappedStep3>
 		</WrappedRoot>
@@ -320,5 +323,25 @@ describe('Wizard', () => {
 				</div>
 			])
 		);
+	});
+
+	it('renders step content', () => {
+		const r = mockedRenderer(() => (
+			<Wizard
+				activeStep={1}
+				steps={[{ title: 'Step 1' }, { title: 'Step 2' }, { title: 'Step 3' }]}
+			>
+				<div>1</div>
+				<div>2</div>
+				<div>3</div>
+			</Wizard>
+		));
+
+		const contentAssertion = baseAssertion
+			.append(WrappedStepContent1, () => <div>1</div>)
+			.append(WrappedStepContent2, () => <div>2</div>)
+			.append(WrappedStepContent3, () => <div>3</div>);
+
+		r.expect(contentAssertion);
 	});
 });
