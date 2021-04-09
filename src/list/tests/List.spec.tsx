@@ -1548,6 +1548,10 @@ describe('List', () => {
 			.replaceChildren(WrappedItemContainer, () => createChildren());
 		r.expect(listAssertion);
 
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'x' }));
+		r.expect(listAssertion);
+		await new Promise((resolve) => setTimeout(resolve, 800));
+
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'b' }));
 		const firstItemSelectedAssertion = listAssertion
 			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-0')
