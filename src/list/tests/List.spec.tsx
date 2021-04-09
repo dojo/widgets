@@ -1509,6 +1509,68 @@ describe('List', () => {
 		r.expect(listAssertion);
 	});
 
+	it('handle key down events relative to preset active index', async () => {
+		const onActiveIndexChangeStub = sb.stub();
+		const testData = [
+			{
+				value: '1',
+				label: 'Bob'
+			},
+			{
+				value: '2',
+				label: 'Adam'
+			},
+			{
+				value: '3',
+				label: 'Ant'
+			},
+			{
+				value: '4',
+				label: 'Anthony'
+			},
+			{
+				value: '5',
+				label: 'Bobby'
+			}
+		];
+		const props = {
+			activeIndex: 2
+		};
+		const r = renderer(
+			() => (
+				<List
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
+					onValue={onValueStub}
+					activeIndex={props.activeIndex}
+					onActiveIndexChange={onActiveIndexChangeStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		const listAssertion = baseAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '225px'
+			})
+			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-2')
+			.replaceChildren(WrappedItemContainer, () => createChildren({ activeItem: 'item-2' }));
+		r.expect(listAssertion);
+		assert.strictEqual(onActiveIndexChangeStub.callCount, 0);
+
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down }));
+		r.expect(listAssertion);
+		assert.strictEqual(onActiveIndexChangeStub.callCount, 1);
+		assert.strictEqual(onActiveIndexChangeStub.firstCall.args[0], 3);
+
+		props.activeIndex = 3;
+		r.expect(
+			listAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-3')
+				.replaceChildren(WrappedItemContainer, () =>
+					createChildren({ activeItem: 'item-3' })
+				)
+		);
+	});
+
 	it('should set active item based on keyboard input', async () => {
 		const testData = [
 			{
