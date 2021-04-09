@@ -847,4 +847,80 @@ describe('Typeahead', () => {
 			}))
 		);
 	});
+
+	it('pulls value from current data', () => {
+		const onValueStub = sb.stub();
+		const toggleClosedStub = sb.stub();
+
+		const readSub = sb.stub();
+		readSub.callsFake((req, { put }) => {
+			put({ data, total: data.length }, req);
+		});
+
+		const template = createResourceTemplate<any>({
+			idKey: 'value',
+			read: readSub
+		});
+
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template }}
+				onValue={onValueStub}
+				strict={false}
+				value="2"
+				required
+			/>
+		));
+
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [toggleClosedStub, 'above']
+		});
+		r.expect(
+			nonStrictModeBaseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'value', 'Cat'),
+				content: nonStrictModeContent
+					.setProperty(WrappedList, 'initialValue', '2')
+					.setProperty(WrappedList, 'staticOption', undefined)
+			}))
+		);
+	});
+
+	it('handles when no data is returned', () => {
+		const onValueStub = sb.stub();
+		const toggleClosedStub = sb.stub();
+
+		const readSub = sb.stub();
+		readSub.callsFake((req, { put }) => {
+			put({ data: [], total: data.length }, req);
+		});
+
+		const template = createResourceTemplate<any>({
+			idKey: 'value',
+			read: readSub
+		});
+
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ template }}
+				onValue={onValueStub}
+				strict={false}
+				value="2"
+				required
+			/>
+		));
+
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [toggleClosedStub, 'above']
+		});
+		r.expect(
+			nonStrictModeBaseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'value', ''),
+				content: nonStrictModeContent
+					.setProperty(WrappedList, 'initialValue', '2')
+					.setProperty(WrappedList, 'staticOption', undefined)
+			}))
+		);
+	});
 });
