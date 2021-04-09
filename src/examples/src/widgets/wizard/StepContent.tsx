@@ -2,8 +2,12 @@ import { create, tsx } from '@dojo/framework/core/vdom';
 import Example from '../../Example';
 import Wizard from '@dojo/widgets/wizard';
 import Button from '@dojo/widgets/button';
+import icache from '@dojo/framework/core/middleware/icache';
 
-export default create()(function StepContent() {
+const factory = create({ icache });
+
+export default factory(function StepContent({ middleware: { icache } }) {
+	let activeStep = icache.getOrSet('activeStep', 1);
 	const steps = [
 		{
 			title: 'Select an app'
@@ -21,10 +25,16 @@ export default create()(function StepContent() {
 
 	return (
 		<Example>
-			<Wizard direction="vertical" steps={steps}>
+			<Wizard
+				direction="vertical"
+				steps={steps}
+				activeStep={activeStep}
+				onStep={(step) => icache.set('activeStep', step)}
+				clickable
+			>
 				<virtual />
 				<div>
-					<ExampleContent />
+					<ExampleContent onContinue={() => icache.set('activeStep', activeStep + 1)} />
 				</div>
 				<virtual />
 				<virtual />
@@ -33,12 +43,15 @@ export default create()(function StepContent() {
 	);
 });
 
-const ExampleContent = create()(() => (
+const exampleFactory = create().properties<{ onContinue: () => void }>();
+
+const ExampleContent = exampleFactory(({ properties }) => (
 	<div styles={{ paddingBottom: '16px' }}>
 		<div
 			styles={{ width: '300px', height: '150px', marginBottom: '8px', background: '#DDD' }}
 		/>
-		<Button kind="primary">Continue</Button>
-		<Button>Cancel</Button>
+		<Button kind="primary" onClick={properties().onContinue}>
+			Continue
+		</Button>
 	</div>
 ));
