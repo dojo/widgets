@@ -1547,15 +1547,19 @@ describe('List', () => {
 			})
 			.replaceChildren(WrappedItemContainer, () => createChildren());
 		r.expect(listAssertion);
+
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'b' }));
+		const firstItemSelectedAssertion = listAssertion
+			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-0')
+			.replaceChildren(WrappedItemContainer, () => createChildren({ activeItem: 'item-0' }));
+		r.expect(firstItemSelectedAssertion);
+		await new Promise((resolve) => setTimeout(resolve, 800));
+
 		r.property(
 			WrappedRoot,
 			'onkeydown',
 			createMockEvent({ which: 0, key: 'b', metaKey: true })
 		);
-
-		const firstItemSelectedAssertion = listAssertion
-			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-0')
-			.replaceChildren(WrappedItemContainer, () => createChildren({ activeItem: 'item-0' }));
 		r.expect(firstItemSelectedAssertion);
 
 		r.property(
@@ -1579,6 +1583,14 @@ describe('List', () => {
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'a' }));
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'n' }));
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 't' }));
+		r.expect(
+			listAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-2')
+				.replaceChildren(WrappedItemContainer, () =>
+					createChildren({ activeItem: 'item-2' })
+				)
+		);
+
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'h' }));
 		r.expect(
 			listAssertion
