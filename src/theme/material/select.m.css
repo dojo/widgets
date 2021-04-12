@@ -75,7 +75,7 @@
 .labelRoot {
 	composes: root from './label.m.css';
 	composes: mdc-floating-label from '@material/select/dist/mdc.select.css';
-	z-index: 10;
+	z-index: 1;
 }
 
 .labelActive {
