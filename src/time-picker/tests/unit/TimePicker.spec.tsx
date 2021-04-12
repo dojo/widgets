@@ -65,33 +65,32 @@ const baseTemplate = (date?: Date) =>
 		);
 	});
 
-const buttonTemplate = (required?: boolean) =>
-	assertionTemplate(() => {
-		return (
-			<div classes={css.input}>
-				<TextInput
-					disabled={undefined}
-					key="input"
-					focus={() => false}
-					theme={{}}
-					onBlur={noop}
-					onFocus={noop}
-					onValue={noop}
-					initialValue={''}
-					onValidate={noop}
-					required={required}
-					valid={undefined}
-					helperText=""
-					onKeyDown={noop}
-					type="text"
-					variant={undefined}
-					classes={undefined}
-				>
-					{{ label: undefined, trailing: undefined }}
-				</TextInput>
-			</div>
-		);
-	});
+const buttonTemplate = assertionTemplate(() => {
+	return (
+		<div classes={css.input}>
+			<TextInput
+				disabled={undefined}
+				key="input"
+				focus={() => false}
+				theme={{}}
+				onBlur={noop}
+				onFocus={noop}
+				onValue={noop}
+				initialValue={''}
+				onValidate={noop}
+				required={undefined}
+				valid={undefined}
+				helperText=""
+				onKeyDown={noop}
+				type="text"
+				variant={undefined}
+				classes={undefined}
+			>
+				{{ label: undefined, trailing: undefined }}
+			</TextInput>
+		</div>
+	);
+});
 
 function generateOptions(step: number, dateOptions: Intl.DateTimeFormatOptions = {}) {
 	const options: ListOption[] = [];
@@ -184,7 +183,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate(), () => triggerResult);
+		h.expect(buttonTemplate, () => triggerResult);
 
 		// Find the date icon & `click` it
 		const [dateIcon] = select(
@@ -213,7 +212,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(buttonTemplate(), () => triggerResult);
+		h.expect(buttonTemplate, () => triggerResult);
 		assert.equal(
 			h.trigger('@popup', (node) => () =>
 				(node.children as any)[0].trigger().children[0].children[0].label
@@ -231,7 +230,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(buttonTemplate(), () => triggerResult);
+		h.expect(buttonTemplate, () => triggerResult);
 		assert.equal(
 			h.trigger('@popup', (node) => () =>
 				(node.children as any)[0].trigger().children[0].children[0].label
@@ -250,7 +249,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate(), () => triggerResult);
+		h.expect(buttonTemplate, () => triggerResult);
 
 		// Find the input and simulate "enter"
 		const [input] = select('@input', triggerResult);
@@ -278,7 +277,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(buttonTemplate(), () => triggerResult);
+		h.expect(buttonTemplate, () => triggerResult);
 		assert.equal(
 			h.trigger('@popup', (node) => () =>
 				(node.children as any)[0].trigger().children[0].children[0].label
@@ -318,7 +317,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate(), () => triggerResult);
+		h.expect(buttonTemplate, () => triggerResult);
 
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
