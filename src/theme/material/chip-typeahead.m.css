@@ -42,9 +42,10 @@
 
 .root .inputLeading {
 	display: block;
+	pointer-events: unset;
 	position: static;
 	transform: none;
-	width: 100%;
+	max-width: 100%;
 }
 
 .values .value {
