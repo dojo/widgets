@@ -257,7 +257,8 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 					'@dojo/widgets/text-input': {
 						inputWrapper: [themeCss.inputWrapper],
 						input: [themeCss.input],
-						wrapper: [themeCss.wrapper]
+						wrapper: [themeCss.wrapper],
+						leading: [themeCss.inputLeading]
 					}
 				}}
 				itemDisabled={(item) => {

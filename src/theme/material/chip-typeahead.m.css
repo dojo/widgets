@@ -40,6 +40,13 @@
 	padding-top: 20px;
 }
 
+.root .inputLeading {
+	display: block;
+	position: static;
+	transform: none;
+	width: 100%;
+}
+
 .values .value {
 	margin: 4px 4px 4px 0;
 }

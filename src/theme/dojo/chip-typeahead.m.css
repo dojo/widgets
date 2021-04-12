@@ -16,6 +16,13 @@
 	width: 100px;
 }
 
+.root .inputLeading {
+	display: block;
+	position: static;
+	transform: none;
+	width: 100%;
+}
+
 .root .inputWrapper {
 	display: flex;
 	flex-wrap: wrap;
