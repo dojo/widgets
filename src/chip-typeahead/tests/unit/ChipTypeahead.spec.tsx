@@ -53,7 +53,8 @@ const baseAssertion = assertionTemplate(() => (
 				'@dojo/widgets/text-input': {
 					inputWrapper: [themeCss.inputWrapper],
 					input: [themeCss.input],
-					wrapper: [themeCss.wrapper]
+					wrapper: [themeCss.wrapper],
+					leading: [themeCss.inputLeading]
 				}
 			}}
 		>
