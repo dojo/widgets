@@ -202,6 +202,7 @@ export default factory(function DateInput({
 								<TextInput
 									key="input"
 									disabled={disabled}
+									required={required}
 									readOnly={readOnly}
 									focus={() => shouldFocus && focusNode === 'input'}
 									theme={theme.compose(

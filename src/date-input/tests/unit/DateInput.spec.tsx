@@ -71,6 +71,7 @@ const buttonTemplate = assertionTemplate(() => {
 			<TextInput
 				key="input"
 				disabled={false}
+				required={undefined}
 				readOnly={false}
 				focus={() => false}
 				theme={{}}
@@ -594,7 +595,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(buttonTemplate.setProperty('@input', 'required', true), () => triggerResult);
 
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
