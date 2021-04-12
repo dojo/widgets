@@ -554,4 +554,29 @@ describe('TimePicker', () => {
 			() => contentResult
 		);
 	});
+
+	it('required date input', () => {
+		const onValidate = sinon.stub();
+
+		const h = harness(() => (
+			<TimePicker
+				name="timeInput"
+				onValue={onValue}
+				onValidate={onValidate}
+				required={true}
+			/>
+		));
+
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			noop
+		);
+
+		// Find the input widget and give it a bad value
+		let [input] = select('@input', triggerResult);
+		onValidate.resetHistory();
+		input.properties.onValidate(false);
+		sinon.assert.calledWith(onValidate, false);
+	});
 });
