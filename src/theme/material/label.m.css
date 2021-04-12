@@ -10,11 +10,11 @@
 	position: relative;
 }
 
-.root:not(.disabled).active {
+.root:not(.disabled).focused {
 	color: var(--mdc-theme-primary) !important;
 }
 
-.root:not(.active) {
+.root:not(.focused) {
 	color: var(--mdc-secondary-text-color) !important;
 }
 
