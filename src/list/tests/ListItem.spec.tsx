@@ -8,6 +8,7 @@ const { describe, it, after } = intern.getInterface('bdd');
 
 const noop: any = () => {};
 const WrappedRoot = wrap('div');
+const WrappedText = wrap('span');
 
 describe('ListBoxItem', () => {
 	const template = assertion(() => (
@@ -18,6 +19,7 @@ describe('ListBoxItem', () => {
 				undefined,
 				css.root,
 				css.height,
+				false,
 				false,
 				false,
 				false,
@@ -42,7 +44,7 @@ describe('ListBoxItem', () => {
 				visibility: undefined
 			}}
 		>
-			<span classes={css.primary}>test</span>
+			<WrappedText classes={css.text}>test</WrappedText>
 		</WrappedRoot>
 	));
 	const disabledTemplate = template
@@ -50,6 +52,7 @@ describe('ListBoxItem', () => {
 			undefined,
 			css.root,
 			css.height,
+			false,
 			false,
 			false,
 			css.disabled,
@@ -93,6 +96,38 @@ describe('ListBoxItem', () => {
 		);
 	});
 
+	it('renders with secondary text', () => {
+		const r = renderer(() => (
+			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop}>
+				{{
+					primary: 'test',
+					secondary: 'Less important'
+				}}
+			</ListItem>
+		));
+		r.expect(
+			template
+				.setProperty(WrappedRoot, 'classes', [
+					undefined,
+					css.root,
+					css.height,
+					css.twoLine,
+					false,
+					false,
+					false,
+					undefined,
+					undefined,
+					undefined,
+					undefined,
+					undefined
+				])
+				.replaceChildren(WrappedText, () => [
+					'test',
+					<span classes={css.secondary}>Less important</span>
+				])
+		);
+	});
+
 	it('renders selected', () => {
 		const r = renderer(() => (
 			<ListItem widgetId="test" selected onRequestActive={noop} onSelect={noop}>
@@ -104,6 +139,7 @@ describe('ListBoxItem', () => {
 				undefined,
 				css.root,
 				css.height,
+				false,
 				css.selected,
 				false,
 				false,
@@ -137,6 +173,7 @@ describe('ListBoxItem', () => {
 			css.root,
 			css.height,
 			false,
+			false,
 			css.active,
 			false,
 			undefined,
@@ -158,6 +195,7 @@ describe('ListBoxItem', () => {
 			undefined,
 			css.root,
 			css.height,
+			false,
 			false,
 			false,
 			false,
@@ -183,6 +221,7 @@ describe('ListBoxItem', () => {
 			false,
 			false,
 			false,
+			false,
 			undefined,
 			css.movedDown,
 			undefined,
@@ -202,6 +241,7 @@ describe('ListBoxItem', () => {
 			undefined,
 			css.root,
 			css.height,
+			false,
 			false,
 			false,
 			false,
@@ -228,6 +268,7 @@ describe('ListBoxItem', () => {
 				false,
 				false,
 				false,
+				false,
 				undefined,
 				undefined,
 				undefined,
@@ -250,6 +291,7 @@ describe('ListBoxItem', () => {
 				undefined,
 				css.root,
 				css.height,
+				false,
 				false,
 				false,
 				false,
@@ -285,6 +327,7 @@ describe('ListBoxItem', () => {
 				undefined,
 				css.root,
 				css.height,
+				false,
 				false,
 				false,
 				false,

@@ -110,6 +110,8 @@ export interface ListItemChildren {
 	leading?: RenderResult;
 	/** The main content of the item, typically text */
 	primary?: RenderResult;
+	/** The further details about the item to display below the primary content, typically text */
+	secondary?: RenderResult;
 	/** Icon or text to place after the primary content */
 	trailing?: RenderResult;
 }
@@ -154,9 +156,12 @@ export const ListItem = listItemFactory(function ListItem({
 	}
 
 	const [firstChild, ...otherChildren] = children();
-	const { leading = undefined, primary, trailing = undefined } = isRenderResult(firstChild)
-		? { primary: [firstChild, ...otherChildren] }
-		: firstChild;
+	const {
+		leading = undefined,
+		primary,
+		secondary = undefined,
+		trailing = undefined
+	} = isRenderResult(firstChild) ? { primary: [firstChild, ...otherChildren] } : firstChild;
 
 	return (
 		<div
@@ -169,6 +174,7 @@ export const ListItem = listItemFactory(function ListItem({
 				theme.variant(),
 				themedCss.root,
 				themedCss.height,
+				Boolean(secondary) && themedCss.twoLine,
 				selected && themedCss.selected,
 				active && themedCss.active,
 				disabled && themedCss.disabled,
@@ -194,7 +200,10 @@ export const ListItem = listItemFactory(function ListItem({
 			styles={{ visibility: dragged ? 'hidden' : undefined }}
 		>
 			{leading ? <span classes={themedCss.leading}>{leading}</span> : undefined}
-			<span classes={themedCss.primary}>{primary}</span>
+			<span classes={themedCss.text}>
+				{primary}
+				{secondary ? <span classes={themedCss.secondary}>{secondary}</span> : undefined}
+			</span>
 			{trailing ? <span classes={themedCss.trailing}>{trailing}</span> : undefined}
 			{draggable && !trailing && (
 				<Icon
