@@ -58,6 +58,9 @@
 
 .root.iconOnly .icon {
 	margin: 0;
+	width: 24px;
+	height: 24px;
+	font-size: 24px;
 }
 
 .label {
