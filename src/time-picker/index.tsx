@@ -340,7 +340,7 @@ export const TimePicker = factory(function TimePicker({
 				}
 			}
 
-			isValid = validationMessages.length === 0;
+			isValid = isValid === undefined ? validationMessages.length === 0 : isValid;
 			icache.set('isValid', isValid);
 		}
 
@@ -441,7 +441,10 @@ export const TimePicker = factory(function TimePicker({
 									onValidate={(valid, message) => {
 										if (valid !== icache.get('inputValid')) {
 											icache.set('inputValid', valid);
-											icache.set('inputValidMessage', message);
+											if (icache.get('dirty')) {
+												icache.set('inputValidMessage', message);
+											}
+											callOnValue();
 										}
 									}}
 									onKeyDown={(key) => {

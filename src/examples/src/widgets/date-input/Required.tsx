@@ -18,7 +18,9 @@ export default factory(function Required({ middleware: { icache } }) {
 				}}
 				name="dateInput"
 				required={true}
-			/>
+			>
+				{{ label: 'Date: ' }}
+			</DateInput>
 		</Example>
 	);
 });
