@@ -11,7 +11,7 @@ export default factory(function Basic() {
 		{ name: 'One' },
 		{ name: 'Tab Two' },
 		{ name: 'Long Tab Three' },
-		{ name: 'Tab Four Beyond Max Length Causing Ellipsis' }
+		{ name: "Tab Four's Name Is Beyond Max Length Causing Ellipsis" }
 	];
 
 	return (
