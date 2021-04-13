@@ -59,6 +59,7 @@
 }
 
 .primary {
+	flex-grow: 1;
 	composes: mdc-list-item__text from '@material/list/dist/mdc.list.css';
 }
 
