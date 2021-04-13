@@ -210,6 +210,7 @@ export const Typeahead = factory(function Typeahead({
 					});
 				}
 				break;
+			case Keys.Tab:
 			case Keys.Enter:
 				preventDefault();
 				const activeIndex = icache.getOrSet('activeIndex', strict ? 0 : -1);

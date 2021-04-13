@@ -30,6 +30,11 @@
 	min-width: 0;
 }
 
+.root.iconOnly {
+	min-width: 0;
+	padding: 3px var(--spacing-regular);
+}
+
 .pressed {
 	background-color: var(--color-highlight);
 	border-color: var(--color-highlight);

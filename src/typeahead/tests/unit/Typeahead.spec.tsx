@@ -529,6 +529,31 @@ describe('Typeahead', () => {
 		assert.strictEqual(onValueStub.callCount, 1);
 	});
 
+	it('Should select item on tab ', () => {
+		const r = renderer(() => (
+			<Typeahead resource={{ data, id: 'test', idKey: 'value' }} onValue={onValueStub} />
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion);
+		// open the drop down
+		r.property(WrappedTrigger, 'onClick');
+		// focus second item from the drop down, `cat`
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Down, () => {});
+		// select second item from the drop down, `cat`
+		r.property(WrappedTrigger, 'onKeyDown', Keys.Tab, () => {});
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'value', 'Cat'),
+				content: contentAssertion
+					.setProperty(WrappedList, 'initialValue', '2')
+					.setProperty(WrappedList, 'activeIndex', 1)
+			}))
+		);
+		assert.strictEqual(onValueStub.callCount, 1);
+	});
+
 	it('Should select value on blur in non-strict mode', () => {
 		const r = renderer(() => (
 			<Typeahead
