@@ -57,3 +57,7 @@
 /* Added if the widget has a label */
 .hasLabel {
 }
+
+/* Added to the input's leading content containing chips */
+.inputLeading {
+}
