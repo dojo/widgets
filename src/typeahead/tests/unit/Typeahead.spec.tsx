@@ -1144,10 +1144,10 @@ describe('Typeahead', () => {
 	});
 
 	it('opens typeahead onkeydown `Enter` on down arrow', () => {
-		testDownArrowOpening('onclick', { which: Keys.Enter, preventDefault: noop });
+		testDownArrowOpening('onkeydown', { which: Keys.Enter, preventDefault: noop });
 	});
 
 	it('opens typeahead onkeydown `Space` on down arrow', () => {
-		testDownArrowOpening('onclick', { which: Keys.Space, preventDefault: noop });
+		testDownArrowOpening('onkeydown', { which: Keys.Space, preventDefault: noop });
 	});
 });
