@@ -16,12 +16,19 @@
 }
 
 .root.selected {
-	background: var(--mdc-theme-on-surface-hover);
+	background: var(--mdc-list-item-selected-background);
+	color: var(--mdc-list-item-selected-color);
+}
+
+.root.disabled {
+	background: var(--mdc-list-item-disabled-background);
+	color: var(--mdc-list-item-disabled-color);
 }
 
 .active {
 	border: none;
-	background: var(--mdc-theme-on-surface);
+	background: var(--mdc-list-item-active-background);
+	color: var(--mdc-list-item-active-color);
 	min-height: 48px;
 	height: 100%;
 	box-shadow: none;
