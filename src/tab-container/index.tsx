@@ -31,6 +31,8 @@ export interface TabContainerProperties {
 	onActiveIndex?(index: number): void;
 	/** Tabs config used to display tab buttons */
 	tabs: TabItem[];
+	/** If buttons should be fixed width or variable width */
+	fixed?: boolean;
 }
 
 interface TabContainerICache {
@@ -59,7 +61,8 @@ export const TabContainer = factory(function TabContainer({
 		onClose,
 		theme: themeProp,
 		classes,
-		variant
+		variant,
+		fixed = true
 	} = properties();
 	let { activeIndex } = properties();
 
@@ -218,7 +221,12 @@ export const TabContainer = factory(function TabContainer({
 			{...formatAriaProperties(aria)}
 			key="root"
 			aria-orientation={orientation}
-			classes={[theme.variant(), alignClass || null, themeCss.root]}
+			classes={[
+				theme.variant(),
+				alignClass || null,
+				themeCss.root,
+				fixed ? themeCss.fixed : null
+			]}
 			role="tablist"
 		>
 			{...content}

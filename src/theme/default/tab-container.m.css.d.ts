@@ -8,6 +8,7 @@ export const tabButtonContent: string;
 export const activeTabButtonLabel: string;
 export const activeTabButton: string;
 export const root: string;
+export const fixed: string;
 export const tabButton: string;
 export const disabledTabButton: string;
 export const alignLeft: string;
