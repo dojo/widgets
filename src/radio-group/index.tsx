@@ -18,6 +18,8 @@ export interface RadioGroupProperties {
 	onValue(value: string): void;
 	/** Object containing the values / labels to create radios for */
 	options: RadioOptions;
+	/** Disabled all inputs within this group */
+	disabled?: boolean;
 }
 
 export interface RadioGroupChildren {
@@ -47,7 +49,8 @@ export const RadioGroup = factory(function({
 		initialValue,
 		theme: themeCss,
 		classes,
-		variant
+		variant,
+		disabled
 	} = properties();
 	const [{ radios, label } = { radios: undefined, label: undefined }] = children();
 	const radio = radioGroup(onValue, initialValue || '', value);
@@ -68,6 +71,7 @@ export const RadioGroup = factory(function({
 					theme={themeCss}
 					classes={classes}
 					variant={variant}
+					disabled={disabled}
 				>
 					{label || value}
 				</Radio>

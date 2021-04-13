@@ -30,6 +30,7 @@ describe('RadioGroup', () => {
 				theme={undefined}
 				variant={undefined}
 				classes={undefined}
+				disabled={undefined}
 			>
 				cat
 			</Radio>,
@@ -41,6 +42,7 @@ describe('RadioGroup', () => {
 				theme={undefined}
 				variant={undefined}
 				classes={undefined}
+				disabled={undefined}
 			>
 				fish
 			</Radio>,
@@ -52,6 +54,7 @@ describe('RadioGroup', () => {
 				theme={undefined}
 				variant={undefined}
 				classes={undefined}
+				disabled={undefined}
 			>
 				dog
 			</Radio>
@@ -77,6 +80,7 @@ describe('RadioGroup', () => {
 				theme={undefined}
 				variant={undefined}
 				classes={undefined}
+				disabled={undefined}
 			>
 				cat
 			</Radio>
@@ -102,6 +106,7 @@ describe('RadioGroup', () => {
 				theme={undefined}
 				variant={undefined}
 				classes={undefined}
+				disabled={undefined}
 			>
 				cat
 			</Radio>,
@@ -113,6 +118,7 @@ describe('RadioGroup', () => {
 				theme={undefined}
 				variant={undefined}
 				classes={undefined}
+				disabled={undefined}
 			>
 				fish
 			</Radio>,
@@ -124,6 +130,7 @@ describe('RadioGroup', () => {
 				theme={undefined}
 				variant={undefined}
 				classes={undefined}
+				disabled={undefined}
 			>
 				dog
 			</Radio>
@@ -150,6 +157,7 @@ describe('RadioGroup', () => {
 				theme={undefined}
 				variant={undefined}
 				classes={undefined}
+				disabled={undefined}
 			>
 				cat
 			</Radio>,
@@ -161,6 +169,7 @@ describe('RadioGroup', () => {
 				theme={undefined}
 				variant={undefined}
 				classes={undefined}
+				disabled={undefined}
 			>
 				fish
 			</Radio>,
@@ -172,6 +181,7 @@ describe('RadioGroup', () => {
 				theme={undefined}
 				variant={undefined}
 				classes={undefined}
+				disabled={undefined}
 			>
 				dog
 			</Radio>
@@ -197,6 +207,7 @@ describe('RadioGroup', () => {
 								theme={undefined}
 								variant={undefined}
 								classes={undefined}
+								disabled={undefined}
 							>
 								cat
 							</Radio>,
@@ -217,11 +228,62 @@ describe('RadioGroup', () => {
 				theme={undefined}
 				variant={undefined}
 				classes={undefined}
+				disabled={undefined}
 			>
 				cat
 			</Radio>,
 			<hr />
 		]);
 		h.expect(customTemplate);
+	});
+
+	it('renders disabled inputs', () => {
+		const h = harness(() => (
+			<RadioGroup
+				name="test"
+				onValue={noop}
+				options={[{ value: 'cat' }, { value: 'fish' }, { value: 'dog' }]}
+				disabled
+			/>
+		));
+		const optionTemplate = template.setChildren('@root', () => [
+			<Radio
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+				disabled
+			>
+				cat
+			</Radio>,
+			<Radio
+				name="test"
+				value="fish"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+				disabled
+			>
+				fish
+			</Radio>,
+			<Radio
+				name="test"
+				value="dog"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+				disabled
+			>
+				dog
+			</Radio>
+		]);
+		h.expect(optionTemplate);
 	});
 });

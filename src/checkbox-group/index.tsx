@@ -18,6 +18,8 @@ export interface CheckboxGroupProperties {
 	initialValue?: string[];
 	/** A controlled value for the checkbox group */
 	value?: string[];
+	/** Disabled all inputs within this group */
+	disabled?: boolean;
 }
 
 export interface CheckboxGroupChildren {
@@ -48,7 +50,8 @@ export const CheckboxGroup = factory(function({
 		value,
 		classes,
 		theme: themeProp,
-		variant
+		variant,
+		disabled
 	} = properties();
 	const [{ checkboxes, label } = { checkboxes: undefined, label: undefined }] = children();
 
@@ -70,6 +73,7 @@ export const CheckboxGroup = factory(function({
 					classes={classes}
 					theme={themeProp}
 					variant={variant}
+					disabled={disabled}
 				>
 					{label || value}
 				</Checkbox>
