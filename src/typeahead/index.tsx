@@ -56,7 +56,7 @@ export interface TypeaheadProperties {
 	/** Flag to indicate if values other than those in the resource can be entered, defaults to true */
 	strict?: boolean;
 	/** Flag to indicate if drop down arrow should be shown in trailing section of text input, defaults to false */
-	showDropDownButton?: boolean;
+	hasDownArrow?: boolean;
 }
 
 export interface TypeaheadICache {
@@ -119,7 +119,7 @@ export const Typeahead = factory(function Typeahead({
 		classes,
 		theme: themeProp,
 		variant,
-		showDropDownButton
+		hasDownArrow
 	} = properties();
 	const {
 		get,
@@ -435,11 +435,22 @@ export const Typeahead = factory(function Typeahead({
 								{{
 									label,
 									leading,
-									trailing: showDropDownButton && (
+									trailing: hasDownArrow && (
 										<button
-											classes={themedCss.arrow}
 											type="button"
+											disabled={disabled}
+											classes={themedCss.arrow}
 											onclick={openMenu}
+											onkeydown={(event) => {
+												if (
+													event.which === Keys.Down ||
+													event.which === Keys.Space ||
+													event.which === Keys.Enter
+												) {
+													event.preventDefault();
+													openMenu();
+												}
+											}}
 										>
 											<Icon
 												type="downIcon"
