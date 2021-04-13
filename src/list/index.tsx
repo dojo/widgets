@@ -362,9 +362,9 @@ export const List = factory(function List({
 				if (event.metaKey || event.ctrlKey) {
 					setActiveIndex(total - 1);
 				} else {
-					setActiveIndex(
-						(computedActiveIndex !== undefined ? computedActiveIndex + 1 : 0) % total
-					);
+					const effectiveActiveIndex =
+						computedActiveIndex !== undefined ? computedActiveIndex + 1 : 0;
+					setActiveIndex(effectiveActiveIndex % total);
 				}
 				break;
 			case Keys.Up:
@@ -372,11 +372,11 @@ export const List = factory(function List({
 				if (event.metaKey || event.ctrlKey) {
 					setActiveIndex(0);
 				} else {
-					setActiveIndex(
-						(computedActiveIndex !== undefined
+					const effectiveActiveIndex =
+						computedActiveIndex !== undefined
 							? computedActiveIndex - 1 + total
-							: total - 1) % total
-					);
+							: total - 1;
+					setActiveIndex(effectiveActiveIndex % total);
 				}
 				break;
 			case Keys.Escape:
