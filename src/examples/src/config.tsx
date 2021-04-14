@@ -107,6 +107,7 @@ import DividedList from './widgets/list/Dividers';
 import ControlledList from './widgets/list/Controlled';
 import ItemRenderer from './widgets/list/ItemRenderer';
 import ListItemRenderer from './widgets/list/ListItemRenderer';
+import NoPadding from './widgets/list/NoPadding';
 import FetchedResource from './widgets/list/FetchedResource';
 import DisabledList from './widgets/list/Disabled';
 import DraggableList from './widgets/list/Draggable';
@@ -1100,6 +1101,11 @@ export const config = {
 					filename: 'ListItemRenderer',
 					module: ListItemRenderer,
 					title: 'ListItem Renderer'
+				},
+				{
+					filename: 'NoPadding',
+					module: NoPadding,
+					title: 'No Padding'
 				},
 				{
 					description:

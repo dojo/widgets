@@ -17,7 +17,6 @@ describe('ListBoxItem', () => {
 			classes={[
 				undefined,
 				css.root,
-				css.height,
 				false,
 				false,
 				false,
@@ -25,7 +24,8 @@ describe('ListBoxItem', () => {
 				undefined,
 				undefined,
 				undefined,
-				undefined
+				undefined,
+				css.mediumPadding
 			]}
 			draggable={undefined}
 			onclick={noop}
@@ -42,14 +42,13 @@ describe('ListBoxItem', () => {
 				visibility: undefined
 			}}
 		>
-			<span classes={css.primary}>test</span>
+			test
 		</WrappedRoot>
 	));
 	const disabledTemplate = template
 		.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
-			css.height,
 			false,
 			false,
 			css.disabled,
@@ -57,7 +56,8 @@ describe('ListBoxItem', () => {
 			undefined,
 			undefined,
 			undefined,
-			undefined
+			undefined,
+			css.mediumPadding
 		])
 		.setProperty(WrappedRoot, 'aria-disabled', 'true');
 
@@ -87,9 +87,13 @@ describe('ListBoxItem', () => {
 			</ListItem>
 		));
 		r.expect(
-			template
-				.prepend(WrappedRoot, () => <span classes={css.leading}>In front</span>)
-				.append(WrappedRoot, () => <span classes={css.trailing}>After</span>)
+			template.setChildren(WrappedRoot, () => (
+				<virtual>
+					<span classes={css.leading}>In front</span>
+					<span classes={css.primary}>test</span>
+					<span classes={css.trailing}>After</span>
+				</virtual>
+			))
 		);
 	});
 
@@ -103,7 +107,6 @@ describe('ListBoxItem', () => {
 			.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
-				css.height,
 				css.selected,
 				false,
 				false,
@@ -111,7 +114,8 @@ describe('ListBoxItem', () => {
 				undefined,
 				undefined,
 				undefined,
-				undefined
+				undefined,
+				css.mediumPadding
 			])
 			.setProperty(WrappedRoot, 'aria-selected', 'true');
 		r.expect(selectedTemplate);
@@ -135,7 +139,6 @@ describe('ListBoxItem', () => {
 		const activeTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
-			css.height,
 			false,
 			css.active,
 			false,
@@ -143,7 +146,8 @@ describe('ListBoxItem', () => {
 			undefined,
 			undefined,
 			undefined,
-			undefined
+			undefined,
+			css.mediumPadding
 		]);
 		r.expect(activeTemplate);
 	});
@@ -157,7 +161,6 @@ describe('ListBoxItem', () => {
 		const selectedTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
-			css.height,
 			false,
 			false,
 			false,
@@ -165,7 +168,8 @@ describe('ListBoxItem', () => {
 			undefined,
 			undefined,
 			undefined,
-			undefined
+			undefined,
+			css.mediumPadding
 		]);
 		r.expect(selectedTemplate);
 	});
@@ -179,7 +183,6 @@ describe('ListBoxItem', () => {
 		const selectedTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
-			css.height,
 			false,
 			false,
 			false,
@@ -187,7 +190,8 @@ describe('ListBoxItem', () => {
 			css.movedDown,
 			undefined,
 			undefined,
-			undefined
+			undefined,
+			css.mediumPadding
 		]);
 		r.expect(selectedTemplate);
 	});
@@ -201,7 +205,6 @@ describe('ListBoxItem', () => {
 		const selectedTemplate = template.setProperty(WrappedRoot, 'classes', [
 			undefined,
 			css.root,
-			css.height,
 			false,
 			false,
 			false,
@@ -209,7 +212,8 @@ describe('ListBoxItem', () => {
 			undefined,
 			css.collapsed,
 			undefined,
-			undefined
+			undefined,
+			css.mediumPadding
 		]);
 		r.expect(selectedTemplate);
 	});
@@ -224,7 +228,6 @@ describe('ListBoxItem', () => {
 			.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
-				css.height,
 				false,
 				false,
 				false,
@@ -232,7 +235,8 @@ describe('ListBoxItem', () => {
 				undefined,
 				undefined,
 				css.dragged,
-				undefined
+				undefined,
+				css.mediumPadding
 			])
 			.setProperty(WrappedRoot, 'styles', { visibility: 'hidden' });
 		r.expect(selectedTemplate);
@@ -241,7 +245,7 @@ describe('ListBoxItem', () => {
 	it('renders draggable', () => {
 		const r = renderer(() => (
 			<ListItem widgetId="test" onRequestActive={noop} onSelect={noop} draggable>
-				test
+				{{ primary: 'test' }}
 			</ListItem>
 		));
 		const draggableTemplate = template
@@ -249,7 +253,6 @@ describe('ListBoxItem', () => {
 			.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
-				css.height,
 				false,
 				false,
 				false,
@@ -257,16 +260,20 @@ describe('ListBoxItem', () => {
 				undefined,
 				undefined,
 				undefined,
-				css.draggable
+				css.draggable,
+				css.mediumPadding
 			])
-			.append(WrappedRoot, () => [
-				<Icon
-					type="barsIcon"
-					classes={{ '@dojo/widgets/icon': { icon: [css.dragIcon] } }}
-					theme={undefined}
-					variant={undefined}
-				/>
-			]);
+			.setChildren(WrappedRoot, () => (
+				<virtual>
+					<span classes={css.primary}>test</span>
+					<Icon
+						type="barsIcon"
+						classes={{ '@dojo/widgets/icon': { icon: [css.dragIcon] } }}
+						theme={undefined}
+						variant={undefined}
+					/>
+				</virtual>
+			));
 		r.expect(draggableTemplate);
 	});
 
@@ -284,7 +291,6 @@ describe('ListBoxItem', () => {
 			.setProperty(WrappedRoot, 'classes', [
 				undefined,
 				css.root,
-				css.height,
 				false,
 				false,
 				false,
@@ -292,13 +298,17 @@ describe('ListBoxItem', () => {
 				undefined,
 				undefined,
 				undefined,
-				css.draggable
+				css.draggable,
+				css.mediumPadding
 			])
-			.append(WrappedRoot, () => [
-				<span classes={css.trailing}>
-					<Icon type="starIcon" />
-				</span>
-			]);
+			.setChildren(WrappedRoot, () => (
+				<virtual>
+					<span classes={css.primary}>test</span>
+					<span classes={css.trailing}>
+						<Icon type="starIcon" />
+					</span>
+				</virtual>
+			));
 		r.expect(draggableTemplate);
 	});
 

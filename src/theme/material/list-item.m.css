@@ -1,14 +1,23 @@
 .root {
-	composes: mdc-list-item from '@material/list/dist/mdc.list.css';
 	color: var(--mdc-text-color);
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-}
-
-.root.height {
 	min-height: 48px;
 	height: 100%;
+	composes: mdc-list-item from '@material/list/dist/mdc.list.css';
+}
+
+.smallPadding {
+}
+
+.mediumPadding {
+	padding-left: calc(var(--mdc-theme-grid-base) * 2);
+	padding-right: calc(var(--mdc-theme-grid-base) * 2);
+}
+
+.noPadding {
+	padding: 0 !important;
 }
 
 .root:hover {
@@ -22,7 +31,6 @@
 .active {
 	border: none;
 	background: var(--mdc-theme-on-surface);
-	min-height: 48px;
 	height: 100%;
 	box-shadow: none;
 }
