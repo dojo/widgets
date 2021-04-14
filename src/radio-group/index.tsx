@@ -34,7 +34,7 @@ const factory = create({ radioGroup, theme })
 	.properties<RadioGroupProperties>()
 	.children<RadioGroupChildren | undefined>();
 
-export const RadioGroup = factory(function({
+export const RadioGroup = factory(function RadioGroup({
 	children,
 	properties,
 	middleware: { radioGroup, theme }

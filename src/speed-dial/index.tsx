@@ -37,7 +37,12 @@ const actionFactory = create({ theme })
 	.properties<ActionProperties>()
 	.children<ActionChildren | [ActionChildren] | RenderResult | RenderResult[]>();
 
-export const Action = actionFactory(({ properties, id, children, middleware: { theme } }) => {
+export const Action = actionFactory(function Action({
+	properties,
+	id,
+	children,
+	middleware: { theme }
+}) {
 	const {
 		labelOrientation = LabelOrientation.left,
 		onClick,
