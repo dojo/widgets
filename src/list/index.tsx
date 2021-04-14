@@ -343,7 +343,7 @@ export const List = factory(function List({
 		const { disabled, activeIndex } = properties();
 		event.stopPropagation();
 		let computedActiveIndex =
-			activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
+			activeIndex === undefined ? icache.get('activeIndex') : activeIndex;
 		switch (event.which) {
 			case Keys.Enter:
 			case Keys.Space:
@@ -362,7 +362,9 @@ export const List = factory(function List({
 				if (event.metaKey || event.ctrlKey) {
 					setActiveIndex(total - 1);
 				} else {
-					setActiveIndex((computedActiveIndex + 1) % total);
+					const effectiveActiveIndex =
+						computedActiveIndex !== undefined ? computedActiveIndex + 1 : 0;
+					setActiveIndex(effectiveActiveIndex % total);
 				}
 				break;
 			case Keys.Up:
@@ -370,7 +372,11 @@ export const List = factory(function List({
 				if (event.metaKey || event.ctrlKey) {
 					setActiveIndex(0);
 				} else {
-					setActiveIndex((computedActiveIndex - 1 + total) % total);
+					const effectiveActiveIndex =
+						computedActiveIndex !== undefined
+							? computedActiveIndex - 1 + total
+							: total - 1;
+					setActiveIndex(effectiveActiveIndex % total);
 				}
 				break;
 			case Keys.Escape:
@@ -726,22 +732,24 @@ export const List = factory(function List({
 	let scrollTop = icache.getOrSet('scrollTop', 0);
 	const nodePadding = Math.min(calculatedItemsInView, 20);
 	const renderedItemsCount = calculatedItemsInView + 2 * nodePadding;
-	let computedActiveIndex =
-		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
+	let computedActiveIndex = activeIndex === undefined ? icache.get('activeIndex') : activeIndex;
 	const inputText = icache.get('inputText');
 	const {
 		meta: { total = 0 }
 	} = get(options(), { meta: true, read });
 	if (inputText && inputText !== icache.get('previousInputText') && total) {
 		const items = get({ ...options(), offset: 0, size: total });
-		const first = items.slice(0, computedActiveIndex);
-		const second = items.slice(computedActiveIndex);
+		const first =
+			computedActiveIndex !== undefined ? items.slice(0, computedActiveIndex) : items;
+		const second = computedActiveIndex !== undefined ? items.slice(computedActiveIndex) : [];
 		let foundIndex = computedActiveIndex;
-		for (let i = 1; i < second.length; i++) {
-			const item = second[i];
-			if (item && item.label.toLowerCase().indexOf(inputText.toLowerCase()) === 0) {
-				foundIndex = foundIndex + i;
-				break;
+		if (foundIndex !== undefined) {
+			for (let i = 1; i < second.length; i++) {
+				const item = second[i];
+				if (item && item.label.toLowerCase().indexOf(inputText.toLowerCase()) === 0) {
+					foundIndex = foundIndex + i;
+					break;
+				}
 			}
 		}
 		if (foundIndex === computedActiveIndex) {
@@ -753,18 +761,17 @@ export const List = factory(function List({
 				}
 			}
 		}
-		if (foundIndex !== computedActiveIndex) {
+		if (foundIndex !== undefined && foundIndex !== computedActiveIndex) {
 			setActiveIndex(foundIndex);
 		}
 		icache.set('previousInputText', inputText);
 	}
 
 	const previousActiveIndex = icache.get('previousActiveIndex');
-	computedActiveIndex =
-		activeIndex === undefined ? icache.getOrSet('activeIndex', 0) : activeIndex;
+	computedActiveIndex = activeIndex === undefined ? icache.get('activeIndex') : activeIndex;
 	let activeItem: ListOption | undefined = undefined;
 
-	if (computedActiveIndex !== previousActiveIndex) {
+	if (computedActiveIndex !== undefined && computedActiveIndex !== previousActiveIndex) {
 		const visibleStartIndex = Math.floor(scrollTop / itemHeight);
 		const visibleEndIndex = visibleStartIndex + calculatedItemsInView - 1;
 		if (computedActiveIndex < visibleStartIndex) {
@@ -807,7 +814,11 @@ export const List = factory(function List({
 			styles={rootStyles}
 			role={menu ? 'menu' : 'listbox'}
 			aria-orientation="vertical"
-			aria-activedescendant={`${idBase}-item-${computedActiveIndex}`}
+			aria-activedescendant={
+				computedActiveIndex !== undefined
+					? `${idBase}-item-${computedActiveIndex}`
+					: undefined
+			}
 			id={idBase}
 		>
 			<div
