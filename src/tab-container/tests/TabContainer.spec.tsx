@@ -41,10 +41,24 @@ const baseTemplate = assertionTemplate(() => (
 	<div
 		key="root"
 		aria-orientation={'horizontal'}
-		classes={[undefined, null, css.root]}
+		classes={[undefined, null, css.root, css.fixed]}
 		role="tablist"
 	>
 		<div key="buttons" classes={css.tabButtons} />
+		<div key="tabs" classes={css.tabs} />
+	</div>
+));
+
+const scrollableBaseTemplate = assertionTemplate(() => (
+	<div
+		key="root"
+		aria-orientation={'horizontal'}
+		classes={[undefined, null, css.root, null]}
+		role="tablist"
+	>
+		<div key="scrollArea" classes={css.scrollArea}>
+			<div key="buttons" classes={[css.tabButtons, css.scrollContent]} />
+		</div>
 		<div key="tabs" classes={css.tabs} />
 	</div>
 ));
@@ -53,7 +67,7 @@ const reverseOrientationTemplate = assertionTemplate(() => (
 	<div
 		key="root"
 		aria-orientation={'vertical'}
-		classes={[undefined, css.alignRight, css.root]}
+		classes={[undefined, css.alignRight, css.root, css.fixed]}
 		role="tablist"
 	>
 		<div key="tabs" classes={css.tabs} />
@@ -427,6 +441,57 @@ registerSuite('TabContainer', {
 			h.trigger('@1-tabbutton', 'onclick');
 			h.expect(disabledTemplate);
 			assert.isTrue(onActiveIndexStub.notCalled);
+		},
+
+		'variable width tabs'() {
+			const tabs = [{ name: 'tab0' }, { name: 'tab1' }];
+
+			const h = harness(() => (
+				<TabContainer tabs={tabs} fixed={false}>
+					<div>tab0</div>
+					<div>tab1</div>
+				</TabContainer>
+			));
+
+			const template = scrollableBaseTemplate
+				.setChildren('@buttons', () => [
+					<div {...tabButtonProperties}>
+						<span
+							key="tabButtonContent"
+							classes={[css.tabButtonContent, css.activeTabButtonLabel]}
+						>
+							tab0
+							<span classes={[css.indicator, css.indicatorActive]}>
+								<span classes={css.indicatorContent} />
+							</span>
+						</span>
+					</div>,
+					<div
+						{...tabButtonProperties}
+						classes={[css.tabButton, null, null, null]}
+						aria-selected="false"
+						aria-controls="test-tab-1"
+						tabIndex={-1}
+						key="1-tabbutton"
+					>
+						<span key="tabButtonContent" classes={[css.tabButtonContent, false]}>
+							tab1
+							<span classes={[css.indicator, false]}>
+								<span classes={css.indicatorContent} />
+							</span>
+						</span>
+					</div>
+				])
+				.setChildren('@tabs', () => [
+					<div classes={css.tab} hidden={false}>
+						<div>tab0</div>
+					</div>,
+					<div classes={undefined} hidden={true}>
+						<div>tab1</div>
+					</div>
+				]);
+
+			h.expect(template);
 		}
 	}
 });

@@ -180,10 +180,20 @@ export const TabContainer = factory(function TabContainer({
 		);
 	};
 
-	const content = [
-		<div key="buttons" classes={themeCss.tabButtons}>
-			{tabs.map(renderTab)}
-		</div>,
+	const renderedTabs = tabs.map(renderTab);
+
+	let content = [
+		fixed ? (
+			<div key="buttons" classes={themeCss.tabButtons}>
+				{...renderedTabs}
+			</div>
+		) : (
+			<div key="scrollArea" classes={themeCss.scrollArea}>
+				<div key="buttons" classes={[themeCss.tabButtons, themeCss.scrollContent]}>
+					{...renderedTabs}
+				</div>
+			</div>
+		),
 		<div key="tabs" classes={themeCss.tabs}>
 			{children().map((child, index) => {
 				const disabled = tabs[index].disabled;

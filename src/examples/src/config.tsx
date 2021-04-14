@@ -1799,7 +1799,7 @@ export const config = {
 				{
 					filename: 'VariableWidth',
 					module: VariableWidthTabContainer,
-					title: 'TabContainer with variable width tabs'
+					title: 'TabContainer with scrollable variable width tabs'
 				}
 			],
 			filename: 'index',

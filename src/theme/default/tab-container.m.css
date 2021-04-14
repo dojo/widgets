@@ -66,6 +66,29 @@
 .fixed {
 }
 
+.root:not(.fixed) {
+	overflow-y: hidden;
+}
+
+.scrollArea {
+	-webkit-overflow-scrolling: touch;
+	display: flex;
+	overflow-x: scroll;
+}
+
+.scrollArea::-webkit-scrollbar {
+	display: none;
+}
+
+.scrollContent {
+	position: relative;
+	display: flex;
+	flex: 1 0 auto;
+	-webkit-transform: none;
+	transform: none;
+	will-change: transform;
+}
+
 /* The root class of the TabButton */
 .tabButton {
 	border: 1px solid transparent;

@@ -6,7 +6,7 @@ import Button from '@dojo/widgets/button';
 
 const factory = create();
 
-export default factory(function Basic() {
+export default factory(function VariableWidth() {
 	const tabs = [
 		{ name: 'One' },
 		{ name: 'Tab Two' },
