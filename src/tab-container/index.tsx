@@ -204,7 +204,6 @@ export const TabContainer = factory(function TabContainer({
 		return horizontalScrollbarHeight;
 	};
 
-	const scrollBarHeight = computeHorizontalScrollbarHeight();
 	const renderedTabs = tabs.map(renderTab);
 
 	let content = [
@@ -216,7 +215,7 @@ export const TabContainer = factory(function TabContainer({
 			<div
 				key="scrollArea"
 				classes={[themeCss.scrollArea, themeCss.scroll]}
-				styles={{ marginBottom: `${scrollBarHeight}px` }}
+				styles={{ marginBottom: `${computeHorizontalScrollbarHeight()}px` }}
 			>
 				<div key="buttons" classes={[themeCss.tabButtons, themeCss.scrollContent]}>
 					{...renderedTabs}

@@ -1,3 +1,4 @@
+import global from '@dojo/framework/shim/global';
 import { AriaAttributes } from '@dojo/framework/core/interfaces';
 
 const { registerSuite } = intern.getInterface('object');
@@ -53,10 +54,14 @@ const scrollableBaseTemplate = assertionTemplate(() => (
 	<div
 		key="root"
 		aria-orientation={'horizontal'}
-		classes={[undefined, null, css.root, null]}
+		classes={[undefined, null, css.root, css.scroller]}
 		role="tablist"
 	>
-		<div key="scrollArea" classes={css.scrollArea}>
+		<div
+			key="scrollArea"
+			classes={[css.scrollArea, css.scroll]}
+			styles={{ marginBottom: '5px' }}
+		>
 			<div key="buttons" classes={[css.tabButtons, css.scrollContent]} />
 		</div>
 		<div key="tabs" classes={css.tabs} />
@@ -444,6 +449,11 @@ registerSuite('TabContainer', {
 		},
 
 		'variable width tabs'() {
+			const div = { offsetHeight: 10, clientHeight: 5, classList: { add: sinon.stub() } };
+			global.document.createElement = sinon.stub().returns(div);
+			global.document.body.appendChild = sinon.stub();
+			global.document.body.removeChild = sinon.stub();
+
 			const tabs = [{ name: 'tab0' }, { name: 'tab1' }];
 
 			const h = harness(() => (
@@ -492,6 +502,9 @@ registerSuite('TabContainer', {
 				]);
 
 			h.expect(template);
+			assert.isTrue(global.document.body.appendChild.calledWith(div));
+			assert.isTrue(global.document.body.removeChild.calledWith(div));
+			assert.isTrue(div.classList.add.calledWith(css.scrollTest));
 		}
 	}
 });
