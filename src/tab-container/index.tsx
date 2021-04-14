@@ -1,3 +1,4 @@
+import global from '@dojo/framework/shim/global';
 import focus from '@dojo/framework/core/middleware/focus';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
@@ -37,6 +38,7 @@ export interface TabContainerProperties {
 
 interface TabContainerICache {
 	activeIndex: number | undefined;
+	horizontalScrollbarHeight: number | undefined;
 }
 
 const factory = create({
@@ -180,6 +182,29 @@ export const TabContainer = factory(function TabContainer({
 		);
 	};
 
+	/**
+	 * Computes the height of browser-rendered horizontal scrollbars using a self-created test element.
+	 * May return 0 (e.g. on OS X browsers under default configuration).
+	 */
+	const computeHorizontalScrollbarHeight = (): number => {
+		let horizontalScrollbarHeight = icache.get('horizontalScrollbarHeight');
+		if (typeof horizontalScrollbarHeight !== 'undefined') {
+			return horizontalScrollbarHeight;
+		}
+
+		const div = global.document.createElement('div');
+		div.classList.add(themeCss.scrollTest);
+		global.document.body.appendChild(div);
+
+		horizontalScrollbarHeight = div.offsetHeight - div.clientHeight;
+		global.document.body.removeChild(div);
+
+		icache.set('horizontalScrollbarHeight', horizontalScrollbarHeight);
+
+		return horizontalScrollbarHeight;
+	};
+
+	const scrollBarHeight = computeHorizontalScrollbarHeight();
 	const renderedTabs = tabs.map(renderTab);
 
 	let content = [
@@ -188,7 +213,11 @@ export const TabContainer = factory(function TabContainer({
 				{...renderedTabs}
 			</div>
 		) : (
-			<div key="scrollArea" classes={themeCss.scrollArea}>
+			<div
+				key="scrollArea"
+				classes={[themeCss.scrollArea, themeCss.scroll]}
+				styles={{ marginBottom: `${scrollBarHeight}px` }}
+			>
 				<div key="buttons" classes={[themeCss.tabButtons, themeCss.scrollContent]}>
 					{...renderedTabs}
 				</div>
@@ -235,7 +264,7 @@ export const TabContainer = factory(function TabContainer({
 				theme.variant(),
 				alignClass || null,
 				themeCss.root,
-				fixed ? themeCss.fixed : null
+				fixed ? themeCss.fixed : themeCss.scroller
 			]}
 			role="tablist"
 		>

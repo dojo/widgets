@@ -66,17 +66,30 @@
 .fixed {
 }
 
-.root:not(.fixed) {
+.scroller {
 	overflow-y: hidden;
 }
 
 .scrollArea {
 	-webkit-overflow-scrolling: touch;
 	display: flex;
+	overflow-x: hidden;
+}
+
+.scroll {
 	overflow-x: scroll;
 }
 
-.scrollArea::-webkit-scrollbar {
+.scrollTest {
+	position: absolute;
+	top: -9999px;
+	width: 100px;
+	height: 100px;
+	overflow-x: scroll;
+}
+
+.scrollArea::-webkit-scrollbar,
+.scrollTest::-webkit-scrollbar {
 	display: none;
 }
 
@@ -105,7 +118,7 @@
 	top: 1px;
 }
 
-.root:not(.fixed) .tabButton {
+.scroller .tabButton {
 	min-width: 90px;
 	max-width: 360px;
 	flex-grow: 0;

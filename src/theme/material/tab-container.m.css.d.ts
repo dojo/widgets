@@ -15,3 +15,6 @@ export const alignRight: string;
 export const alignLeft: string;
 export const tabs: string;
 export const alignBottom: string;
+export const scroller: string;
+export const scrollArea: string;
+export const scrollContent: string;

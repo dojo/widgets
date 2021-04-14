@@ -82,7 +82,6 @@
     "@material/snackbar": "5.1.0",
     "@material/switch": "5.1.0",
     "@material/tab": "5.1.0",
-    "@material/tab-scroller": "^5.1.0",
     "@material/textfield": "5.1.0",
     "@material/top-app-bar": "5.1.0",
     "@material/typography": "5.1.0",
