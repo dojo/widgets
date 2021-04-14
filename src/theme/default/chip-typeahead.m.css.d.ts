@@ -13,3 +13,4 @@ export const wrapper: string;
 export const hasValue: string;
 export const active: string;
 export const hasLabel: string;
+export const inputLeading: string;

@@ -63,6 +63,132 @@ function createMockEvent({
 	};
 }
 
+interface ChildOptions {
+	activeItem?: 'item-0' | 'item-1' | 'item-2' | 'item-3' | 'item-4';
+}
+
+const createChildren = (options?: ChildOptions) => {
+	const { activeItem = undefined } = options || {};
+
+	return [
+		<ListItem
+			classes={undefined}
+			variant={undefined}
+			active={activeItem === 'item-0'}
+			disabled={false}
+			key={'item-0'}
+			onRequestActive={noop}
+			onSelect={noop}
+			selected={false}
+			theme={listItemTheme}
+			widgetId={'menu-test-item-0'}
+			collapsed={false}
+			draggable={undefined}
+			dragged={false}
+			movedDown={false}
+			movedUp={false}
+			onDragEnd={noop}
+			onDragOver={noop}
+			onDragStart={noop}
+			onDrop={noop}
+		>
+			Bob
+		</ListItem>,
+		<ListItem
+			classes={undefined}
+			variant={undefined}
+			active={activeItem === 'item-1'}
+			disabled={false}
+			key={'item-1'}
+			onRequestActive={noop}
+			onSelect={noop}
+			selected={false}
+			theme={listItemTheme}
+			widgetId={'menu-test-item-1'}
+			collapsed={false}
+			draggable={undefined}
+			dragged={false}
+			movedDown={false}
+			movedUp={false}
+			onDragEnd={noop}
+			onDragOver={noop}
+			onDragStart={noop}
+			onDrop={noop}
+		>
+			Adam
+		</ListItem>,
+		<ListItem
+			classes={undefined}
+			variant={undefined}
+			active={activeItem === 'item-2'}
+			disabled={false}
+			key={'item-2'}
+			onRequestActive={noop}
+			onSelect={noop}
+			selected={false}
+			theme={listItemTheme}
+			widgetId={'menu-test-item-2'}
+			collapsed={false}
+			draggable={undefined}
+			dragged={false}
+			movedDown={false}
+			movedUp={false}
+			onDragEnd={noop}
+			onDragOver={noop}
+			onDragStart={noop}
+			onDrop={noop}
+		>
+			Ant
+		</ListItem>,
+		<ListItem
+			classes={undefined}
+			variant={undefined}
+			active={activeItem === 'item-3'}
+			disabled={false}
+			key={'item-3'}
+			onRequestActive={noop}
+			onSelect={noop}
+			selected={false}
+			theme={listItemTheme}
+			widgetId={'menu-test-item-3'}
+			collapsed={false}
+			draggable={undefined}
+			dragged={false}
+			movedDown={false}
+			movedUp={false}
+			onDragEnd={noop}
+			onDragOver={noop}
+			onDragStart={noop}
+			onDrop={noop}
+		>
+			Anthony
+		</ListItem>,
+		<ListItem
+			classes={undefined}
+			variant={undefined}
+			active={activeItem === 'item-4'}
+			disabled={false}
+			key={'item-4'}
+			onRequestActive={noop}
+			onSelect={noop}
+			selected={false}
+			theme={listItemTheme}
+			widgetId={'menu-test-item-4'}
+			collapsed={false}
+			draggable={undefined}
+			dragged={false}
+			movedDown={false}
+			movedUp={false}
+			onDragEnd={noop}
+			onDragOver={noop}
+			onDragStart={noop}
+			onDrop={noop}
+		>
+			Bobby
+		</ListItem>
+	];
+};
+
 const listItemTheme = createTestTheme({ ...listItemCss, s: css.items });
 
 const WrappedItemContainer = wrap('div');
@@ -71,7 +197,7 @@ const WrappedRoot = wrap('div');
 
 const baseAssertion = assertion(() => (
 	<WrappedRoot
-		aria-activedescendant={'menu-test-item-0'}
+		aria-activedescendant={undefined}
 		aria-orientation={'vertical'}
 		classes={[null, css.root, fixedCss.root]}
 		focus={noop}
@@ -115,7 +241,7 @@ const listWithListItemsAssertion = baseAssertion
 		<ListItem
 			classes={undefined}
 			variant={undefined}
-			active={true}
+			active={false}
 			disabled={false}
 			key={'item-0'}
 			onRequestActive={noop}
@@ -192,7 +318,7 @@ const listWithMenuItemsAssertion = baseAssertion
 		<MenuItem
 			classes={undefined}
 			variant={undefined}
-			active={true}
+			active={false}
 			disabled={false}
 			key={'item-0'}
 			onRequestActive={noop}
@@ -289,7 +415,7 @@ describe('List', () => {
 						<ListItem
 							classes={undefined}
 							variant={undefined}
-							active={i === 0}
+							active={false}
 							disabled={false}
 							key={`item-${i}`}
 							onRequestActive={noop}
@@ -505,7 +631,7 @@ describe('List', () => {
 				<ListItem
 					classes={undefined}
 					variant={undefined}
-					active={true}
+					active={false}
 					disabled={false}
 					key={'item-0'}
 					onRequestActive={noop}
@@ -711,7 +837,7 @@ describe('List', () => {
 				<ListItem
 					classes={undefined}
 					variant={undefined}
-					active={true}
+					active={false}
 					disabled={false}
 					key={'item-0'}
 					onRequestActive={noop}
@@ -929,7 +1055,7 @@ describe('List', () => {
 						<MenuItem
 							classes={undefined}
 							variant={undefined}
-							active={i === 0}
+							active={false}
 							disabled={false}
 							key={`item-${i}`}
 							onRequestActive={noop}
@@ -1045,7 +1171,7 @@ describe('List', () => {
 	});
 
 	it('should be able to navigate the list using the keyboard', () => {
-		function createListItems(activeIndex = 0, selected?: number) {
+		function createListItems(activeIndex: number | undefined = undefined, selected?: number) {
 			return new Array(6).fill(undefined).map((_, index) => (
 				<ListItem
 					classes={undefined}
@@ -1133,7 +1259,7 @@ describe('List', () => {
 					height: '270px'
 				})
 				.replaceChildren(WrappedItemContainer, () => {
-					return createListItems();
+					return createListItems(0);
 				})
 		);
 		// navigate to last item with cmd/meta down
@@ -1157,7 +1283,7 @@ describe('List', () => {
 					height: '270px'
 				})
 				.replaceChildren(WrappedItemContainer, () => {
-					return createListItems();
+					return createListItems(0);
 				})
 		);
 		// navigate to last item with ctrl down
@@ -1181,7 +1307,7 @@ describe('List', () => {
 					height: '270px'
 				})
 				.replaceChildren(WrappedItemContainer, () => {
-					return createListItems();
+					return createListItems(0);
 				})
 		);
 		// navigate to next item with down
@@ -1236,11 +1362,12 @@ describe('List', () => {
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Home }));
 		r.expect(
 			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-0')
 				.setProperty(WrappedItemWrapper, 'styles', {
 					height: '270px'
 				})
 				.replaceChildren(WrappedItemContainer, () => {
-					return createListItems();
+					return createListItems(0);
 				})
 		);
 		// navigate to next item with down
@@ -1340,6 +1467,274 @@ describe('List', () => {
 		assert.strictEqual(onRequestCloseStub.callCount, 1);
 	});
 
+	it('should navigate to the first item when pressing down and no item is active', () => {
+		function createListItems(activeIndex: number | undefined = undefined, selected?: number) {
+			return new Array(6).fill(undefined).map((_, index) => (
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={index === activeIndex}
+					disabled={testData[index].value === '3'}
+					key={`item-${index}`}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={!!selected && index === selected}
+					theme={listItemTheme}
+					widgetId={`menu-test-item-${index}`}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					{testData[index].label || testData[index].value}
+				</ListItem>
+			));
+		}
+		const onRequestCloseStub = sb.stub();
+		const testData = [
+			...data,
+			...[
+				{
+					value: '4',
+					label: 'Panda'
+				},
+				{
+					value: '5',
+					label: 'Crow'
+				},
+				{
+					value: '6',
+					label: 'Fire-Bellied Toad'
+				}
+			]
+		];
+		const r = renderer(
+			() => (
+				<List
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
+					disabled={(item) => {
+						return item.value === '3';
+					}}
+					onValue={onValueStub}
+					onRequestClose={onRequestCloseStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems();
+				})
+		);
+		// navigate to first item from nothing
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-0')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(0);
+				})
+		);
+	});
+
+	it('should navigate to the last item when pressing up and no item is active', () => {
+		function createListItems(activeIndex: number | undefined = undefined, selected?: number) {
+			return new Array(6).fill(undefined).map((_, index) => (
+				<ListItem
+					classes={undefined}
+					variant={undefined}
+					active={index === activeIndex}
+					disabled={testData[index].value === '3'}
+					key={`item-${index}`}
+					onRequestActive={noop}
+					onSelect={noop}
+					selected={!!selected && index === selected}
+					theme={listItemTheme}
+					widgetId={`menu-test-item-${index}`}
+					collapsed={false}
+					draggable={undefined}
+					dragged={false}
+					movedDown={false}
+					movedUp={false}
+					onDragEnd={noop}
+					onDragOver={noop}
+					onDragStart={noop}
+					onDrop={noop}
+				>
+					{testData[index].label || testData[index].value}
+				</ListItem>
+			));
+		}
+		const onRequestCloseStub = sb.stub();
+		const testData = [
+			...data,
+			...[
+				{
+					value: '4',
+					label: 'Panda'
+				},
+				{
+					value: '5',
+					label: 'Crow'
+				},
+				{
+					value: '6',
+					label: 'Fire-Bellied Toad'
+				}
+			]
+		];
+		const r = renderer(
+			() => (
+				<List
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
+					disabled={(item) => {
+						return item.value === '3';
+					}}
+					onValue={onValueStub}
+					onRequestClose={onRequestCloseStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems();
+				})
+		);
+		// navigate to last item from nothing
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Up }));
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-5')
+				.setProperty(WrappedItemWrapper, 'styles', {
+					height: '270px'
+				})
+				.replaceChildren(WrappedItemContainer, () => {
+					return createListItems(5);
+				})
+		);
+	});
+
+	it('should set active index when provided', async () => {
+		const testData = [
+			{
+				value: '1',
+				label: 'Bob'
+			},
+			{
+				value: '2',
+				label: 'Adam'
+			},
+			{
+				value: '3',
+				label: 'Ant'
+			},
+			{
+				value: '4',
+				label: 'Anthony'
+			},
+			{
+				value: '5',
+				label: 'Bobby'
+			}
+		];
+		const r = renderer(
+			() => (
+				<List
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
+					onValue={onValueStub}
+					activeIndex={2}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		const listAssertion = baseAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '225px'
+			})
+			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-2')
+			.replaceChildren(WrappedItemContainer, () => createChildren({ activeItem: 'item-2' }));
+		r.expect(listAssertion);
+	});
+
+	it('handle key down events relative to preset active index', async () => {
+		const onActiveIndexChangeStub = sb.stub();
+		const testData = [
+			{
+				value: '1',
+				label: 'Bob'
+			},
+			{
+				value: '2',
+				label: 'Adam'
+			},
+			{
+				value: '3',
+				label: 'Ant'
+			},
+			{
+				value: '4',
+				label: 'Anthony'
+			},
+			{
+				value: '5',
+				label: 'Bobby'
+			}
+		];
+		const props = {
+			activeIndex: 2
+		};
+		const r = renderer(
+			() => (
+				<List
+					resource={{ data: testData, id: 'test', idKey: 'value' }}
+					onValue={onValueStub}
+					activeIndex={props.activeIndex}
+					onActiveIndexChange={onActiveIndexChangeStub}
+				/>
+			),
+			{ middleware: [[getRegistry, mockGetRegistry]] }
+		);
+		const listAssertion = baseAssertion
+			.setProperty(WrappedItemWrapper, 'styles', {
+				height: '225px'
+			})
+			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-2')
+			.replaceChildren(WrappedItemContainer, () => createChildren({ activeItem: 'item-2' }));
+		r.expect(listAssertion);
+		assert.strictEqual(onActiveIndexChangeStub.callCount, 0);
+
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: Keys.Down }));
+		r.expect(listAssertion);
+		assert.strictEqual(onActiveIndexChangeStub.callCount, 1);
+		assert.strictEqual(onActiveIndexChangeStub.firstCall.args[0], 3);
+
+		props.activeIndex = 3;
+		r.expect(
+			listAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-3')
+				.replaceChildren(WrappedItemContainer, () =>
+					createChildren({ activeItem: 'item-3' })
+				)
+		);
+	});
+
 	it('should set active item based on keyboard input', async () => {
 		const testData = [
 			{
@@ -1376,631 +1771,83 @@ describe('List', () => {
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '225px'
 			})
-			.replaceChildren(WrappedItemContainer, () => [
-				<ListItem
-					classes={undefined}
-					variant={undefined}
-					active={true}
-					disabled={false}
-					key={'item-0'}
-					onRequestActive={noop}
-					onSelect={noop}
-					selected={false}
-					theme={listItemTheme}
-					widgetId={'menu-test-item-0'}
-					collapsed={false}
-					draggable={undefined}
-					dragged={false}
-					movedDown={false}
-					movedUp={false}
-					onDragEnd={noop}
-					onDragOver={noop}
-					onDragStart={noop}
-					onDrop={noop}
-				>
-					Bob
-				</ListItem>,
-				<ListItem
-					classes={undefined}
-					variant={undefined}
-					active={false}
-					disabled={false}
-					key={'item-1'}
-					onRequestActive={noop}
-					onSelect={noop}
-					selected={false}
-					theme={listItemTheme}
-					widgetId={'menu-test-item-1'}
-					collapsed={false}
-					draggable={undefined}
-					dragged={false}
-					movedDown={false}
-					movedUp={false}
-					onDragEnd={noop}
-					onDragOver={noop}
-					onDragStart={noop}
-					onDrop={noop}
-				>
-					Adam
-				</ListItem>,
-				<ListItem
-					classes={undefined}
-					variant={undefined}
-					active={false}
-					disabled={false}
-					key={'item-2'}
-					onRequestActive={noop}
-					onSelect={noop}
-					selected={false}
-					theme={listItemTheme}
-					widgetId={'menu-test-item-2'}
-					collapsed={false}
-					draggable={undefined}
-					dragged={false}
-					movedDown={false}
-					movedUp={false}
-					onDragEnd={noop}
-					onDragOver={noop}
-					onDragStart={noop}
-					onDrop={noop}
-				>
-					Ant
-				</ListItem>,
-				<ListItem
-					classes={undefined}
-					variant={undefined}
-					active={false}
-					disabled={false}
-					key={'item-3'}
-					onRequestActive={noop}
-					onSelect={noop}
-					selected={false}
-					theme={listItemTheme}
-					widgetId={'menu-test-item-3'}
-					collapsed={false}
-					draggable={undefined}
-					dragged={false}
-					movedDown={false}
-					movedUp={false}
-					onDragEnd={noop}
-					onDragOver={noop}
-					onDragStart={noop}
-					onDrop={noop}
-				>
-					Anthony
-				</ListItem>,
-				<ListItem
-					classes={undefined}
-					variant={undefined}
-					active={false}
-					disabled={false}
-					key={'item-4'}
-					onRequestActive={noop}
-					onSelect={noop}
-					selected={false}
-					theme={listItemTheme}
-					widgetId={'menu-test-item-4'}
-					collapsed={false}
-					draggable={undefined}
-					dragged={false}
-					movedDown={false}
-					movedUp={false}
-					onDragEnd={noop}
-					onDragOver={noop}
-					onDragStart={noop}
-					onDrop={noop}
-				>
-					Bobby
-				</ListItem>
-			]);
+			.replaceChildren(WrappedItemContainer, () => createChildren());
 		r.expect(listAssertion);
+
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'x' }));
+		r.expect(listAssertion);
+		await new Promise((resolve) => setTimeout(resolve, 800));
+
+		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'b' }));
+		const firstItemSelectedAssertion = listAssertion
+			.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-0')
+			.replaceChildren(WrappedItemContainer, () => createChildren({ activeItem: 'item-0' }));
+		r.expect(firstItemSelectedAssertion);
+		await new Promise((resolve) => setTimeout(resolve, 800));
+
 		r.property(
 			WrappedRoot,
 			'onkeydown',
 			createMockEvent({ which: 0, key: 'b', metaKey: true })
 		);
-		r.expect(listAssertion);
+		r.expect(firstItemSelectedAssertion);
+
 		r.property(
 			WrappedRoot,
 			'onkeydown',
 			createMockEvent({ which: 0, key: 'b', ctrlKey: true })
 		);
-		r.expect(listAssertion);
+		r.expect(firstItemSelectedAssertion);
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'bo' }));
-		r.expect(listAssertion);
+		r.expect(firstItemSelectedAssertion);
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'a' }));
 		r.expect(
 			listAssertion
 				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-1')
-				.replaceChildren(WrappedItemContainer, () => [
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-0'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-0'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Bob
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={true}
-						disabled={false}
-						key={'item-1'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-1'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Adam
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-2'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-2'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Ant
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-3'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-3'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Anthony
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-4'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-4'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Bobby
-					</ListItem>
-				])
+				.replaceChildren(WrappedItemContainer, () =>
+					createChildren({ activeItem: 'item-1' })
+				)
 		);
+
 		await new Promise((resolve) => setTimeout(resolve, 800));
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'a' }));
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'n' }));
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 't' }));
+		r.expect(
+			listAssertion
+				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-2')
+				.replaceChildren(WrappedItemContainer, () =>
+					createChildren({ activeItem: 'item-2' })
+				)
+		);
+
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'h' }));
 		r.expect(
 			listAssertion
 				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-3')
-				.replaceChildren(WrappedItemContainer, () => [
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-0'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-0'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Bob
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-1'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-1'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Adam
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-2'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-2'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Ant
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={true}
-						disabled={false}
-						key={'item-3'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-3'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Anthony
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-4'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-4'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Bobby
-					</ListItem>
-				])
+				.replaceChildren(WrappedItemContainer, () =>
+					createChildren({ activeItem: 'item-3' })
+				)
 		);
+
 		await new Promise((resolve) => setTimeout(resolve, 800));
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'b' }));
 		r.expect(
 			listAssertion
 				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-4')
-				.replaceChildren(WrappedItemContainer, () => [
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-0'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-0'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Bob
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-1'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-1'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Adam
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-2'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-2'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Ant
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-3'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-3'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Anthony
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={true}
-						disabled={false}
-						key={'item-4'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-4'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Bobby
-					</ListItem>
-				])
+				.replaceChildren(WrappedItemContainer, () =>
+					createChildren({ activeItem: 'item-4' })
+				)
 		);
+
 		await new Promise((resolve) => setTimeout(resolve, 800));
 		r.property(WrappedRoot, 'onkeydown', createMockEvent({ which: 0, key: 'a' }));
 		r.expect(
 			listAssertion
 				.setProperty(WrappedRoot, 'aria-activedescendant', 'menu-test-item-1')
-				.replaceChildren(WrappedItemContainer, () => [
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-0'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-0'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Bob
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={true}
-						disabled={false}
-						key={'item-1'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-1'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Adam
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-2'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-2'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Ant
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-3'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-3'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Anthony
-					</ListItem>,
-					<ListItem
-						classes={undefined}
-						variant={undefined}
-						active={false}
-						disabled={false}
-						key={'item-4'}
-						onRequestActive={noop}
-						onSelect={noop}
-						selected={false}
-						theme={listItemTheme}
-						widgetId={'menu-test-item-4'}
-						collapsed={false}
-						draggable={undefined}
-						dragged={false}
-						movedDown={false}
-						movedUp={false}
-						onDragEnd={noop}
-						onDragOver={noop}
-						onDragStart={noop}
-						onDrop={noop}
-					>
-						Bobby
-					</ListItem>
-				])
+				.replaceChildren(WrappedItemContainer, () =>
+					createChildren({ activeItem: 'item-1' })
+				)
 		);
 	});
 
@@ -2040,123 +1887,7 @@ describe('List', () => {
 			.setProperty(WrappedItemWrapper, 'styles', {
 				height: '225px'
 			})
-			.replaceChildren(WrappedItemContainer, () => [
-				<ListItem
-					classes={undefined}
-					variant={undefined}
-					active={true}
-					disabled={false}
-					key={'item-0'}
-					onRequestActive={noop}
-					onSelect={noop}
-					selected={false}
-					theme={listItemTheme}
-					widgetId={'menu-test-item-0'}
-					collapsed={false}
-					draggable={undefined}
-					dragged={false}
-					movedDown={false}
-					movedUp={false}
-					onDragEnd={noop}
-					onDragOver={noop}
-					onDragStart={noop}
-					onDrop={noop}
-				>
-					Bob
-				</ListItem>,
-				<ListItem
-					classes={undefined}
-					variant={undefined}
-					active={false}
-					disabled={false}
-					key={'item-1'}
-					onRequestActive={noop}
-					onSelect={noop}
-					selected={false}
-					theme={listItemTheme}
-					widgetId={'menu-test-item-1'}
-					collapsed={false}
-					draggable={undefined}
-					dragged={false}
-					movedDown={false}
-					movedUp={false}
-					onDragEnd={noop}
-					onDragOver={noop}
-					onDragStart={noop}
-					onDrop={noop}
-				>
-					Adam
-				</ListItem>,
-				<ListItem
-					classes={undefined}
-					variant={undefined}
-					active={false}
-					disabled={false}
-					key={'item-2'}
-					onRequestActive={noop}
-					onSelect={noop}
-					selected={false}
-					theme={listItemTheme}
-					widgetId={'menu-test-item-2'}
-					collapsed={false}
-					draggable={undefined}
-					dragged={false}
-					movedDown={false}
-					movedUp={false}
-					onDragEnd={noop}
-					onDragOver={noop}
-					onDragStart={noop}
-					onDrop={noop}
-				>
-					Ant
-				</ListItem>,
-				<ListItem
-					classes={undefined}
-					variant={undefined}
-					active={false}
-					disabled={false}
-					key={'item-3'}
-					onRequestActive={noop}
-					onSelect={noop}
-					selected={false}
-					theme={listItemTheme}
-					widgetId={'menu-test-item-3'}
-					collapsed={false}
-					draggable={undefined}
-					dragged={false}
-					movedDown={false}
-					movedUp={false}
-					onDragEnd={noop}
-					onDragOver={noop}
-					onDragStart={noop}
-					onDrop={noop}
-				>
-					Anthony
-				</ListItem>,
-				<ListItem
-					classes={undefined}
-					variant={undefined}
-					active={false}
-					disabled={false}
-					key={'item-4'}
-					onRequestActive={noop}
-					onSelect={noop}
-					selected={false}
-					theme={listItemTheme}
-					widgetId={'menu-test-item-4'}
-					collapsed={false}
-					draggable={undefined}
-					dragged={false}
-					movedDown={false}
-					movedUp={false}
-					onDragEnd={noop}
-					onDragOver={noop}
-					onDragStart={noop}
-					onDrop={noop}
-				>
-					Bobby
-				</ListItem>
-			]);
+			.replaceChildren(WrappedItemContainer, () => createChildren());
 		r.expect(listAssertion);
 		r.property(WrappedRoot, 'onscroll', {
 			target: {
@@ -2176,7 +1907,7 @@ describe('List', () => {
 					classes={undefined}
 					variant={undefined}
 					theme={undefined}
-					active={true}
+					active={false}
 					disabled={false}
 					key={'item-0'}
 					onRequestActive={noop}
@@ -2248,7 +1979,7 @@ describe('List', () => {
 				<ListItem
 					classes={undefined}
 					variant={undefined}
-					active={true}
+					active={false}
 					disabled={false}
 					key={'item-0'}
 					onRequestActive={noop}
@@ -2340,7 +2071,7 @@ describe('List', () => {
 				<ListItem
 					classes={undefined}
 					variant={undefined}
-					active={true}
+					active={false}
 					disabled={false}
 					key={'item-0'}
 					onRequestActive={noop}
@@ -2417,7 +2148,7 @@ describe('List', () => {
 				<ListItem
 					classes={undefined}
 					variant={undefined}
-					active={true}
+					active={false}
 					disabled={false}
 					key={'item-0'}
 					onRequestActive={noop}
@@ -2522,7 +2253,7 @@ describe('List', () => {
 				<ListItem
 					classes={undefined}
 					variant={undefined}
-					active={true}
+					active={false}
 					disabled={false}
 					key={'item-0'}
 					onRequestActive={noop}

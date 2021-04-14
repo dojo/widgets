@@ -40,6 +40,14 @@
 	padding-top: 20px;
 }
 
+.root .inputLeading {
+	display: block;
+	pointer-events: unset;
+	position: static;
+	transform: none;
+	max-width: 100%;
+}
+
 .values .value {
 	margin: 4px 4px 4px 0;
 }
