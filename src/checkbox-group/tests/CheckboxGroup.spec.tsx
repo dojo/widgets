@@ -234,6 +234,52 @@ describe('CheckboxGroup', () => {
 		h.expect(customTemplate);
 	});
 
+	it('renders with disabled custom renderer', () => {
+		const h = harness(() => (
+			<CheckboxGroup onValue={noop} name="test" options={[{ value: 'cat' }]} disabled>
+				{{
+					label: 'custom render label',
+					checkboxes: (_, __, ___, disabled) => {
+						return [
+							<span>custom label</span>,
+							<Checkbox
+								name="test"
+								value="cat"
+								checked={false}
+								onValue={noop}
+								theme={undefined}
+								classes={undefined}
+								variant={undefined}
+								disabled={disabled}
+							>
+								cat
+							</Checkbox>,
+							<hr />
+						];
+					}
+				}}
+			</CheckboxGroup>
+		));
+		const customTemplate = template.setChildren('@root', () => [
+			<legend classes={css.legend}>custom render label</legend>,
+			<span>custom label</span>,
+			<Checkbox
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				classes={undefined}
+				variant={undefined}
+				disabled={true}
+			>
+				cat
+			</Checkbox>,
+			<hr />
+		]);
+		h.expect(customTemplate);
+	});
+
 	it('renders disabled inputs', () => {
 		const h = harness(() => (
 			<CheckboxGroup

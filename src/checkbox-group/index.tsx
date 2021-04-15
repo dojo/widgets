@@ -27,7 +27,8 @@ export interface CheckboxGroupChildren {
 	checkboxes?(
 		name: string,
 		middleware: ReturnType<ReturnType<typeof checkboxGroup>['api']>,
-		options: CheckboxOptions
+		options: CheckboxOptions,
+		disabled: boolean
 	): RenderResult;
 	/** A label for the checkbox group */
 	label?: RenderResult;
@@ -60,7 +61,7 @@ export const CheckboxGroup = factory(function({
 
 	function renderCheckboxes() {
 		if (checkboxes) {
-			return checkboxes(name, checkbox, options);
+			return checkboxes(name, checkbox, options, !!disabled);
 		}
 		return options.map(({ value, label }) => {
 			const { checked } = checkbox(value);
