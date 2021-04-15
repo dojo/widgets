@@ -18,6 +18,8 @@ export interface CheckboxGroupProperties {
 	initialValue?: string[];
 	/** A controlled value for the checkbox group */
 	value?: string[];
+	/** Disabled all inputs within this group */
+	disabled?: boolean;
 }
 
 export interface CheckboxGroupChildren {
@@ -25,7 +27,8 @@ export interface CheckboxGroupChildren {
 	checkboxes?(
 		name: string,
 		middleware: ReturnType<ReturnType<typeof checkboxGroup>['api']>,
-		options: CheckboxOptions
+		options: CheckboxOptions,
+		disabled: boolean
 	): RenderResult;
 	/** A label for the checkbox group */
 	label?: RenderResult;
@@ -48,7 +51,8 @@ export const CheckboxGroup = factory(function CheckboxGroup({
 		value,
 		classes,
 		theme: themeProp,
-		variant
+		variant,
+		disabled
 	} = properties();
 	const [{ checkboxes, label } = { checkboxes: undefined, label: undefined }] = children();
 
@@ -57,7 +61,7 @@ export const CheckboxGroup = factory(function CheckboxGroup({
 
 	function renderCheckboxes() {
 		if (checkboxes) {
-			return checkboxes(name, checkbox, options);
+			return checkboxes(name, checkbox, options, !!disabled);
 		}
 		return options.map(({ value, label }) => {
 			const { checked } = checkbox(value);
@@ -70,6 +74,7 @@ export const CheckboxGroup = factory(function CheckboxGroup({
 					classes={classes}
 					theme={themeProp}
 					variant={variant}
+					disabled={disabled}
 				>
 					{label || value}
 				</Checkbox>
