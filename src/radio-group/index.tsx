@@ -27,7 +27,8 @@ export interface RadioGroupChildren {
 	radios?(
 		name: string,
 		middleware: ReturnType<ReturnType<typeof radioGroup>['api']>,
-		options: RadioOptions
+		options: RadioOptions,
+		disabled: boolean
 	): RenderResult;
 	label?: RenderResult;
 }
@@ -58,7 +59,7 @@ export const RadioGroup = factory(function({
 
 	function renderRadios() {
 		if (radios) {
-			return radios(name, radio, options);
+			return radios(name, radio, options, !!disabled);
 		}
 		return options.map(({ value, label }) => {
 			const { checked } = radio(value);

@@ -237,6 +237,52 @@ describe('RadioGroup', () => {
 		h.expect(customTemplate);
 	});
 
+	it('renders with disabled custom renderer', () => {
+		const h = harness(() => (
+			<RadioGroup name="test" onValue={noop} options={[{ value: 'cat' }]} disabled>
+				{{
+					label: 'custom render label',
+					radios: (_, __, ___, disabled) => {
+						return [
+							<span>custom label</span>,
+							<Radio
+								name="test"
+								value="cat"
+								checked={false}
+								onValue={noop}
+								theme={undefined}
+								variant={undefined}
+								classes={undefined}
+								disabled={true}
+							>
+								cat
+							</Radio>,
+							<hr />
+						];
+					}
+				}}
+			</RadioGroup>
+		));
+		const customTemplate = template.setChildren('@root', () => [
+			<legend classes={css.legend}>custom render label</legend>,
+			<span>custom label</span>,
+			<Radio
+				name="test"
+				value="cat"
+				checked={false}
+				onValue={noop}
+				theme={undefined}
+				variant={undefined}
+				classes={undefined}
+				disabled={true}
+			>
+				cat
+			</Radio>,
+			<hr />
+		]);
+		h.expect(customTemplate);
+	});
+
 	it('renders disabled inputs', () => {
 		const h = harness(() => (
 			<RadioGroup
