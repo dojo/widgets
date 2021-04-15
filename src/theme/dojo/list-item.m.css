@@ -13,6 +13,11 @@
 	display: flex;
 }
 
+.root:hover {
+	color: var(--list-item-hover-color);
+	background: var(--list-hover-active-background);
+}
+
 .root.active {
 	border: 1px solid var(--color-highlight-border);
 	transition: none;

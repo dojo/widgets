@@ -12,7 +12,8 @@
 }
 
 .root:hover {
-	background: var(--mdc-theme-on-surface);
+	background: var(--mdc-list-item-hover-background);
+	color: var(--mdc-list-item-hover-color);
 }
 
 .root.selected {

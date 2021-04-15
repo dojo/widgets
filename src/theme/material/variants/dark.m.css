@@ -103,4 +103,6 @@
 	--mdc-list-item-disabled-color: var(--mdc-text-color);
 	--mdc-list-item-active-background: var(--mdc-theme-on-surface);
 	--mdc-list-item-active-color: var(--mdc-text-color);
+	--mdc-list-item-hover-background: var(--mdc-theme-on-surface);
+	--mdc-list-item-hover-color: var(--mdc-text-color);
 }

@@ -110,6 +110,7 @@ import ListItemRenderer from './widgets/list/ListItemRenderer';
 import FetchedResource from './widgets/list/FetchedResource';
 import DisabledList from './widgets/list/Disabled';
 import DraggableList from './widgets/list/Draggable';
+import CustomThemeList from './widgets/list/CustomTheme';
 import Menu from './widgets/list/Menu';
 import CustomTransformer from './widgets/list/CustomTransformer';
 import BasicChipTypeahead from './widgets/chip-typeahead/Basic';
@@ -1145,6 +1146,12 @@ export const config = {
 					filename: 'Fill',
 					module: FillList,
 					title: 'Fill'
+				},
+				{
+					description: 'This example shows how list items can be easily themed',
+					filename: 'CustomTheme',
+					module: CustomThemeList,
+					title: 'CustomTheme'
 				}
 			],
 			overview: {
