@@ -107,4 +107,13 @@
 	--loader-size-small: 24px;
 	--loader-size-medium: 36px;
 	--loader-size-large: 48px;
+
+	--mdc-list-item-selected-background: var(--mdc-theme-on-surface-hover);
+	--mdc-list-item-selected-color: var(--mdc-text-color);
+	--mdc-list-item-disabled-background: inherit;
+	--mdc-list-item-disabled-color: var(--mdc-text-color);
+	--mdc-list-item-active-background: var(--mdc-theme-on-surface);
+	--mdc-list-item-active-color: var(--mdc-text-color);
+	--mdc-list-item-hover-background: var(--mdc-theme-on-surface);
+	--mdc-list-item-hover-color: var(--mdc-text-color);
 }
