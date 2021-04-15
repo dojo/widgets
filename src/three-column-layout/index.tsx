@@ -31,7 +31,7 @@ const factory = create({ breakpoint, theme })
 	.properties<ThreeColumnLayoutProperties>()
 	.children<ThreeColumnLayoutChildren>();
 
-export const ThreeColumnLayout = factory(function({
+export const ThreeColumnLayout = factory(function ThreeColumnLayout({
 	properties,
 	children,
 	middleware: { breakpoint, theme }

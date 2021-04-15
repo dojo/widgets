@@ -17,7 +17,7 @@ const factory = create({ icache, theme })
 	.properties<EmailInputProperties>()
 	.children<TextInputChildren | undefined>();
 
-export const EmailInput = factory(function({
+export const EmailInput = factory(function EmailInput({
 	properties,
 	children,
 	middleware: { icache, theme }

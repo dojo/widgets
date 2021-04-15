@@ -35,7 +35,7 @@ const factory = create({ checkboxGroup, theme })
 	.properties<CheckboxGroupProperties>()
 	.children<CheckboxGroupChildren | undefined>();
 
-export const CheckboxGroup = factory(function({
+export const CheckboxGroup = factory(function CheckboxGroup({
 	children,
 	properties,
 	middleware: { checkboxGroup, theme }

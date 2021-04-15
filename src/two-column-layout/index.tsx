@@ -32,7 +32,7 @@ const factory = create({ theme, breakpoint, icache, resize, drag })
 	.properties<TwoColumnLayoutProperties>()
 	.children<TwoColumnLayoutChildren>();
 
-export const TwoColumnLayout = factory(function({
+export const TwoColumnLayout = factory(function TwoColumnLayout({
 	properties,
 	children,
 	middleware: { theme, breakpoint: breakpointMiddleware, icache, resize: resizeMiddleware, drag }
