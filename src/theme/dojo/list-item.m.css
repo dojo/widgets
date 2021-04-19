@@ -13,17 +13,26 @@
 	display: flex;
 }
 
+.root:hover {
+	color: var(--list-item-hover-color);
+	background: var(--list-hover-active-background);
+}
+
 .root.active {
 	border: 1px solid var(--color-highlight-border);
 	transition: none;
+	background: var(--list-item-active-background);
+	color: var(--list-item-active-color);
 }
 
 .selected {
-	background: var(--color-background-faded);
+	background: var(--list-item-selected-background);
+	color: var(--list-item-selected-color);
 }
 
 .disabled {
-	color: var(--color-text-faded);
+	color: var(--list-item-disabled-color);
+	background: var(--list-item-disabled-background);
 	font-style: italic;
 }
 

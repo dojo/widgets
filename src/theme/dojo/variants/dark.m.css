@@ -71,6 +71,13 @@
 	--tab-button-active-color: var(--color-highlight);
 	--tab-button-disabled-color: var(--color-border);
 
+	--list-item-selected-background: var(--color-background-faded);
+	--list-item-selected-color: var(--color-text-primary);
+	--list-item-disabled-background: inherit;
+	--list-item-disabled-color: var(--color-text-faded);
+	--list-item-active-background: inherit;
+	--list-item-active-color: var(--color-text-primary);
+
 	--loader-size-small: 24px;
 	--loader-size-medium: 36px;
 	--loader-size-large: 48px;

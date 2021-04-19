@@ -116,7 +116,7 @@ const formGroupFactory = create({ theme })
 	.properties<FormGroupProperties>()
 	.children();
 
-export const FormGroup = formGroupFactory(function FormRow({
+export const FormGroup = formGroupFactory(function FormGroup({
 	properties,
 	children,
 	middleware: { theme }
