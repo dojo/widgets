@@ -27,6 +27,7 @@ export default factory(function Validation({ id, middleware: { icache, resource 
 					icache.set('value', value);
 				}}
 				required
+				hasDownArrow
 			>
 				{{
 					label: 'Validation'
