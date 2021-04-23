@@ -110,6 +110,7 @@ import ListItemRenderer from './widgets/list/ListItemRenderer';
 import FetchedResource from './widgets/list/FetchedResource';
 import DisabledList from './widgets/list/Disabled';
 import DraggableList from './widgets/list/Draggable';
+import CustomThemeList from './widgets/list/CustomTheme';
 import Menu from './widgets/list/Menu';
 import CustomTransformer from './widgets/list/CustomTransformer';
 import BasicChipTypeahead from './widgets/chip-typeahead/Basic';
@@ -1146,6 +1147,12 @@ export const config = {
 					filename: 'Fill',
 					module: FillList,
 					title: 'Fill'
+				},
+				{
+					description: 'This example shows how list items can be easily themed',
+					filename: 'CustomTheme',
+					module: CustomThemeList,
+					title: 'CustomTheme'
 				}
 			],
 			overview: {
@@ -2064,38 +2071,52 @@ export const config = {
 				{
 					filename: 'RemoteSource',
 					module: RemoteTypeahead,
-					title: 'Remote Source'
+					title: 'Remote Source',
+					sandbox: true,
+					size: 'large'
 				},
 				{
 					filename: 'Validation',
 					module: ValidatedTypeahead,
-					title: 'Validation'
+					title: 'Validation',
+					sandbox: true,
+					size: 'large'
 				},
 				{
 					filename: 'FreeText',
 					module: FreeTextTypeahead,
-					title: 'Free Text Typeahead'
+					title: 'Free Text Typeahead',
+					sandbox: true,
+					size: 'large'
 				},
 				{
 					filename: 'InitialValue',
 					module: InitialValueTypeahead,
-					title: 'Initial Value Typeahead'
+					title: 'Initial Value Typeahead',
+					sandbox: true,
+					size: 'large'
 				},
 				{
 					filename: 'Controlled',
 					module: ControlledTypeahead,
-					title: 'Controlled Typeahead'
+					title: 'Controlled Typeahead',
+					sandbox: true,
+					size: 'large'
 				},
 				{
 					filename: 'Disabled',
 					module: DisabledTypeahead,
-					title: 'Disabled Typeahead'
+					title: 'Disabled Typeahead',
+					sandbox: true,
+					size: 'large'
 				}
 			],
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicTypeahead
+					module: BasicTypeahead,
+					sandbox: true,
+					size: 'large'
 				}
 			}
 		},

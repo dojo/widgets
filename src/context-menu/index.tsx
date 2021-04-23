@@ -16,7 +16,11 @@ const factory = create({
 	resource: createResourceMiddleware<ListOption>()
 }).properties<ContextMenuProperties>();
 
-export const ContextMenu = factory(function({ properties, children, middleware: { theme } }) {
+export const ContextMenu = factory(function ContextMenu({
+	properties,
+	children,
+	middleware: { theme }
+}) {
 	const { resource, onSelect, classes, variant } = properties();
 	return (
 		<ContextPopup>

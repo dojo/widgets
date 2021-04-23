@@ -5,3 +5,27 @@
 
 .triggerWrapper {
 }
+
+.arrow {
+	border: unset;
+	border-left: var(--border-width) solid var(--color-border);
+	bottom: var(--border-width);
+	color: var(--color-text-faded);
+	display: flex;
+	font-size: var(--font-size-icon);
+	line-height: var(--line-height-base);
+	padding: var(--spacing-regular);
+
+	cursor: pointer;
+	outline: none;
+
+	background: unset;
+
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	border-radius: 0;
+}
+
+.inputTrailing {
+}

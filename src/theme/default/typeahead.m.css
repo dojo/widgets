@@ -12,3 +12,13 @@
 }
 .menuWrapper {
 }
+/* Wrapper around the widgets arrow icon */
+.arrow {
+}
+
+.focused {
+}
+
+/* class added to the root when the menu is open */
+.expanded {
+}
