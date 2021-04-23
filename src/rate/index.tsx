@@ -46,7 +46,7 @@ const factory = create({ focus, theme, icache: createICacheMiddleware<RateIcache
 	.properties<RateProperties>()
 	.children<RateChildren | undefined>();
 
-export const Rate = factory(function Radio({
+export const Rate = factory(function Rate({
 	properties,
 	id,
 	children,

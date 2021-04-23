@@ -2,3 +2,37 @@
 	display: flex;
 	flex-direction: column;
 }
+
+.arrow {
+	background: unset;
+	border: unset;
+
+	composes: mdc-select__dropdown-icon from '@material/select/dist/mdc.select.css';
+
+	pointer-events: auto;
+
+	cursor: pointer;
+	outline: none;
+
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+
+	padding: 0;
+}
+
+.expanded {
+	composes: mdc-select--activated from '@material/select/dist/mdc.select.css';
+}
+
+.iconDownIcon {
+	composes: downAltIcon from './icon.m.css';
+	color: var(--mdc-secondary-text-color);
+}
+
+.focused .iconDownIcon {
+	color: var(--mdc-theme-primary);
+}
+
+.inputTrailing {
+}

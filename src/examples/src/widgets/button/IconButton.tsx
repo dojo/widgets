@@ -11,7 +11,7 @@ export default factory(function Basic() {
 			<virtual>
 				<Button>
 					{{
-						icon: <Icon type="starIcon" size="small" />
+						icon: <Icon type="starIcon" size="medium" />
 					}}
 				</Button>
 				<Button>

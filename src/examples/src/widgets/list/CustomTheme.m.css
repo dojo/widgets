@@ -1,0 +1,15 @@
+.exampleList {
+	--mdc-list-item-selected-background: #4fc3f7;
+	--mdc-list-item-selected-color: #eeeeee;
+	--mdc-list-item-active-background: #0093c4;
+	--mdc-list-item-active-color: #ffffff;
+	--mdc-list-item-hover-background: #4fc3f7;
+	--mdc-list-item-hover-color: #eeeeee;
+
+	--list-item-selected-background: #43a047;
+	--list-item-selected-color: #eeeeee;
+	--list-item-active-background: #00701a;
+	--list-item-active-color: #ffffff;
+	--list-item-hover-background: #43a047;
+	--list-item-hover-color: #eeeeee;
+}

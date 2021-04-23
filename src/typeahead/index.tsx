@@ -23,6 +23,8 @@ import * as listCss from '../theme/default/list.m.css';
 import * as inputCss from '../theme/default/text-input.m.css';
 import * as css from '../theme/default/typeahead.m.css';
 import TriggerPopup from '../trigger-popup';
+import Icon from '../icon';
+import * as iconCss from '../theme/default/icon.m.css';
 
 export interface TypeaheadProperties {
 	/** Callback called when user selects a value */
@@ -55,6 +57,8 @@ export interface TypeaheadProperties {
 	strict?: boolean;
 	/** Placeholder value to show when nothing has been selected */
 	placeholder?: ListOption;
+	/** Flag to indicate if drop down arrow should be shown in trailing section of text input, defaults to false */
+	hasDownArrow?: boolean;
 }
 
 export interface TypeaheadICache {
@@ -64,6 +68,7 @@ export interface TypeaheadICache {
 	activeIndex: number;
 	dirty: boolean;
 	expanded: boolean;
+	focused: boolean;
 	focusNode: string;
 	initial: string;
 	valid: boolean | undefined;
@@ -115,7 +120,8 @@ export const Typeahead = factory(function Typeahead({
 		},
 		classes,
 		theme: themeProp,
-		variant
+		variant,
+		hasDownArrow
 	} = properties();
 	const {
 		get,
@@ -217,6 +223,7 @@ export const Typeahead = factory(function Typeahead({
 					});
 				}
 				break;
+			case Keys.Tab:
 			case Keys.Enter:
 				preventDefault();
 				const activeIndex = icache.getOrSet('activeIndex', strict ? 0 : -1);
@@ -305,6 +312,9 @@ export const Typeahead = factory(function Typeahead({
 		}
 	}
 
+	const expanded = icache.get('expanded');
+	const focused = icache.get('focused');
+
 	return (
 		<div
 			key="root"
@@ -313,7 +323,9 @@ export const Typeahead = factory(function Typeahead({
 				themedCss.root,
 				disabled && themedCss.disabled,
 				valid === true && themedCss.valid,
-				valid === false && themedCss.invalid
+				valid === false && themedCss.invalid,
+				expanded && themedCss.expanded,
+				focused && themedCss.focused
 			]}
 		>
 			<TriggerPopup
@@ -375,10 +387,12 @@ export const Typeahead = factory(function Typeahead({
 								)}
 								onFocus={() => {
 									const { onFocus } = properties();
+									icache.set('focused', true);
 									onFocus && onFocus();
 								}}
 								onBlur={() => {
 									const { onBlur } = properties();
+									icache.set('focused', false);
 									if (!strict) {
 										const value = icache.getOrSet('labelValue', '');
 										const currentOption = icache.get('selectedOption');
@@ -435,7 +449,39 @@ export const Typeahead = factory(function Typeahead({
 								}}
 								valid={valid}
 							>
-								{{ label, leading }}
+								{{
+									label,
+									leading,
+									trailing: hasDownArrow && (
+										<button
+											type="button"
+											disabled={disabled}
+											classes={themedCss.arrow}
+											onclick={openMenu}
+											onkeydown={(event) => {
+												if (
+													event.which === Keys.Down ||
+													event.which === Keys.Space ||
+													event.which === Keys.Enter
+												) {
+													event.preventDefault();
+													openMenu();
+												}
+											}}
+										>
+											<Icon
+												type="downIcon"
+												theme={theme.compose(
+													iconCss,
+													css,
+													'icon'
+												)}
+												classes={classes}
+												variant={variant}
+											/>
+										</button>
+									)
+								}}
 							</TextInput>
 						);
 					},

@@ -7,6 +7,7 @@ export const wrapper: string;
 export const inputWrapper: string;
 export const input: string;
 export const selectedIcon: string;
+export const inputLeading: string;
 export const values: string;
 export const label: string;
 export const hasValue: string;
