@@ -522,7 +522,7 @@ describe('Typeahead', () => {
 				null
 			])
 		);
-		assert.strictEqual(onValueStub.callCount, 0);
+		assert.strictEqual(onValueStub.callCount, 1);
 	});
 
 	it('Should select item on enter ', () => {
@@ -558,7 +558,7 @@ describe('Typeahead', () => {
 						.setProperty(WrappedList, 'activeIndex', 1)
 				}))
 		);
-		assert.strictEqual(onValueStub.callCount, 1);
+		assert.strictEqual(onValueStub.callCount, 2);
 	});
 
 	it('Should select item on tab ', () => {
@@ -740,7 +740,7 @@ describe('Typeahead', () => {
 				null
 			])
 		);
-		assert.strictEqual(onValueStub.callCount, 0);
+		assert.strictEqual(onValueStub.callCount, 1);
 	});
 
 	it('Should be able to select a free text value in non-strict mode', () => {
@@ -960,6 +960,243 @@ describe('Typeahead', () => {
 	// 	);
 	// 	r.expect(expandedSelectedAssertion);
 	// });
+
+	it('applies focused flag on focus and blur', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ data, id: 'test', idKey: 'value' }}
+				onValue={onValueStub}
+				value="2"
+			/>
+		));
+
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'value', 'Cat'),
+				content: contentAssertion.setProperty(WrappedList, 'initialValue', '2')
+			}))
+		);
+
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [() => {}, 'below']
+		});
+		r.property(WrappedTrigger, 'onValue', '');
+
+		r.expect(
+			baseAssertion.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.setProperty(WrappedTrigger, 'value', 'Cat'),
+				content: contentAssertion.setProperty(WrappedList, 'initialValue', '2')
+			}))
+		);
+
+		r.property(WrappedTrigger, 'onFocus');
+
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'classes', [
+					null,
+					css.root,
+					null,
+					false,
+					false,
+					false,
+					css.focused
+				])
+				.replaceChildren(WrappedPopup, () => ({
+					trigger: triggerAssertion.setProperty(WrappedTrigger, 'value', 'Cat'),
+					content: contentAssertion.setProperty(WrappedList, 'initialValue', '2')
+				}))
+		);
+
+		r.property(WrappedTrigger, 'onBlur');
+
+		r.expect(
+			baseAssertion
+				.setProperty(WrappedRoot, 'classes', [
+					null,
+					css.root,
+					null,
+					false,
+					false,
+					false,
+					false
+				])
+				.replaceChildren(WrappedPopup, () => ({
+					trigger: triggerAssertion.setProperty(WrappedTrigger, 'value', 'Cat'),
+					content: contentAssertion.setProperty(WrappedList, 'initialValue', '2')
+				}))
+		);
+	});
+
+	it('shows dropdown button', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ data, id: 'test', idKey: 'value' }}
+				onValue={onValueStub}
+				hasDownArrow
+			/>
+		));
+
+		const withArrowAssertion = baseAssertion.replaceChildren(WrappedPopup, () => ({
+			trigger: triggerAssertion.replaceChildren(WrappedTrigger, () => ({
+				label: undefined,
+				leading: undefined,
+				trailing: (
+					<WrappedButton
+						type="button"
+						disabled={undefined}
+						classes={css.arrow}
+						onclick={noop}
+						onkeydown={noop}
+					>
+						<Icon
+							type="downIcon"
+							theme={{
+								'@dojo/widgets/icon': iconTheme
+							}}
+							classes={undefined}
+							variant={undefined}
+						/>
+					</WrappedButton>
+				)
+			})),
+			content: contentAssertion
+		}));
+
+		r.expect(withArrowAssertion);
+	});
+
+	it('should disable dropdown button', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ data, id: 'test', idKey: 'value' }}
+				onValue={onValueStub}
+				hasDownArrow
+				disabled
+			/>
+		));
+
+		const withArrowAssertion = baseAssertion
+			.setProperty(WrappedRoot, 'classes', [
+				null,
+				css.root,
+				css.disabled,
+				false,
+				false,
+				null,
+				null
+			])
+			.replaceChildren(WrappedPopup, () => ({
+				trigger: triggerAssertion.replaceChildren(WrappedTrigger, () => ({
+					label: undefined,
+					leading: undefined,
+					trailing: (
+						<WrappedButton
+							type="button"
+							disabled={true}
+							classes={css.arrow}
+							onclick={noop}
+							onkeydown={noop}
+						>
+							<Icon
+								type="downIcon"
+								theme={{
+									'@dojo/widgets/icon': iconTheme
+								}}
+								classes={undefined}
+								variant={undefined}
+							/>
+						</WrappedButton>
+					)
+				})),
+				content: contentAssertion
+			}));
+
+		r.expect(withArrowAssertion);
+	});
+
+	const testDownArrowOpening = (propKey: string, ...params: any[]) => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ data, id: 'test', idKey: 'value' }}
+				onValue={onValueStub}
+				hasDownArrow
+			/>
+		));
+
+		const triggerWithDownArrow = triggerAssertion.replaceChildren(WrappedTrigger, () => ({
+			label: undefined,
+			leading: undefined,
+			trailing: (
+				<WrappedButton
+					type="button"
+					disabled={undefined}
+					classes={css.arrow}
+					onclick={noop}
+					onkeydown={noop}
+				>
+					<Icon
+						type="downIcon"
+						theme={{
+							'@dojo/widgets/icon': iconTheme
+						}}
+						classes={undefined}
+						variant={undefined}
+					/>
+				</WrappedButton>
+			)
+		}));
+
+		const withArrowAssertion = baseAssertion.replaceChildren(WrappedPopup, () => ({
+			trigger: triggerWithDownArrow,
+			content: contentAssertion
+		}));
+
+		r.child(WrappedPopup, {
+			trigger: [() => {}],
+			content: [() => {}, 'below']
+		});
+
+		r.expect(withArrowAssertion);
+		r.property(WrappedButton, propKey, ...params);
+
+		r.expect(
+			withArrowAssertion
+				.replaceChildren(WrappedPopup, () => ({
+					trigger: triggerWithDownArrow.setProperties(WrappedTrigger, (current: any) => ({
+						...current,
+						aria: { ...current.aria, expanded: 'true' }
+					})),
+					content: contentAssertion
+				}))
+				.setProperty(WrappedRoot, 'classes', [
+					null,
+					css.root,
+					null,
+					false,
+					false,
+					css.expanded,
+					null
+				])
+		);
+	};
+
+	it('opens typeahead on down arrow click', () => {
+		testDownArrowOpening('onclick');
+	});
+
+	it('opens typeahead onkeydown `Down` on down arrow', () => {
+		testDownArrowOpening('onkeydown', { which: Keys.Down, preventDefault: noop });
+	});
+
+	it('opens typeahead onkeydown `Enter` on down arrow', () => {
+		testDownArrowOpening('onkeydown', { which: Keys.Enter, preventDefault: noop });
+	});
+
+	it('opens typeahead onkeydown `Space` on down arrow', () => {
+		testDownArrowOpening('onkeydown', { which: Keys.Space, preventDefault: noop });
+	});
 
 	it('should create placeholder object when not required and no placeholder provided', () => {
 		const toggleClosedStub = sb.stub();
