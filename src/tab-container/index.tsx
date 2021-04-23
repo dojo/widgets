@@ -1,4 +1,3 @@
-import global from '@dojo/framework/shim/global';
 import focus from '@dojo/framework/core/middleware/focus';
 import i18n from '@dojo/framework/core/middleware/i18n';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
@@ -10,6 +9,7 @@ import bundle from './nls/TabContainer';
 import { formatAriaProperties, Keys } from '../common/util';
 import * as css from '../theme/default/tab-container.m.css';
 import { AriaAttributes } from '@dojo/framework/core/interfaces';
+import offscreen from '../middleware/offscreen';
 
 export interface TabItem {
 	closeable?: boolean;
@@ -45,13 +45,14 @@ const factory = create({
 	focus,
 	i18n,
 	icache: createICacheMiddleware<TabContainerICache>(),
-	theme
+	theme,
+	offscreen
 }).properties<TabContainerProperties>();
 
 export const TabContainer = factory(function TabContainer({
 	children,
 	id,
-	middleware: { focus, i18n, icache, theme },
+	middleware: { focus, i18n, icache, theme, offscreen },
 	properties
 }) {
 	const {
@@ -182,29 +183,14 @@ export const TabContainer = factory(function TabContainer({
 		);
 	};
 
-	/**
-	 * Computes the height of browser-rendered horizontal scrollbars using a self-created test element.
-	 * May return 0 (e.g. on OS X browsers under default configuration).
-	 */
-	const computeHorizontalScrollbarHeight = (): number => {
-		let horizontalScrollbarHeight = icache.get('horizontalScrollbarHeight');
-		if (typeof horizontalScrollbarHeight !== 'undefined') {
-			return horizontalScrollbarHeight;
-		}
-
-		const div = global.document.createElement('div');
-		div.classList.add(themeCss.scrollTest);
-		global.document.body.appendChild(div);
-
-		horizontalScrollbarHeight = div.offsetHeight - div.clientHeight;
-		global.document.body.removeChild(div);
-
-		icache.set('horizontalScrollbarHeight', horizontalScrollbarHeight);
-
-		return horizontalScrollbarHeight;
-	};
-
 	const renderedTabs = tabs.map(renderTab);
+
+	const horizontalScrollbarHeight = icache.getOrSet('horizontalScrollbarHeight', () => {
+		return offscreen(
+			() => <div classes={[themeCss.scrollTest]} />,
+			(node) => node.offsetHeight - node.clientHeight
+		);
+	});
 
 	let content = [
 		fixed ? (
@@ -215,7 +201,7 @@ export const TabContainer = factory(function TabContainer({
 			<div
 				key="scrollArea"
 				classes={[themeCss.scrollArea, themeCss.scroll]}
-				styles={{ marginBottom: `${computeHorizontalScrollbarHeight()}px` }}
+				styles={{ marginBottom: `${horizontalScrollbarHeight}px` }}
 			>
 				<div key="buttons" classes={[themeCss.tabButtons, themeCss.scrollContent]}>
 					{...renderedTabs}

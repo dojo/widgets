@@ -1,12 +1,12 @@
-import global from '@dojo/framework/shim/global';
-import { AriaAttributes } from '@dojo/framework/core/interfaces';
+import { AriaAttributes, RenderResult } from '@dojo/framework/core/interfaces';
 
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { tsx, v, w } from '@dojo/framework/core/vdom';
+import { create, tsx, v, w } from '@dojo/framework/core/vdom';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 
 import { Keys } from '../../common/util';
 import Icon from '../../icon';
@@ -19,7 +19,7 @@ import {
 	isStringComparator,
 	noop
 } from '../../common/tests/support/test-helpers';
-import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import offscreen from '../../middleware/offscreen';
 
 const compareLabelledBy = { selector: '*', property: 'labelledBy', comparator: isStringComparator };
 const compareControls = { selector: '*', property: 'controls', comparator: isStringComparator };
@@ -449,19 +449,32 @@ registerSuite('TabContainer', {
 		},
 
 		'variable width tabs'() {
-			const div = { offsetHeight: 10, clientHeight: 5, classList: { add: sinon.stub() } };
-			global.document.createElement = sinon.stub().returns(div);
-			global.document.body.appendChild = sinon.stub();
-			global.document.body.removeChild = sinon.stub();
-
 			const tabs = [{ name: 'tab0' }, { name: 'tab1' }];
 
-			const h = harness(() => (
-				<TabContainer tabs={tabs} fixed={false}>
-					<div>tab0</div>
-					<div>tab1</div>
-				</TabContainer>
-			));
+			let offscreenRenderResult: RenderResult;
+
+			const factory = create();
+			const offscreenMock = factory(function offscreen() {
+				return (
+					renderFunction: () => RenderResult,
+					predicate: (node: HTMLDivElement) => number
+				): number => {
+					offscreenRenderResult = renderFunction();
+					return predicate({ offsetHeight: 10, clientHeight: 5 } as any);
+				};
+			});
+
+			const h = harness(
+				() => (
+					<TabContainer tabs={tabs} fixed={false}>
+						<div>tab0</div>
+						<div>tab1</div>
+					</TabContainer>
+				),
+				{
+					middleware: [[offscreen, offscreenMock]]
+				}
+			);
 
 			const template = scrollableBaseTemplate
 				.setChildren('@buttons', () => [
@@ -502,9 +515,8 @@ registerSuite('TabContainer', {
 				]);
 
 			h.expect(template);
-			assert.isTrue(global.document.body.appendChild.calledWith(div));
-			assert.isTrue(global.document.body.removeChild.calledWith(div));
-			assert.isTrue(div.classList.add.calledWith(css.scrollTest));
+
+			assert.deepEqual(offscreenRenderResult, <div classes={[css.scrollTest]} />);
 		}
 	}
 });
