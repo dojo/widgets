@@ -1,8 +1,9 @@
 export const tabButtons: string;
 export const tabButton: string;
+export const root: string;
+export const fixed: string;
 export const activeTabButton: string;
 export const tabButtonContent: string;
-export const root: string;
 export const activeTabButtonLabel: string;
 export const disabledTabButton: string;
 export const close: string;
@@ -14,3 +15,6 @@ export const alignRight: string;
 export const alignLeft: string;
 export const tabs: string;
 export const alignBottom: string;
+export const scroller: string;
+export const scrollArea: string;
+export const scrollContent: string;

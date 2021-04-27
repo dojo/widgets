@@ -62,6 +62,46 @@
 	box-sizing: border-box;
 }
 
+/* Added to an TabButton */
+.fixed {
+}
+
+.scroller {
+	overflow-y: hidden;
+}
+
+.scrollArea {
+	-webkit-overflow-scrolling: touch;
+	display: flex;
+	overflow-x: hidden;
+}
+
+.scroll {
+	overflow-x: scroll;
+}
+
+.scrollTest {
+	position: absolute;
+	top: -9999px;
+	width: 100px;
+	height: 100px;
+	overflow-x: scroll;
+}
+
+.scrollArea::-webkit-scrollbar,
+.scrollTest::-webkit-scrollbar {
+	display: none;
+}
+
+.scrollContent {
+	position: relative;
+	display: flex;
+	flex: 1 0 auto;
+	-webkit-transform: none;
+	transform: none;
+	will-change: transform;
+}
+
 /* The root class of the TabButton */
 .tabButton {
 	border: 1px solid transparent;
@@ -76,6 +116,12 @@
 	cursor: pointer;
 	position: relative;
 	top: 1px;
+}
+
+.scroller .tabButton {
+	min-width: 90px;
+	max-width: 360px;
+	flex-grow: 0;
 }
 
 /* Focus for a TabButton when not disabled */

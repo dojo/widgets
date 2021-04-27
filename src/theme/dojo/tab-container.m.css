@@ -6,8 +6,19 @@
 	font-family: var(--font-family);
 }
 
+.root:not(.fixed) .tabButton {
+	min-width: 90px;
+	max-width: 360px;
+	flex-grow: 0;
+}
+
 .tabButtons {
 	display: flex;
+}
+
+.root.fixed .tabButton {
+	width: var(--tab-width);
+	flex: 1;
 }
 
 .tabButton {
@@ -17,19 +28,23 @@
 	border-top: var(--border-width) solid transparent;
 	color: var(--tab-button-color);
 	cursor: pointer;
-	display: inline-block;
-	flex: 1;
+	display: flex;
 	outline: none;
 	overflow: hidden;
 	padding: calc(var(--grid-base) * 2) calc(var(--grid-base) / 2);
 	position: relative;
-	text-align: center;
+	justify-content: center;
 	text-overflow: ellipsis;
 	vertical-align: top;
 	white-space: nowrap;
-	width: var(--tab-width);
 	margin: 0;
 	background-color: var(--tab-button-background);
+}
+
+.tabButtonContent {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .tabButton:hover:not(.disabledTabButton):not(.activeTabButton) {

@@ -193,6 +193,7 @@ import TitleText from './widgets/speed-dial/TitleText';
 import BasicSwitch from './widgets/switch/Basic';
 import DisabledSwitch from './widgets/switch/Disabled';
 import BasicTabContainer from './widgets/tab-container/Basic';
+import VariableWidthTabContainer from './widgets/tab-container/VariableWidth';
 import ControlledTabContainer from './widgets/tab-container/Controlled';
 import ButtonAlignmentTabContainer from './widgets/tab-container/ButtonAlignment';
 import CloseableTabContainer from './widgets/tab-container/Closeable';
@@ -1801,6 +1802,11 @@ export const config = {
 					filename: 'Closeable',
 					module: CloseableTabContainer,
 					title: 'TabContainer with closeable tab'
+				},
+				{
+					filename: 'VariableWidth',
+					module: VariableWidthTabContainer,
+					title: 'TabContainer with scrollable variable width tabs'
 				}
 			],
 			filename: 'index',

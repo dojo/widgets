@@ -1,11 +1,12 @@
-import { AriaAttributes } from '@dojo/framework/core/interfaces';
+import { AriaAttributes, RenderResult } from '@dojo/framework/core/interfaces';
 
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
 
 import * as sinon from 'sinon';
 
-import { tsx, v, w } from '@dojo/framework/core/vdom';
+import { create, tsx, v, w } from '@dojo/framework/core/vdom';
+import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 
 import { Keys } from '../../common/util';
 import Icon from '../../icon';
@@ -18,7 +19,7 @@ import {
 	isStringComparator,
 	noop
 } from '../../common/tests/support/test-helpers';
-import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
+import offscreen from '../../middleware/offscreen';
 
 const compareLabelledBy = { selector: '*', property: 'labelledBy', comparator: isStringComparator };
 const compareControls = { selector: '*', property: 'controls', comparator: isStringComparator };
@@ -41,10 +42,28 @@ const baseTemplate = assertionTemplate(() => (
 	<div
 		key="root"
 		aria-orientation={'horizontal'}
-		classes={[undefined, null, css.root]}
+		classes={[undefined, null, css.root, css.fixed]}
 		role="tablist"
 	>
 		<div key="buttons" classes={css.tabButtons} />
+		<div key="tabs" classes={css.tabs} />
+	</div>
+));
+
+const scrollableBaseTemplate = assertionTemplate(() => (
+	<div
+		key="root"
+		aria-orientation={'horizontal'}
+		classes={[undefined, null, css.root, css.scroller]}
+		role="tablist"
+	>
+		<div
+			key="scrollArea"
+			classes={[css.scrollArea, css.scroll]}
+			styles={{ marginBottom: '5px' }}
+		>
+			<div key="buttons" classes={[css.tabButtons, css.scrollContent]} />
+		</div>
 		<div key="tabs" classes={css.tabs} />
 	</div>
 ));
@@ -53,7 +72,7 @@ const reverseOrientationTemplate = assertionTemplate(() => (
 	<div
 		key="root"
 		aria-orientation={'vertical'}
-		classes={[undefined, css.alignRight, css.root]}
+		classes={[undefined, css.alignRight, css.root, css.fixed]}
 		role="tablist"
 	>
 		<div key="tabs" classes={css.tabs} />
@@ -427,6 +446,77 @@ registerSuite('TabContainer', {
 			h.trigger('@1-tabbutton', 'onclick');
 			h.expect(disabledTemplate);
 			assert.isTrue(onActiveIndexStub.notCalled);
+		},
+
+		'variable width tabs'() {
+			const tabs = [{ name: 'tab0' }, { name: 'tab1' }];
+
+			let offscreenRenderResult: RenderResult;
+
+			const factory = create();
+			const offscreenMock = factory(function offscreen() {
+				return (
+					renderFunction: () => RenderResult,
+					predicate: (node: HTMLDivElement) => number
+				): number => {
+					offscreenRenderResult = renderFunction();
+					return predicate({ offsetHeight: 10, clientHeight: 5 } as any);
+				};
+			});
+
+			const h = harness(
+				() => (
+					<TabContainer tabs={tabs} fixed={false}>
+						<div>tab0</div>
+						<div>tab1</div>
+					</TabContainer>
+				),
+				{
+					middleware: [[offscreen, offscreenMock]]
+				}
+			);
+
+			const template = scrollableBaseTemplate
+				.setChildren('@buttons', () => [
+					<div {...tabButtonProperties}>
+						<span
+							key="tabButtonContent"
+							classes={[css.tabButtonContent, css.activeTabButtonLabel]}
+						>
+							tab0
+							<span classes={[css.indicator, css.indicatorActive]}>
+								<span classes={css.indicatorContent} />
+							</span>
+						</span>
+					</div>,
+					<div
+						{...tabButtonProperties}
+						classes={[css.tabButton, null, null, null]}
+						aria-selected="false"
+						aria-controls="test-tab-1"
+						tabIndex={-1}
+						key="1-tabbutton"
+					>
+						<span key="tabButtonContent" classes={[css.tabButtonContent, false]}>
+							tab1
+							<span classes={[css.indicator, false]}>
+								<span classes={css.indicatorContent} />
+							</span>
+						</span>
+					</div>
+				])
+				.setChildren('@tabs', () => [
+					<div classes={css.tab} hidden={false}>
+						<div>tab0</div>
+					</div>,
+					<div classes={undefined} hidden={true}>
+						<div>tab1</div>
+					</div>
+				]);
+
+			h.expect(template);
+
+			assert.deepEqual(offscreenRenderResult, <div classes={[css.scrollTest]} />);
 		}
 	}
 });

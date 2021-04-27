@@ -9,6 +9,7 @@ import bundle from './nls/TabContainer';
 import { formatAriaProperties, Keys } from '../common/util';
 import * as css from '../theme/default/tab-container.m.css';
 import { AriaAttributes } from '@dojo/framework/core/interfaces';
+import offscreen from '../middleware/offscreen';
 
 export interface TabItem {
 	closeable?: boolean;
@@ -31,23 +32,27 @@ export interface TabContainerProperties {
 	onActiveIndex?(index: number): void;
 	/** Tabs config used to display tab buttons */
 	tabs: TabItem[];
+	/** If buttons should be fixed width or variable width */
+	fixed?: boolean;
 }
 
 interface TabContainerICache {
 	activeIndex: number | undefined;
+	horizontalScrollbarHeight: number | undefined;
 }
 
 const factory = create({
 	focus,
 	i18n,
 	icache: createICacheMiddleware<TabContainerICache>(),
-	theme
+	theme,
+	offscreen
 }).properties<TabContainerProperties>();
 
 export const TabContainer = factory(function TabContainer({
 	children,
 	id,
-	middleware: { focus, i18n, icache, theme },
+	middleware: { focus, i18n, icache, theme, offscreen },
 	properties
 }) {
 	const {
@@ -59,7 +64,8 @@ export const TabContainer = factory(function TabContainer({
 		onClose,
 		theme: themeProp,
 		classes,
-		variant
+		variant,
+		fixed = true
 	} = properties();
 	let { activeIndex } = properties();
 
@@ -177,10 +183,31 @@ export const TabContainer = factory(function TabContainer({
 		);
 	};
 
-	const content = [
-		<div key="buttons" classes={themeCss.tabButtons}>
-			{tabs.map(renderTab)}
-		</div>,
+	const renderedTabs = tabs.map(renderTab);
+
+	const horizontalScrollbarHeight = icache.getOrSet('horizontalScrollbarHeight', () => {
+		return offscreen(
+			() => <div classes={[themeCss.scrollTest]} />,
+			(node) => node.offsetHeight - node.clientHeight
+		);
+	});
+
+	let content = [
+		fixed ? (
+			<div key="buttons" classes={themeCss.tabButtons}>
+				{...renderedTabs}
+			</div>
+		) : (
+			<div
+				key="scrollArea"
+				classes={[themeCss.scrollArea, themeCss.scroll]}
+				styles={{ marginBottom: `${horizontalScrollbarHeight}px` }}
+			>
+				<div key="buttons" classes={[themeCss.tabButtons, themeCss.scrollContent]}>
+					{...renderedTabs}
+				</div>
+			</div>
+		),
 		<div key="tabs" classes={themeCss.tabs}>
 			{children().map((child, index) => {
 				const disabled = tabs[index].disabled;
@@ -218,7 +245,12 @@ export const TabContainer = factory(function TabContainer({
 			{...formatAriaProperties(aria)}
 			key="root"
 			aria-orientation={orientation}
-			classes={[theme.variant(), alignClass || null, themeCss.root]}
+			classes={[
+				theme.variant(),
+				alignClass || null,
+				themeCss.root,
+				fixed ? themeCss.fixed : themeCss.scroller
+			]}
 			role="tablist"
 		>
 			{...content}

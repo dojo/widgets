@@ -9,12 +9,21 @@
 	pointer-events: all;
 }
 
+.root:not(.fixed) .tabButton {
+	min-width: 90px;
+	max-width: 360px;
+	flex-grow: 0;
+}
+
 .tabButton:not(.activeTabButton) .tabButtonContent {
 	color: var(--mdc-tab-button-text-color);
 }
 
 .tabButtonContent {
 	composes: mdc-tab__text-label from '@material/tab/dist/mdc.tab.css';
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .activeTabButton {
