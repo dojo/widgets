@@ -275,10 +275,13 @@ export const TextInput = factory(function TextInput({
 					]}
 					role="presentation"
 				>
-					{leadingElements &&
-						leadingElements.map((leadingElement) => (
-							<span classes={themeCss.leading}>{leadingElement}</span>
-						))}
+					{leadingElements && (
+						<virtual>
+							{leadingElements.map((leadingElement) => (
+								<span classes={themeCss.leading}>{leadingElement}</span>
+							))}
+						</virtual>
+					)}
 					<input
 						{...formatAriaProperties(aria)}
 						aria-invalid={valid === false ? 'true' : undefined}
