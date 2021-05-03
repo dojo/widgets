@@ -8,6 +8,7 @@ import { formatAriaProperties } from '../common/util';
 import HelperText from '../helper-text/index';
 import Label from '../label/index';
 import * as css from '../theme/default/text-input.m.css';
+import { isArray } from 'util';
 
 export type TextInputType =
 	| 'text'
@@ -226,6 +227,11 @@ export const TextInput = factory(function TextInput({
 	const inputFocused = focus.isFocused('input');
 	const autofilled = Boolean(icache.get('autofilled'));
 
+	let leadingElements;
+	if (leading) {
+		leadingElements = isArray(leading) ? leading : [leading];
+	}
+
 	return (
 		<div key="root" classes={[theme.variant(), themeCss.root]} role="presentation">
 			<div
@@ -269,7 +275,10 @@ export const TextInput = factory(function TextInput({
 					]}
 					role="presentation"
 				>
-					{leading && <span classes={themeCss.leading}>{leading}</span>}
+					{leadingElements &&
+						leadingElements.map((leadingElement) => (
+							<span classes={themeCss.leading}>{leadingElement}</span>
+						))}
 					<input
 						{...formatAriaProperties(aria)}
 						aria-invalid={valid === false ? 'true' : undefined}
