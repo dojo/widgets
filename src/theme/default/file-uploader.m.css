@@ -1,0 +1,51 @@
+/* The root class for FileUploader */
+.root {
+}
+
+/* Applied to the root node if the widget is disabled */
+.disabled {
+}
+
+/* Container for each item representing an added file */
+.fileItem {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Applied to a file item if it is invalid */
+.invalid {
+}
+
+/* The file information node within a file item node */
+.fileInfo {
+	display: flex;
+	flex-direction: row;
+}
+
+/* The name of each added file */
+.fileItemName {
+	flex-grow: 1;
+}
+
+/* The size of each added file */
+.fileItemSize {
+	flex-basis: 8em;
+	text-align: right;
+}
+
+/* Close icon button rendered for each file */
+.closeButton {
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	padding-top: 2px;
+}
+
+/* Applied to the node containing the validation message */
+.validationMessage {
+	color: var(--success-color);
+}
+
+.invalid .validationMessage {
+	color: var(--error-color);
+}

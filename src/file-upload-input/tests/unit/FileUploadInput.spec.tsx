@@ -10,7 +10,6 @@ import bundle from '../../nls/FileUploadInput';
 import * as baseCss from '../../../theme/default/base.m.css';
 import * as buttonCss from '../../../theme/default/button.m.css';
 import * as css from '../../../theme/default/file-upload-input.m.css';
-import * as fixedCss from '../../styles/file-upload-input.m.css';
 import * as labelCss from '../../../theme/default/label.m.css';
 
 const { after, afterEach, describe, it } = intern.getInterface('bdd');
@@ -26,11 +25,7 @@ describe('FileUploadInput', function() {
 
 	const baseAssertion = assertion(function() {
 		return (
-			<WrappedRoot
-				key="root"
-				aria-disabled="false"
-				classes={[null, fixedCss.root, css.root, false]}
-			>
+			<WrappedRoot key="root" aria-disabled="false" classes={[null, css.root, false]}>
 				<WrappedWrapper classes={[css.wrapper]}>
 					<WrappedInput
 						key="nativeInput"
@@ -125,7 +120,7 @@ describe('FileUploadInput', function() {
 								invalid: labelCss.invalid,
 								readonly: labelCss.readonly,
 								required: labelCss.required,
-								root: labelCss.root,
+								root: css.labelRoot,
 								secondary: labelCss.secondary,
 								valid: labelCss.valid
 							}
@@ -147,7 +142,7 @@ describe('FileUploadInput', function() {
 		r.expect(
 			baseAssertion
 				.setProperty(WrappedRoot, 'aria-disabled', 'true')
-				.setProperty(WrappedRoot, 'classes', [null, fixedCss.root, css.root, css.disabled])
+				.setProperty(WrappedRoot, 'classes', [null, css.root, css.disabled])
 				.setProperty(WrappedInput, 'disabled', true)
 				.setProperty(WrappedButton, 'disabled', true)
 		);

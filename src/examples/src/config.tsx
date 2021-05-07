@@ -289,6 +289,12 @@ import DisabledFileUploadInput from './widgets/file-upload-input/Disabled';
 import LabelledFileUploadInput from './widgets/file-upload-input/Labelled';
 import MultipleFileUploadInput from './widgets/file-upload-input/Multiple';
 import NoDropFileUploadInput from './widgets/file-upload-input/NoDrop';
+import BasicFileUploader from './widgets/file-uploader/Basic';
+import ControlledFileUploader from './widgets/file-uploader/Controlled';
+import CustomValidatorFileUploader from './widgets/file-uploader/CustomValidator';
+import DisabledFileUploader from './widgets/file-uploader/Disabled';
+import MultipleFileUploader from './widgets/file-uploader/Multiple';
+import ValidatedFileUploader from './widgets/file-uploader/Validated';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -846,6 +852,42 @@ export const config = {
 					title: 'FileUploadInput with no DnD',
 					filename: 'NoDrop',
 					module: NoDropFileUploadInput
+				}
+			]
+		},
+		'file-uploader': {
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicFileUploader
+				}
+			},
+			examples: [
+				{
+					title: 'Disabled FileUploader',
+					filename: 'Disabled',
+					module: DisabledFileUploader
+				},
+				{
+					title: 'Multiple FileUploader',
+					filename: 'Multiple',
+					module: MultipleFileUploader
+				},
+				{
+					title: 'Validated FileUploader',
+					filename: 'Validated',
+					module: ValidatedFileUploader
+				},
+				{
+					title: 'FileUploader with custom validator',
+					filename: 'CustomValidator',
+					module: CustomValidatorFileUploader
+				},
+				{
+					title: 'Controlled FileUploader',
+					filename: 'Controlled',
+					module: ControlledFileUploader
 				}
 			]
 		},

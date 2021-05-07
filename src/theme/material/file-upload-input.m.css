@@ -3,24 +3,10 @@
 	border: 2px dashed transparent;
 }
 
-.dndActive {
-	border-color: var(--mdc-solid-border-color-hover);
-}
-
 .disabled {
 	cursor: no-drop;
 }
 
-.dndOverlay {
-	background-color: var(--mdc-theme-on-surface);
-	opacity: 0.55;
-}
-
-.dndLabel {
-	color: var(--mdc-text-color);
-	margin-left: var(--mdc-theme-grid-base);
-}
-
-.disabled .dndLabel {
-	color: var(--mdc-disabled-text-color);
+.labelRoot {
+	position: static;
 }

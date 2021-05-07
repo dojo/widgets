@@ -10,7 +10,6 @@ import bundle from './nls/FileUploadInput';
 import * as css from '../theme/default/file-upload-input.m.css';
 import * as baseCss from '../theme/default/base.m.css';
 import * as buttonCss from '../theme/default/button.m.css';
-import * as fixedCss from './styles/file-upload-input.m.css';
 import * as labelCss from '../theme/default/label.m.css';
 
 export interface FileValidation {
@@ -98,7 +97,7 @@ export const FileUploadInput = factory(function FileUploadInput({
 			key="root"
 			{...formatAriaProperties(aria)}
 			aria-disabled={disabled ? 'true' : 'false'}
-			classes={[theme.variant(), fixedCss.root, themeCss.root, disabled && themeCss.disabled]}
+			classes={[theme.variant(), themeCss.root, disabled && themeCss.disabled]}
 		>
 			{label && (
 				<Label

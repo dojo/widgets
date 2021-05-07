@@ -1,0 +1,39 @@
+.root {
+	background-color: var(--mdc-theme-background);
+}
+
+.disabled {
+	cursor: no-drop;
+}
+
+.fileItem {
+	color: var(--mdc-text-color);
+	display: flex;
+	flex-direction: column;
+	padding: calc(var(--mdc-theme-grid-base) / 2);
+}
+
+.fileInfo {
+	display: flex;
+	flex-direction: row;
+}
+
+.fileItemName {
+	flex-grow: 1;
+}
+
+.closeButton {
+	border: none;
+	background: transparent;
+	color: var(--mdc-text-color);
+	cursor: pointer;
+	padding-top: 2px;
+}
+
+.validationMessage {
+	color: var(--mdc-secondary-text-color);
+}
+
+.invalid .validationMessage {
+	color: var(--mdc-theme-error);
+}

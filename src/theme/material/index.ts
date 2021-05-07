@@ -62,6 +62,7 @@ import * as typeahead from './typeahead.m.css';
 import * as defaultVariant from './variants/default.m.css';
 import * as darkVariant from './variants/dark.m.css';
 import * as fileUploadInput from './file-upload-input.m.css';
+import * as fileUploader from './file-uploader.m.css';
 
 export default {
 	theme: {
@@ -77,6 +78,7 @@ export default {
 		'@dojo/widgets/date-input': dateInput,
 		'@dojo/widgets/dialog': dialog,
 		'@dojo/widgets/file-upload-input': fileUploadInput,
+		'@dojo/widgets/file-uploader': fileUploader,
 		'@dojo/widgets/floating-action-button': floatingActionButton,
 		'@dojo/widgets/form': form,
 		'@dojo/widgets/grid-body': gridBody,
