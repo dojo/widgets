@@ -44,11 +44,15 @@ describe('FileUploadInput', function() {
 						onClick={noop}
 						theme={{
 							'@dojo/widgets/button': {
+								defaultKind: buttonCss.defaultKind,
 								disabled: buttonCss.disabled,
+								icon: buttonCss.icon,
+								iconOnly: buttonCss.iconOnly,
 								label: buttonCss.label,
 								popup: buttonCss.popup,
 								pressed: buttonCss.pressed,
-								root: buttonCss.root
+								root: buttonCss.root,
+								secondaryKind: buttonCss.secondaryKind
 							}
 						}}
 					>
