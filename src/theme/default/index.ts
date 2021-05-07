@@ -58,6 +58,7 @@ import * as tooltip from './tooltip.m.css';
 import * as twoColumnLayout from './two-column-layout.m.css';
 import * as typeahead from './typeahead.m.css';
 import * as defaultVariant from './variants/default.m.css';
+import * as fileUploadInput from './file-upload-input.m.css';
 
 export default {
 	theme: {
@@ -74,6 +75,7 @@ export default {
 		'@dojo/widgets/date-input': dateInput,
 		'@dojo/widgets/dialog': dialog,
 		'@dojo/widgets/email-input': emailInput,
+		'@dojo/widgets/file-upload-input': fileUploadInput,
 		'@dojo/widgets/floating-action-button': floatingActionButton,
 		'@dojo/widgets/form': form,
 		'@dojo/widgets/grid-body': gridBody,

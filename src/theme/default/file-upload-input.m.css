@@ -1,0 +1,29 @@
+/* The root class for FileUploadInput */
+.root {
+	border: 2px dashed transparent;
+}
+
+/* Applied to the root node if a DnD operation is in progress */
+.dndActive {
+	border-color: hsl(210, 29%, 60%);
+}
+
+/* Applied to the root node if the widget is disabled */
+.disabled {
+	cursor: no-drop;
+}
+
+/* The node containing the button and dnd label */
+.wrapper {
+}
+
+/* The text label in the DnD area */
+.dndLabel {
+	margin-left: 8px;
+}
+
+/* The overlay node that is displayed when DnD is active */
+.dndOverlay {
+	background-color: var(--selected-background);
+	opacity: 0.25;
+}

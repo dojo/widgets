@@ -284,6 +284,11 @@ import InitialStateTree from './widgets/tree/InitialState';
 import PopupConfirmation from './widgets/popup-confirmation/Basic';
 import PopupConfirmationUnderlay from './widgets/popup-confirmation/Underlay';
 import ClickableCard from './widgets/card/ClickableCard';
+import BasicFileUploadInput from './widgets/file-upload-input/Basic';
+import DisabledFileUploadInput from './widgets/file-upload-input/Disabled';
+import LabelledFileUploadInput from './widgets/file-upload-input/Labelled';
+import MultipleFileUploadInput from './widgets/file-upload-input/Multiple';
+import NoDropFileUploadInput from './widgets/file-upload-input/NoDrop';
 
 import * as dojoDarkVariant from '@dojo/widgets/theme/dojo/variants/dark.m.css';
 import * as materialDarkVariant from '@dojo/widgets/theme/material/variants/dark.m.css';
@@ -809,6 +814,40 @@ export const config = {
 					module: BasicEmailInput
 				}
 			}
+		},
+		'file-upload-input': {
+			filename: 'index',
+			overview: {
+				example: {
+					title: 'Basic FileUploadInput',
+					filename: 'Basic',
+					module: BasicFileUploadInput
+				}
+			},
+			examples: [
+				{
+					title: 'Disabled FileUploadInput',
+					filename: 'Disabled',
+					module: DisabledFileUploadInput
+				},
+				{
+					title: 'Multiple FileUploadInput',
+					filename: 'Multiple',
+					module: MultipleFileUploadInput,
+					description:
+						'Demonstrates using child `content` property to render information about the uploaded files that is available to the `onValue` callback.'
+				},
+				{
+					title: 'FileUploadInput with label',
+					filename: 'Labelled',
+					module: LabelledFileUploadInput
+				},
+				{
+					title: 'FileUploadInput with no DnD',
+					filename: 'NoDrop',
+					module: NoDropFileUploadInput
+				}
+			]
 		},
 		'floating-action-button': {
 			overview: {
