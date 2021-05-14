@@ -94,16 +94,16 @@
 	--loader-size-large: 48px;
 
 	--vstack-padding-small: var(--grid-base);
-	--vstack-padding-medium: calc(var(--grid-base), 1.5);
-	--vstack-padding-large: calc(var(--grid-base), 2);
+	--vstack-padding-medium: calc(var(--grid-base) * 1.5);
+	--vstack-padding-large: calc(var(--grid-base) * 2);
 	--vstack-spacing-small: var(--grid-base);
-	--vstack-spacing-medium: calc(var(--grid-base), 1.5);
-	--vstack-spacing-large: calc(var(--grid-base), 2);
+	--vstack-spacing-medium: calc(var(--grid-base) * 1.5);
+	--vstack-spacing-large: calc(var(--grid-base) * 2);
 
 	--hstack-padding-small: var(--grid-base);
-	--hstack-padding-medium: calc(var(--grid-base), 1.5);
-	--hstack-padding-large: calc(var(--grid-base), 2);
+	--hstack-padding-medium: calc(var(--grid-base) * 1.5);
+	--hstack-padding-large: calc(var(--grid-base) * 2);
 	--hstack-spacing-small: var(--grid-base);
-	--hstack-spacing-medium: calc(var(--grid-base), 1.5);
-	--hstack-spacing-large: calc(var(--grid-base), 2);
+	--hstack-spacing-medium: calc(var(--grid-base) * 1.5);
+	--hstack-spacing-large: calc(var(--grid-base) * 2);
 }

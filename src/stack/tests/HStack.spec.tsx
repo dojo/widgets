@@ -11,7 +11,7 @@ describe('Stacks - HStack Rendering', () => {
 	it('As Default', () => {
 		const r = renderer(() => <HStack>HStack Child</HStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.middle, undefined, false]}>
+			<div classes={[null, fixedCss.root, undefined, undefined, false]}>
 				<div classes={[undefined, fixedCss.child]}>HStack Child</div>
 			</div>
 		));
@@ -21,7 +21,7 @@ describe('Stacks - HStack Rendering', () => {
 	it('With Small Spacing', () => {
 		const r = renderer(() => <HStack spacing="small">HStack Child</HStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.middle, undefined, false]}>
+			<div classes={[null, fixedCss.root, undefined, undefined, false]}>
 				<div classes={[css.smallSpacing, fixedCss.child]}>HStack Child</div>
 			</div>
 		));
@@ -31,7 +31,7 @@ describe('Stacks - HStack Rendering', () => {
 	it('With Medium Spacing', () => {
 		const r = renderer(() => <HStack spacing="medium">HStack Child</HStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.middle, undefined, false]}>
+			<div classes={[null, fixedCss.root, undefined, undefined, false]}>
 				<div classes={[css.mediumSpacing, fixedCss.child]}>HStack Child</div>
 			</div>
 		));
@@ -41,7 +41,7 @@ describe('Stacks - HStack Rendering', () => {
 	it('With Large Spacing', () => {
 		const r = renderer(() => <HStack spacing="large">HStack Child</HStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.middle, undefined, false]}>
+			<div classes={[null, fixedCss.root, undefined, undefined, false]}>
 				<div classes={[css.largeSpacing, fixedCss.child]}>HStack Child</div>
 			</div>
 		));
@@ -51,7 +51,7 @@ describe('Stacks - HStack Rendering', () => {
 	it('With Small Padding', () => {
 		const r = renderer(() => <HStack padding="small">HStack Child</HStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.middle, css.smallPadding, false]}>
+			<div classes={[null, fixedCss.root, undefined, css.smallPadding, false]}>
 				<div classes={[null, fixedCss.child]}>HStack Child</div>
 			</div>
 		));
@@ -61,7 +61,7 @@ describe('Stacks - HStack Rendering', () => {
 	it('With Medium Padding', () => {
 		const r = renderer(() => <HStack padding="medium">HStack Child</HStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.middle, css.mediumPadding, false]}>
+			<div classes={[null, fixedCss.root, undefined, css.mediumPadding, false]}>
 				<div classes={[null, fixedCss.child]}>HStack Child</div>
 			</div>
 		));
@@ -71,7 +71,7 @@ describe('Stacks - HStack Rendering', () => {
 	it('With Large Padding', () => {
 		const r = renderer(() => <HStack padding="large">HStack Child</HStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.middle, css.largePadding, false]}>
+			<div classes={[null, fixedCss.root, undefined, css.largePadding, false]}>
 				<div classes={[null, fixedCss.child]}>HStack Child</div>
 			</div>
 		));
@@ -82,6 +82,16 @@ describe('Stacks - HStack Rendering', () => {
 		const r = renderer(() => <HStack align="start">HStack Child</HStack>);
 		const baseAssertion = assertion(() => (
 			<div classes={[null, fixedCss.root, fixedCss.top, undefined, false]}>
+				<div classes={[null, fixedCss.child]}>HStack Child</div>
+			</div>
+		));
+		r.expect(baseAssertion);
+	});
+
+	it('With Middle Alignment', () => {
+		const r = renderer(() => <HStack align="middle">HStack Child</HStack>);
+		const baseAssertion = assertion(() => (
+			<div classes={[null, fixedCss.root, fixedCss.middle, undefined, false]}>
 				<div classes={[null, fixedCss.child]}>HStack Child</div>
 			</div>
 		));
@@ -101,7 +111,7 @@ describe('Stacks - HStack Rendering', () => {
 	it('With Stretch', () => {
 		const r = renderer(() => <HStack stretch>HStack Child</HStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.middle, undefined, fixedCss.stretch]}>
+			<div classes={[null, fixedCss.root, undefined, undefined, fixedCss.stretch]}>
 				<div classes={[null, fixedCss.child]}>HStack Child</div>
 			</div>
 		));
@@ -117,7 +127,7 @@ describe('Stacks - HStack Rendering', () => {
 			</HStack>
 		));
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.middle, css.largePadding, false]}>
+			<div classes={[null, fixedCss.root, undefined, css.largePadding, false]}>
 				<Spacer />
 				<div classes={[null, fixedCss.child]}>HStack Child</div>
 				<Spacer />

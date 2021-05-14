@@ -28,8 +28,8 @@ const Box = factory(function Box() {
 export default factory(function Basic({ middleware: { icache } }) {
 	const stretch = icache.get('stretch');
 	const align = icache.getOrSet('align', 'middle');
-	const padding = icache.getOrSet('padding', 'none');
-	const spacing = icache.getOrSet('spacing', 'none');
+	const padding = icache.get('padding');
+	const spacing = icache.get('spacing');
 	const direction = icache.getOrSet('direction', 'horizontal');
 
 	return (
@@ -50,10 +50,14 @@ export default factory(function Basic({ middleware: { icache } }) {
 						value={spacing}
 						name="spacing"
 						onValue={(value: any) => {
-							icache.set('spacing', value);
+							if (!value) {
+								icache.delete('spacing');
+							} else {
+								icache.set('spacing', value);
+							}
 						}}
 						options={[
-							{ value: 'none' },
+							{ value: '', label: 'None' },
 							{ value: 'small' },
 							{ value: 'medium' },
 							{ value: 'large' }
@@ -77,10 +81,14 @@ export default factory(function Basic({ middleware: { icache } }) {
 						value={padding}
 						name="padding"
 						onValue={(value: any) => {
-							icache.set('padding', value);
+							if (!value) {
+								icache.delete('padding');
+							} else {
+								icache.set('padding', value);
+							}
 						}}
 						options={[
-							{ value: 'none' },
+							{ value: '', label: 'None' },
 							{ value: 'small' },
 							{ value: 'medium' },
 							{ value: 'large' }

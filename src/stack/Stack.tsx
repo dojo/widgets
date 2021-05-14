@@ -5,12 +5,12 @@ import { VStack } from './VStack';
 export interface StackProperties {
 	/** The direction of the stack */
 	direction: 'vertical' | 'horizontal';
-	/** The alignment of the stack */
+	/** The sets the alignment of the stack for the opposite direction of the stack, i.e. for a vertical stack it is the horizontal alignment */
 	align?: 'start' | 'middle' | 'end';
-	/** The spacing between children, defaults to `none` */
-	spacing?: 'small' | 'medium' | 'large' | 'none';
-	/** Adds padding to the stack container */
-	padding?: 'small' | 'medium' | 'large' | 'none';
+	/** The spacing between children */
+	spacing?: 'small' | 'medium' | 'large';
+	/** The padding for stack container */
+	padding?: 'small' | 'medium' | 'large';
 	/** Stretches the container to fit the space */
 	stretch?: boolean;
 }

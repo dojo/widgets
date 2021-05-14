@@ -1,16 +1,16 @@
 import { tsx, create, isWNode } from '@dojo/framework/core/vdom';
-import theme from '@dojo/framework/core/middleware/theme';
+import theme from '../middleware/theme';
 import * as fixedCss from './styles/vstack.m.css';
 import * as css from '../theme/default/vstack.m.css';
 import Spacer from './Spacer';
 
 export interface VStackProperties {
-	/** The alignment of the stack */
+	/** The sets the horizontal alignment of the stack */
 	align?: 'start' | 'middle' | 'end';
-	/** The spacing between children, defaults to `none` */
-	spacing?: 'small' | 'medium' | 'large' | 'none';
-	/** Adds padding to the stack container */
-	padding?: 'small' | 'medium' | 'large' | 'none';
+	/** The spacing between children */
+	spacing?: 'small' | 'medium' | 'large';
+	/** The padding for stack container */
+	padding?: 'small' | 'medium' | 'large';
 	/** Stretches the container to fit the space */
 	stretch?: boolean;
 }
@@ -20,7 +20,7 @@ const spacer = <Spacer />;
 const factory = create({ theme }).properties<VStackProperties>();
 
 export const VStack = factory(function VStack({ properties, middleware: { theme }, children }) {
-	const { align = 'middle', spacing = 'none', padding = 'none', stretch = false } = properties();
+	const { align, spacing, padding, stretch = false } = properties();
 	const themeCss = theme.classes(css);
 	let spacingClass: string | undefined;
 	let paddingClass: string | undefined;

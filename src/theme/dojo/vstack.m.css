@@ -1,13 +1,13 @@
 .smallSpacing {
-	margin-right: var(--vstack-spacing-small);
+	margin-bottom: var(--vstack-spacing-small);
 }
 
 .mediumSpacing {
-	margin-right: var(--vstack-spacing-medium);
+	margin-bottom: var(--vstack-spacing-medium);
 }
 
 .largeSpacing {
-	margin-right: var(--vstack-spacing-large);
+	margin-bottom: var(--vstack-spacing-large);
 }
 
 .smallPadding {

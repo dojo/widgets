@@ -22,6 +22,7 @@ import * as gridPlaceholderRow from './grid-placeholder-row.m.css';
 import * as gridRow from './grid-row.m.css';
 import * as grid from './grid.m.css';
 import * as helperText from './helper-text.m.css';
+import * as hstack from './hstack.m.css';
 import * as icon from './icon.m.css';
 import * as label from './label.m.css';
 import * as listItem from './list-item.m.css';
@@ -57,6 +58,7 @@ import * as tree from './tree.m.css';
 import * as tooltip from './tooltip.m.css';
 import * as twoColumnLayout from './two-column-layout.m.css';
 import * as typeahead from './typeahead.m.css';
+import * as vstack from './vstack.m.css';
 import * as defaultVariant from './variants/default.m.css';
 
 export default {
@@ -119,7 +121,9 @@ export default {
 		'@dojo/widgets/tree': tree,
 		'@dojo/widgets/tooltip': tooltip,
 		'@dojo/widgets/two-column-layout': twoColumnLayout,
-		'@dojo/widgets/typeahead': typeahead
+		'@dojo/widgets/typeahead': typeahead,
+		'@dojo/widgets/hstack': hstack,
+		'@dojo/widgets/vstack': vstack
 	},
 	variants: {
 		default: defaultVariant

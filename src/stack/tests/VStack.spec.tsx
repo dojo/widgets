@@ -11,8 +11,8 @@ describe('Stacks - VStack Rendering', () => {
 	it('As Default', () => {
 		const r = renderer(() => <VStack>VStack Child</VStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.center, undefined, false]}>
-				<div classes={[undefined, fixedCss.child]}>VStack Child</div>
+			<div classes={[null, fixedCss.root, undefined, false]}>
+				<div classes={[null, null, fixedCss.child]}>VStack Child</div>
 			</div>
 		));
 		r.expect(baseAssertion);
@@ -21,8 +21,8 @@ describe('Stacks - VStack Rendering', () => {
 	it('With Small Spacing', () => {
 		const r = renderer(() => <VStack spacing="small">VStack Child</VStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.center, undefined, false]}>
-				<div classes={[css.smallSpacing, fixedCss.child]}>VStack Child</div>
+			<div classes={[null, fixedCss.root, undefined, false]}>
+				<div classes={[css.smallSpacing, null, fixedCss.child]}>VStack Child</div>
 			</div>
 		));
 		r.expect(baseAssertion);
@@ -31,8 +31,8 @@ describe('Stacks - VStack Rendering', () => {
 	it('With Medium Spacing', () => {
 		const r = renderer(() => <VStack spacing="medium">VStack Child</VStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.center, undefined, false]}>
-				<div classes={[css.mediumSpacing, fixedCss.child]}>VStack Child</div>
+			<div classes={[null, fixedCss.root, undefined, false]}>
+				<div classes={[css.mediumSpacing, null, fixedCss.child]}>VStack Child</div>
 			</div>
 		));
 		r.expect(baseAssertion);
@@ -41,8 +41,8 @@ describe('Stacks - VStack Rendering', () => {
 	it('With Large Spacing', () => {
 		const r = renderer(() => <VStack spacing="large">VStack Child</VStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.center, undefined, false]}>
-				<div classes={[css.largeSpacing, fixedCss.child]}>VStack Child</div>
+			<div classes={[null, fixedCss.root, undefined, false]}>
+				<div classes={[css.largeSpacing, null, fixedCss.child]}>VStack Child</div>
 			</div>
 		));
 		r.expect(baseAssertion);
@@ -51,8 +51,8 @@ describe('Stacks - VStack Rendering', () => {
 	it('With Small Padding', () => {
 		const r = renderer(() => <VStack padding="small">VStack Child</VStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.center, css.smallPadding, false]}>
-				<div classes={[null, fixedCss.child]}>VStack Child</div>
+			<div classes={[null, fixedCss.root, css.smallPadding, false]}>
+				<div classes={[null, null, fixedCss.child]}>VStack Child</div>
 			</div>
 		));
 		r.expect(baseAssertion);
@@ -61,8 +61,8 @@ describe('Stacks - VStack Rendering', () => {
 	it('With Medium Padding', () => {
 		const r = renderer(() => <VStack padding="medium">VStack Child</VStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.center, css.mediumPadding, false]}>
-				<div classes={[null, fixedCss.child]}>VStack Child</div>
+			<div classes={[null, fixedCss.root, css.mediumPadding, false]}>
+				<div classes={[null, null, fixedCss.child]}>VStack Child</div>
 			</div>
 		));
 		r.expect(baseAssertion);
@@ -71,8 +71,8 @@ describe('Stacks - VStack Rendering', () => {
 	it('With Large Padding', () => {
 		const r = renderer(() => <VStack padding="large">VStack Child</VStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.center, css.largePadding, false]}>
-				<div classes={[null, fixedCss.child]}>VStack Child</div>
+			<div classes={[null, fixedCss.root, css.largePadding, false]}>
+				<div classes={[null, null, fixedCss.child]}>VStack Child</div>
 			</div>
 		));
 		r.expect(baseAssertion);
@@ -81,8 +81,18 @@ describe('Stacks - VStack Rendering', () => {
 	it('With Start Alignment', () => {
 		const r = renderer(() => <VStack align="start">VStack Child</VStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.left, undefined, false]}>
-				<div classes={[null, fixedCss.child]}>VStack Child</div>
+			<div classes={[null, fixedCss.root, undefined, false]}>
+				<div classes={[null, fixedCss.left, fixedCss.child]}>VStack Child</div>
+			</div>
+		));
+		r.expect(baseAssertion);
+	});
+
+	it('With Middle Alignment', () => {
+		const r = renderer(() => <VStack align="middle">VStack Child</VStack>);
+		const baseAssertion = assertion(() => (
+			<div classes={[null, fixedCss.root, undefined, false]}>
+				<div classes={[null, fixedCss.center, fixedCss.child]}>VStack Child</div>
 			</div>
 		));
 		r.expect(baseAssertion);
@@ -91,8 +101,8 @@ describe('Stacks - VStack Rendering', () => {
 	it('With End Alignment', () => {
 		const r = renderer(() => <VStack align="end">VStack Child</VStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.right, undefined, false]}>
-				<div classes={[null, fixedCss.child]}>VStack Child</div>
+			<div classes={[null, fixedCss.root, undefined, false]}>
+				<div classes={[null, fixedCss.right, fixedCss.child]}>VStack Child</div>
 			</div>
 		));
 		r.expect(baseAssertion);
@@ -101,8 +111,8 @@ describe('Stacks - VStack Rendering', () => {
 	it('With Stretch', () => {
 		const r = renderer(() => <VStack stretch>VStack Child</VStack>);
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.center, undefined, fixedCss.stretch]}>
-				<div classes={[null, fixedCss.child]}>VStack Child</div>
+			<div classes={[null, fixedCss.root, undefined, fixedCss.stretch]}>
+				<div classes={[null, null, fixedCss.child]}>VStack Child</div>
 			</div>
 		));
 		r.expect(baseAssertion);
@@ -117,9 +127,9 @@ describe('Stacks - VStack Rendering', () => {
 			</VStack>
 		));
 		const baseAssertion = assertion(() => (
-			<div classes={[null, fixedCss.root, fixedCss.center, css.largePadding, false]}>
+			<div classes={[null, fixedCss.root, css.largePadding, false]}>
 				<Spacer />
-				<div classes={[null, fixedCss.child]}>VStack Child</div>
+				<div classes={[null, null, fixedCss.child]}>VStack Child</div>
 				<Spacer />
 			</div>
 		));
