@@ -2,15 +2,3 @@
 	height: 100%;
 	width: 100%;
 }
-
-.normal {
-	flex: 1;
-}
-
-.double {
-	flex: 2;
-}
-
-.root:first {
-	margin-top: auto;
-}

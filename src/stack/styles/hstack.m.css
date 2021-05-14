@@ -1,9 +1,12 @@
 .root {
 	display: flex;
 	flex-direction: row;
-	height: 100%;
-	width: 100%;
 	justify-content: center;
+	height: 100%;
+}
+
+.stretch {
+	width: 100%;
 }
 
 .top {
@@ -16,6 +19,10 @@
 
 .bottom {
 	align-items: flex-end;
+}
+
+.stretch .child {
+	width: 100%;
 }
 
 .child:last-child {

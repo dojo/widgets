@@ -1,23 +1,23 @@
-.padding {
-	padding: var(--vstack-padding);
-}
-
-.extraSmall {
-	margin-right: var(--vstack-spacing-extra-small);
-}
-
-.small {
+.smallSpacing {
 	margin-right: var(--vstack-spacing-small);
 }
 
-.medium {
+.mediumSpacing {
 	margin-right: var(--vstack-spacing-medium);
 }
 
-.large {
+.largeSpacing {
 	margin-right: var(--vstack-spacing-large);
 }
 
-.extraLarge {
-	margin-right: var(--vstack-spacing-extra-large);
+.smallPadding {
+	padding: var(--vstack-padding-small);
+}
+
+.mediumPadding {
+	padding: var(--vstack-padding-medium);
+}
+
+.largePadding {
+	padding: var(--vstack-padding-large);
 }

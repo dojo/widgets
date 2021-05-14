@@ -245,11 +245,7 @@ import BasicHeader from './widgets/header/Basic';
 import LeadingHeader from './widgets/header/Leading';
 import StickyHeader from './widgets/header/Sticky';
 import TrailingHeader from './widgets/header/Trailing';
-import BasicHStack from './widgets/hstack/Basic';
-import PaddingHStack from './widgets/hstack/Padding';
-import SpacingHStack from './widgets/hstack/Spacing';
-import SpacerHStack from './widgets/hstack/Spacer';
-import AlignHStack from './widgets/hstack/Align';
+import BasicStack from './widgets/stack/Basic';
 import BasicRate from './widgets/rate/Basic';
 import HalfRate from './widgets/rate/AllowHalf';
 import ControlledRate from './widgets/rate/Controlled';
@@ -281,10 +277,6 @@ import StepRendererWizard from './widgets/wizard/StepRenderer';
 import StepContentWizard from './widgets/wizard/StepContent';
 import VerticalWizard from './widgets/wizard/Vertical';
 import ErrorWizard from './widgets/wizard/Error';
-import BasicVStack from './widgets/vstack/Basic';
-import PaddingVStack from './widgets/vstack/Padding';
-import SpacingVStack from './widgets/vstack/Spacing';
-import SpacerVStack from './widgets/vstack/Spacer';
 import BasicTree from './widgets/tree/Basic';
 import CheckableTree from './widgets/tree/Checkable';
 import CustomRendererTree from './widgets/tree/CustomRenderer';
@@ -1028,37 +1020,6 @@ export const config: Config = {
 					filename: 'Basic'
 				}
 			}
-		},
-		hstack: {
-			filename: 'HStack',
-			overview: {
-				example: {
-					filename: 'Basic',
-					module: BasicHStack
-				}
-			},
-			examples: [
-				{
-					filename: 'Padding',
-					module: PaddingHStack,
-					title: 'HStack with Padding'
-				},
-				{
-					filename: 'Spacing',
-					module: SpacingHStack,
-					title: 'HStack with Spacing'
-				},
-				{
-					filename: 'Spacer',
-					module: SpacerHStack,
-					title: 'HStack using spacers'
-				},
-				{
-					filename: 'Align',
-					module: AlignHStack,
-					title: 'HStack using vertical alignment'
-				}
-			]
 		},
 		icon: {
 			examples: [
@@ -2171,31 +2132,14 @@ export const config: Config = {
 				}
 			}
 		},
-		vstack: {
-			filename: 'VStack',
+		stack: {
+			filename: 'Stack',
 			overview: {
 				example: {
 					filename: 'Basic',
-					module: BasicVStack
+					module: BasicStack
 				}
-			},
-			examples: [
-				{
-					filename: 'Padding',
-					module: PaddingVStack,
-					title: 'VStack with Padding'
-				},
-				{
-					filename: 'Spacing',
-					module: SpacingVStack,
-					title: 'VStack with Spacing'
-				},
-				{
-					filename: 'Spacer',
-					module: SpacerVStack,
-					title: 'VStack using spacers'
-				}
-			]
+			}
 		},
 		wizard: {
 			overview: {

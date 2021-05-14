@@ -5,10 +5,14 @@ import * as css from '../theme/default/vstack.m.css';
 import Spacer from './Spacer';
 
 export interface VStackProperties {
+	/** The alignment of the stack */
+	align?: 'start' | 'middle' | 'end';
 	/** The spacing between children, defaults to `none` */
-	spacing?: 'extra-small' | 'small' | 'medium' | 'large' | 'extra-large' | 'none';
+	spacing?: 'small' | 'medium' | 'large' | 'none';
 	/** Adds padding to the stack container */
-	padding?: boolean;
+	padding?: 'small' | 'medium' | 'large' | 'none';
+	/** Stretches the container to fit the space */
+	stretch?: boolean;
 }
 
 const spacer = <Spacer />;
@@ -16,42 +20,69 @@ const spacer = <Spacer />;
 const factory = create({ theme }).properties<VStackProperties>();
 
 export const VStack = factory(function VStack({ properties, middleware: { theme }, children }) {
-	const { spacing = 'none', padding = false } = properties();
+	const { align = 'middle', spacing = 'none', padding = 'none', stretch = false } = properties();
 	const themeCss = theme.classes(css);
-	let spacingClass: string;
+	let spacingClass: string | undefined;
+	let paddingClass: string | undefined;
+	let alignClass: string | undefined;
+
 	switch (spacing) {
-		case 'extra-small':
-			spacingClass = themeCss.extraSmall;
-			break;
 		case 'small':
-			spacingClass = themeCss.small;
+			spacingClass = themeCss.smallSpacing;
 			break;
 		case 'medium':
-			spacingClass = themeCss.medium;
+			spacingClass = themeCss.mediumSpacing;
 			break;
 		case 'large':
-			spacingClass = themeCss.large;
+			spacingClass = themeCss.largeSpacing;
 			break;
-		case 'extra-large':
-			spacingClass = themeCss.extraLarge;
+		default:
+			break;
+	}
+	switch (padding) {
+		case 'small':
+			paddingClass = themeCss.smallPadding;
+			break;
+		case 'medium':
+			paddingClass = themeCss.mediumPadding;
+			break;
+		case 'large':
+			paddingClass = themeCss.largePadding;
+			break;
+		default:
+			break;
+	}
+	switch (align) {
+		case 'start':
+			alignClass = fixedCss.left;
+			break;
+		case 'middle':
+			alignClass = fixedCss.center;
+			break;
+		case 'end':
+			alignClass = fixedCss.right;
 			break;
 		default:
 			break;
 	}
 
-	const wrappedChildren = children().map((child, index) => {
+	const wrappedChildren = children().map((child) => {
 		if (isWNode(child) && spacer.widgetConstructor === child.widgetConstructor) {
 			return child;
 		}
-		return (
-			<div key={index} classes={[spacingClass, fixedCss.child]}>
-				{child}
-			</div>
-		);
+		return <div classes={[spacingClass, fixedCss.child]}>{child}</div>;
 	});
 
 	return (
-		<div classes={[theme.variant(), fixedCss.root, padding && themeCss.padding]}>
+		<div
+			classes={[
+				theme.variant(),
+				fixedCss.root,
+				alignClass,
+				paddingClass,
+				stretch && fixedCss.stretch
+			]}
+		>
 			{wrappedChildren}
 		</div>
 	);
