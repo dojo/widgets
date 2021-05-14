@@ -1,0 +1,23 @@
+.padding {
+	padding: var(--hstack-padding);
+}
+
+.extraSmall {
+	margin-right: var(--hstack-spacing-extra-small);
+}
+
+.small {
+	margin-right: var(--hstack-spacing-small);
+}
+
+.medium {
+	margin-right: var(--hstack-spacing-medium);
+}
+
+.large {
+	margin-right: var(--hstack-spacing-large);
+}
+
+.extraLarge {
+	margin-right: var(--hstack-spacing-extra-large);
+}

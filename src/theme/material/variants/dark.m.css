@@ -105,4 +105,18 @@
 	--mdc-list-item-active-color: var(--mdc-text-color);
 	--mdc-list-item-hover-background: var(--mdc-theme-on-surface);
 	--mdc-list-item-hover-color: var(--mdc-text-color);
+
+	--mdc-vstack-padding: calc(var(--grid-base), 3);
+	--mdc-vstack-spacing-extra-small: calc(var(--grid-base), 0.5);
+	--mdc-vstack-spacing-small: var(--grid-base);
+	--mdc-vstack-spacing-medium: calc(var(--grid-base), 1.5);
+	--mdc-vstack-spacing-large: calc(var(--grid-base), 2);
+	--mdc-vstack-spacing-extra-large: calc(var(--grid-base), 2.5);
+
+	--mdc-hstack-padding: calc(var(--grid-base), 3);
+	--mdc-hstack-spacing-extra-small: calc(var(--grid-base), 0.5);
+	--mdc-hstack-spacing-small: var(--grid-base);
+	--mdc-hstack-spacing-medium: calc(var(--grid-base), 1.5);
+	--mdc-hstack-spacing-large: calc(var(--grid-base), 2);
+	--mdc-hstack-spacing-extra-large: calc(var(--grid-base), 2.5);
 }

@@ -1,0 +1,29 @@
+/* Defines the size of padding that can be optionally applied */
+.padding {
+	padding: 24px;
+}
+
+/* Defines the extra small spacing size */
+.extraSmall {
+	margin-right: 4px;
+}
+
+/* Defines the small spacing size */
+.small {
+	margin-right: 8px;
+}
+
+/* Defines the medium spacing size */
+.medium {
+	margin-right: 12px;
+}
+
+/* Defines the large spacing size */
+.large {
+	margin-right: 16px;
+}
+
+/* Defines the extra large spacing size */
+.extraLarge {
+	margin-right: 20px;
+}

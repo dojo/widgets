@@ -1,0 +1,23 @@
+.root {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+	width: 100%;
+	justify-content: center;
+}
+
+.top {
+	align-items: flex-start;
+}
+
+.middle {
+	align-items: center;
+}
+
+.bottom {
+	align-items: flex-end;
+}
+
+.child:last-child {
+	margin-right: 0;
+}

@@ -1,0 +1,23 @@
+.padding {
+	padding: var(--vstack-padding);
+}
+
+.extraSmall {
+	margin-right: var(--vstack-spacing-extra-small);
+}
+
+.small {
+	margin-right: var(--vstack-spacing-small);
+}
+
+.medium {
+	margin-right: var(--vstack-spacing-medium);
+}
+
+.large {
+	margin-right: var(--vstack-spacing-large);
+}
+
+.extraLarge {
+	margin-right: var(--vstack-spacing-extra-large);
+}
