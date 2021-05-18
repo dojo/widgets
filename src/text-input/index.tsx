@@ -8,7 +8,6 @@ import { formatAriaProperties } from '../common/util';
 import HelperText from '../helper-text/index';
 import Label from '../label/index';
 import * as css from '../theme/default/text-input.m.css';
-import { isArray } from 'util';
 
 export type TextInputType =
 	| 'text'
@@ -229,7 +228,7 @@ export const TextInput = factory(function TextInput({
 
 	let leadingElements;
 	if (leading) {
-		leadingElements = isArray(leading) ? leading : [leading];
+		leadingElements = Array.isArray(leading) ? leading : [leading];
 	}
 
 	return (
