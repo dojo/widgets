@@ -1,7 +1,7 @@
 const { it, describe } = intern.getInterface('bdd');
 
 import { tsx } from '@dojo/framework/core/vdom';
-import { renderer, assertion } from '@dojo/framework/testing/renderer';
+import { renderer, assertion, wrap } from '@dojo/framework/testing/renderer';
 import Stack from '../index';
 import * as fixedCss from '../styles/stack.m.css';
 import * as css from '../../theme/default/stack.m.css';
@@ -270,11 +270,16 @@ describe('Stack', () => {
 		});
 
 		it('With a Spacer', () => {
+			const WrappedSpacerTop = wrap(Spacer);
+			const WrappedSpacerBottom = wrap(Spacer);
+			const WrappedSpacerTopDiv = wrap('div');
+			const WrappedSpacerBottomDiv = wrap('div');
+
 			const r = renderer(() => (
 				<Stack direction="horizontal" padding="large">
 					<Spacer />
 					HStack Child
-					<Spacer />
+					<Spacer spanCallback={() => {}} />
 				</Stack>
 			));
 			const baseAssertion = assertion(() => (
@@ -289,12 +294,29 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<Spacer />
+					<WrappedSpacerTopDiv classes={[null, false, fixedCss.child]}>
+						<WrappedSpacerTop spanCallback={() => {}} />
+					</WrappedSpacerTopDiv>
 					<div classes={[null, false, fixedCss.child]}>HStack Child</div>
-					<Spacer />
+					<WrappedSpacerBottomDiv classes={[null, false, fixedCss.child]}>
+						<WrappedSpacerBottom spanCallback={() => {}} />
+					</WrappedSpacerBottomDiv>
 				</div>
 			));
 			r.expect(baseAssertion);
+			r.property(WrappedSpacerTop, 'spanCallback', 1);
+			r.property(WrappedSpacerBottom, 'spanCallback', 2);
+			r.expect(
+				baseAssertion
+					.setProperties(WrappedSpacerTopDiv, {
+						styles: { flex: '1' },
+						classes: [fixedCss.spacer]
+					})
+					.setProperties(WrappedSpacerBottomDiv, {
+						styles: { flex: '2' },
+						classes: [fixedCss.spacer]
+					})
+			);
 		});
 	});
 
@@ -560,11 +582,16 @@ describe('Stack', () => {
 		});
 
 		it('With a Spacer', () => {
+			const WrappedSpacerTop = wrap(Spacer);
+			const WrappedSpacerBottom = wrap(Spacer);
+			const WrappedSpacerTopDiv = wrap('div');
+			const WrappedSpacerBottomDiv = wrap('div');
+
 			const r = renderer(() => (
 				<Stack direction="vertical" padding="large">
 					<Spacer />
 					VStack Child
-					<Spacer />
+					<Spacer spanCallback={() => {}} />
 				</Stack>
 			));
 			const baseAssertion = assertion(() => (
@@ -579,12 +606,29 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<Spacer />
+					<WrappedSpacerTopDiv classes={[null, null, fixedCss.child]}>
+						<WrappedSpacerTop spanCallback={() => {}} />
+					</WrappedSpacerTopDiv>
 					<div classes={[null, null, fixedCss.child]}>VStack Child</div>
-					<Spacer />
+					<WrappedSpacerBottomDiv classes={[null, null, fixedCss.child]}>
+						<WrappedSpacerBottom spanCallback={() => {}} />
+					</WrappedSpacerBottomDiv>
 				</div>
 			));
 			r.expect(baseAssertion);
+			r.property(WrappedSpacerTop, 'spanCallback', 1);
+			r.property(WrappedSpacerBottom, 'spanCallback', 2);
+			r.expect(
+				baseAssertion
+					.setProperties(WrappedSpacerTopDiv, {
+						styles: { flex: '1' },
+						classes: [fixedCss.spacer]
+					})
+					.setProperties(WrappedSpacerBottomDiv, {
+						styles: { flex: '2' },
+						classes: [fixedCss.spacer]
+					})
+			);
 		});
 	});
 });
