@@ -6,3 +6,4 @@ export const child: string;
 export const start: string;
 export const middle: string;
 export const end: string;
+export const spacer: string;

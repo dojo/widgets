@@ -1,25 +1,11 @@
-import { tsx, create, isWNode } from '@dojo/framework/core/vdom';
+import { tsx, create, isWNode, isVNode } from '@dojo/framework/core/vdom';
+import icache from '@dojo/framework/core/middleware/icache';
 import theme from '../middleware/theme';
 
 import * as fixedCss from './styles/stack.m.css';
 import * as css from '../theme/default/stack.m.css';
 
-import {
-	DNode,
-	WNodeFactory,
-	OptionalWNodeFactory,
-	DefaultChildrenWNodeFactory
-} from '@dojo/framework/core/interfaces';
-import Spacer from './Spacer';
 export { Spacer } from './Spacer';
-
-function typeOf(
-	node: DNode,
-	factory: WNodeFactory<any> | OptionalWNodeFactory<any> | DefaultChildrenWNodeFactory<any>
-) {
-	const compareTo = factory({}, []);
-	return isWNode(node) && compareTo.widgetConstructor === node.widgetConstructor;
-}
 
 export interface StackProperties {
 	/** The direction of the stack */
@@ -34,9 +20,13 @@ export interface StackProperties {
 	stretch?: boolean;
 }
 
-const factory = create({ theme }).properties<StackProperties>();
+const factory = create({ icache, theme }).properties<StackProperties>();
 
-export const Stack = factory(function Stack({ properties, middleware: { theme }, children }) {
+export const Stack = factory(function Stack({
+	properties,
+	middleware: { icache, theme },
+	children
+}) {
 	const { direction, align, spacing, padding = false, stretch = false } = properties();
 	const themeCss = theme.classes(css);
 	let spacingClass: string | undefined;
@@ -83,10 +73,22 @@ export const Stack = factory(function Stack({ properties, middleware: { theme },
 			break;
 	}
 
-	const wrappedChildren = children().map((child) => {
-		if (typeOf(child, Spacer)) {
-			return child;
+	const wrappedChildren = children().map((child, index) => {
+		if (isWNode(child) || isVNode(child)) {
+			child.properties.spanCallback = (span: number) => {
+				icache.set(`span-${index}`, span);
+			};
 		}
+
+		const span = icache.get(`span-${index}`);
+		if (span) {
+			return (
+				<div styles={{ flex: `${span}` }} classes={[fixedCss.spacer]}>
+					{child}
+				</div>
+			);
+		}
+
 		return (
 			<div classes={[spacingClass, direction === 'vertical' && alignClass, fixedCss.child]}>
 				{child}

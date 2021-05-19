@@ -1,3 +1,8 @@
+dojo-stack {
+	height: 100%;
+	width: 100%;
+}
+
 .root {
 	display: flex;
 }
@@ -67,4 +72,9 @@
 
 .horizontal > .child:last-child {
 	margin-right: 0;
+}
+
+.spacer {
+	height: 100%;
+	width: 100%;
 }
