@@ -116,4 +116,18 @@
 	--mdc-list-item-active-color: var(--mdc-text-color);
 	--mdc-list-item-hover-background: var(--mdc-theme-on-surface);
 	--mdc-list-item-hover-color: var(--mdc-text-color);
+
+	--mdc-vstack-padding-small: var(--mdc-theme-grid-base);
+	--mdc-vstack-padding-medium: calc(var(--mdc-theme-grid-base) * 1.5);
+	--mdc-vstack-padding-large: calc(var(--mdc-theme-grid-base) * 2);
+	--mdc-vstack-spacing-small: var(--mdc-theme-grid-base);
+	--mdc-vstack-spacing-medium: calc(var(--mdc-theme-grid-base) * 1.5);
+	--mdc-vstack-spacing-large: calc(var(--mdc-theme-grid-base) * 2);
+
+	--mdc-hstack-padding-small: var(--mdc-theme-grid-base);
+	--mdc-hstack-padding-medium: calc(var(--mdc-theme-grid-base) * 1.5);
+	--mdc-hstack-padding-large: calc(var(--mdc-theme-grid-base) * 2);
+	--mdc-hstack-spacing-small: var(--mdc-theme-grid-base);
+	--mdc-hstack-spacing-medium: calc(var(--mdc-theme-grid-base) * 1.5);
+	--mdc-hstack-spacing-large: calc(var(--mdc-theme-grid-base) * 2);
 }

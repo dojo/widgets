@@ -22,6 +22,7 @@ import * as gridPlaceholderRow from './grid-placeholder-row.m.css';
 import * as gridRow from './grid-row.m.css';
 import * as grid from './grid.m.css';
 import * as helperText from './helper-text.m.css';
+import * as stack from './stack.m.css';
 import * as icon from './icon.m.css';
 import * as label from './label.m.css';
 import * as listItem from './list-item.m.css';
@@ -119,7 +120,8 @@ export default {
 		'@dojo/widgets/tree': tree,
 		'@dojo/widgets/tooltip': tooltip,
 		'@dojo/widgets/two-column-layout': twoColumnLayout,
-		'@dojo/widgets/typeahead': typeahead
+		'@dojo/widgets/typeahead': typeahead,
+		'@dojo/widgets/stack': stack
 	},
 	variants: {
 		default: defaultVariant

@@ -1,0 +1,67 @@
+/* Class set when in vertical mode */
+.vertical {
+}
+
+/* Class set when in horizontal mode */
+.horizontal {
+}
+
+/* Defines the small spacing size */
+.horizontal > .smallSpacing {
+	margin-right: var(--mdc-hstack-spacing-small);
+}
+
+/* Defines the medium spacing size */
+.horizontal > .mediumSpacing {
+	margin-right: var(--mdc-hstack-spacing-medium);
+}
+
+/* Defines the large spacing size */
+.horizontal > .largeSpacing {
+	margin-right: var(--mdc-hstack-spacing-large);
+}
+
+/* Defines the small padding size */
+.horizontal.smallPadding {
+	padding: var(--mdc-hstack-padding-small);
+}
+
+/* Defines the medium padding size */
+.horizontal.mediumPadding {
+	padding: var(--mdc-hstack-padding-medium);
+}
+
+/* Defines the large padding size */
+.horizontal.largePadding {
+	padding: var(--mdc-hstack-padding-large);
+}
+
+/* Defines the small spacing size */
+.vertical > .smallSpacing {
+	margin-bottom: var(--mdc-vstack-spacing-small);
+}
+
+/* Defines the medium spacing size */
+.vertical > .mediumSpacing {
+	margin-bottom: var(--mdc-vstack-spacing-medium);
+}
+
+/* Defines the large spacing size */
+.vertical > .largeSpacing {
+	margin-bottom: var(--mdc-vstack-spacing-large);
+}
+
+/* Defines the small padding size */
+.vertical.smallPadding {
+	padding: var(--mdc-vstack-padding-small);
+}
+
+/* Defines the medium padding size */
+.vertical.mediumPadding {
+	padding: var(--mdc-vstack-padding-medium);
+}
+
+/* Defines the large padding size */
+.vertical.largePadding {
+	padding: var(--mdc-vstack-padding-large);
+}

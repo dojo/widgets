@@ -59,6 +59,7 @@ import * as tooltip from './tooltip.m.css';
 import * as tree from './tree.m.css';
 import * as twoColumnLayout from './two-column-layout.m.css';
 import * as typeahead from './typeahead.m.css';
+import * as stack from './stack.m.css';
 import * as darkVariant from './variants/dark.m.css';
 import * as defaultVariant from './variants/default.m.css';
 
@@ -124,7 +125,8 @@ export default {
 		'@dojo/widgets/tooltip': tooltip,
 		'@dojo/widgets/tree': tree,
 		'@dojo/widgets/two-column-layout': twoColumnLayout,
-		'@dojo/widgets/typeahead': typeahead
+		'@dojo/widgets/typeahead': typeahead,
+		'@dojo/widgets/stack': stack
 	},
 	variants: {
 		default: defaultVariant,

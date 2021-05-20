@@ -59,6 +59,8 @@
 			"src/slider",
 			"src/snackbar",
 			"src/speed-dial",
+			"src/stack",
+			"src/stack/Spacer",
 			"src/wizard",
 			"src/switch",
 			"src/tab-container",
