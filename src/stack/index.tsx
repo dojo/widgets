@@ -75,6 +75,9 @@ export const Stack = factory(function Stack({
 
 	const wrappedChildren = children().map((child, index) => {
 		if (isWNode(child) || isVNode(child)) {
+			// A callback that allows the stack to control the flex span
+			// of the wrapping node of a spacer required for using the stacks
+			// as a custom element.
 			child.properties.spanCallback = (span: number) => {
 				icache.set(`span-${index}`, span);
 			};
