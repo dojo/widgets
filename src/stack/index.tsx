@@ -79,7 +79,10 @@ export const Stack = factory(function Stack({
 			// of the wrapping node of a spacer required for using the stacks
 			// as a custom element.
 			child.properties.spanCallback = (span: number) => {
-				icache.set(`span-${index}`, span);
+				const currentSpan = icache.get(`span-${index}`);
+				if (currentSpan !== span) {
+					icache.set(`span-${index}`, span);
+				}
 			};
 		}
 
