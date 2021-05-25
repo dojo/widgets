@@ -591,7 +591,7 @@ describe('Stack', () => {
 				<Stack direction="vertical" padding="large">
 					<Spacer />
 					VStack Child
-					<Spacer spanCallback={() => {}} />
+					<Spacer />
 				</Stack>
 			));
 			const baseAssertion = assertion(() => (
