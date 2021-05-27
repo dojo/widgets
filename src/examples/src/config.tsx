@@ -18,7 +18,6 @@ import TextButton from './widgets/button/TextButton';
 import OutlinedButton from './widgets/button/OutlinedButton';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
 import IconButton from './widgets/button/IconButton';
-import ToggleButton from './widgets/button/ToggleButton';
 import BasicCalendar from './widgets/calendar/Basic';
 import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
 import LimitedRange from './widgets/calendar/LimitedRange';
@@ -425,11 +424,6 @@ export const config: Config = {
 					filename: 'DisabledSubmit',
 					module: DisabledSubmit,
 					title: 'Disabled Submit Button'
-				},
-				{
-					filename: 'ToggleButton',
-					module: ToggleButton,
-					title: 'Toggle Button'
 				},
 				{
 					filename: 'IconButton',
