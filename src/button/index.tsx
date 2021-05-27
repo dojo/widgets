@@ -27,8 +27,6 @@ export interface ButtonProperties {
 	onOver?(): void;
 	/** Handler for events triggered by "on up" */
 	onUp?(): void;
-	/** Indicates status of a toggle button */
-	pressed?: boolean;
 	/** Button type can be "submit", "reset", "button", or "menu" */
 	type?: 'submit' | 'reset' | 'button' | 'menu';
 	/**  Defines a value for the button submitted with form data */
@@ -38,7 +36,7 @@ export interface ButtonProperties {
 	/** The title text for the button node */
 	title?: string;
 	/** The kind of button */
-	kind?: 'primary' | 'secondary' | 'default';
+	kind?: 'contained' | 'outlined' | 'text';
 	/** Where to add the icon. Default to "before" */
 	iconPosition?: 'before' | 'after';
 }
@@ -65,7 +63,6 @@ export const Button = factory(function Button({
 		disabled,
 		widgetId,
 		name,
-		pressed,
 		type = 'button',
 		value,
 		onClick,
@@ -76,7 +73,7 @@ export const Button = factory(function Button({
 		onBlur,
 		onFocus,
 		title,
-		kind = 'default',
+		kind = 'contained',
 		iconPosition = 'before'
 	} = properties();
 
@@ -96,9 +93,9 @@ export const Button = factory(function Button({
 				theme.variant(),
 				themeCss.root,
 				disabled ? themeCss.disabled : null,
-				pressed ? themeCss.pressed : null,
-				kind === 'secondary' ? themeCss.secondaryKind : null,
-				kind === 'default' ? themeCss.defaultKind : null,
+				kind === 'text' ? themeCss.text : null,
+				kind === 'contained' ? themeCss.contained : null,
+				kind === 'outlined' ? themeCss.outlined : null,
 				iconOnly ? themeCss.iconOnly : null
 			]}
 			title={title}
@@ -119,7 +116,6 @@ export const Button = factory(function Button({
 			onpointerdown={() => onDown && onDown()}
 			onpointerup={() => onUp && onUp()}
 			{...formatAriaProperties(aria)}
-			aria-pressed={typeof pressed === 'boolean' ? (pressed ? 'true' : 'false') : undefined}
 		>
 			{icon && iconPosition === 'before' ? iconSpan : undefined}
 			{label ? <span classes={themeCss.label}>{label}</span> : undefined}

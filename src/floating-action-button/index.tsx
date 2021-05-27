@@ -4,7 +4,8 @@ import * as floatingActionButtonCss from '../theme/default/floating-action-butto
 import * as buttonCss from '../theme/default/button.m.css';
 import theme from '../middleware/theme';
 
-export interface FloatingActionButtonProperties extends ButtonProperties {
+// floating actions do not support a `kind`
+export interface FloatingActionButtonProperties extends Omit<ButtonProperties, 'kind'> {
 	/** Sets size of the button to small, normal, or extended. Defaults to normal */
 	size?: 'small' | 'normal' | 'extended';
 	/** Fixed position for button */

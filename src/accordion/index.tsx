@@ -1,3 +1,4 @@
+import Set from '@dojo/framework/shim/Set';
 import * as css from '../theme/default/accordion.m.css';
 import * as titlePaneCss from '../theme/default/title-pane.m.css';
 import TitlePane from '../title-pane';

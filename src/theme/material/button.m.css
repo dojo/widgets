@@ -12,39 +12,28 @@
 	composes: mdc-button from '@material/button/dist/mdc.button.css';
 }
 
+.text {
+}
+
 .root:hover:not(:disabled)::after {
 	opacity: 0.04;
 }
 
-/* Styles taken from :active pseudo class */
-.pressed {
+.outlined {
+	composes: mdc-button--outlined from '@material/button/dist/mdc.button.css';
 }
-.pressed::after {
-	transition-duration: 75ms;
-	opacity: 0.12;
+
+.contained {
+	composes: mdc-button--raised from '@material/button/dist/mdc.button.css';
+}
+
+.root.disabled:disabled {
+	background-color: var(--mdc-disabled-text-color);
 }
 
 .root.disabled:disabled {
 	color: var(--mdc-disabled-text-color);
 	border-color: var(--mdc-disabled-text-color);
-}
-
-.root.defaultKind:not(.disabled) {
-	color: var(--mdc-text-color);
-}
-
-.root.defaultKind:before,
-.root.defaultKind:after {
-	background-color: var(--mdc-text-color);
-}
-
-.root.secondaryKind:not(.disabled) {
-	color: var(--mdc-theme-secondary);
-}
-
-.root.secondaryKind:before,
-.root.secondaryKind:after {
-	background-color: var(--mdc-theme-secondary);
 }
 
 .icon {

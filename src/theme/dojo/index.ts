@@ -30,7 +30,6 @@ import * as list from './list.m.css';
 import * as loadingIndicator from './loading-indicator.m.css';
 import * as menuItem from './menu-item.m.css';
 import * as nativeSelect from './native-select.m.css';
-import * as outlinedButton from './outlined-button.m.css';
 import * as pagination from './pagination.m.css';
 import * as passwordInput from './password-input.m.css';
 import * as popup from './popup.m.css';
@@ -38,7 +37,7 @@ import * as popupConfirmation from './popup-confirmation.m.css';
 import * as progress from './progress.m.css';
 import * as radioGroup from './radio-group.m.css';
 import * as radio from './radio.m.css';
-import * as raisedButton from './raised-button.m.css';
+
 import * as rangeSlider from './range-slider.m.css';
 import * as result from './result.m.css';
 import * as rate from './rate.m.css';
@@ -96,7 +95,6 @@ export default {
 		'@dojo/widgets/menu-item': menuItem,
 		'@dojo/widgets/chip-typeahead': chipTypeahead,
 		'@dojo/widgets/list': list,
-		'@dojo/widgets/outlined-button': outlinedButton,
 		'@dojo/widgets/native-select': nativeSelect,
 		'@dojo/widgets/pagination': pagination,
 		'@dojo/widgets/password-input': passwordInput,
@@ -105,7 +103,6 @@ export default {
 		'@dojo/widgets/progress': progress,
 		'@dojo/widgets/radio-group': radioGroup,
 		'@dojo/widgets/radio': radio,
-		'@dojo/widgets/raised-button': raisedButton,
 		'@dojo/widgets/range-slider': rangeSlider,
 		'@dojo/widgets/rate': rate,
 		'@dojo/widgets/result': result,
