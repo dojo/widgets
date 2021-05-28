@@ -50,7 +50,7 @@ const ExampleContent = exampleFactory(({ properties }) => (
 		<div
 			styles={{ width: '300px', height: '150px', marginBottom: '8px', background: '#DDD' }}
 		/>
-		<Button kind="primary" onClick={properties().onContinue}>
+		<Button kind="text" onClick={properties().onContinue}>
 			Continue
 		</Button>
 	</div>

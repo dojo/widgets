@@ -1,6 +1,6 @@
 # @dojo/widgets/button
 
-Dojo's `Button` widget creates a `<button>` element with support `pressed` and `disabled` states.
+Dojo's `Button` widget creates a `<button>` element with support `disabled` states.
 
 ## Features
 
@@ -15,4 +15,3 @@ Icon only buttons will be sized to support a `24px` icon instead of the default 
 ### Accessibility Features
 
 - The basic button provides a strongly typed `type` property, as well as `disabled`
-- Setting `pressed` to create a toggle button handles `aria-pressed`

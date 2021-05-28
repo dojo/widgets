@@ -1,13 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import RaisedButton from '@dojo/widgets/raised-button';
+import Button from '@dojo/widgets/button';
 import Example from '../../Example';
 
 const factory = create();
 
-export default factory(function Basic() {
+export default factory(function TextButton() {
 	return (
 		<Example>
-			<RaisedButton>Raised Button</RaisedButton>
+			<Button kind="text">Text Button</Button>
 		</Example>
 	);
 });

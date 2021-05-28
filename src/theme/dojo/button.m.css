@@ -5,7 +5,7 @@
 	font: var(--font-family);
 }
 
-.root {
+.text {
 	background-color: var(--color-background);
 	border: var(--border-width) solid var(--color-border);
 	cursor: pointer;
@@ -19,8 +19,8 @@
 	margin: 0;
 }
 
-.root:hover,
-.root:focus {
+.text:hover,
+.text:focus {
 	border-color: var(--color-highlight);
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
 	outline: none;
@@ -35,14 +35,8 @@
 	padding: 3px var(--spacing-regular);
 }
 
-.pressed {
-	background-color: var(--color-highlight);
-	border-color: var(--color-highlight);
-	color: var(--color-text-inverted);
-}
-
-.disabled,
-.disabled:hover {
+.text.disabled,
+.text.disabled:hover {
 	background-color: var(--color-background-faded);
 	border-color: var(--color-border);
 	box-shadow: none;
@@ -50,23 +44,79 @@
 	cursor: default;
 }
 
+.outlined {
+	background-color: var(--color-background);
+	border: var(--border-width) solid var(--color-highlight);
+	color: var(--color-highlight);
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
+	font-size: var(--font-size-base);
+	font-weight: bold;
+	line-height: var(--line-height-base);
+	min-width: calc(var(--grid-base) * 20);
+	padding: var(--spacing-regular);
+	margin: 0;
+	font-family: var(--font-family);
+}
+
+.outlined:focus {
+	outline: none;
+}
+
+.outlined:hover {
+	background-color: var(--color-highlight);
+	color: var(--color-text-inverted);
+	outline: none;
+}
+
+.outlined.root:hover .label {
+	color: var(--color-text-inverted);
+}
+
+.outlined.disabled,
+.outlined.disabled:hover {
+	background-color: initial;
+	border-color: var(--color-border);
+	color: var(--color-text-faded);
+	cursor: default;
+}
+
+.outlined.disabled:hover .label {
+	color: var(--color-text-faded);
+}
+
+.contained {
+	font-family: var(--font-family);
+	border: 0;
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
+	font-size: inherit;
+	line-height: var(--line-height-base);
+	min-width: calc(var(--grid-base) * 20);
+	padding: var(--spacing-regular);
+	background-color: var(--color-background);
+}
+
+.contained:hover,
+.contained:focus {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
+}
+
+.contained.disabled:hover {
+	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+}
+
 .label {
 	color: var(--color-highlight);
 	font-size: var(--font-size-base);
 	font-weight: bold;
 	line-height: var(--line-height-base);
-}
-
-.pressed .label {
-	color: var(--color-text-inverted);
-}
-
-.secondaryKind .label {
-	color: var(--color-text-faded);
-}
-
-.defaultKind .label {
-	color: var(--color-text);
 }
 
 .icon {

@@ -14,10 +14,10 @@ import BasicActionButton from './widgets/action-button/Basic';
 import BasicBreadcrumbGroup from './widgets/breadcrumb-group/Basic';
 import CustomRendererBreadcrumbGroup from './widgets/breadcrumb-group/CustomRenderer';
 import BasicButton from './widgets/button/Basic';
+import TextButton from './widgets/button/TextButton';
+import OutlinedButton from './widgets/button/OutlinedButton';
 import DisabledSubmit from './widgets/button/DisabledSubmit';
-import KindButton from './widgets/button/Kinds';
 import IconButton from './widgets/button/IconButton';
-import ToggleButton from './widgets/button/ToggleButton';
 import BasicCalendar from './widgets/calendar/Basic';
 import FirstDayOfWeekCalendar from './widgets/calendar/CustomFirstWeekDay';
 import LimitedRange from './widgets/calendar/LimitedRange';
@@ -124,10 +124,6 @@ import FreeTextChipTypeahead from './widgets/chip-typeahead/FreeText';
 import BasicNumberInput from './widgets/number-input/Basic';
 import ValidatedNumberInput from './widgets/number-input/Validation';
 import LeadingTrailingNumberInput from './widgets/number-input/LeadingTrailing';
-import BasicOutlinedButton from './widgets/outlined-button/Basic';
-import OutlinedButtonKinds from './widgets/outlined-button/Kinds';
-import OutlinedDisabledSubmit from './widgets/outlined-button/DisabledSubmit';
-import OutlinedToggleButton from './widgets/outlined-button/ToggleButton';
 import BasicPassword from './widgets/password-input/Basic';
 import NoRules from './widgets/password-input/NoRules';
 import DisabledPassword from './widgets/password-input/Disabled';
@@ -149,10 +145,6 @@ import ControlledRadioGroup from './widgets/radio-group/Basic';
 import CustomLabelRadioGroup from './widgets/radio-group/CustomLabel';
 import CustomRendererRadioGroup from './widgets/radio-group/CustomRenderer';
 import InitialValueRadioGroup from './widgets/radio-group/InitialValue';
-import BasicRaisedButton from './widgets/raised-button/Basic';
-import RaisedDisabledSubmit from './widgets/raised-button/DisabledSubmit';
-import RaisedButtonKinds from './widgets/raised-button/Kinds';
-import RaisedToggleButton from './widgets/raised-button/ToggleButton';
 import BasicRangeSlider from './widgets/range-slider/Basic';
 import MinMaxRangeSlider from './widgets/range-slider/MinMax';
 import TooltipRangeSlider from './widgets/range-slider/Tooltip';
@@ -419,19 +411,19 @@ export const config: Config = {
 		button: {
 			examples: [
 				{
+					filename: 'TextButton',
+					module: TextButton,
+					title: 'Text Button'
+				},
+				{
+					filename: 'OutlinedButton',
+					module: OutlinedButton,
+					title: 'Outlined Button'
+				},
+				{
 					filename: 'DisabledSubmit',
 					module: DisabledSubmit,
 					title: 'Disabled Submit Button'
-				},
-				{
-					filename: 'ToggleButton',
-					module: ToggleButton,
-					title: 'Toggle Button'
-				},
-				{
-					filename: 'Kinds',
-					module: KindButton,
-					title: 'Kinds'
 				},
 				{
 					filename: 'IconButton',
@@ -1308,31 +1300,6 @@ export const config: Config = {
 				}
 			]
 		},
-		'outlined-button': {
-			examples: [
-				{
-					filename: 'DisabledSubmit',
-					module: OutlinedDisabledSubmit,
-					title: 'Disabled Submit Button'
-				},
-				{
-					filename: 'ToggleButton',
-					module: OutlinedToggleButton,
-					title: 'Toggle Button'
-				},
-				{
-					filename: 'Kinds',
-					module: OutlinedButtonKinds,
-					title: 'Kinds'
-				}
-			],
-			overview: {
-				example: {
-					filename: 'Basic',
-					module: BasicOutlinedButton
-				}
-			}
-		},
 		pagination: {
 			examples: [
 				{
@@ -1456,31 +1423,6 @@ export const config: Config = {
 				example: {
 					filename: 'Basic',
 					module: BasicRadioGroup
-				}
-			}
-		},
-		'raised-button': {
-			examples: [
-				{
-					filename: 'DisabledSubmit',
-					module: RaisedDisabledSubmit,
-					title: 'Disabled Submit Button'
-				},
-				{
-					filename: 'ToggleButton',
-					module: RaisedToggleButton,
-					title: 'Toggle Button'
-				},
-				{
-					filename: 'Kinds',
-					module: RaisedButtonKinds,
-					title: 'Kinds'
-				}
-			],
-			overview: {
-				example: {
-					filename: 'Basic',
-					module: BasicRaisedButton
 				}
 			}
 		},

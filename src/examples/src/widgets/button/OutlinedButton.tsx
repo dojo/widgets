@@ -1,13 +1,13 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import OutlinedButton from '@dojo/widgets/outlined-button';
+import Button from '@dojo/widgets/button';
 import Example from '../../Example';
 
 const factory = create();
 
-export default factory(function Basic() {
+export default factory(function OutlinedButton() {
 	return (
 		<Example>
-			<OutlinedButton>Outlined Button</OutlinedButton>
+			<Button kind="outlined">Outlined Button</Button>
 		</Example>
 	);
 });

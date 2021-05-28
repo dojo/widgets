@@ -21,14 +21,6 @@
 	height: 40px;
 }
 
-.root:not(.pressed) {
-	color: var(--fab-color);
-}
-
-.pressed {
-	composes: pressed from './button.m.css';
-}
-
 .label {
 	composes: label from './button.m.css';
 	display: flex;

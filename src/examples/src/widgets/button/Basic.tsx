@@ -7,7 +7,7 @@ const factory = create();
 export default factory(function Basic() {
 	return (
 		<Example>
-			<Button>Basic Button</Button>
+			<Button>Default Button</Button>
 		</Example>
 	);
 });

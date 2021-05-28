@@ -27,7 +27,8 @@ function createMockFocusMiddleware({
 
 const template = assertionTemplate(() => (
 	<button
-		classes={[undefined, css.root, null, null, null, css.defaultKind, null]}
+		assertion-key="button"
+		classes={[undefined, css.root, null, null, css.contained, null, null]}
 		disabled={undefined}
 		id="button-test"
 		focus={false}
@@ -41,7 +42,6 @@ const template = assertionTemplate(() => (
 		onpointerleave={noop}
 		onpointerdown={noop}
 		onpointerup={noop}
-		aria-pressed={undefined}
 		title={undefined}
 	>
 		<span classes={css.label} />
@@ -53,6 +53,51 @@ registerSuite('Button', {
 		'no content'() {
 			const h = harness(() => <Button />, [compareId]);
 			h.expect(template);
+		},
+
+		outlined() {
+			const h = harness(() => <Button kind="outlined" />, [compareId]);
+			h.expect(
+				template.setProperty('@button', 'classes', [
+					undefined,
+					css.root,
+					null,
+					null,
+					null,
+					css.outlined,
+					null
+				])
+			);
+		},
+
+		text() {
+			const h = harness(() => <Button kind="text" />, [compareId]);
+			h.expect(
+				template.setProperty('@button', 'classes', [
+					undefined,
+					css.root,
+					null,
+					css.text,
+					null,
+					null,
+					null
+				])
+			);
+		},
+
+		contained() {
+			const h = harness(() => <Button kind="contained" />, [compareId]);
+			h.expect(
+				template.setProperty('@button', 'classes', [
+					undefined,
+					css.root,
+					null,
+					null,
+					css.contained,
+					null,
+					null
+				])
+			);
 		},
 
 		'calls focus on button node'() {
@@ -94,36 +139,6 @@ registerSuite('Button', {
 			assert.isTrue(blurred);
 			assert.isTrue(clicked);
 			assert.isTrue(focused);
-		},
-
-		'renders secondary button kinds'() {
-			const h = harness(() => <Button kind="secondary" />, [compareId]);
-			h.expect(
-				template.setProperty('button', 'classes', [
-					undefined,
-					css.root,
-					null,
-					null,
-					css.secondaryKind,
-					null,
-					null
-				])
-			);
-		},
-
-		'renders primary button kinds'() {
-			const h = harness(() => <Button kind="primary" />, [compareId]);
-			h.expect(
-				template.setProperty('button', 'classes', [
-					undefined,
-					css.root,
-					null,
-					null,
-					null,
-					null,
-					null
-				])
-			);
 		},
 
 		'renders labels'() {
@@ -195,8 +210,8 @@ registerSuite('Button', {
 						css.root,
 						null,
 						null,
+						css.contained,
 						null,
-						css.defaultKind,
 						css.iconOnly
 					])
 					.replaceChildren('button', () => [
