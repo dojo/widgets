@@ -11,7 +11,7 @@ const baseAssertion = assertion(() => (
 	</WrappedParagraph>
 ));
 
-describe('Texty', () => {
+describe('Text', () => {
 	it('Default Text', () => {
 		const r = renderer(() => <Text>Hello World</Text>);
 		r.expect(baseAssertion);
