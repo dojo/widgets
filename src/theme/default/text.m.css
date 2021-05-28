@@ -1,0 +1,41 @@
+.root {
+	text-decoration: none;
+}
+
+.primary {
+	color: black;
+}
+
+.primary.inverse {
+	color: white;
+}
+
+.xs {
+	font-size: 12px;
+}
+
+.s {
+	font-size: 14px;
+}
+
+.m {
+	font-size: 16px;
+}
+
+.l {
+	font-size: 18px;
+}
+
+.xl {
+	font-size: 20px;
+}
+
+.xxl {
+	font-size: 22px;
+}
+
+.truncate {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}

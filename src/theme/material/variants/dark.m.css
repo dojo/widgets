@@ -77,7 +77,12 @@
 	--mdc-theme-heading-font-weight: 500;
 	--mdc-theme-separator: #e0e0e0;
 
+	--mdc-font-size-xs: 12px;
 	--mdc-font-size-small: 14px;
+	--mdc-font-size-medium: 16px;
+	--mdc-font-size-large: 22px;
+	--mdc-font-size-xl: 24px;
+	--mdc-font-size-xxl: 26px;
 	--mdc-disabled-color: var(--mdc-theme-text-hint-on-dark);
 
 	--mdc-tab-background: var(--mdc-raised-surface-background);

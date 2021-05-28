@@ -1,0 +1,42 @@
+.root {
+	text-decoration: none;
+	font-family: var(--font-family);
+}
+
+.primary {
+	color: var(--color-text-primary);
+}
+
+.primary.inverse {
+	color: var(--color-text-inverted);
+}
+
+.xs {
+	font-size: var(--font-size-xs);
+}
+
+.s {
+	font-size: var(--font-size-small);
+}
+
+.m {
+	font-size: var(--font-size-medium);
+}
+
+.l {
+	font-size: var(--font-size-large);
+}
+
+.xl {
+	font-size: var(--font-size-xl);
+}
+
+.xxl {
+	font-size: var(--font-size-xxl);
+}
+
+.truncate {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}

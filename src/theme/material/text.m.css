@@ -1,0 +1,42 @@
+.root {
+	text-decoration: none;
+	font-family: var(--mdc-theme-font-family);
+}
+
+.primary {
+	color: var(--mdc-text-color);
+}
+
+.primary.inverse {
+	color: var(--mdc-theme-text-primary-on-dark);
+}
+
+.xs {
+	font-size: var(--mdc-font-size-xs);
+}
+
+.s {
+	font-size: var(--mdc-font-size-small);
+}
+
+.m {
+	font-size: var(--mdc-font-size-medium);
+}
+
+.l {
+	font-size: var(--mdc-font-size-large);
+}
+
+.xl {
+	font-size: var(--mdc-font-size-xl);
+}
+
+.xxl {
+	font-size: var(--mdc-font-size-xxl);
+}
+
+.truncate {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}

@@ -62,6 +62,7 @@
 			"src/wizard",
 			"src/switch",
 			"src/tab-container",
+			"src/text",
 			"src/text-area",
 			"src/text-input",
 			"src/three-column-layout",
