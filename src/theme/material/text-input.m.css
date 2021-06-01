@@ -8,6 +8,10 @@
 	display: flex;
 }
 
+.outlinedKind {
+	composes: mdc-text-field--outlined from '@material/textfield/dist/mdc.textfield.css';
+}
+
 /* Added to the input */
 .input {
 	composes: mdc-text-field__input from '@material/textfield/dist/mdc.textfield.css';
@@ -15,18 +19,21 @@
 /* Contains the input element */
 .inputWrapper {
 	width: 100%;
+}
+
+.defaultKindInputWrapper {
 	composes: mdc-line-ripple from '@material/textfield/dist/mdc.textfield.css';
 }
 
-.root .wrapper {
+.wrapper.defaultKind {
 	background-color: var(--mdc-theme-on-surface);
 }
 
-.root:hover .wrapper:not(.disabled) {
+.root:hover .wrapper.defaultKind:not(.disabled) {
 	background-color: var(--mdc-theme-on-surface-hover);
 }
 
-.inputWrapperFocused {
+.defaultKindInputWrapperFocused {
 	composes: mdc-line-ripple--active from '@material/textfield/dist/mdc.textfield.css';
 }
 
@@ -77,8 +84,12 @@
 }
 
 /* Added at the root when there is leading content */
-.hasLeading {
+.hasLeadingDefaultKind {
 	composes: mdc-text-field--with-leading-icon from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.hasLeadingOutlinedKind {
+	composes: mdc-text-field--outlined--with-leading-icon from '@material/textfield/dist/mdc.textfield.css';
 }
 
 /* Added at the root when there is trailing content */
@@ -115,4 +126,37 @@
 }
 .input:-webkit-autofill {
 	animation-name: onAutofillShown;
+}
+
+.root.outlinedKind {
+	color: var(--mdc-theme-secondary);
+}
+
+/* .root.outlinedKind .wrapper:not(.disabled):not(.focused) .inputWrapper:before {
+	border-color: var(--mdc-border-color);
+}
+
+.root.outlinedKind .wrapper:not(.disabled):not(.focused) .inputWrapper:hover:before {
+	border-color: var(--mdc-border-color-hover);
+} */
+
+.notchedOutline {
+	composes: mdc-notched-outline from '@material/textfield/dist/mdc.textfield.css';
+	composes: mdc-notched-outline--upgraded from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineNotched {
+	composes: mdc-notched-outline--notched from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineLeading {
+	composes: mdc-notched-outline__leading from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineNotch {
+	composes: mdc-notched-outline__notch from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineTrailing {
+	composes: mdc-notched-outline__trailing from '@material/textfield/dist/mdc.textfield.css';
 }
