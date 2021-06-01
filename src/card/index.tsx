@@ -4,13 +4,20 @@ import * as css from '../theme/default/card.m.css';
 import theme from '../middleware/theme';
 
 export interface CardProperties {
+	/** Handler for events triggered by click of the card */
 	onClick?: () => void;
+	/** url source for media */
 	mediaSrc?: string;
+	/** The title description fo the media */
 	mediaTitle?: string;
+	/** to render a square card */
 	square?: boolean;
+	/** The title text for the card */
 	title?: string;
+	/** The subtitle text for the card */
 	subtitle?: string;
-	outlined?: boolean;
+	/** The kind of card */
+	kind?: 'elevated' | 'outlined';
 }
 
 export interface CardChildren {
@@ -33,12 +40,15 @@ export const Card = factory(function Card({ children, properties, middleware: { 
 		square,
 		title,
 		subtitle,
-		outlined = false
+		kind = 'elevated'
 	} = properties();
 	const { header, content, actionButtons, actionIcons } = children()[0] || ({} as CardChildren);
 
 	return (
-		<div key="root" classes={[theme.variant(), themeCss.root, outlined && themeCss.outlined]}>
+		<div
+			key="root"
+			classes={[theme.variant(), themeCss.root, kind === 'outlined' && themeCss.outlined]}
+		>
 			<div
 				key="content"
 				classes={[themeCss.content, onClick ? themeCss.primary : null]}

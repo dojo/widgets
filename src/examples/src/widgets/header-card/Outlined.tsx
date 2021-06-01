@@ -9,7 +9,7 @@ export default factory(function Outlined() {
 	return (
 		<Example>
 			<div styles={{ maxWidth: '400px' }}>
-				<HeaderCard outlined title="Hello, World" subtitle="Lorem ipsum">
+				<HeaderCard kind="outlined" title="Hello, World" subtitle="Lorem ipsum">
 					{{
 						avatar: <Avatar>D</Avatar>,
 						content: <p styles={{ margin: '0' }}>Lorem ipsum</p>

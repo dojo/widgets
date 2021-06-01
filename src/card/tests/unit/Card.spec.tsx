@@ -26,7 +26,7 @@ describe('Card', () => {
 	});
 
 	it('renders outlined', () => {
-		const r = renderer(() => <Card outlined />);
+		const r = renderer(() => <Card kind="outlined" />);
 		const outlinedTemplate = template.setProperty(Root, 'classes', [
 			undefined,
 			css.root,

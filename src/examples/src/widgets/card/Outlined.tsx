@@ -8,7 +8,7 @@ export default factory(function Outlined() {
 	return (
 		<Example>
 			<div styles={{ maxWidth: '400px' }}>
-				<Card outlined title="Outlined Card">
+				<Card kind="outlined" title="Outlined Card">
 					{{
 						content: (
 							<span>
