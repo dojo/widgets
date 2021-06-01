@@ -1,0 +1,47 @@
+.root {
+	text-decoration: none;
+}
+
+.primary {
+	color: black;
+}
+
+.primary.inverse {
+	color: white;
+}
+
+.xSmall {
+	font-size: 12px;
+}
+
+.small {
+	font-size: 14px;
+}
+
+.medium {
+	font-size: 16px;
+}
+
+.large {
+	font-size: 18px;
+}
+
+.xLarge {
+	font-size: 20px;
+}
+
+.xxLarge {
+	font-size: 22px;
+}
+
+.light {
+	font-weight: 300;
+}
+
+.normal {
+	font-weight: normal;
+}
+
+.heavy {
+	font-weight: 700;
+}

@@ -1,0 +1,48 @@
+.root {
+	text-decoration: none;
+	font-family: var(--font-family);
+}
+
+.primary {
+	color: var(--color-text-primary);
+}
+
+.primary.inverse {
+	color: var(--color-text-inverted);
+}
+
+.xSmall {
+	font-size: var(--font-size-xs);
+}
+
+.small {
+	font-size: var(--font-size-small);
+}
+
+.medium {
+	font-size: var(--font-size-medium);
+}
+
+.large {
+	font-size: var(--font-size-large);
+}
+
+.xLarge {
+	font-size: var(--font-size-xl);
+}
+
+.xxLarge {
+	font-size: var(--font-size-xxl);
+}
+
+.light {
+	font-weight: var(--font-weight-light);
+}
+
+.normal {
+	font-weight: var(--font-weight-normal);
+}
+
+.heavy {
+	font-weight: var(--font-weight-heavy);
+}

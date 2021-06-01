@@ -271,6 +271,14 @@ import StepRendererWizard from './widgets/wizard/StepRenderer';
 import StepContentWizard from './widgets/wizard/StepContent';
 import VerticalWizard from './widgets/wizard/Vertical';
 import ErrorWizard from './widgets/wizard/Error';
+import BasicText from './widgets/text/Basic';
+import SizeText from './widgets/text/Size';
+import InverseText from './widgets/text/Inverse';
+import TruncatedText from './widgets/text/Truncated';
+import UppercaseText from './widgets/text/Uppercase';
+import WeightText from './widgets/text/Weight';
+import CustomNodeTypeText from './widgets/text/CustomNodeType';
+import OverrideFontText from './widgets/text/OverrideFont';
 import BasicTree from './widgets/tree/Basic';
 import CheckableTree from './widgets/tree/Checkable';
 import CustomRendererTree from './widgets/tree/CustomRenderer';
@@ -1762,6 +1770,51 @@ export const config: Config = {
 					module: BasicTabContainer
 				}
 			}
+		},
+		text: {
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicText
+				}
+			},
+			examples: [
+				{
+					filename: 'Size',
+					module: SizeText,
+					title: 'Demo the Text sizes available'
+				},
+				{
+					filename: 'Weight',
+					module: WeightText,
+					title: 'Demo the Text weights available'
+				},
+				{
+					filename: 'Truncated',
+					module: TruncatedText,
+					title: 'Text that truncates with an ellipsis'
+				},
+				{
+					filename: 'Uppercase',
+					module: UppercaseText,
+					title: 'Text that transforms to uppercase'
+				},
+				{
+					filename: 'Inverse',
+					module: InverseText,
+					title: 'Text with the inverse color'
+				},
+				{
+					filename: 'CustomNodeType',
+					module: CustomNodeTypeText,
+					title: 'Renders text with a custom node type'
+				},
+				{
+					filename: 'OverrideFont',
+					module: OverrideFontText,
+					title: 'Override the font-family variable'
+				}
+			]
 		},
 		'text-area': {
 			examples: [
