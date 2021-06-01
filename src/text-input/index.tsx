@@ -1,6 +1,7 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import dimensions from '@dojo/framework/core/middleware/dimensions';
 import theme from '../middleware/theme';
 import validity from '@dojo/framework/core/middleware/validity';
 import { create, diffProperty, invalidator, tsx } from '@dojo/framework/core/vdom';
@@ -62,6 +63,8 @@ export interface BaseInputProperties<T extends { value: any } = { value: string 
 	value?: T['value'];
 	/** The id to be applied to the input */
 	widgetId?: string;
+	/** The kind of input */
+	kind?: 'outlined' | 'default';
 }
 
 export interface TextInputChildren {
@@ -115,13 +118,14 @@ const factory = create({
 	validity,
 	focus,
 	diffProperty,
-	invalidator
+	invalidator,
+	dimensions
 })
 	.properties<TextInputProperties>()
 	.children<TextInputChildren | undefined>();
 
 export const TextInput = factory(function TextInput({
-	middleware: { icache, theme, validity, focus, diffProperty, invalidator },
+	middleware: { icache, theme, validity, focus, diffProperty, invalidator, dimensions },
 	properties,
 	children,
 	id
@@ -168,7 +172,8 @@ export const TextInput = factory(function TextInput({
 		initialValue,
 		valid: validValue = { valid: undefined, message: '' },
 		widgetId = `text-input-${id}`,
-		variant
+		variant,
+		kind = 'default'
 	} = properties();
 
 	let { value } = properties();
@@ -226,6 +231,56 @@ export const TextInput = factory(function TextInput({
 	const inputFocused = focus.isFocused('input');
 	const autofilled = Boolean(icache.get('autofilled'));
 
+	let {
+		size: { width: labelWidth }
+	} = dimensions.get('label');
+
+	// When notched the label is transformed in the CSS to 75% size, then we need to add 10px of padding to get the desired look
+	labelWidth = labelWidth * 0.75 + 10;
+
+	function _renderLabel() {
+		const labelActive = !!value || inputFocused || autofilled;
+
+		const renderedLabel = (
+			<Label
+				theme={themeProp}
+				classes={classes}
+				variant={variant}
+				disabled={disabled}
+				valid={valid}
+				focused={inputFocused}
+				readOnly={readOnly}
+				required={required}
+				hidden={labelHidden}
+				forId={widgetId}
+				active={labelActive}
+			>
+				{label}
+			</Label>
+		);
+
+		return kind === 'outlined' ? (
+			<div classes={[themeCss.notchedOutline, labelActive && themeCss.notchedOutlineNotched]}>
+				<div classes={themeCss.notchedOutlineLeading} />
+				{label && (
+					<div
+						classes={themeCss.notchedOutlineNotch}
+						styles={
+							labelActive && labelWidth
+								? { width: `${labelWidth}px` }
+								: { width: 'auto' }
+						}
+					>
+						<span key="label">{renderedLabel}</span>
+					</div>
+				)}
+				<div classes={themeCss.notchedOutlineTrailing} />
+			</div>
+		) : (
+			label && renderedLabel
+		);
+	}
+
 	return (
 		<div key="root" classes={[theme.variant(), themeCss.root]} role="presentation">
 			<div
@@ -238,34 +293,24 @@ export const TextInput = factory(function TextInput({
 					valid === true ? themeCss.valid : null,
 					readOnly ? themeCss.readonly : null,
 					required ? themeCss.required : null,
-					leading ? themeCss.hasLeading : null,
+					kind === 'outlined' && leading ? themeCss.hasLeadingOutlinedKind : null,
+					kind === 'default' && leading ? themeCss.hasLeadingDefaultKind : null,
 					trailing ? themeCss.hasTrailing : null,
-					!label || labelHidden ? themeCss.noLabel : null
+					!label || labelHidden ? themeCss.noLabel : null,
+					kind === 'outlined' ? themeCss.outlinedKind : null,
+					kind === 'default' ? themeCss.defaultKind : null
 				]}
 				role="presentation"
 			>
-				{label && (
-					<Label
-						theme={themeProp}
-						classes={classes}
-						variant={variant}
-						disabled={disabled}
-						valid={valid}
-						focused={inputFocused}
-						readOnly={readOnly}
-						required={required}
-						hidden={labelHidden}
-						forId={widgetId}
-						active={!!value || inputFocused || autofilled}
-					>
-						{label}
-					</Label>
-				)}
+				{_renderLabel()}
 				<div
 					key="inputWrapper"
 					classes={[
 						themeCss.inputWrapper,
-						inputFocused ? themeCss.inputWrapperFocused : undefined
+						kind === 'default' ? themeCss.defaultKindInputWrapper : null,
+						inputFocused && kind === 'default'
+							? themeCss.defaultKindInputWrapperFocused
+							: null
 					]}
 					role="presentation"
 				>

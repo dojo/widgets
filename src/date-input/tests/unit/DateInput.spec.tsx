@@ -65,7 +65,7 @@ const baseTemplate = (date?: Date | '') =>
 		);
 	});
 
-const buttonTemplate = assertionTemplate(() => {
+const textInputTemplate = assertionTemplate(() => {
 	return (
 		<div classes={css.input}>
 			<TextInput
@@ -84,6 +84,7 @@ const buttonTemplate = assertionTemplate(() => {
 				onKeyDown={noop}
 				variant={undefined}
 				classes={undefined}
+				kind={undefined}
 			>
 				{{ trailing: undefined }}
 			</TextInput>
@@ -180,7 +181,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 
 		// Find the date icon & `click` it
 		const [dateIcon] = select(
@@ -203,7 +204,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(buttonTemplate.setProperty('@input', 'disabled', true), () => triggerResult);
+		h.expect(textInputTemplate.setProperty('@input', 'disabled', true), () => triggerResult);
 	});
 
 	it('renders readonly', () => {
@@ -215,7 +216,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(buttonTemplate.setProperty('@input', 'readOnly', true), () => triggerResult);
+		h.expect(textInputTemplate.setProperty('@input', 'readOnly', true), () => triggerResult);
 	});
 
 	it('renders with a label as the only child', () => {
@@ -227,7 +228,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 		assert.equal(
 			h.trigger('@popup', (node) => () =>
 				(node.children as any)[0].trigger().children[0].children[0].label
@@ -245,7 +246,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 		assert.equal(
 			h.trigger('@popup', (node) => () =>
 				(node.children as any)[0].trigger().children[0].children[0].label
@@ -272,7 +273,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 		assert.equal(
 			h.trigger('@popup', (node) => () =>
 				(node.children as any)[0].trigger().children[0].children[0].label.children[0]
@@ -291,7 +292,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 
 		// Find the input and simulate "enter"
 		const [input] = select('@input', triggerResult);
@@ -332,7 +333,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
@@ -370,7 +371,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
@@ -574,7 +575,7 @@ describe('DateInput', () => {
 			noop
 		);
 		h.expect(
-			buttonTemplate.setProperty('@input', 'valid', {
+			textInputTemplate.setProperty('@input', 'valid', {
 				valid: false,
 				message: messages.invalidProps
 			}),
@@ -595,7 +596,7 @@ describe('DateInput', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate.setProperty('@input', 'required', true), () => triggerResult);
+		h.expect(textInputTemplate.setProperty('@input', 'required', true), () => triggerResult);
 
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
@@ -608,5 +609,18 @@ describe('DateInput', () => {
 
 		h.expect(baseTemplate().setProperty('@input', 'required', true));
 		sinon.assert.calledWith(onValidate, false, messages.requiredDate);
+	});
+
+	it('renders as outlined date input', () => {
+		const h = harness(() => <DateInput name="dateInput" kind="outlined" />);
+
+		// Execute render-prop to show "trigger" content
+		const toggleOpen = sinon.stub();
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpen
+		);
+		h.expect(textInputTemplate.setProperty('@input', 'kind', 'outlined'), () => triggerResult);
 	});
 });

@@ -13,7 +13,10 @@
 .inputWrapper {
 }
 
-.inputWrapperFocused {
+.defaultKindInputWrapper {
+}
+
+.defaultKindInputWrapperFocused {
 }
 /* Added to a disabled TextInput */
 .disabled {
@@ -37,7 +40,9 @@
 .trailing {
 }
 /* Added to the wrapper when there is leading content */
-.hasLeading {
+.hasLeadingDefaultKind {
+}
+.hasLeadingOutlinedKind {
 }
 /* Added to the wrapper when there is trailing content */
 .hasTrailing {
@@ -74,4 +79,28 @@
 }
 .input:-webkit-autofill {
 	animation-name: onAutofillShown;
+}
+
+/* Applied to outlined inputs */
+.outlinedKind {
+}
+
+/* Applied to outlined inputs */
+.defaultKind {
+}
+
+/* Applied to outlined inputs to create notch effect */
+.notchedOutline {
+}
+
+.notchedOutlineNotched {
+}
+
+.notchedOutlineLeading {
+}
+
+.notchedOutlineNotch {
+}
+
+.notchedOutlineTrailing {
 }
