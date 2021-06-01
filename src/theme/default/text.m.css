@@ -10,32 +10,38 @@
 	color: white;
 }
 
-.xs {
+.xSmall {
 	font-size: 12px;
 }
 
-.s {
+.small {
 	font-size: 14px;
 }
 
-.m {
+.medium {
 	font-size: 16px;
 }
 
-.l {
+.large {
 	font-size: 18px;
 }
 
-.xl {
+.xLarge {
 	font-size: 20px;
 }
 
-.xxl {
+.xxLarge {
 	font-size: 22px;
 }
 
-.truncate {
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
+.light {
+	font-weight: 300;
+}
+
+.normal {
+	font-weight: normal;
+}
+
+.heavy {
+	font-weight: 700;
 }

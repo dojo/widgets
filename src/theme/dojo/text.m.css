@@ -11,32 +11,38 @@
 	color: var(--color-text-inverted);
 }
 
-.xs {
+.xSmall {
 	font-size: var(--font-size-xs);
 }
 
-.s {
+.small {
 	font-size: var(--font-size-small);
 }
 
-.m {
+.medium {
 	font-size: var(--font-size-medium);
 }
 
-.l {
+.large {
 	font-size: var(--font-size-large);
 }
 
-.xl {
+.xLarge {
 	font-size: var(--font-size-xl);
 }
 
-.xxl {
+.xxLarge {
 	font-size: var(--font-size-xxl);
 }
 
-.truncate {
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
+.light {
+	font-weight: var(--font-weight-light);
+}
+
+.normal {
+	font-weight: var(--font-weight-normal);
+}
+
+.heavy {
+	font-weight: var(--font-weight-heavy);
 }

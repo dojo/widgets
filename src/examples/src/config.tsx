@@ -275,6 +275,8 @@ import BasicText from './widgets/text/Basic';
 import SizeText from './widgets/text/Size';
 import InverseText from './widgets/text/Inverse';
 import TruncatedText from './widgets/text/Truncated';
+import UppercaseText from './widgets/text/Uppercase';
+import WeightText from './widgets/text/Weight';
 import CustomNodeTypeText from './widgets/text/CustomNodeType';
 import OverrideFontText from './widgets/text/OverrideFont';
 import BasicTree from './widgets/tree/Basic';
@@ -1783,9 +1785,19 @@ export const config: Config = {
 					title: 'Demo the Text sizes available'
 				},
 				{
+					filename: 'Weight',
+					module: WeightText,
+					title: 'Demo the Text weights available'
+				},
+				{
 					filename: 'Truncated',
 					module: TruncatedText,
 					title: 'Text that truncates with an ellipsis'
+				},
+				{
+					filename: 'Uppercase',
+					module: UppercaseText,
+					title: 'Text that transforms to uppercase'
 				},
 				{
 					filename: 'Inverse',

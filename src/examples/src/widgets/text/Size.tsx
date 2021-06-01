@@ -9,12 +9,12 @@ export default factory(function Size() {
 	return (
 		<Example>
 			<virtual>
-				<Text size="xs">Extra Small Text</Text>
-				<Text size="s">Small Text</Text>
-				<Text size="m">Medium Text (default)</Text>
-				<Text size="l">Large Text</Text>
-				<Text size="xl">Extra Large Text</Text>
-				<Text size="xxl">Extra Extra Large Text</Text>
+				<Text size="x-small">Extra Small Text</Text>
+				<Text size="small">Small Text</Text>
+				<Text size="medium">Medium Text (default)</Text>
+				<Text size="large">Large Text</Text>
+				<Text size="x-large">Extra Large Text</Text>
+				<Text size="xx-large">Extra Extra Large Text</Text>
 			</virtual>
 		</Example>
 	);

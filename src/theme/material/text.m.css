@@ -11,32 +11,38 @@
 	color: var(--mdc-theme-text-primary-on-dark);
 }
 
-.xs {
+.xSmall {
 	font-size: var(--mdc-font-size-xs);
 }
 
-.s {
+.small {
 	font-size: var(--mdc-font-size-small);
 }
 
-.m {
+.medium {
 	font-size: var(--mdc-font-size-medium);
 }
 
-.l {
+.large {
 	font-size: var(--mdc-font-size-large);
 }
 
-.xl {
+.xLarge {
 	font-size: var(--mdc-font-size-xl);
 }
 
-.xxl {
+.xxLarge {
 	font-size: var(--mdc-font-size-xxl);
 }
 
-.truncate {
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
+.light {
+	font-weight: var(--mdc-font-weight-light);
+}
+
+.normal {
+	font-weight: var(--mdc-font-weight-normal);
+}
+
+.heavy {
+	font-weight: var(--mdc-font-weight-heavy);
 }

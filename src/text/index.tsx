@@ -2,36 +2,55 @@ import { v, create } from '@dojo/framework/core/vdom';
 import theme from '../middleware/theme';
 
 import * as css from '../theme/default/text.m.css';
+import * as fixedCss from './styles/Text.m.css';
 
 export interface TextProperties {
-	size?: 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
+	size?: 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
+	weight?: 'light' | 'normal' | 'heavy';
 	inverse?: boolean;
 	truncated?: boolean;
 	as?: string;
+	uppercase?: boolean;
 }
 
 const factory = create({ theme }).properties<TextProperties>();
 
 const Text = factory(function Text({ middleware: { theme }, properties, children }) {
 	const themedCss = theme.classes(css);
-	const { as = 'p', truncated = false, size = 'm', inverse = false } = properties();
+	const {
+		as = 'p',
+		truncated = false,
+		size = 'm',
+		inverse = false,
+		uppercase = false,
+		weight = 'normal'
+	} = properties();
 
-	let sizeClass = themedCss.m;
+	let sizeClass = themedCss.medium;
 	switch (size) {
-		case 'xs':
-			sizeClass = themedCss.xs;
+		case 'x-small':
+			sizeClass = themedCss.xSmall;
 			break;
-		case 's':
-			sizeClass = themedCss.s;
+		case 'small':
+			sizeClass = themedCss.small;
 			break;
-		case 'l':
-			sizeClass = themedCss.l;
+		case 'large':
+			sizeClass = themedCss.large;
 			break;
-		case 'xl':
-			sizeClass = themedCss.xl;
+		case 'x-large':
+			sizeClass = themedCss.xLarge;
 			break;
-		case 'xxl':
-			sizeClass = themedCss.xxl;
+		case 'xx-large':
+			sizeClass = themedCss.xxLarge;
+			break;
+	}
+	let weightClass = themedCss.normal;
+	switch (weight) {
+		case 'light':
+			weightClass = themedCss.light;
+			break;
+		case 'heavy':
+			weightClass = themedCss.heavy;
 			break;
 	}
 
@@ -42,9 +61,11 @@ const Text = factory(function Text({ middleware: { theme }, properties, children
 				theme.variant(),
 				themedCss.root,
 				sizeClass,
-				truncated && themedCss.truncate,
+				weightClass,
+				truncated && fixedCss.truncate,
 				inverse && themedCss.inverse,
-				themedCss.primary
+				themedCss.primary,
+				uppercase && fixedCss.uppercase
 			]
 		},
 		children()

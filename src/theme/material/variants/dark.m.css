@@ -83,6 +83,11 @@
 	--mdc-font-size-large: 22px;
 	--mdc-font-size-xl: 24px;
 	--mdc-font-size-xxl: 26px;
+
+	--mdc-font-weight-light: 300;
+	--mdc-font-weight-normal: normal;
+	--mdc-font-weight-heavy: 700;
+
 	--mdc-disabled-color: var(--mdc-theme-text-hint-on-dark);
 
 	--mdc-tab-background: var(--mdc-raised-surface-background);
