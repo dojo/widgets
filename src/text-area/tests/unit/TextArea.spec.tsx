@@ -1,4 +1,5 @@
 import createValidityMock from '@dojo/framework/testing/mocks/middleware/validity';
+import createFocusMock from '@dojo/framework/testing/mocks/middleware/focus';
 
 const { registerSuite } = intern.getInterface('object');
 const { assert } = intern.getPlugin('chai');
@@ -20,6 +21,8 @@ import {
 } from '../../../common/tests/support/test-helpers';
 import HelperText from '../../../helper-text/index';
 import validity from '@dojo/framework/core/middleware/validity';
+import focus from '@dojo/framework/core/middleware/focus';
+import { SupportedClassName } from '@dojo/framework/core/interfaces';
 
 const harness = createHarness([compareId, compareForId, compareTheme]);
 
@@ -28,16 +31,38 @@ interface States {
 	required?: boolean;
 	readOnly?: boolean;
 	valid?: { valid?: boolean; message?: string } | boolean;
-	focused?: boolean;
 }
 
-const expected = function(
+interface DefaultExpectedOptions {
+	label?: boolean;
+	inputOverrides?: any;
+	states?: States;
+	helperText?: string;
+	wrapperClasses?: SupportedClassName[];
+	lineRippleClasses?: SupportedClassName[];
+}
+
+const defaultExpected = function({
 	label = false,
 	inputOverrides = {},
-	states: States = {},
-	helperText?: string
-) {
-	const { disabled, required, readOnly, valid: validState, focused } = states;
+	states = {},
+	helperText,
+	wrapperClasses = [
+		css.wrapper,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		css.noLabel,
+		null,
+		css.defaultKind,
+		null
+	],
+	lineRippleClasses = [css.lineRipple, null]
+}: DefaultExpectedOptions = {}) {
+	const { disabled, required, readOnly, valid: validState } = states;
 	let valid: boolean | undefined;
 	let message: string | undefined;
 
@@ -52,18 +77,7 @@ const expected = function(
 
 	return (
 		<div key="root" classes={[undefined, css.root]}>
-			<div
-				key="wrapper"
-				classes={[
-					css.wrapper,
-					disabled ? css.disabled : null,
-					valid === false ? css.invalid : null,
-					valid === true ? css.valid : null,
-					readOnly ? css.readonly : null,
-					required ? css.required : null,
-					focused ? css.focused : null
-				]}
-			>
+			<div key="wrapper" classes={wrapperClasses}>
 				{label ? (
 					<Label
 						theme={{}}
@@ -82,6 +96,7 @@ const expected = function(
 					</Label>
 				) : null}
 				<div classes={css.inputWrapper}>
+					<span classes={css.ripple} />
 					<textarea
 						classes={css.input}
 						id=""
@@ -110,6 +125,7 @@ const expected = function(
 						onpointerleave={noop}
 						{...inputOverrides}
 					/>
+					<span classes={lineRippleClasses} />
 				</div>
 			</div>
 			<HelperText
@@ -125,7 +141,22 @@ const expected = function(
 
 const baseAssertion = assertionTemplate(() => (
 	<div key="root" classes={[undefined, css.root]}>
-		<div key="wrapper" classes={[css.wrapper, null, null, null, null, null, null]}>
+		<div
+			key="wrapper"
+			classes={[
+				css.wrapper,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				css.noLabel,
+				null,
+				css.defaultKind,
+				null
+			]}
+		>
 			{textarea()}
 		</div>
 		<HelperText
@@ -139,8 +170,12 @@ const baseAssertion = assertionTemplate(() => (
 	</div>
 ));
 
+const defaultKindBaseAssertion = baseAssertion
+	.prepend('~inputWrapper', () => [<span classes={css.ripple} />])
+	.append('~inputWrapper', () => [<span classes={[css.lineRipple, null]} />]);
+
 const textarea = () => (
-	<div classes={css.inputWrapper}>
+	<div assertion-key="inputWrapper" classes={css.inputWrapper}>
 		<textarea
 			classes={css.input}
 			id=""
@@ -171,15 +206,80 @@ const textarea = () => (
 	</div>
 );
 
-const valueAssertion = baseAssertion
+const valueAssertion = defaultKindBaseAssertion
 	.setProperty('@input', 'value', 'test value')
+	.setProperty('~helperText', 'valid', undefined);
+
+const outlinedUnlabeledAssertion = baseAssertion
+	.prepend('@wrapper', () => [
+		<div assertion-key="notchedOutline" classes={[css.notchedOutline, false]}>
+			<div classes={css.notchedOutlineLeading} />
+			{false}
+			<div classes={css.notchedOutlineTrailing} />
+		</div>
+	])
+	.setProperty('@wrapper', 'classes', [
+		css.wrapper,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		css.noLabel,
+		css.outlinedKind,
+		null,
+		null
+	])
+	.setProperty('~helperText', 'valid', undefined);
+
+const outlinedLabeledAssertion = baseAssertion
+	.prepend('@wrapper', () => [
+		<div assertion-key="notchedOutline" classes={[css.notchedOutline, false]}>
+			<div classes={css.notchedOutlineLeading} />
+			<div assertion-key="notch" classes={css.notchedOutlineNotch} styles={{ width: 'auto' }}>
+				<span key="label">
+					<Label
+						assertion-key="label"
+						theme={{}}
+						classes={undefined}
+						variant={undefined}
+						disabled={undefined}
+						hidden={undefined}
+						valid={undefined}
+						readOnly={undefined}
+						required={undefined}
+						forId=""
+						active={false}
+						focused={false}
+					>
+						foo
+					</Label>
+				</span>
+			</div>
+			<div classes={css.notchedOutlineTrailing} />
+		</div>
+	])
+	.setProperty('@wrapper', 'classes', [
+		css.wrapper,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		css.outlinedKind,
+		null,
+		null
+	])
 	.setProperty('~helperText', 'valid', undefined);
 
 registerSuite('Textarea', {
 	tests: {
 		'default properties'() {
 			const h = harness(() => <TextArea />);
-			h.expect(expected);
+			h.expect(defaultExpected);
 		},
 
 		'custom properties'() {
@@ -199,17 +299,19 @@ registerSuite('Textarea', {
 			));
 
 			h.expect(() =>
-				expected(false, {
-					cols: 15,
-					'aria-describedby': 'foo',
-					id: 'foo',
-					maxlength: '50',
-					minlength: '10',
-					name: 'bar',
-					placeholder: 'baz',
-					rows: 42,
-					value: 'qux',
-					wrap: 'soft'
+				defaultExpected({
+					inputOverrides: {
+						cols: 15,
+						'aria-describedby': 'foo',
+						id: 'foo',
+						maxlength: '50',
+						minlength: '10',
+						name: 'bar',
+						placeholder: 'baz',
+						rows: 42,
+						value: 'qux',
+						wrap: 'soft'
+					}
 				})
 			);
 		},
@@ -217,13 +319,47 @@ registerSuite('Textarea', {
 		label() {
 			const h = harness(() => <TextArea>foo</TextArea>);
 
-			h.expect(() => expected(true));
+			h.expect(() =>
+				defaultExpected({
+					label: true,
+					wrapperClasses: [
+						css.wrapper,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.defaultKind,
+						null
+					]
+				})
+			);
 		},
 
 		'named label'() {
 			const h = harness(() => <TextArea>{{ label: 'foo' }}</TextArea>);
 
-			h.expect(() => expected(true));
+			h.expect(() =>
+				defaultExpected({
+					label: true,
+					wrapperClasses: [
+						css.wrapper,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.defaultKind,
+						null
+					]
+				})
+			);
 		},
 
 		'state classes'() {
@@ -237,7 +373,7 @@ registerSuite('Textarea', {
 			const h = harness(() => <TextArea {...properties} />);
 
 			h.expect(
-				baseAssertion
+				defaultKindBaseAssertion
 					.setProperty('@wrapper', 'classes', [
 						css.wrapper,
 						css.disabled,
@@ -245,6 +381,10 @@ registerSuite('Textarea', {
 						null,
 						css.readonly,
 						css.required,
+						null,
+						css.noLabel,
+						null,
+						css.defaultKind,
 						null
 					])
 					.setProperty('@input', 'aria-invalid', 'true')
@@ -262,7 +402,7 @@ registerSuite('Textarea', {
 				required: false
 			};
 			h.expect(
-				baseAssertion
+				defaultKindBaseAssertion
 					.setProperty('@wrapper', 'classes', [
 						css.wrapper,
 						null,
@@ -270,6 +410,10 @@ registerSuite('Textarea', {
 						null,
 						null,
 						null,
+						null,
+						css.noLabel,
+						null,
+						css.defaultKind,
 						null
 					])
 					.setProperty('@input', 'aria-invalid', undefined)
@@ -281,9 +425,39 @@ registerSuite('Textarea', {
 			);
 		},
 
+		'focused class'() {
+			const focusMock = createFocusMock();
+			const validityMock = createValidityMock();
+
+			focusMock('input', true);
+			validityMock('input', { valid: undefined, message: '' });
+
+			const h = harness(() => <TextArea />, {
+				middleware: [[focus, focusMock], [validity, validityMock]]
+			});
+			h.expect(() =>
+				defaultExpected({
+					wrapperClasses: [
+						css.wrapper,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.focused,
+						css.noLabel,
+						null,
+						css.defaultKind,
+						css.defaultKindFocused
+					],
+					lineRippleClasses: [css.lineRipple, css.defaultKindLineRippleFocused]
+				})
+			);
+		},
+
 		helperText() {
 			const h = harness(() => <TextArea helperText="test" />);
-			h.expect(() => expected(false, {}, {}, 'test'));
+			h.expect(() => defaultExpected({ helperText: 'test' }));
 		},
 
 		events() {
@@ -319,33 +493,37 @@ registerSuite('Textarea', {
 			));
 
 			h.expect(() =>
-				expected(false, {
-					cols: 15,
-					'aria-describedby': 'foo',
-					id: 'foo',
-					maxlength: '50',
-					minlength: '10',
-					name: 'bar',
-					placeholder: 'baz',
-					rows: 42,
-					value: 'qux',
-					wrap: 'soft'
+				defaultExpected({
+					inputOverrides: {
+						cols: 15,
+						'aria-describedby': 'foo',
+						id: 'foo',
+						maxlength: '50',
+						minlength: '10',
+						name: 'bar',
+						placeholder: 'baz',
+						rows: 42,
+						value: 'qux',
+						wrap: 'soft'
+					}
 				})
 			);
 
 			h.trigger('@input', 'oninput', { ...stubEvent, target: { value: 'newvalue' } });
 			h.expect(() =>
-				expected(false, {
-					cols: 15,
-					'aria-describedby': 'foo',
-					id: 'foo',
-					maxlength: '50',
-					minlength: '10',
-					name: 'bar',
-					placeholder: 'baz',
-					rows: 42,
-					value: 'newvalue',
-					wrap: 'soft'
+				defaultExpected({
+					inputOverrides: {
+						cols: 15,
+						'aria-describedby': 'foo',
+						id: 'foo',
+						maxlength: '50',
+						minlength: '10',
+						name: 'bar',
+						placeholder: 'baz',
+						rows: 42,
+						value: 'newvalue',
+						wrap: 'soft'
+					}
 				})
 			);
 		},
@@ -367,17 +545,19 @@ registerSuite('Textarea', {
 			));
 
 			const assertion = () =>
-				expected(false, {
-					cols: 15,
-					'aria-describedby': 'foo',
-					id: 'foo',
-					maxlength: '50',
-					minlength: '10',
-					name: 'bar',
-					placeholder: 'baz',
-					rows: 42,
-					value: 'qux',
-					wrap: 'soft'
+				defaultExpected({
+					inputOverrides: {
+						cols: 15,
+						'aria-describedby': 'foo',
+						id: 'foo',
+						maxlength: '50',
+						minlength: '10',
+						name: 'bar',
+						placeholder: 'baz',
+						rows: 42,
+						value: 'qux',
+						wrap: 'soft'
+					}
 				});
 			h.expect(assertion);
 
@@ -444,7 +624,7 @@ registerSuite('Textarea', {
 				middleware: [[validity, mockValidity]]
 			});
 
-			h.expect(baseAssertion.setProperty('@helperText', 'valid', undefined));
+			h.expect(defaultKindBaseAssertion.setProperty('@helperText', 'valid', undefined));
 			assert.isTrue(validateSpy.calledWith(undefined));
 		},
 
@@ -543,6 +723,84 @@ registerSuite('Textarea', {
 			h.expect(valueAssertion);
 
 			assert.isTrue(validateSpy.calledWith(false, 'custom message'));
+		},
+
+		'outline kind'() {
+			const h = harness(() => <TextArea kind="outlined" />);
+			h.expect(outlinedUnlabeledAssertion);
+		},
+
+		'outline focused class'() {
+			const focusMock = createFocusMock();
+			const validityMock = createValidityMock();
+
+			focusMock('input', true);
+			validityMock('input', { valid: undefined, message: '' });
+
+			const h = harness(() => <TextArea kind="outlined" />, {
+				middleware: [[focus, focusMock], [validity, validityMock]]
+			});
+			h.expect(
+				outlinedUnlabeledAssertion
+					.setProperty('@wrapper', 'classes', [
+						css.wrapper,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.focused,
+						css.noLabel,
+						css.outlinedKind,
+						null,
+						null
+					])
+					.setProperty('~notchedOutline', 'classes', [
+						css.notchedOutline,
+						css.notchedOutlineNotched
+					])
+			);
+		},
+
+		'outlined label'() {
+			const h = harness(() => <TextArea kind="outlined">{{ label: 'foo' }}</TextArea>);
+
+			h.expect(outlinedLabeledAssertion);
+		},
+
+		'outlined label focused'() {
+			const focusMock = createFocusMock();
+			const validityMock = createValidityMock();
+
+			focusMock('input', true);
+			validityMock('input', { valid: undefined, message: '' });
+
+			const h = harness(() => <TextArea kind="outlined">{{ label: 'foo' }}</TextArea>, {
+				middleware: [[focus, focusMock], [validity, validityMock]]
+			});
+			h.expect(
+				outlinedLabeledAssertion
+					.setProperty('@wrapper', 'classes', [
+						css.wrapper,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.focused,
+						null,
+						css.outlinedKind,
+						null,
+						null
+					])
+					.setProperty('~label', 'active', true)
+					.setProperty('~label', 'focused', true)
+					.setProperty('~notch', 'styles', { width: '10px' })
+					.setProperty('~notchedOutline', 'classes', [
+						css.notchedOutline,
+						css.notchedOutlineNotched
+					])
+			);
 		}
 	}
 });

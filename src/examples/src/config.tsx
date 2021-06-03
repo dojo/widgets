@@ -199,6 +199,7 @@ import HelperTextTextArea from './widgets/text-area/HelperText';
 import HiddenLabelTextArea from './widgets/text-area/HiddenLabel';
 import ValidatedCustomTextArea from './widgets/text-area/ValidatedCustom';
 import ValidatedRequiredTextArea from './widgets/text-area/ValidatedRequired';
+import KindsTextArea from './widgets/text-area/Kinds';
 import BasicTextInput from './widgets/text-input/Basic';
 import ControlledTextInput from './widgets/text-input/Controlled';
 import DisabledTextInput from './widgets/text-input/Disabled';
@@ -1810,6 +1811,11 @@ export const config: Config = {
 					filename: 'ValidatedRequired',
 					module: ValidatedRequiredTextArea,
 					title: 'Validated required'
+				},
+				{
+					filename: 'Kinds',
+					module: KindsTextArea,
+					title: 'Kinds'
 				}
 			],
 			overview: {

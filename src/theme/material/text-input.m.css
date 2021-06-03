@@ -8,6 +8,10 @@
 	display: flex;
 }
 
+.defaultKind {
+	composes: mdc-text-field--filled from '@material/textfield/dist/mdc.textfield.css';
+}
+
 .outlinedKind {
 	composes: mdc-text-field--outlined from '@material/textfield/dist/mdc.textfield.css';
 }
@@ -16,25 +20,10 @@
 .input {
 	composes: mdc-text-field__input from '@material/textfield/dist/mdc.textfield.css';
 }
+
 /* Contains the input element */
 .inputWrapper {
 	width: 100%;
-}
-
-.defaultKindInputWrapper {
-	composes: mdc-line-ripple from '@material/textfield/dist/mdc.textfield.css';
-}
-
-.wrapper.defaultKind {
-	background-color: var(--mdc-theme-on-surface);
-}
-
-.root:hover .wrapper.defaultKind:not(.disabled) {
-	background-color: var(--mdc-theme-on-surface-hover);
-}
-
-.defaultKindInputWrapperFocused {
-	composes: mdc-line-ripple--active from '@material/textfield/dist/mdc.textfield.css';
 }
 
 .noLabel {
@@ -68,6 +57,12 @@
 .trailing {
 	composes: mdc-text-field__icon from '@material/textfield/dist/mdc.textfield.css';
 }
+.leading {
+	composes: mdc-text-field__icon--leading from '@material/textfield/dist/mdc.textfield.css';
+}
+.trailing {
+	composes: mdc-text-field__icon--trailing from '@material/textfield/dist/mdc.textfield.css';
+}
 .root .leading,
 .root .trailing {
 	color: var(--mdc-secondary-text-color);
@@ -84,12 +79,8 @@
 }
 
 /* Added at the root when there is leading content */
-.hasLeadingDefaultKind {
+.hasLeading {
 	composes: mdc-text-field--with-leading-icon from '@material/textfield/dist/mdc.textfield.css';
-}
-
-.hasLeadingOutlinedKind {
-	composes: mdc-text-field--outlined--with-leading-icon from '@material/textfield/dist/mdc.textfield.css';
 }
 
 /* Added at the root when there is trailing content */
@@ -132,17 +123,8 @@
 	color: var(--mdc-theme-secondary);
 }
 
-/* .root.outlinedKind .wrapper:not(.disabled):not(.focused) .inputWrapper:before {
-	border-color: var(--mdc-border-color);
-}
-
-.root.outlinedKind .wrapper:not(.disabled):not(.focused) .inputWrapper:hover:before {
-	border-color: var(--mdc-border-color-hover);
-} */
-
 .notchedOutline {
-	composes: mdc-notched-outline from '@material/textfield/dist/mdc.textfield.css';
-	composes: mdc-notched-outline--upgraded from '@material/textfield/dist/mdc.textfield.css';
+	composes: mdc-notched-outline mdc-notched-outline--upgraded from '@material/textfield/dist/mdc.textfield.css';
 }
 
 .notchedOutlineNotched {
@@ -159,4 +141,21 @@
 
 .notchedOutlineTrailing {
 	composes: mdc-notched-outline__trailing from '@material/textfield/dist/mdc.textfield.css';
+}
+
+/* Applied to default inputs */
+.ripple {
+	composes: mdc-text-field__ripple from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.lineRipple {
+	composes: mdc-line-ripple from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.defaultKindFocused {
+	composes: mdc-ripple-upgraded--background-focused from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.defaultKindLineRippleFocused {
+	composes: mdc-line-ripple--active from '@material/textfield/dist/mdc.textfield.css';
 }
