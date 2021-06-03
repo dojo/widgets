@@ -1,5 +1,5 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
-import TextInput from '@dojo/widgets/text-input';
+import TextArea from '@dojo/widgets/text-area';
 import Example from '../../Example';
 
 const factory = create();
@@ -8,12 +8,12 @@ export default factory(function Kinds() {
 	return (
 		<Example>
 			<div>
-				<TextInput placeholder="Placeholder Text">{{ label: 'Default Kind' }}</TextInput>
+				<TextArea placeholder="Placeholder Text">{{ label: 'Default Kind' }}</TextArea>
 				<br />
 				<br />
-				<TextInput kind="outlined" placeholder="Placeholder Text">
+				<TextArea kind="outlined" placeholder="Placeholder Text">
 					{{ label: 'Outlined Kind' }}
-				</TextInput>
+				</TextArea>
 			</div>
 		</Example>
 	);

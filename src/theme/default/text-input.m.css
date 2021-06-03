@@ -13,11 +13,6 @@
 .inputWrapper {
 }
 
-.defaultKindInputWrapper {
-}
-
-.defaultKindInputWrapperFocused {
-}
 /* Added to a disabled TextInput */
 .disabled {
 }
@@ -39,11 +34,11 @@
 /* Root of the trailing wrapper*/
 .trailing {
 }
+
 /* Added to the wrapper when there is leading content */
-.hasLeadingDefaultKind {
+.hasLeading {
 }
-.hasLeadingOutlinedKind {
-}
+
 /* Added to the wrapper when there is trailing content */
 .hasTrailing {
 }
@@ -103,4 +98,17 @@
 }
 
 .notchedOutlineTrailing {
+}
+
+/* Applied to default inputs */
+.ripple {
+}
+
+.lineRipple {
+}
+
+.defaultKindFocused {
+}
+
+.defaultKindLineRippleFocused {
 }

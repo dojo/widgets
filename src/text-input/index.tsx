@@ -293,87 +293,84 @@ export const TextInput = factory(function TextInput({
 					valid === true ? themeCss.valid : null,
 					readOnly ? themeCss.readonly : null,
 					required ? themeCss.required : null,
-					kind === 'outlined' && leading ? themeCss.hasLeadingOutlinedKind : null,
-					kind === 'default' && leading ? themeCss.hasLeadingDefaultKind : null,
+					leading ? themeCss.hasLeading : null,
 					trailing ? themeCss.hasTrailing : null,
 					!label || labelHidden ? themeCss.noLabel : null,
 					kind === 'outlined' ? themeCss.outlinedKind : null,
-					kind === 'default' ? themeCss.defaultKind : null
+					kind === 'default' ? themeCss.defaultKind : null,
+					kind === 'default' && inputFocused ? themeCss.defaultKindFocused : null
 				]}
 				role="presentation"
 			>
 				{_renderLabel()}
-				<div
-					key="inputWrapper"
-					classes={[
-						themeCss.inputWrapper,
-						kind === 'default' ? themeCss.defaultKindInputWrapper : null,
-						inputFocused && kind === 'default'
-							? themeCss.defaultKindInputWrapperFocused
-							: null
-					]}
-					role="presentation"
-				>
-					{leading && <span classes={themeCss.leading}>{leading}</span>}
-					<input
-						{...formatAriaProperties(aria)}
-						aria-invalid={valid === false ? 'true' : undefined}
-						autocomplete={formatAutocomplete(autocomplete)}
-						classes={themeCss.input}
-						disabled={disabled}
-						id={widgetId}
-						focus={focus.shouldFocus}
-						key={'input'}
-						max={max}
-						maxlength={maxLength ? `${maxLength}` : null}
-						min={min}
-						minlength={minLength ? `${minLength}` : null}
-						name={name}
-						pattern={pattern}
-						placeholder={placeholder}
-						readOnly={readOnly}
-						aria-readonly={readOnly ? 'true' : undefined}
-						required={required}
-						step={step}
-						type={type}
-						value={value}
-						onblur={() => {
-							onBlur && onBlur();
-						}}
-						onfocus={() => {
-							onFocus && onFocus();
-						}}
-						oninput={(event: Event) => {
-							event.stopPropagation();
-							const value = (event.target as HTMLInputElement).value;
-							icache.set('value', value);
-							onValue && onValue(value);
-						}}
-						onkeydown={(event: KeyboardEvent) => {
-							event.stopPropagation();
-							onKeyDown && onKeyDown(event.which, () => event.preventDefault());
-						}}
-						onkeyup={(event: KeyboardEvent) => {
-							event.stopPropagation();
-							onKeyUp && onKeyUp(event.which, () => event.preventDefault());
-						}}
-						onclick={() => {
-							onClick && onClick();
-						}}
-						onpointerenter={() => {
-							onOver && onOver();
-						}}
-						onpointerleave={() => {
-							onOut && onOut();
-						}}
-						onanimationstart={(event: AnimationEvent) => {
-							if (event.animationName === themeCss.onAutofillShown) {
-								icache.set('autofilled', true);
-							}
-						}}
+				{leading && <span classes={themeCss.leading}>{leading}</span>}
+				{kind === 'default' && <span classes={themeCss.ripple} />}
+				<input
+					{...formatAriaProperties(aria)}
+					aria-invalid={valid === false ? 'true' : undefined}
+					autocomplete={formatAutocomplete(autocomplete)}
+					classes={themeCss.input}
+					disabled={disabled}
+					id={widgetId}
+					focus={focus.shouldFocus}
+					key={'input'}
+					max={max}
+					maxlength={maxLength ? `${maxLength}` : null}
+					min={min}
+					minlength={minLength ? `${minLength}` : null}
+					name={name}
+					pattern={pattern}
+					placeholder={placeholder}
+					readOnly={readOnly}
+					aria-readonly={readOnly ? 'true' : undefined}
+					required={required}
+					step={step}
+					type={type}
+					value={value}
+					onblur={() => {
+						onBlur && onBlur();
+					}}
+					onfocus={() => {
+						onFocus && onFocus();
+					}}
+					oninput={(event: Event) => {
+						event.stopPropagation();
+						const value = (event.target as HTMLInputElement).value;
+						icache.set('value', value);
+						onValue && onValue(value);
+					}}
+					onkeydown={(event: KeyboardEvent) => {
+						event.stopPropagation();
+						onKeyDown && onKeyDown(event.which, () => event.preventDefault());
+					}}
+					onkeyup={(event: KeyboardEvent) => {
+						event.stopPropagation();
+						onKeyUp && onKeyUp(event.which, () => event.preventDefault());
+					}}
+					onclick={() => {
+						onClick && onClick();
+					}}
+					onpointerenter={() => {
+						onOver && onOver();
+					}}
+					onpointerleave={() => {
+						onOut && onOut();
+					}}
+					onanimationstart={(event: AnimationEvent) => {
+						if (event.animationName === themeCss.onAutofillShown) {
+							icache.set('autofilled', true);
+						}
+					}}
+				/>
+				{kind === 'default' && (
+					<span
+						classes={[
+							themeCss.lineRipple,
+							inputFocused ? themeCss.defaultKindLineRippleFocused : null
+						]}
 					/>
-					{trailing && <span classes={themeCss.trailing}>{trailing}</span>}
-				</div>
+				)}
+				{trailing && <span classes={themeCss.trailing}>{trailing}</span>}
 			</div>
 			<HelperText
 				text={computedHelperText}
