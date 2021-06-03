@@ -49,6 +49,7 @@ import * as wizard from './wizard.m.css';
 import * as switchControl from './switch.m.css';
 import * as tabContainer from './tab-container.m.css';
 import * as textArea from './text-area.m.css';
+import * as text from './text.m.css';
 import * as textInput from './text-input.m.css';
 import * as threeColumnLayout from './three-column-layout.m.css';
 import * as timePicker from './time-picker.m.css';
@@ -113,6 +114,7 @@ export default {
 		'@dojo/widgets/wizard': wizard,
 		'@dojo/widgets/switch': switchControl,
 		'@dojo/widgets/tab-container': tabContainer,
+		'@dojo/widgets/text': text,
 		'@dojo/widgets/text-area': textArea,
 		'@dojo/widgets/text-input': textInput,
 		'@dojo/widgets/three-column-layout': threeColumnLayout,
