@@ -6,6 +6,7 @@ export const input: string;
 export const disabled: string;
 export const focused: string;
 export const inputWrapper: string;
+export const noLabel: string;
 export const notchedOutline: string;
 export const notchedOutlineNotched: string;
 export const notchedOutlineLeading: string;

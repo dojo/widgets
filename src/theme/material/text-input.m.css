@@ -21,11 +21,6 @@
 	composes: mdc-text-field__input from '@material/textfield/dist/mdc.textfield.css';
 }
 
-/* Contains the input element */
-.inputWrapper {
-	width: 100%;
-}
-
 .noLabel {
 	composes: mdc-text-field--no-label from '@material/textfield/dist/mdc.textfield.css';
 }
@@ -33,6 +28,10 @@
 /* Added to a disabled TextInput */
 .disabled {
 	composes: mdc-text-field--disabled from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.root .wrapper {
+	background-color: var(--mdc-text-input-background);
 }
 
 .root .disabled .input {
@@ -97,11 +96,11 @@
 	color: var(--mdc-text-color);
 }
 
-.wrapper:not(.disabled):not(.focused) .inputWrapper:before {
+.wrapper:not(.disabled):not(.focused) .lineRipple:before {
 	border-bottom-color: var(--mdc-border-color);
 }
 
-.wrapper:not(.disabled):not(.focused) .inputWrapper:hover:before {
+.wrapper:not(.disabled):not(.focused) .lineRipple:hover:before {
 	border-bottom-color: var(--mdc-border-color-hover);
 }
 

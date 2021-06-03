@@ -6,6 +6,18 @@
 	composes: mdc-text-field mdc-text-field--textarea from '@material/textfield/dist/mdc.textfield.css';
 }
 
+.root .wrapper {
+	background-color: var(--mdc-text-input-background);
+}
+
+.wrapper:not(.disabled):not(.focused) .lineRipple:before {
+	border-bottom-color: var(--mdc-border-color);
+}
+
+.wrapper:not(.disabled):not(.focused) .lineRipple:hover:before {
+	border-bottom-color: var(--mdc-border-color-hover);
+}
+
 .defaultKind {
 	composes: mdc-text-field--filled from '@material/textfield/dist/mdc.textfield.css';
 }

@@ -1,4 +1,6 @@
-.root {
+.root,
+.root *::before,
+.root *::after {
 	--example-background: var(--mdc-theme-surface);
 
 	/* variables taken from @material/theme/dist/mdc.theme.css */
@@ -64,6 +66,12 @@
 	--mdc-avatar-size-small: 24px;
 	--mdc-avatar-size-medium: 40px;
 	--mdc-avatar-size-large: 56px;
+
+	/* ripple */
+	--mdc-ripple-color: hsla(0, 0%, 100%, 0.87);
+
+	/* Text Input */
+	--mdc-text-input-background: var(--mdc-theme-on-surface);
 
 	/* Checkbox */
 	--mdc-checkbox-background-enabled: transparent;
