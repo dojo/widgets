@@ -1,4 +1,6 @@
-.root {
+.root,
+.root *::before,
+.root *::after {
 	--example-background: var(--mdc-theme-surface);
 
 	/* variables taken from @material/theme/dist/mdc.theme.css */
@@ -70,6 +72,12 @@
 	--mdc-transition-duration: 0.25s;
 	--mdc-transition-easing: ease;
 	--mdc-medium-transition-duration: 0.5s;
+
+	/* ripple */
+	--mdc-ripple-color: rgba(0, 0, 0, 0.87);
+
+	/* Text Input */
+	--mdc-text-input-background: whitesmoke;
 
 	/* Two column layout */
 	--mdc-divider-width: 9px;
