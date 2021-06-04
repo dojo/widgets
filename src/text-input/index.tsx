@@ -242,21 +242,23 @@ export const TextInput = factory(function TextInput({
 		const labelActive = !!value || inputFocused || autofilled;
 
 		const renderedLabel = (
-			<Label
-				theme={themeProp}
-				classes={classes}
-				variant={variant}
-				disabled={disabled}
-				valid={valid}
-				focused={inputFocused}
-				readOnly={readOnly}
-				required={required}
-				hidden={labelHidden}
-				forId={widgetId}
-				active={labelActive}
-			>
-				{label}
-			</Label>
+			<span key="label" classes={themeCss.label}>
+				<Label
+					theme={themeProp}
+					classes={classes}
+					variant={variant}
+					disabled={disabled}
+					valid={valid}
+					focused={inputFocused}
+					readOnly={readOnly}
+					required={required}
+					hidden={labelHidden}
+					forId={widgetId}
+					active={labelActive}
+				>
+					{label}
+				</Label>
+			</span>
 		);
 
 		return kind === 'outlined' ? (
@@ -271,7 +273,7 @@ export const TextInput = factory(function TextInput({
 								: { width: 'auto' }
 						}
 					>
-						<span key="label">{renderedLabel}</span>
+						{renderedLabel}
 					</div>
 				)}
 				<div classes={themeCss.notchedOutlineTrailing} />
@@ -303,76 +305,74 @@ export const TextInput = factory(function TextInput({
 				role="presentation"
 			>
 				{_renderLabel()}
-				<div key="inputWrapper" classes={themeCss.inputWrapper} role="presentation">
-					{leading && <span classes={themeCss.leading}>{leading}</span>}
-					{kind === 'default' && <span classes={themeCss.ripple} />}
-					<input
-						{...formatAriaProperties(aria)}
-						aria-invalid={valid === false ? 'true' : undefined}
-						autocomplete={formatAutocomplete(autocomplete)}
-						classes={themeCss.input}
-						disabled={disabled}
-						id={widgetId}
-						focus={focus.shouldFocus}
-						key={'input'}
-						max={max}
-						maxlength={maxLength ? `${maxLength}` : null}
-						min={min}
-						minlength={minLength ? `${minLength}` : null}
-						name={name}
-						pattern={pattern}
-						placeholder={placeholder}
-						readOnly={readOnly}
-						aria-readonly={readOnly ? 'true' : undefined}
-						required={required}
-						step={step}
-						type={type}
-						value={value}
-						onblur={() => {
-							onBlur && onBlur();
-						}}
-						onfocus={() => {
-							onFocus && onFocus();
-						}}
-						oninput={(event: Event) => {
-							event.stopPropagation();
-							const value = (event.target as HTMLInputElement).value;
-							icache.set('value', value);
-							onValue && onValue(value);
-						}}
-						onkeydown={(event: KeyboardEvent) => {
-							event.stopPropagation();
-							onKeyDown && onKeyDown(event.which, () => event.preventDefault());
-						}}
-						onkeyup={(event: KeyboardEvent) => {
-							event.stopPropagation();
-							onKeyUp && onKeyUp(event.which, () => event.preventDefault());
-						}}
-						onclick={() => {
-							onClick && onClick();
-						}}
-						onpointerenter={() => {
-							onOver && onOver();
-						}}
-						onpointerleave={() => {
-							onOut && onOut();
-						}}
-						onanimationstart={(event: AnimationEvent) => {
-							if (event.animationName === themeCss.onAutofillShown) {
-								icache.set('autofilled', true);
-							}
-						}}
+				{leading && <span classes={themeCss.leading}>{leading}</span>}
+				{kind === 'default' && <span classes={themeCss.ripple} />}
+				<input
+					{...formatAriaProperties(aria)}
+					aria-invalid={valid === false ? 'true' : undefined}
+					autocomplete={formatAutocomplete(autocomplete)}
+					classes={themeCss.input}
+					disabled={disabled}
+					id={widgetId}
+					focus={focus.shouldFocus}
+					key={'input'}
+					max={max}
+					maxlength={maxLength ? `${maxLength}` : null}
+					min={min}
+					minlength={minLength ? `${minLength}` : null}
+					name={name}
+					pattern={pattern}
+					placeholder={placeholder}
+					readOnly={readOnly}
+					aria-readonly={readOnly ? 'true' : undefined}
+					required={required}
+					step={step}
+					type={type}
+					value={value}
+					onblur={() => {
+						onBlur && onBlur();
+					}}
+					onfocus={() => {
+						onFocus && onFocus();
+					}}
+					oninput={(event: Event) => {
+						event.stopPropagation();
+						const value = (event.target as HTMLInputElement).value;
+						icache.set('value', value);
+						onValue && onValue(value);
+					}}
+					onkeydown={(event: KeyboardEvent) => {
+						event.stopPropagation();
+						onKeyDown && onKeyDown(event.which, () => event.preventDefault());
+					}}
+					onkeyup={(event: KeyboardEvent) => {
+						event.stopPropagation();
+						onKeyUp && onKeyUp(event.which, () => event.preventDefault());
+					}}
+					onclick={() => {
+						onClick && onClick();
+					}}
+					onpointerenter={() => {
+						onOver && onOver();
+					}}
+					onpointerleave={() => {
+						onOut && onOut();
+					}}
+					onanimationstart={(event: AnimationEvent) => {
+						if (event.animationName === themeCss.onAutofillShown) {
+							icache.set('autofilled', true);
+						}
+					}}
+				/>
+				{kind === 'default' && (
+					<span
+						classes={[
+							themeCss.lineRipple,
+							inputFocused ? themeCss.defaultKindLineRippleFocused : null
+						]}
 					/>
-					{kind === 'default' && (
-						<span
-							classes={[
-								themeCss.lineRipple,
-								inputFocused ? themeCss.defaultKindLineRippleFocused : null
-							]}
-						/>
-					)}
-					{trailing && <span classes={themeCss.trailing}>{trailing}</span>}
-				</div>
+				)}
+				{trailing && <span classes={themeCss.trailing}>{trailing}</span>}
 			</div>
 			<HelperText
 				text={computedHelperText}
