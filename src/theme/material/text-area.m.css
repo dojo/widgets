@@ -79,6 +79,15 @@
 	composes: mdc-notched-outline__trailing from '@material/textfield/dist/mdc.textfield.css';
 }
 
+.wrapper.outlinedKind .notchedOutlineLeading,
+.wrapper.outlinedKind .notchedOutlineNotch,
+.wrapper.outlinedKind .notchedOutlineTrailing,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineLeading,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineNotch,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineTrailing {
+	border-color: var(--mdc-border-color);
+}
+
 /* Applied to default inputs */
 .ripple {
 	composes: mdc-text-field__ripple from '@material/textfield/dist/mdc.textfield.css';

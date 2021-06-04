@@ -36,14 +36,21 @@
 .inputWrapper {
 	background-color: var(--color-background);
 	color: var(--color-text-primary);
-	border: var(--border-width) solid var(--color-border);
-	border-bottom-color: var(--color-border-strong);
 	width: 100%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	transition: box-shadow var(--transition-duration) var(--transition-easing);
 	box-sizing: border-box;
+}
+
+.defaultKind .inputWrapper {
+	border: var(--border-width) solid var(--color-border);
+	border-bottom-color: var(--color-border-strong);
+}
+
+.outlinedKind .inputWrapper {
+	border: var(--border-width) solid var(--color-highlight);
 }
 
 .focused .inputWrapper {
@@ -105,4 +112,8 @@
 
 .trailing {
 	background-color: var(--color-background-faded);
+}
+
+.notchedOutlineNotch {
+	width: 100% !important;
 }
