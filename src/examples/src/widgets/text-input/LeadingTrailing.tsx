@@ -1,5 +1,6 @@
 import { create, tsx } from '@dojo/framework/core/vdom';
 import TextInput from '@dojo/widgets/text-input';
+import Icon from '@dojo/widgets/icon';
 import Example from '../../Example';
 
 const factory = create();
@@ -10,8 +11,8 @@ export default factory(function Basic() {
 			<TextInput>
 				{{
 					label: 'Input label',
-					leading: 'A',
-					trailing: 'Z'
+					leading: <Icon type="dateIcon" />,
+					trailing: <Icon type="dateIcon" />
 				}}
 			</TextInput>
 		</Example>

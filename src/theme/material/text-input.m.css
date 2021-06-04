@@ -6,20 +6,19 @@
 .wrapper {
 	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
 	display: flex;
-	flex-direction: column;
-}
-
-.inputWrapper {
-	flex-grow: 1;
-	width: 100%;
 }
 
 .defaultKind {
 	composes: mdc-text-field--filled from '@material/textfield/dist/mdc.textfield.css';
 }
 
-.defaultKind .inputWrapper {
+.defaultKind:not(.hasLeading):not(.hasTrailing) .inputWrapper {
 	padding-bottom: 7px;
+}
+
+.defaultKind.hasLeading .input,
+.defaultKind.hasTrailing .input {
+	padding-top: 4px;
 }
 
 .outlinedKind {
@@ -29,6 +28,7 @@
 /* Added to the input */
 .input {
 	composes: mdc-text-field__input from '@material/textfield/dist/mdc.textfield.css';
+	height: 100%;
 }
 
 .noLabel {

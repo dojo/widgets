@@ -7,11 +7,11 @@
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-base);
 	box-sizing: border-box;
+	display: flex;
+	flex-flow: row wrap;
 }
 
 .input {
-	border: none;
-	width: 100%;
 	border-radius: 0;
 	margin: 0;
 	font-size: inherit;
@@ -23,6 +23,14 @@
 	box-sizing: border-box;
 	background-color: var(--color-background);
 	color: var(--color-text-primary);
+	border: var(--border-width) solid;
+	flex-grow: 1;
+}
+
+.label,
+.notchedOutline {
+	display: inline-block;
+	width: 100%;
 }
 
 .input:focus {
@@ -33,34 +41,13 @@
 	color: var(--color-text-faded);
 }
 
-.inputWrapper {
-	background-color: var(--color-background);
-	color: var(--color-text-primary);
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	transition: box-shadow var(--transition-duration) var(--transition-easing);
-	box-sizing: border-box;
-}
-
-.defaultKind .inputWrapper {
-	border: var(--border-width) solid var(--color-border);
-	border-bottom-color: var(--color-border-strong);
-}
-
-.outlinedKind .inputWrapper {
-	border: var(--border-width) solid var(--color-highlight);
-}
-
-.focused .inputWrapper {
+.wrapper.focused .input {
 	border-color: var(--color-highlight);
 	border-bottom-color: var(--color-highlight);
-	box-shadow: var(--box-shadow-dimensions-small) var(--box-shadow-focus);
 }
 
-.inputWrapper:hover {
-	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow);
+.wrapper:hover {
+	box-shadow: 0 4px 2px -2px var(--color-box-shadow);
 }
 
 .input::-ms-clear {
@@ -70,33 +57,33 @@
 }
 
 /* disabled and readonly */
-.disabled .inputWrapper,
-.readonly .inputWrapper {
+.disabled .input,
+.readonly .input {
 	background-color: var(--color-background-faded);
 }
 
-.disabled .inputWrapper:hover,
-.readonly .inputWrapper:hover {
+.disabled .input:hover,
+.readonly .input:hover {
 	box-shadow: none;
 }
 
 /* invalid */
-.invalid .inputWrapper {
+.invalid .input {
 	border-color: var(--color-border-invalid);
 	border-bottom-color: var(--color-error);
 }
 
-.invalid.focused .inputWrapper {
+.invalid.focused .input {
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-invalid);
 }
 
 /* valid */
-.valid .inputWrapper {
+.valid .input {
 	border-color: var(--color-border-valid);
 	border-bottom-color: var(--color-success);
 }
 
-.valid.focused .inputWrapper {
+.valid.focused .input {
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-valid);
 }
 
@@ -110,8 +97,36 @@
 	box-sizing: border-box;
 }
 
+.leading {
+	border: var(--border-width) solid;
+	border-right: none;
+}
+
+.hasLeading .input {
+	border-left: none;
+}
+
 .trailing {
 	background-color: var(--color-background-faded);
+	border: var(--border-width) solid;
+	border-left: none;
+}
+
+.hasTrailing .input {
+	border-right: none;
+}
+
+.defaultKind .leading,
+.defaultKind .trailing,
+.defaultKind .input {
+	border-color: var(--color-border);
+	border-bottom-color: var(--color-border-strong);
+}
+
+.outlinedKind .leading,
+.outlinedKind .trailing,
+.outlinedKind .input {
+	border-color: var(--color-highlight);
 }
 
 .notchedOutlineNotch {
