@@ -79,40 +79,42 @@ const defaultExpected = function({
 	return (
 		<div key="root" classes={[undefined, css.root]} role="presentation">
 			<div key="wrapper" classes={wrapperClasses} role="presentation">
-				<span classes={css.ripple} />
-				<input
-					aria-invalid={valid === false ? 'true' : undefined}
-					autocomplete="off"
-					classes={css.input}
-					disabled={disabled}
-					id={''}
-					focus={noop}
-					key={'input'}
-					max={undefined}
-					maxlength={null}
-					min={undefined}
-					minlength={null}
-					name={undefined}
-					pattern={undefined}
-					placeholder={undefined}
-					readOnly={readOnly}
-					aria-readonly={readOnly ? 'true' : undefined}
-					required={required}
-					step={undefined}
-					type="text"
-					value={value}
-					onblur={noop}
-					onfocus={noop}
-					oninput={noop}
-					onkeydown={noop}
-					onkeyup={noop}
-					onclick={noop}
-					onpointerenter={noop}
-					onpointerleave={noop}
-					onanimationstart={noop}
-					{...inputOverrides}
-				/>
-				<span classes={lineRippleClasses} />
+				<div key="inputWrapper" classes={css.inputWrapper} role="presentation">
+					<span classes={css.ripple} />
+					<input
+						aria-invalid={valid === false ? 'true' : undefined}
+						autocomplete="off"
+						classes={css.input}
+						disabled={disabled}
+						id={''}
+						focus={noop}
+						key={'input'}
+						max={undefined}
+						maxlength={null}
+						min={undefined}
+						minlength={null}
+						name={undefined}
+						pattern={undefined}
+						placeholder={undefined}
+						readOnly={readOnly}
+						aria-readonly={readOnly ? 'true' : undefined}
+						required={required}
+						step={undefined}
+						type="text"
+						value={value}
+						onblur={noop}
+						onfocus={noop}
+						oninput={noop}
+						onkeydown={noop}
+						onkeyup={noop}
+						onclick={noop}
+						onpointerenter={noop}
+						onpointerleave={noop}
+						onanimationstart={noop}
+						{...inputOverrides}
+					/>
+					<span classes={lineRippleClasses} />
+				</div>
 			</div>
 			<HelperText
 				text={helperTextValue}
@@ -147,7 +149,9 @@ const baseAssertion = assertionTemplate(() => {
 					null
 				]}
 			>
-				{input()}
+				<div key="inputWrapper" classes={css.inputWrapper} role="presentation">
+					{input()}
+				</div>
 			</div>
 			<HelperText
 				assertion-key="helperText"
@@ -162,8 +166,8 @@ const baseAssertion = assertionTemplate(() => {
 });
 
 const defaultKindAssertion = baseAssertion
-	.prepend('@wrapper', () => [<span classes={css.ripple} />])
-	.append('@wrapper', () => [
+	.prepend('@inputWrapper', () => [<span classes={css.ripple} />])
+	.append('@inputWrapper', () => [
 		<span assertion-key="lineRipple" classes={[css.lineRipple, null]} />
 	]);
 
@@ -776,7 +780,7 @@ registerSuite('TextInput', {
 					css.defaultKind,
 					null
 				])
-				.prepend('@wrapper', () => [leading]);
+				.prepend('@inputWrapper', () => [leading]);
 			const h = harness(() => <TextInput>{{ leading: 'A' }}</TextInput>);
 			h.expect(leadingTemplate);
 		},
@@ -799,7 +803,7 @@ registerSuite('TextInput', {
 					css.defaultKind,
 					null
 				])
-				.append('@wrapper', () => [trailing]);
+				.append('@inputWrapper', () => [trailing]);
 			const h = harness(() => <TextInput>{{ trailing: 'Z' }}</TextInput>);
 			h.expect(trailingTemplate);
 		},

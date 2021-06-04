@@ -6,10 +6,20 @@
 .wrapper {
 	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
 	display: flex;
+	flex-direction: column;
+}
+
+.inputWrapper {
+	flex-grow: 1;
+	width: 100%;
 }
 
 .defaultKind {
 	composes: mdc-text-field--filled from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.defaultKind .inputWrapper {
+	padding-bottom: 7px;
 }
 
 .outlinedKind {
@@ -118,10 +128,6 @@
 	animation-name: onAutofillShown;
 }
 
-.root.outlinedKind {
-	color: var(--mdc-theme-secondary);
-}
-
 .notchedOutline {
 	composes: mdc-notched-outline mdc-notched-outline--upgraded from '@material/textfield/dist/mdc.textfield.css';
 }
@@ -140,6 +146,15 @@
 
 .notchedOutlineTrailing {
 	composes: mdc-notched-outline__trailing from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.wrapper.outlinedKind .notchedOutlineLeading,
+.wrapper.outlinedKind .notchedOutlineNotch,
+.wrapper.outlinedKind .notchedOutlineTrailing,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineLeading,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineNotch,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineTrailing {
+	border-color: var(--mdc-border-color);
 }
 
 /* Applied to default inputs */
