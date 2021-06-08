@@ -80,6 +80,7 @@ const defaultExpected = function({
 		<div key="root" classes={[undefined, css.root]} role="presentation">
 			<div key="wrapper" classes={wrapperClasses} role="presentation">
 				<span classes={css.ripple} />
+				<span key="leading" classes={css.leadingWrapper} />
 				<input
 					aria-invalid={valid === false ? 'true' : undefined}
 					autocomplete="off"
@@ -112,6 +113,7 @@ const defaultExpected = function({
 					onanimationstart={noop}
 					{...inputOverrides}
 				/>
+				<span key="trailing" classes={css.trailingWrapper} />
 				<span classes={lineRippleClasses} />
 			</div>
 			<HelperText
@@ -147,7 +149,9 @@ const baseAssertion = assertionTemplate(() => {
 					null
 				]}
 			>
+				<span key="leading" classes={css.leadingWrapper} />
 				{input()}
+				<span key="trailing" classes={css.trailingWrapper} />
 			</div>
 			<HelperText
 				assertion-key="helperText"
@@ -169,7 +173,7 @@ const defaultKindAssertion = baseAssertion
 
 const defaultKindLabeledAssertion = defaultKindAssertion
 	.prepend('@wrapper', () => [
-		<span key="label" classes={css.label}>
+		<span key="label" classes={css.labelWrapper}>
 			<Label
 				assertion-key="label"
 				theme={undefined}
@@ -181,7 +185,11 @@ const defaultKindLabeledAssertion = defaultKindAssertion
 				hidden={false}
 				forId={''}
 				active={false}
-				classes={undefined}
+				classes={{
+					'@dojo/widgets/label': {
+						root: [css.label]
+					}
+				}}
 				variant={undefined}
 			>
 				foo
@@ -233,7 +241,7 @@ const outlinedLabeledAssertion = baseAssertion
 		<div assertion-key="notchedOutline" classes={[css.notchedOutline, false]}>
 			<div classes={css.notchedOutlineLeading} />
 			<div assertion-key="notch" classes={css.notchedOutlineNotch} styles={{ width: 'auto' }}>
-				<span key="label" classes={css.label}>
+				<span key="label" classes={css.labelWrapper}>
 					<Label
 						assertion-key="label"
 						theme={undefined}
@@ -245,7 +253,11 @@ const outlinedLabeledAssertion = baseAssertion
 						hidden={false}
 						forId={''}
 						active={false}
-						classes={undefined}
+						classes={{
+							'@dojo/widgets/label': {
+								root: [css.label]
+							}
+						}}
 						variant={undefined}
 					>
 						foo
@@ -778,7 +790,7 @@ registerSuite('TextInput', {
 					css.defaultKind,
 					null
 				])
-				.prepend('@wrapper', () => [leading]);
+				.setChildren('@leading', () => [leading]);
 			const h = harness(() => <TextInput>{{ leading: 'A' }}</TextInput>);
 			h.expect(leadingTemplate);
 		},
@@ -801,7 +813,7 @@ registerSuite('TextInput', {
 					css.defaultKind,
 					null
 				])
-				.append('@wrapper', () => [trailing]);
+				.setChildren('@trailing', () => [trailing]);
 			const h = harness(() => <TextInput>{{ trailing: 'Z' }}</TextInput>);
 			h.expect(trailingTemplate);
 		},

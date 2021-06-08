@@ -16,9 +16,7 @@ import Chip from '../chip';
 import focus from '@dojo/framework/core/middleware/focus';
 import * as typeaheadCss from '../theme/default/typeahead.m.css';
 import * as chipCss from '../theme/default/chip.m.css';
-import * as labelCss from '../theme/default/label.m.css';
 import { PopupPosition } from '@dojo/widgets/popup';
-import Label from '../label';
 import { find } from '@dojo/framework/shim/array';
 
 export interface ChipTypeaheadProperties {
@@ -42,6 +40,8 @@ export interface ChipTypeaheadProperties {
 	duplicates?: boolean;
 	/** Flag to indicate if values other than those in the resource can be entered, defaults to true */
 	strict?: boolean;
+	/** The kind of chip typeahead input */
+	kind?: 'outlined' | 'default';
 }
 
 export interface ChipTypeaheadChildren {
@@ -104,7 +104,8 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 		resource: {
 			template,
 			options = resource.createOptions((curr, next) => ({ ...curr, ...next }))
-		}
+		},
+		kind
 	} = properties();
 	const {
 		get,
@@ -204,29 +205,9 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 				themeCss.root,
 				selectedOptions.length > 0 ? themeCss.hasValue : null,
 				focused ? themeCss.focused : null,
-				label ? themeCss.hasLabel : null
+				label ? themeCss.hasLabel : themeCss.noLabel
 			]}
 		>
-			{label && (
-				<Label
-					focused={focused}
-					disabled={disabled}
-					active={active}
-					theme={theme.compose(
-						labelCss,
-						css,
-						'label'
-					)}
-					classes={{
-						'@dojo/widgets/label': {
-							root: [themeCss.label]
-						}
-					}}
-					variant={variant}
-				>
-					{label}
-				</Label>
-			)}
 			<Typeahead
 				key="typeahead"
 				theme={theme.compose(
@@ -255,10 +236,14 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 				onBlur={() => icache.set('focused', false)}
 				classes={{
 					'@dojo/widgets/text-input': {
-						inputWrapper: [themeCss.inputWrapper],
 						input: [themeCss.input],
 						wrapper: [themeCss.wrapper],
-						leading: [themeCss.inputLeading]
+						leading: [themeCss.inputLeading],
+						leadingWrapper: [themeCss.inputLeadingWrapper],
+						defaultKind: [themeCss.defaultKind],
+						outlinedKind: [themeCss.outlinedKind],
+						labelWrapper: [themeCss.inputLabel],
+						label: [themeCss.label]
 					}
 				}}
 				itemDisabled={(item) => {
@@ -269,8 +254,11 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 							.findIndex((option) => option.value === item.value) !== -1;
 					return item.disabled || (!duplicates && strict && selected);
 				}}
+				kind={kind}
+				active={active}
 			>
 				{{
+					label,
 					items: (item, props) => {
 						const selected =
 							icache
@@ -298,7 +286,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 							</ListItem>
 						);
 					},
-					leading: placement === 'inline' ? chips : undefined
+					leading: placement === 'inline' && chips && chips.length ? chips : undefined
 				}}
 			</Typeahead>
 			{placement === 'bottom' && <div classes={themeCss.values}>{chips}</div>}

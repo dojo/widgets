@@ -59,6 +59,8 @@ export interface TypeaheadProperties {
 	hasDownArrow?: boolean;
 	/** The kind of typeahead input */
 	kind?: 'outlined' | 'default';
+	/** The active property of the typeahead's input */
+	active?: boolean;
 }
 
 export interface TypeaheadICache {
@@ -122,7 +124,8 @@ export const Typeahead = factory(function Typeahead({
 		theme: themeProp,
 		variant,
 		hasDownArrow,
-		kind
+		kind,
+		active
 	} = properties();
 	const {
 		get,
@@ -435,6 +438,7 @@ export const Typeahead = factory(function Typeahead({
 								}}
 								valid={valid}
 								kind={kind}
+								active={active}
 							>
 								{{
 									label,

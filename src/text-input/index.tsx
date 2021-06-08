@@ -65,6 +65,8 @@ export interface BaseInputProperties<T extends { value: any } = { value: string 
 	widgetId?: string;
 	/** The kind of input */
 	kind?: 'outlined' | 'default';
+	/** The active property of the input's label */
+	active?: boolean;
 }
 
 export interface TextInputChildren {
@@ -173,7 +175,8 @@ export const TextInput = factory(function TextInput({
 		valid: validValue = { valid: undefined, message: '' },
 		widgetId = `text-input-${id}`,
 		variant,
-		kind = 'default'
+		kind = 'default',
+		active
 	} = properties();
 
 	let { value } = properties();
@@ -239,13 +242,19 @@ export const TextInput = factory(function TextInput({
 	labelWidth = labelWidth * 0.75 + 10;
 
 	function _renderLabel() {
-		const labelActive = !!value || inputFocused || autofilled;
+		const labelActive = Boolean(!!value || inputFocused || autofilled || active);
 
 		const renderedLabel = (
-			<span key="label" classes={themeCss.label}>
+			<span key="label" classes={themeCss.labelWrapper}>
 				<Label
 					theme={themeProp}
-					classes={classes}
+					classes={{
+						...classes,
+						'@dojo/widgets/label': {
+							...(classes ? classes['@dojo/widgets/label'] : {}),
+							root: [themeCss.label]
+						}
+					}}
 					variant={variant}
 					disabled={disabled}
 					valid={valid}
@@ -305,8 +314,10 @@ export const TextInput = factory(function TextInput({
 				role="presentation"
 			>
 				{_renderLabel()}
-				{leading && <span classes={themeCss.leading}>{leading}</span>}
 				{kind === 'default' && <span classes={themeCss.ripple} />}
+				<span key="leading" classes={themeCss.leadingWrapper}>
+					{leading && <span classes={themeCss.leading}>{leading}</span>}
+				</span>
 				<input
 					{...formatAriaProperties(aria)}
 					aria-invalid={valid === false ? 'true' : undefined}
@@ -364,6 +375,9 @@ export const TextInput = factory(function TextInput({
 						}
 					}}
 				/>
+				<span key="trailing" classes={themeCss.trailingWrapper}>
+					{trailing && <span classes={themeCss.trailing}>{trailing}</span>}
+				</span>
 				{kind === 'default' && (
 					<span
 						classes={[
@@ -372,7 +386,6 @@ export const TextInput = factory(function TextInput({
 						]}
 					/>
 				)}
-				{trailing && <span classes={themeCss.trailing}>{trailing}</span>}
 			</div>
 			<HelperText
 				text={computedHelperText}

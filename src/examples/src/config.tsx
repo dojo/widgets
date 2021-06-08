@@ -121,6 +121,7 @@ import CustomRendererChipTypeahead from './widgets/chip-typeahead/CustomRenderer
 import BottomChipTypeahead from './widgets/chip-typeahead/BottomPlacement';
 import DuplicatesChipTypeahead from './widgets/chip-typeahead/Duplicates';
 import FreeTextChipTypeahead from './widgets/chip-typeahead/FreeText';
+import KindsChipTypeahead from './widgets/chip-typeahead/Kinds';
 import BasicNumberInput from './widgets/number-input/Basic';
 import ValidatedNumberInput from './widgets/number-input/Validation';
 import LeadingTrailingNumberInput from './widgets/number-input/LeadingTrailing';
@@ -1297,6 +1298,11 @@ export const config: Config = {
 					title: 'Free Text',
 					filename: 'FreeText',
 					module: FreeTextChipTypeahead
+				},
+				{
+					title: 'Kinds',
+					filename: 'Kinds',
+					module: KindsChipTypeahead
 				}
 			]
 		},
