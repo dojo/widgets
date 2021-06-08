@@ -29,9 +29,17 @@
 .invalid {
 }
 /* Root of the leading wrapper*/
+.leadingWrapper {
+	display: flex;
+}
+
 .leading {
 }
 /* Root of the trailing wrapper*/
+.trailingWrapper {
+	display: flex;
+}
+
 .trailing {
 }
 
@@ -49,6 +57,10 @@
 
 /* passed to the text-input's Label's root component */
 .label {
+}
+
+/* wraps text-input's Label component */
+.labelWrapper {
 }
 
 /* Styles the helper text when the input is invalid */

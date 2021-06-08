@@ -27,7 +27,7 @@
 	flex-grow: 1;
 }
 
-.label,
+.labelWrapper,
 .notchedOutline {
 	display: inline-block;
 	width: 100%;
@@ -41,6 +41,8 @@
 	color: var(--color-text-faded);
 }
 
+.wrapper.focused .leading,
+.wrapper.focused .trailing,
 .wrapper.focused .input {
 	border-color: var(--color-highlight);
 	border-bottom-color: var(--color-highlight);
@@ -68,6 +70,8 @@
 }
 
 /* invalid */
+.invalid .leading,
+.invalid .trailing,
 .invalid .input {
 	border-color: var(--color-border-invalid);
 	border-bottom-color: var(--color-error);
@@ -78,6 +82,8 @@
 }
 
 /* valid */
+.valid .leading,
+.valid .trailing,
 .valid .input {
 	border-color: var(--color-border-valid);
 	border-bottom-color: var(--color-success);

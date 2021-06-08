@@ -1,17 +1,3 @@
-.root {
-	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
-	height: auto !important;
-	display: block !important;
-}
-
-.disabled {
-	composes: mdc-text-field--disabled from '@material/textfield/dist/mdc.textfield.css';
-}
-
-.focused {
-	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';
-}
-
 .value {
 	margin-bottom: 2px;
 	margin-right: 2px;
@@ -19,28 +5,11 @@
 	height: 28px !important;
 }
 
-.root.hasLabel .wrapper .inputWrapper .input {
-	padding: 0px 16px 6px;
-}
-
 .selectedIcon {
 	margin-right: 8px;
 }
 
-.root .input {
-	flex-grow: 1;
-	min-width: 100px;
-	width: 100px;
-}
-
-.root .inputWrapper {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	padding-top: 20px;
-}
-
-.root .inputLeading {
+.root.hasValue .inputLeading {
 	display: block;
 	pointer-events: unset;
 	position: static;
@@ -56,26 +25,50 @@
 	z-index: 1;
 }
 
-.root.hasValue {
+.root.hasValue .input {
+	display: inline-block;
+	width: 100%;
+	padding: 8px 28px 12px;
+}
+
+.root.hasValue .wrapper {
 	height: auto;
+	flex-flow: row wrap;
 }
 
-.root.hasValue .inputWrapper {
-	height: auto;
-	padding-left: 16px;
+.root.noLabel.hasValue .wrapper {
+	padding-top: 12px;
 }
 
-.root .wrapper {
-	height: auto;
+.root.hasLabel .defaultKind .input {
+	padding-top: 12px;
 }
 
-.root .input {
-	height: 36px;
-	padding-left: 16px;
+.root.hasLabel.hasValue .defaultKind {
+	padding-top: 28px;
 }
 
-.root.hasValue .label {
-	top: 26px;
+.root.hasLabel.hasValue .defaultKind .inputLabel {
+	position: absolute;
+	width: 100%;
+	left: -24px;
+}
+
+.root.hasLabel .defaultKind::before {
+	height: 0;
+}
+
+.root.hasLabel.hasValue .outlinedKind {
+	padding-top: 12px;
+}
+
+.root.hasLabel.hasValue .outlinedKind .inputLabel {
+	position: absolute;
+	top: 28px;
+}
+
+.root.hasLabel.hasValue .outlinedKind .label {
+	transition: unset;
 }
 
 .values {
