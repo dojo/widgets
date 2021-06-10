@@ -17,11 +17,9 @@
 }
 
 .root .inputLeading {
-	display: block;
 	pointer-events: unset;
 	position: static;
 	transform: none;
-	max-width: 100%;
 }
 
 .root .inputWrapper {

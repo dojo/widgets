@@ -591,7 +591,11 @@ registerSuite('TextInput', {
 		},
 
 		'leading property'() {
-			const leading = <span classes={css.leading}>A</span>;
+			const leading = (
+				<virtual>
+					<span classes={css.leading}>A</span>
+				</virtual>
+			);
 			const leadingTemplate = baseAssertion
 				.setProperty('@wrapper', 'classes', [
 					css.wrapper,

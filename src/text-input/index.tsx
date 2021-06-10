@@ -226,6 +226,11 @@ export const TextInput = factory(function TextInput({
 	const inputFocused = focus.isFocused('input');
 	const autofilled = Boolean(icache.get('autofilled'));
 
+	let leadingElements;
+	if (leading) {
+		leadingElements = Array.isArray(leading) ? leading : [leading];
+	}
+
 	return (
 		<div key="root" classes={[theme.variant(), themeCss.root]} role="presentation">
 			<div
@@ -269,7 +274,13 @@ export const TextInput = factory(function TextInput({
 					]}
 					role="presentation"
 				>
-					{leading && <span classes={themeCss.leading}>{leading}</span>}
+					{leadingElements && (
+						<virtual>
+							{leadingElements.map((leadingElement) => (
+								<span classes={themeCss.leading}>{leadingElement}</span>
+							))}
+						</virtual>
+					)}
 					<input
 						{...formatAriaProperties(aria)}
 						aria-invalid={valid === false ? 'true' : undefined}
