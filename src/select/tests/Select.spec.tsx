@@ -73,9 +73,7 @@ const buttonTemplate = assertionTemplate(() => (
 		name={undefined}
 		value={undefined}
 	>
-		<span classes={[css.value, undefined]}>
-			<span classes={css.placeholder} />
-		</span>
+		<span classes={[css.value, undefined]} />
 		<span classes={css.arrow}>
 			<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
 		</span>
@@ -100,6 +98,10 @@ const menuTemplate = assertionTemplate(() => (
 			onBlur={() => {}}
 			initialValue={undefined}
 			itemsInView={6}
+			staticOption={{
+				value: '',
+				label: ''
+			}}
 			theme={{}}
 			classes={undefined}
 			variant={undefined}
@@ -124,7 +126,7 @@ describe('Select', () => {
 					resource={{ data: options, idKey: 'value', id: 'test' }}
 					itemsInView={10}
 					position="above"
-					placeholder="test"
+					placeholder={{ value: 'test', label: 'Test' }}
 					helperText="test-helper"
 					required={true}
 				>
@@ -135,6 +137,15 @@ describe('Select', () => {
 		);
 
 		const optionalPropertyTemplate = baseTemplate
+			.setProperty(':root', 'classes', [
+				undefined,
+				css.root,
+				undefined,
+				css.valid,
+				false,
+				false,
+				undefined
+			])
 			.prepend('@root', () => [
 				<Label
 					theme={{}}
@@ -142,7 +153,7 @@ describe('Select', () => {
 					variant={undefined}
 					disabled={undefined}
 					forId={'id'}
-					valid={undefined}
+					valid={true}
 					required={true}
 					active={false}
 					focused={false}
@@ -150,9 +161,9 @@ describe('Select', () => {
 					test-label
 				</Label>
 			])
-
 			.setProperty('@popup', 'position', 'above')
-			.setProperty('@helperText', 'text', 'test-helper');
+			.setProperty('@helperText', 'text', 'test-helper')
+			.setProperty('@helperText', 'valid', true);
 
 		h.expect(optionalPropertyTemplate);
 	});
@@ -270,13 +281,43 @@ describe('Select', () => {
 		assert.isTrue(closeMenuStub.calledOnce);
 	});
 
-	it('calls onValue when a menu item is selected', () => {
+	it('calls onValue immediately with an empty value for non-required select', () => {
+		const onValueStub = stub();
+
+		const h = harness(
+			() => (
+				<Select
+					onValue={onValueStub}
+					resource={{ data: options, idKey: 'value', id: 'test' }}
+				/>
+			),
+			[compareWidgetId, ignoreMenuTheme]
+		);
+
+		const optionalPropertyTemplate = baseTemplate.setProperty(':root', 'classes', [
+			undefined,
+			css.root,
+			undefined,
+			false,
+			false,
+			false,
+			undefined
+		]);
+
+		h.expect(optionalPropertyTemplate);
+
+		assert.equal(onValueStub.callCount, 1);
+		assert.isTrue(onValueStub.calledOnceWith({ value: '', label: '' }));
+	});
+
+	it('calls onValue when a menu item is selected for required select', () => {
 		const onValueStub = stub();
 		const closeMenuStub = stub();
 
 		const h = harness(
 			() => (
 				<Select
+					required
 					onValue={onValueStub}
 					resource={{ data: options, idKey: 'value', id: 'test' }}
 				/>
@@ -290,7 +331,12 @@ describe('Select', () => {
 			closeMenuStub
 		);
 
-		h.expect(menuTemplate, () => menuRenderResult);
+		h.expect(
+			menuTemplate
+				.setProperty('@menu', 'initialValue', undefined)
+				.setProperty('@menu', 'staticOption', undefined),
+			() => menuRenderResult
+		);
 		const [menu] = select('@menu', menuRenderResult);
 
 		menu.properties.onValue('cat');
@@ -404,9 +450,7 @@ describe('Select', () => {
 			buttonTemplate
 				.setProperty('@trigger', 'value', undefined)
 				.setChildren('@trigger', () => [
-					<span classes={[css.value, undefined]}>
-						<span classes={css.placeholder} />
-					</span>,
+					<span classes={[css.value, undefined]} />,
 					<span classes={css.arrow}>
 						<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
 					</span>
@@ -451,6 +495,80 @@ describe('Select', () => {
 					<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
 				</span>
 			]),
+			() => triggerRenderResult
+		);
+	});
+
+	it('pulls value from current data', () => {
+		const onValueStub = stub();
+		const toggleOpenStub = stub();
+
+		const readSub = stub();
+		readSub.callsFake((req, { put }) => {
+			put({ data: [...options], total: options.length }, req);
+		});
+
+		const template = createResourceTemplate<any>({
+			idKey: 'value',
+			read: readSub
+		});
+
+		const h = harness(
+			() => <Select onValue={onValueStub} resource={{ template }} value="2" />,
+			[compareAriaControls, compareId]
+		);
+
+		const triggerRenderResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpenStub
+		);
+
+		h.expect(
+			buttonTemplate.setProperty('@trigger', 'value', '2').setChildren('@trigger', () => [
+				<span classes={[css.value, undefined]}>Cat</span>,
+				<span classes={css.arrow}>
+					<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
+				</span>
+			]),
+			() => triggerRenderResult
+		);
+	});
+
+	it('handles when no data is returned', () => {
+		const onValueStub = stub();
+		const toggleOpenStub = stub();
+
+		const readSub = stub();
+		readSub.callsFake((req, { put }) => {
+			put({ data: [], total: options.length }, req);
+		});
+
+		const template = createResourceTemplate<any>({
+			idKey: 'value',
+			read: readSub
+		});
+
+		const h = harness(
+			() => <Select onValue={onValueStub} resource={{ template }} value="2" />,
+			[compareAriaControls, compareId]
+		);
+
+		const triggerRenderResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpenStub
+		);
+
+		h.expect(
+			buttonTemplate
+				.setProperty('@trigger', 'value', undefined)
+				.setChildren('@trigger', () => [
+					<span classes={[css.value, undefined]} />,
+					<span classes={css.arrow}>
+						<Icon type="downIcon" theme={{}} classes={undefined} variant={undefined} />
+					</span>
+				]),
 			() => triggerRenderResult
 		);
 	});

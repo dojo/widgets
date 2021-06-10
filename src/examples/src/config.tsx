@@ -111,6 +111,7 @@ import ListItemRenderer from './widgets/list/ListItemRenderer';
 import FetchedResource from './widgets/list/FetchedResource';
 import DisabledList from './widgets/list/Disabled';
 import DraggableList from './widgets/list/Draggable';
+import StaticOptionList from './widgets/list/StaticOption';
 import CustomThemeList from './widgets/list/CustomTheme';
 import Menu from './widgets/list/Menu';
 import CustomTransformer from './widgets/list/CustomTransformer';
@@ -154,6 +155,7 @@ import RequiredRangeSlider from './widgets/range-slider/Required';
 import LabelledRangeSlider from './widgets/range-slider/Labelled';
 import ControlledRangeSlider from './widgets/range-slider/Controlled';
 import AdditionalText from './widgets/select/AdditionalText';
+import PlaceholderSelect from './widgets/select/Placeholder';
 import BasicSelect from './widgets/select/Basic';
 import ControlledSelect from './widgets/select/Controlled';
 import CustomRenderer from './widgets/select/CustomRenderer';
@@ -251,6 +253,7 @@ import PaginationPageSizeSelector from './widgets/pagination/PageSizeSelector';
 import PaginationControlled from './widgets/pagination/Controlled';
 import PaginationSiblingCount from './widgets/pagination/SiblingCount';
 import BasicTypeahead from './widgets/typeahead/Basic';
+import PlaceholderTypeahead from './widgets/typeahead/Placeholder';
 import RemoteTypeahead from './widgets/typeahead/RemoteSource';
 import ValidatedTypeahead from './widgets/typeahead/Validation';
 import FreeTextTypeahead from './widgets/typeahead/FreeText';
@@ -1153,6 +1156,11 @@ export const config: Config = {
 					title: 'Fill'
 				},
 				{
+					filename: 'StaticOption',
+					module: StaticOptionList,
+					title: 'Static Option'
+				},
+				{
 					description: 'This example shows how list items can be easily themed',
 					filename: 'CustomTheme',
 					module: CustomThemeList,
@@ -1526,6 +1534,13 @@ export const config: Config = {
 					filename: 'AdditionalText',
 					module: AdditionalText,
 					title: 'Additional Text',
+					sandbox: true,
+					size: 'medium'
+				},
+				{
+					filename: 'Placeholder',
+					module: PlaceholderSelect,
+					title: 'Placeholder',
 					sandbox: true,
 					size: 'medium'
 				},
@@ -2094,6 +2109,11 @@ export const config: Config = {
 					title: 'Initial Value Typeahead',
 					sandbox: true,
 					size: 'large'
+				},
+				{
+					filename: 'Placeholder',
+					module: PlaceholderTypeahead,
+					title: 'Placeholder'
 				},
 				{
 					filename: 'Controlled',
