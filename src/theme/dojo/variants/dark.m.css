@@ -103,4 +103,11 @@
 	--hstack-spacing-small: var(--grid-base);
 	--hstack-spacing-medium: calc(var(--grid-base) * 1.5);
 	--hstack-spacing-large: calc(var(--grid-base) * 2);
+
+	--button-background: var(--color-background);
+	--button-background-faded: var(--color-background-faded);
+	--button-text: var(--color-highlight);
+	--button-text-faded: var(--color-text-faded);
+	--button-text-inverted: var(--color-text-inverted);
+	--button-border: var(--color-highlight);
 }

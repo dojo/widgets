@@ -6,8 +6,8 @@
 }
 
 .text {
-	background-color: var(--color-background);
-	border: var(--border-width) solid var(--color-border);
+	background-color: var(--button-background);
+	border: var(--border-width) solid var(--button-border);
 	cursor: pointer;
 	display: inline-flex;
 	vertical-align: middle;
@@ -21,7 +21,7 @@
 
 .text:hover,
 .text:focus {
-	border-color: var(--color-highlight);
+	border-color: var(--button-border);
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-highlight);
 	outline: none;
 }
@@ -37,17 +37,17 @@
 
 .text.disabled,
 .text.disabled:hover {
-	background-color: var(--color-background-faded);
-	border-color: var(--color-border);
+	background-color: var(--button-background-faded);
+	border-color: var(--button-border);
 	box-shadow: none;
-	color: var(--color-text-faded);
+	color: var(--button-text-faded);
 	cursor: default;
 }
 
 .outlined {
-	background-color: var(--color-background);
-	border: var(--border-width) solid var(--color-highlight);
-	color: var(--color-highlight);
+	background-color: var(--button-background);
+	border: var(--border-width) solid var(--button-border);
+	color: var(--button-text);
 	cursor: pointer;
 	display: inline-flex;
 	align-items: center;
@@ -67,25 +67,25 @@
 }
 
 .outlined:hover {
-	background-color: var(--color-highlight);
-	color: var(--color-text-inverted);
+	background-color: var(--button-background);
+	color: var(--button-text-inverted);
 	outline: none;
 }
 
 .outlined.root:hover .label {
-	color: var(--color-text-inverted);
+	color: var(--button-text-inverted);
 }
 
 .outlined.disabled,
 .outlined.disabled:hover {
 	background-color: initial;
-	border-color: var(--color-border);
-	color: var(--color-text-faded);
+	border-color: var(--button-border);
+	color: var(--button-text-faded);
 	cursor: default;
 }
 
 .outlined.disabled:hover .label {
-	color: var(--color-text-faded);
+	color: var(--button-text-faded);
 }
 
 .contained {
@@ -100,7 +100,7 @@
 	line-height: var(--line-height-base);
 	min-width: calc(var(--grid-base) * 20);
 	padding: var(--spacing-regular);
-	background-color: var(--color-background);
+	background-color: var(--button-background);
 }
 
 .contained:hover,
@@ -113,7 +113,7 @@
 }
 
 .label {
-	color: var(--color-highlight);
+	color: var(--button-text);
 	font-size: var(--font-size-base);
 	font-weight: bold;
 	line-height: var(--line-height-base);

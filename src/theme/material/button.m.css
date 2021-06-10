@@ -27,6 +27,20 @@
 	composes: mdc-button--raised from '@material/button/dist/mdc.button.css';
 }
 
+.root.contained {
+	background: var(--mdc-button-primary);
+	color: var(--mdc-button-text-on-primary);
+}
+
+.root.text {
+	color: var(--mdc-button-primary);
+}
+
+.root.outlined {
+	color: var(--mdc-button-primary);
+	border-color: var(--mdc-button-primary);
+}
+
 .root.disabled:disabled {
 	background-color: var(--mdc-disabled-text-color);
 }
