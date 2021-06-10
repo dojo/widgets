@@ -11,24 +11,24 @@
 /* Contains the dialog */
 .main {
 	composes: mdc-dialog__container, mdc-dialog__surface from '@material/dialog/dist/mdc.dialog.css';
-	outline: 0;
 }
 
 .root .main {
 	background-color: var(--mdc-raised-surface-background);
+	outline: 0;
 }
 
 /* Contains the title of the dialog */
 .title {
 	composes: mdc-dialog__title from '@material/dialog/dist/mdc.dialog.css';
-	padding-top: 20px;
 }
 
 .root .title {
 	color: var(--mdc-text-color);
+	padding-top: 20px;
 }
 
-.title:before {
+.root .title:before {
 	display: none;
 }
 
