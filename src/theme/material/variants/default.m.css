@@ -140,4 +140,7 @@
 	--mdc-hstack-spacing-small: var(--mdc-theme-grid-base);
 	--mdc-hstack-spacing-medium: calc(var(--mdc-theme-grid-base) * 1.5);
 	--mdc-hstack-spacing-large: calc(var(--mdc-theme-grid-base) * 2);
+
+	--mdc-button-primary: var(--mdc-theme-primary);
+	--mdc-button-text-on-primary: var(--mdc-theme-on-primary);
 }
