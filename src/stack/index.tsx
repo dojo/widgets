@@ -89,14 +89,17 @@ export const Stack = factory(function Stack({
 		const span = icache.get(`span-${index}`);
 		if (span) {
 			return (
-				<div styles={{ flex: `${span}` }} classes={[fixedCss.spacer]}>
+				<div key={index} styles={{ flex: `${span}` }} classes={[fixedCss.spacer]}>
 					{child}
 				</div>
 			);
 		}
 
 		return (
-			<div classes={[spacingClass, direction === 'vertical' && alignClass, fixedCss.child]}>
+			<div
+				key={index}
+				classes={[spacingClass, direction === 'vertical' && alignClass, fixedCss.child]}
+			>
 				{child}
 			</div>
 		);

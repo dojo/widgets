@@ -23,7 +23,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[undefined, false, fixedCss.child]}>HStack Child</div>
+					<div key={0} classes={[undefined, false, fixedCss.child]}>
+						HStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -47,7 +49,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[css.smallSpacing, false, fixedCss.child]}>HStack Child</div>
+					<div key={0} classes={[css.smallSpacing, false, fixedCss.child]}>
+						HStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -71,7 +75,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[css.mediumSpacing, false, fixedCss.child]}>HStack Child</div>
+					<div key={0} classes={[css.mediumSpacing, false, fixedCss.child]}>
+						HStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -95,7 +101,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[css.largeSpacing, false, fixedCss.child]}>HStack Child</div>
+					<div key={0} classes={[css.largeSpacing, false, fixedCss.child]}>
+						HStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -119,7 +127,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, false, fixedCss.child]}>HStack Child</div>
+					<div key={0} classes={[null, false, fixedCss.child]}>
+						HStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -143,7 +153,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, false, fixedCss.child]}>HStack Child</div>
+					<div key={0} classes={[null, false, fixedCss.child]}>
+						HStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -167,7 +179,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, false, fixedCss.child]}>HStack Child</div>
+					<div key={0} classes={[null, false, fixedCss.child]}>
+						HStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -191,7 +205,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, false, fixedCss.child]}>HStack Child</div>
+					<div key={0} classes={[null, false, fixedCss.child]}>
+						HStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -215,7 +231,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, false, fixedCss.child]}>HStack Child</div>
+					<div key={0} classes={[null, false, fixedCss.child]}>
+						HStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -239,7 +257,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, false, fixedCss.child]}>HStack Child</div>
+					<div key={0} classes={[null, false, fixedCss.child]}>
+						HStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -263,7 +283,9 @@ describe('Stack', () => {
 						fixedCss.stretch
 					]}
 				>
-					<div classes={[null, false, fixedCss.child]}>HStack Child</div>
+					<div key={0} classes={[null, false, fixedCss.child]}>
+						HStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -294,11 +316,13 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<WrappedSpacerTopDiv classes={[null, false, fixedCss.child]}>
+					<WrappedSpacerTopDiv key={0} classes={[null, false, fixedCss.child]}>
 						<WrappedSpacerTop spanCallback={() => {}} />
 					</WrappedSpacerTopDiv>
-					<div classes={[null, false, fixedCss.child]}>HStack Child</div>
-					<WrappedSpacerBottomDiv classes={[null, false, fixedCss.child]}>
+					<div key={1} classes={[null, false, fixedCss.child]}>
+						HStack Child
+					</div>
+					<WrappedSpacerBottomDiv key={2} classes={[null, false, fixedCss.child]}>
 						<WrappedSpacerBottom spanCallback={() => {}} />
 					</WrappedSpacerBottomDiv>
 				</div>
@@ -309,10 +333,12 @@ describe('Stack', () => {
 			r.expect(
 				baseAssertion
 					.setProperties(WrappedSpacerTopDiv, {
+						key: 0,
 						styles: { flex: '1' },
 						classes: [fixedCss.spacer]
 					})
 					.setProperties(WrappedSpacerBottomDiv, {
+						key: 2,
 						styles: { flex: '2' },
 						classes: [fixedCss.spacer]
 					})
@@ -335,7 +361,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, null, fixedCss.child]}>VStack Child</div>
+					<div key={0} classes={[null, null, fixedCss.child]}>
+						VStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -359,7 +387,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[css.smallSpacing, null, fixedCss.child]}>VStack Child</div>
+					<div key={0} classes={[css.smallSpacing, null, fixedCss.child]}>
+						VStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -383,7 +413,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[css.mediumSpacing, null, fixedCss.child]}>VStack Child</div>
+					<div key={0} classes={[css.mediumSpacing, null, fixedCss.child]}>
+						VStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -407,7 +439,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[css.largeSpacing, null, fixedCss.child]}>VStack Child</div>
+					<div key={0} classes={[css.largeSpacing, null, fixedCss.child]}>
+						VStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -431,7 +465,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, null, fixedCss.child]}>VStack Child</div>
+					<div key={0} classes={[null, null, fixedCss.child]}>
+						VStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -455,7 +491,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, null, fixedCss.child]}>VStack Child</div>
+					<div key={0} classes={[null, null, fixedCss.child]}>
+						VStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -479,7 +517,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, null, fixedCss.child]}>VStack Child</div>
+					<div key={0} classes={[null, null, fixedCss.child]}>
+						VStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -503,7 +543,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, fixedCss.start, fixedCss.child]}>VStack Child</div>
+					<div key={0} classes={[null, fixedCss.start, fixedCss.child]}>
+						VStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -527,7 +569,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, fixedCss.middle, fixedCss.child]}>VStack Child</div>
+					<div key={0} classes={[null, fixedCss.middle, fixedCss.child]}>
+						VStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -551,7 +595,9 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<div classes={[null, fixedCss.end, fixedCss.child]}>VStack Child</div>
+					<div key={0} classes={[null, fixedCss.end, fixedCss.child]}>
+						VStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -575,7 +621,9 @@ describe('Stack', () => {
 						fixedCss.stretch
 					]}
 				>
-					<div classes={[null, null, fixedCss.child]}>VStack Child</div>
+					<div key={0} classes={[null, null, fixedCss.child]}>
+						VStack Child
+					</div>
 				</div>
 			));
 			r.expect(baseAssertion);
@@ -606,11 +654,13 @@ describe('Stack', () => {
 						false
 					]}
 				>
-					<WrappedSpacerTopDiv classes={[null, null, fixedCss.child]}>
+					<WrappedSpacerTopDiv key={0} classes={[null, null, fixedCss.child]}>
 						<WrappedSpacerTop spanCallback={() => {}} />
 					</WrappedSpacerTopDiv>
-					<div classes={[null, null, fixedCss.child]}>VStack Child</div>
-					<WrappedSpacerBottomDiv classes={[null, null, fixedCss.child]}>
+					<div key={1} classes={[null, null, fixedCss.child]}>
+						VStack Child
+					</div>
+					<WrappedSpacerBottomDiv key={2} classes={[null, null, fixedCss.child]}>
 						<WrappedSpacerBottom spanCallback={() => {}} />
 					</WrappedSpacerBottomDiv>
 				</div>
@@ -621,10 +671,12 @@ describe('Stack', () => {
 			r.expect(
 				baseAssertion
 					.setProperties(WrappedSpacerTopDiv, {
+						key: 0,
 						styles: { flex: '1' },
 						classes: [fixedCss.spacer]
 					})
 					.setProperties(WrappedSpacerBottomDiv, {
+						key: 2,
 						styles: { flex: '2' },
 						classes: [fixedCss.spacer]
 					})
