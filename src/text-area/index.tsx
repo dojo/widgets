@@ -201,13 +201,6 @@ export const TextArea = factory(function TextArea({
 	const [labelChild] = children();
 	const label = isRenderResult(labelChild) ? labelChild : labelChild.label;
 
-	let {
-		size: { width: labelWidth }
-	} = dimensions.get('label');
-
-	// When notched the label is transformed in the CSS to 75% size, then we need to add 10px of padding to get the desired look
-	labelWidth = labelWidth * 0.75 + 10;
-
 	function _renderLabel() {
 		const labelActive = !!value || inputFocused;
 
@@ -218,7 +211,13 @@ export const TextArea = factory(function TextArea({
 					css,
 					'label'
 				)}
-				classes={classes}
+				classes={{
+					...classes,
+					'@dojo/widgets/label': {
+						...(classes ? classes['@dojo/widgets/label'] : {}),
+						active: kind === 'outlined' ? [themeCss.outlinedLabelActive] : []
+					}
+				}}
 				variant={variant}
 				disabled={disabled}
 				valid={valid}
@@ -237,14 +236,7 @@ export const TextArea = factory(function TextArea({
 			<div classes={[themeCss.notchedOutline, labelActive && themeCss.notchedOutlineNotched]}>
 				<div classes={themeCss.notchedOutlineLeading} />
 				{label && (
-					<div
-						classes={themeCss.notchedOutlineNotch}
-						styles={
-							labelActive && labelWidth
-								? { width: `${labelWidth}px` }
-								: { width: 'auto' }
-						}
-					>
+					<div classes={themeCss.notchedOutlineNotch}>
 						<span key="label">{renderedLabel}</span>
 					</div>
 				)}

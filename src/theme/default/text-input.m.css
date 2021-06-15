@@ -88,6 +88,10 @@
 	animation-name: onAutofillShown;
 }
 
+/* Applied to root of the outlined label when active */
+.outlinedLabelActive {
+}
+
 /* Applied to outlined inputs */
 .outlinedKind {
 }

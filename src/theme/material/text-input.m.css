@@ -40,7 +40,7 @@
 	composes: mdc-text-field--disabled from '@material/textfield/dist/mdc.textfield.css';
 }
 
-.root .wrapper {
+.root .wrapper.defaultKind {
 	background-color: var(--mdc-text-input-background);
 }
 
@@ -172,4 +172,9 @@
 
 .defaultKindLineRippleFocused {
 	composes: mdc-line-ripple--active from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.outlinedLabelActive {
+	transform: translateY(-34.75px) !important;
+	font-size: 0.75rem !important;
 }
