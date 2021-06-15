@@ -19,6 +19,7 @@ export const labelWrapper: string;
 export const helperText: string;
 export const valid: string;
 export const onAutofillShown: string;
+export const outlinedLabelActive: string;
 export const outlinedKind: string;
 export const defaultKind: string;
 export const notchedOutline: string;

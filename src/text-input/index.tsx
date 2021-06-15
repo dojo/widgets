@@ -234,13 +234,6 @@ export const TextInput = factory(function TextInput({
 	const inputFocused = focus.isFocused('input');
 	const autofilled = Boolean(icache.get('autofilled'));
 
-	let {
-		size: { width: labelWidth }
-	} = dimensions.get('label');
-
-	// When notched the label is transformed in the CSS to 75% size, then we need to add 10px of padding to get the desired look
-	labelWidth = labelWidth * 0.75 + 10;
-
 	function _renderLabel() {
 		const labelActive = Boolean(!!value || inputFocused || autofilled || active);
 
@@ -252,7 +245,8 @@ export const TextInput = factory(function TextInput({
 						...classes,
 						'@dojo/widgets/label': {
 							...(classes ? classes['@dojo/widgets/label'] : {}),
-							root: [themeCss.label]
+							root: [themeCss.label],
+							active: kind === 'outlined' ? [themeCss.outlinedLabelActive] : []
 						}
 					}}
 					variant={variant}
@@ -273,18 +267,7 @@ export const TextInput = factory(function TextInput({
 		return kind === 'outlined' ? (
 			<div classes={[themeCss.notchedOutline, labelActive && themeCss.notchedOutlineNotched]}>
 				<div classes={themeCss.notchedOutlineLeading} />
-				{label && (
-					<div
-						classes={themeCss.notchedOutlineNotch}
-						styles={
-							labelActive && labelWidth
-								? { width: `${labelWidth}px` }
-								: { width: 'auto' }
-						}
-					>
-						{renderedLabel}
-					</div>
-				)}
+				{label && <div classes={themeCss.notchedOutlineNotch}>{renderedLabel}</div>}
 				<div classes={themeCss.notchedOutlineTrailing} />
 			</div>
 		) : (

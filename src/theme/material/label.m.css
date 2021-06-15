@@ -1,5 +1,6 @@
 .root {
 	composes: mdc-floating-label from '@material/textfield/dist/mdc.textfield.css';
+	transition-property: all !important;
 }
 
 .active {

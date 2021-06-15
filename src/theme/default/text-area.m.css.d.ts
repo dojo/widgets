@@ -9,6 +9,7 @@ export const required: string;
 export const invalid: string;
 export const valid: string;
 export const noLabel: string;
+export const outlinedLabelActive: string;
 export const outlinedKind: string;
 export const defaultKind: string;
 export const notchedOutline: string;
