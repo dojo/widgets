@@ -187,7 +187,8 @@ const defaultKindLabeledAssertion = defaultKindAssertion
 				active={false}
 				classes={{
 					'@dojo/widgets/label': {
-						root: [css.label]
+						root: [css.label],
+						active: []
 					}
 				}}
 				variant={undefined}
@@ -240,7 +241,7 @@ const outlinedLabeledAssertion = baseAssertion
 	.prepend('@wrapper', () => [
 		<div assertion-key="notchedOutline" classes={[css.notchedOutline, false]}>
 			<div classes={css.notchedOutlineLeading} />
-			<div assertion-key="notch" classes={css.notchedOutlineNotch} styles={{ width: 'auto' }}>
+			<div assertion-key="notch" classes={css.notchedOutlineNotch}>
 				<span key="label" classes={css.labelWrapper}>
 					<Label
 						assertion-key="label"
@@ -255,7 +256,8 @@ const outlinedLabeledAssertion = baseAssertion
 						active={false}
 						classes={{
 							'@dojo/widgets/label': {
-								root: [css.label]
+								root: [css.label],
+								active: [css.outlinedLabelActive]
 							}
 						}}
 						variant={undefined}
@@ -1077,7 +1079,6 @@ registerSuite('TextInput', {
 					])
 					.setProperty('~label', 'active', true)
 					.setProperty('~label', 'focused', true)
-					.setProperty('~notch', 'styles', { width: '10px' })
 					.setProperty('~notchedOutline', 'classes', [
 						css.notchedOutline,
 						css.notchedOutlineNotched
