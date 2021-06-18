@@ -81,7 +81,11 @@ const defaultExpected = function({
 				{label ? (
 					<Label
 						theme={{}}
-						classes={undefined}
+						classes={{
+							'@dojo/widgets/label': {
+								active: []
+							}
+						}}
 						variant={undefined}
 						disabled={disabled}
 						hidden={undefined}
@@ -237,12 +241,16 @@ const outlinedLabeledAssertion = baseAssertion
 	.prepend('@wrapper', () => [
 		<div assertion-key="notchedOutline" classes={[css.notchedOutline, false]}>
 			<div classes={css.notchedOutlineLeading} />
-			<div assertion-key="notch" classes={css.notchedOutlineNotch} styles={{ width: 'auto' }}>
+			<div assertion-key="notch" classes={css.notchedOutlineNotch}>
 				<span key="label">
 					<Label
 						assertion-key="label"
 						theme={{}}
-						classes={undefined}
+						classes={{
+							'@dojo/widgets/label': {
+								active: [css.outlinedLabelActive]
+							}
+						}}
 						variant={undefined}
 						disabled={undefined}
 						hidden={undefined}
@@ -795,7 +803,6 @@ registerSuite('Textarea', {
 					])
 					.setProperty('~label', 'active', true)
 					.setProperty('~label', 'focused', true)
-					.setProperty('~notch', 'styles', { width: '10px' })
 					.setProperty('~notchedOutline', 'classes', [
 						css.notchedOutline,
 						css.notchedOutlineNotched
