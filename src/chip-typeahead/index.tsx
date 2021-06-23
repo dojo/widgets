@@ -243,7 +243,13 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 						defaultKind: [themeCss.defaultKind],
 						outlinedKind: [themeCss.outlinedKind],
 						labelWrapper: [themeCss.inputLabel],
-						label: [themeCss.label]
+						label: [
+							themeCss.label,
+							kind === 'outlined' && chips.length ? themeCss.labelActive : undefined
+						],
+						notchedOutline: [
+							kind === 'outlined' && chips.length ? themeCss.notchActive : undefined
+						]
 					}
 				}}
 				itemDisabled={(item) => {
@@ -255,7 +261,6 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 					return item.disabled || (!duplicates && strict && selected);
 				}}
 				kind={kind}
-				active={active}
 			>
 				{{
 					label,

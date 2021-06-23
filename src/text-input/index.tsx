@@ -65,8 +65,6 @@ export interface BaseInputProperties<T extends { value: any } = { value: string 
 	widgetId?: string;
 	/** The kind of input */
 	kind?: 'outlined' | 'default';
-	/** The active property of the input's label */
-	active?: boolean;
 }
 
 export interface TextInputChildren {
@@ -175,8 +173,7 @@ export const TextInput = factory(function TextInput({
 		valid: validValue = { valid: undefined, message: '' },
 		widgetId = `text-input-${id}`,
 		variant,
-		kind = 'default',
-		active
+		kind = 'default'
 	} = properties();
 
 	let { value } = properties();
@@ -235,7 +232,7 @@ export const TextInput = factory(function TextInput({
 	const autofilled = Boolean(icache.get('autofilled'));
 
 	function _renderLabel() {
-		const labelActive = Boolean(!!value || inputFocused || autofilled || active);
+		const labelActive = Boolean(!!value || inputFocused || autofilled);
 
 		const renderedLabel = (
 			<span key="label" classes={themeCss.labelWrapper}>

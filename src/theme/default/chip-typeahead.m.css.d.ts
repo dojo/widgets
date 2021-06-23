@@ -18,3 +18,5 @@ export const inputLeading: string;
 export const defaultKind: string;
 export const outlinedKind: string;
 export const inputLabel: string;
+export const labelActive: string;
+export const notchActive: string;

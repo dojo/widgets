@@ -25,3 +25,4 @@ export const notchedOutlineTrailing: string;
 export const ripple: string;
 export const defaultKindFocused: string;
 export const defaultKindLineRippleFocused: string;
+export const outlinedLabelActive: string;

@@ -74,3 +74,11 @@
 .values {
 	padding-left: 16px;
 }
+
+.labelActive {
+	composes: mdc-floating-label--float-above from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchActive {
+	composes: mdc-notched-outline--notched from '@material/textfield/dist/mdc.textfield.css';
+}
