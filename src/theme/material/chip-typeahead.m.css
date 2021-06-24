@@ -59,16 +59,22 @@
 }
 
 .root.hasLabel.hasValue .outlinedKind {
-	padding-top: 12px;
+	/* padding-top: 12px; */
 }
 
 .root.hasLabel.hasValue .outlinedKind .inputLabel {
-	position: absolute;
-	top: 28px;
+	position: relative;
+	top: -14px;
+	left: 4px;
 }
 
 .root.hasLabel.hasValue .outlinedKind .label {
 	transition: unset;
+	/* left: 0 !important; */
+}
+
+.root.hasLabel.hasValue.focused .outlinedKind .label {
+	left: 0;
 }
 
 .values {
@@ -81,4 +87,18 @@
 
 .notchActive {
 	composes: mdc-notched-outline--notched from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.outlinedKind .labelActive {
+	/* left: unset !important; */
+	/* transform: translateY(-34.75px) !important; */
+	/* font-size: 0.75rem !important; */
+}
+
+.inputLeadingWrapper {
+	padding-left: 8px;
+}
+
+.outlinedKind .inputLeadingWrapper {
+	padding-top: 16px;
 }

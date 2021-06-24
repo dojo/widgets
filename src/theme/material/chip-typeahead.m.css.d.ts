@@ -14,3 +14,4 @@ export const inputLabel: string;
 export const outlinedKind: string;
 export const labelActive: string;
 export const notchActive: string;
+export const inputLeadingWrapper: string;

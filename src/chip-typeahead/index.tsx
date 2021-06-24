@@ -243,10 +243,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 						defaultKind: [themeCss.defaultKind],
 						outlinedKind: [themeCss.outlinedKind],
 						labelWrapper: [themeCss.inputLabel],
-						label: [
-							themeCss.label,
-							kind === 'outlined' && chips.length ? themeCss.labelActive : undefined
-						],
+						label: [themeCss.label, chips.length ? themeCss.labelActive : undefined],
 						notchedOutline: [
 							kind === 'outlined' && chips.length ? themeCss.notchActive : undefined
 						]
