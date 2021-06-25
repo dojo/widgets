@@ -10,11 +10,8 @@
 }
 
 .root.hasValue .inputLeading {
-	display: block;
+	position: relative;
 	pointer-events: unset;
-	position: static;
-	transform: none;
-	max-width: 100%;
 }
 
 .values .value {
@@ -58,10 +55,6 @@
 	height: 0;
 }
 
-.root.hasLabel.hasValue .outlinedKind {
-	/* padding-top: 12px; */
-}
-
 .root.hasLabel.hasValue .outlinedKind .inputLabel {
 	position: relative;
 	top: -14px;
@@ -70,10 +63,8 @@
 
 .root.hasLabel.hasValue .outlinedKind .label {
 	transition: unset;
-	/* left: 0 !important; */
-}
-
-.root.hasLabel.hasValue.focused .outlinedKind .label {
+	transform: translateY(-34.75px) !important;
+	font-size: 0.75rem !important;
 	left: 0;
 }
 
@@ -89,16 +80,10 @@
 	composes: mdc-notched-outline--notched from '@material/textfield/dist/mdc.textfield.css';
 }
 
-.outlinedKind .labelActive {
-	/* left: unset !important; */
-	/* transform: translateY(-34.75px) !important; */
-	/* font-size: 0.75rem !important; */
-}
-
 .inputLeadingWrapper {
 	padding-left: 8px;
 }
 
 .outlinedKind .inputLeadingWrapper {
-	padding-top: 16px;
+	margin-top: 16px;
 }
