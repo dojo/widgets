@@ -50,7 +50,6 @@ const onValueStub = sb.stub();
 
 const triggerAssertion = assertion(() => (
 	<WrappedTrigger
-		active={undefined}
 		autocomplete={false}
 		onValue={noop}
 		onKeyDown={noop}
@@ -1165,19 +1164,5 @@ describe('Typeahead', () => {
 			trigger: [() => {}]
 		});
 		r.expect(baseAssertion.setProperty(WrappedTrigger, 'kind', 'outlined'));
-	});
-
-	it('should pass active property to trigger', () => {
-		const r = renderer(() => (
-			<Typeahead
-				resource={{ data, id: 'test', idKey: 'value' }}
-				onValue={onValueStub}
-				active={true}
-			/>
-		));
-		r.child(WrappedPopup, {
-			trigger: [() => {}]
-		});
-		r.expect(baseAssertion.setProperty(WrappedTrigger, 'active', true));
 	});
 });

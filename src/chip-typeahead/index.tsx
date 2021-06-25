@@ -194,8 +194,6 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 		);
 	});
 
-	const active = focused || selectedOptions.length > 0;
-
 	return (
 		<div
 			key="root"

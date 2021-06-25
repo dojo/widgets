@@ -56,10 +56,10 @@ const baseAssertion = assertionTemplate(() => (
 					defaultKind: [themeCss.defaultKind],
 					outlinedKind: [themeCss.outlinedKind],
 					labelWrapper: [themeCss.inputLabel],
-					label: [themeCss.label]
+					label: [themeCss.label, undefined],
+					notchedOutline: [undefined]
 				}
 			}}
-			active={false}
 			kind={undefined}
 		>
 			{{
@@ -99,10 +99,10 @@ const labeledAssertion = assertionTemplate(() => (
 					defaultKind: [themeCss.defaultKind],
 					outlinedKind: [themeCss.outlinedKind],
 					labelWrapper: [themeCss.inputLabel],
-					label: [themeCss.label]
+					label: [themeCss.label, undefined],
+					notchedOutline: [undefined]
 				}
 			}}
-			active={false}
 			kind={undefined}
 		>
 			{{
@@ -114,16 +114,28 @@ const labeledAssertion = assertionTemplate(() => (
 	</div>
 ));
 
-const hasValueAssertion = baseAssertion
-	.setProperty('@root', 'classes', [
-		undefined,
-		null,
-		themeCss.root,
-		themeCss.hasValue,
-		null,
-		themeCss.noLabel
-	])
-	.setProperty('@typeahead', 'active', true);
+const labelActiveAssertion = baseAssertion.setProperty('@typeahead', 'classes', {
+	'@dojo/widgets/text-input': {
+		input: [themeCss.input],
+		wrapper: [themeCss.wrapper],
+		leading: [themeCss.inputLeading],
+		leadingWrapper: [themeCss.inputLeadingWrapper],
+		defaultKind: [themeCss.defaultKind],
+		outlinedKind: [themeCss.outlinedKind],
+		labelWrapper: [themeCss.inputLabel],
+		label: [themeCss.label, themeCss.labelActive],
+		notchedOutline: [undefined]
+	}
+});
+
+const hasValueAssertion = labelActiveAssertion.setProperty('@root', 'classes', [
+	undefined,
+	null,
+	themeCss.root,
+	themeCss.hasValue,
+	null,
+	themeCss.noLabel
+]);
 
 const disabledAssertion = hasValueAssertion
 	.setProperty('@typeahead', 'disabled', true)
@@ -136,16 +148,14 @@ const disabledAssertion = hasValueAssertion
 		themeCss.noLabel
 	]);
 
-const focusedAssertion = baseAssertion
-	.setProperty('@root', 'classes', [
-		undefined,
-		null,
-		themeCss.root,
-		null,
-		themeCss.focused,
-		themeCss.noLabel
-	])
-	.setProperty('@typeahead', 'active', true);
+const focusedAssertion = baseAssertion.setProperty('@root', 'classes', [
+	undefined,
+	null,
+	themeCss.root,
+	null,
+	themeCss.focused,
+	themeCss.noLabel
+]);
 
 const bottomAssertion = hasValueAssertion.insertAfter('@typeahead', () => [
 	<div classes={themeCss.values}>
