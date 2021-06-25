@@ -192,7 +192,7 @@ export const TextInput = factory(function TextInput({
 
 	const pattern = patternValue instanceof RegExp ? patternValue.source : patternValue;
 
-	function _callOnValidate(valid: boolean | undefined, message: string) {
+	function callOnValidate(valid: boolean | undefined, message: string) {
 		let { valid: previousValid } = properties();
 		let previousMessage: string | undefined;
 
@@ -208,7 +208,7 @@ export const TextInput = factory(function TextInput({
 
 	if (onValidate) {
 		if (value === undefined && !dirty) {
-			_callOnValidate(undefined, '');
+			callOnValidate(undefined, '');
 		} else {
 			icache.set('dirty', true);
 			let { valid, message = '' } = validity.get('input', value || '');
@@ -220,7 +220,7 @@ export const TextInput = factory(function TextInput({
 				}
 			}
 
-			_callOnValidate(valid, message);
+			callOnValidate(valid, message);
 		}
 	}
 
@@ -231,7 +231,7 @@ export const TextInput = factory(function TextInput({
 	const inputFocused = focus.isFocused('input');
 	const autofilled = Boolean(icache.get('autofilled'));
 
-	function _renderLabel() {
+	function renderLabel() {
 		const labelActive = Boolean(!!value || inputFocused || autofilled);
 
 		const renderedLabel = (
@@ -293,7 +293,7 @@ export const TextInput = factory(function TextInput({
 				]}
 				role="presentation"
 			>
-				{_renderLabel()}
+				{renderLabel()}
 				{kind === 'kind' && <span classes={themeCss.ripple} />}
 				<span key="leading" classes={themeCss.leadingWrapper}>
 					{leading && <span classes={themeCss.leading}>{leading}</span>}
