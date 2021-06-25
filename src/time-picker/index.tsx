@@ -61,7 +61,7 @@ export interface TimePickerProperties {
 	itemsInView?: number;
 
 	/** The kind of time picker input */
-	kind?: 'outlined' | 'default';
+	kind?: 'outlined' | 'filled';
 }
 
 export interface TimePickerChildren {

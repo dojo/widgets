@@ -58,7 +58,7 @@ export interface TypeaheadProperties {
 	/** Flag to indicate if drop down arrow should be shown in trailing section of text input, defaults to false */
 	hasDownArrow?: boolean;
 	/** The kind of typeahead input */
-	kind?: 'outlined' | 'default';
+	kind?: 'outlined' | 'filled';
 }
 
 export interface TypeaheadICache {

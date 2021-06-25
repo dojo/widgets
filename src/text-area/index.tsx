@@ -77,7 +77,7 @@ export interface TextAreaProperties {
 	/** Controls text wrapping. Can be "hard", "soft", or "off" */
 	wrapText?: 'hard' | 'soft' | 'off';
 	/** The kind of text area */
-	kind?: 'outlined' | 'default';
+	kind?: 'outlined' | 'filled';
 }
 
 export interface TextAreaChildren {
@@ -177,7 +177,7 @@ export const TextArea = factory(function TextArea({
 		helperText,
 		onValidate,
 		variant,
-		kind = 'default'
+		kind = 'filled'
 	} = properties();
 
 	let { value } = properties();
@@ -261,13 +261,13 @@ export const TextArea = factory(function TextArea({
 					inputFocused ? themeCss.focused : null,
 					!label || labelHidden ? themeCss.noLabel : null,
 					kind === 'outlined' ? themeCss.outlinedKind : null,
-					kind === 'default' ? themeCss.defaultKind : null,
-					kind === 'default' && inputFocused ? themeCss.defaultKindFocused : null
+					kind === 'filled' ? themeCss.defaultKind : null,
+					kind === 'filled' && inputFocused ? themeCss.defaultKindFocused : null
 				]}
 			>
 				{_renderLabel()}
 				<div classes={themeCss.inputWrapper}>
-					{kind === 'default' && <span classes={themeCss.ripple} />}
+					{kind === 'filled' && <span classes={themeCss.ripple} />}
 					<textarea
 						id={widgetId}
 						key="input"
@@ -331,7 +331,7 @@ export const TextArea = factory(function TextArea({
 							onOut && onOut();
 						}}
 					/>
-					{kind === 'default' && (
+					{kind === 'filled' && (
 						<span
 							classes={[
 								themeCss.lineRipple,

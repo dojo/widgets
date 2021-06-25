@@ -43,7 +43,7 @@ export interface DateInputProperties extends ThemeProperties, FocusProperties {
 	/** Determines if this input is required, styles accordingly */
 	required?: boolean;
 	/** The kind of date input */
-	kind?: 'outlined' | 'default';
+	kind?: 'outlined' | 'filled';
 }
 
 export interface DateInputChildren {

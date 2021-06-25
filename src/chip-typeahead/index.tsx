@@ -41,7 +41,7 @@ export interface ChipTypeaheadProperties {
 	/** Flag to indicate if values other than those in the resource can be entered, defaults to true */
 	strict?: boolean;
 	/** The kind of chip typeahead input */
-	kind?: 'outlined' | 'default';
+	kind?: 'outlined' | 'filled';
 }
 
 export interface ChipTypeaheadChildren {

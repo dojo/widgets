@@ -64,7 +64,7 @@ export interface BaseInputProperties<T extends { value: any } = { value: string 
 	/** The id to be applied to the input */
 	widgetId?: string;
 	/** The kind of input */
-	kind?: 'outlined' | 'default';
+	kind?: 'outlined' | 'filled';
 }
 
 export interface TextInputChildren {
@@ -173,7 +173,7 @@ export const TextInput = factory(function TextInput({
 		valid: validValue = { valid: undefined, message: '' },
 		widgetId = `text-input-${id}`,
 		variant,
-		kind = 'default'
+		kind = 'kind'
 	} = properties();
 
 	let { value } = properties();
@@ -288,13 +288,13 @@ export const TextInput = factory(function TextInput({
 					trailing ? themeCss.hasTrailing : null,
 					!label || labelHidden ? themeCss.noLabel : null,
 					kind === 'outlined' ? themeCss.outlinedKind : null,
-					kind === 'default' ? themeCss.defaultKind : null,
-					kind === 'default' && inputFocused ? themeCss.defaultKindFocused : null
+					kind === 'kind' ? themeCss.defaultKind : null,
+					kind === 'kind' && inputFocused ? themeCss.defaultKindFocused : null
 				]}
 				role="presentation"
 			>
 				{_renderLabel()}
-				{kind === 'default' && <span classes={themeCss.ripple} />}
+				{kind === 'kind' && <span classes={themeCss.ripple} />}
 				<span key="leading" classes={themeCss.leadingWrapper}>
 					{leading && <span classes={themeCss.leading}>{leading}</span>}
 				</span>
@@ -358,7 +358,7 @@ export const TextInput = factory(function TextInput({
 				<span key="trailing" classes={themeCss.trailingWrapper}>
 					{trailing && <span classes={themeCss.trailing}>{trailing}</span>}
 				</span>
-				{kind === 'default' && (
+				{kind === 'kind' && (
 					<span
 						classes={[
 							themeCss.lineRipple,
