@@ -23,7 +23,7 @@ export default factory(function Kinds({ id, middleware: { resource } }) {
 					})}
 				>
 					{{
-						label: 'Default Kind'
+						label: 'Filled Kind'
 					}}
 				</ChipTypeahead>
 				<br />

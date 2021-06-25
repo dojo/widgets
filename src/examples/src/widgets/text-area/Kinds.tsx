@@ -8,7 +8,7 @@ export default factory(function Kinds() {
 	return (
 		<Example>
 			<div>
-				<TextArea placeholder="Placeholder Text">{{ label: 'Default Kind' }}</TextArea>
+				<TextArea placeholder="Placeholder Text">{{ label: 'Filled Kind' }}</TextArea>
 				<br />
 				<br />
 				<TextArea kind="outlined" placeholder="Placeholder Text">

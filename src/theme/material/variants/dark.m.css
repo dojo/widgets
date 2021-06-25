@@ -1,6 +1,4 @@
-.root,
-.root *::before,
-.root *::after {
+.root {
 	--example-background: var(--mdc-theme-surface);
 
 	/* variables taken from @material/theme/dist/mdc.theme.css */

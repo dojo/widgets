@@ -17,7 +17,7 @@ export default factory(function Kind({ middleware: { icache } }) {
 					}}
 				>
 					{{
-						label: 'Default Kind'
+						label: 'Filled Kind'
 					}}
 				</DateInput>
 				<br />

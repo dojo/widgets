@@ -10,7 +10,7 @@ export default factory(function Kind({ middleware: { icache } }) {
 		<Example>
 			<div>
 				<TimePicker step={1800} onValue={(value) => icache.set('value', value)}>
-					{{ label: 'Default Kind' }}
+					{{ label: 'Filled Kind' }}
 				</TimePicker>
 				<div>The value is {icache.get('value') || 'not set'}</div>
 				<br />

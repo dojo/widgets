@@ -43,7 +43,7 @@ export default factory(function Kind({ middleware: { icache, resource } }) {
 					}}
 				>
 					{{
-						label: 'Default Kind'
+						label: 'Filled Kind'
 					}}
 				</Typeahead>
 				<pre>{JSON.stringify(icache.getOrSet('value', ''))}</pre>

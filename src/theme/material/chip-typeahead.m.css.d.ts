@@ -12,7 +12,6 @@ export const hasLabel: string;
 export const defaultKind: string;
 export const inputLabel: string;
 export const outlinedKind: string;
-export const focused: string;
 export const labelActive: string;
 export const notchActive: string;
 export const inputLeadingWrapper: string;

@@ -251,6 +251,7 @@ export const ChipTypeahead = factory(function ChipTypeahead({
 					const { duplicates = false, strict = true } = properties();
 					const selected =
 						icache
+
 							.getOrSet('options', [])
 							.findIndex((option) => option.value === item.value) !== -1;
 					return item.disabled || (!duplicates && strict && selected);

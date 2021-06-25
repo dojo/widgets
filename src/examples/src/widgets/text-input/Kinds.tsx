@@ -8,7 +8,7 @@ export default factory(function Kinds() {
 	return (
 		<Example>
 			<div>
-				<TextInput placeholder="Placeholder Text">{{ label: 'Default Kind' }}</TextInput>
+				<TextInput placeholder="Placeholder Text">{{ label: 'Filled Kind' }}</TextInput>
 				<br />
 				<br />
 				<TextInput kind="outlined" placeholder="Placeholder Text">
