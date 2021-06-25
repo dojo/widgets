@@ -121,6 +121,7 @@ import CustomRendererChipTypeahead from './widgets/chip-typeahead/CustomRenderer
 import BottomChipTypeahead from './widgets/chip-typeahead/BottomPlacement';
 import DuplicatesChipTypeahead from './widgets/chip-typeahead/Duplicates';
 import FreeTextChipTypeahead from './widgets/chip-typeahead/FreeText';
+import KindsChipTypeahead from './widgets/chip-typeahead/Kinds';
 import BasicNumberInput from './widgets/number-input/Basic';
 import ValidatedNumberInput from './widgets/number-input/Validation';
 import LeadingTrailingNumberInput from './widgets/number-input/LeadingTrailing';
@@ -199,6 +200,7 @@ import HelperTextTextArea from './widgets/text-area/HelperText';
 import HiddenLabelTextArea from './widgets/text-area/HiddenLabel';
 import ValidatedCustomTextArea from './widgets/text-area/ValidatedCustom';
 import ValidatedRequiredTextArea from './widgets/text-area/ValidatedRequired';
+import KindsTextArea from './widgets/text-area/Kinds';
 import BasicTextInput from './widgets/text-input/Basic';
 import ControlledTextInput from './widgets/text-input/Controlled';
 import DisabledTextInput from './widgets/text-input/Disabled';
@@ -208,6 +210,7 @@ import PlaceholderTextInput from './widgets/text-input/Placeholder';
 import LeadingTrailingTextInput from './widgets/text-input/LeadingTrailing';
 import ValidatedTextInput from './widgets/text-input/Validated';
 import TextInputWithLabel from './widgets/text-input/WithLabel';
+import KindTextInput from './widgets/text-input/Kinds';
 import BasicThreeColumnLayout from './widgets/three-column-layout/Basic';
 import TwelveHourTimePicker from './widgets/time-picker/12HourTime';
 import BasicTimePicker from './widgets/time-picker/Basic';
@@ -216,6 +219,7 @@ import DisabledTimePicker from './widgets/time-picker/Disabled';
 import DisabledMenuItemsTimePicker from './widgets/time-picker/DisabledMenuItems';
 import RequiredTimePicker from './widgets/time-picker/Required';
 import SelectBySecondTimePicker from './widgets/time-picker/SelectBySecond';
+import KindTimePicker from './widgets/time-picker/Kind';
 import BasicTitlePane from './widgets/title-pane/Basic';
 import ControlledTitlePane from './widgets/title-pane/Controlled';
 import HeadingLevel from './widgets/title-pane/HeadingLevel';
@@ -231,6 +235,7 @@ import DisabledDateInput from './widgets/date-input/Disabled';
 import ReadOnlyDateInput from './widgets/date-input/ReadOnly';
 import RequiredDateInput from './widgets/date-input/Required';
 import CustomParserDateInput from './widgets/date-input/CustomParser';
+import KindDateInput from './widgets/date-input/Kind';
 import BasicLoadingIndicator from './widgets/loading-indicator/Basic';
 import CircularLoadingIndicator from './widgets/loading-indicator/Circular';
 import BasicHeader from './widgets/header/Basic';
@@ -257,6 +262,7 @@ import FreeTextTypeahead from './widgets/typeahead/FreeText';
 import InitialValueTypeahead from './widgets/typeahead/InitialValue';
 import ControlledTypeahead from './widgets/typeahead/Controlled';
 import DisabledTypeahead from './widgets/typeahead/Disabled';
+import KindTypeahead from './widgets/typeahead/Kind';
 import BasicTwoColumnLayout from './widgets/two-column-layout/Basic';
 import TrailingBiasTwoColumnLayout from './widgets/two-column-layout/TrailingBias';
 import CollapsingLayout from './widgets/two-column-layout/Collapsing';
@@ -731,6 +737,13 @@ export const config: Config = {
 					sandbox: true,
 					size: 'large',
 					title: 'Custom parser date input'
+				},
+				{
+					filename: 'Kind',
+					module: KindDateInput,
+					sandbox: true,
+					size: 'large',
+					title: 'Default and outlined date input'
 				}
 			]
 		},
@@ -1285,6 +1298,11 @@ export const config: Config = {
 					title: 'Free Text',
 					filename: 'FreeText',
 					module: FreeTextChipTypeahead
+				},
+				{
+					title: 'Kinds',
+					filename: 'Kinds',
+					module: KindsChipTypeahead
 				}
 			]
 		},
@@ -1852,6 +1870,11 @@ export const config: Config = {
 					filename: 'ValidatedRequired',
 					module: ValidatedRequiredTextArea,
 					title: 'Validated required'
+				},
+				{
+					filename: 'Kinds',
+					module: KindsTextArea,
+					title: 'Kinds'
 				}
 			],
 			overview: {
@@ -1902,6 +1925,11 @@ export const config: Config = {
 					filename: 'LeadingTrailing',
 					module: LeadingTrailingTextInput,
 					title: 'TextInput with leading and trailing'
+				},
+				{
+					filename: 'Kinds',
+					module: KindTextInput,
+					title: 'Kinds'
 				}
 			],
 			filename: 'index',
@@ -1951,6 +1979,11 @@ export const config: Config = {
 					filename: 'Required',
 					module: RequiredTimePicker,
 					title: 'Required time picker'
+				},
+				{
+					filename: 'Kind',
+					module: KindTimePicker,
+					title: 'Default and outlined time picker'
 				}
 			],
 			overview: {
@@ -2106,6 +2139,13 @@ export const config: Config = {
 					filename: 'Disabled',
 					module: DisabledTypeahead,
 					title: 'Disabled Typeahead',
+					sandbox: true,
+					size: 'large'
+				},
+				{
+					filename: 'Kind',
+					module: KindTypeahead,
+					title: 'Default or Outlined Typeahead',
 					sandbox: true,
 					size: 'large'
 				}

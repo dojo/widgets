@@ -13,8 +13,6 @@
 .inputWrapper {
 }
 
-.inputWrapperFocused {
-}
 /* Added to a disabled TextInput */
 .disabled {
 }
@@ -31,14 +29,24 @@
 .invalid {
 }
 /* Root of the leading wrapper*/
+.leadingWrapper {
+	display: flex;
+}
+
 .leading {
 }
 /* Root of the trailing wrapper*/
+.trailingWrapper {
+	display: flex;
+}
+
 .trailing {
 }
+
 /* Added to the wrapper when there is leading content */
 .hasLeading {
 }
+
 /* Added to the wrapper when there is trailing content */
 .hasTrailing {
 }
@@ -49,6 +57,10 @@
 
 /* passed to the text-input's Label's root component */
 .label {
+}
+
+/* wraps text-input's Label component */
+.labelWrapper {
 }
 
 /* Styles the helper text when the input is invalid */
@@ -74,4 +86,45 @@
 }
 .input:-webkit-autofill {
 	animation-name: onAutofillShown;
+}
+
+/* Applied to root of the outlined label when active */
+.outlinedLabelActive {
+}
+
+/* Applied to outlined inputs */
+.outlinedKind {
+}
+
+/* Applied to outlined inputs */
+.defaultKind {
+}
+
+/* Applied to outlined inputs to create notch effect */
+.notchedOutline {
+}
+
+.notchedOutlineNotched {
+}
+
+.notchedOutlineLeading {
+}
+
+.notchedOutlineNotch {
+}
+
+.notchedOutlineTrailing {
+}
+
+/* Applied to default inputs */
+.ripple {
+}
+
+.lineRipple {
+}
+
+.defaultKindFocused {
+}
+
+.defaultKindLineRippleFocused {
 }

@@ -12,9 +12,7 @@ import { ListOption, ListItem } from '../../../list';
 import ChipTypeahead from '../..';
 import * as typeaheadCss from '../../../theme/default/typeahead.m.css';
 import * as chipCss from '../../../theme/default/chip.m.css';
-import * as labelCss from '../../../theme/default/label.m.css';
 import Chip from '../../../chip/index';
-import Label from '../../../label';
 
 const { assert } = intern.getPlugin('chai');
 
@@ -30,7 +28,7 @@ const animalOptions: ListOption[] = [
 ];
 
 const baseAssertion = assertionTemplate(() => (
-	<div key="root" classes={[undefined, null, themeCss.root, null, null, null]}>
+	<div key="root" classes={[undefined, null, themeCss.root, null, null, themeCss.noLabel]}>
 		<Typeahead
 			strict={undefined}
 			key="typeahead"
@@ -51,12 +49,18 @@ const baseAssertion = assertionTemplate(() => (
 			variant={undefined}
 			classes={{
 				'@dojo/widgets/text-input': {
-					inputWrapper: [themeCss.inputWrapper],
 					input: [themeCss.input],
 					wrapper: [themeCss.wrapper],
-					leading: [themeCss.inputLeading]
+					leading: [themeCss.inputLeading],
+					leadingWrapper: [themeCss.inputLeadingWrapper],
+					defaultKind: [themeCss.defaultKind],
+					outlinedKind: [themeCss.outlinedKind],
+					labelWrapper: [themeCss.inputLabel],
+					label: [themeCss.label, undefined],
+					notchedOutline: [undefined]
 				}
 			}}
+			kind={undefined}
 		>
 			{{
 				items: stub as any,
@@ -66,13 +70,71 @@ const baseAssertion = assertionTemplate(() => (
 	</div>
 ));
 
-const hasValueAssertion = baseAssertion.setProperty('@root', 'classes', [
+const labeledAssertion = assertionTemplate(() => (
+	<div key="root" classes={[undefined, null, themeCss.root, null, null, themeCss.hasLabel]}>
+		<Typeahead
+			strict={undefined}
+			key="typeahead"
+			theme={{
+				'@dojo/widgets/typeahead': typeaheadCss
+			}}
+			itemsInView={undefined}
+			position={undefined}
+			name={undefined}
+			focus={() => false}
+			itemDisabled={stub()}
+			disabled={undefined}
+			resource={{} as any}
+			onValue={stub}
+			value=""
+			onFocus={stub}
+			onBlur={stub}
+			variant={undefined}
+			classes={{
+				'@dojo/widgets/text-input': {
+					input: [themeCss.input],
+					wrapper: [themeCss.wrapper],
+					leading: [themeCss.inputLeading],
+					leadingWrapper: [themeCss.inputLeadingWrapper],
+					defaultKind: [themeCss.defaultKind],
+					outlinedKind: [themeCss.outlinedKind],
+					labelWrapper: [themeCss.inputLabel],
+					label: [themeCss.label, undefined],
+					notchedOutline: [undefined]
+				}
+			}}
+			kind={undefined}
+		>
+			{{
+				items: stub as any,
+				leading: ['test'],
+				label: 'Label'
+			}}
+		</Typeahead>
+	</div>
+));
+
+const labelActiveAssertion = baseAssertion.setProperty('@typeahead', 'classes', {
+	'@dojo/widgets/text-input': {
+		input: [themeCss.input],
+		wrapper: [themeCss.wrapper],
+		leading: [themeCss.inputLeading],
+		leadingWrapper: [themeCss.inputLeadingWrapper],
+		defaultKind: [themeCss.defaultKind],
+		outlinedKind: [themeCss.outlinedKind],
+		labelWrapper: [themeCss.inputLabel],
+		label: [themeCss.label, themeCss.labelActive],
+		notchedOutline: [undefined]
+	}
+});
+
+const hasValueAssertion = labelActiveAssertion.setProperty('@root', 'classes', [
 	undefined,
 	null,
 	themeCss.root,
 	themeCss.hasValue,
 	null,
-	null
+	themeCss.noLabel
 ]);
 
 const disabledAssertion = hasValueAssertion
@@ -83,7 +145,7 @@ const disabledAssertion = hasValueAssertion
 		themeCss.root,
 		themeCss.hasValue,
 		null,
-		null
+		themeCss.noLabel
 	]);
 
 const focusedAssertion = baseAssertion.setProperty('@root', 'classes', [
@@ -92,7 +154,7 @@ const focusedAssertion = baseAssertion.setProperty('@root', 'classes', [
 	themeCss.root,
 	null,
 	themeCss.focused,
-	null
+	themeCss.noLabel
 ]);
 
 const bottomAssertion = hasValueAssertion.insertAfter('@typeahead', () => [
@@ -109,32 +171,6 @@ const bottomAssertion = hasValueAssertion.insertAfter('@typeahead', () => [
 		</Chip>
 	</div>
 ]);
-
-const labeledAssertion = baseAssertion
-	.setProperty('@root', 'classes', [
-		undefined,
-		null,
-		themeCss.root,
-		null,
-		null,
-		themeCss.hasLabel
-	])
-	.insertBefore('@typeahead', () => [
-		<Label
-			disabled={undefined}
-			focused={false}
-			active={false}
-			theme={{ '@dojo/widgets/Label': labelCss }}
-			classes={{
-				'@dojo/widgets/label': {
-					root: [themeCss.label]
-				}
-			}}
-			variant={undefined}
-		>
-			Label
-		</Label>
-	]);
 
 registerSuite('ChipTypeahead', {
 	tests: {
@@ -301,7 +337,7 @@ registerSuite('ChipTypeahead', {
 			h.expect(baseAssertion);
 
 			const chips = h.trigger('@typeahead', (node: any) => () => node.children[0].leading);
-			assert.isTrue(chips.length === 0);
+			assert.isUndefined(chips);
 		},
 
 		'selecting a value from the typeahead selects a value'() {

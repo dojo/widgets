@@ -34,10 +34,6 @@
 .input {
 }
 
-/* Class of the input wrapper on the typeaheads Input widget */
-.inputWrapper {
-}
-
 /* Class on the input label */
 .label {
 }
@@ -58,6 +54,35 @@
 .hasLabel {
 }
 
+/* Added if the widget does not have a label */
+.noLabel {
+}
+
 /* Added to the input's leading content containing chips */
+.inputLeadingWrapper {
+}
+
 .inputLeading {
+}
+
+/* Added to the input's wrapper content if kind is default */
+.defaultKind {
+}
+
+/* Added to the input's wrapper content if kind is outlined */
+.outlinedKind {
+}
+
+/* Added to the input's label content */
+.inputLabel {
+}
+
+/* Added to the label's content */
+.label {
+}
+
+.labelActive {
+}
+
+.notchActive {
 }

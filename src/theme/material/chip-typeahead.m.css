@@ -1,17 +1,3 @@
-.root {
-	composes: mdc-text-field from '@material/textfield/dist/mdc.textfield.css';
-	height: auto !important;
-	display: block !important;
-}
-
-.disabled {
-	composes: mdc-text-field--disabled from '@material/textfield/dist/mdc.textfield.css';
-}
-
-.focused {
-	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';
-}
-
 .value {
 	margin-bottom: 2px;
 	margin-right: 2px;
@@ -19,33 +5,14 @@
 	height: 28px !important;
 }
 
-.root.hasLabel .wrapper .inputWrapper .input {
-	padding: 0px 16px 6px;
-}
-
 .selectedIcon {
 	margin-right: 8px;
 }
 
-.root .input {
-	flex-grow: 1;
-	min-width: 100px;
-	width: 100px;
-}
-
-.root .inputWrapper {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	padding-top: 20px;
-}
-
-.root .inputLeading {
-	display: block;
+.root.hasValue .inputLeading {
+	position: relative;
 	pointer-events: unset;
-	position: static;
-	transform: none;
-	max-width: 100%;
+	margin-left: 0;
 }
 
 .values .value {
@@ -56,28 +23,69 @@
 	z-index: 1;
 }
 
-.root.hasValue {
+.root.hasValue .input {
+	display: inline-block;
+	width: 100%;
+	padding: 8px 28px 12px;
+}
+
+.root.hasValue .wrapper {
 	height: auto;
+	flex-flow: row wrap;
 }
 
-.root.hasValue .inputWrapper {
-	height: auto;
-	padding-left: 16px;
+.root.noLabel.hasValue .wrapper {
+	padding-top: 12px;
 }
 
-.root .wrapper {
-	height: auto;
+.root.hasLabel .defaultKind .input {
+	padding-top: 12px;
 }
 
-.root .input {
-	height: 36px;
-	padding-left: 16px;
+.root.hasLabel.hasValue .defaultKind {
+	padding-top: 28px;
 }
 
-.root.hasValue .label {
-	top: 26px;
+.root.hasLabel.hasValue .defaultKind .inputLabel {
+	position: absolute;
+	width: 100%;
+	left: -24px;
+}
+
+.root.hasLabel .defaultKind::before {
+	height: 0;
+}
+
+.root.hasLabel.hasValue .outlinedKind .inputLabel {
+	position: relative;
+	top: -14px;
+	left: 4px;
+}
+
+.root.hasLabel.hasValue .outlinedKind .label {
+	transition: unset;
+	transform: translateY(-34.75px) !important;
+	font-size: 0.75rem !important;
+	left: 0;
+	top: 38px;
 }
 
 .values {
 	padding-left: 16px;
+}
+
+.labelActive {
+	composes: mdc-floating-label--float-above from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchActive {
+	composes: mdc-notched-outline--notched from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.inputLeadingWrapper {
+	padding-left: 8px;
+}
+
+.outlinedKind .inputLeadingWrapper {
+	margin-top: 16px;
 }

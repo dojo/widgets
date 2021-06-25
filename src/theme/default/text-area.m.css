@@ -37,3 +37,48 @@
 .valid .input {
 	border-color: var(--success-color);
 }
+
+/* Added to the wrapper if no label is provided */
+.noLabel {
+}
+
+/* Applied to root of the outlined label when active */
+.outlinedLabelActive {
+}
+
+/* Applied to outlined inputs */
+.outlinedKind {
+}
+
+/* Applied to outlined inputs */
+.defaultKind {
+}
+
+/* Applied to outlined inputs to create notch effect */
+.notchedOutline {
+}
+
+.notchedOutlineNotched {
+}
+
+.notchedOutlineLeading {
+}
+
+.notchedOutlineNotch {
+}
+
+.notchedOutlineTrailing {
+}
+
+/* Applied to default inputs */
+.ripple {
+}
+
+.lineRipple {
+}
+
+.defaultKindFocused {
+}
+
+.defaultKindLineRippleFocused {
+}

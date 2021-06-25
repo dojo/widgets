@@ -1,6 +1,7 @@
 import { RenderResult } from '@dojo/framework/core/interfaces';
 import focus from '@dojo/framework/core/middleware/focus';
 import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
+import dimensions from '@dojo/framework/core/middleware/dimensions';
 import theme from '../middleware/theme';
 import validity from '@dojo/framework/core/middleware/validity';
 import { create, diffProperty, invalidator, tsx } from '@dojo/framework/core/vdom';
@@ -62,6 +63,8 @@ export interface BaseInputProperties<T extends { value: any } = { value: string 
 	value?: T['value'];
 	/** The id to be applied to the input */
 	widgetId?: string;
+	/** The kind of input */
+	kind?: 'outlined' | 'filled';
 }
 
 export interface TextInputChildren {
@@ -115,13 +118,14 @@ const factory = create({
 	validity,
 	focus,
 	diffProperty,
-	invalidator
+	invalidator,
+	dimensions
 })
 	.properties<TextInputProperties>()
 	.children<TextInputChildren | undefined>();
 
 export const TextInput = factory(function TextInput({
-	middleware: { icache, theme, validity, focus, diffProperty, invalidator },
+	middleware: { icache, theme, validity, focus, diffProperty, invalidator, dimensions },
 	properties,
 	children,
 	id
@@ -168,7 +172,8 @@ export const TextInput = factory(function TextInput({
 		initialValue,
 		valid: validValue = { valid: undefined, message: '' },
 		widgetId = `text-input-${id}`,
-		variant
+		variant,
+		kind = 'kind'
 	} = properties();
 
 	let { value } = properties();
@@ -187,7 +192,7 @@ export const TextInput = factory(function TextInput({
 
 	const pattern = patternValue instanceof RegExp ? patternValue.source : patternValue;
 
-	function _callOnValidate(valid: boolean | undefined, message: string) {
+	function callOnValidate(valid: boolean | undefined, message: string) {
 		let { valid: previousValid } = properties();
 		let previousMessage: string | undefined;
 
@@ -203,7 +208,7 @@ export const TextInput = factory(function TextInput({
 
 	if (onValidate) {
 		if (value === undefined && !dirty) {
-			_callOnValidate(undefined, '');
+			callOnValidate(undefined, '');
 		} else {
 			icache.set('dirty', true);
 			let { valid, message = '' } = validity.get('input', value || '');
@@ -215,7 +220,7 @@ export const TextInput = factory(function TextInput({
 				}
 			}
 
-			_callOnValidate(valid, message);
+			callOnValidate(valid, message);
 		}
 	}
 
@@ -225,6 +230,47 @@ export const TextInput = factory(function TextInput({
 	const computedHelperText = (valid === false && message) || helperText;
 	const inputFocused = focus.isFocused('input');
 	const autofilled = Boolean(icache.get('autofilled'));
+
+	function renderLabel() {
+		const labelActive = Boolean(!!value || inputFocused || autofilled);
+
+		const renderedLabel = (
+			<span key="label" classes={themeCss.labelWrapper}>
+				<Label
+					theme={themeProp}
+					classes={{
+						...classes,
+						'@dojo/widgets/label': {
+							...(classes ? classes['@dojo/widgets/label'] : {}),
+							root: [themeCss.label],
+							active: kind === 'outlined' ? [themeCss.outlinedLabelActive] : []
+						}
+					}}
+					variant={variant}
+					disabled={disabled}
+					valid={valid}
+					focused={inputFocused}
+					readOnly={readOnly}
+					required={required}
+					hidden={labelHidden}
+					forId={widgetId}
+					active={labelActive}
+				>
+					{label}
+				</Label>
+			</span>
+		);
+
+		return kind === 'outlined' ? (
+			<div classes={[themeCss.notchedOutline, labelActive && themeCss.notchedOutlineNotched]}>
+				<div classes={themeCss.notchedOutlineLeading} />
+				{label && <div classes={themeCss.notchedOutlineNotch}>{renderedLabel}</div>}
+				<div classes={themeCss.notchedOutlineTrailing} />
+			</div>
+		) : (
+			label && renderedLabel
+		);
+	}
 
 	return (
 		<div key="root" classes={[theme.variant(), themeCss.root]} role="presentation">
@@ -240,95 +286,86 @@ export const TextInput = factory(function TextInput({
 					required ? themeCss.required : null,
 					leading ? themeCss.hasLeading : null,
 					trailing ? themeCss.hasTrailing : null,
-					!label || labelHidden ? themeCss.noLabel : null
+					!label || labelHidden ? themeCss.noLabel : null,
+					kind === 'outlined' ? themeCss.outlinedKind : null,
+					kind === 'kind' ? themeCss.defaultKind : null,
+					kind === 'kind' && inputFocused ? themeCss.defaultKindFocused : null
 				]}
 				role="presentation"
 			>
-				{label && (
-					<Label
-						theme={themeProp}
-						classes={classes}
-						variant={variant}
-						disabled={disabled}
-						valid={valid}
-						focused={inputFocused}
-						readOnly={readOnly}
-						required={required}
-						hidden={labelHidden}
-						forId={widgetId}
-						active={!!value || inputFocused || autofilled}
-					>
-						{label}
-					</Label>
-				)}
-				<div
-					key="inputWrapper"
-					classes={[
-						themeCss.inputWrapper,
-						inputFocused ? themeCss.inputWrapperFocused : undefined
-					]}
-					role="presentation"
-				>
+				{renderLabel()}
+				{kind === 'kind' && <span classes={themeCss.ripple} />}
+				<span key="leading" classes={themeCss.leadingWrapper}>
 					{leading && <span classes={themeCss.leading}>{leading}</span>}
-					<input
-						{...formatAriaProperties(aria)}
-						aria-invalid={valid === false ? 'true' : undefined}
-						autocomplete={formatAutocomplete(autocomplete)}
-						classes={themeCss.input}
-						disabled={disabled}
-						id={widgetId}
-						focus={focus.shouldFocus}
-						key={'input'}
-						max={max}
-						maxlength={maxLength ? `${maxLength}` : null}
-						min={min}
-						minlength={minLength ? `${minLength}` : null}
-						name={name}
-						pattern={pattern}
-						placeholder={placeholder}
-						readOnly={readOnly}
-						aria-readonly={readOnly ? 'true' : undefined}
-						required={required}
-						step={step}
-						type={type}
-						value={value}
-						onblur={() => {
-							onBlur && onBlur();
-						}}
-						onfocus={() => {
-							onFocus && onFocus();
-						}}
-						oninput={(event: Event) => {
-							event.stopPropagation();
-							const value = (event.target as HTMLInputElement).value;
-							icache.set('value', value);
-							onValue && onValue(value);
-						}}
-						onkeydown={(event: KeyboardEvent) => {
-							event.stopPropagation();
-							onKeyDown && onKeyDown(event.which, () => event.preventDefault());
-						}}
-						onkeyup={(event: KeyboardEvent) => {
-							event.stopPropagation();
-							onKeyUp && onKeyUp(event.which, () => event.preventDefault());
-						}}
-						onclick={() => {
-							onClick && onClick();
-						}}
-						onpointerenter={() => {
-							onOver && onOver();
-						}}
-						onpointerleave={() => {
-							onOut && onOut();
-						}}
-						onanimationstart={(event: AnimationEvent) => {
-							if (event.animationName === themeCss.onAutofillShown) {
-								icache.set('autofilled', true);
-							}
-						}}
-					/>
+				</span>
+				<input
+					{...formatAriaProperties(aria)}
+					aria-invalid={valid === false ? 'true' : undefined}
+					autocomplete={formatAutocomplete(autocomplete)}
+					classes={themeCss.input}
+					disabled={disabled}
+					id={widgetId}
+					focus={focus.shouldFocus}
+					key={'input'}
+					max={max}
+					maxlength={maxLength ? `${maxLength}` : null}
+					min={min}
+					minlength={minLength ? `${minLength}` : null}
+					name={name}
+					pattern={pattern}
+					placeholder={placeholder}
+					readOnly={readOnly}
+					aria-readonly={readOnly ? 'true' : undefined}
+					required={required}
+					step={step}
+					type={type}
+					value={value}
+					onblur={() => {
+						onBlur && onBlur();
+					}}
+					onfocus={() => {
+						onFocus && onFocus();
+					}}
+					oninput={(event: Event) => {
+						event.stopPropagation();
+						const value = (event.target as HTMLInputElement).value;
+						icache.set('value', value);
+						onValue && onValue(value);
+					}}
+					onkeydown={(event: KeyboardEvent) => {
+						event.stopPropagation();
+						onKeyDown && onKeyDown(event.which, () => event.preventDefault());
+					}}
+					onkeyup={(event: KeyboardEvent) => {
+						event.stopPropagation();
+						onKeyUp && onKeyUp(event.which, () => event.preventDefault());
+					}}
+					onclick={() => {
+						onClick && onClick();
+					}}
+					onpointerenter={() => {
+						onOver && onOver();
+					}}
+					onpointerleave={() => {
+						onOut && onOut();
+					}}
+					onanimationstart={(event: AnimationEvent) => {
+						if (event.animationName === themeCss.onAutofillShown) {
+							icache.set('autofilled', true);
+						}
+					}}
+				/>
+				<span key="trailing" classes={themeCss.trailingWrapper}>
 					{trailing && <span classes={themeCss.trailing}>{trailing}</span>}
-				</div>
+				</span>
+				{kind === 'kind' && (
+					<span
+						classes={[
+							themeCss.lineRipple,
+							inputFocused ? themeCss.defaultKindLineRippleFocused : null
+						]}
+					/>
+				)}
 			</div>
 			<HelperText
 				text={computedHelperText}

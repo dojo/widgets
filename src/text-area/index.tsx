@@ -8,6 +8,7 @@ import { createICacheMiddleware } from '@dojo/framework/core/middleware/icache';
 import theme from '../middleware/theme';
 import focus from '@dojo/framework/core/middleware/focus';
 import validity from '@dojo/framework/core/middleware/validity';
+import dimensions from '@dojo/framework/core/middleware/dimensions';
 import { RenderResult } from '@dojo/framework/core/interfaces';
 
 export interface TextAreaProperties {
@@ -75,6 +76,8 @@ export interface TextAreaProperties {
 	widgetId?: string;
 	/** Controls text wrapping. Can be "hard", "soft", or "off" */
 	wrapText?: 'hard' | 'soft' | 'off';
+	/** The kind of text area */
+	kind?: 'outlined' | 'filled';
 }
 
 export interface TextAreaChildren {
@@ -91,13 +94,14 @@ const factory = create({
 	icache: createICacheMiddleware<TextAreaICache>(),
 	theme,
 	focus,
-	validity
+	validity,
+	dimensions
 })
 	.properties<TextAreaProperties>()
 	.children<TextAreaChildren | RenderResult | undefined>();
 export const TextArea = factory(function TextArea({
 	id,
-	middleware: { icache, theme, focus, validity },
+	middleware: { icache, theme, focus, validity, dimensions },
 	properties,
 	children
 }) {
@@ -172,7 +176,8 @@ export const TextArea = factory(function TextArea({
 		labelHidden,
 		helperText,
 		onValidate,
-		variant
+		variant,
+		kind = 'filled'
 	} = properties();
 
 	let { value } = properties();
@@ -196,6 +201,52 @@ export const TextArea = factory(function TextArea({
 	const [labelChild] = children();
 	const label = isRenderResult(labelChild) ? labelChild : labelChild.label;
 
+	function _renderLabel() {
+		const labelActive = !!value || inputFocused;
+
+		const renderedLabel = (
+			<Label
+				theme={theme.compose(
+					labelCss,
+					css,
+					'label'
+				)}
+				classes={{
+					...classes,
+					'@dojo/widgets/label': {
+						...(classes ? classes['@dojo/widgets/label'] : {}),
+						active: kind === 'outlined' ? [themeCss.outlinedLabelActive] : []
+					}
+				}}
+				variant={variant}
+				disabled={disabled}
+				valid={valid}
+				focused={inputFocused}
+				readOnly={readOnly}
+				required={required}
+				hidden={labelHidden}
+				forId={widgetId}
+				active={labelActive}
+			>
+				{label}
+			</Label>
+		);
+
+		return kind === 'outlined' ? (
+			<div classes={[themeCss.notchedOutline, labelActive && themeCss.notchedOutlineNotched]}>
+				<div classes={themeCss.notchedOutlineLeading} />
+				{label && (
+					<div classes={themeCss.notchedOutlineNotch}>
+						<span key="label">{renderedLabel}</span>
+					</div>
+				)}
+				<div classes={themeCss.notchedOutlineTrailing} />
+			</div>
+		) : (
+			label && renderedLabel
+		);
+	}
+
 	return (
 		<div key="root" classes={[theme.variant(), themeCss.root]}>
 			<div
@@ -207,31 +258,16 @@ export const TextArea = factory(function TextArea({
 					valid === true ? themeCss.valid : null,
 					readOnly ? themeCss.readonly : null,
 					required ? themeCss.required : null,
-					inputFocused ? themeCss.focused : null
+					inputFocused ? themeCss.focused : null,
+					!label || labelHidden ? themeCss.noLabel : null,
+					kind === 'outlined' ? themeCss.outlinedKind : null,
+					kind === 'filled' ? themeCss.defaultKind : null,
+					kind === 'filled' && inputFocused ? themeCss.defaultKindFocused : null
 				]}
 			>
-				{label ? (
-					<Label
-						theme={theme.compose(
-							labelCss,
-							css,
-							'label'
-						)}
-						classes={classes}
-						variant={variant}
-						disabled={disabled}
-						valid={valid}
-						readOnly={readOnly}
-						required={required}
-						hidden={labelHidden}
-						forId={widgetId}
-						focused={inputFocused}
-						active={!!value || inputFocused}
-					>
-						{label}
-					</Label>
-				) : null}
+				{_renderLabel()}
 				<div classes={themeCss.inputWrapper}>
+					{kind === 'filled' && <span classes={themeCss.ripple} />}
 					<textarea
 						id={widgetId}
 						key="input"
@@ -295,6 +331,14 @@ export const TextArea = factory(function TextArea({
 							onOut && onOut();
 						}}
 					/>
+					{kind === 'filled' && (
+						<span
+							classes={[
+								themeCss.lineRipple,
+								inputFocused ? themeCss.defaultKindLineRippleFocused : null
+							]}
+						/>
+					)}
 				</div>
 			</div>
 			<HelperText

@@ -65,7 +65,7 @@ const baseTemplate = (date?: Date) =>
 		);
 	});
 
-const buttonTemplate = assertionTemplate(() => {
+const textInputTemplate = assertionTemplate(() => {
 	return (
 		<div classes={css.input}>
 			<TextInput
@@ -85,6 +85,7 @@ const buttonTemplate = assertionTemplate(() => {
 				type="text"
 				variant={undefined}
 				classes={undefined}
+				kind={undefined}
 			>
 				{{ label: undefined, trailing: undefined }}
 			</TextInput>
@@ -183,7 +184,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 
 		// Find the date icon & `click` it
 		const [dateIcon] = select(
@@ -212,7 +213,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 		assert.equal(
 			h.trigger('@popup', (node) => () =>
 				(node.children as any)[0].trigger().children[0].children[0].label
@@ -230,7 +231,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 		assert.equal(
 			h.trigger('@popup', (node) => () =>
 				(node.children as any)[0].trigger().children[0].children[0].label
@@ -249,7 +250,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 
 		// Find the input and simulate "enter"
 		const [input] = select('@input', triggerResult);
@@ -277,7 +278,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			() => {}
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 		assert.equal(
 			h.trigger('@popup', (node) => () =>
 				(node.children as any)[0].trigger().children[0].children[0].label
@@ -317,7 +318,7 @@ describe('TimePicker', () => {
 			(node) => (node.children as any)[0].trigger,
 			toggleOpen
 		);
-		h.expect(buttonTemplate, () => triggerResult);
+		h.expect(textInputTemplate, () => triggerResult);
 
 		// Find the input widget and trigger it's value changed
 		const [input] = select('@input', triggerResult);
@@ -578,5 +579,19 @@ describe('TimePicker', () => {
 		onValidate.resetHistory();
 		input.properties.onValidate(false);
 		sinon.assert.calledWith(onValidate, false);
+	});
+
+	it('rendered as outlined text input', () => {
+		const h = harness(() => <TimePicker name="timeInput" onValue={onValue} kind="outlined" />);
+		h.expect(baseTemplate());
+
+		// Execute render-prop to show "trigger" content
+		const toggleOpen = sinon.stub();
+		const triggerResult = h.trigger(
+			'@popup',
+			(node) => (node.children as any)[0].trigger,
+			toggleOpen
+		);
+		h.expect(textInputTemplate.setProperty('@input', 'kind', 'outlined'), () => triggerResult);
 	});
 });

@@ -5,3 +5,6 @@ export const input: string;
 export const inputLeading: string;
 export const inputWrapper: string;
 export const values: string;
+export const hasValue: string;
+export const wrapper: string;
+export const inputLeadingWrapper: string;

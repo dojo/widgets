@@ -29,6 +29,7 @@
 	/* Support for Firefox. */
 	-moz-osx-font-smoothing: grayscale;
 	font-feature-settings: 'liga';
+	display: flex;
 }
 
 .clockIcon:before {

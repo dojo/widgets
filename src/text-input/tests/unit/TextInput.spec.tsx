@@ -21,6 +21,7 @@ import {
 	stubEvent
 } from '../../../common/tests/support/test-helpers';
 import HelperText from '../../../helper-text/index';
+import { SupportedClassName } from '@dojo/framework/core/interfaces';
 
 const harness = createHarness([compareId, compareForId]);
 
@@ -31,21 +32,37 @@ interface States {
 	valid?: { valid?: boolean; message?: string } | boolean;
 }
 
-interface ExpectedOptions {
+interface DefaultExpectedOptions {
 	inputOverrides?: any;
 	states?: States;
-	focused?: boolean;
 	helperText?: string;
 	value?: string;
+	wrapperClasses?: SupportedClassName[];
+	lineRippleClasses?: SupportedClassName[];
 }
 
-const expected = function({
+const defaultExpected = function({
 	inputOverrides = {},
 	states = {},
-	focused = false,
 	helperText,
-	value
-}: ExpectedOptions = {}) {
+	value,
+	wrapperClasses = [
+		css.wrapper,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		css.noLabel,
+		null,
+		css.defaultKind,
+		null
+	],
+	lineRippleClasses = [css.lineRipple, null]
+}: DefaultExpectedOptions = {}) {
 	const { disabled, required, readOnly, valid: validState } = states;
 	let valid: boolean | undefined;
 	let message: string | undefined;
@@ -61,60 +78,43 @@ const expected = function({
 
 	return (
 		<div key="root" classes={[undefined, css.root]} role="presentation">
-			<div
-				key="wrapper"
-				classes={[
-					css.wrapper,
-					disabled ? css.disabled : null,
-					focused ? css.focused : null,
-					valid === false ? css.invalid : null,
-					valid === true ? css.valid : null,
-					readOnly ? css.readonly : null,
-					required ? css.required : null,
-					null,
-					null,
-					css.noLabel
-				]}
-				role="presentation"
-			>
-				<div
-					key="inputWrapper"
-					classes={[css.inputWrapper, focused ? css.inputWrapperFocused : undefined]}
-					role="presentation"
-				>
-					<input
-						aria-invalid={valid === false ? 'true' : undefined}
-						autocomplete="off"
-						classes={css.input}
-						disabled={disabled}
-						id={''}
-						focus={noop}
-						key={'input'}
-						max={undefined}
-						maxlength={null}
-						min={undefined}
-						minlength={null}
-						name={undefined}
-						pattern={undefined}
-						placeholder={undefined}
-						readOnly={readOnly}
-						aria-readonly={readOnly ? 'true' : undefined}
-						required={required}
-						step={undefined}
-						type="text"
-						value={value}
-						onblur={noop}
-						onfocus={noop}
-						oninput={noop}
-						onkeydown={noop}
-						onkeyup={noop}
-						onclick={noop}
-						onpointerenter={noop}
-						onpointerleave={noop}
-						onanimationstart={noop}
-						{...inputOverrides}
-					/>
-				</div>
+			<div key="wrapper" classes={wrapperClasses} role="presentation">
+				<span classes={css.ripple} />
+				<span key="leading" classes={css.leadingWrapper} />
+				<input
+					aria-invalid={valid === false ? 'true' : undefined}
+					autocomplete="off"
+					classes={css.input}
+					disabled={disabled}
+					id={''}
+					focus={noop}
+					key={'input'}
+					max={undefined}
+					maxlength={null}
+					min={undefined}
+					minlength={null}
+					name={undefined}
+					pattern={undefined}
+					placeholder={undefined}
+					readOnly={readOnly}
+					aria-readonly={readOnly ? 'true' : undefined}
+					required={required}
+					step={undefined}
+					type="text"
+					value={value}
+					onblur={noop}
+					onfocus={noop}
+					oninput={noop}
+					onkeydown={noop}
+					onkeyup={noop}
+					onclick={noop}
+					onpointerenter={noop}
+					onpointerleave={noop}
+					onanimationstart={noop}
+					{...inputOverrides}
+				/>
+				<span key="trailing" classes={css.trailingWrapper} />
+				<span classes={lineRippleClasses} />
 			</div>
 			<HelperText
 				text={helperTextValue}
@@ -133,9 +133,25 @@ const baseAssertion = assertionTemplate(() => {
 			<div
 				key="wrapper"
 				role="presentation"
-				classes={[css.wrapper, null, null, null, null, null, null, null, null, null]}
+				classes={[
+					css.wrapper,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					css.noLabel,
+					null,
+					css.defaultKind,
+					null
+				]}
 			>
+				<span key="leading" classes={css.leadingWrapper} />
 				{input()}
+				<span key="trailing" classes={css.trailingWrapper} />
 			</div>
 			<HelperText
 				assertion-key="helperText"
@@ -149,24 +165,37 @@ const baseAssertion = assertionTemplate(() => {
 	);
 });
 
-const labeledAssertion = baseAssertion
+const defaultKindAssertion = baseAssertion
+	.prepend('@wrapper', () => [<span classes={css.ripple} />])
+	.append('@wrapper', () => [
+		<span assertion-key="lineRipple" classes={[css.lineRipple, null]} />
+	]);
+
+const defaultKindLabeledAssertion = defaultKindAssertion
 	.prepend('@wrapper', () => [
-		<Label
-			assertion-key="label"
-			theme={undefined}
-			disabled={undefined}
-			valid={undefined}
-			focused={false}
-			readOnly={undefined}
-			required={undefined}
-			hidden={false}
-			forId={''}
-			active={false}
-			classes={undefined}
-			variant={undefined}
-		>
-			foo
-		</Label>
+		<span key="label" classes={css.labelWrapper}>
+			<Label
+				assertion-key="label"
+				theme={undefined}
+				disabled={undefined}
+				valid={undefined}
+				focused={false}
+				readOnly={undefined}
+				required={undefined}
+				hidden={false}
+				forId={''}
+				active={false}
+				classes={{
+					'@dojo/widgets/label': {
+						root: [css.label],
+						active: []
+					}
+				}}
+				variant={undefined}
+			>
+				foo
+			</Label>
+		</span>
 	])
 	.setProperty('@wrapper', 'classes', [
 		css.wrapper,
@@ -178,55 +207,128 @@ const labeledAssertion = baseAssertion
 		null,
 		null,
 		null,
+		null,
+		null,
+		css.defaultKind,
+		null
+	]);
+
+const outlinedUnlabeledAssertion = baseAssertion
+	.prepend('@wrapper', () => [
+		<div assertion-key="notchedOutline" classes={[css.notchedOutline, false]}>
+			<div classes={css.notchedOutlineLeading} />
+			{false}
+			<div classes={css.notchedOutlineTrailing} />
+		</div>
+	])
+	.setProperty('@wrapper', 'classes', [
+		css.wrapper,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		css.noLabel,
+		css.outlinedKind,
+		null,
+		null
+	]);
+
+const outlinedLabeledAssertion = baseAssertion
+	.prepend('@wrapper', () => [
+		<div assertion-key="notchedOutline" classes={[css.notchedOutline, false]}>
+			<div classes={css.notchedOutlineLeading} />
+			<div assertion-key="notch" classes={css.notchedOutlineNotch}>
+				<span key="label" classes={css.labelWrapper}>
+					<Label
+						assertion-key="label"
+						theme={undefined}
+						disabled={undefined}
+						valid={undefined}
+						focused={false}
+						readOnly={undefined}
+						required={undefined}
+						hidden={false}
+						forId={''}
+						active={false}
+						classes={{
+							'@dojo/widgets/label': {
+								root: [css.label],
+								active: [css.outlinedLabelActive]
+							}
+						}}
+						variant={undefined}
+					>
+						foo
+					</Label>
+				</span>
+			</div>
+			<div classes={css.notchedOutlineTrailing} />
+		</div>
+	])
+	.setProperty('@wrapper', 'classes', [
+		css.wrapper,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		css.outlinedKind,
+		null,
 		null
 	]);
 
 const input = () => (
-	<div key="inputWrapper" role="presentation" classes={[css.inputWrapper, undefined]}>
-		<input
-			key="input"
-			classes={css.input}
-			id=""
-			disabled={undefined}
-			aria-invalid={undefined}
-			autocomplete="off"
-			maxlength={null}
-			minlength={null}
-			name={undefined}
-			placeholder={undefined}
-			readOnly={undefined}
-			aria-readonly={undefined}
-			required={undefined}
-			type="text"
-			value={undefined}
-			focus={noop}
-			pattern={undefined}
-			onblur={noop}
-			onfocus={noop}
-			oninput={noop}
-			onkeydown={noop}
-			onkeyup={noop}
-			onclick={noop}
-			onpointerenter={noop}
-			onpointerleave={noop}
-			onanimationstart={noop}
-			min={undefined}
-			max={undefined}
-			step={undefined}
-		/>
-	</div>
+	<input
+		key="input"
+		classes={css.input}
+		id=""
+		disabled={undefined}
+		aria-invalid={undefined}
+		autocomplete="off"
+		maxlength={null}
+		minlength={null}
+		name={undefined}
+		placeholder={undefined}
+		readOnly={undefined}
+		aria-readonly={undefined}
+		required={undefined}
+		type="text"
+		value={undefined}
+		focus={noop}
+		pattern={undefined}
+		onblur={noop}
+		onfocus={noop}
+		oninput={noop}
+		onkeydown={noop}
+		onkeyup={noop}
+		onclick={noop}
+		onpointerenter={noop}
+		onpointerleave={noop}
+		onanimationstart={noop}
+		min={undefined}
+		max={undefined}
+		step={undefined}
+	/>
 );
 
 registerSuite('TextInput', {
 	tests: {
 		'default properties'() {
 			const h = harness(() => <TextInput />);
-			h.expect(expected);
+			h.expect(defaultKindAssertion);
 		},
 
 		'controlled value'() {
 			const h = harness(() => <TextInput value="foo" />);
-			const valueTemplate = baseAssertion
+			const valueTemplate = defaultKindAssertion
 				.setProperty('@input', 'value', 'foo')
 				.setProperty('@wrapper', 'classes', [
 					css.wrapper,
@@ -238,7 +340,10 @@ registerSuite('TextInput', {
 					null,
 					null,
 					null,
-					css.noLabel
+					css.noLabel,
+					null,
+					css.defaultKind,
+					null
 				]);
 			h.expect(valueTemplate);
 		},
@@ -260,7 +365,7 @@ registerSuite('TextInput', {
 			));
 
 			h.expect(() =>
-				expected({
+				defaultExpected({
 					inputOverrides: {
 						'aria-controls': 'foo',
 						'aria-describedby': 'bar',
@@ -278,7 +383,7 @@ registerSuite('TextInput', {
 		label() {
 			const h = harness(() => <TextInput>{{ label: 'foo' }}</TextInput>);
 
-			h.expect(labeledAssertion);
+			h.expect(defaultKindLabeledAssertion);
 		},
 
 		pattern: {
@@ -286,7 +391,7 @@ registerSuite('TextInput', {
 				const h = harness(() => <TextInput pattern="^foo|bar$" />);
 
 				h.expect(() =>
-					expected({
+					defaultExpected({
 						inputOverrides: {
 							pattern: '^foo|bar$'
 						}
@@ -300,7 +405,7 @@ registerSuite('TextInput', {
 				const h = harness(() => <TextInput {...properties} />);
 
 				h.expect(() =>
-					expected({
+					defaultExpected({
 						inputOverrides: {
 							pattern: '^foo|bar$'
 						}
@@ -310,7 +415,7 @@ registerSuite('TextInput', {
 				(properties.pattern.compile as any)('^bar|baz$');
 
 				h.expect(() =>
-					expected({
+					defaultExpected({
 						inputOverrides: {
 							pattern: '^bar|baz$'
 						}
@@ -320,7 +425,7 @@ registerSuite('TextInput', {
 				properties.pattern = /^ham|spam$/;
 
 				h.expect(() =>
-					expected({
+					defaultExpected({
 						inputOverrides: {
 							pattern: '^ham|spam$'
 						}
@@ -334,7 +439,7 @@ registerSuite('TextInput', {
 				const h = harness(() => <TextInput autocomplete />);
 
 				h.expect(() =>
-					expected({
+					defaultExpected({
 						inputOverrides: {
 							autocomplete: 'on'
 						}
@@ -345,7 +450,7 @@ registerSuite('TextInput', {
 				const h = harness(() => <TextInput autocomplete={false} />);
 
 				h.expect(() =>
-					expected({
+					defaultExpected({
 						inputOverrides: {
 							autocomplete: 'off'
 						}
@@ -356,7 +461,7 @@ registerSuite('TextInput', {
 				const h = harness(() => <TextInput autocomplete="name" />);
 
 				h.expect(() =>
-					expected({
+					defaultExpected({
 						inputOverrides: {
 							autocomplete: 'name'
 						}
@@ -375,8 +480,23 @@ registerSuite('TextInput', {
 			const h = harness(() => <TextInput {...properties} />);
 
 			h.expect(() =>
-				expected({
-					states: properties
+				defaultExpected({
+					states: properties,
+					wrapperClasses: [
+						css.wrapper,
+						css.disabled,
+						null,
+						null,
+						css.valid,
+						css.readonly,
+						css.required,
+						null,
+						null,
+						css.noLabel,
+						null,
+						css.defaultKind,
+						null
+					]
 				})
 			);
 
@@ -388,8 +508,23 @@ registerSuite('TextInput', {
 			};
 
 			h.expect(() =>
-				expected({
-					states: properties
+				defaultExpected({
+					states: properties,
+					wrapperClasses: [
+						css.wrapper,
+						null,
+						null,
+						css.invalid,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.noLabel,
+						null,
+						css.defaultKind,
+						null
+					]
 				})
 			);
 
@@ -401,8 +536,23 @@ registerSuite('TextInput', {
 			};
 
 			h.expect(() =>
-				expected({
-					states: properties
+				defaultExpected({
+					states: properties,
+					wrapperClasses: [
+						css.wrapper,
+						null,
+						null,
+						css.invalid,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.noLabel,
+						null,
+						css.defaultKind,
+						null
+					]
 				})
 			);
 		},
@@ -417,14 +567,33 @@ registerSuite('TextInput', {
 			const h = harness(() => <TextInput />, {
 				middleware: [[focus, focusMock], [validity, validityMock]]
 			});
-			h.expect(() => expected({ focused: true }));
+			h.expect(() =>
+				defaultExpected({
+					wrapperClasses: [
+						css.wrapper,
+						null,
+						css.focused,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.noLabel,
+						null,
+						css.defaultKind,
+						css.defaultKindFocused
+					],
+					lineRippleClasses: [css.lineRipple, css.defaultKindLineRippleFocused]
+				})
+			);
 		},
 
 		helperText() {
 			const helperText = 'test';
 			const h = harness(() => <TextInput helperText={helperText} />);
 
-			h.expect(() => expected({ helperText }));
+			h.expect(() => defaultExpected({ helperText }));
 		},
 
 		onValidate() {
@@ -443,7 +612,7 @@ registerSuite('TextInput', {
 				}
 			);
 
-			h.expect(assertionTemplate(() => expected({ value: 'test value' })));
+			h.expect(assertionTemplate(() => defaultExpected({ value: 'test value' })));
 
 			assert.isTrue(validateSpy.calledWith(false, 'test'));
 
@@ -454,7 +623,7 @@ registerSuite('TextInput', {
 			});
 
 			h.trigger('@input', '');
-			h.expect(assertionTemplate(() => expected({ value: 'test value' })));
+			h.expect(assertionTemplate(() => defaultExpected({ value: 'test value' })));
 
 			assert.isTrue(validateSpy.calledWith(true, ''));
 		},
@@ -481,11 +650,26 @@ registerSuite('TextInput', {
 
 			h.expect(
 				assertionTemplate(() =>
-					expected({
+					defaultExpected({
 						value: 'test value',
 						states: {
 							valid: { valid: false, message: 'test' }
-						}
+						},
+						wrapperClasses: [
+							css.wrapper,
+							null,
+							null,
+							css.invalid,
+							null,
+							null,
+							null,
+							null,
+							null,
+							css.noLabel,
+							null,
+							css.defaultKind,
+							null
+						]
 					})
 				)
 			);
@@ -506,7 +690,7 @@ registerSuite('TextInput', {
 				middleware: [[focus, focusMock], [validity, validityMock]]
 			});
 
-			h.expect(expected);
+			h.expect(defaultExpected);
 			validateSpy.calledWith(undefined, '');
 		},
 
@@ -531,7 +715,7 @@ registerSuite('TextInput', {
 				{ middleware: [[focus, focusMock], [validity, validityMock]] }
 			);
 
-			h.expect(assertionTemplate(() => expected({ value: 'test value' })));
+			h.expect(assertionTemplate(() => defaultExpected({ value: 'test value' })));
 
 			assert.isFalse(customValidatorSpy.called);
 		},
@@ -557,7 +741,7 @@ registerSuite('TextInput', {
 				{ middleware: [[focus, focusMock], [validity, validityMock]] }
 			);
 
-			h.expect(assertionTemplate(() => expected({ value: 'test value' })));
+			h.expect(assertionTemplate(() => defaultExpected({ value: 'test value' })));
 
 			assert.isTrue(customValidatorSpy.called);
 		},
@@ -585,14 +769,14 @@ registerSuite('TextInput', {
 				{ middleware: [[focus, focusMock], [validity, validityMock]] }
 			);
 
-			h.expect(assertionTemplate(() => expected({ value: 'test value' })));
+			h.expect(assertionTemplate(() => defaultExpected({ value: 'test value' })));
 
 			assert.isTrue(validateSpy.calledWith(false, 'custom message'));
 		},
 
 		'leading property'() {
 			const leading = <span classes={css.leading}>A</span>;
-			const leadingTemplate = baseAssertion
+			const leadingTemplate = defaultKindAssertion
 				.setProperty('@wrapper', 'classes', [
 					css.wrapper,
 					null,
@@ -603,16 +787,19 @@ registerSuite('TextInput', {
 					null,
 					css.hasLeading,
 					null,
-					css.noLabel
+					css.noLabel,
+					null,
+					css.defaultKind,
+					null
 				])
-				.prepend('@inputWrapper', () => [leading]);
+				.setChildren('@leading', () => [leading]);
 			const h = harness(() => <TextInput>{{ leading: 'A' }}</TextInput>);
 			h.expect(leadingTemplate);
 		},
 
 		'trailing property'() {
 			const trailing = <span classes={css.trailing}>Z</span>;
-			const trailingTemplate = baseAssertion
+			const trailingTemplate = defaultKindAssertion
 				.setProperty('@wrapper', 'classes', [
 					css.wrapper,
 					null,
@@ -623,9 +810,12 @@ registerSuite('TextInput', {
 					null,
 					null,
 					css.hasTrailing,
-					css.noLabel
+					css.noLabel,
+					null,
+					css.defaultKind,
+					null
 				])
-				.append('@inputWrapper', () => [trailing]);
+				.setChildren('@trailing', () => [trailing]);
 			const h = harness(() => <TextInput>{{ trailing: 'Z' }}</TextInput>);
 			h.expect(trailingTemplate);
 		},
@@ -689,7 +879,7 @@ registerSuite('TextInput', {
 				{ middleware: [[focus, focusMock], [validity, validityMock]] }
 			);
 
-			let assertion = baseAssertion
+			let assertion = defaultKindAssertion
 				.setProperty('@wrapper', 'classes', [
 					css.wrapper,
 					null,
@@ -700,7 +890,10 @@ registerSuite('TextInput', {
 					css.required,
 					null,
 					null,
-					css.noLabel
+					css.noLabel,
+					null,
+					css.defaultKind,
+					null
 				])
 				.setProperty('@input', 'required', true)
 				.setProperty('@input', 'value', 'Initial');
@@ -721,7 +914,10 @@ registerSuite('TextInput', {
 					css.required,
 					null,
 					null,
-					css.noLabel
+					css.noLabel,
+					null,
+					css.defaultKind,
+					null
 				])
 				.setProperty('@input', 'aria-invalid', 'true')
 				.setProperty('~helperText', 'text', 'Please fill out this field.')
@@ -754,7 +950,10 @@ registerSuite('TextInput', {
 						css.required,
 						null,
 						null,
-						css.noLabel
+						css.noLabel,
+						null,
+						css.defaultKind,
+						null
 					])
 					.setProperty('~helperText', 'valid', true)
 			);
@@ -764,7 +963,7 @@ registerSuite('TextInput', {
 			const h = harness(() => <TextInput labelHidden={true}>{{ label: 'foo' }}</TextInput>);
 
 			h.expect(
-				labeledAssertion
+				defaultKindLabeledAssertion
 					.setProperty('~label', 'hidden', true)
 					.setProperty('@wrapper', 'classes', [
 						css.wrapper,
@@ -776,27 +975,115 @@ registerSuite('TextInput', {
 						null,
 						null,
 						null,
-						css.noLabel
+						css.noLabel,
+						null,
+						css.defaultKind,
+						null
 					])
 			);
 		},
 
 		'autofill sets active'() {
 			const h = harness(() => <TextInput>{{ label: 'foo' }}</TextInput>);
-			h.expect(labeledAssertion);
+			h.expect(defaultKindLabeledAssertion);
 
 			h.trigger('@input', 'onanimationstart', {
 				...stubEvent,
 				animationName: 'other-animation'
 			});
-			h.expect(labeledAssertion);
+			h.expect(defaultKindLabeledAssertion);
 
 			h.trigger('@input', 'onanimationstart', {
 				...stubEvent,
 				animationName: css.onAutofillShown
 			});
-			const activeTemplate = labeledAssertion.setProperty('~label', 'active', true);
+			const activeTemplate = defaultKindLabeledAssertion.setProperty(
+				'~label',
+				'active',
+				true
+			);
 			h.expect(activeTemplate);
+		},
+
+		'outline kind'() {
+			const h = harness(() => <TextInput kind="outlined" />);
+			h.expect(outlinedUnlabeledAssertion);
+		},
+
+		'outline focused class'() {
+			const focusMock = createFocusMock();
+			const validityMock = createValidityMock();
+
+			focusMock('input', true);
+			validityMock('input', { valid: undefined, message: '' });
+
+			const h = harness(() => <TextInput kind="outlined" />, {
+				middleware: [[focus, focusMock], [validity, validityMock]]
+			});
+			h.expect(
+				outlinedUnlabeledAssertion
+					.setProperty('@wrapper', 'classes', [
+						css.wrapper,
+						null,
+						css.focused,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.noLabel,
+						css.outlinedKind,
+						null,
+						null
+					])
+					.setProperty('~notchedOutline', 'classes', [
+						css.notchedOutline,
+						css.notchedOutlineNotched
+					])
+			);
+		},
+
+		'outlined label'() {
+			const h = harness(() => <TextInput kind="outlined">{{ label: 'foo' }}</TextInput>);
+
+			h.expect(outlinedLabeledAssertion);
+		},
+
+		'outlined label focused'() {
+			const focusMock = createFocusMock();
+			const validityMock = createValidityMock();
+
+			focusMock('input', true);
+			validityMock('input', { valid: undefined, message: '' });
+
+			const h = harness(() => <TextInput kind="outlined">{{ label: 'foo' }}</TextInput>, {
+				middleware: [[focus, focusMock], [validity, validityMock]]
+			});
+			h.expect(
+				outlinedLabeledAssertion
+					.setProperty('@wrapper', 'classes', [
+						css.wrapper,
+						null,
+						css.focused,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						css.outlinedKind,
+						null,
+						null
+					])
+					.setProperty('~label', 'active', true)
+					.setProperty('~label', 'focused', true)
+					.setProperty('~notchedOutline', 'classes', [
+						css.notchedOutline,
+						css.notchedOutlineNotched
+					])
+			);
 		}
 	}
 });

@@ -71,6 +71,12 @@
 	--mdc-transition-easing: ease;
 	--mdc-medium-transition-duration: 0.5s;
 
+	/* ripple */
+	--mdc-ripple-color: rgba(0, 0, 0, 0.87);
+
+	/* Text Input */
+	--mdc-text-input-background: whitesmoke;
+
 	/* Two column layout */
 	--mdc-divider-width: 9px;
 

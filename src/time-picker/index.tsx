@@ -59,6 +59,9 @@ export interface TimePickerProperties {
 
 	/** Property to determine how many items to render. Defaults to 10 */
 	itemsInView?: number;
+
+	/** The kind of time picker input */
+	kind?: 'outlined' | 'filled';
 }
 
 export interface TimePickerChildren {
@@ -385,7 +388,7 @@ export const TimePicker = factory(function TimePicker({
 		value,
 		disabled: timeDisabled ? timeDisabled(new Date(dt)) : false
 	}));
-	const { name, theme: themeProp, classes, variant } = properties();
+	const { name, theme: themeProp, classes, variant, kind } = properties();
 	const [labelChild] = children();
 	const label = isTimePickerChildren(labelChild) ? labelChild.label : labelChild;
 
@@ -456,6 +459,7 @@ export const TimePicker = factory(function TimePicker({
 										}
 									}}
 									type="text"
+									kind={kind}
 								>
 									{{
 										label,

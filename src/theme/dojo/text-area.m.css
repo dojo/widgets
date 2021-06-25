@@ -20,6 +20,15 @@
 	color: var(--color-text-primary);
 }
 
+.defaultKind .input {
+	border: var(--border-width) solid var(--color-border);
+	border-bottom-color: var(--color-border-strong);
+}
+
+.outlinedKind .input {
+	border: var(--border-width) solid var(--color-highlight);
+}
+
 .input:focus {
 	border-color: var(--color-highlight);
 	border-bottom-color: var(--color-highlight);
@@ -60,4 +69,8 @@
 
 .valid .input:focus {
 	box-shadow: var(--box-shadow-dimensions-small) var(--color-box-shadow-valid);
+}
+
+.notchedOutlineNotch {
+	width: 100% !important;
 }

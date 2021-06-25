@@ -2,7 +2,33 @@
 }
 
 .wrapper {
-	composes: mdc-text-field mdc-text-field--textarea mdc-text-field--fullwidth from '@material/textfield/dist/mdc.textfield.css';
+	width: 100%;
+	composes: mdc-text-field mdc-text-field--textarea from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.root .wrapper.defaultKind {
+	background-color: var(--mdc-text-input-background);
+}
+
+.wrapper:not(.disabled):not(.focused) .lineRipple:before {
+	border-bottom-color: var(--mdc-border-color);
+}
+
+.wrapper:not(.disabled):not(.focused) .lineRipple:hover:before {
+	border-bottom-color: var(--mdc-border-color-hover);
+}
+
+.defaultKind {
+	composes: mdc-text-field--filled from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.outlinedKind {
+	composes: mdc-text-field--outlined from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.outlinedLabelActive {
+	transform: translateY(-130%) !important;
+	font-size: 0.75rem !important;
 }
 
 .root .input {
@@ -23,11 +49,11 @@
 
 .inputWrapper {
 	width: 100%;
+	composes: mdc-text-field__resizer from '@material/textfield/dist/mdc.textfield.css';
 }
 
-.root .input {
-	border: 1px solid var(--mdc-border-color);
-	border-radius: var(--mdc-theme-border-radius);
+.noLabel {
+	composes: mdc-text-field--no-label from '@material/textfield/dist/mdc.textfield.css';
 }
 
 .root .focused .input {
@@ -36,4 +62,50 @@
 
 .focused {
 	composes: mdc-text-field--focused from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutline {
+	composes: mdc-notched-outline mdc-notched-outline--upgraded from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineNotched {
+	composes: mdc-notched-outline--notched from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineLeading {
+	composes: mdc-notched-outline__leading from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineNotch {
+	composes: mdc-notched-outline__notch from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineTrailing {
+	composes: mdc-notched-outline__trailing from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.wrapper.outlinedKind .notchedOutlineLeading,
+.wrapper.outlinedKind .notchedOutlineNotch,
+.wrapper.outlinedKind .notchedOutlineTrailing,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineLeading,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineNotch,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineTrailing {
+	border-color: var(--mdc-border-color);
+}
+
+/* Applied to default inputs */
+.ripple {
+	composes: mdc-text-field__ripple from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.lineRipple {
+	composes: mdc-line-ripple from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.defaultKindFocused {
+	composes: mdc-ripple-upgraded--background-focused from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.defaultKindLineRippleFocused {
+	composes: mdc-line-ripple--active from '@material/textfield/dist/mdc.textfield.css';
 }

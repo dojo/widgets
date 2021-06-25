@@ -57,6 +57,8 @@ export interface TypeaheadProperties {
 	strict?: boolean;
 	/** Flag to indicate if drop down arrow should be shown in trailing section of text input, defaults to false */
 	hasDownArrow?: boolean;
+	/** The kind of typeahead input */
+	kind?: 'outlined' | 'filled';
 }
 
 export interface TypeaheadICache {
@@ -119,7 +121,8 @@ export const Typeahead = factory(function Typeahead({
 		classes,
 		theme: themeProp,
 		variant,
-		hasDownArrow
+		hasDownArrow,
+		kind
 	} = properties();
 	const {
 		get,
@@ -431,6 +434,7 @@ export const Typeahead = factory(function Typeahead({
 									onKeyDown(event, preventDefault, openMenu, closeMenu);
 								}}
 								valid={valid}
+								kind={kind}
 							>
 								{{
 									label,

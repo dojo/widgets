@@ -42,6 +42,8 @@ export interface DateInputProperties extends ThemeProperties, FocusProperties {
 	readOnly?: boolean;
 	/** Determines if this input is required, styles accordingly */
 	required?: boolean;
+	/** The kind of date input */
+	kind?: 'outlined' | 'filled';
 }
 
 export interface DateInputChildren {
@@ -95,7 +97,8 @@ export default factory(function DateInput({
 		theme: themeProp,
 		variant,
 		classes,
-		required
+		required,
+		kind
 	} = properties();
 	const { messages } = i18n.localize(bundle);
 	const themedCss = theme.classes(css);
@@ -251,6 +254,7 @@ export default factory(function DateInput({
 									}}
 									classes={classes}
 									variant={variant}
+									kind={kind}
 								>
 									{{
 										label,

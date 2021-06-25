@@ -8,26 +8,27 @@
 	display: flex;
 }
 
+.defaultKind {
+	composes: mdc-text-field--filled from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.defaultKind:not(.hasLeading):not(.hasTrailing) .inputWrapper {
+	padding-bottom: 7px;
+}
+
+.defaultKind.hasLeading .input,
+.defaultKind.hasTrailing .input {
+	padding-top: 4px;
+}
+
+.outlinedKind {
+	composes: mdc-text-field--outlined from '@material/textfield/dist/mdc.textfield.css';
+}
+
 /* Added to the input */
 .input {
 	composes: mdc-text-field__input from '@material/textfield/dist/mdc.textfield.css';
-}
-/* Contains the input element */
-.inputWrapper {
-	width: 100%;
-	composes: mdc-line-ripple from '@material/textfield/dist/mdc.textfield.css';
-}
-
-.root .wrapper {
-	background-color: var(--mdc-theme-on-surface);
-}
-
-.root:hover .wrapper:not(.disabled) {
-	background-color: var(--mdc-theme-on-surface-hover);
-}
-
-.inputWrapperFocused {
-	composes: mdc-line-ripple--active from '@material/textfield/dist/mdc.textfield.css';
+	height: 100%;
 }
 
 .noLabel {
@@ -37,6 +38,10 @@
 /* Added to a disabled TextInput */
 .disabled {
 	composes: mdc-text-field--disabled from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.root .wrapper.defaultKind {
+	background-color: var(--mdc-text-input-background);
 }
 
 .root .disabled .input {
@@ -60,6 +65,12 @@
 .leading,
 .trailing {
 	composes: mdc-text-field__icon from '@material/textfield/dist/mdc.textfield.css';
+}
+.leading {
+	composes: mdc-text-field__icon--leading from '@material/textfield/dist/mdc.textfield.css';
+}
+.trailing {
+	composes: mdc-text-field__icon--trailing from '@material/textfield/dist/mdc.textfield.css';
 }
 .root .leading,
 .root .trailing {
@@ -95,11 +106,11 @@
 	color: var(--mdc-text-color);
 }
 
-.wrapper:not(.disabled):not(.focused) .inputWrapper:before {
+.wrapper:not(.disabled):not(.focused) .lineRipple:before {
 	border-bottom-color: var(--mdc-border-color);
 }
 
-.wrapper:not(.disabled):not(.focused) .inputWrapper:hover:before {
+.wrapper:not(.disabled):not(.focused) .lineRipple:hover:before {
 	border-bottom-color: var(--mdc-border-color-hover);
 }
 
@@ -115,4 +126,55 @@
 }
 .input:-webkit-autofill {
 	animation-name: onAutofillShown;
+}
+
+.notchedOutline {
+	composes: mdc-notched-outline mdc-notched-outline--upgraded from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineNotched {
+	composes: mdc-notched-outline--notched from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineLeading {
+	composes: mdc-notched-outline__leading from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineNotch {
+	composes: mdc-notched-outline__notch from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.notchedOutlineTrailing {
+	composes: mdc-notched-outline__trailing from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.wrapper.outlinedKind .notchedOutlineLeading,
+.wrapper.outlinedKind .notchedOutlineNotch,
+.wrapper.outlinedKind .notchedOutlineTrailing,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineLeading,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineNotch,
+.wrapper.outlinedKind:not(.disabled):not(.focused):hover .notchedOutlineTrailing {
+	border-color: var(--mdc-border-color);
+}
+
+/* Applied to default inputs */
+.ripple {
+	composes: mdc-text-field__ripple from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.lineRipple {
+	composes: mdc-line-ripple from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.defaultKindFocused {
+	composes: mdc-ripple-upgraded--background-focused from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.defaultKindLineRippleFocused {
+	composes: mdc-line-ripple--active from '@material/textfield/dist/mdc.textfield.css';
+}
+
+.outlinedLabelActive {
+	transform: translateY(-34.75px) !important;
+	font-size: 0.75rem !important;
 }

@@ -77,6 +77,7 @@ const triggerAssertion = assertion(() => (
 			}
 		}}
 		variant={undefined}
+		kind={undefined}
 	>
 		{{ label: undefined, leading: undefined, trailing: undefined }}
 	</WrappedTrigger>
@@ -1149,5 +1150,19 @@ describe('Typeahead', () => {
 
 	it('opens typeahead onkeydown `Space` on down arrow', () => {
 		testDownArrowOpening('onkeydown', { which: Keys.Space, preventDefault: noop });
+	});
+
+	it('Should render the typeahead as outlined', () => {
+		const r = renderer(() => (
+			<Typeahead
+				resource={{ data, id: 'test', idKey: 'value' }}
+				onValue={onValueStub}
+				kind="outlined"
+			/>
+		));
+		r.child(WrappedPopup, {
+			trigger: [() => {}]
+		});
+		r.expect(baseAssertion.setProperty(WrappedTrigger, 'kind', 'outlined'));
 	});
 });

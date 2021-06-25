@@ -32,3 +32,27 @@
 .values {
 	margin-top: var(--spacing-regular);
 }
+
+.root.hasValue .wrapper {
+	height: auto;
+	flex-flow: row wrap;
+}
+
+.root .inputLeadingWrapper {
+	width: 100%;
+	display: inline-block;
+}
+
+.root .inputLeading {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-bottom: none;
+}
+
+.root.hasValue .input {
+	display: inline-block;
+	width: 100%;
+	border-left-width: 1px;
+	border-left-style: solid;
+	border-top: none;
+}
