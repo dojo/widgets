@@ -12,6 +12,7 @@
 .root.hasValue .inputLeading {
 	position: relative;
 	pointer-events: unset;
+	margin-left: 0;
 }
 
 .values .value {
