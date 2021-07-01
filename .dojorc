@@ -29,6 +29,8 @@
 			"src/date-input",
 			"src/dialog",
 			"src/email-input",
+			"src/file-upload-input",
+			"src/file-uploader",
 			"src/floating-action-button",
 			"src/form",
 			"src/grid",

@@ -65,6 +65,17 @@ import AnimatedDialog from './widgets/dialog/AnimatedDialog';
 import FocusTrappedDialog from './widgets/dialog/FocusTrappedDialog';
 import ActionsDialog from './widgets/dialog/ActionsDialog';
 import BasicEmailInput from './widgets/email-input/Basic';
+import BasicFileUploadInput from './widgets/file-upload-input/Basic';
+import DisabledFileUploadInput from './widgets/file-upload-input/Disabled';
+import LabelledFileUploadInput from './widgets/file-upload-input/Labelled';
+import MultipleFileUploadInput from './widgets/file-upload-input/Multiple';
+import NoDropFileUploadInput from './widgets/file-upload-input/NoDrop';
+import BasicFileUploader from './widgets/file-uploader/Basic';
+import ControlledFileUploader from './widgets/file-uploader/Controlled';
+import CustomValidatorFileUploader from './widgets/file-uploader/CustomValidator';
+import DisabledFileUploader from './widgets/file-uploader/Disabled';
+import MultipleFileUploader from './widgets/file-uploader/Multiple';
+import ValidatedFileUploader from './widgets/file-uploader/Validated';
 import Advanced from './widgets/grid/Advanced';
 import BasicFab from './widgets/floating-action-button/Basic';
 import ExtendedFab from './widgets/floating-action-button/Extended';
@@ -826,6 +837,76 @@ export const config: Config = {
 					module: BasicEmailInput
 				}
 			}
+		},
+		'file-upload-input': {
+			filename: 'index',
+			overview: {
+				example: {
+					title: 'Basic FileUploadInput',
+					filename: 'Basic',
+					module: BasicFileUploadInput
+				}
+			},
+			examples: [
+				{
+					title: 'Disabled FileUploadInput',
+					filename: 'Disabled',
+					module: DisabledFileUploadInput
+				},
+				{
+					title: 'Multiple FileUploadInput',
+					filename: 'Multiple',
+					module: MultipleFileUploadInput,
+					description:
+						'Demonstrates using child `content` property to render information about the uploaded files that is available to the `onValue` callback.'
+				},
+				{
+					title: 'FileUploadInput with label',
+					filename: 'Labelled',
+					module: LabelledFileUploadInput
+				},
+				{
+					title: 'FileUploadInput with no DnD',
+					filename: 'NoDrop',
+					module: NoDropFileUploadInput
+				}
+			]
+		},
+		'file-uploader': {
+			filename: 'index',
+			overview: {
+				example: {
+					filename: 'Basic',
+					module: BasicFileUploader
+				}
+			},
+			examples: [
+				{
+					title: 'Disabled FileUploader',
+					filename: 'Disabled',
+					module: DisabledFileUploader
+				},
+				{
+					title: 'Multiple FileUploader',
+					filename: 'Multiple',
+					module: MultipleFileUploader
+				},
+				{
+					title: 'Validated FileUploader',
+					filename: 'Validated',
+					module: ValidatedFileUploader
+				},
+				{
+					title: 'FileUploader with custom validator',
+					filename: 'CustomValidator',
+					module: CustomValidatorFileUploader
+				},
+				{
+					title: 'Controlled FileUploader',
+					filename: 'Controlled',
+					module: ControlledFileUploader
+				}
+			]
 		},
 		'floating-action-button': {
 			overview: {

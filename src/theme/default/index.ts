@@ -11,6 +11,7 @@ import * as constrainedInput from './constrained-input.m.css';
 import * as dateInput from './date-input.m.css';
 import * as dialog from './dialog.m.css';
 import * as emailInput from './email-input.m.css';
+import * as fileUploadInput from './file-upload-input.m.css';
 import * as floatingActionButton from './floating-action-button.m.css';
 import * as form from './form.m.css';
 import * as gridBody from './grid-body.m.css';
@@ -74,6 +75,7 @@ export default {
 		'@dojo/widgets/date-input': dateInput,
 		'@dojo/widgets/dialog': dialog,
 		'@dojo/widgets/email-input': emailInput,
+		'@dojo/widgets/file-upload-input': fileUploadInput,
 		'@dojo/widgets/floating-action-button': floatingActionButton,
 		'@dojo/widgets/form': form,
 		'@dojo/widgets/grid-body': gridBody,

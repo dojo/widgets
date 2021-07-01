@@ -1,0 +1,20 @@
+/*
+DnD `dragenter` and `dragleave` events are triggered on children which makes it challenging to keep track of when
+a drag operation has truly left a target node - `dragleave` is triggered for the node when the cursor moves over
+a child of the node. For this reason it is ideal to provide as a drag target an overlay node that has no children.
+As soon as the target node receives a `dragenter` event it displays an overlay that obscures everything below it.
+The overlay node then receives any further DnD events and leave and enter can be accurately tracked.
+ */
+
+.root {
+	position: relative;
+}
+
+.dndOverlay {
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+}
