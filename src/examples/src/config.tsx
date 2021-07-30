@@ -334,7 +334,7 @@ export const config: Config = {
 	],
 	tests,
 	readmePath: (widget: string) => `src/${widget}/README.md`,
-	widgetPath: (widget: string, filename: string) => `src/${widget}/${filename || 'index'}.tsx`,
+	widgetPath: (widget: string) => `src/${widget}/index.tsx`,
 	examplePath: (widget: string, filename: string) =>
 		`src/examples/src/widgets/${widget}/${filename || 'index'}.tsx`,
 	codesandboxPath: (widget: string, filename: string, themeName?: string) => {
