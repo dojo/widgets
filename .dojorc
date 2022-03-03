@@ -5,7 +5,6 @@
 	},
 	"build-app": {
 		"locale": "en",
-		"supportedLocales": ["zh", "zh-CN", "zh-TW"],
 		"features": {
 			"tests": true
 		}
