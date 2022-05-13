@@ -1,0 +1,12 @@
+.root {
+	background-color: var(--mdc-theme-background);
+	border: 2px dashed transparent;
+}
+
+.disabled {
+	cursor: no-drop;
+}
+
+.labelRoot {
+	position: static;
+}

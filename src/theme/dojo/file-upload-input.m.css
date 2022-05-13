@@ -1,0 +1,8 @@
+.root {
+	background-color: var(--color-background);
+	border: 2px dashed transparent;
+}
+
+.disabled {
+	cursor: no-drop;
+}
